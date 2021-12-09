@@ -21,5 +21,6 @@ public enum ObjectType {
     ENTITY,
     GROUP,
     CERTIFICATE,
-    STATISTICS;
+    STATISTICS,
+    LOCALHOST;
 }
