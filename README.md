@@ -8,7 +8,7 @@ These interface have to be generally applied when extending the platform, in cas
 
 ## Connector functional group
 
-Each connector must implement a specific functional group that defines the functionality provided by the connector. For more information on functional groups and types, refer to CZERTAINLY documentation.
+Each connector must implement a specific functional group that defines the functionality provided by the connector. For more information on functional groups and types, refer to [CZERTAINLY documentation](https://docs.czertainly.com).
 
 Functional groups can be combined, for example, a connector can implement both `Credential Provider` and `CA Connector` functional group, however types cannot be mixed.
 
