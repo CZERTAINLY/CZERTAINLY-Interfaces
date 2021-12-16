@@ -8,15 +8,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class CAInstanceDto implements Identified {
+public class CAInstanceRequestDto {
 
-    @Schema(description = "Identifier of Authority")
-    private Long id;
-
-    @Schema(description = "UUID of Authority")
-    private String uuid;
-
-    @Schema(description = "Authority Name",
+    @Schema(description = "New Authority name",
             required = true)
     private String name;
 
@@ -25,40 +19,14 @@ public class CAInstanceDto implements Identified {
             required = true)
     private List<AttributeDefinition> attributes;
 
-    @Schema(description = "Status of the Authority",
-            required = true)
-    private String status;
-
     @Schema(description = "UUID of CA connector",
             required = true)
     private String connectorUuid;
-
-    @Schema(description = "Name of CA connector",
-            required = true)
-    private String connectorName;
 
     @Schema(description = "Authority type",
             example = "Ejbca, AdCs, etc",
             required = true)
     private String authorityType;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
     public String getName() {
         return name;
@@ -74,14 +42,6 @@ public class CAInstanceDto implements Identified {
 
     public void setAttributes(List<AttributeDefinition> attributes) {
         this.attributes = attributes;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getConnectorUuid() {
@@ -100,20 +60,12 @@ public class CAInstanceDto implements Identified {
         this.authorityType = authorityType;
     }
 
-    public String getConnectorName() { return connectorName; }
-
-    public void setConnectorName(String connectorName) { this.connectorName = connectorName; }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
-                .append("uuid", uuid)
                 .append("name", name)
                 .append("attributes", attributes)
-                .append("status", status)
                 .append("connectorUuid", connectorUuid)
-                .append("connectorName", connectorName)
                 .append("authorityType", authorityType)
                 .toString();
     }

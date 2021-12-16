@@ -10,6 +10,7 @@ import com.czertainly.api.model.AttributeCallback;
 import com.czertainly.api.model.AttributeDefinition;
 import com.czertainly.api.model.ca.CAInstanceDto;
 import com.czertainly.api.model.NameAndIdDto;
+import com.czertainly.api.model.ca.CAInstanceRequestDto;
 import com.czertainly.api.model.connector.ForceDeleteMessageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,32 +40,32 @@ public interface CAInstanceController {
 	@RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
 	public List<CAInstanceDto> listCAInstances();
 
-	@Operation(summary = "Details of Certificate Authorities")
+	@Operation(summary = "Details of a Certificate Authority")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
 	public CAInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
-	@Operation(summary = "Add a new Certificate Authorities")
+	@Operation(summary = "Add a new Certificate Authority")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "new authority added"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))), })
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> createCAInstance(@RequestBody CAInstanceDto request)
+	public ResponseEntity<?> createCAInstance(@RequestBody CAInstanceRequestDto request)
 			throws AlreadyExistException, NotFoundException, ConnectorException;
 
-	@Operation(summary = "Update a Certificate Authorities")
+	@Operation(summary = "Update a Certificate Authority")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority details updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
-	public CAInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody CAInstanceDto request)
+	public CAInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody CAInstanceRequestDto request)
 			throws NotFoundException, ConnectorException;
 
-	@Operation(summary = "Remove a Certificate Authorities")
+	@Operation(summary = "Remove a Certificate Authority")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority details removed"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -101,7 +102,7 @@ public interface CAInstanceController {
 	public Boolean validateRAProfileAttributes(@PathVariable String uuid, @RequestBody List<AttributeDefinition> attributes)
 			throws NotFoundException, ConnectorException;
 
-	@Operation(summary = "Delete multiple Ca Instances")
+	@Operation(summary = "Delete multiple Authorities")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Ca Instances deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
@@ -109,7 +110,7 @@ public interface CAInstanceController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	public List<ForceDeleteMessageDto> bulkRemoveCaInstance(@RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "Force Delete multiple Ca Instances")
+	@Operation(summary = "Force Delete multiple Authorities")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Ca Instances deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
