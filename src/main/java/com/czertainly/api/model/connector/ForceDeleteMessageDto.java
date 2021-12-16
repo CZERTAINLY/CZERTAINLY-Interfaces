@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ForceDeleteMessageDto extends NameAndUuidDto {
 
-    @Schema(description = "Message describing the associations of the connector which is preventing the delete operation",
+    @Schema(description = "Message describing the associations of the Connector which is preventing the delete operation",
             required = true)
     private String message;
 

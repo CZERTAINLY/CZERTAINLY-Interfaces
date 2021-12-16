@@ -36,14 +36,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface ConnectorController {
 
 	@Operation(summary = "List of all Connectors")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List connectors"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List Connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
 	public List<ConnectorDto> listConnectors();
 
 	@Operation(summary = "List Connectors by Function Group")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all connectors"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup" }, produces = { "application/json" })
@@ -51,7 +51,7 @@ public interface ConnectorController {
 			throws NotFoundException;
 
 	@Operation(summary = "List Connectors by Function Group and Kind")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all connectors"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup", "kind" }, produces = { "application/json" })
@@ -66,7 +66,7 @@ public interface ConnectorController {
 	public ConnectorDto getConnector(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Create a new Connector")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New connector created"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Connector created"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -103,7 +103,7 @@ public interface ConnectorController {
 	public List<ConnectDto> connect(@RequestBody ConnectorDto request) throws ValidationException, ConnectException, ConnectorException;
 
 	@Operation(summary = "Reconnect to a Connector")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Reconnect to a connector"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Reconnect to a Connector"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -112,7 +112,7 @@ public interface ConnectorController {
 	public List<ConnectDto> reconnect(@PathVariable String uuid) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
 
 	@Operation(summary = "Approve multiple Connector")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Approve multiple connectors"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Approve multiple Connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/approve", method = RequestMethod.PUT, consumes = { "application/json" })
@@ -121,7 +121,7 @@ public interface ConnectorController {
 
 	@Operation(summary = "Reconnect multiple Connectors")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Reconnect multiple connectors initiated"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Reconnect multiple Connectors initiated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/reconnect", method = RequestMethod.PUT, consumes = {
