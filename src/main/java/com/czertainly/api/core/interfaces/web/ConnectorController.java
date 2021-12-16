@@ -11,10 +11,8 @@ import com.czertainly.api.model.AttributeDefinition;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.HealthDto;
-import com.czertainly.api.model.connector.ConnectDto;
-import com.czertainly.api.model.connector.ConnectorDto;
-import com.czertainly.api.model.connector.ForceDeleteMessageDto;
-import com.czertainly.api.model.connector.FunctionGroupCode;
+import com.czertainly.api.model.UuidDto;
+import com.czertainly.api.model.connector.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,7 +50,7 @@ public interface ConnectorController {
 	public List<ConnectorDto> listConnectorsByFunctionGroup(@RequestParam FunctionGroupCode functionGroup)
 			throws NotFoundException;
 
-	@Operation(summary = "List Connectors")
+	@Operation(summary = "List Connectors by Function group and type")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -70,19 +68,22 @@ public interface ConnectorController {
 	@Operation(summary = "Create a new connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New connector created"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
+
 	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
-	public ResponseEntity<?> createConnector(@RequestBody ConnectorDto request)
-			throws AlreadyExistException, NotFoundException;
+	public ResponseEntity<UuidDto> createConnector(@RequestBody ConnectorRequestDto request)
+			throws AlreadyExistException, ConnectorException;
 
 	@Operation(summary = "Update a connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
-	public ConnectorDto updateConnector(@PathVariable String uuid, @RequestBody ConnectorDto request)
-			throws NotFoundException;
+	public ConnectorDto updateConnector(@PathVariable String uuid, @RequestBody ConnectorRequestDto request)
+			throws ConnectorException;
 
 	@Operation(summary = "Delete a connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connector deleted"),
@@ -95,6 +96,7 @@ public interface ConnectorController {
 	@Operation(summary = "Connect to a connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector connected"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/connect", method = RequestMethod.PUT, consumes = { "application/json" }, produces = {
 			"application/json" })
@@ -103,6 +105,7 @@ public interface ConnectorController {
 	@Operation(summary = "Reconnect to a connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Reconnect to a connector"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}/reconnect", method = RequestMethod.PUT, consumes = {
 			"application/json" }, produces = { "application/json" })
