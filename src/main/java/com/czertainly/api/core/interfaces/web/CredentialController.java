@@ -8,6 +8,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.credential.CredentialDto;
+import com.czertainly.api.model.credential.CredentialRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +49,7 @@ public interface CredentialController {
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
-	public ResponseEntity<?> createCredential(@RequestBody CredentialDto request)
+	public ResponseEntity<?> createCredential(@RequestBody CredentialRequestDto request)
 			throws AlreadyExistException, NotFoundException, ConnectorException;
 
 	@Operation(summary = "Update a credential")
@@ -57,7 +58,7 @@ public interface CredentialController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
-	public CredentialDto updateCredential(@PathVariable String uuid, @RequestBody CredentialDto request)
+	public CredentialDto updateCredential(@PathVariable String uuid, @RequestBody CredentialRequestDto request)
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Remove a credential")
