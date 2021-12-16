@@ -1,5 +1,6 @@
 package com.czertainly.api.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -7,7 +8,11 @@ import java.io.Serializable;
 
 public class NameAndUuidDto implements Serializable {
 
+    @Schema(description = "Object identifier",
+            required = true)
     private String uuid;
+    @Schema(description = "Object Name",
+            required = true)
     private String name;
 
     public NameAndUuidDto() {
