@@ -10,19 +10,19 @@ public class EndpointDto extends NameAndUuidDto {
 
 
     @Schema(
-            description = "Context of the endpoint",
+            description = "Context of the Endpoint",
             example = "/v1",
             required = true
     )
     private String context;
     @Schema(
-            description = "Method to be used for the endpoint",
+            description = "Method to be used for the Endpoint",
             example = "POST",
             required = true
     )
     private String method;
     @Schema(
-            description = "True if the endpoint is required for implementation",
+            description = "True if the Endpoint is required for implementation",
             example = "true",
             required = true
     )

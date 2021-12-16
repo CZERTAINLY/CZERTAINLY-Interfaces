@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class UuidDto {
 
-    @Schema(description = "Object UUID",
+    @Schema(description = "Object identifier",
             required = true)
     private String uuid;
 

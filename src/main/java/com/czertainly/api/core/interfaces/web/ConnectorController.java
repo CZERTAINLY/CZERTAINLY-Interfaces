@@ -35,7 +35,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 public interface ConnectorController {
 
-	@Operation(summary = "List of all connectors")
+	@Operation(summary = "List of all Connectors")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -50,7 +50,7 @@ public interface ConnectorController {
 	public List<ConnectorDto> listConnectorsByFunctionGroup(@RequestParam FunctionGroupCode functionGroup)
 			throws NotFoundException;
 
-	@Operation(summary = "List Connectors by Function group and kind")
+	@Operation(summary = "List Connectors by Function Group and Kind")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -58,14 +58,14 @@ public interface ConnectorController {
 	public List<ConnectorDto> listConnectors(@RequestParam FunctionGroupCode functionGroup, @RequestParam String kind)
 			throws NotFoundException;
 
-	@Operation(summary = "Get details of a connector")
+	@Operation(summary = "Get details of a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
 	public ConnectorDto getConnector(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
-	@Operation(summary = "Create a new connector")
+	@Operation(summary = "Create a new Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New connector created"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
@@ -75,7 +75,7 @@ public interface ConnectorController {
 	public ResponseEntity<?> createConnector(@RequestBody ConnectorRequestDto request)
 			throws AlreadyExistException, ConnectorException;
 
-	@Operation(summary = "Update a connector")
+	@Operation(summary = "Update a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
@@ -85,7 +85,7 @@ public interface ConnectorController {
 	public ConnectorDto updateConnector(@PathVariable String uuid, @RequestBody ConnectorRequestDto request)
 			throws ConnectorException;
 
-	@Operation(summary = "Delete a connector")
+	@Operation(summary = "Delete a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connector deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -93,7 +93,7 @@ public interface ConnectorController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeConnector(@PathVariable String uuid) throws NotFoundException;
 
-	@Operation(summary = "Connect to a connector")
+	@Operation(summary = "Connect to a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector connected"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
@@ -102,7 +102,7 @@ public interface ConnectorController {
 			"application/json" })
 	public List<ConnectDto> connect(@RequestBody ConnectorDto request) throws ValidationException, ConnectException, ConnectorException;
 
-	@Operation(summary = "Reconnect to a connector")
+	@Operation(summary = "Reconnect to a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Reconnect to a connector"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
@@ -111,7 +111,7 @@ public interface ConnectorController {
 			"application/json" }, produces = { "application/json" })
 	public List<ConnectDto> reconnect(@PathVariable String uuid) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
 
-	@Operation(summary = "Approve multiple connector")
+	@Operation(summary = "Approve multiple Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Approve multiple connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -119,7 +119,7 @@ public interface ConnectorController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkApprove(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
-	@Operation(summary = "Reconnect multiple connectors")
+	@Operation(summary = "Reconnect multiple Connectors")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Reconnect multiple connectors initiated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
@@ -128,7 +128,7 @@ public interface ConnectorController {
 			"application/json" }, produces = { "application/json" })
 	public void bulkReconnect(@RequestBody List<String> uuids) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
 
-	@Operation(summary = "Approve a connector")
+	@Operation(summary = "Approve a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector Approved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -136,14 +136,14 @@ public interface ConnectorController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void approve(@PathVariable String uuid) throws NotFoundException, ValidationException;
 
-	@Operation(summary = "Check Health of a connector")
+	@Operation(summary = "Check Health of a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Health check completed"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}/health", method = RequestMethod.GET, produces = { "application/json" })
 	public HealthDto checkHealth(@PathVariable String uuid) throws NotFoundException, ValidationException, ConnectorException;
 
-	@Operation(summary = "Get Attributes from a connector")
+	@Operation(summary = "Get Attributes from a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -152,7 +152,7 @@ public interface ConnectorController {
 	public List<AttributeDefinition> getAttributes(@PathVariable String uuid, @PathVariable String functionGroup,
                                                    @PathVariable String functionGroupKind) throws NotFoundException, ConnectorException;
 	
-	@Operation(summary = "Get attributes of all function Groups")
+	@Operation(summary = "Get attributes of all Function Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -160,7 +160,7 @@ public interface ConnectorController {
 			"application/json" })
 	public Map<FunctionGroupCode, Map<String, List<AttributeDefinition>>> getAttributesAll(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
-	@Operation(summary = "Validate attributes")
+	@Operation(summary = "Validate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes Validated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -178,7 +178,7 @@ public interface ConnectorController {
 			"application/json" }, produces = { "application/json" })
 	public Object callback(@PathVariable String uuid, @RequestBody AttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "Delete multiple connectors")
+	@Operation(summary = "Delete multiple Connectors")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
@@ -186,7 +186,7 @@ public interface ConnectorController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	public List<ForceDeleteMessageDto> bulkRemoveConnector(@RequestBody List<String> uuids) throws NotFoundException, ValidationException, ConnectorException;
 
-	@Operation(summary = "Force Delete multiple connectors")
+	@Operation(summary = "Force Delete multiple Connectors")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connector deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
