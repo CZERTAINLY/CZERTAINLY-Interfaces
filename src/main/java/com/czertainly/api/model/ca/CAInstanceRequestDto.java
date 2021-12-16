@@ -18,7 +18,7 @@ public class CAInstanceRequestDto {
             implementation = List.class,
             required = true)
     private List<AttributeDefinition> attributes;
-
+    
     @Schema(description = "UUID of CA Connector",
             required = true)
     private String connectorUuid;
