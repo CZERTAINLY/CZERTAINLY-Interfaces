@@ -7,18 +7,15 @@ import java.util.List;
 public class BaseFunctionGroupDto {
 
     @Schema(description = "Enumerated code of functional group",
-            implementation = FunctionGroupCode.class,
             required = true)
     protected FunctionGroupCode functionGroupCode;
 
     @Schema(description = "List of supported functional group kinds",
-            implementation = List.class,
             example = "SoftKeyStore, Basic, ApiKey, etc",
             required = true)
     protected List<String> kinds;
 
     @Schema(description = "List of end points related to functional group",
-            implementation = List.class,
             required = true)
     protected List<EndpointDto> endPoints;
 

@@ -12,41 +12,33 @@ import java.util.List;
 public class ConnectorDto implements Identified, Serializable {
 
     @Schema(description = "Id of the connector",
-            implementation = Long.class,
             example = "1",
             required = true)
     private Long id;
     @Schema(description = "UUID of the connector",
             example = "204a57f6-2ed3-45b6-bf09-af8b8c900e33",
-            implementation = String.class,
             required = true)
     private String uuid;
     @Schema(description = "Name of the connector",
-            implementation = String.class,
             example = "Connector1",
             required = true)
     private String name;
     @Schema(description = "List of function groups implemented by the connector",
-            implementation = List.class,
             required = true)
     private List<FunctionGroupDto> functionGroups;
     @Schema(description = "URL of the connector",
             example = "http://network-discovery-provider:8080",
-            implementation = String.class,
             required = true)
     private String url;
     @Schema(description = "Type of authentication for the connector",
-            implementation = AuthType.class,
             example = "NONE",
             required = true)
     private AuthType authType;
     @Schema(description = "List of attributes for the authentication type",
-            implementation = List.class,
             required = false)
     private List<AttributeDefinition> authAttributes;
     @Schema(description = "Status of the connector",
             example = "CONNECTED",
-            implementation = ConnectorStatus.class,
             required = true)
     private ConnectorStatus status;
 

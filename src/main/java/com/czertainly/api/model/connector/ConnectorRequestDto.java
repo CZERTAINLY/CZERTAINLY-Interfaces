@@ -12,22 +12,18 @@ import java.util.List;
 public class ConnectorRequestDto {
 
     @Schema(description = "Name of the connector",
-            implementation = String.class,
             example = "Connector1",
             required = true)
     private String name;
     @Schema(description = "URL of the connector to connect",
-            implementation = String.class,
             example = "http://network-discovery-provicer:8080",
             required = true)
     private String url;
     @Schema(description = "Type of authentication for the connector",
             example = "NONE",
-            implementation = AuthType.class,
             required = true)
     private AuthType authType;
     @Schema(description = "List of authentication attributes. Required if the authentication type is not NONE",
-            implementation = List.class,
             required = false)
     private List<AttributeDefinition> authAttributes;
 

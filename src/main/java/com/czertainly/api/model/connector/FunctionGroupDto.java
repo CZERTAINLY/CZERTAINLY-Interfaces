@@ -9,16 +9,13 @@ public class FunctionGroupDto extends BaseFunctionGroupDto implements Identified
 
     @Schema(description = "Id of the Function Group",
             example = "1",
-            implementation = Long.class,
             required = true)
     private Long id;
     @Schema(description = "UUID of the function group",
-            implementation = String.class,
             example = "204a57f6-2ed3-45b6-bf09-af8b8c900e33",
             required = true)
     private String uuid;
     @Schema(description = "Function Group Name",
-            implementation = String.class,
             required = true)
     private String name;
 
