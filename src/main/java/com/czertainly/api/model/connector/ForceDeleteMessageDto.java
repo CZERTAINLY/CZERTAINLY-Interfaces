@@ -1,25 +1,13 @@
 package com.czertainly.api.model.connector;
 
-public class ForceDeleteMessageDto {
-    private String uuid;
-    private String name;
+import com.czertainly.api.model.NameAndUuidDto;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public class ForceDeleteMessageDto extends NameAndUuidDto {
+
+    @Schema(description = "Message describing the associations of the Connector which is preventing the delete operation",
+            required = true)
     private String message;
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getMessage() {
         return message;

@@ -1,11 +1,12 @@
 package com.czertainly.api.model.connector;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ConnectDto {
 
+    @Schema(description = "Function Group information of a connector",
+            required = true)
     private FunctionGroupDto functionGroup;
-    private List<EndpointDto> endpoints;
 
     public FunctionGroupDto getFunctionGroup() {
         return functionGroup;
@@ -13,13 +14,5 @@ public class ConnectDto {
 
     public void setFunctionGroup(FunctionGroupDto functionGroup) {
         this.functionGroup = functionGroup;
-    }
-
-    public List<EndpointDto> getEndpoints() {
-        return endpoints;
-    }
-
-    public void setEndpoints(List<EndpointDto> endpoints) {
-        this.endpoints = endpoints;
     }
 }

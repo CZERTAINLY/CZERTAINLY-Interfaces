@@ -1,76 +1,32 @@
 package com.czertainly.api.model.connector;
 
 import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class EndpointDto implements Identified {
+public class EndpointDto extends NameAndUuidDto {
+
 
     @Schema(
-            description = "ID of the endpoint",
-            example = "1",
-            required = true
-    )
-    private Long id;
-
-    @Schema(
-            description = "UUID of the endpoint",
-            example = "204a57f6-2ed3-45b6-bf09-af8b8c900e33",
-            required = true
-    )
-    private String uuid;
-
-    @Schema(
-            description = "Name of the endpoint",
-            example = "listSupportedFunctions",
-            required = true
-    )
-    private String name;
-    @Schema(
-            description = "Context of the endpoint",
+            description = "Context of the Endpoint",
             example = "/v1",
             required = true
     )
     private String context;
     @Schema(
-            description = "Method to be used for the endpoint",
+            description = "Method to be used for the Endpoint",
             example = "POST",
             required = true
     )
     private String method;
     @Schema(
-            description = "True if the endpoint is required for implementation",
+            description = "True if the Endpoint is required for implementation",
             example = "true",
             required = true
     )
     private boolean required;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getContext() {
         return context;
@@ -99,7 +55,6 @@ public class EndpointDto implements Identified {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("context", context)

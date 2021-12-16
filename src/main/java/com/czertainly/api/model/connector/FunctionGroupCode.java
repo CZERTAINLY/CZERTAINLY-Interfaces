@@ -15,7 +15,7 @@ public enum FunctionGroupCode {
     CA_CONNECTOR("caConnector"),
     DISCOVERY_PROVIDER("discoveryProvider");
 
-    @Schema(description = "Functional group code of the connector",
+    @Schema(description = "Functional Group code of the Connector",
             example = "credentialProvider", required = true)
     private String code;
 

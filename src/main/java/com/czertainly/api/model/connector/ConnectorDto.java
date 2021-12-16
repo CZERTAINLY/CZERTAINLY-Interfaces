@@ -1,49 +1,34 @@
 package com.czertainly.api.model.connector;
 
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.NameAndUuidDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class ConnectorDto implements Identified, Serializable {
+public class ConnectorDto extends NameAndUuidDto implements Serializable {
 
-    private Long id;
-    private String uuid;
-    private String name;
+    @Schema(description = "List of Function Groups implemented by the Connector",
+            required = true)
     private List<FunctionGroupDto> functionGroups;
+    @Schema(description = "URL of the Connector",
+            example = "http://network-discovery-provider:8080",
+            required = true)
     private String url;
+    @Schema(description = "Type of authentication for the Connector",
+            example = "NONE",
+            required = true)
     private AuthType authType;
+    @Schema(description = "List of Attributes for the authentication type",
+            required = false)
     private List<AttributeDefinition> authAttributes;
+    @Schema(description = "Status of the Connector",
+            example = "CONNECTED",
+            required = true)
     private ConnectorStatus status;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<FunctionGroupDto> getFunctionGroups() {
         return functionGroups;
@@ -88,14 +73,13 @@ public class ConnectorDto implements Identified, Serializable {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
-                .append("uuid", uuid)
-                .append("name", name)
                 .append("functionGroups", functionGroups)
                 .append("url", url)
                 .append("authType", authType)
                 .append("authAttributes", authAttributes)
                 .append("status", status)
+                .append("name", name)
+                .append("uuid", uuid)
                 .toString();
     }
 }
