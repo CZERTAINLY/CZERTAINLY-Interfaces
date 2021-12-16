@@ -50,7 +50,7 @@ public interface ConnectorController {
 	public List<ConnectorDto> listConnectorsByFunctionGroup(@RequestParam FunctionGroupCode functionGroup)
 			throws NotFoundException;
 
-	@Operation(summary = "List Connectors by Function group and type")
+	@Operation(summary = "List Connectors by Function group and kind")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all connectors"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })

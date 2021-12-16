@@ -1,12 +1,15 @@
 package com.czertainly.api.model.connector;
 
 import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.NameIdUuidDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class FunctionGroupDto extends BaseFunctionGroupDto implements Identified {
 
+    @JsonIgnore
     @Schema(description = "Id of the Function Group",
             example = "1",
             required = true)

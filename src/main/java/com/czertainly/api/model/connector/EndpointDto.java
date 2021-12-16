@@ -1,32 +1,14 @@
 package com.czertainly.api.model.connector;
 
 import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.NameIdUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class EndpointDto implements Identified {
+public class EndpointDto extends NameIdUuidDto implements Identified {
 
-    @Schema(
-            description = "ID of the endpoint",
-            example = "1",
-            required = true
-    )
-    private Long id;
 
-    @Schema(
-            description = "UUID of the endpoint",
-            example = "204a57f6-2ed3-45b6-bf09-af8b8c900e33",
-            required = true
-    )
-    private String uuid;
-
-    @Schema(
-            description = "Name of the endpoint",
-            example = "listSupportedFunctions",
-            required = true
-    )
-    private String name;
     @Schema(
             description = "Context of the endpoint",
             example = "/v1",
@@ -45,32 +27,6 @@ public class EndpointDto implements Identified {
             required = true
     )
     private boolean required;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getContext() {
         return context;
