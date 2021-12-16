@@ -1,8 +1,7 @@
 package com.czertainly.api.model.connector;
 
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.Identified;
-import com.czertainly.api.model.NameIdUuidDto;
+import com.czertainly.api.model.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.Serializable;
 import java.util.List;
 
-public class ConnectorDto extends NameIdUuidDto implements Identified, Serializable {
+public class ConnectorDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "List of function groups implemented by the connector",
             required = true)
@@ -79,7 +78,6 @@ public class ConnectorDto extends NameIdUuidDto implements Identified, Serializa
                 .append("authType", authType)
                 .append("authAttributes", authAttributes)
                 .append("status", status)
-                .append("id", id)
                 .append("name", name)
                 .append("uuid", uuid)
                 .toString();

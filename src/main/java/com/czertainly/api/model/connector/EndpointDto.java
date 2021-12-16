@@ -1,12 +1,12 @@
 package com.czertainly.api.model.connector;
 
 import com.czertainly.api.model.Identified;
-import com.czertainly.api.model.NameIdUuidDto;
+import com.czertainly.api.model.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class EndpointDto extends NameIdUuidDto implements Identified {
+public class EndpointDto extends NameAndUuidDto {
 
 
     @Schema(
@@ -55,7 +55,6 @@ public class EndpointDto extends NameIdUuidDto implements Identified {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("context", context)

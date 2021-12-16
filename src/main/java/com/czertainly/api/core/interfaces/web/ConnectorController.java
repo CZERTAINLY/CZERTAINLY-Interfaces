@@ -72,7 +72,7 @@ public interface ConnectorController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 
 	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
-	public ResponseEntity<UuidDto> createConnector(@RequestBody ConnectorRequestDto request)
+	public ResponseEntity<?> createConnector(@RequestBody ConnectorRequestDto request)
 			throws AlreadyExistException, ConnectorException;
 
 	@Operation(summary = "Update a connector")
