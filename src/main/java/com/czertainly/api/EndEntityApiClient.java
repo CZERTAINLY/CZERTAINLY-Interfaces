@@ -21,11 +21,11 @@ public class EndEntityApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<EndEntityDto> listEntities(ConnectorDto connector, Long authorityId, String endEntityProfileName) throws ConnectorException {
+    public List<EndEntityDto> listEntities(ConnectorDto connector, String authorityUuid, String endEntityProfileName) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_BASE_CONTEXT, authorityId, endEntityProfileName)
+                .uri(connector.getUrl() + END_ENTITY_BASE_CONTEXT, authorityUuid, endEntityProfileName)
                 .retrieve()
                 .toEntityList(EndEntityDto.class)
                 .block().getBody(),
@@ -33,11 +33,11 @@ public class EndEntityApiClient extends BaseApiClient {
                 connector);
     }
 
-    public EndEntityDto getEndEntity(ConnectorDto connector, Long authorityId, String endEntityProfileName, String endEntityName) throws ConnectorException {
+    public EndEntityDto getEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityId, endEntityProfileName, endEntityName)
+                .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)
                 .retrieve()
                 .toEntity(EndEntityDto.class)
                 .block().getBody(),
@@ -45,11 +45,11 @@ public class EndEntityApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void createEndEntity(ConnectorDto connector, Long authorityId, String endEntityProfileName, AddEndEntityRequestDto requestDto) throws ConnectorException {
+    public void createEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, AddEndEntityRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_BASE_CONTEXT, authorityId, endEntityProfileName)
+                .uri(connector.getUrl() + END_ENTITY_BASE_CONTEXT, authorityUuid, endEntityProfileName)
                 .body(Mono.just(requestDto), AddEndEntityRequestDto.class)
                 .retrieve()
                 .toEntity(Void.class)
@@ -58,11 +58,11 @@ public class EndEntityApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void updateEndEntity(ConnectorDto connector, Long authorityId, String endEntityProfileName, String endEntityName, EditEndEntityRequestDto requestDto) throws ConnectorException {
+    public void updateEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName, EditEndEntityRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityId, endEntityProfileName, endEntityName)
+                .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)
                 .body(Mono.just(requestDto), EditEndEntityRequestDto.class)
                 .retrieve()
                 .toEntity(Void.class)
@@ -71,11 +71,11 @@ public class EndEntityApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void revokeAndDeleteEndEntity(ConnectorDto connector, Long authorityId, String endEntityProfileName, String endEntityName) throws ConnectorException {
+    public void revokeAndDeleteEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityId, endEntityProfileName, endEntityName)
+                .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)
                 .retrieve()
                 .toEntity(Void.class)
                 .block().getBody(),
@@ -83,11 +83,11 @@ public class EndEntityApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void resetPassword(ConnectorDto connector, Long authorityId, String endEntityProfileName, String endEntityName) throws ConnectorException {
+    public void resetPassword(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_RESET_PASSWORD_CONTEXT, authorityId, endEntityProfileName, endEntityName)
+                .uri(connector.getUrl() + END_ENTITY_RESET_PASSWORD_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)
                 .retrieve()
                 .toEntity(Void.class)
                 .block().getBody(),

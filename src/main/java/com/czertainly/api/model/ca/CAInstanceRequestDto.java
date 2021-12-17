@@ -14,16 +14,16 @@ public class CAInstanceRequestDto {
             required = true)
     private String name;
 
-    @Schema(description = "List of Authority attributes",
+    @Schema(description = "List of Authority Attributes",
             implementation = List.class,
             required = true)
     private List<AttributeDefinition> attributes;
 
-    @Schema(description = "UUID of CA connector",
+    @Schema(description = "UUID of CA Connector",
             required = true)
     private String connectorUuid;
 
-    @Schema(description = "Authority type",
+    @Schema(description = "Authority Type",
             example = "Ejbca, AdCs, etc",
             required = true)
     private String authorityType;

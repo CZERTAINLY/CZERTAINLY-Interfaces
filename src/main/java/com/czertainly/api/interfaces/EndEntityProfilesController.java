@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities/{authorityId}/endEntityProfiles")
+@RequestMapping("/v1/caConnector/authorities/{uuid}/endEntityProfiles")
 @Tag(name = "End Entity Profiles API", description = "End Entity Profiles API")
 public interface EndEntityProfilesController {
 
@@ -29,7 +29,7 @@ public interface EndEntityProfilesController {
     })
     List<NameAndIdDto> listEntityProfiles(
             @Parameter(in = ParameterIn.PATH, name = "authorityId", description = "Authority Instance Id")
-            @PathVariable Long authorityId
+            @PathVariable String uuid
     )
             throws NotFoundException;
 
@@ -44,7 +44,7 @@ public interface EndEntityProfilesController {
     })
     List<NameAndIdDto> listCertificateProfiles(
             @Parameter(in = ParameterIn.PATH, name = "authorityId", description = "Authority Instance Id")
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id")
             @PathVariable Integer endEntityProfileId
     )
@@ -61,7 +61,7 @@ public interface EndEntityProfilesController {
     })
     List<NameAndIdDto> listCAsInProfile(
             @Parameter(in = ParameterIn.PATH, name = "authorityId", description = "Authority Instance Id")
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id")
             @PathVariable Integer endEntityProfileId
     )

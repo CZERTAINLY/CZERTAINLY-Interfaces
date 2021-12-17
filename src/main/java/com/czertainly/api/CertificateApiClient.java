@@ -19,11 +19,11 @@ public class CertificateApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public CertificateSignResponseDto issueCertificate(ConnectorDto connector, Long authorityId, String endEntityProfileName, CertificateSignRequestDto requestDto) throws ConnectorException {
+    public CertificateSignResponseDto issueCertificate(ConnectorDto connector, String authorityUuid, String endEntityProfileName, CertificateSignRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_ISSUE_CONTEXT, authorityId, endEntityProfileName)
+                .uri(connector.getUrl() + CERTIFICATE_ISSUE_CONTEXT, authorityUuid, endEntityProfileName)
                 .body(Mono.just(requestDto), CertificateSignRequestDto.class)
                 .retrieve()
                 .toEntity(CertificateSignResponseDto.class)
@@ -32,11 +32,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void revokeCertificate(ConnectorDto connector, Long authorityId, String endEntityProfileName, CertRevocationDto requestDto) throws ConnectorException {
+    public void revokeCertificate(ConnectorDto connector, String authorityUuid, String endEntityProfileName, CertRevocationDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityId, endEntityProfileName)
+                .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityUuid, endEntityProfileName)
                 .body(Mono.just(requestDto), CertRevocationDto.class)
                 .retrieve()
                 .bodyToMono(Void.class),

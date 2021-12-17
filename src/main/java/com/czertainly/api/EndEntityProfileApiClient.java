@@ -19,11 +19,11 @@ public class EndEntityProfileApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<NameAndIdDto> listEndEntityProfiles(ConnectorDto connector, Long authorityId) throws ConnectorException {
+    public List<NameAndIdDto> listEndEntityProfiles(ConnectorDto connector, String authorityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_PROFILE_BASE_CONTEXT, authorityId)
+                .uri(connector.getUrl() + END_ENTITY_PROFILE_BASE_CONTEXT, authorityUuid)
                 .retrieve()
                 .toEntityList(NameAndIdDto.class)
                 .block().getBody(),
@@ -31,11 +31,11 @@ public class EndEntityProfileApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<NameAndIdDto> listCertificateProfiles(ConnectorDto connector, Long authorityId, int endEntityProfileId) throws ConnectorException {
+    public List<NameAndIdDto> listCertificateProfiles(ConnectorDto connector, String authorityUuid, int endEntityProfileId) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_PROFILE_CERT_PROFILE_CONTEXT, authorityId, endEntityProfileId)
+                .uri(connector.getUrl() + END_ENTITY_PROFILE_CERT_PROFILE_CONTEXT, authorityUuid, endEntityProfileId)
                 .retrieve()
                 .toEntityList(NameAndIdDto.class)
                 .block().getBody(),
@@ -43,11 +43,11 @@ public class EndEntityProfileApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<NameAndIdDto> listCAsInProfile(ConnectorDto connector, Long authorityId, int endEntityProfileId) throws ConnectorException {
+    public List<NameAndIdDto> listCAsInProfile(ConnectorDto connector, String authorityUuid, int endEntityProfileId) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + END_ENTITY_PROFILE_CAS_IN_PROFILE_CONTEXT, authorityId, endEntityProfileId)
+                .uri(connector.getUrl() + END_ENTITY_PROFILE_CAS_IN_PROFILE_CONTEXT, authorityUuid, endEntityProfileId)
                 .retrieve()
                 .toEntityList(NameAndIdDto.class)
                 .block().getBody(),
