@@ -96,7 +96,7 @@ public interface CredentialController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	public List<ForceDeleteMessageDto> bulkRemoveCredential(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
-	@Operation(summary = "Force Delete multiple Credentials")
+	@Operation(summary = "Force delete multiple Credentials")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Credentials forced to delete"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
