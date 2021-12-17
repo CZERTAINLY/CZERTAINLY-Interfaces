@@ -5,6 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.AttributeDefinition;
 import com.czertainly.api.model.ca.CAInstanceDto;
+import com.czertainly.api.model.ca.ConnectorCAInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,8 +22,8 @@ import java.util.List;
 public interface CAInstanceController {
 
     @Operation(
-            summary = "List CA instances",
-            description = "Method for listing all CA instances managed by CA connector."
+            summary = "List CA Instances",
+            description = "Method for listing all CA Instances managed by CA connector."
     )
     @ApiResponses(
             value = {
@@ -32,7 +33,7 @@ public interface CAInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.GET)
-    List<CAInstanceDto> listCAInstances();
+    List<ConnectorCAInstanceDto> listCAInstances();
 
     @Operation(
             summary = "Get CA instance",
@@ -50,8 +51,8 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}", method = RequestMethod.GET)
-    CAInstanceDto getCAInstance(@PathVariable Long authorityId) throws NotFoundException;
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
+    ConnectorCAInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Create CA instance",
@@ -70,7 +71,7 @@ public interface CAInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.POST)
-    CAInstanceDto createCAInstance(@RequestBody CAInstanceDto request) throws AlreadyExistException;
+    ConnectorCAInstanceDto createCAInstance(@RequestBody CAInstanceDto request) throws AlreadyExistException;
 
     @Operation(
             summary = "Update CA instance",
@@ -93,8 +94,8 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}", method = RequestMethod.POST)
-    CAInstanceDto updateCAInstance(@PathVariable Long authorityId, @RequestBody CAInstanceDto request) throws NotFoundException;
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.POST)
+    ConnectorCAInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody CAInstanceDto request) throws NotFoundException;
 
     @Operation(
             summary = "Remove CA instance",
@@ -112,13 +113,13 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeCAInstance(@PathVariable Long authorityId) throws NotFoundException;
+    void removeCAInstance(@PathVariable String uuid) throws NotFoundException;
 
-    @RequestMapping(path = "/{authorityId}/connect", method = RequestMethod.GET)
+    @RequestMapping(path = "/{uuid}/connect", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void getConnection(@PathVariable Long authorityId) throws NotFoundException;
+    void getConnection(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "List RA profile attributes",
@@ -136,9 +137,9 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}/raProfiles/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/{uuid}/raProfiles/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listRAProfileAttributes(
-            @PathVariable Long CAInstanceController) throws NotFoundException;
+            @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Validate RA profile attributes",
@@ -161,8 +162,8 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}/raProfiles/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/{uuid}/raProfiles/attributes/validate", method = RequestMethod.POST)
     boolean validateRAProfileAttributes(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody List<AttributeDefinition> attributes) throws ValidationException, NotFoundException;
 }

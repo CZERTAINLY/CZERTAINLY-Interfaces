@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/endEntities")
+@RequestMapping("/v1/caConnector/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities")
 @Tag(name = "End Entity Management API", description = "End Entity Management API")
 public interface EndEntityController {
 
@@ -32,7 +32,7 @@ public interface EndEntityController {
             })
     @RequestMapping(method = RequestMethod.GET)
     List<EndEntityDto> listEndEntities(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName) throws NotFoundException;
 
     @Operation(
@@ -53,7 +53,7 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET)
     EndEntityDto getEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName) throws NotFoundException;
 
@@ -75,7 +75,7 @@ public interface EndEntityController {
             })
     @RequestMapping(method = RequestMethod.POST)
     void createEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @RequestBody AddEndEntityRequestDto request) throws NotFoundException, AlreadyExistException;
 
@@ -102,7 +102,7 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}", method = RequestMethod.POST)
     void updateEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName,
             @RequestBody EditEndEntityRequestDto request) throws NotFoundException;
@@ -125,7 +125,7 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE)
     void removeEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName) throws NotFoundException;
 
@@ -148,7 +148,7 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT)
     void resetPassword(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName) throws NotFoundException;
 

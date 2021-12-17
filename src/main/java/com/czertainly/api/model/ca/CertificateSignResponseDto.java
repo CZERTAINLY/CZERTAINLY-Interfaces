@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class CertificateSignResponseDto {
 
-    @Schema(description = "Date of signed certificate",
+    @Schema(description = "Base64 Certificate content",
             required = true)
     private String certificateData;
 

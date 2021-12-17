@@ -34,7 +34,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface CAInstanceController {
 
 	@Operation(summary = "List of Available Certificate Authorities")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of certificate authorities"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of Certificate Authorities"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
@@ -48,7 +48,7 @@ public interface CAInstanceController {
 	public CAInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Add a new Certificate Authority")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "new authority added"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New Authority added"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))), })
@@ -59,6 +59,7 @@ public interface CAInstanceController {
 	@Operation(summary = "Update a Certificate Authority")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority details updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
@@ -66,7 +67,7 @@ public interface CAInstanceController {
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Remove a Certificate Authority")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority details removed"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
@@ -103,15 +104,15 @@ public interface CAInstanceController {
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Delete multiple Authorities")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Ca Instances deleted"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authorities deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.DELETE)
 	public List<ForceDeleteMessageDto> bulkRemoveCaInstance(@RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "Force Delete multiple Authorities")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Ca Instances deleted"),
+	@Operation(summary = "Force delete multiple Authorities")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authorities forced to delete"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })

@@ -39,11 +39,11 @@ public class CertificateApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<AttributeDefinition> listIssueCertificateAttributes(ConnectorDto connector, Long authorityId) throws ConnectorException {
+    public List<AttributeDefinition> listIssueCertificateAttributes(ConnectorDto connector, String authorityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_ISSUE_ATTRIBUTES_CONTEXT, authorityId)
+                .uri(connector.getUrl() + CERTIFICATE_ISSUE_ATTRIBUTES_CONTEXT, authorityUuid)
                 .retrieve()
                 .toEntityList(AttributeDefinition.class)
                 .block().getBody(),
@@ -51,11 +51,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateIssueCertificateAttributes(ConnectorDto connector, Long authorityId, List<AttributeDefinition> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateIssueCertificateAttributes(ConnectorDto connector, String authorityUuid, List<AttributeDefinition> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_ISSUE_ATTRIBUTES_VALIDATE_CONTEXT, authorityId)
+                .uri(connector.getUrl() + CERTIFICATE_ISSUE_ATTRIBUTES_VALIDATE_CONTEXT, authorityUuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Boolean.class)
@@ -64,11 +64,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public CertificateDataResponseDto issueCertificate(ConnectorDto connector, Long authorityId, CertificateSignRequestDto requestDto) throws ConnectorException {
+    public CertificateDataResponseDto issueCertificate(ConnectorDto connector, String authorityUuid, CertificateSignRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_ISSUE_CONTEXT, authorityId)
+                .uri(connector.getUrl() + CERTIFICATE_ISSUE_CONTEXT, authorityUuid)
                 .body(Mono.just(requestDto), CertificateSignRequestDto.class)
                 .retrieve()
                 .toEntity(CertificateDataResponseDto.class)
@@ -77,11 +77,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public CertificateDataResponseDto renewCertificate(ConnectorDto connector, Long authorityId, String certificateId, CertificateRenewRequestDto requestDto) throws ConnectorException {
+    public CertificateDataResponseDto renewCertificate(ConnectorDto connector, String authorityUuid, String certificateId, CertificateRenewRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_RENEW_CONTEXT, authorityId, certificateId)
+                .uri(connector.getUrl() + CERTIFICATE_RENEW_CONTEXT, authorityUuid, certificateId)
                 .body(Mono.just(requestDto), CertificateRenewRequestDto.class)
                 .retrieve()
                 .toEntity(CertificateDataResponseDto.class)
@@ -90,11 +90,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<AttributeDefinition> listRevokeCertificateAttributes(ConnectorDto connector, Long authorityId) throws ConnectorException {
+    public List<AttributeDefinition> listRevokeCertificateAttributes(ConnectorDto connector, String authorityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_REVOKE_ATTRIBUTES_CONTEXT, authorityId)
+                .uri(connector.getUrl() + CERTIFICATE_REVOKE_ATTRIBUTES_CONTEXT, authorityUuid)
                 .retrieve()
                 .toEntityList(AttributeDefinition.class)
                 .block().getBody(),
@@ -102,11 +102,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateRevokeCertificateAttributes(ConnectorDto connector, Long authorityId, List<AttributeDefinition> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateRevokeCertificateAttributes(ConnectorDto connector, String authorityUuid, List<AttributeDefinition> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_REVOKE_ATTRIBUTES_VALIDATE_CONTEXT, authorityId)
+                .uri(connector.getUrl() + CERTIFICATE_REVOKE_ATTRIBUTES_VALIDATE_CONTEXT, authorityUuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Boolean.class)
@@ -115,11 +115,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void revokeCertificate(ConnectorDto connector, Long authorityId, String certificateId, CertRevocationDto requestDto) throws ConnectorException {
+    public void revokeCertificate(ConnectorDto connector, String authorityUuid, String certificateId, CertRevocationDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityId, certificateId)
+                .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityUuid, certificateId)
                 .body(Mono.just(requestDto), CertRevocationDto.class)
                 .retrieve()
                 .toEntity(Void.class)

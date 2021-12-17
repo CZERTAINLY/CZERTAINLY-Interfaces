@@ -5,6 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.AttributeDefinition;
 import com.czertainly.api.model.ca.CAInstanceDto;
+import com.czertainly.api.model.ca.ConnectorCAInstanceDto;
 import com.czertainly.api.model.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -27,62 +28,62 @@ public class CAInstanceApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<CAInstanceDto> listCAInstances(ConnectorDto connector) throws ConnectorException {
+    public List<ConnectorCAInstanceDto> listCAInstances(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_BASE_CONTEXT)
                 .retrieve()
-                .toEntityList(CAInstanceDto.class)
+                .toEntityList(ConnectorCAInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public CAInstanceDto getCAInstance(ConnectorDto connector, Long id) throws ConnectorException {
+    public ConnectorCAInstanceDto getCAInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, id)
+                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
-                .toEntity(CAInstanceDto.class)
+                .toEntity(ConnectorCAInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public CAInstanceDto createCAInstance(ConnectorDto connector, CAInstanceDto requestDto) throws ConnectorException {
+    public ConnectorCAInstanceDto createCAInstance(ConnectorDto connector, CAInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_BASE_CONTEXT)
                 .body(Mono.just(requestDto), CAInstanceDto.class)
                 .retrieve()
-                .toEntity(CAInstanceDto.class)
+                .toEntity(ConnectorCAInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
 
-    public CAInstanceDto updateCAInstance(ConnectorDto connector, Long id, CAInstanceDto requestDto) throws ConnectorException {
+    public ConnectorCAInstanceDto updateCAInstance(ConnectorDto connector, String uuid, CAInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, id)
+                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .body(Mono.just(requestDto), CAInstanceDto.class)
                 .retrieve()
-                .toEntity(CAInstanceDto.class)
+                .toEntity(ConnectorCAInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public void removeCAInstance(ConnectorDto connector, Long id) throws ConnectorException {
+    public void removeCAInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, id)
+                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
                 .toEntity(Void.class)
                 .block().getBody(),
@@ -91,11 +92,11 @@ public class CAInstanceApiClient extends BaseApiClient {
     }
 
 
-    public List<AttributeDefinition> listRAProfileAttributes(ConnectorDto connector, Long id) throws ConnectorException {
+    public List<AttributeDefinition> listRAProfileAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_RA_ATTRS_CONTEXT, id)
+                .uri(connector.getUrl() + CA_INSTANCE_RA_ATTRS_CONTEXT, uuid)
                 .retrieve()
                 .toEntityList(AttributeDefinition.class)
                 .block().getBody(),
@@ -103,11 +104,11 @@ public class CAInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateRAProfileAttributes(ConnectorDto connector, Long id, List<AttributeDefinition> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateRAProfileAttributes(ConnectorDto connector, String uuid, List<AttributeDefinition> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT, id)
+                .uri(connector.getUrl() + CA_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT, uuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Boolean.class)
