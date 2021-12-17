@@ -2,6 +2,7 @@ package com.czertainly.api.model.credential;
 
 import com.czertainly.api.model.AttributeDefinition;
 import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,24 +10,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.Serializable;
 import java.util.List;
 
-public class CredentialDto implements Identified, Serializable {
+public class CredentialDto extends NameAndUuidDto implements Serializable {
 
-    @Schema(description = "Identifier of credential")
-    private Long id;
-
-    @Schema(description = "UUID of credential")
-    private String uuid;
-
-    @Schema(description = "Credential name",
-            required = true)
-    private String name;
-
-    @Schema(description = "Credential type",
+    @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
             required = true)
     private String credentialType;
 
-    @Schema(description = "List of credential attributes",
+    @Schema(description = "List of Credential Attributes",
             implementation = List.class,
             required = true)
     private List<AttributeDefinition> attributes;
@@ -35,39 +26,13 @@ public class CredentialDto implements Identified, Serializable {
             required = true)
     private Boolean enabled;
 
-    @Schema(description = "UUID of credential provider connector",
+    @Schema(description = "UUID of Credential provider Connector",
             required = true)
     private String connectorUuid;
 
-    @Schema(description = "Name of credential provider connector",
+    @Schema(description = "Name of Credential provider Connector",
             required = true)
     private String connectorName;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getCredentialType() {
         return credentialType;
@@ -108,7 +73,6 @@ public class CredentialDto implements Identified, Serializable {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("credentialType", credentialType)

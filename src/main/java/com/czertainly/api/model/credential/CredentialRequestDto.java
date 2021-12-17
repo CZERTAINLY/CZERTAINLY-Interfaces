@@ -15,17 +15,17 @@ public class CredentialRequestDto implements Serializable {
             required = true)
     private String name;
 
-    @Schema(description = "Credential type",
+    @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
             required = true)
     private String credentialType;
 
-    @Schema(description = "List of credential attributes",
+    @Schema(description = "List of Credential Attributes",
             implementation = List.class,
             required = true)
     private List<AttributeDefinition> attributes;
 
-    @Schema(description = "UUID of credential provider connector",
+    @Schema(description = "UUID of Credential provider Connector",
             required = true)
     private String connectorUuid;
 
