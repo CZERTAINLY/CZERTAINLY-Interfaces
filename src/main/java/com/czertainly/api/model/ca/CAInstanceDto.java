@@ -10,7 +10,6 @@ import java.util.List;
 
 public class CAInstanceDto extends NameAndUuidDto {
 
-
     @Schema(description = "List of Authority Attributes",
             required = true)
     private List<AttributeDefinition> attributes;
