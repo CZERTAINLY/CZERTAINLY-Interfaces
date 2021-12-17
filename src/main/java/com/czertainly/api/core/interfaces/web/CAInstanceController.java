@@ -109,8 +109,8 @@ public interface CAInstanceController {
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.DELETE)
+
 	public List<ForceDeleteMessageDto> bulkRemoveCaInstance(@RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
-	
 	@Operation(summary = "Force delete multiple Authorities")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authorities forced to delete"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
