@@ -1,6 +1,5 @@
 package com.czertainly.util;
 
-import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.*;
 import com.czertainly.api.model.credential.CredentialDto;
@@ -119,7 +118,7 @@ public class AttributeDefinitionUtilsTest {
     public void testValidateAttributes_success() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        int attributeValue = 1234;
+        String attributeValue = "1234";
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);

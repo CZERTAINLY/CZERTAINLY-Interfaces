@@ -1,5 +1,8 @@
 package com.czertainly.api.model.connector;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 
 public enum AuthType {
@@ -15,10 +18,12 @@ public enum AuthType {
         this.code = code;
     }
 
+    @JsonValue
     public String getCode() {
         return code;
     }
 
+    @JsonCreator
     public static AuthType findByCode(String code) {
         return Arrays.stream(values())
                 .filter(a -> a.getCode().equals(code))
