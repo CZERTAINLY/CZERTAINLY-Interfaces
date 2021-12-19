@@ -235,6 +235,84 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
+    public void testValidateAttributes_credentialMap() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName(attributeName);
+        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        LinkedHashMap<String, Object> credentialData = new LinkedHashMap<>();
+        credentialData.put("name", "testName");
+        credentialData.put("uuid", "testUuid");
+        attribute.setValue(credentialData);
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_credentialDto() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName(attributeName);
+        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+        attribute.setValue(new CredentialDto());
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_credentialFail() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName(attributeName);
+        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+        attribute.setValue(123l); // cause or failure
+
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_unknownAttribute() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.STRING);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName("unknown-attribute");  // cause or failure
+        attribute.setType(BaseAttributeDefinitionTypes.STRING);
+        attribute.setValue("123");
+
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
     public void testValidateAttributeCallback_success() {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
         mappings.add(new AttributeCallbackMapping(

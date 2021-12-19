@@ -107,9 +107,17 @@ public class AttributeDefinitionUtils {
     }
 
     public static List<AttributeDefinition> mergeAttributes(List<AttributeDefinition> definitions, List<AttributeDefinition> attributes) throws ValidationException {
+        if (definitions == null || attributes == null) {
+            return List.of();
+        }
+
         return attributes.stream()
                 .map(a -> {
                     AttributeDefinition definition = getAttributeDefinition(a.getName(), definitions);
+                    if (definition == null) {
+                        return a;
+                    }
+
                     AttributeDefinition extended = new AttributeDefinition(definition);
                     extended.setValue(a.getValue());
                     return extended;
