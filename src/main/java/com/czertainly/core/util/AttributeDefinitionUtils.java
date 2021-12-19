@@ -225,7 +225,7 @@ public class AttributeDefinitionUtils {
                 wrongValue = !((Collection) definition.getValue()).contains(attribute.getValue());
                 break;
             case CREDENTIAL:
-                wrongValue = !(attribute.getValue() instanceof CredentialDto) || !(attribute.getValue() instanceof Map);
+                wrongValue = !(attribute.getValue() instanceof CredentialDto) && !(attribute.getValue() instanceof Map);
                 break;
             default:
                 errors.add(ValidationError.create("Unknown type of attribute definition {} {}.", definition.getName(), definition.getType()));
