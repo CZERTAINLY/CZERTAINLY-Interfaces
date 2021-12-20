@@ -17,7 +17,7 @@ public class ClientCertificateSignRequestDto {
             required = true)
     private String pkcs10;
 
-    @Schema(description = "List of attributes needed for issuing certificate",
+    @Schema(description = "List of Attributes needed for issuing Certificate",
             required = true)
     private List<AttributeDefinition> attributes;
 

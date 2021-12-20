@@ -9,11 +9,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ClientCertificateDataResponseDto {
 
-    @Schema(description = "Date of signed certificate",
+    @Schema(description = "Data of signed Certificate",
             required = true)
     private String certificateData;
 
-    @Schema(description = "UUID of certificate from inventory",
+    @Schema(description = "UUID of Certificate from Inventory",
             required = true)
     private String uuid;
 

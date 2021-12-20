@@ -19,7 +19,7 @@ public class ClientCertificateRevocationDto {
             required = true)
     private RevocationReason reason;
 
-    @Schema(description = "List of attributes needed for revoking certificate",
+    @Schema(description = "List of Attributes needed for revoking Certificate",
             required = true)
     private List<AttributeDefinition> attributes;
 

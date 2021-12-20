@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CertificateApiClient extends BaseApiClient {
 
-    private static final String CERTIFICATE_BASE_CONTEXT = "/v2/caConnector/authorities/{authorityId}/certificates";
+    private static final String CERTIFICATE_BASE_CONTEXT = "/v2/caConnector/authorities/{uuid}/certificates";
     private static final String CERTIFICATE_IDENTIFIED_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/{certificateId}";
 
     private static final String CERTIFICATE_ISSUE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/issue";
