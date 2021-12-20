@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v2/caConnector/authorities/{authorityId}/certificates")
+@RequestMapping("/v2/caConnector/authorities/{uuid}/certificates")
 @Tag(name = "Certificate Management API", description = "Certificate Management API")
 public interface CertificateController {
 
@@ -37,7 +37,7 @@ public interface CertificateController {
     })
     @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listIssueCertificateAttributes(
-            @PathVariable Long authorityId) throws NotFoundException;
+            @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Validate issue certificate attributes",
@@ -58,7 +58,7 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
     boolean validateIssueCertificateAttributes(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
@@ -85,7 +85,7 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/issue", method = RequestMethod.POST)
     CertificateDataResponseDto issueCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -113,7 +113,7 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
     CertificateDataResponseDto renewCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String certificateId,
             @RequestBody CertificateRenewRequestDto request) throws NotFoundException;
 
@@ -131,7 +131,7 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listRevokeCertificateAttributes(
-            @PathVariable Long authorityId) throws NotFoundException;
+            @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Validate revoke certificate attributes",
@@ -152,7 +152,7 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
     boolean validateRevokeCertificateAttributes(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
@@ -180,7 +180,7 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST)
     void revokeCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String certificateId,
             @RequestBody CertRevocationDto request) throws NotFoundException;
 }
