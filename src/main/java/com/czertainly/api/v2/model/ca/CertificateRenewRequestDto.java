@@ -14,7 +14,7 @@ public class CertificateRenewRequestDto {
             required = true)
     private String pkcs10;
 
-    @Schema(description = "Full data of RA profile",
+    @Schema(description = "Full data of RA Profile",
             required = true)
     private RaProfileDto raProfile;
 

@@ -17,11 +17,11 @@ public class CertificateSignRequestDto {
             required = true)
     private String pkcs10;
 
-    @Schema(description = "Full data of RA profile",
+    @Schema(description = "Full data of RA Profile",
             required = true)
     private RaProfileDto raProfile;
 
-    @Schema(description = "List of attributes needed for issuing certificate",
+    @Schema(description = "List of Attributes needed for issuing Certificate",
             required = true)
     private List<AttributeDefinition> attributes;
 

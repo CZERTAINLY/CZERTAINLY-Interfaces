@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Certificate Authority Controller", description = "Certificate Authority Controller")
 public interface CAInstanceController {
 
-	@Operation(summary = "List of Available Certificate Authorities")
+	@Operation(summary = "List of available Certificate Authorities")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of Certificate Authorities"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
