@@ -147,6 +147,27 @@ public class AttributeDefinition {
     )
     private Serializable value;
 
+    public AttributeDefinition() {
+        super();
+    }
+
+    public AttributeDefinition(AttributeDefinition original) {
+        this.id = original.id;
+        this.name = original.name;
+        this.label = original.label;
+        this.type = original.type;
+        this.required = original.required;
+        this.readOnly = original.readOnly;
+        this.editable = original.editable;
+        this.visible = original.visible;
+        this.multiValue = original.multiValue;
+        this.description = original.description;
+        this.validationRegex = original.validationRegex;
+        this.dependsOn = original.dependsOn;
+        this.attributeCallback = original.attributeCallback;
+        this.value = original.value;
+    }
+
     public String getId() {
         return id;
     }

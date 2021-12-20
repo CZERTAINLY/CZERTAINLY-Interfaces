@@ -1,6 +1,5 @@
 package com.czertainly.util;
 
-import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.*;
 import com.czertainly.api.model.credential.CredentialDto;
@@ -119,7 +118,7 @@ public class AttributeDefinitionUtilsTest {
     public void testValidateAttributes_success() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        int attributeValue = 1234;
+        String attributeValue = "1234";
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
@@ -226,6 +225,84 @@ public class AttributeDefinitionUtilsTest {
         attribute.setId(attributeId);
         attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(attributeValue);
+
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_credentialMap() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName(attributeName);
+        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        LinkedHashMap<String, Object> credentialData = new LinkedHashMap<>();
+        credentialData.put("name", "testName");
+        credentialData.put("uuid", "testUuid");
+        attribute.setValue(credentialData);
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_credentialDto() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName(attributeName);
+        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+        attribute.setValue(new CredentialDto());
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_credentialFail() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName(attributeName);
+        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+        attribute.setValue(123l); // cause or failure
+
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_unknownAttribute() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.STRING);
+
+        AttributeDefinition attribute = new AttributeDefinition();
+        attribute.setName("unknown-attribute");  // cause or failure
+        attribute.setType(BaseAttributeDefinitionTypes.STRING);
+        attribute.setValue("123");
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method

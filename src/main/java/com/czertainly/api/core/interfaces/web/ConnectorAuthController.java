@@ -1,8 +1,10 @@
 package com.czertainly.api.core.interfaces.web;
 
 import java.util.List;
+import java.util.Set;
 
 import com.czertainly.api.model.AttributeDefinition;
+import com.czertainly.api.model.connector.AuthType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +26,7 @@ public interface ConnectorAuthController {
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/types", method = RequestMethod.GET, produces = { "application/json" })
-	public List<String> getAuthenticationTypes();
+	public Set<AuthType> getAuthenticationTypes();
 
 	@Operation(summary = "Get basic auth attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved"),

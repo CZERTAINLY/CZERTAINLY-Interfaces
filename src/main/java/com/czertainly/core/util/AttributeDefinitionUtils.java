@@ -1,22 +1,20 @@
 package com.czertainly.core.util;
 
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.*;
 import com.czertainly.api.model.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.czertainly.api.exception.ValidationError;
-import com.czertainly.api.exception.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class AttributeDefinitionUtils {
 
@@ -108,8 +106,34 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static List<AttributeDefinition> mergeAttributes(List<AttributeDefinition> definitions, List<AttributeDefinition> attributes) throws ValidationException {
+        if (definitions == null || attributes == null) {
+            return List.of();
+        }
+
+        return attributes.stream()
+                .map(a -> {
+                    AttributeDefinition definition = getAttributeDefinition(a.getName(), definitions);
+                    if (definition == null) {
+                        return a;
+                    }
+
+                    AttributeDefinition extended = new AttributeDefinition(definition);
+                    extended.setValue(a.getValue());
+                    return extended;
+                })
+                .collect(Collectors.toList());
+    }
+
     public static void validateAttributes(List<AttributeDefinition> definitions, List<AttributeDefinition> attributes) throws ValidationException {
         List<ValidationError> errors = new ArrayList<>();
+
+        // If attribute identified by id not in definitions - throw error
+        for (AttributeDefinition attribute : attributes) {
+            if (!containsAttributeDefinition(attribute.getName(), definitions)) {
+                errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
+            }
+        }
 
         for (AttributeDefinition definition : definitions) {
             AttributeDefinition attribute = getAttributeDefinition(definition.getName(), attributes);
@@ -121,21 +145,28 @@ public class AttributeDefinitionUtils {
                 continue; // skip other validations
             }
 
-            if (StringUtils.isBlank(attribute.getId())) {
-                errors.add(ValidationError.create("Id of attribute not set.", definition.getName()));
-            }
-
-            if (attribute.getType() == null) {
-                errors.add(ValidationError.create("Type of attribute {} not set.", definition.getName()));
-            }
-
             Serializable attributeValue = attribute.getValue();
 
             if (definition.isRequired() && attributeValue == null) {
                 errors.add(ValidationError.create("Value of required attribute {} not set.", definition.getName()));
+                continue; // required attribute has no value, skip other validations
             }
 
-            if (attributeValue instanceof String && definition.getValidationRegex() != null) {
+            if (definition.isReadOnly()) {
+                Serializable definitionValue = definition.getValue();
+                if (definitionValue == null || !definitionValue.equals(attributeValue)) {
+                    errors.add(ValidationError.create(
+                            "Wrong value of read only attribute {}. Definition value = {} and attribute value = {}.",
+                            definition.getName(),
+                            definitionValue,
+                            attributeValue));
+                }
+            }
+
+            validateAttributeValue(definition, attribute, errors);
+
+            if (BaseAttributeDefinitionTypes.STRING.equals(definition.getType())
+                    && definition.getValidationRegex() != null) {
                 Pattern pattern;
                 try {
                     pattern = Pattern.compile(definition.getValidationRegex());
@@ -158,6 +189,51 @@ public class AttributeDefinitionUtils {
 
         if (!errors.isEmpty()) {
             throw new ValidationException("Attributes validation failed.", errors);
+        }
+    }
+
+    private static void validateAttributeValue(AttributeDefinition definition, AttributeDefinition attribute, List<ValidationError> errors) {
+
+        if (definition.getType() == null) {
+            errors.add(ValidationError.create("Type of attribute definition {} not set.", definition.getName()));
+        }
+
+        boolean wrongValue = false;
+        switch (definition.getType()) {
+            case STRING:
+                wrongValue = !(attribute.getValue() instanceof String);
+                break;
+            case SECRET:
+                // no type validation for secrets
+                break;
+            case FILE:
+                boolean isString = attribute.getValue() instanceof String;
+                if (isString) {
+                    try {
+                        Base64.getDecoder().decode(String.valueOf(attribute.getValue()));
+                    } catch (Exception e) {
+                        wrongValue = true;
+                    }
+                } else {
+                    wrongValue = true;
+                }
+                break;
+            case BOOLEAN:
+                wrongValue = !(attribute.getValue() instanceof Boolean);
+                break;
+            case LIST:
+                wrongValue = !((Collection) definition.getValue()).contains(attribute.getValue());
+                break;
+            case CREDENTIAL:
+                wrongValue = !(attribute.getValue() instanceof CredentialDto) && !(attribute.getValue() instanceof Map);
+                break;
+            default:
+                errors.add(ValidationError.create("Unknown type of attribute definition {} {}.", definition.getName(), definition.getType()));
+                break;
+        }
+
+        if (wrongValue) {
+            errors.add(ValidationError.create("Attribute {} of type {} has wrong value {}.", definition.getName(), definition.getType(), attribute.getValue()));
         }
     }
 
