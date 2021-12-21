@@ -16,8 +16,8 @@ import java.util.List;
 
 public class CAInstanceApiClient extends BaseApiClient {
 
-    private static final String CA_INSTANCE_BASE_CONTEXT = "/v1/caConnector/authorities";
-    private static final String CA_INSTANCE_IDENTIFIED_CONTEXT = CA_INSTANCE_BASE_CONTEXT + "/{authorityId}";
+    private static final String CA_INSTANCE_BASE_CONTEXT = "/v1/authorityProvider/authorities";
+    private static final String CA_INSTANCE_IDENTIFIED_CONTEXT = CA_INSTANCE_BASE_CONTEXT + "/{uuid}";
     private static final String CA_INSTANCE_RA_ATTRS_CONTEXT = CA_INSTANCE_IDENTIFIED_CONTEXT + "/raProfiles/attributes";
     private static final String CA_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = CA_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
 

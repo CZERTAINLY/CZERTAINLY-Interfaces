@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities")
+@RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities")
 @Tag(name = "End Entity Management API", description = "End Entity Management API")
 public interface EndEntityController {
 

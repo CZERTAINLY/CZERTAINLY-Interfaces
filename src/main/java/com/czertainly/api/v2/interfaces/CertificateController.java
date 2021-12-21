@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v2/caConnector/authorities/{uuid}/certificates")
+@RequestMapping("/v2/authorityProvider/authorities/{uuid}/certificates")
 @Tag(name = "Certificate Management API", description = "Certificate Management API")
 public interface CertificateController {
 

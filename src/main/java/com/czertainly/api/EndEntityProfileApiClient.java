@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EndEntityProfileApiClient extends BaseApiClient {
 
-    private static final String END_ENTITY_PROFILE_BASE_CONTEXT = "/v1/caConnector/authorities/{authorityId}/endEntityProfiles";
+    private static final String END_ENTITY_PROFILE_BASE_CONTEXT = "/v1/authorityProvider/authorities/{uuid}/endEntityProfiles";
     private static final String END_ENTITY_PROFILE_IDENTIFIED_CONTEXT = END_ENTITY_PROFILE_BASE_CONTEXT + "/{endEntityProfileId}";
     private static final String END_ENTITY_PROFILE_CERT_PROFILE_CONTEXT = END_ENTITY_PROFILE_IDENTIFIED_CONTEXT + "/certificateprofiles";
     private static final String END_ENTITY_PROFILE_CAS_IN_PROFILE_CONTEXT = END_ENTITY_PROFILE_IDENTIFIED_CONTEXT + "/cas";

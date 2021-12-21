@@ -13,7 +13,7 @@ import java.util.List;
 
 public class EndEntityApiClient extends BaseApiClient {
 
-    private static final String END_ENTITY_BASE_CONTEXT = "/v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/endEntities";
+    private static final String END_ENTITY_BASE_CONTEXT = "/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities";
     private static final String END_ENTITY_IDENTIFIED_CONTEXT = END_ENTITY_BASE_CONTEXT + "/{endEntityName}";
     private static final String END_ENTITY_RESET_PASSWORD_CONTEXT = END_ENTITY_IDENTIFIED_CONTEXT + "/resetPassword";
 

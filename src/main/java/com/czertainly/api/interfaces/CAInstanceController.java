@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities")
+@RequestMapping("/v1/authorityProvider/authorities")
 @Tag(name = "Certification Authority API", description = "Certification Authority API")
 public interface CAInstanceController {
 

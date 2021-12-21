@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities/{uuid}/endEntityProfiles")
+@RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles")
 @Tag(name = "End Entity Profiles API", description = "End Entity Profiles API")
 public interface EndEntityProfilesController {
 
@@ -28,7 +28,7 @@ public interface EndEntityProfilesController {
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
     List<NameAndIdDto> listEntityProfiles(
-            @Parameter(in = ParameterIn.PATH, name = "authorityId", description = "Authority Instance Id")
+            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance Id")
             @PathVariable String uuid
     )
             throws NotFoundException;
@@ -43,7 +43,7 @@ public interface EndEntityProfilesController {
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
     List<NameAndIdDto> listCertificateProfiles(
-            @Parameter(in = ParameterIn.PATH, name = "authorityId", description = "Authority Instance Id")
+            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance Id")
             @PathVariable String uuid,
             @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id")
             @PathVariable Integer endEntityProfileId
@@ -60,7 +60,7 @@ public interface EndEntityProfilesController {
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
     })
     List<NameAndIdDto> listCAsInProfile(
-            @Parameter(in = ParameterIn.PATH, name = "authorityId", description = "Authority Instance Id")
+            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance Id")
             @PathVariable String uuid,
             @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id")
             @PathVariable Integer endEntityProfileId

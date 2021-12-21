@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 public class CertificateApiClient extends BaseApiClient {
 
-    private static final String CERTIFICATE_BASE_CONTEXT = "/v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/certificates";
+    private static final String CERTIFICATE_BASE_CONTEXT = "/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates";
     private static final String CERTIFICATE_ISSUE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/issue";
     private static final String CERTIFICATE_REVOKE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/revoke";
 

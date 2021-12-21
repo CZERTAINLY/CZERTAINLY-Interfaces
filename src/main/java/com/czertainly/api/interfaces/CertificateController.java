@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates")
+@RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates")
 @Tag(name = "Certificate Management API", description = "Certificate Management API")
 public interface CertificateController {
 
