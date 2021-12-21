@@ -45,7 +45,7 @@ public interface ClientOperationController {
             @PathVariable String raProfileName,
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ConnectorException, ValidationException;
 	
-	@Operation(summary = "Issue a new Certificate")
+	@Operation(summary = "Issue new Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate issued"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
@@ -55,7 +55,7 @@ public interface ClientOperationController {
             @PathVariable String raProfileName,
             @RequestBody ClientCertificateSignRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException;
     
-	@Operation(summary = "Renew a Certificate")
+	@Operation(summary = "Renew Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate renewed"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
@@ -83,7 +83,7 @@ public interface ClientOperationController {
             @PathVariable String raProfileName,
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ConnectorException, ValidationException;
     
-	@Operation(summary = "Revoke a Certificate")
+	@Operation(summary = "Revoke Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate revoked"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })

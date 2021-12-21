@@ -24,9 +24,7 @@ import java.util.List;
 public interface CertificateController {
 
     @Operation(
-            summary = "List issue Certificate Attributes",
-            description = "Method for listing of attributes " +
-                    "needed to issue or sign certificate."
+            summary = "List of Attributes to issue Certificate"
     )
     @ApiResponses(
             value = {
@@ -40,9 +38,7 @@ public interface CertificateController {
             @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Validate issue Certificate Attributes",
-            description = "Method for validation of attributes " +
-                    "needed to issue or sign certificate."
+            summary = "Validate list of Attributes to issue Certificate"
     )
     @ApiResponses(
             value = {
@@ -67,9 +63,7 @@ public interface CertificateController {
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
-            summary = "Issue Certificate",
-            description = "Method for issuing Certificates " +
-                    "based on given Attributes."
+            summary = "Issue Certificate"
     )
     @ApiResponses(
             value = {
@@ -99,10 +93,7 @@ public interface CertificateController {
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Renew Certificate",
-            description = "Method for renewing existing Certificates " +
-                    "by given Certificate identifier. Certificate identifier value depends on" +
-                    "implementation of Authority, which data it needs to uniquely identify Certificate"
+            summary = "Renew Certificate"
     )
     @ApiResponses(
             value = {
@@ -133,9 +124,7 @@ public interface CertificateController {
             @RequestBody CertificateRenewRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "List revoke Certificate Attributes",
-            description = "Method for listing of Attributes " +
-                    "needed to revoke Certificate."
+            summary = "List of Attributes to revoke Certificate"
     )
     @ApiResponses(
             value = {
@@ -154,9 +143,7 @@ public interface CertificateController {
             @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Validate revoke Certificate Attributes",
-            description = "Method for validation of Attributes " +
-                    "needed to revoke or sign Certificate."
+            summary = "Validate list of Attributes to revoke certificate"
     )
     @ApiResponses(
             value = {
@@ -181,10 +168,7 @@ public interface CertificateController {
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
-            summary = "Revoke Certificate",
-            description = "Method for revoking existing Certificates " +
-                    "by given Certificate identifier. Certificate identifier value depends on" +
-                    "implementation of Authority, which data it needs to uniquely identify Certificate"
+            summary = "Revoke Certificate"
     )
     @ApiResponses(
             value = {

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ConnectorCAInstanceDto extends NameAndUuidDto {
 
-    @Schema(description = "List of Authority Attributes",
+    @Schema(description = "List of Authority instance Attributes",
             implementation = List.class,
             required = true)
     private List<AttributeDefinition> attributes;

@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public interface CertificateController {
 
     @Operation(
-            summary = "Issue certificate",
-            description = "Method for issuing certificates " +
-                    "based on given request."
+            summary = "Issue new Certificate"
     )
     @ApiResponses(
             value = {
@@ -45,9 +43,7 @@ public interface CertificateController {
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Revoke certificate",
-            description = "Method for revoking existing certificates " +
-                    "by given request."
+            summary = "Revoke Certificate"
     )
     @ApiResponses(
             value = {

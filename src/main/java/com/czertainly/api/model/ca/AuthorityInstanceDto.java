@@ -1,40 +1,35 @@
 package com.czertainly.api.model.ca;
 
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class CAInstanceRequestDto {
+public class AuthorityInstanceDto extends NameAndUuidDto {
 
-    @Schema(description = "Authority Instance name",
-            required = true)
-    private String name;
-
-    @Schema(description = "List of Authority Attributes",
-            implementation = List.class,
+    @Schema(description = "List of Authority instance Attributes",
             required = true)
     private List<AttributeDefinition> attributes;
+
+    @Schema(description = "Status of Authority instance",
+            required = true)
+    private String status;
 
     @Schema(description = "UUID of CA Connector",
             required = true)
     private String connectorUuid;
 
+    @Schema(description = "Name of CA Connector",
+            required = true)
+    private String connectorName;
+
     @Schema(description = "Authority Type",
-            example = "LegacyEjbca, ADCS, etc",
+            example = "LegacyEjbca, ADCS etc",
             required = true)
     private String authorityType;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<AttributeDefinition> getAttributes() {
         return attributes;
@@ -42,6 +37,14 @@ public class CAInstanceRequestDto {
 
     public void setAttributes(List<AttributeDefinition> attributes) {
         this.attributes = attributes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getConnectorUuid() {
@@ -60,12 +63,19 @@ public class CAInstanceRequestDto {
         this.authorityType = authorityType;
     }
 
+    public String getConnectorName() { return connectorName; }
+
+    public void setConnectorName(String connectorName) { this.connectorName = connectorName; }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("uuid", uuid)
                 .append("name", name)
                 .append("attributes", attributes)
+                .append("status", status)
                 .append("connectorUuid", connectorUuid)
+                .append("connectorName", connectorName)
                 .append("authorityType", authorityType)
                 .toString();
     }

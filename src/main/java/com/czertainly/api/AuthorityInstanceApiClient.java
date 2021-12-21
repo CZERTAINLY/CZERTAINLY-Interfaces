@@ -1,10 +1,9 @@
 package com.czertainly.api;
 
-import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.ca.CAInstanceDto;
+import com.czertainly.api.model.ca.AuthorityInstanceDto;
 import com.czertainly.api.model.ca.ConnectorCAInstanceDto;
 import com.czertainly.api.model.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public class CAInstanceApiClient extends BaseApiClient {
+public class AuthorityInstanceApiClient extends BaseApiClient {
 
     private static final String CA_INSTANCE_BASE_CONTEXT = "/v1/authorityProvider/authorities";
     private static final String CA_INSTANCE_IDENTIFIED_CONTEXT = CA_INSTANCE_BASE_CONTEXT + "/{uuid}";
@@ -24,7 +23,7 @@ public class CAInstanceApiClient extends BaseApiClient {
     private static final ParameterizedTypeReference<List<AttributeDefinition>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
-    public CAInstanceApiClient(WebClient webClient) {
+    public AuthorityInstanceApiClient(WebClient webClient) {
         this.webClient = webClient;
     }
 
@@ -52,12 +51,12 @@ public class CAInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public ConnectorCAInstanceDto createCAInstance(ConnectorDto connector, CAInstanceDto requestDto) throws ConnectorException {
+    public ConnectorCAInstanceDto createCAInstance(ConnectorDto connector, AuthorityInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_BASE_CONTEXT)
-                .body(Mono.just(requestDto), CAInstanceDto.class)
+                .body(Mono.just(requestDto), AuthorityInstanceDto.class)
                 .retrieve()
                 .toEntity(ConnectorCAInstanceDto.class)
                 .block().getBody(),
@@ -66,12 +65,12 @@ public class CAInstanceApiClient extends BaseApiClient {
     }
 
 
-    public ConnectorCAInstanceDto updateCAInstance(ConnectorDto connector, String uuid, CAInstanceDto requestDto) throws ConnectorException {
+    public ConnectorCAInstanceDto updateCAInstance(ConnectorDto connector, String uuid, AuthorityInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
-                .body(Mono.just(requestDto), CAInstanceDto.class)
+                .body(Mono.just(requestDto), AuthorityInstanceDto.class)
                 .retrieve()
                 .toEntity(ConnectorCAInstanceDto.class)
                 .block().getBody(),

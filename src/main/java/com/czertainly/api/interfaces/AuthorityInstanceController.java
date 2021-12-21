@@ -4,7 +4,7 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.ca.CAInstanceDto;
+import com.czertainly.api.model.ca.AuthorityInstanceDto;
 import com.czertainly.api.model.ca.ConnectorCAInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/authorityProvider/authorities")
 @Tag(name = "Certification Authority API", description = "Certification Authority API")
-public interface CAInstanceController {
+public interface AuthorityInstanceController {
 
     @Operation(
             summary = "List Authority instances"
@@ -53,7 +53,7 @@ public interface CAInstanceController {
     ConnectorCAInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Create a new Authority instance"
+            summary = "Create new Authority instance"
     )
     @ApiResponses(
             value = {
@@ -68,10 +68,10 @@ public interface CAInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.POST)
-    ConnectorCAInstanceDto createCAInstance(@RequestBody CAInstanceDto request) throws AlreadyExistException;
+    ConnectorCAInstanceDto createCAInstance(@RequestBody AuthorityInstanceDto request) throws AlreadyExistException;
 
     @Operation(
-            summary = "Update an Authority instance"
+            summary = "Update Authority instance"
     )
     @ApiResponses(
             value = {
@@ -91,10 +91,10 @@ public interface CAInstanceController {
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.POST)
-    ConnectorCAInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody CAInstanceDto request) throws NotFoundException;
+    ConnectorCAInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody AuthorityInstanceDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Remove an Authority instance"
+            summary = "Remove Authority instance"
     )
     @ApiResponses(
             value = {
