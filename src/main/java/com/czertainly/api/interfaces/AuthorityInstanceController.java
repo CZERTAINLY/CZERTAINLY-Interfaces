@@ -53,7 +53,7 @@ public interface AuthorityInstanceController {
     ConnectorAuthorityInstanceDto getAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Create new Authority instance"
+            summary = "Create Authority instance"
     )
     @ApiResponses(
             value = {

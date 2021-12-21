@@ -26,7 +26,7 @@ import java.util.List;
 @Tag(name = "Client Operation API", description = "Client Operation API")
 public interface ClientOperationController {
 	
-	@Operation(summary = "Get list of all Attributes for new Certificate")
+	@Operation(summary = "Get list of all Attributes for Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes list obtained"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
