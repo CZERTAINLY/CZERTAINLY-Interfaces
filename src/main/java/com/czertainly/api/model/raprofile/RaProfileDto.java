@@ -26,13 +26,13 @@ public class RaProfileDto implements Identified {
     @Schema(description = "Detailed description")
     private String description;
   
-    @Schema(description = "Identifier of CA instance reference",
+    @Schema(description = "Identifier of Authority instance reference",
             required = true)
-    private String caInstanceUuid;
+    private String authorityInstanceUuid;
 
-    @Schema(description = "Name of CA instance",
+    @Schema(description = "Name of Authority instance",
             required = true)
-    private String caInstanceName;
+    private String authorityInstanceName;
 
     @Schema(description = "List of RA profiles attributes",
             implementation = List.class,
@@ -77,14 +77,6 @@ public class RaProfileDto implements Identified {
         this.description = description;
     }
 
-    public String getCaInstanceUuid() {
-        return caInstanceUuid;
-    }
-
-    public void setCaInstanceUuid(String caInstanceUuid) {
-        this.caInstanceUuid = caInstanceUuid;
-    }
-
     public List<AttributeDefinition> getAttributes() {
         return attributes;
     }
@@ -101,9 +93,21 @@ public class RaProfileDto implements Identified {
         this.enabled = enabled;
     }
 
-    public String getCaInstanceName() { return caInstanceName; }
+    public String getAuthorityInstanceUuid() {
+        return authorityInstanceUuid;
+    }
 
-    public void setCaInstanceName(String caInstanceName) { this.caInstanceName = caInstanceName; }
+    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
+        this.authorityInstanceUuid = authorityInstanceUuid;
+    }
+
+    public String getAuthorityInstanceName() {
+        return authorityInstanceName;
+    }
+
+    public void setAuthorityInstanceName(String authorityInstanceName) {
+        this.authorityInstanceName = authorityInstanceName;
+    }
 
     @Override
     public String toString() {
@@ -112,10 +116,10 @@ public class RaProfileDto implements Identified {
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("description", description)
-                .append("caInstanceUuid", caInstanceUuid)
+                .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("attributes", attributes)
                 .append("enabled", enabled)
-                .append("caInstanceName", caInstanceName)
+                .append("authorityInstanceName", authorityInstanceName)
                 .toString();
     }
 }

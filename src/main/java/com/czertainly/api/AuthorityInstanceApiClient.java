@@ -27,7 +27,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<ConnectorAuthorityInstanceDto> listCAInstances(ConnectorDto connector) throws ConnectorException {
+    public List<ConnectorAuthorityInstanceDto> listAuthorityInstances(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
@@ -39,7 +39,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public ConnectorAuthorityInstanceDto getCAInstance(ConnectorDto connector, String uuid) throws ConnectorException {
+    public ConnectorAuthorityInstanceDto getAuthorityInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
@@ -51,7 +51,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public ConnectorAuthorityInstanceDto createCAInstance(ConnectorDto connector, AuthorityInstanceDto requestDto) throws ConnectorException {
+    public ConnectorAuthorityInstanceDto createAuthorityInstance(ConnectorDto connector, AuthorityInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
@@ -65,7 +65,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     }
 
 
-    public ConnectorAuthorityInstanceDto updateCAInstance(ConnectorDto connector, String uuid, AuthorityInstanceDto requestDto) throws ConnectorException {
+    public ConnectorAuthorityInstanceDto updateAuthorityInstance(ConnectorDto connector, String uuid, AuthorityInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
@@ -78,7 +78,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void removeCAInstance(ConnectorDto connector, String uuid) throws ConnectorException {
+    public void removeAuthorityInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r

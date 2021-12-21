@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EditRaProfileRequestDto {
     private String description;
-    private String caInstanceUuid;
+    private String authorityInstanceUuid;
     private List<AttributeDefinition> attributes;
 
     public String getDescription() {
@@ -19,12 +19,12 @@ public class EditRaProfileRequestDto {
         this.description = description;
     }
 
-    public String getCaInstanceUuid() {
-        return caInstanceUuid;
+    public String getAuthorityInstanceUuid() {
+        return authorityInstanceUuid;
     }
 
-    public void setCaInstanceUuid(String caInstanceUuid) {
-        this.caInstanceUuid = caInstanceUuid;
+    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
+        this.authorityInstanceUuid = authorityInstanceUuid;
     }
 
     public List<AttributeDefinition> getAttributes() {
@@ -39,7 +39,7 @@ public class EditRaProfileRequestDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("description", description)
-                .append("caInstanceId", caInstanceUuid)
+                .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("attributes", attributes)
                 .toString();
     }

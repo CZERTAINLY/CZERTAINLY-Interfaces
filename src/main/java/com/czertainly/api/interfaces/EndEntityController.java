@@ -20,8 +20,7 @@ import java.util.List;
 public interface EndEntityController {
 
     @Operation(
-            summary = "List End Entities",
-            description = "Method for listing all End Entities managed by CA."
+            summary = "List End Entities"
     )
     @ApiResponses(
             value = {
@@ -36,8 +35,7 @@ public interface EndEntityController {
             @PathVariable String endEntityProfileName) throws NotFoundException;
 
     @Operation(
-            summary = "Get End Entity",
-            description = "Method for retrieving detail of End Entity managed by CA."
+            summary = "Get End Entity"
     )
     @ApiResponses(
             value = {
@@ -58,8 +56,7 @@ public interface EndEntityController {
             @PathVariable String endEntityName) throws NotFoundException;
 
     @Operation(
-            summary = "Create End Entity",
-            description = "Method for creating new End Entity."
+            summary = "Create End Entity"
     )
     @ApiResponses(
             value = {
@@ -80,8 +77,7 @@ public interface EndEntityController {
             @RequestBody AddEndEntityRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(
-            summary = "Update End Entity",
-            description = "Method for updating existing End Entity managed by CA."
+            summary = "Update End Entity"
     )
     @ApiResponses(
             value = {
@@ -108,8 +104,7 @@ public interface EndEntityController {
             @RequestBody EditEndEntityRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Remove End Entity",
-            description = "Method for removing existing End Entity."
+            summary = "Remove End Entity"
     )
     @ApiResponses(
             value = {
@@ -131,8 +126,7 @@ public interface EndEntityController {
 
 
     @Operation(
-            summary = "Reset End Entity password",
-            description = "Method for resetting password for existing End Entity."
+            summary = "Reset End Entity password"
     )
     @ApiResponses(
             value = {

@@ -37,14 +37,14 @@ public interface AuthorityInstanceController {
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
-	public List<AuthorityInstanceDto> listCAInstances();
+	public List<AuthorityInstanceDto> listAuthorityInstances();
 
 	@Operation(summary = "Details of an Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instance details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
-	public AuthorityInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException, ConnectorException;
+	public AuthorityInstanceDto getAuthorityInstance(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Add Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New Authority instance added"),
@@ -52,7 +52,7 @@ public interface AuthorityInstanceController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))), })
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> createCAInstance(@RequestBody AuthorityInstanceRequestDto request)
+	public ResponseEntity<?> createAuthorityInstance(@RequestBody AuthorityInstanceRequestDto request)
 			throws AlreadyExistException, NotFoundException, ConnectorException;
 
 	@Operation(summary = "Update Authority instance")
@@ -62,7 +62,7 @@ public interface AuthorityInstanceController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
-	public AuthorityInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody AuthorityInstanceRequestDto request)
+	public AuthorityInstanceDto updateAuthorityInstance(@PathVariable String uuid, @RequestBody AuthorityInstanceRequestDto request)
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Remove Authority instance")
@@ -71,7 +71,7 @@ public interface AuthorityInstanceController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void removeCAInstance(@PathVariable String uuid) throws NotFoundException, ConnectorException;
+	public void removeAuthorityInstance(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@RequestMapping(path = "/{uuid}/endentityprofiles", method = RequestMethod.GET, produces = { "application/json" })
 	public List<NameAndIdDto> listEntityProfiles(@PathVariable String uuid) throws NotFoundException, ConnectorException;
@@ -109,7 +109,7 @@ public interface AuthorityInstanceController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.DELETE)
 
-	public List<ForceDeleteMessageDto> bulkRemoveCaInstance(@RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
+	public List<ForceDeleteMessageDto> bulkRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
 	@Operation(summary = "Force delete multiple Authority instances")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority instances forced to delete"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
@@ -117,5 +117,5 @@ public interface AuthorityInstanceController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/force", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkForceRemoveCaInstance(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+	public void bulkForceRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 }

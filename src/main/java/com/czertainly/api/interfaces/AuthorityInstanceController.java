@@ -32,7 +32,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.GET)
-    List<ConnectorAuthorityInstanceDto> listCAInstances();
+    List<ConnectorAuthorityInstanceDto> listAuthorityInstances();
 
     @Operation(
             summary = "Get an Authority instance"
@@ -50,7 +50,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
-    ConnectorAuthorityInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException;
+    ConnectorAuthorityInstanceDto getAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Create new Authority instance"
@@ -68,7 +68,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.POST)
-    ConnectorAuthorityInstanceDto createCAInstance(@RequestBody AuthorityInstanceDto request) throws AlreadyExistException;
+    ConnectorAuthorityInstanceDto createAuthorityInstance(@RequestBody AuthorityInstanceDto request) throws AlreadyExistException;
 
     @Operation(
             summary = "Update Authority instance"
@@ -91,7 +91,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.POST)
-    ConnectorAuthorityInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody AuthorityInstanceDto request) throws NotFoundException;
+    ConnectorAuthorityInstanceDto updateAuthorityInstance(@PathVariable String uuid, @RequestBody AuthorityInstanceDto request) throws NotFoundException;
 
     @Operation(
             summary = "Remove Authority instance"
@@ -110,7 +110,7 @@ public interface AuthorityInstanceController {
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeCAInstance(@PathVariable String uuid) throws NotFoundException;
+    void removeAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
 
     @RequestMapping(path = "/{uuid}/connect", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.NO_CONTENT)
