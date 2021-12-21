@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/endEntities")
+@RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities")
 @Tag(name = "End Entity Management API", description = "End Entity Management API")
 public interface EndEntityController {
 
     @Operation(
-            summary = "List End Entities",
-            description = "Method for listing all End Entities managed by CA."
+            summary = "List End Entities"
     )
     @ApiResponses(
             value = {
@@ -32,12 +31,11 @@ public interface EndEntityController {
             })
     @RequestMapping(method = RequestMethod.GET)
     List<EndEntityDto> listEndEntities(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName) throws NotFoundException;
 
     @Operation(
-            summary = "Get End Entity",
-            description = "Method for retrieving detail of End Entity managed by CA."
+            summary = "Get End Entity"
     )
     @ApiResponses(
             value = {
@@ -53,13 +51,12 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET)
     EndEntityDto getEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName) throws NotFoundException;
 
     @Operation(
-            summary = "Create End Entity",
-            description = "Method for creating new End Entity."
+            summary = "Create End Entity"
     )
     @ApiResponses(
             value = {
@@ -75,13 +72,12 @@ public interface EndEntityController {
             })
     @RequestMapping(method = RequestMethod.POST)
     void createEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @RequestBody AddEndEntityRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(
-            summary = "Update End Entity",
-            description = "Method for updating existing End Entity managed by CA."
+            summary = "Update End Entity"
     )
     @ApiResponses(
             value = {
@@ -102,14 +98,13 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}", method = RequestMethod.POST)
     void updateEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName,
             @RequestBody EditEndEntityRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Remove End Entity",
-            description = "Method for removing existing End Entity."
+            summary = "Remove End Entity"
     )
     @ApiResponses(
             value = {
@@ -125,14 +120,13 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE)
     void removeEndEntity(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName) throws NotFoundException;
 
 
     @Operation(
-            summary = "Reset End Entity password",
-            description = "Method for resetting password for existing End Entity."
+            summary = "Reset End Entity password"
     )
     @ApiResponses(
             value = {
@@ -148,7 +142,7 @@ public interface EndEntityController {
             })
     @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT)
     void resetPassword(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @PathVariable String endEntityName) throws NotFoundException;
 

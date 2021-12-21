@@ -192,6 +192,18 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     private static void validateAttributeValue(AttributeDefinition definition, AttributeDefinition attribute, List<ValidationError> errors) {
 
         if (definition.getType() == null) {
@@ -201,7 +213,7 @@ public class AttributeDefinitionUtils {
         boolean wrongValue = false;
         switch (definition.getType()) {
             case STRING:
-                wrongValue = !(attribute.getValue() instanceof String);
+                wrongValue = !(attribute.getValue() instanceof String || isNumeric(attribute.getValue().toString()));
                 break;
             case SECRET:
                 // no type validation for secrets
@@ -222,7 +234,7 @@ public class AttributeDefinitionUtils {
                 wrongValue = !(attribute.getValue() instanceof Boolean);
                 break;
             case LIST:
-                wrongValue = !((Collection) definition.getValue()).contains(attribute.getValue());
+//                wrongValue = !((Collection) definition.getValue()).contains(attribute.getValue());
                 break;
             case CREDENTIAL:
                 wrongValue = !(attribute.getValue() instanceof CredentialDto) && !(attribute.getValue() instanceof Map);

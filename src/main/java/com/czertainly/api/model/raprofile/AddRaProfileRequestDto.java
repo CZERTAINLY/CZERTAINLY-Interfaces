@@ -11,18 +11,22 @@ import java.util.List;
  */
 public class AddRaProfileRequestDto {
 
-    private String caInstanceUuid;
+    private String authorityInstanceUuid;
     private String name;
     private String description;
     private List<AttributeDefinition> attributes;
     private Boolean enabled;
 
-    public String getCaInstanceUuid() {
-        return caInstanceUuid;
+    public String getAuthorityInstanceUuid() {
+        return authorityInstanceUuid;
     }
 
-    public void setCaInstanceUuid(String caInstanceUuid) {
-        this.caInstanceUuid = caInstanceUuid;
+    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
+        this.authorityInstanceUuid = authorityInstanceUuid;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
     }
 
     public String getName() {
@@ -60,7 +64,7 @@ public class AddRaProfileRequestDto {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("caInstanceUuid", caInstanceUuid)
+                .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("name", name)
                 .append("description", description)
                 .append("attributes", attributes)

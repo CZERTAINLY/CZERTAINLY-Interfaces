@@ -19,11 +19,11 @@ public class CertRevocationDto {
             required = true)
     private RevocationReason reason;
 
-    @Schema(description = "Full data of RA profile",
+    @Schema(description = "RA Profile information",
             required = true)
     protected RaProfileDto raProfile;
 
-    @Schema(description = "List of attributes needed for revoking certificate",
+    @Schema(description = "List of Attributes to revoke Certificate",
             required = true)
     private List<AttributeDefinition> attributes;
 

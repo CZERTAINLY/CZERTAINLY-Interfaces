@@ -4,7 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.ca.CAInstanceDto;
+import com.czertainly.api.model.ca.AuthorityInstanceDto;
+import com.czertainly.api.model.ca.ConnectorAuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,33 +17,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities")
-@Tag(name = "Certification Authority API", description = "Certification Authority API")
-public interface CAInstanceController {
+@RequestMapping("/v1/authorityProvider/authorities")
+@Tag(name = "Authority Management API", description = "Authority Management API")
+public interface AuthorityInstanceController {
 
     @Operation(
-            summary = "List CA instances",
-            description = "Method for listing all CA instances managed by CA connector."
+            summary = "List Authority instances"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instances retrieved"
+                            description = "Authority instances retrieved"
                     )
             })
     @RequestMapping(method = RequestMethod.GET)
-    List<CAInstanceDto> listCAInstances();
+    List<ConnectorAuthorityInstanceDto> listAuthorityInstances();
 
     @Operation(
-            summary = "Get CA instance",
-            description = "Method for retrieving detail of CA instance managed by CA connector."
+            summary = "Get an Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance retrieved"
+                            description = "Authority instance retrieved"
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -50,18 +49,17 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}", method = RequestMethod.GET)
-    CAInstanceDto getCAInstance(@PathVariable Long authorityId) throws NotFoundException;
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
+    ConnectorAuthorityInstanceDto getAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Create CA instance",
-            description = "Method for creating new CA instance to be managed by CA connector."
+            summary = "Create Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance created"
+                            description = "Authority instance created"
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -70,17 +68,16 @@ public interface CAInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.POST)
-    CAInstanceDto createCAInstance(@RequestBody CAInstanceDto request) throws AlreadyExistException;
+    ConnectorAuthorityInstanceDto createAuthorityInstance(@RequestBody AuthorityInstanceDto request) throws AlreadyExistException;
 
     @Operation(
-            summary = "Update CA instance",
-            description = "Method for updating existing CA instance managed by CA connector."
+            summary = "Update Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance updated"
+                            description = "Authority instance updated"
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -93,18 +90,17 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}", method = RequestMethod.POST)
-    CAInstanceDto updateCAInstance(@PathVariable Long authorityId, @RequestBody CAInstanceDto request) throws NotFoundException;
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.POST)
+    ConnectorAuthorityInstanceDto updateAuthorityInstance(@PathVariable String uuid, @RequestBody AuthorityInstanceDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Remove CA instance",
-            description = "Method for removing existing CA instance managed by CA connector."
+            summary = "Remove Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance removed"
+                            description = "Authority instance removed"
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -112,23 +108,22 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeCAInstance(@PathVariable Long authorityId) throws NotFoundException;
+    void removeAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
 
-    @RequestMapping(path = "/{authorityId}/connect", method = RequestMethod.GET)
+    @RequestMapping(path = "/{uuid}/connect", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void getConnection(@PathVariable Long authorityId) throws NotFoundException;
+    void getConnection(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "List RA profile attributes",
-            description = "Method for listing RA profile attributes needed to create RA profile."
+            summary = "List RA Profile Attributes"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance updated"
+                            description = "Authority instance updated"
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -136,19 +131,18 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}/raProfiles/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listRAProfileAttributes(
-            @PathVariable Long CAInstanceController) throws NotFoundException;
+            @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Validate RA profile attributes",
-            description = "Method for validating RA profile attributes."
+            summary = "Validate RA Profile attributes"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance updated"
+                            description = "Authority instance updated"
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -161,8 +155,8 @@ public interface CAInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{authorityId}/raProfiles/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST)
     boolean validateRAProfileAttributes(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody List<AttributeDefinition> attributes) throws ValidationException, NotFoundException;
 }

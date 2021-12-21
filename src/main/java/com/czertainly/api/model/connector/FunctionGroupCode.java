@@ -11,8 +11,8 @@ import java.util.Arrays;
 public enum FunctionGroupCode {
 
     CREDENTIAL_PROVIDER("credentialProvider"),
-    LEGACY_CA_CONNECTOR("legacyCaConnector"),
-    CA_CONNECTOR("caConnector"),
+    LEGACY_AUTHORITY_PROVIDER("legacyAuthorityProvider"),
+    AUTHORITY_PROVIDER("authorityProvider"),
     DISCOVERY_PROVIDER("discoveryProvider");
 
     @Schema(description = "Functional Group code of the Connector",

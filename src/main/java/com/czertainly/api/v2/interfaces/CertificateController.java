@@ -19,14 +19,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v2/caConnector/authorities/{authorityId}/certificates")
+@RequestMapping("/v2/authorityProvider/authorities/{uuid}/certificates")
 @Tag(name = "Certificate Management API", description = "Certificate Management API")
 public interface CertificateController {
 
     @Operation(
-            summary = "List issue certificate attributes",
-            description = "Method for listing of attributes " +
-                    "needed to issue or sign certificate."
+            summary = "List of Attributes to issue Certificate"
     )
     @ApiResponses(
             value = {
@@ -37,12 +35,10 @@ public interface CertificateController {
     })
     @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listIssueCertificateAttributes(
-            @PathVariable Long authorityId) throws NotFoundException;
+            @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Validate issue certificate attributes",
-            description = "Method for validation of attributes " +
-                    "needed to issue or sign certificate."
+            summary = "Validate list of Attributes to issue Certificate"
     )
     @ApiResponses(
             value = {
@@ -54,17 +50,20 @@ public interface CertificateController {
                             responseCode = "400",
                             description = "Bad Request",
                             content = @Content
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                    ))
             })
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
     boolean validateIssueCertificateAttributes(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
-            summary = "Issue certificate",
-            description = "Method for issuing certificates " +
-                    "based on given attributes."
+            summary = "Issue Certificate"
     )
     @ApiResponses(
             value = {
@@ -81,18 +80,20 @@ public interface CertificateController {
                             responseCode = "404",
                             description = "Not found",
                             content = @Content
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            ))
             })
     @RequestMapping(path = "/issue", method = RequestMethod.POST)
     CertificateDataResponseDto issueCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Renew certificate",
-            description = "Method for renewing existing certificates " +
-                    "by given certificate identifier. Certificate identifier value depends on" +
-                    "implementation of CA instance, which data it needs to uniquely identify certificate"
+            summary = "Renew Certificate"
     )
     @ApiResponses(
             value = {
@@ -109,34 +110,40 @@ public interface CertificateController {
                             responseCode = "404",
                             description = "Not found",
                             content = @Content
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            ))
             })
     @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
     CertificateDataResponseDto renewCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String certificateId,
             @RequestBody CertificateRenewRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "List revoke certificate attributes",
-            description = "Method for listing of attributes " +
-                    "needed to revoke certificate."
+            summary = "List of Attributes to revoke Certificate"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Attribute list retrieved"
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            ))
             })
     @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listRevokeCertificateAttributes(
-            @PathVariable Long authorityId) throws NotFoundException;
+            @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Validate revoke certificate attributes",
-            description = "Method for validation of attributes " +
-                    "needed to revoke or sign certificate."
+            summary = "Validate list of Attributes to revoke certificate"
     )
     @ApiResponses(
             value = {
@@ -148,18 +155,20 @@ public interface CertificateController {
                             responseCode = "400",
                             description = "Bad Request",
                             content = @Content
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            ))
             })
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
     boolean validateRevokeCertificateAttributes(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
-            summary = "Revoke certificate",
-            description = "Method for revoking existing certificates " +
-                    "by given certificate identifier. Certificate identifier value depends on" +
-                    "implementation of CA instance, which data it needs to uniquely identify certificate"
+            summary = "Revoke Certificate"
     )
     @ApiResponses(
             value = {
@@ -176,11 +185,16 @@ public interface CertificateController {
                             responseCode = "404",
                             description = "Not found",
                             content = @Content
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            ))
             })
     @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST)
     void revokeCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String certificateId,
             @RequestBody CertRevocationDto request) throws NotFoundException;
 }

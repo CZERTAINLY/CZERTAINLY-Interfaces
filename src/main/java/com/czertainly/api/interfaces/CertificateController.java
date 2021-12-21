@@ -12,14 +12,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/caConnector/authorities/{authorityId}/endEntityProfiles/{endEntityProfileName}/certificates")
+@RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates")
 @Tag(name = "Certificate Management API", description = "Certificate Management API")
 public interface CertificateController {
 
     @Operation(
-            summary = "Issue certificate",
-            description = "Method for issuing certificates " +
-                    "based on given request."
+            summary = "Issue Certificate"
     )
     @ApiResponses(
             value = {
@@ -40,14 +38,12 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/issue", method = RequestMethod.POST)
     CertificateSignResponseDto issueCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Revoke certificate",
-            description = "Method for revoking existing certificates " +
-                    "by given request."
+            summary = "Revoke Certificate"
     )
     @ApiResponses(
             value = {
@@ -68,7 +64,7 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/revoke", method = RequestMethod.POST)
     void revokeCertificate(
-            @PathVariable Long authorityId,
+            @PathVariable String uuid,
             @PathVariable String endEntityProfileName,
             @RequestBody CertRevocationDto request) throws NotFoundException;
 
