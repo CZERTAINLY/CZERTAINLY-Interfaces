@@ -19,7 +19,7 @@ public class AuthorityInstanceRequestDto {
             required = true)
     private List<AttributeDefinition> attributes;
 
-    @Schema(description = "UUID of Authority instance Connector",
+    @Schema(description = "UUID of Authority provider",
             required = true)
     private String connectorUuid;
 

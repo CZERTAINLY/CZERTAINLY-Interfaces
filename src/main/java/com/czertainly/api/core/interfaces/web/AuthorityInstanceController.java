@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/v1/authorities")
-@Tag(name = "Authority instance Controller", description = "Authority instance Controller")
+@Tag(name = "Authority Management API", description = "Authority Management API")
 public interface AuthorityInstanceController {
 
 	@Operation(summary = "List of available Authority instances")

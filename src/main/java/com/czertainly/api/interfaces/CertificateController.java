@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public interface CertificateController {
 
     @Operation(
-            summary = "Issue new Certificate"
+            summary = "Issue Certificate"
     )
     @ApiResponses(
             value = {

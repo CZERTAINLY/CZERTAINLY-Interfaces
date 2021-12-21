@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authorityProvider/authorities")
-@Tag(name = "Certification Authority API", description = "Certification Authority API")
+@Tag(name = "Authority Management API", description = "Authority Management API")
 public interface AuthorityInstanceController {
 
     @Operation(
@@ -131,7 +131,7 @@ public interface AuthorityInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{uuid}/raProfiles/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listRAProfileAttributes(
             @PathVariable String uuid) throws NotFoundException;
 
@@ -155,7 +155,7 @@ public interface AuthorityInstanceController {
                             content = @Content
                     )
             })
-    @RequestMapping(path = "/{uuid}/raProfiles/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST)
     boolean validateRAProfileAttributes(
             @PathVariable String uuid,
             @RequestBody List<AttributeDefinition> attributes) throws ValidationException, NotFoundException;

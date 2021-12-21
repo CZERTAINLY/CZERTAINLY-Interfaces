@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ClientCertificateDataResponseDto {
 
-    @Schema(description = "Data of signed Certificate",
+    @Schema(description = "Base64 encoded Certificate content",
             required = true)
     private String certificateData;
 

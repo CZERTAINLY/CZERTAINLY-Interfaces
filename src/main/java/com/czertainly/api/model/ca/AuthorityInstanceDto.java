@@ -18,11 +18,11 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             required = true)
     private String status;
 
-    @Schema(description = "UUID of Authority instance Connector",
+    @Schema(description = "UUID of Authority provider",
             required = true)
     private String connectorUuid;
 
-    @Schema(description = "Name of Authority instance Connector",
+    @Schema(description = "Name of Authority provider",
             required = true)
     private String connectorName;
 

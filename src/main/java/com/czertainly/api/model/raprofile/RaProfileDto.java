@@ -26,7 +26,7 @@ public class RaProfileDto implements Identified {
     @Schema(description = "Detailed description")
     private String description;
   
-    @Schema(description = "Identifier of Authority instance reference",
+    @Schema(description = "UUID of Authority provider",
             required = true)
     private String authorityInstanceUuid;
 

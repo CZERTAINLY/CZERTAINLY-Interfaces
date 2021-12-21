@@ -45,7 +45,7 @@ public interface ClientOperationController {
             @PathVariable String raProfileName,
             @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ConnectorException, ValidationException;
 	
-	@Operation(summary = "Issue new Certificate")
+	@Operation(summary = "Issue Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate issued"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
