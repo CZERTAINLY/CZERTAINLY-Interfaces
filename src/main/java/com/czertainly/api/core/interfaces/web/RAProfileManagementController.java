@@ -26,23 +26,24 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Ra Profile Management API", description = "Ra Management Management API")
 
 public interface RAProfileManagementController {
-	@Operation(summary = "List of availabe RA Profiles")
+	@Operation(summary = "List of available RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile list retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<RaProfileDto> listRaProfiles();
 
-	@Operation(summary = "List of availabe RA Profiles by Status")
+	@Operation(summary = "List of available RA Profiles by Status")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile list retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, params = { "isEnabled" }, produces = {"application/json"})
 	public List<RaProfileDto> listRaProfiles(@RequestParam Boolean isEnabled);
 	
-	@Operation(summary = "Add a new RA Profiles")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile Added"),
+	@Operation(summary = "Add a new RA Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "RA Profile Added"),
 			@ApiResponse(responseCode = "400", description ="Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> addRaProfile(@RequestBody AddRaProfileRequestDto request)
@@ -58,6 +59,7 @@ public interface RAProfileManagementController {
 	@Operation(summary = "Edit an RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile edited"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public RaProfileDto editRaProfile(@PathVariable String uuid, @RequestBody EditRaProfileRequestDto request)
@@ -87,7 +89,7 @@ public interface RAProfileManagementController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void enableRaProfile(@PathVariable String uuid) throws NotFoundException;
 	
-	@Operation(summary = "List Clients of an RA Profile")
+	@Operation(summary = "List authorized Clients of an RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of clients of an RA Profile"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -103,7 +105,7 @@ public interface RAProfileManagementController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkRemoveRaProfile(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
-	@Operation(summary = "Disable RA Profiles")
+	@Operation(summary = "Disable an RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles Disabled"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -111,7 +113,7 @@ public interface RAProfileManagementController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkDisableRaProfile(@RequestBody List<String> uuids) throws NotFoundException;
 
-	@Operation(summary = "Enable RA Profiles")
+	@Operation(summary = "Enable an RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles enabled"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
