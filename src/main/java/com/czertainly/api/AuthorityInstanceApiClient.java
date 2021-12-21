@@ -15,10 +15,10 @@ import java.util.List;
 
 public class AuthorityInstanceApiClient extends BaseApiClient {
 
-    private static final String CA_INSTANCE_BASE_CONTEXT = "/v1/authorityProvider/authorities";
-    private static final String CA_INSTANCE_IDENTIFIED_CONTEXT = CA_INSTANCE_BASE_CONTEXT + "/{uuid}";
-    private static final String CA_INSTANCE_RA_ATTRS_CONTEXT = CA_INSTANCE_IDENTIFIED_CONTEXT + "/raProfiles/attributes";
-    private static final String CA_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = CA_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
+    private static final String AUTHORITY_INSTANCE_BASE_CONTEXT = "/v1/authorityProvider/authorities";
+    private static final String AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT = AUTHORITY_INSTANCE_BASE_CONTEXT + "/{uuid}";
+    private static final String AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/raProfiles/attributes";
+    private static final String AUTHORITY_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
 
     private static final ParameterizedTypeReference<List<AttributeDefinition>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -31,7 +31,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_BASE_CONTEXT)
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_BASE_CONTEXT)
                 .retrieve()
                 .toEntityList(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
@@ -43,7 +43,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
                 .toEntity(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
@@ -55,7 +55,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_BASE_CONTEXT)
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_BASE_CONTEXT)
                 .body(Mono.just(requestDto), AuthorityInstanceDto.class)
                 .retrieve()
                 .toEntity(ConnectorAuthorityInstanceDto.class)
@@ -69,7 +69,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .body(Mono.just(requestDto), AuthorityInstanceDto.class)
                 .retrieve()
                 .toEntity(ConnectorAuthorityInstanceDto.class)
@@ -82,7 +82,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
                 .toEntity(Void.class)
                 .block().getBody(),
@@ -95,7 +95,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_RA_ATTRS_CONTEXT, uuid)
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT, uuid)
                 .retrieve()
                 .toEntityList(AttributeDefinition.class)
                 .block().getBody(),
@@ -107,7 +107,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CA_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT, uuid)
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT, uuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Boolean.class)
