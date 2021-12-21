@@ -19,11 +19,11 @@ public class AuthorityInstanceRequestDto {
             required = true)
     private List<AttributeDefinition> attributes;
 
-    @Schema(description = "UUID of CA Connector",
+    @Schema(description = "UUID of Authority instance Connector",
             required = true)
     private String connectorUuid;
 
-    @Schema(description = "Authority Type",
+    @Schema(description = "Authority instance Type",
             example = "LegacyEjbca, ADCS, etc",
             required = true)
     private String authorityType;

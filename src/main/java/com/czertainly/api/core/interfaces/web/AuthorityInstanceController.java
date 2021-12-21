@@ -55,7 +55,7 @@ public interface AuthorityInstanceController {
 	public ResponseEntity<?> createCAInstance(@RequestBody AuthorityInstanceRequestDto request)
 			throws AlreadyExistException, NotFoundException, ConnectorException;
 
-	@Operation(summary = "Update a Authority instance")
+	@Operation(summary = "Update Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instance details updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))),

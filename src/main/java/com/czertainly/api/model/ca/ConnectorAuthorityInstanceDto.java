@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class ConnectorCAInstanceDto extends NameAndUuidDto {
+public class ConnectorAuthorityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
             implementation = List.class,

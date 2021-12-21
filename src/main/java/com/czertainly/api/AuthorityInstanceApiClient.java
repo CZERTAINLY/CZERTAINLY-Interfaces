@@ -4,7 +4,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.AttributeDefinition;
 import com.czertainly.api.model.ca.AuthorityInstanceDto;
-import com.czertainly.api.model.ca.ConnectorCAInstanceDto;
+import com.czertainly.api.model.ca.ConnectorAuthorityInstanceDto;
 import com.czertainly.api.model.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -27,52 +27,52 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<ConnectorCAInstanceDto> listCAInstances(ConnectorDto connector) throws ConnectorException {
+    public List<ConnectorAuthorityInstanceDto> listCAInstances(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_BASE_CONTEXT)
                 .retrieve()
-                .toEntityList(ConnectorCAInstanceDto.class)
+                .toEntityList(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public ConnectorCAInstanceDto getCAInstance(ConnectorDto connector, String uuid) throws ConnectorException {
+    public ConnectorAuthorityInstanceDto getCAInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
-                .toEntity(ConnectorCAInstanceDto.class)
+                .toEntity(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public ConnectorCAInstanceDto createCAInstance(ConnectorDto connector, AuthorityInstanceDto requestDto) throws ConnectorException {
+    public ConnectorAuthorityInstanceDto createCAInstance(ConnectorDto connector, AuthorityInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_BASE_CONTEXT)
                 .body(Mono.just(requestDto), AuthorityInstanceDto.class)
                 .retrieve()
-                .toEntity(ConnectorCAInstanceDto.class)
+                .toEntity(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
 
-    public ConnectorCAInstanceDto updateCAInstance(ConnectorDto connector, String uuid, AuthorityInstanceDto requestDto) throws ConnectorException {
+    public ConnectorAuthorityInstanceDto updateCAInstance(ConnectorDto connector, String uuid, AuthorityInstanceDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CA_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .body(Mono.just(requestDto), AuthorityInstanceDto.class)
                 .retrieve()
-                .toEntity(ConnectorCAInstanceDto.class)
+                .toEntity(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
