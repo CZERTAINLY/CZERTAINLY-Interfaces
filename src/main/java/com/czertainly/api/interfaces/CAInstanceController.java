@@ -22,28 +22,26 @@ import java.util.List;
 public interface CAInstanceController {
 
     @Operation(
-            summary = "List CA Instances",
-            description = "Method for listing all CA Instances managed by CA connector."
+            summary = "List Authority instances"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instances retrieved"
+                            description = "Authority instances retrieved"
                     )
             })
     @RequestMapping(method = RequestMethod.GET)
     List<ConnectorCAInstanceDto> listCAInstances();
 
     @Operation(
-            summary = "Get CA instance",
-            description = "Method for retrieving detail of CA instance managed by CA connector."
+            summary = "Get an Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance retrieved"
+                            description = "Authority instance retrieved"
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -55,14 +53,13 @@ public interface CAInstanceController {
     ConnectorCAInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Create CA instance",
-            description = "Method for creating new CA instance to be managed by CA connector."
+            summary = "Create a new Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance created"
+                            description = "Authority instance created"
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -74,14 +71,13 @@ public interface CAInstanceController {
     ConnectorCAInstanceDto createCAInstance(@RequestBody CAInstanceDto request) throws AlreadyExistException;
 
     @Operation(
-            summary = "Update CA instance",
-            description = "Method for updating existing CA instance managed by CA connector."
+            summary = "Update an Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance updated"
+                            description = "Authority instance updated"
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -98,14 +94,13 @@ public interface CAInstanceController {
     ConnectorCAInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody CAInstanceDto request) throws NotFoundException;
 
     @Operation(
-            summary = "Remove CA instance",
-            description = "Method for removing existing CA instance managed by CA connector."
+            summary = "Remove an Authority instance"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance removed"
+                            description = "Authority instance removed"
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -122,14 +117,13 @@ public interface CAInstanceController {
     void getConnection(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "List RA profile attributes",
-            description = "Method for listing RA profile attributes needed to create RA profile."
+            summary = "List RA Profile Attributes"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance updated"
+                            description = "Authority instance updated"
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -142,14 +136,13 @@ public interface CAInstanceController {
             @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
-            summary = "Validate RA profile attributes",
-            description = "Method for validating RA profile attributes."
+            summary = "Validate RA Profile attributes"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "CA instance updated"
+                            description = "Authority instance updated"
                     ),
                     @ApiResponse(
                             responseCode = "400",

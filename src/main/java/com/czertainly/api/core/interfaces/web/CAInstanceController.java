@@ -30,24 +30,24 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/v1/authorities")
-@Tag(name = "Certificate Authority Controller", description = "Certificate Authority Controller")
+@Tag(name = "Authority instance Controller", description = "Authority instance Controller")
 public interface CAInstanceController {
 
-	@Operation(summary = "List of available Certificate Authorities")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of Certificate Authorities"),
+	@Operation(summary = "List of available Authority instances")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of Authority instances"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
 	public List<CAInstanceDto> listCAInstances();
 
-	@Operation(summary = "Details of a Certificate Authority")
+	@Operation(summary = "Details of a Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
 	public CAInstanceDto getCAInstance(@PathVariable String uuid) throws NotFoundException, ConnectorException;
 
-	@Operation(summary = "Add a new Certificate Authority")
+	@Operation(summary = "Add a new Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New Authority added"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
@@ -56,7 +56,7 @@ public interface CAInstanceController {
 	public ResponseEntity<?> createCAInstance(@RequestBody CAInstanceRequestDto request)
 			throws AlreadyExistException, NotFoundException, ConnectorException;
 
-	@Operation(summary = "Update a Certificate Authority")
+	@Operation(summary = "Update a Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority details updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))),
@@ -66,7 +66,7 @@ public interface CAInstanceController {
 	public CAInstanceDto updateCAInstance(@PathVariable String uuid, @RequestBody CAInstanceRequestDto request)
 			throws NotFoundException, ConnectorException;
 
-	@Operation(summary = "Remove a Certificate Authority")
+	@Operation(summary = "Remove a Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })

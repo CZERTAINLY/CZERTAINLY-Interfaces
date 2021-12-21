@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CAInstanceRequestDto {
 
-    @Schema(description = "New Authority name",
+    @Schema(description = "Authority Instance name",
             required = true)
     private String name;
 
@@ -24,7 +24,7 @@ public class CAInstanceRequestDto {
     private String connectorUuid;
 
     @Schema(description = "Authority Type",
-            example = "Ejbca, AdCs, etc",
+            example = "LegacyEjbca, ADCS, etc",
             required = true)
     private String authorityType;
 

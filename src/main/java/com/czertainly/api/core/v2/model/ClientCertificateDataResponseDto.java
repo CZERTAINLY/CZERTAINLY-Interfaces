@@ -13,7 +13,7 @@ public class ClientCertificateDataResponseDto {
             required = true)
     private String certificateData;
 
-    @Schema(description = "UUID of Certificate from Inventory",
+    @Schema(description = "UUID of Certificate",
             required = true)
     private String uuid;
 

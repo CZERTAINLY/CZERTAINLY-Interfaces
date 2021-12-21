@@ -27,7 +27,7 @@ public class CAInstanceDto extends NameAndUuidDto {
     private String connectorName;
 
     @Schema(description = "Authority Type",
-            example = "Ejbca, AdCs, etc",
+            example = "LegacyEjbca, ADCS etc",
             required = true)
     private String authorityType;
 
