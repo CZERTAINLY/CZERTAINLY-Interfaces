@@ -12,20 +12,20 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class DiscoveryProviderDto {
-	@Schema(description = "Id of the discovery", 
+	@Schema(description = "UUID of the Discovery",
 			required = true)
-	private Long id;
+	private String uuid;
 
-	@Schema(description = "Name of the discovery", 
+	@Schema(description = "Name of the Discovery",
 			example = "Test discovery", 
 			required = true)
 	private String name;
 
-	@Schema(description = "Status of discovery", 
+	@Schema(description = "Status of Discovery",
 			required = true)
 	private DiscoveryStatus status;
 	
-	@Schema(description = "Total number of certificates that are discovered", 
+	@Schema(description = "Total number of certificates discovered",
 			defaultValue = "0")
 	private Integer totalCertificatesDiscovered;
 	@Schema(description = "Current Page Number", 
@@ -50,23 +50,16 @@ public class DiscoveryProviderDto {
 			required = true)
 	private List<AttributeDefinition> attributes;
 	
-	@Schema(description = "Discovery Provider Connector UUID",
+	@Schema(description = "Discovery Provider UUID",
 			required = true)
 	private String connectorUuid;
 
-	@Schema(
-			description = "Credential to authorize certificate discovery",
-			implementation = CredentialDto.class,
-			required = false
-	)
-	private CredentialDto credential;
-
-	public Long getId() {
-		return id;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getName() {
@@ -141,13 +134,10 @@ public class DiscoveryProviderDto {
 		this.connectorUuid = connectorUuid;
 	}
 
-	public CredentialDto getCredential() { return credential; }
-
-	public void setCredential(CredentialDto credential) { this.credential = credential; }
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("id", id)
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("id", uuid)
 				.append("totalCertificatesDiscovered", totalCertificatesDiscovered).toString();
 	}
 }

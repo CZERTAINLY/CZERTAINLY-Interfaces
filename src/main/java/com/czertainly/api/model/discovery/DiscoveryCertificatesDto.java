@@ -1,27 +1,26 @@
 package com.czertainly.api.model.discovery;
 
-import com.czertainly.api.model.Identified;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Date;
 
-public class DiscoveryCertificatesDto implements Identified {
-    private Long id;
+public class DiscoveryCertificatesDto {
+    @Schema(description = "UUID of the Certificate", required = true)
     private String uuid;
+    @Schema(description = "Certificate common name", required = true)
     private String commonName;
+    @Schema(description = "Certificate Serial Number", required = true)
     private String serialNumber;
+    @Schema(description = "Issuer common name", required = true)
     private String issuerCommonName;
+    @Schema(description = "Certificate validity start date", required = true)
     private Date notBefore;
+    @Schema(description = "Certificate expiration date", required = true)
     private Date notAfter;
+    @Schema(description = "SHA256 thumbprint of the certificate", required = true)
     private String fingerprint;
+    @Schema(description = "Base64 encoded Certificate content", required = true)
     private String certificateContent;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUuid() {
         return uuid;

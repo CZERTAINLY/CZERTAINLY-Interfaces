@@ -5,107 +5,72 @@ import java.util.List;
 import java.util.Map;
 
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class DiscoveryHistoryDto implements Identified {
+public class DiscoveryHistoryDto extends NameAndUuidDto {
 
     @Schema(
-            description = "Id of the discovery",
-            //example = "123456",
-            required = true
-    )
-    private Long id;
-    @Schema(
-            description = "UUID of the discovery",
-            example = "7776f44d-eb8d-4975-bdeb-d8ec3a84488f",
-            required = true
-    )
-    private String uuid;
-    @Schema(
-            description = "Name of the discovery",
-            example = "Test discovery",
-            required = true
-    )
-    private String name;
-
-    @Schema(
-            description = "Type of the discovery",
-            example = "IP-HostName-discovery",
+            description = "Type of the Discovery",
+            example = "IP-HostName",
             required = true
     )
     private String discoveryType;
 
     @Schema(
-            description = "Status of discovery",
-            //example = "IN_PROGRESS",
+            description = "Status of Discovery",
             required = true
     )
     private DiscoveryStatus status;
 
     @Schema(
             description = "Failure/Success Messages",
-            example = "Failed due to network connectivity issues",
-            required = false
+            example = "Failed due to network connectivity issues"
     )
     private String message;
 
     @Schema(
-            description = "Date and time when discovery started",
-            //example = "2021-08-18T13:08:51",
+            description = "Date and time when Discovery started",
             nullable = true
     )
     private Date startTime;
     @Schema(
-            description = "Date and time when discovery finished",
-            //example = "2021-08-18T13:08:51",
+            description = "Date and time when Discovery finished",
             nullable = true
     )
     private Date endTime;
     @Schema(
             description = "Total number of certificates that are discovered",
-            //example = "Test discovery",
             defaultValue = "0"
     )
     private Integer totalCertificatesDiscovered;
     @Schema(
-            description = "ID of the Discovery Connector",
-            //example = "1",
+            description = "UUID of the Discovery Provider",
             required = true
     )
-    private Long connectorId;
+    private String connectorUuid;
     
     @Schema(
-            description = "Name of the Discovery Connector",
-            //example = "1",
+            description = "Name of the Discovery Provider",
             required = true
     )
     private String connectorName;
     @Schema(
-            description = "List of discovered certificates",
+            description = "List of Discovered Certificates",
             required = true
     )
     private List<DiscoveryCertificatesDto> certificate;
     @Schema(
-            description = "List of discovery attributes",
+            description = "List of Discovery Attributes",
             required = true
     )
     private List<AttributeDefinition> attributes;
     @Schema(
-            description = "Meta data of the discovery"
+            description = "Meta data of the Discovery"
     )
     private Map<String, Object> meta;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -172,12 +137,12 @@ public class DiscoveryHistoryDto implements Identified {
         this.certificate = list;
     }
 
-    public Long getConnectorId() {
-        return connectorId;
+    public String getConnectorUuid() {
+        return connectorUuid;
     }
 
-    public void setConnectorId(Long connectorId) {
-        this.connectorId = connectorId;
+    public void setConnectorUuid(String connectorUuid) {
+        this.connectorUuid = connectorUuid;
     }
 
     public List<AttributeDefinition> getAttributes() {
@@ -214,7 +179,8 @@ public class DiscoveryHistoryDto implements Identified {
 
 	@Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("id", id).append("uuid", uuid)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("uuid", uuid)
                 .append("totalCertificatesDiscovered", totalCertificatesDiscovered).toString();
     }
 

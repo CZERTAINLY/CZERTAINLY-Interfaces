@@ -3,11 +3,16 @@ package com.czertainly.api.model.discovery;
 import java.util.List;
 
 import com.czertainly.api.model.AttributeDefinition;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class DiscoveryDto {
+	@Schema(description = "Discovery name", required = true)
 	private String name;
+	@Schema(description = "List of attributes for Discovery", required = true)
 	private List<AttributeDefinition> attributes;
+	@Schema(description = "Discovery Provider UUID", required = true)
 	private String connectorUuid;
+	@Schema(description = "Discovery Type", required = true)
 	private String discoveryType;
 	
 	public String getConnectorUuid() {
