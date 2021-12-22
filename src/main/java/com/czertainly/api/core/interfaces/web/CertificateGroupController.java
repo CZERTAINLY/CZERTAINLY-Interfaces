@@ -25,14 +25,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/v1/certificate-group")
 @Tag(name = "Certificate Group API", description = "Certificate Group API")
 public interface CertificateGroupController {
-	@Operation(summary = "List of all Groups")
+	@Operation(summary = "List Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available Group"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<CertificateGroupDto> listCertificateGroups();
 	
-	@Operation(summary = "Detail of a Group")
+	@Operation(summary = "Group details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })

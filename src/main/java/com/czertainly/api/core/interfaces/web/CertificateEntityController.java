@@ -26,14 +26,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Certificate Entity API", description = "Certificate Entity API")
 public interface CertificateEntityController {
 	
-	@Operation(summary = "List of all Entities")
+	@Operation(summary = "List Entities")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available Entities"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<CertificateEntityDto> listCertificateEntities();
 	
-	@Operation(summary = "Detail of an Entity")
+	@Operation(summary = "Entity details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Entity details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
