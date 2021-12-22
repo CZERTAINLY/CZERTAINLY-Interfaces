@@ -20,6 +20,9 @@ public class EditRaProfileRequestDto {
             required = true)
     private List<AttributeDefinition> attributes;
 
+    @Schema(description = "Enabled flag - true = enabled; false = disabled")
+    private Boolean enabled;
+
     public String getDescription() {
         return description;
     }
@@ -42,6 +45,18 @@ public class EditRaProfileRequestDto {
 
     public void setAttributes(List<AttributeDefinition> attributes) {
         this.attributes = attributes;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
     }
 
     @Override
