@@ -19,12 +19,6 @@ public class DiscoveryProviderCertificateDataDto {
 	private String base64Content;
 	
 	@Schema(
-			description = "Source of the Discovery",
-			required = true
-	)
-	private String discoverySource;
-	
-	@Schema(
 			description = "Metadata for the Certificate",
 			required = true
 	)
@@ -41,12 +35,6 @@ public class DiscoveryProviderCertificateDataDto {
 	}
 	public void setBase64Content(String base64Content) {
 		this.base64Content = base64Content;
-	}
-	public String getDiscoverySource() {
-		return discoverySource;
-	}
-	public void setDiscoverySource(String discoverySource) {
-		this.discoverySource = discoverySource;
 	}
 	public Map<String, Object> getMeta() {
 		return meta;
