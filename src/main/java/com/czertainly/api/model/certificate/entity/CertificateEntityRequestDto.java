@@ -1,22 +1,19 @@
-package com.czertainly.api.model.discovery;
+package com.czertainly.api.model.certificate.entity;
 
-import com.czertainly.api.model.Identified;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CertificateEntityDto implements Identified {
+public class CertificateEntityRequestDto {
 
-    private Long id;
+    @Schema(description = "Name of the Entity",
+            required = true)
     private String name;
-    private String uuid;
+
+    @Schema(description = "Description of the Entity")
     private String description;
+
+    @Schema(description = "Type of the Entity",
+            required = true)
     private CertificateEntityCode entityType;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -24,14 +21,6 @@ public class CertificateEntityDto implements Identified {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     public String getDescription() {

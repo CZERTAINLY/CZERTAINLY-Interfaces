@@ -4,7 +4,8 @@ import java.util.List;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.discovery.CertificateEntityDto;
+import com.czertainly.api.model.certificate.entity.CertificateEntityDto;
+import com.czertainly.api.model.certificate.entity.CertificateEntityRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,38 +26,38 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Certificate Entity API", description = "Certificate Entity API")
 public interface CertificateEntityController {
 	
-	@Operation(summary = "List of All Entities")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available entities"),
+	@Operation(summary = "List Entities")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available Entities"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-	public List<CertificateEntityDto> listCertificateEntitys();
+	public List<CertificateEntityDto> listCertificateEntities();
 	
-	@Operation(summary = "Detail of an Entity")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Entity Details retrieved"),
+	@Operation(summary = "Entity details")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Entity details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
 	public CertificateEntityDto getCertificateEntity(@PathVariable String uuid) throws NotFoundException;
 	
-	@Operation(summary = "Create a new Entity")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Entity Created"),
+	@Operation(summary = "Create Entity")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Entity created"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public ResponseEntity<?> createCertificateEntity(@RequestBody CertificateEntityDto request)
+	public ResponseEntity<?> createCertificateEntity(@RequestBody CertificateEntityRequestDto request)
 			throws AlreadyExistException, NotFoundException;
 	
-	@Operation(summary = "Update an Entity")
+	@Operation(summary = "Update Entity")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Entity updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public CertificateEntityDto updateCertificateEntity(@PathVariable String uuid,
-			@RequestBody CertificateEntityDto request) throws NotFoundException;
+			@RequestBody CertificateEntityRequestDto request) throws NotFoundException;
 	
-	@Operation(summary = "Remove an Entity")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "entity removed"),
+	@Operation(summary = "Remove Entity")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entity removed"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
@@ -64,7 +65,7 @@ public interface CertificateEntityController {
 	public void removeCertificateEntity(@PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Remove multiple Entity")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "entity removed"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entities removed"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.DELETE)
