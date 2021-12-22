@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class DiscoveryDto {
 	@Schema(description = "Discovery name", required = true)
 	private String name;
-	@Schema(description = "List of attributes for Discovery", required = true)
+	@Schema(description = "List of Attributes for Discovery", required = true)
 	private List<AttributeDefinition> attributes;
 	@Schema(description = "Discovery Provider UUID", required = true)
 	private String connectorUuid;

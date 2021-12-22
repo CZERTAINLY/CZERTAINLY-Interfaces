@@ -18,7 +18,7 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 			required = true)
 	private DiscoveryStatus status;
 	
-	@Schema(description = "Total number of certificates discovered",
+	@Schema(description = "Total number of Certificates discovered",
 			defaultValue = "0")
 	private Integer totalCertificatesDiscovered;
 	@Schema(description = "Current Page Number", 
@@ -33,7 +33,7 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 			required = true)
 	private List<DiscoveryProviderCertificateDataDto> certificateData;
 	
-	@Schema(description = "Certificate Meta Data", 
+	@Schema(description = "Certificate Metadata",
 			implementation = Map.class, 
 			required = true)
 	private Map<String, Object> meta;

@@ -68,7 +68,7 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
     )
     private List<AttributeDefinition> attributes;
     @Schema(
-            description = "Meta data of the Discovery"
+            description = "Metadata of the Discovery"
     )
     private Map<String, Object> meta;
 
