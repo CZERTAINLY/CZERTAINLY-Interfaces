@@ -5,21 +5,14 @@ import com.czertainly.api.model.AttributeDefinition;
 import java.util.List;
 import java.util.Map;
 
+import com.czertainly.api.model.NameAndUuidDto;
 import com.czertainly.api.model.credential.CredentialDto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class DiscoveryProviderDto {
-	@Schema(description = "UUID of the Discovery",
-			required = true)
-	private String uuid;
-
-	@Schema(description = "Name of the Discovery",
-			example = "Test discovery", 
-			required = true)
-	private String name;
+public class DiscoveryProviderDto extends NameAndUuidDto {
 
 	@Schema(description = "Status of Discovery",
 			required = true)
