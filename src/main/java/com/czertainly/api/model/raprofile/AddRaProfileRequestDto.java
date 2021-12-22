@@ -20,8 +20,7 @@ public class AddRaProfileRequestDto {
             required = true)
     private String name;
 
-    @Schema(description = "RA Profile description",
-            required = true)
+    @Schema(description = "RA Profile description")
     private String description;
 
     @Schema(description = "List of Attributes to create RA Profile",

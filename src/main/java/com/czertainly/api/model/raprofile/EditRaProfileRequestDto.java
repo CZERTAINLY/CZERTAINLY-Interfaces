@@ -9,8 +9,7 @@ import java.util.List;
 
 public class EditRaProfileRequestDto {
 
-    @Schema(description = "Description of RA Profile",
-            required = true)
+    @Schema(description = "Description of RA Profile")
     private String description;
 
     @Schema(description = "Authority instance UUID",
