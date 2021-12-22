@@ -49,7 +49,7 @@ public interface RAProfileManagementController {
 	public ResponseEntity<?> addRaProfile(@RequestBody AddRaProfileRequestDto request)
 			throws AlreadyExistException, ValidationException, NotFoundException, ConnectorException;
 	
-	@Operation(summary = "Details of an RA Profile")
+	@Operation(summary = "Details of RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
