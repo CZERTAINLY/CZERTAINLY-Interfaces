@@ -1,6 +1,7 @@
 package com.czertainly.api.model.raprofile;
 
 import com.czertainly.api.model.AttributeDefinition;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,10 +12,22 @@ import java.util.List;
  */
 public class AddRaProfileRequestDto {
 
+    @Schema(description = "UUID of the Authority instance",
+            required = true)
     private String authorityInstanceUuid;
+
+    @Schema(description = "RA Profile name",
+            required = true)
     private String name;
+
+    @Schema(description = "RA Profile description")
     private String description;
+
+    @Schema(description = "List of Attributes to create RA Profile",
+            required = true)
     private List<AttributeDefinition> attributes;
+
+    @Schema(description = "Enabled flag - true = enabled; false = disabled")
     private Boolean enabled;
 
     public String getAuthorityInstanceUuid() {

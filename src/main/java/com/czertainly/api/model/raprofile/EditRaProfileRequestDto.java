@@ -1,15 +1,27 @@
 package com.czertainly.api.model.raprofile;
 
 import com.czertainly.api.model.AttributeDefinition;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
 public class EditRaProfileRequestDto {
+
+    @Schema(description = "Description of RA Profile")
     private String description;
+
+    @Schema(description = "Authority instance UUID",
+            required = true)
     private String authorityInstanceUuid;
+
+    @Schema(description = "List of Attributes for RA Profile",
+            required = true)
     private List<AttributeDefinition> attributes;
+
+    @Schema(description = "Enabled flag - true = enabled; false = disabled")
+    private Boolean enabled;
 
     public String getDescription() {
         return description;
@@ -33,6 +45,18 @@ public class EditRaProfileRequestDto {
 
     public void setAttributes(List<AttributeDefinition> attributes) {
         this.attributes = attributes;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
     }
 
     @Override
