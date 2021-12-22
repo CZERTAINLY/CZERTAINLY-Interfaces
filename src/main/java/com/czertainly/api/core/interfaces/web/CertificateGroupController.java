@@ -3,8 +3,9 @@ package com.czertainly.api.core.interfaces.web;
 import java.util.List;
 
 import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.model.discovery.CertificateGroupDto;
+import com.czertainly.api.model.certificate.group.CertificateGroupDto;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.certificate.group.CertificateGroupRequestDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,37 +25,37 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/v1/certificate-group")
 @Tag(name = "Certificate Group API", description = "Certificate Group API")
 public interface CertificateGroupController {
-	@Operation(summary = "List of All Groups")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available groups"),
+	@Operation(summary = "List of all Groups")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available Group"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<CertificateGroupDto> listCertificateGroups();
 	
-	@Operation(summary = "Detail of an Group")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group Details retrieved"),
+	@Operation(summary = "Detail of a Group")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
 	public CertificateGroupDto getCertificateGroup(@PathVariable String uuid) throws NotFoundException;
 	
-	@Operation(summary = "Create a new Group")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Group Created"),
+	@Operation(summary = "Create Group")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Group created"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public ResponseEntity<?> createCertificateGroup(@RequestBody CertificateGroupDto request)
+	public ResponseEntity<?> createCertificateGroup(@RequestBody CertificateGroupRequestDto request)
 			throws AlreadyExistException, NotFoundException;
 	
-	@Operation(summary = "Update an Group")
+	@Operation(summary = "Update Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group updated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public CertificateGroupDto updateCertificateGroup(@PathVariable String uuid, @RequestBody CertificateGroupDto request)
+	public CertificateGroupDto updateCertificateGroup(@PathVariable String uuid, @RequestBody CertificateGroupRequestDto request)
 			throws NotFoundException;
 	
-	@Operation(summary = "Remove an Group")
+	@Operation(summary = "Remove Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group removed"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -62,7 +63,7 @@ public interface CertificateGroupController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeCertificateGroup(@PathVariable String uuid) throws NotFoundException;
 
-	@Operation(summary = "Remove Multiple Group")
+	@Operation(summary = "Remove multiple Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Groups removed"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })

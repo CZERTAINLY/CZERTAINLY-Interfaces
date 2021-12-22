@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.czertainly.api.model.Identified;
 import com.czertainly.api.model.certificate.CertificateValidationDto;
+import com.czertainly.api.model.certificate.entity.CertificateEntityDto;
+import com.czertainly.api.model.certificate.group.CertificateGroupDto;
 import com.czertainly.api.model.raprofile.RaProfileDto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

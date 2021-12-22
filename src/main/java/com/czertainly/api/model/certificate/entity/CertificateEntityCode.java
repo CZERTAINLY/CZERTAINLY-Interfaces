@@ -1,4 +1,4 @@
-package com.czertainly.api.model.discovery;
+package com.czertainly.api.model.certificate.entity;
 
 public enum CertificateEntityCode {
 
