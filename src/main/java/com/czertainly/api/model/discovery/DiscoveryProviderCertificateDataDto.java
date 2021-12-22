@@ -7,46 +7,34 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class DiscoveryProviderCertificateDataDto {
 	
 	@Schema(
-			description = "Unique id of the certificate",
+			description = "Certificate UUID",
 			required = true
 	)
-	private Long id;
+	private String uuid;
 	
 	@Schema(
-			description = "PEM Certificate centent in base64",
+			description = "Base64 encoded Certificate content",
 			required = true
 	)
 	private String base64Content;
 	
 	@Schema(
-			description = "Source of the discovery",
-			required = true
-	)
-	private String discoverySource;
-	
-	@Schema(
-			description = "Metadata for the certificate",
+			description = "Metadata for the Certificate",
 			required = true
 	)
 	private Map<String, Object> meta;
 	
-	public Long getId() {
-		return id;
+	public String getUuid() {
+		return uuid;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 	public String getBase64Content() {
 		return base64Content;
 	}
 	public void setBase64Content(String base64Content) {
 		this.base64Content = base64Content;
-	}
-	public String getDiscoverySource() {
-		return discoverySource;
-	}
-	public void setDiscoverySource(String discoverySource) {
-		this.discoverySource = discoverySource;
 	}
 	public Map<String, Object> getMeta() {
 		return meta;

@@ -29,29 +29,30 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 public interface DiscoveryController {
 	
-	@Operation(summary = "List of Available Discoveries")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of availabe discoveries"),
+	@Operation(summary = "List Discovery")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available Discoveries"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<DiscoveryHistoryDto> listDiscovery();
 	
-	@Operation(summary = "List a Discovery")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Dicovery details retrieved"),
+	@Operation(summary = "Discovery Details")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Discovery details retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
 	public DiscoveryHistoryDto getDiscovery(@PathVariable String uuid) throws NotFoundException;
 	
-	@Operation(summary = "Create a new Discovery")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Discovery Created"),
+	@Operation(summary = "Create Discovery")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Created"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request)
 			throws AlreadyExistException, NotFoundException, CertificateException, InterruptedException, ConnectorException;
 	
-	@Operation(summary = "Delete a Discovery")
+	@Operation(summary = "Delete Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discovery deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -59,8 +60,8 @@ public interface DiscoveryController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeDiscovery(@PathVariable String uuid) throws NotFoundException;
 
-	@Operation(summary = "Delete Multiple Discovery")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discovery deleted"),
+	@Operation(summary = "Delete Multiple Discoveries")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discoveries deleted"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.DELETE)
