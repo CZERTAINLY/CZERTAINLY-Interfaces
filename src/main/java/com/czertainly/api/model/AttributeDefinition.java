@@ -53,50 +53,50 @@ public class AttributeDefinition {
     private BaseAttributeDefinitionTypes type;
 
     /**
-     * Boolean determining that Attribute is required, value has to be set
+     * Boolean determining if Attribute is required, value has to be set
      **/
     @Schema(
-            description = "Boolean determining that Attribute is required",
+            description = "Boolean determining if Attribute is required",
             required = true,
             defaultValue = "false"
     )
     private boolean required = false;
 
     /**
-     * Boolean determining that Attribute is read only, value can not be changed
+     * Boolean determining if Attribute is read only, value can not be changed
      **/
     @Schema(
-            description = "Boolean determining that Attribute is read only",
+            description = "Boolean determining if Attribute is read only",
             required = true,
             defaultValue = "false"
     )
     private boolean readOnly = false;
 
     /**
-     * Boolean determining that Attribute is editable, value can not be edited after is saved
+     * Boolean determining if Attribute is editable, value can not be edited after is saved
      **/
     @Schema(
-            description = "Boolean determining that Attribute is editable",
+            description = "Boolean determining if Attribute is editable",
             required = true,
             defaultValue = "true"
     )
     private boolean editable = true;
 
     /**
-     * Boolean determining that Attribute is visible and can be displayed
+     * Boolean determining if Attribute is visible and can be displayed
      **/
     @Schema(
-            description = "Boolean determining that Attribute is visible and can be displayed",
+            description = "Boolean determining if Attribute is visible and can be displayed",
             required = true,
             defaultValue = "true"
     )
     private boolean visible = true;
 
     /**
-     * Boolean determining that Attribute has value composed from multiple items
+     * Boolean determining if Attribute has value composed from multiple items
      **/
     @Schema(
-            description = "Boolean determining that Attribute has value composed from multiple items",
+            description = "Boolean determining if Attribute has value composed from multiple items",
             required = true,
             defaultValue = "false"
     )
