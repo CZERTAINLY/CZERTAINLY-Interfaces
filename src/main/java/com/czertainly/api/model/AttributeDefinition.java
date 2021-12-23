@@ -37,8 +37,7 @@ public class AttributeDefinition {
     **/
    @Schema(
            description = "Label of the the Attribute",
-           example = "Attribute Name",
-           required = true
+           example = "Attribute Name"
    )
    private String label;
 
@@ -46,8 +45,7 @@ public class AttributeDefinition {
      * Type of the Attribute, base types are defined in {@link BaseAttributeDefinitionTypes}
      **/
     @Schema(
-            description = "Type of the Attribute",
-            required = true
+            description = "Type of the Attribute"
     )
     private BaseAttributeDefinitionTypes type;
 
@@ -56,7 +54,6 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is required",
-            required = true,
             defaultValue = "false"
     )
     private boolean required = false;
@@ -66,7 +63,6 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is read only",
-            required = true,
             defaultValue = "false"
     )
     private boolean readOnly = false;
@@ -76,7 +72,6 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is editable",
-            required = true,
             defaultValue = "true"
     )
     private boolean editable = true;
@@ -86,7 +81,6 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is visible and can be displayed",
-            required = true,
             defaultValue = "true"
     )
     private boolean visible = true;
@@ -96,7 +90,6 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute has value composed from multiple items",
-            required = true,
             defaultValue = "false"
     )
     private Boolean multiValue = false;
@@ -142,7 +135,7 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Value of the Attribute",
-            required = false
+            required = true
     )
     private Serializable value;
 
