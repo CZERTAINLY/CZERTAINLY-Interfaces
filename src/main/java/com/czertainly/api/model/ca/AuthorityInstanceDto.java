@@ -27,7 +27,7 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
     private String connectorName;
 
     @Schema(description = "Authority Instance Kind",
-            example = "LegacyEjbca, ADCS etc",
+            example = "LegacyEjbca, ADCS, etc.",
             required = true)
     private String kind;
 
