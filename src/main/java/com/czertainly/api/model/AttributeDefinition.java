@@ -9,122 +9,122 @@ import java.util.List;
 
 /**
  * This class contains set of properties to represent
- * an attribute definition including attribute value.
+ * an Attribute definition including Attribute value.
  */
 public class AttributeDefinition {
 
     /**
-     * UUID of attribute, should by unique
+     * UUID of Attribute, should by unique
      **/
     @Schema(
-            description = "UUID of attribute, should by unique",
+            description = "UUID of Attribute, should by unique",
             example = "1",
             required = true
     )
     private String uuid;
 
     /**
-     * Name of attribute, can be used as key for form field label text
+     * Name of Attribute, can be used as key for form field label text
      **/
     @Schema(
-            description = "Name of the attribute",
-            example = "attribute",
+            description = "Name of the Attribute",
+            example = "Attribute",
             required = true
     )
     private String name;
     
     /**
-    * Label of attribute, Can be used to display the field name in the User Interface
+    * Label of Attribute, Can be used to display the field name in the User Interface
     **/
    @Schema(
-           description = "Label of the attribute",
+           description = "Label of the Attribute",
            example = "Attribute Name",
            required = true
    )
    private String label;
 
     /**
-     * Type of attribute, base types are defined in {@link BaseAttributeDefinitionTypes}
+     * Type of Attribute, base types are defined in {@link BaseAttributeDefinitionTypes}
      **/
     @Schema(
-            description = "Type of the attribute",
+            description = "Type of the Attribute",
             required = true
     )
     private BaseAttributeDefinitionTypes type;
 
     /**
-     * Boolean determining that attribute is required, value has to be set
+     * Boolean determining that Attribute is required, value has to be set
      **/
     @Schema(
-            description = "Boolean determining that attribute is required",
+            description = "Boolean determining that Attribute is required",
             required = true,
             defaultValue = "false"
     )
     private boolean required = false;
 
     /**
-     * Boolean determining that attribute is read only, value can not be changed
+     * Boolean determining that Attribute is read only, value can not be changed
      **/
     @Schema(
-            description = "Boolean determining that attribute is read only",
+            description = "Boolean determining that Attribute is read only",
             required = true,
             defaultValue = "false"
     )
     private boolean readOnly = false;
 
     /**
-     * Boolean determining that attribute is editable, value can not be edited after is saved
+     * Boolean determining that Attribute is editable, value can not be edited after is saved
      **/
     @Schema(
-            description = "Boolean determining that attribute is editable",
+            description = "Boolean determining that Attribute is editable",
             required = true,
             defaultValue = "true"
     )
     private boolean editable = true;
 
     /**
-     * Boolean determining that attribute is visible and can be displayed
+     * Boolean determining that Attribute is visible and can be displayed
      **/
     @Schema(
-            description = "Boolean determining that attribute is visible and can be displayed",
+            description = "Boolean determining that Attribute is visible and can be displayed",
             required = true,
             defaultValue = "true"
     )
     private boolean visible = true;
 
     /**
-     * Boolean determining that attribute has value composed from multiple items
+     * Boolean determining that Attribute has value composed from multiple items
      **/
     @Schema(
-            description = "Boolean determining that attribute has value composed from multiple items",
+            description = "Boolean determining that Attribute has value composed from multiple items",
             required = true,
             defaultValue = "false"
     )
     private Boolean multiValue = false;
 
     /**
-     * Optional description of attribute, should contain help for setting proper value
+     * Optional description of Attribute, should contain help for setting proper value
      **/
     @Schema(
-            description = "Optional description of attribute, should contain help for setting proper value",
+            description = "Optional description of Attribute, should contain help for setting proper value",
             required = false
     )
     private String description;
 
     /**
-     * Optional regular expression used for validating attribute value
+     * Optional regular expression used for validating Attribute value
      **/
     @Schema(
-            description = "Optional regular expression used for validating attribute value",
+            description = "Optional regular expression used for validating Attribute value",
             required = false
     )
     private String validationRegex;
 
     /**
-     * Optional list of other attribute names and values on which this attribute depends on
+     * Optional list of other Attribute names and values on which this Attribute depends on
      **/
     @Schema(
-            description = "Optional list of other attribute names and values on which this attribute depends on",
+            description = "Optional list of other Attribute names and values on which this Attribute depends on",
             required = false
     )
     private List<AttributeDependency> dependsOn;
@@ -136,13 +136,13 @@ public class AttributeDefinition {
             description = "Optional definition of callback for helper methods",
             required = false
     )
-    private AttributeCallback attributeCallback;
+    private AttributeCallback AttributeCallback;
 
     /**
-     * Value of attribute, has to be serializable
+     * Value of Attribute, has to be serializable
      **/
     @Schema(
-            description = "Value of attribute",
+            description = "Value of Attribute",
             required = false
     )
     private Serializable value;
@@ -164,7 +164,7 @@ public class AttributeDefinition {
         this.description = original.description;
         this.validationRegex = original.validationRegex;
         this.dependsOn = original.dependsOn;
-        this.attributeCallback = original.attributeCallback;
+        this.AttributeCallback = original.AttributeCallback;
         this.value = original.value;
     }
 
@@ -265,11 +265,11 @@ public class AttributeDefinition {
     }
 
     public AttributeCallback getAttributeCallback() {
-        return attributeCallback;
+        return AttributeCallback;
     }
 
-    public void setAttributeCallback(AttributeCallback attributeCallback) {
-        this.attributeCallback = attributeCallback;
+    public void setAttributeCallback(AttributeCallback AttributeCallback) {
+        this.AttributeCallback = AttributeCallback;
     }
 
     public Serializable getValue() {
@@ -294,7 +294,7 @@ public class AttributeDefinition {
                 .append("description", description)
                 .append("validationRegex", validationRegex)
                 .append("dependsOn", dependsOn)
-                .append("attributeCallback", attributeCallback)
+                .append("AttributeCallback", AttributeCallback)
                 .append("value", value)
                 .toString();
     }
