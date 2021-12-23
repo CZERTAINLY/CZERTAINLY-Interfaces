@@ -18,8 +18,7 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "UUID of the Attribute",
-            example = "1",
-            required = true
+            example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
     )
     private String uuid;
 
