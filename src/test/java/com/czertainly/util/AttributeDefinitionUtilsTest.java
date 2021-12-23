@@ -122,13 +122,13 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
         AttributeDefinition attribute = new AttributeDefinition();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
+        attribute.setUuid(attributeId);
         attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(attributeValue);
 
@@ -142,7 +142,7 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
@@ -161,13 +161,13 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
         AttributeDefinition attribute = new AttributeDefinition();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
+        attribute.setUuid(attributeId);
         attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(null); // cause or failure
 
@@ -190,14 +190,14 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setValidationRegex(validationRegex);
         definition.setRequired(true);
 
         AttributeDefinition attribute = new AttributeDefinition();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
+        attribute.setUuid(attributeId);
         attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(attributeValue);
 
@@ -215,14 +215,14 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setValidationRegex(validationRegex);
         definition.setRequired(true);
 
         AttributeDefinition attribute = new AttributeDefinition();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
+        attribute.setUuid(attributeId);
         attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(attributeValue);
 

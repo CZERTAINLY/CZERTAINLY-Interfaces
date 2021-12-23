@@ -14,14 +14,14 @@ import java.util.List;
 public class AttributeDefinition {
 
     /**
-     * Identifier of attribute, should by unique
+     * UUID of attribute, should by unique
      **/
     @Schema(
-            description = "Identifier of attribute, should by unique",
+            description = "UUID of attribute, should by unique",
             example = "1",
             required = true
     )
-    private String id;
+    private String uuid;
 
     /**
      * Name of attribute, can be used as key for form field label text
@@ -152,7 +152,7 @@ public class AttributeDefinition {
     }
 
     public AttributeDefinition(AttributeDefinition original) {
-        this.id = original.id;
+        this.uuid = original.uuid;
         this.name = original.name;
         this.label = original.label;
         this.type = original.type;
@@ -168,12 +168,12 @@ public class AttributeDefinition {
         this.value = original.value;
     }
 
-    public String getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
@@ -283,7 +283,7 @@ public class AttributeDefinition {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
+                .append("uuid", uuid)
                 .append("name", name)
                 .append("type", type)
                 .append("required", required)
