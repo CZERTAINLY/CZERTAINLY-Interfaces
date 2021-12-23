@@ -9,22 +9,22 @@ import java.util.List;
 
 /**
  * This class contains set of properties to represent
- * an Attribute definition including Attribute value.
+ * an Attribute definition including the Attribute value.
  */
 public class AttributeDefinition {
 
     /**
-     * UUID of Attribute
+     * UUID of the Attribute
      **/
     @Schema(
-            description = "UUID of Attribute",
+            description = "UUID of the Attribute",
             example = "1",
             required = true
     )
     private String uuid;
 
     /**
-     * Name of Attribute, can be used as key for form field label text
+     * Name of the Attribute, can be used as key for form field label text
      **/
     @Schema(
             description = "Name of the Attribute",
@@ -34,17 +34,17 @@ public class AttributeDefinition {
     private String name;
     
     /**
-    * Label of Attribute, Can be used to display the field name in the User Interface
+    * Label of the Attribute, Can be used to display the field name in the User Interface
     **/
    @Schema(
-           description = "Label of the Attribute",
+           description = "Label of the the Attribute",
            example = "Attribute Name",
            required = true
    )
    private String label;
 
     /**
-     * Type of Attribute, base types are defined in {@link BaseAttributeDefinitionTypes}
+     * Type of the Attribute, base types are defined in {@link BaseAttributeDefinitionTypes}
      **/
     @Schema(
             description = "Type of the Attribute",
@@ -53,78 +53,78 @@ public class AttributeDefinition {
     private BaseAttributeDefinitionTypes type;
 
     /**
-     * Boolean determining if Attribute is required, value has to be set
+     * Boolean determining if the Attribute is required, value has to be set
      **/
     @Schema(
-            description = "Boolean determining if Attribute is required",
+            description = "Boolean determining if the Attribute is required",
             required = true,
             defaultValue = "false"
     )
     private boolean required = false;
 
     /**
-     * Boolean determining if Attribute is read only, value can not be changed
+     * Boolean determining if the Attribute is read only, value can not be changed
      **/
     @Schema(
-            description = "Boolean determining if Attribute is read only",
+            description = "Boolean determining if the Attribute is read only",
             required = true,
             defaultValue = "false"
     )
     private boolean readOnly = false;
 
     /**
-     * Boolean determining if Attribute is editable, value can not be edited after is saved
+     * Boolean determining if the Attribute is editable, value can not be edited after is saved
      **/
     @Schema(
-            description = "Boolean determining if Attribute is editable",
+            description = "Boolean determining if the Attribute is editable",
             required = true,
             defaultValue = "true"
     )
     private boolean editable = true;
 
     /**
-     * Boolean determining if Attribute is visible and can be displayed
+     * Boolean determining if the Attribute is visible and can be displayed
      **/
     @Schema(
-            description = "Boolean determining if Attribute is visible and can be displayed",
+            description = "Boolean determining if the Attribute is visible and can be displayed",
             required = true,
             defaultValue = "true"
     )
     private boolean visible = true;
 
     /**
-     * Boolean determining if Attribute has value composed from multiple items
+     * Boolean determining if the Attribute has value composed from multiple items
      **/
     @Schema(
-            description = "Boolean determining if Attribute has value composed from multiple items",
+            description = "Boolean determining if the Attribute has value composed from multiple items",
             required = true,
             defaultValue = "false"
     )
     private Boolean multiValue = false;
 
     /**
-     * Optional description of Attribute, should contain help for setting proper value
+     * Optional description of the Attribute, should contain help for setting proper value
      **/
     @Schema(
-            description = "Optional description of Attribute, should contain help for setting proper value",
+            description = "Optional description of the Attribute, should contain help for setting proper value",
             required = false
     )
     private String description;
 
     /**
-     * Optional regular expression used for validating Attribute value
+     * Optional regular expression used for validating the Attribute value
      **/
     @Schema(
-            description = "Optional regular expression used for validating Attribute value",
+            description = "Optional regular expression used for validating the Attribute value",
             required = false
     )
     private String validationRegex;
 
     /**
-     * Optional list of other Attribute names and values on which this Attribute depends on
+     * Optional list of other the Attribute names and values on which this the Attribute depends on
      **/
     @Schema(
-            description = "Optional list of other Attribute names and values on which this Attribute depends on",
+            description = "Optional list of other the Attribute names and values on which this the Attribute depends on",
             required = false
     )
     private List<AttributeDependency> dependsOn;
@@ -139,10 +139,10 @@ public class AttributeDefinition {
     private AttributeCallback attributeCallback;
 
     /**
-     * Value of Attribute, has to be serializable
+     * Value of the Attribute, has to be serializable
      **/
     @Schema(
-            description = "Value of Attribute",
+            description = "Value of the Attribute",
             required = false
     )
     private Serializable value;
