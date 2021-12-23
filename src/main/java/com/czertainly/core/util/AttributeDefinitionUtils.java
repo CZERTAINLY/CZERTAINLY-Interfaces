@@ -346,7 +346,7 @@ public class AttributeDefinitionUtils {
 
     public static List<AttributeDefinition> createAttributes(String name, Serializable value) {
         AttributeDefinition attribute = new AttributeDefinition();
-        attribute.setId(UUID.randomUUID().toString());
+        attribute.setUuid(UUID.randomUUID().toString());
         attribute.setName(name);
         attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(value);
