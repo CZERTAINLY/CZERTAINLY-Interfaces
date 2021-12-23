@@ -14,10 +14,10 @@ import java.util.List;
 public class AttributeDefinition {
 
     /**
-     * UUID of Attribute, should by unique
+     * UUID of Attribute
      **/
     @Schema(
-            description = "UUID of Attribute, should by unique",
+            description = "UUID of Attribute",
             example = "1",
             required = true
     )
