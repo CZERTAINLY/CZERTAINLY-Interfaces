@@ -1,6 +1,7 @@
 package com.czertainly.api.model.raprofile;
 
 import com.czertainly.api.model.AttributeDefinition;
+import com.czertainly.api.model.ClientAttributeDefinition;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -25,7 +26,7 @@ public class AddRaProfileRequestDto {
 
     @Schema(description = "List of Attributes to create RA Profile",
             required = true)
-    private List<AttributeDefinition> attributes;
+    private List<ClientAttributeDefinition> attributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled")
     private Boolean enabled;
@@ -58,11 +59,11 @@ public class AddRaProfileRequestDto {
         this.description = description;
     }
 
-    public List<AttributeDefinition> getAttributes() {
+    public List<ClientAttributeDefinition> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeDefinition> attributes) {
+    public void setAttributes(List<ClientAttributeDefinition> attributes) {
         this.attributes = attributes;
     }
 

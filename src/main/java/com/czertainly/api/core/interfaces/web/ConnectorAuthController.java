@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.czertainly.api.model.AttributeDefinition;
+import com.czertainly.api.model.ClientAttributeDefinition;
 import com.czertainly.api.model.connector.AuthType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public interface ConnectorAuthController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/basic/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
-	public Boolean validateBasicAuthAttributes(@RequestBody List<AttributeDefinition> attributes);
+	public Boolean validateBasicAuthAttributes(@RequestBody List<ClientAttributeDefinition> attributes);
 
 	@Operation(summary = "Get attributes for certificate auth")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "attributes retrieved"),
@@ -56,7 +57,7 @@ public interface ConnectorAuthController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/certificate/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
-	public Boolean validateCertificateAttributes(@RequestBody List<AttributeDefinition> attributes);
+	public Boolean validateCertificateAttributes(@RequestBody List<ClientAttributeDefinition> attributes);
 
 	@Operation(summary = "Get API Key auth attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved"),
@@ -71,7 +72,7 @@ public interface ConnectorAuthController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/apiKey/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
-	public Boolean validateApiKeyAuthAttributes(@RequestBody List<AttributeDefinition> attributes);
+	public Boolean validateApiKeyAuthAttributes(@RequestBody List<ClientAttributeDefinition> attributes);
 
 	@Operation(summary = "Get JWT auth attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved"),
@@ -86,5 +87,5 @@ public interface ConnectorAuthController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/jwt/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
-	public Boolean validateJWTAuthAttributes(@RequestBody List<AttributeDefinition> attributes);
+	public Boolean validateJWTAuthAttributes(@RequestBody List<ClientAttributeDefinition> attributes);
 }

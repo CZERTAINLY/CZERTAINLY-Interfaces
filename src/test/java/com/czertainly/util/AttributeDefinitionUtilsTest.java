@@ -15,11 +15,11 @@ public class AttributeDefinitionUtilsTest {
     @Test
     public void testGetAttribute() {
         String attributeName = "testAttribute";
-        List<AttributeDefinition> attributes = createAttributes(attributeName, 1234);
+        List<ClientAttributeDefinition> attributes = createAttributes(attributeName, 1234);
 
-        AttributeDefinition attribute = getAttributeDefinition(attributeName, attributes);
+        ClientAttributeDefinition attribute = getClientAttributeDefinition(attributeName, attributes);
         Assertions.assertNotNull(attribute);
-        Assertions.assertTrue(containsAttributeDefinition(attributeName, attributes));
+        Assertions.assertTrue(containsClientAttributeDefinition(attributeName, attributes));
         Assertions.assertEquals(attributes.get(0), attribute);
     }
 
@@ -76,7 +76,7 @@ public class AttributeDefinitionUtilsTest {
     @Test
     public void testGetAttributeCredentialValue() {
         String attribute1Name = "testAttribute1";
-        List<AttributeDefinition> credentialAttributes = createAttributes("credAttr", 987);
+        List<ClientAttributeDefinition> credentialAttributes = createAttributes("credAttr", 987);
 
         HashMap<String, Object> attribute1Value = new HashMap<>();
         attribute1Value.put("uuid", UUID.randomUUID().toString());

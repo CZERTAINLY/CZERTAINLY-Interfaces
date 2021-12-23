@@ -9,6 +9,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.AttributeDefinition;
+import com.czertainly.api.model.ClientAttributeDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +44,7 @@ public interface ClientOperationController {
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
 	boolean validateIssueCertificateAttributes(
             @PathVariable String raProfileName,
-            @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ConnectorException, ValidationException;
+            @RequestBody List<ClientAttributeDefinition> attributes) throws NotFoundException, ConnectorException, ValidationException;
 	
 	@Operation(summary = "Issue Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate issued"),
@@ -81,7 +82,7 @@ public interface ClientOperationController {
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
 	boolean validateRevokeCertificateAttributes(
             @PathVariable String raProfileName,
-            @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ConnectorException, ValidationException;
+            @RequestBody List<ClientAttributeDefinition> attributes) throws NotFoundException, ConnectorException, ValidationException;
     
 	@Operation(summary = "Revoke Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate revoked"),

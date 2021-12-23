@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.w3c.dom.Attr;
 
 import java.io.Serializable;
 import java.util.*;
@@ -26,6 +27,15 @@ public class AttributeDefinitionUtils {
 
     public static boolean containsAttributeDefinition(String name, List<AttributeDefinition> attributes) {
         AttributeDefinition definition = getAttributeDefinition(name, attributes);
+        return definition != null;
+    }
+
+    public static ClientAttributeDefinition getClientAttributeDefinition(String name, List<ClientAttributeDefinition> attributes) {
+        return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public static boolean containsClientAttributeDefinition(String name, List<ClientAttributeDefinition> attributes) {
+        ClientAttributeDefinition definition = getClientAttributeDefinition(name, attributes);
         return definition != null;
     }
 
@@ -344,23 +354,37 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<AttributeDefinition> createAttributes(String name, Serializable value) {
-        AttributeDefinition attribute = new AttributeDefinition();
+    public static List<ClientAttributeDefinition> createAttributes(String name, Serializable value) {
+        ClientAttributeDefinition attribute = new ClientAttributeDefinition();
         attribute.setUuid(UUID.randomUUID().toString());
         attribute.setName(name);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(value);
         return createAttributes(attribute);
     }
 
-    public static List<AttributeDefinition> createAttributes(AttributeDefinition attribute) {
-        List<AttributeDefinition> attributes = createAttributes();
+    public static List<ClientAttributeDefinition> createAttributes(ClientAttributeDefinition attribute) {
+        List<ClientAttributeDefinition> attributes = createAttributes();
         attributes.add(attribute);
 
         return attributes;
     }
 
-    public static List<AttributeDefinition> createAttributes() {
+    public static List<ClientAttributeDefinition> createAttributes() {
         return new ArrayList<>();
+    }
+
+    public static List<AttributeDefinition> clientAttributeConverter(List<ClientAttributeDefinition> attributes) {
+        if(attributes == null){
+            return new ArrayList<>();
+        }
+        List<AttributeDefinition> convertedDefinition = new ArrayList<>();
+        for (ClientAttributeDefinition clt : attributes) {
+            AttributeDefinition atr = new AttributeDefinition();
+            atr.setValue(clt.getValue());
+            atr.setName(clt.getName());
+            atr.setUuid(clt.getUuid());
+            convertedDefinition.add(atr);
+        }
+        return convertedDefinition;
     }
 }
