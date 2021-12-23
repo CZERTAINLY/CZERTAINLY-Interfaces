@@ -13,11 +13,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class DiscoveryHistoryDto extends NameAndUuidDto {
 
     @Schema(
-            description = "Type of the Discovery",
+            description = "Discovery Kind",
             example = "IP-HostName",
             required = true
     )
-    private String discoveryType;
+    private String kind;
 
     @Schema(
             description = "Status of Discovery",
@@ -153,12 +153,12 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
         this.attributes = attributes;
     }
 
-    public String getDiscoveryType() {
-        return discoveryType;
+    public String getKind() {
+        return kind;
     }
 
-    public void setDiscoveryType(String discoveryType) {
-        this.discoveryType = discoveryType;
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public String getMessage() {

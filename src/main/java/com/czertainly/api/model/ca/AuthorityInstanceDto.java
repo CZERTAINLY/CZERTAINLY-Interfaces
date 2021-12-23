@@ -26,10 +26,10 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             required = true)
     private String connectorName;
 
-    @Schema(description = "Authority Instance Type",
-            example = "LegacyEjbca, ADCS etc",
+    @Schema(description = "Authority Instance Kind",
+            example = "LegacyEjbca, ADCS, etc.",
             required = true)
-    private String authorityType;
+    private String kind;
 
     public List<AttributeDefinition> getAttributes() {
         return attributes;
@@ -55,12 +55,12 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
         this.connectorUuid = connectorUuid;
     }
 
-    public String getAuthorityType() {
-        return authorityType;
+    public String getKind() {
+        return kind;
     }
 
-    public void setAuthorityType(String authorityType) {
-        this.authorityType = authorityType;
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public String getConnectorName() { return connectorName; }
@@ -76,7 +76,7 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
                 .append("status", status)
                 .append("connectorUuid", connectorUuid)
                 .append("connectorName", connectorName)
-                .append("authorityType", authorityType)
+                .append("kind", kind)
                 .toString();
     }
 }

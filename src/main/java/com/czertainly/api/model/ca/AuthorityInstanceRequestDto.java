@@ -1,7 +1,6 @@
 package com.czertainly.api.model.ca;
 
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.Identified;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -23,10 +22,10 @@ public class AuthorityInstanceRequestDto {
             required = true)
     private String connectorUuid;
 
-    @Schema(description = "Authority instance Type",
+    @Schema(description = "Authority instance Kind",
             example = "LegacyEjbca, ADCS, etc",
             required = true)
-    private String authorityType;
+    private String kind;
 
     public String getName() {
         return name;
@@ -52,12 +51,12 @@ public class AuthorityInstanceRequestDto {
         this.connectorUuid = connectorUuid;
     }
 
-    public String getAuthorityType() {
-        return authorityType;
+    public String getKind() {
+        return kind;
     }
 
-    public void setAuthorityType(String authorityType) {
-        this.authorityType = authorityType;
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     @Override
@@ -66,7 +65,7 @@ public class AuthorityInstanceRequestDto {
                 .append("name", name)
                 .append("attributes", attributes)
                 .append("connectorUuid", connectorUuid)
-                .append("authorityType", authorityType)
+                .append("kind", kind)
                 .toString();
     }
 }

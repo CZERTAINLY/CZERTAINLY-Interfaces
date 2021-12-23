@@ -18,7 +18,7 @@ import java.util.List;
 
 public class AttributeApiClient extends BaseApiClient {
 
-    private static final String ATTRIBUTE_BASE_CONTEXT = "/v1/{functionGroup}/{functionGroupType}/attributes";
+    private static final String ATTRIBUTE_BASE_CONTEXT = "/v1/{functionGroup}/{kind}/attributes";
     private static final String ATTRIBUTE_VALIDATION_CONTEXT = ATTRIBUTE_BASE_CONTEXT + "/validate";
 
     private static final ParameterizedTypeReference<List<AttributeDefinition>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
@@ -28,11 +28,11 @@ public class AttributeApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<AttributeDefinition> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String functionGroupType) throws ConnectorException {
+    public List<AttributeDefinition> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), functionGroupType)
+                .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
                 .retrieve()
                 .toEntityList(AttributeDefinition.class)
                 .block().getBody(),

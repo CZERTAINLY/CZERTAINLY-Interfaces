@@ -12,8 +12,8 @@ public class DiscoveryDto {
 	private List<AttributeDefinition> attributes;
 	@Schema(description = "Discovery Provider UUID", required = true)
 	private String connectorUuid;
-	@Schema(description = "Discovery Type", required = true)
-	private String discoveryType;
+	@Schema(description = "Discovery Kind", required = true)
+	private String kind;
 	
 	public String getConnectorUuid() {
 		return connectorUuid;
@@ -33,10 +33,10 @@ public class DiscoveryDto {
 	public void setAttributes(List<AttributeDefinition> attributes) {
 		this.attributes = attributes;
 	}
-	public String getDiscoveryType() {
-		return discoveryType;
+	public String getKind() {
+		return kind;
 	}
-	public void setDiscoveryType(String discoveryType) {
-		this.discoveryType = discoveryType;
+	public void setKind(String kind) {
+		this.kind = kind;
 	}
 }
