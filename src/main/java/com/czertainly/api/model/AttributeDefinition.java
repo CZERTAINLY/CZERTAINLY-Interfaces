@@ -136,7 +136,7 @@ public class AttributeDefinition {
             description = "Optional definition of callback for helper methods",
             required = false
     )
-    private AttributeCallback AttributeCallback;
+    private AttributeCallback attributeCallback;
 
     /**
      * Value of Attribute, has to be serializable
@@ -164,7 +164,7 @@ public class AttributeDefinition {
         this.description = original.description;
         this.validationRegex = original.validationRegex;
         this.dependsOn = original.dependsOn;
-        this.AttributeCallback = original.AttributeCallback;
+        this.attributeCallback = original.attributeCallback;
         this.value = original.value;
     }
 
@@ -265,11 +265,11 @@ public class AttributeDefinition {
     }
 
     public AttributeCallback getAttributeCallback() {
-        return AttributeCallback;
+        return attributeCallback;
     }
 
-    public void setAttributeCallback(AttributeCallback AttributeCallback) {
-        this.AttributeCallback = AttributeCallback;
+    public void setAttributeCallback(AttributeCallback attributeCallback) {
+        this.attributeCallback = attributeCallback;
     }
 
     public Serializable getValue() {
@@ -294,7 +294,7 @@ public class AttributeDefinition {
                 .append("description", description)
                 .append("validationRegex", validationRegex)
                 .append("dependsOn", dependsOn)
-                .append("AttributeCallback", AttributeCallback)
+                .append("attributeCallback", attributeCallback)
                 .append("value", value)
                 .toString();
     }
