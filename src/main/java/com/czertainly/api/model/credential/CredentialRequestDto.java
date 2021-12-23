@@ -1,7 +1,6 @@
 package com.czertainly.api.model.credential;
 
 import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.Identified;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,7 +17,7 @@ public class CredentialRequestDto implements Serializable {
     @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
             required = true)
-    private String credentialType;
+    private String kind;
 
     @Schema(description = "List of Credential Attributes",
             implementation = List.class,
@@ -38,12 +37,12 @@ public class CredentialRequestDto implements Serializable {
         this.name = name;
     }
 
-    public String getCredentialType() {
-        return credentialType;
+    public String getKind() {
+        return kind;
     }
 
-    public void setCredentialType(String credentialType) {
-        this.credentialType = credentialType;
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public List<AttributeDefinition> getAttributes() {
@@ -66,7 +65,7 @@ public class CredentialRequestDto implements Serializable {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
-                .append("credentialType", credentialType)
+                .append("kind", kind)
                 .append("attributes", attributes)
                 .append("connectorUuid", connectorUuid)
                 .toString();
