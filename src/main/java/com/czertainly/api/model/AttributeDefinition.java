@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * This class contains set of properties to represent
- * an Attribute definition including the Attribute value.
+ * an Attribute definition including its value.
  */
 public class AttributeDefinition {
 
@@ -93,7 +93,7 @@ public class AttributeDefinition {
     private boolean visible = true;
 
     /**
-     * Boolean determining if the Attribute has value composed from multiple items
+     * Boolean determining if the Attribute has value composed of multiple items
      **/
     @Schema(
             description = "Boolean determining if the Attribute has value composed from multiple items",
@@ -121,10 +121,10 @@ public class AttributeDefinition {
     private String validationRegex;
 
     /**
-     * Optional list of other Attribute names and values on which this Attribute depends on
+     * Optional list of other Attribute names and values on which it depends on
      **/
     @Schema(
-            description = "Optional list of other Attribute names and values on which this Attribute depends on",
+            description = "Optional list of other Attribute names and values on which it depends on",
             required = false
     )
     private List<AttributeDependency> dependsOn;
