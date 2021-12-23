@@ -1,6 +1,6 @@
 package com.czertainly.api.model.ca;
 
-import com.czertainly.api.model.ClientAttributeDefinition;
+import com.czertainly.api.model.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,7 +16,7 @@ public class AuthorityInstanceRequestDto {
     @Schema(description = "List of Authority instance Attributes",
             implementation = List.class,
             required = true)
-    private List<ClientAttributeDefinition> attributes;
+    private List<RequestAttributeDto> attributes;
 
     @Schema(description = "UUID of Authority provider",
             required = true)
@@ -35,11 +35,11 @@ public class AuthorityInstanceRequestDto {
         this.name = name;
     }
 
-    public List<ClientAttributeDefinition> getAttributes() {
+    public List<RequestAttributeDto> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<ClientAttributeDefinition> attributes) {
+    public void setAttributes(List<RequestAttributeDto> attributes) {
         this.attributes = attributes;
     }
 

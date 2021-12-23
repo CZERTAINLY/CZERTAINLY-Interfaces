@@ -1,6 +1,6 @@
 package com.czertainly.api.model.credential;
 
-import com.czertainly.api.model.ClientAttributeDefinition;
+import com.czertainly.api.model.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -22,7 +22,7 @@ public class CredentialRequestDto implements Serializable {
     @Schema(description = "List of Credential Attributes",
             implementation = List.class,
             required = true)
-    private List<ClientAttributeDefinition> attributes;
+    private List<RequestAttributeDto> attributes;
 
     @Schema(description = "UUID of Credential provider Connector",
             required = true)
@@ -45,11 +45,11 @@ public class CredentialRequestDto implements Serializable {
         this.kind = kind;
     }
 
-    public List<ClientAttributeDefinition> getAttributes() {
+    public List<RequestAttributeDto> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<ClientAttributeDefinition> attributes) {
+    public void setAttributes(List<RequestAttributeDto> attributes) {
         this.attributes = attributes;
     }
 

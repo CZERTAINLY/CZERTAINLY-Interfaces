@@ -15,9 +15,9 @@ public class AttributeDefinitionUtilsTest {
     @Test
     public void testGetAttribute() {
         String attributeName = "testAttribute";
-        List<ClientAttributeDefinition> attributes = createAttributes(attributeName, 1234);
+        List<RequestAttributeDto> attributes = createAttributes(attributeName, 1234);
 
-        ClientAttributeDefinition attribute = getClientAttributeDefinition(attributeName, attributes);
+        RequestAttributeDto attribute = getClientAttributeDefinition(attributeName, attributes);
         Assertions.assertNotNull(attribute);
         Assertions.assertTrue(containsClientAttributeDefinition(attributeName, attributes));
         Assertions.assertEquals(attributes.get(0), attribute);
@@ -76,7 +76,7 @@ public class AttributeDefinitionUtilsTest {
     @Test
     public void testGetAttributeCredentialValue() {
         String attribute1Name = "testAttribute1";
-        List<ClientAttributeDefinition> credentialAttributes = createAttributes("credAttr", 987);
+        List<RequestAttributeDto> credentialAttributes = createAttributes("credAttr", 987);
 
         HashMap<String, Object> attribute1Value = new HashMap<>();
         attribute1Value.put("uuid", UUID.randomUUID().toString());

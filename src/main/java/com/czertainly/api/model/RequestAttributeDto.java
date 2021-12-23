@@ -10,7 +10,7 @@ import java.io.Serializable;
  * This class contains set of properties to represent
  * an Attribute definition provided by the client
  */
-public class ClientAttributeDefinition {
+public class RequestAttributeDto {
 
     /**
      * UUID of the Attribute
@@ -40,11 +40,11 @@ public class ClientAttributeDefinition {
     )
     private Serializable value;
 
-    public ClientAttributeDefinition() {
+    public RequestAttributeDto() {
         super();
     }
 
-    public ClientAttributeDefinition(ClientAttributeDefinition original) {
+    public RequestAttributeDto(RequestAttributeDto original) {
         this.uuid = original.uuid;
         this.name = original.name;
         this.value = original.value;

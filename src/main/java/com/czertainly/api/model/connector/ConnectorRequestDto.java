@@ -1,13 +1,8 @@
 package com.czertainly.api.model.connector;
 
-import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.ClientAttributeDefinition;
-import com.czertainly.api.model.Identified;
+import com.czertainly.api.model.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class ConnectorRequestDto {
@@ -26,7 +21,7 @@ public class ConnectorRequestDto {
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
             required = false)
-    private List<ClientAttributeDefinition> authAttributes;
+    private List<RequestAttributeDto> authAttributes;
 
     public String getName() {
         return name;
@@ -52,11 +47,11 @@ public class ConnectorRequestDto {
         this.authType = authType;
     }
 
-    public List<ClientAttributeDefinition> getAuthAttributes() {
+    public List<RequestAttributeDto> getAuthAttributes() {
         return authAttributes;
     }
 
-    public void setAuthAttributes(List<ClientAttributeDefinition> authAttributes) {
+    public void setAuthAttributes(List<RequestAttributeDto> authAttributes) {
         this.authAttributes = authAttributes;
     }
 }

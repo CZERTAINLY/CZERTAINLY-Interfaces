@@ -1,7 +1,6 @@
 package com.czertainly.api.core.v2.model;
 
-import com.czertainly.api.model.AttributeDefinition;
-import com.czertainly.api.model.ClientAttributeDefinition;
+import com.czertainly.api.model.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -19,7 +18,7 @@ public class ClientCertificateSignRequestDto {
 
     @Schema(description = "List of Attributes to issue Certificate",
             required = true)
-    private List<ClientAttributeDefinition> attributes;
+    private List<RequestAttributeDto> attributes;
 
     public String getPkcs10() {
         return pkcs10;
@@ -29,11 +28,11 @@ public class ClientCertificateSignRequestDto {
         this.pkcs10 = pkcs10;
     }
 
-    public List<ClientAttributeDefinition> getAttributes() {
+    public List<RequestAttributeDto> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<ClientAttributeDefinition> attributes) {
+    public void setAttributes(List<RequestAttributeDto> attributes) {
         this.attributes = attributes;
     }
 

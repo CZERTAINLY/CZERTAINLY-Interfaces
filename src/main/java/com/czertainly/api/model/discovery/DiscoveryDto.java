@@ -2,14 +2,14 @@ package com.czertainly.api.model.discovery;
 
 import java.util.List;
 
-import com.czertainly.api.model.ClientAttributeDefinition;
+import com.czertainly.api.model.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class DiscoveryDto {
 	@Schema(description = "Discovery name", required = true)
 	private String name;
 	@Schema(description = "List of Attributes for Discovery", required = true)
-	private List<ClientAttributeDefinition> attributes;
+	private List<RequestAttributeDto> attributes;
 	@Schema(description = "Discovery Provider UUID", required = true)
 	private String connectorUuid;
 	@Schema(description = "Discovery Kind", required = true)
@@ -27,10 +27,10 @@ public class DiscoveryDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<ClientAttributeDefinition> getAttributes() {
+	public List<RequestAttributeDto> getAttributes() {
 		return attributes;
 	}
-	public void setAttributes(List<ClientAttributeDefinition> attributes) {
+	public void setAttributes(List<RequestAttributeDto> attributes) {
 		this.attributes = attributes;
 	}
 	public String getKind() {
