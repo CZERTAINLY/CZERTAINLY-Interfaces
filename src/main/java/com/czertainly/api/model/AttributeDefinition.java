@@ -121,10 +121,10 @@ public class AttributeDefinition {
     private String validationRegex;
 
     /**
-     * Optional list of other the Attribute names and values on which this the Attribute depends on
+     * Optional list of other Attribute names and values on which this Attribute depends on
      **/
     @Schema(
-            description = "Optional list of other the Attribute names and values on which this the Attribute depends on",
+            description = "Optional list of other Attribute names and values on which this Attribute depends on",
             required = false
     )
     private List<AttributeDependency> dependsOn;
