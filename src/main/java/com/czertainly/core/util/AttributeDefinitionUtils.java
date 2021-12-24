@@ -29,12 +29,12 @@ public class AttributeDefinitionUtils {
         return definition != null;
     }
 
-    public static RequestAttributeDto getClientAttributeDefinition(String name, List<RequestAttributeDto> attributes) {
+    public static RequestAttributeDto getRequestAttributes(String name, List<RequestAttributeDto> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
     }
 
-    public static boolean containsClientAttributeDefinition(String name, List<RequestAttributeDto> attributes) {
-        RequestAttributeDto definition = getClientAttributeDefinition(name, attributes);
+    public static boolean containsRequestAttributes(String name, List<RequestAttributeDto> attributes) {
+        RequestAttributeDto definition = getRequestAttributes(name, attributes);
         return definition != null;
     }
 

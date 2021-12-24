@@ -18,7 +18,8 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "UUID of the Attribute",
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
+            example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
+            required = true
     )
     private String uuid;
 
@@ -37,7 +38,8 @@ public class AttributeDefinition {
     **/
    @Schema(
            description = "Label of the the Attribute",
-           example = "Attribute Name"
+           example = "Attribute Name",
+           required = true
    )
    private String label;
 
@@ -45,7 +47,8 @@ public class AttributeDefinition {
      * Type of the Attribute, base types are defined in {@link BaseAttributeDefinitionTypes}
      **/
     @Schema(
-            description = "Type of the Attribute"
+            description = "Type of the Attribute",
+            required = true
     )
     private BaseAttributeDefinitionTypes type;
 
@@ -54,7 +57,8 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is required",
-            defaultValue = "false"
+            defaultValue = "false",
+            required = true
     )
     private boolean required = false;
 
@@ -63,7 +67,8 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is read only",
-            defaultValue = "false"
+            defaultValue = "false",
+            required = true
     )
     private boolean readOnly = false;
 
@@ -72,7 +77,8 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is editable",
-            defaultValue = "true"
+            defaultValue = "true",
+            required = true
     )
     private boolean editable = true;
 
@@ -81,7 +87,8 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is visible and can be displayed",
-            defaultValue = "true"
+            defaultValue = "true",
+            required = true
     )
     private boolean visible = true;
 
@@ -90,7 +97,8 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Boolean determining if the Attribute has value composed from multiple items",
-            defaultValue = "false"
+            defaultValue = "false",
+            required = true
     )
     private Boolean multiValue = false;
 
@@ -134,8 +142,7 @@ public class AttributeDefinition {
      * Value of the Attribute, has to be serializable
      **/
     @Schema(
-            description = "Value of the Attribute",
-            required = true
+            description = "Value of the Attribute"
     )
     private Serializable value;
 

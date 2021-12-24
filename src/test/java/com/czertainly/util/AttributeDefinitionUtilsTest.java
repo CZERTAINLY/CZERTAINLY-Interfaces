@@ -17,9 +17,9 @@ public class AttributeDefinitionUtilsTest {
         String attributeName = "testAttribute";
         List<RequestAttributeDto> attributes = createAttributes(attributeName, 1234);
 
-        RequestAttributeDto attribute = getClientAttributeDefinition(attributeName, attributes);
+        RequestAttributeDto attribute = getRequestAttributes(attributeName, attributes);
         Assertions.assertNotNull(attribute);
-        Assertions.assertTrue(containsClientAttributeDefinition(attributeName, attributes));
+        Assertions.assertTrue(containsRequestAttributes(attributeName, attributes));
         Assertions.assertEquals(attributes.get(0), attribute);
     }
 
