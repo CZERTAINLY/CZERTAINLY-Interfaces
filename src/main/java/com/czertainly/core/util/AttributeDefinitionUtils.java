@@ -29,6 +29,15 @@ public class AttributeDefinitionUtils {
         return definition != null;
     }
 
+    public static RequestAttributeDto getRequestAttributes(String name, List<RequestAttributeDto> attributes) {
+        return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public static boolean containsRequestAttributes(String name, List<RequestAttributeDto> attributes) {
+        RequestAttributeDto definition = getRequestAttributes(name, attributes);
+        return definition != null;
+    }
+
     public static <T extends Object> T getAttributeValue(String name, List<AttributeDefinition> attributes) {
         AttributeDefinition definition = getAttributeDefinition(name, attributes);
 
@@ -344,23 +353,37 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<AttributeDefinition> createAttributes(String name, Serializable value) {
-        AttributeDefinition attribute = new AttributeDefinition();
+    public static List<RequestAttributeDto> createAttributes(String name, Serializable value) {
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setUuid(UUID.randomUUID().toString());
         attribute.setName(name);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(value);
         return createAttributes(attribute);
     }
 
-    public static List<AttributeDefinition> createAttributes(AttributeDefinition attribute) {
-        List<AttributeDefinition> attributes = createAttributes();
+    public static List<RequestAttributeDto> createAttributes(RequestAttributeDto attribute) {
+        List<RequestAttributeDto> attributes = createAttributes();
         attributes.add(attribute);
 
         return attributes;
     }
 
-    public static List<AttributeDefinition> createAttributes() {
+    public static List<RequestAttributeDto> createAttributes() {
         return new ArrayList<>();
+    }
+
+    public static List<AttributeDefinition> clientAttributeConverter(List<RequestAttributeDto> attributes) {
+        if(attributes == null){
+            return new ArrayList<>();
+        }
+        List<AttributeDefinition> convertedDefinition = new ArrayList<>();
+        for (RequestAttributeDto clt : attributes) {
+            AttributeDefinition atr = new AttributeDefinition();
+            atr.setValue(clt.getValue());
+            atr.setName(clt.getName());
+            atr.setUuid(clt.getUuid());
+            convertedDefinition.add(atr);
+        }
+        return convertedDefinition;
     }
 }
