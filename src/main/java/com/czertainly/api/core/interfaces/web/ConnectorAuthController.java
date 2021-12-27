@@ -29,29 +29,29 @@ public interface ConnectorAuthController {
 	@RequestMapping(path = "/types", method = RequestMethod.GET, produces = { "application/json" })
 	public Set<AuthType> getAuthenticationTypes();
 
-	@Operation(summary = "Get basic auth attributes")
+	@Operation(summary = "Get basic auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/basic", method = RequestMethod.GET, produces = { "application/json" })
 	public List<AttributeDefinition> getBasicAuthAttributes();
 
-	@Operation(summary = "Validate basic auth attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "attributes validated"),
+	@Operation(summary = "Validate basic auth Attributes")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/basic/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
 	public Boolean validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
-	@Operation(summary = "Get attributes for certificate auth")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "attributes retrieved"),
+	@Operation(summary = "Get Attributes for certificate auth")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/certificate", method = RequestMethod.GET, produces = { "application/json" })
 	public List<AttributeDefinition> getCertificateAttributes();
 
-	@Operation(summary = "Validate certificate auth attributes")
+	@Operation(summary = "Validate certificate auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -59,14 +59,14 @@ public interface ConnectorAuthController {
 			"application/json" }, produces = { "application/json" })
 	public Boolean validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
-	@Operation(summary = "Get API Key auth attributes")
+	@Operation(summary = "Get API Key auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/apiKey", method = RequestMethod.GET, produces = { "application/json" })
 	public List<AttributeDefinition> getApiKeyAuthAttributes();
 
-	@Operation(summary = "Validate API Key attributes")
+	@Operation(summary = "Validate API Key Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
@@ -74,14 +74,14 @@ public interface ConnectorAuthController {
 			"application/json" }, produces = { "application/json" })
 	public Boolean validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
-	@Operation(summary = "Get JWT auth attributes")
+	@Operation(summary = "Get JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/attributes/jwt", method = RequestMethod.GET, produces = { "application/json" })
 	public List<AttributeDefinition> getJWTAuthAttributes();
 
-	@Operation(summary = "Validate JWT auth attributes")
+	@Operation(summary = "Validate JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
