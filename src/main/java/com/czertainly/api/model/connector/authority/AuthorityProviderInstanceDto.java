@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class AuthorityInstanceDto extends NameAndUuidDto {
+public class AuthorityProviderInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
             required = true)

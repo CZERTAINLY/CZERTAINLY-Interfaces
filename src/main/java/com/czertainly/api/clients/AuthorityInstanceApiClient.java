@@ -4,8 +4,8 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.RequestAttributeDto;
-import com.czertainly.api.model.connector.authority.AuthorityInstanceDto;
-import com.czertainly.api.model.connector.authority.AuthorityInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
+import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -28,52 +28,52 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<AuthorityInstanceDto> listAuthorityInstances(ConnectorDto connector) throws ConnectorException {
+    public List<AuthorityProviderInstanceDto> listAuthorityInstances(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + AUTHORITY_INSTANCE_BASE_CONTEXT)
                 .retrieve()
-                .toEntityList(AuthorityInstanceDto.class)
+                .toEntityList(AuthorityProviderInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public AuthorityInstanceDto getAuthorityInstance(ConnectorDto connector, String uuid) throws ConnectorException {
+    public AuthorityProviderInstanceDto getAuthorityInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
-                .toEntity(AuthorityInstanceDto.class)
+                .toEntity(AuthorityProviderInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public AuthorityInstanceDto createAuthorityInstance(ConnectorDto connector, AuthorityInstanceRequestDto requestDto) throws ConnectorException {
+    public AuthorityProviderInstanceDto createAuthorityInstance(ConnectorDto connector, AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + AUTHORITY_INSTANCE_BASE_CONTEXT)
-                .body(Mono.just(requestDto), AuthorityInstanceRequestDto.class)
+                .body(Mono.just(requestDto), AuthorityProviderInstanceRequestDto.class)
                 .retrieve()
-                .toEntity(AuthorityInstanceDto.class)
+                .toEntity(AuthorityProviderInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
 
-    public AuthorityInstanceDto updateAuthorityInstance(ConnectorDto connector, String uuid, AuthorityInstanceRequestDto requestDto) throws ConnectorException {
+    public AuthorityProviderInstanceDto updateAuthorityInstance(ConnectorDto connector, String uuid, AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT, uuid)
-                .body(Mono.just(requestDto), AuthorityInstanceRequestDto.class)
+                .body(Mono.just(requestDto), AuthorityProviderInstanceRequestDto.class)
                 .retrieve()
-                .toEntity(AuthorityInstanceDto.class)
+                .toEntity(AuthorityProviderInstanceDto.class)
                 .block().getBody(),
                 request,
                 connector);
