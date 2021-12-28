@@ -52,7 +52,7 @@ public class AddAdminRequestDto {
     private AdminRole role;
 	
 	@Schema(
-            description = "Status of the administrator. Enabled flag",
+            description = "Enabled flag. true = enabled, false = disabled",
             required = true
     )
     private Boolean enabled;

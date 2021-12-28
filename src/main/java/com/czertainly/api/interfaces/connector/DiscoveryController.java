@@ -24,7 +24,7 @@ import java.io.IOException;
                 "Once the discovery process is started, the progress and the history " +
                 "of the certificate discovery can be requested. Discovery provides " +
                 "information about discovered certificates and meta data that are specific " +
-                "to implementation of the discovery connector."
+                "to implementation of the discovery provider."
 )
 public interface DiscoveryController {
 

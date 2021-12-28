@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/certificate-group")
+@RequestMapping("/v1/groups")
 @Tag(name = "Certificate Group API", description = "Certificate Group API")
 public interface CertificateGroupController {
 	@Operation(summary = "List Groups")

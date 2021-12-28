@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/certificate-entity")
+@RequestMapping("/v1/entities")
 @Tag(name = "Certificate Entity API", description = "Certificate Entity API")
 public interface CertificateEntityController {
 	

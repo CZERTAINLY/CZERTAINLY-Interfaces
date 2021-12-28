@@ -42,7 +42,7 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
     )
     private Date endTime;
     @Schema(
-            description = "Total number of certificates that are discovered",
+            description = "Number of certificates that are discovered",
             defaultValue = "0"
     )
     private Integer totalCertificatesDiscovered;

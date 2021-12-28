@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DiscoveryRequestDto {
 
-    @Schema(description = "Name of the discovery",
+    @Schema(description = "Name of the Discovery",
             required = true)
     private String name;
 

@@ -18,7 +18,7 @@ import java.security.cert.CertificateException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/discovery")
+@RequestMapping("/v1/discoveries")
 @Tag(name = "Discovery Management API", description = "Discovery Management API")
 
 public interface DiscoveryController {

@@ -21,7 +21,7 @@ public class AuditLogResponseDto {
     private int size;
 	
 	@Schema(
-            description = "Total number of pages",
+            description = "Number of pages",
             required = true
     )
     private int totalPages;

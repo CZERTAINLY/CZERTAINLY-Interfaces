@@ -15,7 +15,7 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 			required = true)
 	private DiscoveryStatus status;
 	
-	@Schema(description = "Total number of Certificates discovered",
+	@Schema(description = "Number of Certificates discovered",
 			defaultValue = "0")
 	private Integer totalCertificatesDiscovered;
 

@@ -67,8 +67,8 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case BASIC:
-                String username = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_USERNAME, authAttributes);
-                String password = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_PASSWORD, authAttributes);
+                String username = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_USERNAME, authAttributes);
+                String password = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_PASSWORD, authAttributes);
 
                 request = webClient
                         .method(method)
@@ -82,8 +82,8 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case API_KEY:
-                String apiKeyHeader = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_API_KEY_HEADER, authAttributes);
-                String apiKey = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_API_KEY, authAttributes);
+                String apiKeyHeader = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_API_KEY_HEADER, authAttributes);
+                String apiKey = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_API_KEY, authAttributes);
 
                 request = webClient
                         .method(method)
@@ -101,12 +101,12 @@ public abstract class BaseApiClient {
     private SslContext createSslContext(List<AttributeDefinition> attributes) {
         try {
             KeyManager km = null;
-            String keyStoreData = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_KEYSTORE, attributes);
+            String keyStoreData = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE, attributes);
             if (keyStoreData != null && !keyStoreData.isEmpty()) {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                String keyStoreType = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_KEYSTORE_TYPE, attributes);
-                String keyStorePassword = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
+                String keyStoreType = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE_TYPE, attributes);
+                String keyStorePassword = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
                 byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData);
 
                 kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword, keyStoreType), keyStorePassword.toCharArray());
@@ -114,12 +114,12 @@ public abstract class BaseApiClient {
             }
 
             TrustManager tm = null;
-            String trustStoreData = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_TRUSTSTORE, attributes);
+            String trustStoreData = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE, attributes);
             if (trustStoreData != null && !trustStoreData.isEmpty()) {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                String trustStoreType = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
-                String trustStorePassword = AttributeDefinitionUtils.getFullAttributeValue(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
+                String trustStoreType = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
+                String trustStorePassword = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
                 byte[] trustStoreBytes = Base64.getDecoder().decode(keyStoreData);
 
                 tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword, trustStoreType));

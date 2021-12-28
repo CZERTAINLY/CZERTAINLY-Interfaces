@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class DiscoveryDataRequestDto {
 
-    @Schema(description = "Name of the discovery",
+    @Schema(description = "Name of the Discovery",
             required = true)
     private String name;
 

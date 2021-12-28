@@ -39,17 +39,17 @@ public class AttributeDefinitionUtilsTest {
 
         List<AttributeDefinition> attributes = List.of(attribute1, attribute2);
 
-        Integer value1 = getFullAttributeValue(attribute1Name, attributes);
+        Integer value1 = AttributeDefinitionUtils.getAttributeValue(attribute1Name, attributes);
         Assertions.assertNotNull(value1);
         Assertions.assertTrue(containsAttributeDefinition(attribute1Name, attributes));
         Assertions.assertEquals(attribute1.getValue(), value1);
 
-        String value2 = getFullAttributeValue(attribute2Name, attributes);
+        String value2 = AttributeDefinitionUtils.getAttributeValue(attribute2Name, attributes);
         Assertions.assertNotNull(value2);
         Assertions.assertTrue(containsAttributeDefinition(attribute2Name, attributes));
         Assertions.assertEquals(attribute2.getValue(), value2);
 
-        Object value3 = getFullAttributeValue("wrongName", attributes);
+        Object value3 = AttributeDefinitionUtils.getAttributeValue("wrongName", attributes);
         Assertions.assertNull(value3);
         Assertions.assertFalse(containsAttributeDefinition("wrongName", attributes));
     }
@@ -105,7 +105,7 @@ public class AttributeDefinitionUtilsTest {
         Assertions.assertNotNull(attrs);
         Assertions.assertEquals(7, attrs.size());
 
-        NameAndIdDto endEntityProfile = getNameAndIdValue("endEntityProfile", AttributeDefinitionUtils.clientAttributeReverser(attrs));
+        NameAndIdDto endEntityProfile = getNameAndIdValue("endEntityProfile", AttributeDefinitionUtils.getClientAttributes(attrs));
         Assertions.assertNotNull(endEntityProfile);
         Assertions.assertEquals(0, endEntityProfile.getId());
         Assertions.assertEquals("DemoTLSServerEndEntityProfile", endEntityProfile.getName());

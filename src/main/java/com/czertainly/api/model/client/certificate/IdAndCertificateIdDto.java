@@ -7,13 +7,13 @@ import java.util.List;
 public class IdAndCertificateIdDto {
 	
 	@Schema(
-            description = "Uuid of the Object",
+            description = "UUID of the Object",
             required = true
     )
 	private String uuid;
 	
 	@Schema(
-            description = "List of Uuids of the Certificates in Inventory",
+            description = "List of UUIDs of the Certificates in Inventory",
             required = true
     )
 	private List<String> certificateUuids;

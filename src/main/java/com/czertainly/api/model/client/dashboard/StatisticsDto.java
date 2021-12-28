@@ -6,25 +6,25 @@ import java.util.Map;
 
 public class StatisticsDto {
     // Total Count of the objects. This can be used by the FE for percentage calculation
-    @Schema(description = "Total number Certificates available")
+    @Schema(description = "Number Certificates available")
     private Long totalCertificates;
-	@Schema(description = "Total number of Groups")
+	@Schema(description = "Number of Groups")
     private Long totalGroups;
-	@Schema(description = "Total number of Entities")
+	@Schema(description = "Number of Entities")
     private Long totalEntities;
 	@Schema(description = "Number of Discoveries triggered")
     private Long totalDiscoveries;
 	@Schema(description = "Number of Connectors added")
     private Long totalConnectors;
-	@Schema(description = "Total number of RA Profiles in the platform")
+	@Schema(description = "Number of RA Profiles in the platform")
     private Long totalRaProfiles;
-	@Schema(description = "Total number of Credentials")
+	@Schema(description = "Number of Credentials")
     private Long totalCredentials;
-	@Schema(description = "Total number of Authority instances")
+	@Schema(description = "Number of Authority instances")
     private Long totalAuthorities;
-	@Schema(description = "Total number of Administrators")
+	@Schema(description = "Number of Administrators")
     private Long totalAdministrators;
-	@Schema(description = "Total number of Clients added")
+	@Schema(description = "Number of Clients added")
     private Long totalClients;
 
     // Data of the certificate count by group, entity and RA Profile assignment

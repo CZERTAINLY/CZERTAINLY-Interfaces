@@ -29,12 +29,18 @@ public class AttributeDefinitionUtils {
         return definition != null;
     }
 
-    public static RequestAttributeDto getRequestAttributes(String name, List<RequestAttributeDto> attributes) {
-        return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-    }
+    public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
+        if(attributes.size() == 0){
+            return null;
+        }
+        if(attributes.get(0) instanceof RequestAttributeDto){
+            List<RequestAttributeDto> reloadedAttributes = (List<RequestAttributeDto>) attributes;
+            return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        }else{
+            List<AttributeDefinition> reloadedAttributes = (List<AttributeDefinition>) attributes;
+            return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        }
 
-    public static AttributeDefinition getFullRequestAttributes(String name, List<AttributeDefinition> attributes) {
-        return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
     }
 
     public static boolean containsRequestAttributes(String name, List<RequestAttributeDto> attributes) {
@@ -42,26 +48,24 @@ public class AttributeDefinitionUtils {
         return definition != null;
     }
 
-    public static <T extends Object> T getAttributeValue(String name, List<RequestAttributeDto> attributes) {
-        RequestAttributeDto definition = getRequestAttributes(name, attributes);
-
-        if (definition == null || definition.getValue() == null) {
+    public static <T extends Object> T getAttributeValue(String name, List<?> attributes) {
+        if(attributes.size() == 0){
             return null;
         }
-
-        return (T) definition.getValue();
-    }
-
-    public static <T extends Object> T getFullAttributeValue(String name, List<AttributeDefinition> attributes) {
-        AttributeDefinition definition = getFullRequestAttributes(name, attributes);
-
-        if (definition == null || definition.getValue() == null) {
-            return null;
+        if(attributes.get(0) instanceof RequestAttributeDto) {
+            RequestAttributeDto definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getValue() == null) {
+                return null;
+            }
+            return (T) definition.getValue();
+        }else{
+            AttributeDefinition definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getValue() == null) {
+                return null;
+            }
+            return (T) definition.getValue();
         }
-
-        return (T) definition.getValue();
     }
-
 
     public static NameAndIdDto getNameAndIdValue(String name, List<RequestAttributeDto> attributes) {
         Serializable value = getAttributeValue(name, attributes);
@@ -265,7 +269,7 @@ public class AttributeDefinitionUtils {
                 wrongValue = !(attribute.getValue() instanceof CredentialDto) && !(attribute.getValue() instanceof Map);
                 break;
             default:
-                errors.add(ValidationError.create("Unknown type of attribute definition {} {}.", definition.getName(), definition.getType()));
+                errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", definition.getName(), definition.getType()));
                 break;
         }
 
@@ -403,7 +407,7 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static List<RequestAttributeDto> clientAttributeReverser(List<AttributeDefinition> attributes) {
+    public static List<RequestAttributeDto> getClientAttributes(List<AttributeDefinition> attributes) {
         if(attributes == null){
             return new ArrayList<>();
         }

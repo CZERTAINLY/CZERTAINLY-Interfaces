@@ -15,7 +15,7 @@ public class HealthDto {
     @Schema(description = "Detailed status description")
     private String description;
 
-    @Schema(description = "Nested status of services on which connector depends like database, HSM and so on")
+    @Schema(description = "Nested status of services")
     private Map<String, HealthDto> parts;
 
     public HealthStatus getStatus() {
