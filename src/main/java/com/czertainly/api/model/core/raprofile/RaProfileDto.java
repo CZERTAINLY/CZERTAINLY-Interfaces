@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.raprofile;
 
-import com.czertainly.api.model.commons.AttributeDefinition;
-import com.czertainly.api.model.commons.NameAndUuidDto;
+import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -25,7 +25,6 @@ public class RaProfileDto extends NameAndUuidDto {
     private String authorityInstanceName;
 
     @Schema(description = "List of RA Profiles attributes",
-            implementation = List.class,
             required = true)
     private List<AttributeDefinition> attributes;
 

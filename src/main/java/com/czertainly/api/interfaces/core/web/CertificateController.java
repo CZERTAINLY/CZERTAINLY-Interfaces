@@ -1,27 +1,26 @@
 package com.czertainly.api.interfaces.core.web;
 
-import java.io.IOException;
-import java.security.cert.CertificateException;
-import java.util.List;
-
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.certificate.IdAndCertificateIdDto;
 import com.czertainly.api.model.client.certificate.RemoveCertificateDto;
 import com.czertainly.api.model.client.certificate.UploadCertificateRequestDto;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequestDto;
-import com.czertainly.api.model.commons.UuidDto;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
-import com.czertainly.api.exception.NotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/certificate")

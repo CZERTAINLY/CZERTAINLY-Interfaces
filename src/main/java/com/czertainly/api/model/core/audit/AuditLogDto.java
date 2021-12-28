@@ -1,10 +1,9 @@
 package com.czertainly.api.model.core.audit;
 
+import com.czertainly.api.model.common.Identified;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.czertainly.api.model.commons.Identified;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

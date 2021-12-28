@@ -1,6 +1,6 @@
 package com.czertainly.api.exception;
 
-import com.czertainly.api.model.core.connectors.ConnectorDto;
+import com.czertainly.api.model.core.connector.ConnectorDto;
 
 public class NotFoundException extends ConnectorException {
 

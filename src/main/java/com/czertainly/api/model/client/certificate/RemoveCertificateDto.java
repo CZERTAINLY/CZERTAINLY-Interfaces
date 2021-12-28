@@ -1,13 +1,13 @@
 package com.czertainly.api.model.client.certificate;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 public class RemoveCertificateDto {
 	
 	@Schema(
-            description = "UUIDs of the certificate",
+            description = "UUIDs of the Certificate",
             required = true
     )
 	private List<String> uuids;

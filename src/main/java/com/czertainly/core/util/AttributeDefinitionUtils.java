@@ -2,7 +2,7 @@ package com.czertainly.core.util;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.commons.*;
+import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,13 +33,17 @@ public class AttributeDefinitionUtils {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
     }
 
+    public static AttributeDefinition getFullRequestAttributes(String name, List<AttributeDefinition> attributes) {
+        return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+    }
+
     public static boolean containsRequestAttributes(String name, List<RequestAttributeDto> attributes) {
         RequestAttributeDto definition = getRequestAttributes(name, attributes);
         return definition != null;
     }
 
-    public static <T extends Object> T getAttributeValue(String name, List<AttributeDefinition> attributes) {
-        AttributeDefinition definition = getAttributeDefinition(name, attributes);
+    public static <T extends Object> T getAttributeValue(String name, List<RequestAttributeDto> attributes) {
+        RequestAttributeDto definition = getRequestAttributes(name, attributes);
 
         if (definition == null || definition.getValue() == null) {
             return null;
@@ -48,7 +52,18 @@ public class AttributeDefinitionUtils {
         return (T) definition.getValue();
     }
 
-    public static NameAndIdDto getNameAndIdValue(String name, List<AttributeDefinition> attributes) {
+    public static <T extends Object> T getFullAttributeValue(String name, List<AttributeDefinition> attributes) {
+        AttributeDefinition definition = getFullRequestAttributes(name, attributes);
+
+        if (definition == null || definition.getValue() == null) {
+            return null;
+        }
+
+        return (T) definition.getValue();
+    }
+
+
+    public static NameAndIdDto getNameAndIdValue(String name, List<RequestAttributeDto> attributes) {
         Serializable value = getAttributeValue(name, attributes);
 
         if (!(value instanceof Map)) {
@@ -63,7 +78,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static NameAndUuidDto getNameAndUuidValue(String name, List<AttributeDefinition> attributes) {
+    public static NameAndUuidDto getNameAndUuidValue(String name, List<RequestAttributeDto> attributes) {
         Serializable value = getAttributeValue(name, attributes);
 
         if (!(value instanceof Map)) {
@@ -78,7 +93,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static CredentialDto getCredentialValue(String name, List<AttributeDefinition> attributes) {
+    public static CredentialDto getCredentialValue(String name, List<RequestAttributeDto> attributes) {
         Serializable value = getAttributeValue(name, attributes);
 
         if (!(value instanceof Map)) {
@@ -115,12 +130,13 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<AttributeDefinition> mergeAttributes(List<AttributeDefinition> definitions, List<AttributeDefinition> attributes) throws ValidationException {
+    public static List<AttributeDefinition> mergeAttributes(List<AttributeDefinition> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         if (definitions == null || attributes == null) {
             return List.of();
         }
 
-        return attributes.stream()
+        List<AttributeDefinition> attributeDefinitions = clientAttributeConverter(attributes);
+        return attributeDefinitions.stream()
                 .map(a -> {
                     AttributeDefinition definition = getAttributeDefinition(a.getName(), definitions);
                     if (definition == null) {
@@ -134,18 +150,18 @@ public class AttributeDefinitionUtils {
                 .collect(Collectors.toList());
     }
 
-    public static void validateAttributes(List<AttributeDefinition> definitions, List<AttributeDefinition> attributes) throws ValidationException {
+    public static void validateAttributes(List<AttributeDefinition> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         List<ValidationError> errors = new ArrayList<>();
 
         // If attribute identified by id not in definitions - throw error
-        for (AttributeDefinition attribute : attributes) {
+        for (RequestAttributeDto attribute : attributes) {
             if (!containsAttributeDefinition(attribute.getName(), definitions)) {
                 errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
             }
         }
 
         for (AttributeDefinition definition : definitions) {
-            AttributeDefinition attribute = getAttributeDefinition(definition.getName(), attributes);
+            RequestAttributeDto attribute = getRequestAttributes(definition.getName(), attributes);
 
             if (attribute == null) {
                 if (definition.isRequired()) {
@@ -213,7 +229,7 @@ public class AttributeDefinitionUtils {
         return true;
     }
 
-    private static void validateAttributeValue(AttributeDefinition definition, AttributeDefinition attribute, List<ValidationError> errors) {
+    private static void validateAttributeValue(AttributeDefinition definition, RequestAttributeDto attribute, List<ValidationError> errors) {
 
         if (definition.getType() == null) {
             errors.add(ValidationError.create("Type of attribute definition {} not set.", definition.getName()));
@@ -379,6 +395,21 @@ public class AttributeDefinitionUtils {
         List<AttributeDefinition> convertedDefinition = new ArrayList<>();
         for (RequestAttributeDto clt : attributes) {
             AttributeDefinition atr = new AttributeDefinition();
+            atr.setValue(clt.getValue());
+            atr.setName(clt.getName());
+            atr.setUuid(clt.getUuid());
+            convertedDefinition.add(atr);
+        }
+        return convertedDefinition;
+    }
+
+    public static List<RequestAttributeDto> clientAttributeReverser(List<AttributeDefinition> attributes) {
+        if(attributes == null){
+            return new ArrayList<>();
+        }
+        List<RequestAttributeDto> convertedDefinition = new ArrayList<>();
+        for (AttributeDefinition clt : attributes) {
+            RequestAttributeDto atr = new RequestAttributeDto();
             atr.setValue(clt.getValue());
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());

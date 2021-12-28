@@ -1,20 +1,15 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.model.core.auth.AuthProfileDto;
-import com.czertainly.api.model.client.auth.EditAuthProfileDto;
 import com.czertainly.api.exception.NotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.czertainly.api.model.client.auth.EditAuthProfileDto;
+import com.czertainly.api.model.core.auth.AuthProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/auth")

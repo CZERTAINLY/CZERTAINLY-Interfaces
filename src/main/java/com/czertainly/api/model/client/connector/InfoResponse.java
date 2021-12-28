@@ -1,8 +1,8 @@
 package com.czertainly.api.model.client.connector;
 
-import com.czertainly.api.model.core.connectors.BaseFunctionGroupDto;
-import com.czertainly.api.model.core.connectors.FunctionGroupCode;
-import com.czertainly.api.model.core.connectors.EndpointDto;
+import com.czertainly.api.model.core.connector.BaseFunctionGroupDto;
+import com.czertainly.api.model.core.connector.EndpointDto;
+import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

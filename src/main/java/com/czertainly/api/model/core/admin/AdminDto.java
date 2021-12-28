@@ -1,9 +1,8 @@
 package com.czertainly.api.model.core.admin;
 
+import com.czertainly.api.model.common.Identified;
 import com.czertainly.api.model.core.certificate.CertificateDto;
-import com.czertainly.api.model.commons.Identified;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.v2;
 
-import com.czertainly.api.model.commons.AttributeDefinition;
+import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -23,7 +23,7 @@ public class CertificateSignRequestDto {
 
     @Schema(description = "List of Attributes to issue Certificate",
             required = true)
-    private List<AttributeDefinition> attributes;
+    private List<RequestAttributeDto> attributes;
 
     public String getPkcs10() {
         return pkcs10;
@@ -41,11 +41,11 @@ public class CertificateSignRequestDto {
         this.raProfile = raProfile;
     }
 
-    public List<AttributeDefinition> getAttributes() {
+    public List<RequestAttributeDto> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeDefinition> attributes) {
+    public void setAttributes(List<RequestAttributeDto> attributes) {
         this.attributes = attributes;
     }
 

@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.authority;
 
-import com.czertainly.api.model.commons.AttributeDefinition;
-import com.czertainly.api.model.commons.NameAndUuidDto;
+import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -11,7 +11,6 @@ import java.util.List;
 public class ConnectorAuthorityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
-            implementation = List.class,
             required = true)
     private List<AttributeDefinition> attributes;
 

@@ -1,9 +1,9 @@
 package com.czertainly.api.model.client.discovery;
 
-import java.util.List;
-
-import com.czertainly.api.model.commons.RequestAttributeDto;
+import com.czertainly.api.model.common.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 public class DiscoveryDto {
 	@Schema(description = "Discovery name", required = true)

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.certificate.entity;
 
-import com.czertainly.api.model.commons.NameAndUuidDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CertificateEntityDto extends NameAndUuidDto {

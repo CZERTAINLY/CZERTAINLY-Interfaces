@@ -11,7 +11,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ClientEditEndEntityRequestDto extends ClientBaseEndEntityRequestDto {
 
     @Schema(description = "End Entity Subject domain name",
-            implementation = EndEntityStatus.class,
             required = true)
     protected EndEntityStatus status;
 

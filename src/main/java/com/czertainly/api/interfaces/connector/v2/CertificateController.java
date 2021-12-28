@@ -1,12 +1,13 @@
 package com.czertainly.api.interfaces.connector.v2;
 
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.connector.v2.CertRevocationDto;
 import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
 import com.czertainly.api.model.connector.v2.CertificateRenewRequestDto;
 import com.czertainly.api.model.connector.v2.CertificateSignRequestDto;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.commons.AttributeDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -59,7 +60,7 @@ public interface CertificateController {
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
     boolean validateIssueCertificateAttributes(
             @PathVariable String uuid,
-            @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
+            @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
             summary = "Issue Certificate"
@@ -164,7 +165,7 @@ public interface CertificateController {
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
     boolean validateRevokeCertificateAttributes(
             @PathVariable String uuid,
-            @RequestBody List<AttributeDefinition> attributes) throws NotFoundException, ValidationException;
+            @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
             summary = "Revoke Certificate"

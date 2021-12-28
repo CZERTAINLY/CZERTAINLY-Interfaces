@@ -26,7 +26,6 @@ public class EndEntityDto {
     private String subjectAltName;
 
     @Schema(description = "End Entity Subject domain name",
-            implementation = EndEntityStatus.class,
             required = true)
     private EndEntityStatus status;
 

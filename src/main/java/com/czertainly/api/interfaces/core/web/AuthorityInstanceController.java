@@ -1,31 +1,26 @@
 package com.czertainly.api.interfaces.core.web;
 
-import java.util.List;
-
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.commons.AttributeDefinition;
-import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
-import com.czertainly.api.model.commons.NameAndIdDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.NameAndIdDto;
+import com.czertainly.api.model.common.RequestAttributeDto;
+import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authorities")
@@ -99,7 +94,7 @@ public interface AuthorityInstanceController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
-	public Boolean validateRAProfileAttributes(@PathVariable String uuid, @RequestBody List<AttributeDefinition> attributes)
+	public Boolean validateRAProfileAttributes(@PathVariable String uuid, @RequestBody List<RequestAttributeDto> attributes)
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Delete multiple Authority instances")

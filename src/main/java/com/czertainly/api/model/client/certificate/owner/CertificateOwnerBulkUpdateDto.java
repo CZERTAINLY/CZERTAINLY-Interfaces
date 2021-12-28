@@ -1,8 +1,8 @@
 package com.czertainly.api.model.client.certificate.owner;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 public class CertificateOwnerBulkUpdateDto {
 	

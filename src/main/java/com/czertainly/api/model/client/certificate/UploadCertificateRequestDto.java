@@ -1,9 +1,8 @@
 package com.czertainly.api.model.client.certificate;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Class representing new certificate upload request
@@ -11,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class UploadCertificateRequestDto {
 	
 	@Schema(
-            description = "Base64 Content of the certificate",
+            description = "Base64 Content of the Certificate",
             required = true
     )
 	private String certificate;

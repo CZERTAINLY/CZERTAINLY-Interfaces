@@ -1,52 +1,87 @@
 package com.czertainly.api.model.core.certificate;
 
+import com.czertainly.api.model.common.Identified;
+import com.czertainly.api.model.core.certificate.entity.CertificateEntityDto;
+import com.czertainly.api.model.core.certificate.group.CertificateGroupDto;
+import com.czertainly.api.model.core.raprofile.RaProfileDto;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.czertainly.api.model.commons.Identified;
-import com.czertainly.api.model.core.certificate.entity.CertificateEntityDto;
-import com.czertainly.api.model.core.certificate.group.CertificateGroupDto;
-import com.czertainly.api.model.core.raprofile.RaProfileDto;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+public class CertificateDto {
 
-public class CertificateDto implements Identified {
-    private Long id;
+    @Schema(description = "UUID of the Certificate",
+            required = true)
     private String uuid;
+    @Schema(description = "Certificate common name",
+            required = true)
     private String commonName;
+    @Schema(description = "Certificate serial number",
+            required = true)
     private String serialNumber;
+    @Schema(description = "Certificate issuer common name",
+            required = true)
     private String issuerCommonName;
+    @Schema(description = "Base64 encoded Certificate content",
+            required = true)
     private String certificateContent;
+    @Schema(description = "Issuer DN of the Certificate",
+            required = true)
     private String issuerDn;
+    @Schema(description = "Subject DN of the Certificate",
+            required = true)
     private String subjectDn;
+    @Schema(description = "Certificate validity start date",
+            required = true)
     private Date notBefore;
+    @Schema(description = "Certificate expiration date",
+            required = true)
     private Date notAfter;
+    @Schema(description = "Public key algorithm",
+            required = true)
     private String publicKeyAlgorithm;
+    @Schema(description = "Certificate signature algorithm",
+            required = true)
     private String signatureAlgorithm;
+    @Schema(description = "Certificate key size",
+            required = true)
     private Integer keySize;
+    @Schema(description = "Extended key usages")
     private List<String> extendedKeyUsage;
+    @Schema(description = "Key usages",
+            required = true)
     private List<String> keyUsage;
+    @Schema(description = "Basic Constraints",
+            required = true)
     private String basicConstraints;
+    @Schema(description = "Certificate meta data")
     private Map<String, Object> meta;
+    @Schema(description = "Status of the Certificate",
+            required = true)
     private CertificateStatus status;
+    @Schema(description = "RA Profile associated to the Certificate")
     private RaProfileDto raProfile;
+    @Schema(description = "SHA256 fingerprint of the Certificate", required = true)
     private String fingerprint;
+    @Schema(description = "Subject alternative names")
     private Map<String, Object> subjectAlternativeNames;
+    @Schema(description = "Entity associated to the Certificate")
     private CertificateEntityDto entity;
+    @Schema(description = "Group associated to the Certificate")
     private CertificateGroupDto group;
+    @Schema(description = "Certificate Owner")
     private String owner;
+    @Schema(description = "Certificate type")
     private CertificateType certificateType;
+    @Schema(description = "Serial number of the issuer")
     private String issuerSerialNumber;
+    @Schema(description = "Certificate validation result")
     private Map<String, CertificateValidationDto> certificateValidationResult;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUuid() {
         return uuid;
@@ -243,7 +278,6 @@ public class CertificateDto implements Identified {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
                 .append("uuid", uuid)
                 .append("commonName", commonName)
                 .append("serialNumber", serialNumber)

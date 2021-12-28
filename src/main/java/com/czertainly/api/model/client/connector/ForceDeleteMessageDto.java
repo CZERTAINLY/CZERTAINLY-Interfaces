@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.connector;
 
-import com.czertainly.api.model.commons.NameAndUuidDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ForceDeleteMessageDto extends NameAndUuidDto {

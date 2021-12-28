@@ -1,20 +1,19 @@
 package com.czertainly.api.interfaces.connector;
 
-import java.io.IOException;
-
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.commons.ErrorMessageDto;
-import com.czertainly.api.model.connector.discovery.DiscoveryProviderRequestDto;
-import com.czertainly.api.model.connector.discovery.GetDiscoveryProviderRequestDto;
-import org.springframework.web.bind.annotation.*;
-
+import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.connector.discovery.DiscoveryDataRequestDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryProviderDto;
+import com.czertainly.api.model.connector.discovery.DiscoveryRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/v1/discoveryProvider")
@@ -35,16 +34,13 @@ public interface DiscoveryController {
             produces = {"application/json"}
     )
     @Operation(
-            summary = "Schedule new certificate discovery and get information",
-            description = "Once the certificate discovery is scheduled, " +
-                    "information about discovered certificates, summary, and meta data" +
-                    "are returned."
+            summary = "Initiate certificate Discovery"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Functions found"
+                            description = "Discovery initiated"
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -54,10 +50,14 @@ public interface DiscoveryController {
                                             implementation = ErrorMessageDto.class
                                     )
                             )
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable entity"
+                    ),
             }
     )
-    DiscoveryProviderDto discoverCertificate(@RequestBody DiscoveryProviderRequestDto request) throws IOException, NotFoundException;
+    DiscoveryProviderDto discoverCertificate(@RequestBody DiscoveryRequestDto request) throws IOException, NotFoundException;
 
     @PostMapping(
             path = "/discover/{uuid}",
@@ -65,16 +65,13 @@ public interface DiscoveryController {
             produces = {"application/json"}
     )
     @Operation(
-            summary = "Get the status and details of the discovery",
-            description = "Once the certificate discovery is scheduled, " +
-                    "information about discovered certificates, summary, and meta data" +
-                    "are returned."
+            summary = "Get Discovery status and result"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Functions found"
+                            description = "Discovery details retrieved"
                     ),
                     @ApiResponse(
                             responseCode = "400",
@@ -84,9 +81,13 @@ public interface DiscoveryController {
                                             implementation = ErrorMessageDto.class
                                     )
                             )
-                    )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not Found"
+                    ),
             }
     )
-    DiscoveryProviderDto getDiscovery(@PathVariable String uuid, @RequestBody GetDiscoveryProviderRequestDto request) throws IOException, NotFoundException;
+    DiscoveryProviderDto getDiscovery(@PathVariable String uuid, @RequestBody DiscoveryDataRequestDto request) throws IOException, NotFoundException;
 
 }

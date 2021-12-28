@@ -1,16 +1,13 @@
 package com.czertainly.api.model.connector.discovery;
 
-import com.czertainly.api.model.commons.AttributeDefinition;
-
-import java.util.List;
-import java.util.Map;
-
-import com.czertainly.api.model.commons.NameAndUuidDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.Map;
 
 public class DiscoveryProviderDto extends NameAndUuidDto {
 
@@ -21,20 +18,12 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 	@Schema(description = "Total number of Certificates discovered",
 			defaultValue = "0")
 	private Integer totalCertificatesDiscovered;
-	@Schema(description = "Current Page Number", 
-			defaultValue = "0")
-	private int pageNumber;
-	@Schema(description = "Total number of pages", 
-			defaultValue = "0")
-	private int totalPages;
 
-	@Schema(description = "Certificate data. (100 per page)", 
-			implementation = DiscoveryProviderCertificateDataDto.class, 
+	@Schema(description = "Certificate data",
 			required = true)
 	private List<DiscoveryProviderCertificateDataDto> certificateData;
 	
 	@Schema(description = "Certificate Metadata",
-			implementation = Map.class, 
 			required = true)
 	private Map<String, Object> meta;
 
@@ -68,22 +57,6 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 
 	public void setTotalCertificatesDiscovered(Integer totalCertificatesDiscovered) {
 		this.totalCertificatesDiscovered = totalCertificatesDiscovered;
-	}
-
-	public int getPageNumber() {
-		return pageNumber;
-	}
-
-	public void setPageNumber(int pageNumber) {
-		this.pageNumber = pageNumber;
-	}
-
-	public int getTotalPages() {
-		return totalPages;
-	}
-
-	public void setTotalPages(int totalPages) {
-		this.totalPages = totalPages;
 	}
 
 	public Map<String, Object> getMeta() {

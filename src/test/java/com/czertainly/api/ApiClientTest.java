@@ -1,13 +1,13 @@
 package com.czertainly.api;
 
-import com.czertainly.api.api_clients.AttributeApiClient;
-import com.czertainly.api.api_clients.BaseApiClient;
+import com.czertainly.api.clients.AttributeApiClient;
+import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorClientException;
 import com.czertainly.api.exception.ConnectorCommunicationException;
 import com.czertainly.api.exception.ConnectorServerException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.core.connectors.ConnectorDto;
-import com.czertainly.api.model.core.connectors.FunctionGroupCode;
+import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.AfterEach;

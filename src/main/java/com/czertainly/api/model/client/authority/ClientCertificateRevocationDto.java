@@ -19,7 +19,6 @@ public class ClientCertificateRevocationDto {
     private String issuerDN;
 
     @Schema(description = "Revocation reason",
-            implementation = RevocationReason.class,
             required = true)
     private RevocationReason reason;
 

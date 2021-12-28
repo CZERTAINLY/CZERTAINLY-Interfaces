@@ -1,8 +1,9 @@
 package com.czertainly.util;
 
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.commons.*;
+import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,17 +39,17 @@ public class AttributeDefinitionUtilsTest {
 
         List<AttributeDefinition> attributes = List.of(attribute1, attribute2);
 
-        Integer value1 = getAttributeValue(attribute1Name, attributes);
+        Integer value1 = getFullAttributeValue(attribute1Name, attributes);
         Assertions.assertNotNull(value1);
         Assertions.assertTrue(containsAttributeDefinition(attribute1Name, attributes));
         Assertions.assertEquals(attribute1.getValue(), value1);
 
-        String value2 = getAttributeValue(attribute2Name, attributes);
+        String value2 = getFullAttributeValue(attribute2Name, attributes);
         Assertions.assertNotNull(value2);
         Assertions.assertTrue(containsAttributeDefinition(attribute2Name, attributes));
         Assertions.assertEquals(attribute2.getValue(), value2);
 
-        Object value3 = getAttributeValue("wrongName", attributes);
+        Object value3 = getFullAttributeValue("wrongName", attributes);
         Assertions.assertNull(value3);
         Assertions.assertFalse(containsAttributeDefinition("wrongName", attributes));
     }
@@ -61,11 +62,11 @@ public class AttributeDefinitionUtilsTest {
         attribute1Value.put("uuid", UUID.randomUUID().toString());
         attribute1Value.put("name", "testName");
 
-        AttributeDefinition attribute1 = new AttributeDefinition();
+        RequestAttributeDto attribute1 = new RequestAttributeDto();
         attribute1.setName(attribute1Name);
         attribute1.setValue(attribute1Value);
 
-        List<AttributeDefinition> attributes = List.of(attribute1);
+        List<RequestAttributeDto> attributes = List.of(attribute1);
 
         NameAndUuidDto dto = getNameAndUuidValue(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
@@ -83,11 +84,11 @@ public class AttributeDefinitionUtilsTest {
         attribute1Value.put("name", "testName");
         attribute1Value.put("attributes", credentialAttributes);
 
-        AttributeDefinition attribute1 = new AttributeDefinition();
+        RequestAttributeDto attribute1 = new RequestAttributeDto();
         attribute1.setName(attribute1Name);
         attribute1.setValue(attribute1Value);
 
-        List<AttributeDefinition> attributes = List.of(attribute1);
+        List<RequestAttributeDto> attributes = List.of(attribute1);
 
         CredentialDto dto = getCredentialValue(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
@@ -104,7 +105,7 @@ public class AttributeDefinitionUtilsTest {
         Assertions.assertNotNull(attrs);
         Assertions.assertEquals(7, attrs.size());
 
-        NameAndIdDto endEntityProfile = getNameAndIdValue("endEntityProfile", attrs);
+        NameAndIdDto endEntityProfile = getNameAndIdValue("endEntityProfile", AttributeDefinitionUtils.clientAttributeReverser(attrs));
         Assertions.assertNotNull(endEntityProfile);
         Assertions.assertEquals(0, endEntityProfile.getId());
         Assertions.assertEquals("DemoTLSServerEndEntityProfile", endEntityProfile.getName());
@@ -126,10 +127,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
         attribute.setUuid(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(attributeValue);
 
         validateAttributes(List.of(definition), List.of(attribute));
@@ -165,10 +165,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
         attribute.setUuid(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(null); // cause or failure
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
@@ -195,10 +194,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setValidationRegex(validationRegex);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
         attribute.setUuid(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(attributeValue);
 
         validateAttributes(List.of(definition), List.of(attribute));
@@ -220,10 +218,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setValidationRegex(validationRegex);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
         attribute.setUuid(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(attributeValue);
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
@@ -242,9 +239,8 @@ public class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
 
         LinkedHashMap<String, Object> credentialData = new LinkedHashMap<>();
         credentialData.put("name", "testName");
@@ -262,9 +258,8 @@ public class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
         attribute.setValue(new CredentialDto());
 
         validateAttributes(List.of(definition), List.of(attribute));
@@ -278,9 +273,8 @@ public class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
         attribute.setValue(123l); // cause or failure
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
@@ -299,9 +293,8 @@ public class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName("unknown-attribute");  // cause or failure
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue("123");
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->

@@ -3,10 +3,10 @@ package com.czertainly.api.interfaces.connector;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.commons.AttributeDefinition;
-import com.czertainly.api.model.connector.authority.ConnectorAuthorityInstanceRequestDto;
-import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
+import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.connector.authority.ConnectorAuthorityInstanceDto;
+import com.czertainly.api.model.connector.authority.ConnectorAuthorityInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -159,5 +159,5 @@ public interface AuthorityInstanceController {
     @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST)
     boolean validateRAProfileAttributes(
             @PathVariable String uuid,
-            @RequestBody List<AttributeDefinition> attributes) throws ValidationException, NotFoundException;
+            @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
 }

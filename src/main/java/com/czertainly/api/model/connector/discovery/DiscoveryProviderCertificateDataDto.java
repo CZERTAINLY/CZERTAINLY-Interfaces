@@ -1,8 +1,8 @@
 package com.czertainly.api.model.connector.discovery;
 
-import java.util.Map;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 public class DiscoveryProviderCertificateDataDto {
 	

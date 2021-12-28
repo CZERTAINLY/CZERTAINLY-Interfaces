@@ -1,36 +1,29 @@
 package com.czertainly.api.interfaces.core.web;
 
-import java.net.ConnectException;
-import java.util.List;
-import java.util.Map;
-
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.connector.ConnectDto;
 import com.czertainly.api.model.client.connector.ConnectorRequestDto;
 import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
-import com.czertainly.api.model.commons.AttributeCallback;
-import com.czertainly.api.model.commons.AttributeDefinition;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.commons.HealthDto;
-import com.czertainly.api.model.core.connectors.ConnectorDto;
-import com.czertainly.api.model.core.connectors.FunctionGroupCode;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.czertainly.api.model.common.AttributeCallback;
+import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.HealthDto;
+import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.ConnectException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/connectors")
