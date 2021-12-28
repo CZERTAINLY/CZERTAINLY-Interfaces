@@ -5,8 +5,8 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.RequestAttributeDto;
-import com.czertainly.api.model.connector.authority.ConnectorAuthorityInstanceDto;
-import com.czertainly.api.model.connector.authority.ConnectorAuthorityInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.AuthorityInstanceDto;
+import com.czertainly.api.model.connector.authority.AuthorityInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +33,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.GET)
-    List<ConnectorAuthorityInstanceDto> listAuthorityInstances();
+    List<AuthorityInstanceDto> listAuthorityInstances();
 
     @Operation(
             summary = "Get an Authority instance"
@@ -51,7 +51,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
-    ConnectorAuthorityInstanceDto getAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
+    AuthorityInstanceDto getAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Create Authority instance"
@@ -69,7 +69,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(method = RequestMethod.POST)
-    ConnectorAuthorityInstanceDto createAuthorityInstance(@RequestBody ConnectorAuthorityInstanceRequestDto request) throws AlreadyExistException;
+    AuthorityInstanceDto createAuthorityInstance(@RequestBody AuthorityInstanceRequestDto request) throws AlreadyExistException;
 
     @Operation(
             summary = "Update Authority instance"
@@ -92,7 +92,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.POST)
-    ConnectorAuthorityInstanceDto updateAuthorityInstance(@PathVariable String uuid, @RequestBody ConnectorAuthorityInstanceRequestDto request) throws NotFoundException;
+    AuthorityInstanceDto updateAuthorityInstance(@PathVariable String uuid, @RequestBody AuthorityInstanceRequestDto request) throws NotFoundException;
 
     @Operation(
             summary = "Remove Authority instance"
