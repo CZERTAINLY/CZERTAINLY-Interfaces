@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class AuthorityInstanceRequestDto {
+public class AuthorityProviderInstanceRequestDto {
 
     @Schema(description = "Authority instance name",
             required = true)
