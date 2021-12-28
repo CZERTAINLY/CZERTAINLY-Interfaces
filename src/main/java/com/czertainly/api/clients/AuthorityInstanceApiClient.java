@@ -58,7 +58,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + AUTHORITY_INSTANCE_BASE_CONTEXT)
-                .body(Mono.just(requestDto), AuthorityInstanceDto.class)
+                .body(Mono.just(requestDto), ConnectorAuthorityInstanceRequestDto.class)
                 .retrieve()
                 .toEntity(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
@@ -72,7 +72,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT, uuid)
-                .body(Mono.just(requestDto), AuthorityInstanceDto.class)
+                .body(Mono.just(requestDto), ConnectorAuthorityInstanceRequestDto.class)
                 .retrieve()
                 .toEntity(ConnectorAuthorityInstanceDto.class)
                 .block().getBody(),
