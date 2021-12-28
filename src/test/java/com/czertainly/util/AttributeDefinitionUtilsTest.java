@@ -1,8 +1,8 @@
 package com.czertainly.util;
 
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.*;
-import com.czertainly.api.model.credential.CredentialDto;
+import com.czertainly.api.model.commons.*;
+import com.czertainly.api.model.core.credential.CredentialDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
