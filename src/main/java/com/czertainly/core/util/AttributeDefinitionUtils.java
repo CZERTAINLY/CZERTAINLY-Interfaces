@@ -36,9 +36,11 @@ public class AttributeDefinitionUtils {
         if(attributes.get(0) instanceof RequestAttributeDto){
             List<RequestAttributeDto> reloadedAttributes = (List<RequestAttributeDto>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        }else{
+        }else if (attributes.get(0) instanceof AttributeDefinition){
             List<AttributeDefinition> reloadedAttributes = (List<AttributeDefinition>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        }else{
+            throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
 
     }
@@ -58,12 +60,14 @@ public class AttributeDefinitionUtils {
                 return null;
             }
             return (T) definition.getValue();
-        }else{
+        }else if(attributes.get(0) instanceof AttributeDefinition){
             AttributeDefinition definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getValue() == null) {
                 return null;
             }
             return (T) definition.getValue();
+        } else{
+            throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
     }
 
