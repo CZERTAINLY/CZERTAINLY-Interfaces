@@ -5,6 +5,7 @@ import com.czertainly.api.model.core.authority.CertRevocationDto;
 import com.czertainly.api.model.core.authority.CertificateSignRequestDto;
 import com.czertainly.api.model.core.authority.CertificateSignResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,8 +39,8 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/issue", method = RequestMethod.POST)
     CertificateSignResponseDto issueCertificate(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -64,8 +65,8 @@ public interface CertificateController {
             })
     @RequestMapping(path = "/revoke", method = RequestMethod.POST)
     void revokeCertificate(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
             @RequestBody CertRevocationDto request) throws NotFoundException;
 
 }

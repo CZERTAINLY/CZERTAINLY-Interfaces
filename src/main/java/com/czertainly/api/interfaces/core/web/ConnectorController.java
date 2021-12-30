@@ -5,6 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.connector.ConnectDto;
+import com.czertainly.api.model.client.connector.ConnectRequestDto;
 import com.czertainly.api.model.client.connector.ConnectorRequestDto;
 import com.czertainly.api.model.client.connector.ConnectorUpdateRequestDto;
 import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
@@ -99,7 +100,7 @@ public interface ConnectorController {
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(path = "/connect", method = RequestMethod.PUT, consumes = { "application/json" }, produces = {
 			"application/json" })
-	public List<ConnectDto> connect(@RequestBody ConnectorDto request) throws ValidationException, ConnectException, ConnectorException;
+	public List<ConnectDto> connect(@RequestBody ConnectRequestDto request) throws ValidationException, ConnectException, ConnectorException;
 
 	@Operation(summary = "Reconnect to a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Reconnect to a Connector"),

@@ -8,6 +8,7 @@ import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -51,7 +52,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
-    AuthorityProviderInstanceDto getAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
+    AuthorityProviderInstanceDto getAuthorityInstance(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Create Authority instance"
@@ -92,7 +93,7 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.POST)
-    AuthorityProviderInstanceDto updateAuthorityInstance(@PathVariable String uuid, @RequestBody AuthorityProviderInstanceRequestDto request) throws NotFoundException;
+    AuthorityProviderInstanceDto updateAuthorityInstance(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid, @RequestBody AuthorityProviderInstanceRequestDto request) throws NotFoundException;
 
     @Operation(
             summary = "Remove Authority instance"
@@ -111,11 +112,11 @@ public interface AuthorityInstanceController {
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeAuthorityInstance(@PathVariable String uuid) throws NotFoundException;
+    void removeAuthorityInstance(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @RequestMapping(path = "/{uuid}/connect", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void getConnection(@PathVariable String uuid) throws NotFoundException;
+    void getConnection(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "List RA Profile Attributes"
@@ -134,7 +135,7 @@ public interface AuthorityInstanceController {
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET)
     List<AttributeDefinition> listRAProfileAttributes(
-            @PathVariable String uuid) throws NotFoundException;
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Validate RA Profile attributes"
@@ -158,6 +159,6 @@ public interface AuthorityInstanceController {
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST)
     boolean validateRAProfileAttributes(
-            @PathVariable String uuid,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
 }

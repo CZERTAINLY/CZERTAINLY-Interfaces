@@ -36,6 +36,10 @@ public interface InfoController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Functions found"
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not Found"
                     )
     })
     List<InfoResponse> listSupportedFunctions();

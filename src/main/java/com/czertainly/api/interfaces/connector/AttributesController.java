@@ -4,6 +4,9 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,12 +40,11 @@ public interface AttributesController {
                     )
             }
     )
-    List<AttributeDefinition> listAttributeDefinitions(@PathVariable String kind);
+    List<AttributeDefinition> listAttributeDefinitions(@Parameter(required = true, description = "Kind") @PathVariable String kind);
 
     @PostMapping(
             path = "/validate",
-            consumes = {"application/json"},
-            produces = {"application/json"}
+            consumes = {"application/json"}
     )
     @Operation(
             summary = "Validate Attributes"
@@ -55,10 +57,12 @@ public interface AttributesController {
                     ),
                     @ApiResponse(
                             responseCode = "422",
-                            description = "Attribute validation failed"
+                            description = "Attribute validation failed",
+                            content = @Content(schema = @Schema(implementation = ValidationException.class))
+
                     )
             }
     )
-    boolean validateAttributes(@PathVariable String kind, @RequestBody List<RequestAttributeDto> attributes) throws ValidationException;
+    boolean validateAttributes(@Parameter(required = true, description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttributeDto> attributes) throws ValidationException;
 
 }
