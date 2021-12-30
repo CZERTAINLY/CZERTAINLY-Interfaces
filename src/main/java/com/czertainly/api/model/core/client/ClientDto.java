@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.client;
 
-import com.czertainly.api.model.common.Identified;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,31 +9,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Class representing client
  */
-public class ClientDto implements Identified {
-	
-	@Schema(
-            description = "Id of the client",
-            required = true
-    )
-    private Long id;
-	
-	@Schema(
-            description = "UUID of the client",
-            required = true
-    )
-    private String uuid;
+public class ClientDto extends NameAndUuidDto {
 	
 	@Schema(
             description = "Client serial Number",
             required = true
     )
     private String serialNumber;
-	
-	@Schema(
-            description = "Name of the client",
-            required = true
-    )
-    private String name;
 	
 	@Schema(
             description = "Client Certificate Information",
@@ -52,15 +34,6 @@ public class ClientDto implements Identified {
             required = true
     )
     private Boolean enabled;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String getUuid() {
@@ -114,7 +87,6 @@ public class ClientDto implements Identified {
 	@Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("description", description)

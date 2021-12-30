@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.model.common.HealthDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
                 "Connector returns own status and in some cases " +
                 "can return status of services on which it depends like database, HSM and so on."
 )
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
+
 public interface HealthController {
 
     @GetMapping(

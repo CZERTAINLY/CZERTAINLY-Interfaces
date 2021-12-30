@@ -18,6 +18,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 @Tag(name = "End Entity Profiles API", description = "End Entity Profiles API")
 public interface EndEntityProfilesController {
 
@@ -26,12 +44,10 @@ public interface EndEntityProfilesController {
             summary = "List available end entity profiles"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "End entities retrieved"),
-            @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "End entities retrieved")
     })
     List<NameAndIdDto> listEntityProfiles(
-            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance Id")
+            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance UUID")
             @PathVariable String uuid
     )
             throws NotFoundException;
@@ -41,12 +57,10 @@ public interface EndEntityProfilesController {
             summary = "List available certificate profiles for given end entity profile"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Certificate profiles retrieved"),
-            @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Certificate profiles retrieved")
     })
     List<NameAndIdDto> listCertificateProfiles(
-            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance Id")
+            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance UUID")
             @PathVariable String uuid,
             @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id")
             @PathVariable Integer endEntityProfileId
@@ -58,12 +72,10 @@ public interface EndEntityProfilesController {
             summary = "List available certification authorities for given end entity profile"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "CAs retrieved"),
-            @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
+            @ApiResponse(responseCode = "200", description = "CAs retrieved")
     })
     List<NameAndIdDto> listCAsInProfile(
-            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance Id")
+            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance UUID")
             @PathVariable String uuid,
             @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id")
             @PathVariable Integer endEntityProfileId

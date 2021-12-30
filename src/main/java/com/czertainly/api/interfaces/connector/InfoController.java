@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.model.client.connector.InfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +23,24 @@ import java.util.List;
                 "You can also implement helper end points that are used for callbacks and other relevant operations " +
                 "specific to implementation."
 )
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 public interface InfoController {
 
     @GetMapping(
@@ -36,10 +55,6 @@ public interface InfoController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Functions found"
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not Found"
                     )
     })
     List<InfoResponse> listSupportedFunctions();

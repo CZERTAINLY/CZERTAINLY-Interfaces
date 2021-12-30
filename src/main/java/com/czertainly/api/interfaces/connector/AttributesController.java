@@ -24,6 +24,24 @@ import java.util.List;
                 "data that can be exchanged and properly parsed by the connector. " +
                 "Part of this API is validation of the Attributes."
 )
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 public interface AttributesController {
 
     @GetMapping(
@@ -40,7 +58,7 @@ public interface AttributesController {
                     )
             }
     )
-    List<AttributeDefinition> listAttributeDefinitions(@Parameter(required = true, description = "Kind") @PathVariable String kind);
+    List<AttributeDefinition> listAttributeDefinitions(@Parameter(description = "Kind") @PathVariable String kind);
 
     @PostMapping(
             path = "/validate",

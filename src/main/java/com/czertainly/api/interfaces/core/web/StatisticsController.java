@@ -13,12 +13,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/statistics")
 @Tag(name = "Statistics/Dashboard API", description = "Statistics/Dashboard API")
+@ApiResponses(
+		value = {
+				@ApiResponse(
+						responseCode = "400",
+						description = "Bad Request",
+						content = @Content
+				),
+				@ApiResponse(
+						responseCode = "404",
+						description = "Not Found",
+						content = @Content
+				),
+				@ApiResponse(
+						responseCode = "500",
+						description = "Internal Server Error",
+						content = @Content
+				)
+		})
 
 public interface StatisticsController {
 	@Operation(summary = "Get Dashboard/Statictics Details")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Details retrieved"),
-			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
-			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Details retrieved")})
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public StatisticsDto getStatistics();
 }

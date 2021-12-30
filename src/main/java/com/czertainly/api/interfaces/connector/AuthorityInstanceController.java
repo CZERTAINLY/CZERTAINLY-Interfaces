@@ -20,6 +20,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authorityProvider/authorities")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 @Tag(name = "Authority Management API", description = "Authority Management API")
 public interface AuthorityInstanceController {
 
@@ -44,11 +62,6 @@ public interface AuthorityInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authority instance retrieved"
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET)
@@ -62,11 +75,6 @@ public interface AuthorityInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authority instance created"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
                     )
             })
     @RequestMapping(method = RequestMethod.POST)
@@ -80,16 +88,6 @@ public interface AuthorityInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authority instance updated"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.POST)
@@ -103,11 +101,6 @@ public interface AuthorityInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authority instance removed"
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
@@ -126,11 +119,6 @@ public interface AuthorityInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authority instance updated"
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET)
@@ -145,16 +133,6 @@ public interface AuthorityInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authority instance updated"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST)

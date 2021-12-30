@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.credential;
+package com.czertainly.api.model.client.credential;
 
 import com.czertainly.api.model.common.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;

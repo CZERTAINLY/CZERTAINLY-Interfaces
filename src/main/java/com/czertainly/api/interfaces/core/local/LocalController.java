@@ -19,12 +19,28 @@ import java.security.cert.CertificateException;
 @RestController
 @RequestMapping("/v1/local")
 @Tag(name = "Local API", description = "API only accessible from localhost")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 public interface LocalController {
 
     @Operation(summary = "Create Administrator")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Admin created"),
-            @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Not found", content = @Content)})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Admin created")})
     @RequestMapping(path = "/admins", method = RequestMethod.POST, produces = {"application/json"})
     ResponseEntity<?> addAdmin(
             @RequestBody AddAdminRequestDto request)

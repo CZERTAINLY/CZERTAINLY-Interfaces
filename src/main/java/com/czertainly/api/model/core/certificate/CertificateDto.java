@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.certificate;
 
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.Identified;
 import com.czertainly.api.model.core.certificate.entity.CertificateEntityDto;
 import com.czertainly.api.model.core.certificate.group.CertificateGroupDto;
@@ -64,7 +65,7 @@ public class CertificateDto {
             required = true)
     private CertificateStatus status;
     @Schema(description = "RA Profile associated to the Certificate")
-    private RaProfileDto raProfile;
+    private SimplifiedRaProfileDto raProfile;
     @Schema(description = "SHA256 fingerprint of the Certificate", required = true)
     private String fingerprint;
     @Schema(description = "Subject alternative names")
@@ -251,11 +252,11 @@ public class CertificateDto {
         this.certificateType = certificateType;
     }
 
-    public RaProfileDto getRaProfile() {
+    public SimplifiedRaProfileDto getRaProfile() {
         return raProfile;
     }
 
-    public void setRaProfile(RaProfileDto raProfileDTO) {
+    public void setRaProfile(SimplifiedRaProfileDto raProfileDTO) {
         this.raProfile = raProfileDTO;
     }
 

@@ -14,6 +14,24 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 @Tag(name = "Certificate Management API", description = "Certificate Management API")
 public interface CertificateController {
 
@@ -25,16 +43,6 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Certificate issued"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
     @RequestMapping(path = "/issue", method = RequestMethod.POST)
@@ -51,16 +59,6 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Certificate revoked"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
     @RequestMapping(path = "/revoke", method = RequestMethod.POST)
