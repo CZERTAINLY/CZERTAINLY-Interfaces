@@ -6,10 +6,12 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.client.ClientDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,7 +41,7 @@ public interface RAProfileManagementController {
 	public List<RaProfileDto> listRaProfiles(@RequestParam Boolean isEnabled);
 	
 	@Operation(summary = "Add RA Profile")
-	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "RA Profile added"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "RA Profile added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "400", description ="Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })

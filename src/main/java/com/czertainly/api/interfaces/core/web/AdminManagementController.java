@@ -5,6 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.admin.AddAdminRequestDto;
 import com.czertainly.api.model.client.admin.EditAdminRequestDto;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.admin.AdminDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,8 +34,8 @@ public interface AdminManagementController {
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<AdminDto> listAdmins();
 
-	@Operation(summary = "Create a new Administrators")
-	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New administrator created"),
+	@Operation(summary = "Create a new Administrator")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New administrator created",  content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))), })

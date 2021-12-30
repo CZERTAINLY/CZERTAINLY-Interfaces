@@ -2,10 +2,12 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.entity.CertificateEntityDto;
 import com.czertainly.api.model.core.certificate.entity.CertificateEntityRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +37,7 @@ public interface CertificateEntityController {
 	public CertificateEntityDto getCertificateEntity(@PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Create Entity")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Entity created"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Entity created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})

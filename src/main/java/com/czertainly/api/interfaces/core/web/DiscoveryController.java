@@ -4,9 +4,11 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.discovery.DiscoveryDto;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.discovery.DiscoveryHistoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,7 +40,7 @@ public interface DiscoveryController {
 	public DiscoveryHistoryDto getDiscovery(@PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Create Discovery")
-	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Created"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content) })
