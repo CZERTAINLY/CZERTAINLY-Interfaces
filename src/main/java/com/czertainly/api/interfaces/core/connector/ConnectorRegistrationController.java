@@ -1,7 +1,10 @@
 package com.czertainly.api.interfaces.core.connector;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.client.connector.ConnectRequestDto;
+import com.czertainly.api.model.client.connector.ConnectorRequestDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,8 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
                 )
         })
 public interface ConnectorRegistrationController {
-    @Operation(summary = "Register a connector")
+    @Operation(summary = "Register a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector registration initiated")})
     @RequestMapping(path = "/register", method = RequestMethod.POST, produces = {"application/json"})
-    public UuidDto register(@RequestBody ConnectorDto request) throws NotFoundException, AlreadyExistException;
+    public UuidDto register(@RequestBody ConnectorRequestDto request) throws ConnectorException, AlreadyExistException;
 }

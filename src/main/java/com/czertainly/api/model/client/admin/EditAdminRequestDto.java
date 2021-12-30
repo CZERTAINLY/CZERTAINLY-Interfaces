@@ -17,8 +17,7 @@ public class EditAdminRequestDto {
     private String adminCertificate;
 	
 	@Schema(
-            description = "UUID of the existing certificate in inventory",
-            required = true
+            description = "UUID of the existing certificate in inventory. Mandatory is the certificate is not provided."
     )
     private String certificateUuid;
 	
@@ -47,8 +46,7 @@ public class EditAdminRequestDto {
     private AdminRole role;
 	
 	@Schema(
-            description = "Description for the administrator",
-            required = true
+            description = "Description for the administrator"
     )
     private String description;
 

@@ -12,7 +12,7 @@ public class ConnectorUpdateRequestDto {
             example = "http://network-discovery-provicer:8080")
     private String url;
     @Schema(description = "Type of authentication for the Connector",
-            example = "NONE")
+            example = "none")
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE")
     private List<RequestAttributeDto> authAttributes;

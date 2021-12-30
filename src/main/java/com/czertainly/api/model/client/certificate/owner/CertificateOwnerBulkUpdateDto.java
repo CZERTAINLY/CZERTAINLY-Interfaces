@@ -13,10 +13,10 @@ public class CertificateOwnerBulkUpdateDto {
 	private String owner;
 	
 	@Schema(
-            description = "List of certifiate Ids",
+            description = "List of Certificate UUIDs",
             required = true
     )
-	private List<String> certificateIds;
+	private List<String> certificateUuids;
 
 	public String getOwner() {
 		return owner;
@@ -26,11 +26,11 @@ public class CertificateOwnerBulkUpdateDto {
 		this.owner = owner;
 	}
 
-	public List<String> getCertificateIds() {
-		return certificateIds;
+	public List<String> getCertificateUuids() {
+		return certificateUuids;
 	}
 
-	public void setCertificateIds(List<String> certificateIds) {
-		this.certificateIds = certificateIds;
+	public void setCertificateUuids(List<String> certificateUuids) {
+		this.certificateUuids = certificateUuids;
 	}
 }

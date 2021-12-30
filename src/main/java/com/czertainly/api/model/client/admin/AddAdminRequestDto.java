@@ -53,7 +53,7 @@ public class AddAdminRequestDto {
 	
 	@Schema(
             description = "Enabled flag. true = enabled, false = disabled",
-            required = true
+            defaultValue = "false"
     )
     private Boolean enabled;
 	

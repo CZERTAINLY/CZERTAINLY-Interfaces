@@ -27,7 +27,7 @@ public class AddRaProfileRequestDto {
             required = true)
     private List<RequestAttributeDto> attributes;
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled")
+    @Schema(description = "Enabled flag - true = enabled; false = disabled", defaultValue = "false")
     private Boolean enabled;
 
     public String getAuthorityInstanceUuid() {

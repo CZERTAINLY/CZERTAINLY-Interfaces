@@ -46,7 +46,7 @@ import java.util.List;
 		})
 public interface ClientOperationController {
 	
-	@Operation(summary = "Get list of all Attributes for Certificate")
+	@Operation(summary = "Get issue Certificate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes list obtained"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
 	@RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)

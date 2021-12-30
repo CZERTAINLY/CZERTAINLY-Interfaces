@@ -139,10 +139,10 @@ public interface ConnectorController {
 
 	@Operation(summary = "Get Attributes from a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
-	@RequestMapping(path = "/{uuid}/{functionGroup}/{functionGroupKind}/attributes", method = RequestMethod.GET, produces = {
+	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}/attributes", method = RequestMethod.GET, produces = {
 			"application/json" })
 	public List<AttributeDefinition> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
-												   @Parameter(description = "Kind") @PathVariable String functionGroupKind) throws NotFoundException, ConnectorException;
+												   @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
 	
 	@Operation(summary = "Get attributes of all Function Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
@@ -152,10 +152,10 @@ public interface ConnectorController {
 
 	@Operation(summary = "Validate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes Validated")})
-	@RequestMapping(path = "/{uuid}/{functionGroup}/{functionGroupKind}/attributes/validate", method = RequestMethod.POST, consumes = {
-			"application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}/attributes/validate", method = RequestMethod.POST, consumes = {
+			"application/json" })
 	public boolean validateAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
-									  @Parameter(description = "Kind") @PathVariable String functionGroupKind, @RequestBody List<RequestAttributeDto> attributes)
+									  @Parameter(description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttributeDto> attributes)
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Callback API")

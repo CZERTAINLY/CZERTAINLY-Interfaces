@@ -19,7 +19,7 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
             required = true)
     private String url;
     @Schema(description = "Type of authentication for the Connector",
-            example = "NONE",
+            example = "none",
             required = true)
     private AuthType authType;
     @Schema(description = "List of Attributes for the authentication type",

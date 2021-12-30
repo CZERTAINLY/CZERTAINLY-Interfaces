@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.admin;
 
 import com.czertainly.api.model.common.Identified;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,19 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Class representing administrator
  */
-public class AdminDto implements Identified {
-	
-	@Schema(
-            description = "Id of the Administrator",
-            required = true
-    )
-    private Long id;
-	
-	@Schema(
-            description = "UUID of the Administrator",
-            required = true
-    )
-    private String uuid;
+public class AdminDto extends NameAndUuidDto {
 	
 	@Schema(
             description = "Administrator Username",
@@ -54,12 +43,6 @@ public class AdminDto implements Identified {
     private String serialNumber;
 	
 	@Schema(
-            description = "Username of the administrator",
-            required = true
-    )
-    private String name;
-	
-	@Schema(
             description = "Administrator description",
             required = true
     )
@@ -76,24 +59,6 @@ public class AdminDto implements Identified {
             required = true
     )
     private String surname;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
     public String getUsername() {
         return username;
@@ -113,14 +78,6 @@ public class AdminDto implements Identified {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -170,7 +127,6 @@ public class AdminDto implements Identified {
 	@Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
                 .append("uuid", uuid)
                 .append("username", username)
                 .append("role", role)

@@ -4,6 +4,7 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.client.SimplifiedClientDto;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
 import com.czertainly.api.model.common.UuidDto;
@@ -95,7 +96,7 @@ public interface RAProfileManagementController {
 	@Operation(summary = "List authorized Clients of RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of clients of RA Profile") })
 	@RequestMapping(path = "/{uuid}/listclients", method = RequestMethod.GET, produces = {"application/json"})
-	public List<ClientDto> listClients(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
+	public List<SimplifiedClientDto> listClients(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Delete multiple Ra Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles deleted"),

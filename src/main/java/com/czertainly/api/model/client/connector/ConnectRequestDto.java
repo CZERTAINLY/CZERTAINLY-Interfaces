@@ -13,7 +13,7 @@ public class ConnectRequestDto {
             required = true)
     private String url;
     @Schema(description = "Type of authentication for the Connector",
-            example = "NONE",
+            example = "none",
             required = true)
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",

@@ -10,14 +10,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class AddClientRequestDto {
 	
 	@Schema(
-            description = "Base64 content of the client certificate",
-            required = true
+            description = "Base64 content of the client certificate"
     )
     private String clientCertificate;
     
 	@Schema(
-            description = "UUID of the existing certificate in the Inventory",
-            required = true
+            description = "UUID of the existing certificate in the Inventory. Required if the Certificate is not provided"
     )
     private String certificateUuid;
 	
@@ -28,14 +26,13 @@ public class AddClientRequestDto {
     private String name;
 	
 	@Schema(
-            description = "Description of the Client",
-            required = true
+            description = "Description of the Client"
     )
     private String description;
 	
 	@Schema(
-            description = "Is the client enabled?",
-            required = true
+            description = "Enabled flag. true = enabled, false = disabled",
+            defaultValue = "false"
     )
     private Boolean enabled;
 
