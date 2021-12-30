@@ -5,6 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.client.AddClientRequestDto;
 import com.czertainly.api.model.client.client.EditClientRequestDto;
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.client.ClientDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
@@ -84,7 +85,7 @@ public interface ClientManagementController {
 	@Operation(summary = "Get Authorized profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of authorized profiles")})
 	@RequestMapping(path = "/{uuid}/listauth", method = RequestMethod.GET, produces = { "application/json" })
-	public List<RaProfileDto> listAuthorizations(@PathVariable String uuid) throws NotFoundException;
+	public List<SimplifiedRaProfileDto> listAuthorizations(@PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Disable a client")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Client disabled") })
