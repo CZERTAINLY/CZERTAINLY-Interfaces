@@ -1,12 +1,14 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.authority.CertRevocationDto;
 import com.czertainly.api.model.core.authority.CertificateSignRequestDto;
 import com.czertainly.api.model.core.authority.CertificateSignResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,12 +21,12 @@ import org.springframework.web.bind.annotation.*;
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "500",

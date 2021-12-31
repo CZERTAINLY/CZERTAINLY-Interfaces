@@ -4,9 +4,11 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.authority.*;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,18 +24,28 @@ import java.util.List;
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "500",
                         description = "Internal Server Error",
                         content = @Content
-                )
+                ),
+                @ApiResponse(
+                        responseCode = "502",
+                        description = "Connector Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "503",
+                        description = "Connector Communication Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
         })
 @Tag(name = "Client Operations API", description = "Client API for managing End Entities and Certificates")
 public interface ClientOperationController {
@@ -48,7 +60,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "Revoke Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate revoked")})
-    @RequestMapping(path = "/{raProfileName}/certificate/revoke", method = RequestMethod.POST, consumes = { "application/json" })
+    @RequestMapping(path = "/{raProfileName}/certificate/revoke", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
     void revokeCertificate(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody ClientCertificateRevocationDto request)
@@ -63,7 +75,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "Add End Entity")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End Entity added")})
-    @RequestMapping(path = "/{raProfileName}/endentity", method = RequestMethod.POST, consumes = { "application/json" })
+    @RequestMapping(path = "/{raProfileName}/endentity", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
     void addEndEntity(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody ClientAddEndEntityRequestDto request)
@@ -79,7 +91,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "Edit End Entity")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End Entity edited")})
-    @RequestMapping(path = "/{raProfileName}/endentity/{username}", method = RequestMethod.POST, consumes = { "application/json" })
+    @RequestMapping(path = "/{raProfileName}/endentity/{username}", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
     void editEndEntity(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @Parameter(description = "Username") @PathVariable String username,

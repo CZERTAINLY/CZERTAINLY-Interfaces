@@ -108,6 +108,16 @@ public interface AuthorityInstanceController {
     void removeAuthorityInstance(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @RequestMapping(path = "/{uuid}/connect", method = RequestMethod.GET)
+    @Operation(
+            summary = "Connect to Authority"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Authority instance connected"
+                    )
+            })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void getConnection(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 

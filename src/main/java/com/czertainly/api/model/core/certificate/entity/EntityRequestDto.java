@@ -2,7 +2,7 @@ package com.czertainly.api.model.core.certificate.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CertificateEntityRequestDto {
+public class EntityRequestDto {
 
     @Schema(description = "Name of the Entity",
             required = true)
@@ -13,7 +13,7 @@ public class CertificateEntityRequestDto {
 
     @Schema(description = "Type of the Entity",
             required = true)
-    private CertificateEntityCode entityType;
+    private EntityCode entityType;
 
     public String getName() {
         return name;
@@ -31,11 +31,11 @@ public class CertificateEntityRequestDto {
         this.description = description;
     }
 
-    public CertificateEntityCode getEntityType() {
+    public EntityCode getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(CertificateEntityCode entityType) {
+    public void setEntityType(EntityCode entityType) {
         this.entityType = entityType;
     }
 }

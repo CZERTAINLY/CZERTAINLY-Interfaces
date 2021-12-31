@@ -5,6 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.v2.ClientCertificateDataResponseDto;
 import com.czertainly.api.model.core.v2.ClientCertificateRenewRequestDto;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,31 +34,43 @@ import java.util.List;
 				@ApiResponse(
 						responseCode = "400",
 						description = "Bad Request",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "500",
 						description = "Internal Server Error",
 						content = @Content
-				)
+				),
+				@ApiResponse(
+						responseCode = "502",
+						description = "Connector Error",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "503",
+						description = "Connector Communication Error",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
 		})
 public interface ClientOperationController {
 	
 	@Operation(summary = "Get issue Certificate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes list obtained"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
 	@RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)
 	List<AttributeDefinition> listIssueCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName) throws NotFoundException, ConnectorException;
     
 	@Operation(summary = "Validate issue Certificate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
 	void validateIssueCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
@@ -64,7 +78,8 @@ public interface ClientOperationController {
 	
 	@Operation(summary = "Issue Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate issued"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
 	@RequestMapping(path = "/issue", method = RequestMethod.POST)
     ClientCertificateDataResponseDto issueCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
@@ -72,7 +87,8 @@ public interface ClientOperationController {
     
 	@Operation(summary = "Renew Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate renewed"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
     @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
     ClientCertificateDataResponseDto renewCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,

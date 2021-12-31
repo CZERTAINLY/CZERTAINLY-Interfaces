@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,12 +31,12 @@ import java.util.List;
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "500",
@@ -63,7 +64,9 @@ public interface AttributesController {
 
     @PostMapping(
             path = "/validate",
-            consumes = {"application/json"}
+            consumes = {"application/json"},
+            produces = { "application/json" }
+
     )
     @Operation(
             summary = "Validate Attributes"
@@ -77,7 +80,7 @@ public interface AttributesController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Attribute validation failed",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute Validation error message")))
 
                     )
             }

@@ -1,8 +1,11 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.model.client.connector.InfoResponse;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,12 +31,12 @@ import java.util.List;
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "500",

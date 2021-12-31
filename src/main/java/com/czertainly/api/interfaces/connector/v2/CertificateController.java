@@ -3,6 +3,7 @@ package com.czertainly.api.interfaces.connector.v2;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.connector.v2.CertRevocationDto;
 import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
@@ -11,6 +12,7 @@ import com.czertainly.api.model.connector.v2.CertificateSignRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,12 +30,12 @@ import java.util.List;
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
-                        content = @Content
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "500",
@@ -70,7 +72,7 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
                     ))
             })
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
@@ -90,7 +92,7 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
                             ))
             })
     @RequestMapping(path = "/issue", method = RequestMethod.POST)
@@ -110,7 +112,7 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
                             ))
             })
     @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
@@ -131,7 +133,7 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
                             ))
             })
     @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET)
@@ -150,7 +152,7 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
                             ))
             })
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
@@ -170,7 +172,7 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
                             ))
             })
     @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST)

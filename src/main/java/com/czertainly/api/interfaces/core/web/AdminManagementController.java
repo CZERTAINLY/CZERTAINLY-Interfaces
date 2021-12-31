@@ -5,12 +5,14 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.admin.AddAdminRequestDto;
 import com.czertainly.api.model.client.admin.EditAdminRequestDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.admin.AdminDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,12 +34,12 @@ import java.util.List;
 				@ApiResponse(
 						responseCode = "400",
 						description = "Bad Request",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "500",
@@ -54,7 +56,8 @@ public interface AdminManagementController {
 
 	@Operation(summary = "Create a new Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New administrator created",  content = @Content(schema = @Schema(implementation = UuidDto.class))),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))), })
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")})), })
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> addAdmin(@RequestBody AddAdminRequestDto request)
 			throws CertificateException, AlreadyExistException, ValidationException, NotFoundException;
@@ -74,7 +77,10 @@ public interface AdminManagementController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Administrator removed")})
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkRemoveAdmin(@RequestBody List<String> adminUuids) throws NotFoundException;
+	public void bulkRemoveAdmin(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Admin UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+									@RequestBody List<String> adminUuids) throws NotFoundException;
 
 	@Operation(summary = "Remove Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Administrator removed")})
@@ -84,25 +90,28 @@ public interface AdminManagementController {
 
 	@Operation(summary = "Disable Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Disable administrator success")})
-	@RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void disableAdmin(@Parameter(description = "Administrator UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Enable Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Enable administrator success")})
-	@RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void enableAdmin(@Parameter(description = "Administrator UUID") @PathVariable String uuid) throws NotFoundException, CertificateException;
 
 	@Operation(summary = "Disable Multiple Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Disable administrator success")})
-	@RequestMapping(path = "/disable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkDisableAdmin(@RequestBody List<String> adminUuids) throws NotFoundException;
+	public void bulkDisableAdmin(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Admin UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+									 @RequestBody List<String> adminUuids) throws NotFoundException;
 
 	@Operation(summary = "Enable Multiple Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Enable administrator success")})
-	@RequestMapping(path = "/enable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkEnableAdmin(@RequestBody List<String> adminUuids) throws NotFoundException;
 }

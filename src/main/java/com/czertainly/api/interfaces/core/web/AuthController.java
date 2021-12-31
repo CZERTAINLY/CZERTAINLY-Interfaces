@@ -2,9 +2,11 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.EditAuthProfileDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.AuthProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,12 +21,12 @@ import org.springframework.web.bind.annotation.*;
 				@ApiResponse(
 						responseCode = "400",
 						description = "Bad Request",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "500",
@@ -41,7 +43,7 @@ public interface AuthController {
 
 	@Operation(summary = "Edit Profile Information")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Edit Profile") })
-	@RequestMapping(path = "/profile", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/profile", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void editProfile(@RequestBody EditAuthProfileDto authProfileDTO) throws NotFoundException;
 }

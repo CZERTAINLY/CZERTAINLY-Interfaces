@@ -1,10 +1,8 @@
 package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
-import com.czertainly.api.model.common.Identified;
-import com.czertainly.api.model.core.certificate.entity.CertificateEntityDto;
-import com.czertainly.api.model.core.certificate.group.CertificateGroupDto;
-import com.czertainly.api.model.core.raprofile.RaProfileDto;
+import com.czertainly.api.model.core.certificate.entity.EntityDto;
+import com.czertainly.api.model.core.certificate.group.GroupDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -71,9 +69,9 @@ public class CertificateDto {
     @Schema(description = "Subject alternative names")
     private Map<String, Object> subjectAlternativeNames;
     @Schema(description = "Entity associated to the Certificate")
-    private CertificateEntityDto entity;
+    private EntityDto entity;
     @Schema(description = "Group associated to the Certificate")
-    private CertificateGroupDto group;
+    private GroupDto group;
     @Schema(description = "Certificate Owner")
     private String owner;
     @Schema(description = "Certificate type")
@@ -260,19 +258,19 @@ public class CertificateDto {
         this.raProfile = raProfileDTO;
     }
 
-    public CertificateEntityDto getEntity() {
+    public EntityDto getEntity() {
         return entity;
     }
 
-    public void setEntity(CertificateEntityDto entity) {
+    public void setEntity(EntityDto entity) {
         this.entity = entity;
     }
 
-    public CertificateGroupDto getGroup() {
+    public GroupDto getGroup() {
         return group;
     }
 
-    public void setGroup(CertificateGroupDto group) {
+    public void setGroup(GroupDto group) {
         this.group = group;
     }
 

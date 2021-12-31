@@ -2,14 +2,13 @@ package com.czertainly.api.model.core.certificate.entity;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.core.certificate.CertificateStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
-public enum CertificateEntityCode {
+public enum EntityCode {
 
     SERVER("server"),
     ROUTER("router"),
@@ -25,7 +24,7 @@ public enum CertificateEntityCode {
             example = "router", required = true)
     private String code;
 
-    CertificateEntityCode(String code) {
+    EntityCode(String code) {
         this.code = code;
     }
 
@@ -35,8 +34,8 @@ public enum CertificateEntityCode {
     }
 
     @JsonCreator
-    public static CertificateEntityCode findByCode(String code) {
-        return Arrays.stream(CertificateEntityCode.values())
+    public static EntityCode findByCode(String code) {
+        return Arrays.stream(EntityCode.values())
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

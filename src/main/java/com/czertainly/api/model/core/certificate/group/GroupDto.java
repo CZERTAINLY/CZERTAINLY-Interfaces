@@ -1,24 +1,13 @@
 package com.czertainly.api.model.core.certificate.group;
 
-
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CertificateGroupRequestDto {
-
-    @Schema(description = "Name of the Certificate Group",
-            required = true)
-    private String name;
+public class GroupDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Certificate Group")
     private String description;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getDescription() {
         return description;

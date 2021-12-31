@@ -7,6 +7,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.client.SimplifiedClientDto;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.client.ClientDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,18 +34,28 @@ import java.util.List;
 				@ApiResponse(
 						responseCode = "400",
 						description = "Bad Request",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "500",
 						description = "Internal Server Error",
 						content = @Content
-				)
+				),
+				@ApiResponse(
+						responseCode = "502",
+						description = "Connector Error",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "503",
+						description = "Connector Communication Error",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
 		})
 
 public interface RAProfileManagementController {
@@ -84,13 +96,13 @@ public interface RAProfileManagementController {
 	
 	@Operation(summary = "Disable RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile disabled")})
-	@RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void disableRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Enable RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile enabled")})
-	@RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void enableRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 	
@@ -104,18 +116,27 @@ public interface RAProfileManagementController {
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkRemoveRaProfile(@Parameter(description = "RA Profile UUIDs") @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+	public void bulkRemoveRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+										@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
 	@Operation(summary = "Disable multiple RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles disabled")})
-	@RequestMapping(path = "/disable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkDisableRaProfile(@Parameter(description = "RA Profile UUIDs") @RequestBody List<String> uuids) throws NotFoundException;
+	public void bulkDisableRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+										 @RequestBody List<String> uuids) throws NotFoundException;
 
 	@Operation(summary = "Enable multiple RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles enabled")})
-	@RequestMapping(path = "/enable", method = RequestMethod.PUT, consumes = {"application/json"})
+	@RequestMapping(path = "/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkEnableRaProfile(@Parameter(description = "RA Profile UUIDs") @RequestBody List<String> uuids) throws NotFoundException;
+	public void bulkEnableRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+										@RequestBody List<String> uuids) throws NotFoundException;
 
 }

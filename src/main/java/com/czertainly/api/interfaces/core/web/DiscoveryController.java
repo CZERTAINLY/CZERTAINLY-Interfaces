@@ -5,12 +5,14 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.discovery.DiscoveryDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.discovery.DiscoveryHistoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -30,18 +32,28 @@ import java.util.List;
 				@ApiResponse(
 						responseCode = "400",
 						description = "Bad Request",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
-						content = @Content
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
 						responseCode = "500",
 						description = "Internal Server Error",
 						content = @Content
-				)
+				),
+				@ApiResponse(
+						responseCode = "502",
+						description = "Connector Error",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "503",
+						description = "Connector Communication Error",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
 		})
 
 public interface DiscoveryController {
@@ -58,7 +70,8 @@ public interface DiscoveryController {
 	
 	@Operation(summary = "Create Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request)
 			throws AlreadyExistException, NotFoundException, CertificateException, InterruptedException, ConnectorException;
@@ -73,5 +86,8 @@ public interface DiscoveryController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discoveries deleted")})
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkRemoveDiscovery(@Parameter(description = "Discovery UUIDs") @RequestBody List<String> discoveryUuids) throws NotFoundException;
+	public void bulkRemoveDiscovery(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "Discovery UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+										@RequestBody List<String> discoveryUuids) throws NotFoundException;
 }
