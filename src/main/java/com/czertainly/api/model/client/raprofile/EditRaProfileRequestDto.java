@@ -20,7 +20,7 @@ public class EditRaProfileRequestDto {
             required = true)
     private List<RequestAttributeDto> attributes;
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", defaultValue = "false")
+    @Schema(description = "Enabled flag - true = enabled; false = disabled")
     private Boolean enabled;
 
     public String getDescription() {

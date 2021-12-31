@@ -113,7 +113,7 @@ public interface RAProfileManagementController {
 	@RequestMapping(path = "/{uuid}/listclients", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<SimplifiedClientDto> listClients(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
-	@Operation(summary = "Delete multiple Ra Profiles")
+	@Operation(summary = "Delete multiple RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
