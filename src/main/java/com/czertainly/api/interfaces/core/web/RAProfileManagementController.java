@@ -72,7 +72,7 @@ public interface RAProfileManagementController {
 	@Operation(summary = "Add RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "RA Profile added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> addRaProfile(@RequestBody AddRaProfileRequestDto request)
 			throws AlreadyExistException, ValidationException, NotFoundException, ConnectorException;
@@ -85,7 +85,7 @@ public interface RAProfileManagementController {
 	@Operation(summary = "Edit RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile updated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public RaProfileDto editRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid, @RequestBody EditRaProfileRequestDto request)
             throws NotFoundException, ConnectorException;
@@ -116,7 +116,7 @@ public interface RAProfileManagementController {
 	@Operation(summary = "Delete multiple Ra Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkRemoveRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(

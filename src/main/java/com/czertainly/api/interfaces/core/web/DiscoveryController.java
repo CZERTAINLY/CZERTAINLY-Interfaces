@@ -71,7 +71,7 @@ public interface DiscoveryController {
 	@Operation(summary = "Create Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request)
 			throws AlreadyExistException, NotFoundException, CertificateException, InterruptedException, ConnectorException;

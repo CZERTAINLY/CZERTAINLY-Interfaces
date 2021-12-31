@@ -93,7 +93,7 @@ public interface ConnectorController {
 	@Operation(summary = "Create a new Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Connector created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")})),})
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})),})
 
 	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
 	public ResponseEntity<?> createConnector(@RequestBody ConnectorRequestDto request)
@@ -102,7 +102,7 @@ public interface ConnectorController {
 	@Operation(summary = "Update a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector updated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
 	public ConnectorDto updateConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid, @RequestBody ConnectorUpdateRequestDto request)
@@ -117,7 +117,7 @@ public interface ConnectorController {
 	@Operation(summary = "Connect to a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector connected"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/connect", method = RequestMethod.PUT, consumes = { "application/json" }, produces = {
 			"application/json" })
 	public List<ConnectDto> connect(@RequestBody ConnectRequestDto request) throws ValidationException, ConnectException, ConnectorException;
@@ -125,7 +125,7 @@ public interface ConnectorController {
 	@Operation(summary = "Reconnect to a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Reconnect to a Connector"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/{uuid}/reconnect", method = RequestMethod.PUT, consumes = {
 			"application/json" }, produces = { "application/json" })
 	public List<ConnectDto> reconnect(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
@@ -190,7 +190,7 @@ public interface ConnectorController {
 	@Operation(summary = "Delete multiple Connectors")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connectors deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.DELETE)
 	public List<ForceDeleteMessageDto> bulkRemoveConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Connector UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -200,7 +200,7 @@ public interface ConnectorController {
 	@Operation(summary = "Force Delete multiple Connectors")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connectors deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/force", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkForceRemoveConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
