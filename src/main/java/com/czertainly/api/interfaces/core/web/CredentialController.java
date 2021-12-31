@@ -108,7 +108,8 @@ public interface CredentialController {
 
     @Operation(summary = "Delete multiple Credentials")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Credentials deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
     @RequestMapping(method = RequestMethod.DELETE)
     public List<ForceDeleteMessageDto> bulkRemoveCredential(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Credential UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -117,7 +118,8 @@ public interface CredentialController {
 
     @Operation(summary = "Force delete multiple Credentials")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credentials forced to delete"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
     @RequestMapping(path = "/force", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bulkForceRemoveCredential(@Parameter(description = "Credential UUIDs") @RequestBody List<String> uuids) throws NotFoundException, ValidationException;

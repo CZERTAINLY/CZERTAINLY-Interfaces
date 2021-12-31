@@ -121,7 +121,8 @@ public interface AuthorityInstanceController {
 
 	@Operation(summary = "Delete multiple Authority instances")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instances deleted"),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
 	@RequestMapping(method = RequestMethod.DELETE)
 
 	public List<ForceDeleteMessageDto> bulkRemoveAuthorityInstance(@io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -130,7 +131,8 @@ public interface AuthorityInstanceController {
 																	   @RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
 	@Operation(summary = "Force delete multiple Authority instances")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority instances forced to delete"),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\" , ...]")}))})
 	@RequestMapping(path = "/force", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkForceRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
