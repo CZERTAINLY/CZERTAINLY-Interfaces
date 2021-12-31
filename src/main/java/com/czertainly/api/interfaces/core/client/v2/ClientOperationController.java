@@ -63,7 +63,7 @@ public interface ClientOperationController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes list obtained"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)
+	@RequestMapping(path = "/issue/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	List<AttributeDefinition> listIssueCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName) throws NotFoundException, ConnectorException;
     
@@ -71,7 +71,7 @@ public interface ClientOperationController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	void validateIssueCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
@@ -80,7 +80,7 @@ public interface ClientOperationController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate issued"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/issue", method = RequestMethod.POST)
+	@RequestMapping(path = "/issue", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ClientCertificateDataResponseDto issueCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody ClientCertificateSignRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException;
@@ -89,7 +89,7 @@ public interface ClientOperationController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate renewed"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
+    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ClientCertificateDataResponseDto renewCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
 			@Parameter(description = "Certificate serial number") @PathVariable String certificateId,
@@ -97,20 +97,20 @@ public interface ClientOperationController {
     
 	@Operation(summary = "Get revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes obtained") })
-    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	List<AttributeDefinition> listRevokeCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName) throws NotFoundException, ConnectorException;
     
 	@Operation(summary = "Validate revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
-    @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	void validateRevokeCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
     
 	@Operation(summary = "Revoke Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate revoked")})
-    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST)
+    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
     void revokeCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
