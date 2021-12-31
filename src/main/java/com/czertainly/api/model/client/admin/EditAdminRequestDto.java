@@ -20,28 +20,24 @@ public class EditAdminRequestDto {
             description = "UUID of the existing certificate in inventory. Mandatory is the certificate is not provided."
     )
     private String certificateUuid;
-	
+
 	@Schema(
-            description = "Name of the administrator",
-            required = true
+            description = "Name of the administrator"
     )
     private String name;
 	
 	@Schema(
-            description = "Administrator Surname",
-            required = true
+            description = "Administrator Surname"
     )
     private String surname;
 	
 	@Schema(
-            description = "Email Id of the admin",
-            required = true
+            description = "Email Id of the admin"
     )
     private String email;
 	
 	@Schema(
-            description = "Role of the admin",
-            required = true
+            description = "Role of the admin"
     )
     private AdminRole role;
 	

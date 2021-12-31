@@ -14,6 +14,7 @@ import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -60,14 +61,14 @@ public interface AuthorityInstanceController {
 
 	@Operation(summary = "Add Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New Authority instance added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class))), })
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))), })
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthorityInstance(@RequestBody AuthorityInstanceRequestDto request)
 			throws AlreadyExistException, NotFoundException, ConnectorException;
 
 	@Operation(summary = "Update Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instance details updated"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
 	public AuthorityInstanceDto updateAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody AuthorityInstanceUpdateRequestDto request)
@@ -101,18 +102,18 @@ public interface AuthorityInstanceController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attribute information validated")})
 	@RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST, consumes = {
 			"application/json" })
-	public Boolean validateRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody List<RequestAttributeDto> attributes)
+	public void validateRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody List<RequestAttributeDto> attributes)
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Delete multiple Authority instances")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instances deleted"),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(method = RequestMethod.DELETE)
 
 	public List<ForceDeleteMessageDto> bulkRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
 	@Operation(summary = "Force delete multiple Authority instances")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority instances forced to delete"),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(path = "/force", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkForceRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;

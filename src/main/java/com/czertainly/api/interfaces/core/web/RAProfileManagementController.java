@@ -12,6 +12,7 @@ import com.czertainly.api.model.core.client.ClientDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -58,7 +59,7 @@ public interface RAProfileManagementController {
 	
 	@Operation(summary = "Add RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "RA Profile added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> addRaProfile(@RequestBody AddRaProfileRequestDto request)
 			throws AlreadyExistException, ValidationException, NotFoundException, ConnectorException;
@@ -70,7 +71,7 @@ public interface RAProfileManagementController {
 	
 	@Operation(summary = "Edit RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile updated"),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public RaProfileDto editRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid, @RequestBody EditRaProfileRequestDto request)
             throws NotFoundException, ConnectorException;
@@ -100,7 +101,7 @@ public interface RAProfileManagementController {
 
 	@Operation(summary = "Delete multiple Ra Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkRemoveRaProfile(@Parameter(description = "RA Profile UUIDs") @RequestBody List<String> uuids) throws NotFoundException, ValidationException;

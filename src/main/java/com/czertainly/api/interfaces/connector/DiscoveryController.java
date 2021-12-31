@@ -8,6 +8,7 @@ import com.czertainly.api.model.connector.discovery.DiscoveryProviderDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -65,7 +66,7 @@ public interface DiscoveryController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))
                     )
             }
     )

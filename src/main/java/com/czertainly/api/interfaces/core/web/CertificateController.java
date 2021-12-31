@@ -3,6 +3,9 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.certificate.IdAndCertificateIdDto;
+import com.czertainly.api.model.client.certificate.MultipleEntityUpdateDto;
+import com.czertainly.api.model.client.certificate.MultipleGroupUpdateDto;
+import com.czertainly.api.model.client.certificate.MultipleRAProfileUpdateDto;
 import com.czertainly.api.model.client.certificate.RemoveCertificateDto;
 import com.czertainly.api.model.client.certificate.UploadCertificateRequestDto;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
@@ -101,21 +104,21 @@ public interface CertificateController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile updated") })
 	@RequestMapping(path = "/ra-profile", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkUpdateRaProfile(@RequestBody IdAndCertificateIdDto request)
+	public void bulkUpdateRaProfile(@RequestBody MultipleRAProfileUpdateDto request)
 			throws NotFoundException;
 	
 	@Operation(summary = "Update group for multiple certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group updated")})
 	@RequestMapping(path = "/group", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkUpdateCertificateGroup(@RequestBody IdAndCertificateIdDto request)
+	public void bulkUpdateCertificateGroup(@RequestBody MultipleGroupUpdateDto request)
 			throws NotFoundException;
 	
 	@Operation(summary = "Update Entity for multiple certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entity updated")})
 	@RequestMapping(path = "/entity", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkUpdateEntity(@RequestBody IdAndCertificateIdDto request)
+	public void bulkUpdateEntity(@RequestBody MultipleEntityUpdateDto request)
 			throws NotFoundException;
 	
 	@Operation(summary = "Update Owner for multiple certificates")

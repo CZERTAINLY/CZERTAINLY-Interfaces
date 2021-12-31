@@ -12,6 +12,7 @@ import com.czertainly.api.model.core.v2.ClientCertificateRevocationDto;
 import com.czertainly.api.model.core.v2.ClientCertificateSignRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,22 +49,22 @@ public interface ClientOperationController {
 	
 	@Operation(summary = "Get issue Certificate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes list obtained"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)
 	List<AttributeDefinition> listIssueCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName) throws NotFoundException, ConnectorException;
     
 	@Operation(summary = "Validate issue Certificate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
-	boolean validateIssueCertificateAttributes(
+	void validateIssueCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
 	
 	@Operation(summary = "Issue Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate issued"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
 	@RequestMapping(path = "/issue", method = RequestMethod.POST)
     ClientCertificateDataResponseDto issueCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
@@ -71,7 +72,7 @@ public interface ClientOperationController {
     
 	@Operation(summary = "Renew Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate renewed"),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(schema = @Schema(implementation = ValidationException.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
     @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
     ClientCertificateDataResponseDto renewCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
@@ -87,7 +88,7 @@ public interface ClientOperationController {
 	@Operation(summary = "Validate revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
-	boolean validateRevokeCertificateAttributes(
+	void validateRevokeCertificateAttributes(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
     

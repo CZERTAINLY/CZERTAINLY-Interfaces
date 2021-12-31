@@ -4,7 +4,9 @@ import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.AuthType;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +43,7 @@ import java.util.Set;
 public interface ConnectorAuthController {
 
 	@Operation(summary = "Get list of Authentication Types")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Auth Types retrieved") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Auth Types retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))) })
 	@RequestMapping(path = "/types", method = RequestMethod.GET, produces = { "application/json" })
 	public Set<AuthType> getAuthenticationTypes();
 
@@ -54,7 +56,7 @@ public interface ConnectorAuthController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated") })
 	@RequestMapping(path = "/attributes/basic/validate", method = RequestMethod.POST, consumes = {
 			"application/json" })
-	public Boolean validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	public void validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get Attributes for certificate auth")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
@@ -65,7 +67,7 @@ public interface ConnectorAuthController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
 	@RequestMapping(path = "/attributes/certificate/validate", method = RequestMethod.POST, consumes = {
 			"application/json" })
-	public Boolean validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	public void validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get API Key auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
@@ -76,7 +78,7 @@ public interface ConnectorAuthController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
 	@RequestMapping(path = "/attributes/apiKey/validate", method = RequestMethod.POST, consumes = {
 			"application/json" })
-	public Boolean validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	public void validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
@@ -87,5 +89,5 @@ public interface ConnectorAuthController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
 	@RequestMapping(path = "/attributes/jwt/validate", method = RequestMethod.POST, consumes = {
 			"application/json" })
-	public Boolean validateJWTAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	public void validateJWTAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 }
