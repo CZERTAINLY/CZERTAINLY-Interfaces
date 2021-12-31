@@ -61,12 +61,12 @@ import java.util.List;
 public interface RAProfileManagementController {
 	@Operation(summary = "List of available RA Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profiles retrieved")})
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<RaProfileDto> listRaProfiles();
 
 	@Operation(summary = "List of available RA Profiles by Status")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profiles retrieved")})
-	@RequestMapping(method = RequestMethod.GET, params = { "isEnabled" }, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, params = { "isEnabled" }, consumes = {"application/json"}, produces = {"application/json"})
 	public List<RaProfileDto> listRaProfiles(@RequestParam Boolean isEnabled);
 	
 	@Operation(summary = "Add RA Profile")
@@ -79,7 +79,7 @@ public interface RAProfileManagementController {
 	
 	@Operation(summary = "Details of RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile details retrieved")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public RaProfileDto getRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Edit RA Profile")
@@ -92,7 +92,7 @@ public interface RAProfileManagementController {
 	
 	@Operation(summary = "Delete RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile deleted")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 	
@@ -110,14 +110,14 @@ public interface RAProfileManagementController {
 	
 	@Operation(summary = "List authorized Clients of RA Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of clients of RA Profile") })
-	@RequestMapping(path = "/{uuid}/listclients", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}/listclients", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<SimplifiedClientDto> listClients(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Delete multiple Ra Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkRemoveRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),

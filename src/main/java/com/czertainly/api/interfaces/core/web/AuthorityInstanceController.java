@@ -63,19 +63,19 @@ public interface AuthorityInstanceController {
 
 	@Operation(summary = "List of available Authority instances")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of Authority instances")})
-	@RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<AuthorityInstanceDto> listAuthorityInstances();
 
 	@Operation(summary = "Details of an Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instance details retrieved")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public AuthorityInstanceDto getAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Add Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New Authority instance added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})), })
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> createAuthorityInstance(@RequestBody AuthorityInstanceRequestDto request)
 			throws AlreadyExistException, NotFoundException, ConnectorException;
 
@@ -90,26 +90,24 @@ public interface AuthorityInstanceController {
 
 	@Operation(summary = "Remove Authority instance")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority instance deleted")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@RequestMapping(path = "/{uuid}/endentityprofiles", method = RequestMethod.GET, produces = { "application/json" })
 	public List<NameAndIdDto> listEntityProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
-	@RequestMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles", method = RequestMethod.GET, produces = {
-			"application/json" })
+	@RequestMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<NameAndIdDto> listCertificateProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
 			throws NotFoundException, ConnectorException;
 
-	@RequestMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/cas", method = RequestMethod.GET, produces = {
-			"application/json" })
+	@RequestMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/cas", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<NameAndIdDto> listCAsInProfile(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "List RA Profile Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
-	@RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<AttributeDefinition> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate RA Profile Attributes")
@@ -123,7 +121,7 @@ public interface AuthorityInstanceController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instances deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 
 	public List<ForceDeleteMessageDto> bulkRemoveAuthorityInstance(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Authority Instance UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -133,7 +131,7 @@ public interface AuthorityInstanceController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority instances forced to delete"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/force", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/force", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkForceRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 }

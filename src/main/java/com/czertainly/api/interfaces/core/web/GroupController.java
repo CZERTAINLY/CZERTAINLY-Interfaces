@@ -46,12 +46,12 @@ import java.util.List;
 public interface GroupController {
 	@Operation(summary = "List Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available Group")})
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<GroupDto> listGroups();
 	
 	@Operation(summary = "Group details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group details retrieved") })
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public GroupDto getGroup(@PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Create Group")
@@ -68,13 +68,13 @@ public interface GroupController {
 	
 	@Operation(summary = "Remove Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group removed") })
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeGroup(@Parameter(description = "Group UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Remove multiple Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Groups removed") })
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkRemoveGroup(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Group UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),

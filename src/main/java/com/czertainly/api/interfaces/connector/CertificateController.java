@@ -47,7 +47,7 @@ public interface CertificateController {
                             description = "Certificate issued"
                     )
             })
-    @RequestMapping(path = "/issue", method = RequestMethod.POST)
+    @RequestMapping(path = "/issue", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateSignResponseDto issueCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
@@ -63,7 +63,7 @@ public interface CertificateController {
                             description = "Certificate revoked"
                     )
             })
-    @RequestMapping(path = "/revoke", method = RequestMethod.POST)
+    @RequestMapping(path = "/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void revokeCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,

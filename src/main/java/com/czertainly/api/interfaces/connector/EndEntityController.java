@@ -50,7 +50,7 @@ public interface EndEntityController {
                             description = "End Entities retrieved"
                     )
             })
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     List<EndEntityDto> listEndEntities(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName) throws NotFoundException;
@@ -65,7 +65,7 @@ public interface EndEntityController {
                             description = "End Entity retrieved"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     EndEntityDto getEndEntity(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
@@ -81,7 +81,7 @@ public interface EndEntityController {
                             description = "End Entity created"
                     )
             })
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void createEndEntity(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
@@ -97,7 +97,7 @@ public interface EndEntityController {
                             description = "End Entity updated"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.POST)
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void updateEndEntity(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
@@ -114,7 +114,7 @@ public interface EndEntityController {
                             description = "End Entity removed"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
     void removeEndEntity(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
@@ -131,7 +131,7 @@ public interface EndEntityController {
                             description = "End Entity password reset"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT)
+    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     void resetPassword(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,

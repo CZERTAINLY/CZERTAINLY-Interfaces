@@ -51,7 +51,7 @@ public interface AdminManagementController {
 
 	@Operation(summary = "List available administrators")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of administrator")})
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<AdminDto> listAdmins();
 
 	@Operation(summary = "Create a new Administrator")
@@ -84,7 +84,7 @@ public interface AdminManagementController {
 
 	@Operation(summary = "Remove Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Administrator removed")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeAdmin(@Parameter(description = "Administrator UUID") @PathVariable String uuid) throws NotFoundException;
 

@@ -56,18 +56,18 @@ public interface CertificateController {
 	
 	@Operation(summary = "List Certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of all the certificates")})
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<CertificateDto> listCertificate(@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer end);
 	
 	@Operation(summary = "Get Certificate Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public CertificateDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
 			throws NotFoundException, CertificateException, IOException;
 	
 	@Operation(summary = "Remove a certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate deleted")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 	
@@ -101,7 +101,7 @@ public interface CertificateController {
 	
 	@Operation(summary = "Initiate Certificate validation")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate validation initiated")})
-	@RequestMapping(method = RequestMethod.GET, path = "/{uuid}/validate", produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, path = "/{uuid}/validate", consumes = {"application/json"}, produces = {"application/json"})
 	public void check(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
 			throws CertificateException, IOException, NotFoundException;
 	

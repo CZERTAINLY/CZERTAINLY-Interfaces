@@ -70,24 +70,24 @@ public interface ConnectorController {
 
 	@Operation(summary = "List of all Connectors")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List Connectors")})
-	@RequestMapping(method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<ConnectorDto> listConnectors();
 
 	@Operation(summary = "List Connectors by Function Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors")})
-	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup" }, produces = { "application/json" })
+	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup" }, consumes = {"application/json"}, produces = {"application/json"})
 	public List<ConnectorDto> listConnectorsByFunctionGroup(@RequestParam FunctionGroupCode functionGroup)
 			throws NotFoundException;
 
 	@Operation(summary = "List Connectors by Function Group and Kind")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors")})
-	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup", "kind" }, produces = { "application/json" })
+	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup", "kind" }, consumes = {"application/json"}, produces = {"application/json"})
 	public List<ConnectorDto> listConnectors(@RequestParam FunctionGroupCode functionGroup, @RequestParam String kind)
 			throws NotFoundException;
 
 	@Operation(summary = "Get details of a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector details retrieved")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public ConnectorDto getConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Create a new Connector")
@@ -110,7 +110,7 @@ public interface ConnectorController {
 
 	@Operation(summary = "Delete a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connector deleted")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -157,7 +157,7 @@ public interface ConnectorController {
 
 	@Operation(summary = "Check Health of a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Health check completed")})
-	@RequestMapping(path = "/{uuid}/health", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/health", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public HealthDto checkHealth(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException, ConnectorException;
 
 	@Operation(summary = "Get Attributes from a Connector")
@@ -169,8 +169,7 @@ public interface ConnectorController {
 	
 	@Operation(summary = "Get attributes of all Function Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
-	@RequestMapping(path = "/{uuid}/attributes-all", method = RequestMethod.GET, produces = {
-			"application/json" })
+	@RequestMapping(path = "/{uuid}/attributes-all", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public Map<FunctionGroupCode, Map<String, List<AttributeDefinition>>> getAttributesAll(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate Attributes")
@@ -191,7 +190,7 @@ public interface ConnectorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connectors deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	public List<ForceDeleteMessageDto> bulkRemoveConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Connector UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
@@ -201,7 +200,7 @@ public interface ConnectorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connectors deleted"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/force", method = RequestMethod.DELETE)
+	@RequestMapping(path = "/force", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkForceRemoveConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Connector UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),

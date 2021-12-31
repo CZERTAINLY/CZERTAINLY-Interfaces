@@ -53,6 +53,6 @@ import org.springframework.web.bind.annotation.RestController;
 public interface ConnectorRegistrationController {
     @Operation(summary = "Register a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector registration initiated")})
-    @RequestMapping(path = "/register", method = RequestMethod.POST, produces = {"application/json"})
+    @RequestMapping(path = "/register", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public UuidDto register(@RequestBody ConnectorRequestDto request) throws ConnectorException, AlreadyExistException;
 }

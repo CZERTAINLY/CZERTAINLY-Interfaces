@@ -48,6 +48,7 @@ public interface InfoController {
 
     @GetMapping(
             produces = {"application/json"}
+            , consumes = {"application/json"}
     )
     @Operation(
             summary = "List supported functions of the connector",

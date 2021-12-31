@@ -62,7 +62,7 @@ public interface ClientManagementController {
 
     @Operation(summary = "Get the list of all clients")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Client list retrieved")})
-    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     public List<ClientDto> listClients();
 
     @Operation(summary = "Add a new client")
@@ -73,7 +73,7 @@ public interface ClientManagementController {
 
     @Operation(summary = "Get the details of a client")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Client details retrieved")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     public ClientDto getClient(@Parameter(description = "Client UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Edit a client")
@@ -85,13 +85,13 @@ public interface ClientManagementController {
 
     @Operation(summary = "Remove a client")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Client Deleted")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeClient(@Parameter(description = "Client UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Remove multiple client")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Clients Deleted")})
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bulkRemoveClient(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Client UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -100,7 +100,7 @@ public interface ClientManagementController {
 
     @Operation(summary = "Get Authorized profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of authorized profiles")})
-    @RequestMapping(path = "/{uuid}/listauth", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/listauth", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     public List<SimplifiedRaProfileDto> listAuthorizations(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disable a client")
@@ -144,8 +144,7 @@ public interface ClientManagementController {
 
     @Operation(summary = "Unauthorize Client")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Client unauthorized with given profile")})
-    @RequestMapping(path = "/{uuid}/unauthorize/{raProfileUuid}", method = RequestMethod.PUT, consumes = {
-            "application/json"})
+    @RequestMapping(path = "/{uuid}/unauthorize/{raProfileUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unauthorizeClient(@Parameter(description = "Client UUID") @PathVariable String uuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 }

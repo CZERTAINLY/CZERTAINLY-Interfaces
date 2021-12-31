@@ -43,7 +43,7 @@ public interface LocalController {
 
     @Operation(summary = "Create Administrator")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Admin created")})
-    @RequestMapping(path = "/admins", method = RequestMethod.POST, produces = {"application/json"})
+    @RequestMapping(path = "/admins", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> addAdmin(
             @RequestBody AddAdminRequestDto request)
             throws CertificateException, NotFoundException, AlreadyExistException;
