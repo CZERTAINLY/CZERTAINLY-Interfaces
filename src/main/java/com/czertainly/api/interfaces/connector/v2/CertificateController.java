@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -72,7 +73,8 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                     ))
             })
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
@@ -92,7 +94,8 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(path = "/issue", method = RequestMethod.POST)
@@ -112,7 +115,8 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
@@ -133,7 +137,8 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET)
@@ -152,7 +157,8 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
@@ -172,7 +178,8 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST)

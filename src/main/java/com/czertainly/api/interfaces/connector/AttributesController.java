@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -80,7 +81,8 @@ public interface AttributesController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Attribute validation failed",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute Validation error message")))
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute Validation error message")),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})
 
                     )
             }
