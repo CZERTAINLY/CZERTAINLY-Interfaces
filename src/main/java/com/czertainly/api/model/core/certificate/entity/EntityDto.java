@@ -3,14 +3,14 @@ package com.czertainly.api.model.core.certificate.entity;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CertificateEntityDto extends NameAndUuidDto {
+public class EntityDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Entity")
     private String description;
 
     @Schema(description = "Type of the Entity",
             required = true)
-    private CertificateEntityCode entityType;
+    private EntityCode entityType;
 
     public String getDescription() {
         return description;
@@ -20,11 +20,11 @@ public class CertificateEntityDto extends NameAndUuidDto {
         this.description = description;
     }
 
-    public CertificateEntityCode getEntityType() {
+    public EntityCode getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(CertificateEntityCode entityType) {
+    public void setEntityType(EntityCode entityType) {
         this.entityType = entityType;
     }
 }

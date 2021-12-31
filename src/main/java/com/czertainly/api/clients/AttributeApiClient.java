@@ -41,14 +41,14 @@ public class AttributeApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttributeDto> attributes, String functionGroupType) throws ValidationException, ConnectorException {
+    public Void validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttributeDto> attributes, String functionGroupType) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ATTRIBUTE_VALIDATION_CONTEXT, functionGroupCode.getCode(), functionGroupType)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
-                .toEntity(Boolean.class)
+                .toEntity(Void.class)
                 .block().getBody(),
                 request,
                 connector);

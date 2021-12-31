@@ -1,10 +1,14 @@
 package com.czertainly.api.model.common;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ErrorMessageDto {
 
+    @Schema(description = "Error message detail",
+            required = true,
+            example = "Error message")
     private String message;
 
     public ErrorMessageDto(String message) {

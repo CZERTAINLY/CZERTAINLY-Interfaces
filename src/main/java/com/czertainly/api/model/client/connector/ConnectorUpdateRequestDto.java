@@ -6,31 +6,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public class ConnectorRequestDto {
+public class ConnectorUpdateRequestDto {
 
-    @Schema(description = "Name of the Connector",
-            example = "Connector1",
-            required = true)
-    private String name;
     @Schema(description = "URL of the Connector to connect",
-            example = "http://network-discovery-provicer:8080",
-            required = true)
+            example = "http://network-discovery-provicer:8080")
     private String url;
     @Schema(description = "Type of authentication for the Connector",
-            example = "none",
-            required = true)
+            example = "none")
     private AuthType authType;
-    @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
-            required = false)
+    @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE")
     private List<RequestAttributeDto> authAttributes;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getUrl() {
         return url;

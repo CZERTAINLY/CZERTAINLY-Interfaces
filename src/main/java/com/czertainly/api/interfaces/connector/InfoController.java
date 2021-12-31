@@ -1,7 +1,11 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.model.client.connector.InfoResponse;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,10 +26,29 @@ import java.util.List;
                 "You can also implement helper end points that are used for callbacks and other relevant operations " +
                 "specific to implementation."
 )
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 public interface InfoController {
 
     @GetMapping(
             produces = {"application/json"}
+            , consumes = {"application/json"}
     )
     @Operation(
             summary = "List supported functions of the connector",

@@ -2,11 +2,14 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.authority.AddEndEntityRequestDto;
 import com.czertainly.api.model.core.authority.EditEndEntityRequestDto;
 import com.czertainly.api.model.core.authority.EndEntityDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,6 +19,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
 @Tag(name = "End Entity Management API", description = "End Entity Management API")
 public interface EndEntityController {
 
@@ -29,10 +50,10 @@ public interface EndEntityController {
                             description = "End Entities retrieved"
                     )
             })
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     List<EndEntityDto> listEndEntities(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName) throws NotFoundException;
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName) throws NotFoundException;
 
     @Operation(
             summary = "Get End Entity"
@@ -42,18 +63,13 @@ public interface EndEntityController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "End Entity retrieved"
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     EndEntityDto getEndEntity(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName,
-            @PathVariable String endEntityName) throws NotFoundException;
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
+            @Parameter(description = "End Entity Name") @PathVariable String endEntityName) throws NotFoundException;
 
     @Operation(
             summary = "Create End Entity"
@@ -63,17 +79,12 @@ public interface EndEntityController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "End Entity created"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
                     )
             })
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void createEndEntity(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
             @RequestBody AddEndEntityRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(
@@ -84,23 +95,13 @@ public interface EndEntityController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "End Entity updated"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.POST)
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void updateEndEntity(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName,
-            @PathVariable String endEntityName,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
+            @Parameter(description = "End Entity Name") @PathVariable String endEntityName,
             @RequestBody EditEndEntityRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -111,18 +112,13 @@ public interface EndEntityController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "End Entity removed"
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
     void removeEndEntity(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName,
-            @PathVariable String endEntityName) throws NotFoundException;
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
+            @Parameter(description = "End Entity Name") @PathVariable String endEntityName) throws NotFoundException;
 
 
     @Operation(
@@ -133,17 +129,12 @@ public interface EndEntityController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "End Entity password reset"
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
                     )
             })
-    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT)
+    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     void resetPassword(
-            @PathVariable String uuid,
-            @PathVariable String endEntityProfileName,
-            @PathVariable String endEntityName) throws NotFoundException;
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
+            @Parameter(description = "End Entity Name") @PathVariable String endEntityName) throws NotFoundException;
 
 }

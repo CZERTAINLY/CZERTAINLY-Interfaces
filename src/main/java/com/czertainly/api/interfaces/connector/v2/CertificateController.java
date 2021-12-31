@@ -3,13 +3,18 @@ package com.czertainly.api.interfaces.connector.v2;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.connector.v2.CertRevocationDto;
 import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
 import com.czertainly.api.model.connector.v2.CertificateRenewRequestDto;
 import com.czertainly.api.model.connector.v2.CertificateSignRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,6 +26,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/v2/authorityProvider/authorities/{uuid}/certificates")
 @Tag(name = "Certificate Management API", description = "Certificate Management API")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Bad Request",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Internal Server Error",
+                        content = @Content
+                )
+        })
+
 public interface CertificateController {
 
     @Operation(
@@ -33,9 +57,9 @@ public interface CertificateController {
                             description = "Attribute list retrieved"
                     )
     })
-    @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     List<AttributeDefinition> listIssueCertificateAttributes(
-            @PathVariable String uuid) throws NotFoundException;
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Validate list of Attributes to issue Certificate"
@@ -47,19 +71,15 @@ public interface CertificateController {
                             description = "Attributes validated"
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                     ))
             })
-    @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     boolean validateIssueCertificateAttributes(
-            @PathVariable String uuid,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
@@ -72,24 +92,15 @@ public interface CertificateController {
                             description = "Certificate issued"
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
-                    ),
-                    @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/issue", method = RequestMethod.POST)
+    @RequestMapping(path = "/issue", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateDataResponseDto issueCertificate(
-            @PathVariable String uuid,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -102,25 +113,16 @@ public interface CertificateController {
                             description = "Certificate renewed"
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
-                    ),
-                    @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
+    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateDataResponseDto renewCertificate(
-            @PathVariable String uuid,
-            @PathVariable String certificateId,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Certificate Serial Number") @PathVariable String certificateId,
             @RequestBody CertificateRenewRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -135,12 +137,13 @@ public interface CertificateController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     List<AttributeDefinition> listRevokeCertificateAttributes(
-            @PathVariable String uuid) throws NotFoundException;
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "Validate list of Attributes to revoke certificate"
@@ -152,19 +155,15 @@ public interface CertificateController {
                             description = "Attributes validated"
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     boolean validateRevokeCertificateAttributes(
-            @PathVariable String uuid,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
 
     @Operation(
@@ -177,22 +176,13 @@ public interface CertificateController {
                             description = "Certificate revoked"
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Bad Request",
-                            content = @Content
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Not found",
-                            content = @Content
-                    ),
-                    @ApiResponse(
                             responseCode = "422",
                             description = "Unprocessable Entity",
-                            content = @Content(schema = @Schema(implementation = ValidationException.class)
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST)
+    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void revokeCertificate(
             @PathVariable String uuid,
             @PathVariable String certificateId,

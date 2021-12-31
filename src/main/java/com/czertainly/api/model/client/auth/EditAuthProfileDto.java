@@ -8,20 +8,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class EditAuthProfileDto implements Named {
 	
 	@Schema(
-            description = "Name of the User",
-            required = true
+            description = "Name of the User"
     )
     private String name;
 	
 	@Schema(
-            description = "Surname of the User",
-            required = true
+            description = "Surname of the User"
     )
     private String surname;
 	
 	@Schema(
-            description = "Email Id of the User",
-            required = true
+            description = "Email Id of the User"
     )
     private String email;
 

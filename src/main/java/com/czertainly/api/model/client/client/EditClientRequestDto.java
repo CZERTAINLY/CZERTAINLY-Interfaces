@@ -22,7 +22,7 @@ public class EditClientRequestDto {
     private String clientCertificate;
 	
 	@Schema(
-            description = "UUID of the existing certificate in inventory",
+            description = "UUID of the existing certificate in inventory. Required if the Certificate is not provided",
             required = false
     )
     private String certificateUuid;

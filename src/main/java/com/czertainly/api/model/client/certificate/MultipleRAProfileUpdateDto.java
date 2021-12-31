@@ -1,29 +1,29 @@
-package com.czertainly.api.model.client.certificate.owner;
+package com.czertainly.api.model.client.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public class CertificateOwnerBulkUpdateDto {
+public class MultipleRAProfileUpdateDto {
 	
 	@Schema(
-            description = "Owner of the Certificates",
+            description = "UUID of the RA Profile",
             required = true
     )
-	private String owner;
+	private String uuid;
 	
 	@Schema(
-            description = "List of Certificate UUIDs",
+            description = "List of UUIDs of the Certificates",
             required = true
     )
 	private List<String> certificateUuids;
 
-	public String getOwner() {
-		return owner;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setOwner(String owner) {
-		this.owner = owner;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public List<String> getCertificateUuids() {
