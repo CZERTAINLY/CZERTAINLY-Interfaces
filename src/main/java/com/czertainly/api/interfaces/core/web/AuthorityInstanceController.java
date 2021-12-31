@@ -94,7 +94,7 @@ public interface AuthorityInstanceController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
-	@RequestMapping(path = "/{uuid}/endentityprofiles", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/endentityprofiles", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
 	public List<NameAndIdDto> listEntityProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@RequestMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})

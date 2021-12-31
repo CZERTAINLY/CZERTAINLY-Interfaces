@@ -57,7 +57,7 @@ public interface CertificateController {
                             description = "Attribute list retrieved"
                     )
     })
-    @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     List<AttributeDefinition> listIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -77,7 +77,7 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                     ))
             })
-    @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     boolean validateIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
@@ -98,7 +98,7 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/issue", method = RequestMethod.POST)
+    @RequestMapping(path = "/issue", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateDataResponseDto issueCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody CertificateSignRequestDto request) throws NotFoundException;
@@ -119,7 +119,7 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST)
+    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateDataResponseDto renewCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "Certificate Serial Number") @PathVariable String certificateId,
@@ -141,7 +141,7 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET)
+    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
     List<AttributeDefinition> listRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -161,7 +161,7 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST)
+    @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     boolean validateRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
@@ -182,7 +182,7 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST)
+    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void revokeCertificate(
             @PathVariable String uuid,
             @PathVariable String certificateId,
