@@ -68,7 +68,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "List all End Entities")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of entities retrieved")})
-    @RequestMapping(path = "/{raProfileName}/endentity", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{raProfileName}/endentity", method = RequestMethod.GET, produces = {"application/json"})
     List<ClientEndEntityDto> listEntities(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName)
             throws NotFoundException, ConnectorException;
@@ -83,7 +83,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "Get End Entity information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End Entity detail retrieved")})
-    @RequestMapping(path = "/{raProfileName}/endentity/{username}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{raProfileName}/endentity/{username}", method = RequestMethod.GET, produces = {"application/json"})
     ClientEndEntityDto getEndEntity(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @Parameter(description = "Username") @PathVariable String username)
@@ -100,7 +100,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "Revoke all Certificates and delete End Entity")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End Entity revoked and deleted")})
-    @RequestMapping(path = "/{raProfileName}/endentity/{username}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{raProfileName}/endentity/{username}", method = RequestMethod.DELETE, produces = {"application/json"})
     void revokeAndDeleteEndEntity(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @Parameter(description = "Username") @PathVariable String username)

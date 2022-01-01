@@ -58,13 +58,13 @@ public abstract class BaseApiClient {
 
         // for backward compatibility
         if (authType == null) {
-            request = webClient.method(method).header("Content-Type","application/json");
+            request = webClient.method(method);
             return (WebClient.RequestBodyUriSpec) request;
         }
 
         switch (authType) {
             case NONE:
-                request = webClient.method(method).header("Content-Type","application/json");
+                request = webClient.method(method);
                 break;
             case BASIC:
                 String username = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_USERNAME, authAttributes);

@@ -51,7 +51,7 @@ public interface AdminManagementController {
 
 	@Operation(summary = "List available administrators")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of administrator")})
-	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<AdminDto> listAdmins();
 
 	@Operation(summary = "Create a new Administrator")
@@ -75,7 +75,7 @@ public interface AdminManagementController {
 
 	@Operation(summary = "Remove Multiple Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Administrator removed")})
-	@RequestMapping(method = RequestMethod.DELETE)
+	@RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkRemoveAdmin(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Admin UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -84,7 +84,7 @@ public interface AdminManagementController {
 
 	@Operation(summary = "Remove Administrator")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Administrator removed")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeAdmin(@Parameter(description = "Administrator UUID") @PathVariable String uuid) throws NotFoundException;
 

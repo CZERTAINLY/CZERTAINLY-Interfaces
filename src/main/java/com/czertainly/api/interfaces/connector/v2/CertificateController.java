@@ -57,7 +57,7 @@ public interface CertificateController {
                             description = "Attribute list retrieved"
                     )
     })
-    @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET, produces = {"application/json"})
     List<AttributeDefinition> listIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -78,7 +78,7 @@ public interface CertificateController {
                     ))
             })
     @RequestMapping(path = "/issue/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    boolean validateIssueCertificateAttributes(
+    void validateIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
 
@@ -140,7 +140,7 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET, produces = {"application/json"})
     List<AttributeDefinition> listRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -161,7 +161,7 @@ public interface CertificateController {
                             ))
             })
     @RequestMapping(path = "/revoke/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    boolean validateRevokeCertificateAttributes(
+    void validateRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
 

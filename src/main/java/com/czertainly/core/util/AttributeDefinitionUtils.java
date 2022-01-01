@@ -246,7 +246,14 @@ public class AttributeDefinitionUtils {
         boolean wrongValue = false;
         switch (definition.getType()) {
             case STRING:
-                wrongValue = !(attribute.getValue() instanceof String || isNumeric(attribute.getValue().toString()));
+                wrongValue = !(attribute.getValue() instanceof String);
+                break;
+            case NUMBER:
+                try {
+                    wrongValue = !isNumeric(attribute.getValue().toString()) && !(attribute.getValue() instanceof String);
+                }catch (Exception e){
+                    wrongValue = true;
+                }
                 break;
             case SECRET:
                 // no type validation for secrets

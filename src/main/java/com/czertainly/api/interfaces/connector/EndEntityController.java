@@ -50,7 +50,7 @@ public interface EndEntityController {
                             description = "End Entities retrieved"
                     )
             })
-    @RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
     List<EndEntityDto> listEndEntities(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName) throws NotFoundException;
@@ -65,7 +65,7 @@ public interface EndEntityController {
                             description = "End Entity retrieved"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.GET, produces = {"application/json"})
     EndEntityDto getEndEntity(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
@@ -114,7 +114,7 @@ public interface EndEntityController {
                             description = "End Entity removed"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{endEntityName}", method = RequestMethod.DELETE, produces = {"application/json"})
     void removeEndEntity(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,

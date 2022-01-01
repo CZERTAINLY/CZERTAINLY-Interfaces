@@ -45,12 +45,12 @@ public interface ConnectorAuthController {
 
 	@Operation(summary = "Get list of Authentication Types")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Auth Types retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))) })
-	@RequestMapping(path = "/types", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/types", method = RequestMethod.GET, produces = {"application/json"})
 	public Set<AuthType> getAuthenticationTypes();
 
 	@Operation(summary = "Get basic auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved") })
-	@RequestMapping(path = "/attributes/basic", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/attributes/basic", method = RequestMethod.GET, produces = {"application/json"})
 	public List<AttributeDefinition> getBasicAuthAttributes();
 
 	@Operation(summary = "Validate basic auth Attributes")
@@ -61,7 +61,7 @@ public interface ConnectorAuthController {
 
 	@Operation(summary = "Get Attributes for certificate auth")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
-	@RequestMapping(path = "/attributes/certificate", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/attributes/certificate", method = RequestMethod.GET, produces = {"application/json"})
 	public List<AttributeDefinition> getCertificateAttributes();
 
 	@Operation(summary = "Validate certificate auth Attributes")
@@ -72,7 +72,7 @@ public interface ConnectorAuthController {
 
 	@Operation(summary = "Get API Key auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
-	@RequestMapping(path = "/attributes/apiKey", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/attributes/apiKey", method = RequestMethod.GET, produces = {"application/json"})
 	public List<AttributeDefinition> getApiKeyAuthAttributes();
 
 	@Operation(summary = "Validate API Key Attributes")
@@ -83,7 +83,7 @@ public interface ConnectorAuthController {
 
 	@Operation(summary = "Get JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
-	@RequestMapping(path = "/attributes/jwt", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/attributes/jwt", method = RequestMethod.GET, produces = {"application/json"})
 	public List<AttributeDefinition> getJWTAuthAttributes();
 
 	@Operation(summary = "Validate JWT auth Attributes")

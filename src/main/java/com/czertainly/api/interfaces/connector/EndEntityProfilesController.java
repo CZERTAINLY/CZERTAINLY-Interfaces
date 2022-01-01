@@ -41,7 +41,7 @@ import java.util.List;
 @Tag(name = "End Entity Profiles API", description = "End Entity Profiles API")
 public interface EndEntityProfilesController {
 
-    @RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
     @Operation(
             summary = "List available end entity profiles"
     )
@@ -54,7 +54,7 @@ public interface EndEntityProfilesController {
     )
             throws NotFoundException;
 
-    @RequestMapping(path = "/{endEntityProfileId}/certificateprofiles", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{endEntityProfileId}/certificateprofiles", method = RequestMethod.GET, produces = {"application/json"})
     @Operation(
             summary = "List available certificate profiles for given end entity profile"
     )
@@ -69,7 +69,7 @@ public interface EndEntityProfilesController {
     )
             throws NotFoundException;
 
-    @RequestMapping(path = "/{endEntityProfileId}/cas", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{endEntityProfileId}/cas", method = RequestMethod.GET, produces = {"application/json"})
     @Operation(
             summary = "List available certification authorities for given end entity profile"
     )

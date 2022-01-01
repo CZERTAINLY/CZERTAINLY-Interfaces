@@ -38,7 +38,7 @@ public interface AuthController {
 
 	@Operation(summary = "Profile Authorization")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authenticate a user")})
-	@RequestMapping(path = "/profile", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/profile", method = RequestMethod.GET, produces = {"application/json"})
 	public AuthProfileDto profile() throws NotFoundException;
 
 	@Operation(summary = "Edit Profile Information")
