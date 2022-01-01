@@ -1,5 +1,6 @@
 package com.czertainly.api.model.connector.v2;
 
+import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.authority.RevocationReason;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
@@ -18,13 +19,17 @@ public class CertRevocationDto {
             required = true)
     private RevocationReason reason;
 
-    @Schema(description = "RA Profile information",
+    @Schema(description = "List of RA Profiles attributes",
             required = true)
-    protected RaProfileDto raProfile;
+    private List<RequestAttributeDto> raProfileAttributes;
 
     @Schema(description = "List of Attributes to revoke Certificate",
             required = true)
     private List<RequestAttributeDto> attributes;
+
+    @Schema(description = "Base64 Certificate content. (Certificate to be revoked)",
+            required = true)
+    private String certificate;
 
     public RevocationReason getReason() {
         return reason;
@@ -34,12 +39,20 @@ public class CertRevocationDto {
         this.reason = reason;
     }
 
-    public RaProfileDto getRaProfile() {
-        return raProfile;
+    public List<RequestAttributeDto> getRaProfileAttributes() {
+        return raProfileAttributes;
     }
 
-    public void setRaProfile(RaProfileDto raProfile) {
-        this.raProfile = raProfile;
+    public void setRaProfileAttributes(List<RequestAttributeDto> raProfileAttributes) {
+        this.raProfileAttributes = raProfileAttributes;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
     }
 
     public List<RequestAttributeDto> getAttributes() {
@@ -54,7 +67,7 @@ public class CertRevocationDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("reason", reason)
-                .append("raProfile", raProfile)
+                .append("raProfile", raProfileAttributes)
                 .append("attributes", attributes)
                 .toString();
     }

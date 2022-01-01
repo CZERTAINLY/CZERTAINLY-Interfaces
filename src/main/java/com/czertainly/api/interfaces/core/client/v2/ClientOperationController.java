@@ -89,10 +89,10 @@ public interface ClientOperationController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate renewed"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{certificateUuid}/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ClientCertificateDataResponseDto renewCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
-			@Parameter(description = "Certificate serial number") @PathVariable String certificateId,
+			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException;
     
 	@Operation(summary = "Get revocation Attributes")

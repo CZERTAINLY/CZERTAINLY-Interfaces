@@ -1,9 +1,13 @@
 package com.czertainly.api.model.connector.v2;
 
+import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
 
 /**
  * Class representing a request to renew certificate
@@ -14,9 +18,13 @@ public class CertificateRenewRequestDto {
             required = true)
     private String pkcs10;
 
-    @Schema(description = "RA Profile information",
+    @Schema(description = "List of RA Profiles attributes",
             required = true)
-    private RaProfileDto raProfile;
+    private List<RequestAttributeDto> raProfileAttributes;
+
+    @Schema(description = "Base64 Certificate content. (Certificate to be renewed)",
+            required = true)
+    private String certificate;
 
     public String getPkcs10() {
         return pkcs10;
@@ -26,19 +34,27 @@ public class CertificateRenewRequestDto {
         this.pkcs10 = pkcs10;
     }
 
-    public RaProfileDto getRaProfile() {
-        return raProfile;
+    public List<RequestAttributeDto> getRaProfileAttributes() {
+        return raProfileAttributes;
     }
 
-    public void setRaProfile(RaProfileDto raProfile) {
-        this.raProfile = raProfile;
+    public void setRaProfileAttributes(List<RequestAttributeDto> raProfileAttributes) {
+        this.raProfileAttributes = raProfileAttributes;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("pkcs10", pkcs10)
-                .append("raProfile", raProfile)
+                .append("raProfile", raProfileAttributes)
                 .toString();
     }
 }
