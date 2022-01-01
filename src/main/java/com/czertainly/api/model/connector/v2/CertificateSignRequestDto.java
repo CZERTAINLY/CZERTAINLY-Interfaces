@@ -1,5 +1,6 @@
 package com.czertainly.api.model.connector.v2;
 
+import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,9 +18,9 @@ public class CertificateSignRequestDto {
             required = true)
     private String pkcs10;
 
-    @Schema(description = "RA Profile information",
+    @Schema(description = "List of RA Profiles attributes",
             required = true)
-    private RaProfileDto raProfile;
+    private List<RequestAttributeDto> raProfileAttributes;
 
     @Schema(description = "List of Attributes to issue Certificate",
             required = true)
@@ -33,12 +34,12 @@ public class CertificateSignRequestDto {
         this.pkcs10 = pkcs10;
     }
 
-    public RaProfileDto getRaProfile() {
-        return raProfile;
+    public List<RequestAttributeDto> getRaProfileAttributes() {
+        return raProfileAttributes;
     }
 
-    public void setRaProfile(RaProfileDto raProfile) {
-        this.raProfile = raProfile;
+    public void setRaProfileAttributes(List<RequestAttributeDto> raProfileAttributes) {
+        this.raProfileAttributes = raProfileAttributes;
     }
 
     public List<RequestAttributeDto> getAttributes() {
@@ -53,7 +54,7 @@ public class CertificateSignRequestDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("pkcs10", pkcs10)
-                .append("raProfile", raProfile)
+                .append("raProfile", raProfileAttributes)
                 .append("attributes", attributes)
                 .toString();
     }

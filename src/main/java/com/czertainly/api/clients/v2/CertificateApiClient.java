@@ -20,18 +20,17 @@ import java.util.List;
 public class CertificateApiClient extends BaseApiClient {
 
     private static final String CERTIFICATE_BASE_CONTEXT = "/v2/authorityProvider/authorities/{uuid}/certificates";
-    private static final String CERTIFICATE_IDENTIFIED_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/{certificateId}";
 
     private static final String CERTIFICATE_ISSUE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/issue";
     private static final String CERTIFICATE_ISSUE_ATTRIBUTES_CONTEXT = CERTIFICATE_ISSUE_CONTEXT + "/attributes";
     private static final String CERTIFICATE_ISSUE_ATTRIBUTES_VALIDATE_CONTEXT = CERTIFICATE_ISSUE_ATTRIBUTES_CONTEXT + "/validate";
 
-    private static final String CERTIFICATE_RENEW_CONTEXT = CERTIFICATE_IDENTIFIED_CONTEXT + "/renew";
+    private static final String CERTIFICATE_RENEW_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/renew";
 
     private static final String CERTIFICATE_REVOKE_ATTRIBUTES_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/revoke/attributes";
     private static final String CERTIFICATE_REVOKE_ATTRIBUTES_VALIDATE_CONTEXT = CERTIFICATE_REVOKE_ATTRIBUTES_CONTEXT + "/validate";
 
-    private static final String CERTIFICATE_REVOKE_CONTEXT = CERTIFICATE_IDENTIFIED_CONTEXT + "/revoke";
+    private static final String CERTIFICATE_REVOKE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/revoke";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -78,11 +77,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public CertificateDataResponseDto renewCertificate(ConnectorDto connector, String authorityUuid, String certificateId, CertificateRenewRequestDto requestDto) throws ConnectorException {
+    public CertificateDataResponseDto renewCertificate(ConnectorDto connector, String authorityUuid, CertificateRenewRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_RENEW_CONTEXT, authorityUuid, certificateId)
+                .uri(connector.getUrl() + CERTIFICATE_RENEW_CONTEXT, authorityUuid)
                 .body(Mono.just(requestDto), CertificateRenewRequestDto.class)
                 .retrieve()
                 .toEntity(CertificateDataResponseDto.class)
@@ -116,11 +115,11 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void revokeCertificate(ConnectorDto connector, String authorityUuid, String certificateId, CertRevocationDto requestDto) throws ConnectorException {
+    public void revokeCertificate(ConnectorDto connector, String authorityUuid, CertRevocationDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
         processRequest(r -> r
-                .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityUuid, certificateId)
+                .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityUuid)
                 .body(Mono.just(requestDto), CertRevocationDto.class)
                 .retrieve()
                 .toEntity(Void.class)

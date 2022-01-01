@@ -119,10 +119,9 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/{certificateId}/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateDataResponseDto renewCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Certificate Serial Number") @PathVariable String certificateId,
             @RequestBody CertificateRenewRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -182,9 +181,8 @@ public interface CertificateController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void revokeCertificate(
-            @PathVariable String uuid,
-            @PathVariable String certificateId,
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody CertRevocationDto request) throws NotFoundException;
 }
