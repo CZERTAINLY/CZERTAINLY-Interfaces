@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 public interface HealthController {
 
     @GetMapping(
-            produces = {"application/json"}, consumes = {"application/json"}
+            produces = {"application/json"}
     )
     @Operation(
             summary = "Health check"

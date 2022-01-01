@@ -47,12 +47,12 @@ public interface EntityController {
 	
 	@Operation(summary = "List Entities")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available Entities")})
-	@RequestMapping(method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<EntityDto> listEntities();
 	
 	@Operation(summary = "Entity details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Entity details retrieved")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
 	public EntityDto getEntity(@Parameter(description = "Entity UUID") @PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Create Entity")
@@ -69,13 +69,13 @@ public interface EntityController {
 	
 	@Operation(summary = "Remove Entity")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entity removed")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void removeEntity(@Parameter(description = "Entity UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Remove multiple Entity")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entities removed")})
-	@RequestMapping(method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkRemoveEntity(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Entity UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),

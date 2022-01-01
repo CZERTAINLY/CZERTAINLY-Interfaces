@@ -10,6 +10,7 @@ import java.util.Arrays;
 public enum BaseAttributeDefinitionTypes {
 	
 	STRING(Constants.STRING),
+    NUMBER(Constants.NUMBER),
 	SECRET(Constants.SECRET),
 	FILE(Constants.FILE),
 	BOOLEAN(Constants.BOOLEAN),
@@ -36,6 +37,9 @@ public enum BaseAttributeDefinitionTypes {
     private static class Constants {
     	/** Simple text attribute **/
         private static final String STRING = "string";
+
+        /** Simple number attribute **/
+        private static final String NUMBER = "number";
 
         /** Text attribute containing sensitive data **/
         private static final String SECRET = "secret";
