@@ -110,11 +110,11 @@ public interface ClientOperationController {
     
 	@Operation(summary = "Revoke Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate revoked")})
-    @RequestMapping(path = "/{certificateId}/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{certificateUuid}/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
     void revokeCertificate(
 			@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
-			@Parameter(description = "Certificate serial number") @PathVariable String certificateId,
+			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException;
 
 }
