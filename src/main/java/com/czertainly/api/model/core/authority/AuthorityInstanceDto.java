@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.authority;
 
-import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -12,7 +12,7 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
             required = true)
-    private List<AttributeDefinition> attributes;
+    private List<ResponseAttributeDto> attributes;
 
     @Schema(description = "Status of Authority instance",
             required = true)
@@ -31,11 +31,11 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             required = true)
     private String kind;
 
-    public List<AttributeDefinition> getAttributes() {
+    public List<ResponseAttributeDto> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeDefinition> attributes) {
+    public void setAttributes(List<ResponseAttributeDto> attributes) {
         this.attributes = attributes;
     }
 

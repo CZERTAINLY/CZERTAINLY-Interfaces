@@ -1,9 +1,7 @@
 package com.czertainly.api.model.connector.v2;
 
-import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.authority.RevocationReason;
-import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

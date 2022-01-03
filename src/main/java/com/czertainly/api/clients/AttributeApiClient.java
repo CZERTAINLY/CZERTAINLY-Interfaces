@@ -4,6 +4,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeCallback;
 import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.RequestAttributeCallback;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
@@ -54,21 +55,21 @@ public class AttributeApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Object attributeCallback(ConnectorDto connector, AttributeCallback callback) throws ConnectorException {
+    public Object attributeCallback(ConnectorDto connector, AttributeCallback callback, RequestAttributeCallback callbackRequest) throws ConnectorException {
         HttpMethod method = HttpMethod.valueOf(callback.getCallbackMethod());
 
         URI uri;
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
         uriBuilder.path(callback.getCallbackContext());
 
-        if (callback.getQueryParameters() != null) {
-            callback.getQueryParameters().entrySet().stream()
+        if (callbackRequest.getQueryParameters() != null) {
+            callbackRequest.getQueryParameters().entrySet().stream()
                     .filter(q -> q.getValue() != null)
                     .forEach(q -> uriBuilder.queryParam(q.getKey(), q.getValue()));
         }
 
-        if (callback.getPathVariables() != null) {
-            uri = uriBuilder.build(callback.getPathVariables());
+        if (callbackRequest.getPathVariables() != null) {
+            uri = uriBuilder.build(callbackRequest.getPathVariables());
         } else {
             uri = uriBuilder.build();
         }
@@ -77,8 +78,8 @@ public class AttributeApiClient extends BaseApiClient {
                 prepareRequest(method, connector.getAuthType(), connector.getAuthAttributes())
                         .uri(uri);
 
-        if (callback.getRequestBody() != null) {
-            request.bodyValue(callback.getRequestBody());
+        if (callbackRequest.getRequestBody() != null) {
+            request.bodyValue(callbackRequest.getRequestBody());
         }
 
         return processRequest(r -> r

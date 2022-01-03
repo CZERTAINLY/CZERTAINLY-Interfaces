@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.credential;
 
-import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,7 +18,7 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "List of Credential Attributes",
             required = true)
-    private List<AttributeDefinition> attributes;
+    private List<ResponseAttributeDto> attributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
@@ -40,11 +40,11 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
         this.kind = kind;
     }
 
-    public List<AttributeDefinition> getAttributes() {
+    public List<ResponseAttributeDto> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeDefinition> attributes) {
+    public void setAttributes(List<ResponseAttributeDto> attributes) {
         this.attributes = attributes;
     }
 

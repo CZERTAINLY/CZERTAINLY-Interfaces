@@ -5,6 +5,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class AttributeDefinitionUtils {
 
-    private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public static AttributeDefinition getAttributeDefinition(String name, List<AttributeDefinition> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
@@ -30,16 +31,20 @@ public class AttributeDefinitionUtils {
     }
 
     public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
-        if(attributes.size() == 0){
+        if (attributes.size() == 0) {
             return null;
         }
-        if(attributes.get(0) instanceof RequestAttributeDto){
+        if (attributes.get(0) instanceof RequestAttributeDto) {
             List<RequestAttributeDto> reloadedAttributes = (List<RequestAttributeDto>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        }else if (attributes.get(0) instanceof AttributeDefinition){
+        } else if (attributes.get(0) instanceof AttributeDefinition) {
             List<AttributeDefinition> reloadedAttributes = (List<AttributeDefinition>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        }else{
+        }else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            List<ResponseAttributeDto> reloadedAttributes = (List<ResponseAttributeDto>) attributes;
+            return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        }
+        else {
             throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
 
@@ -51,22 +56,28 @@ public class AttributeDefinitionUtils {
     }
 
     public static <T extends Object> T getAttributeValue(String name, List<?> attributes) {
-        if(attributes.size() == 0){
+        if (attributes.size() == 0) {
             return null;
         }
-        if(attributes.get(0) instanceof RequestAttributeDto) {
+        if (attributes.get(0) instanceof RequestAttributeDto) {
             RequestAttributeDto definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getValue() == null) {
                 return null;
             }
             return (T) definition.getValue();
-        }else if(attributes.get(0) instanceof AttributeDefinition){
+        } else if (attributes.get(0) instanceof AttributeDefinition) {
             AttributeDefinition definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getValue() == null) {
                 return null;
             }
             return (T) definition.getValue();
-        } else{
+        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            ResponseAttributeDto definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getValue() == null) {
+                return null;
+            }
+            return (T) definition.getValue();
+        }else {
             throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
     }
@@ -110,7 +121,7 @@ public class AttributeDefinitionUtils {
 
         try {
             return ATTRIBUTES_OBJECT_MAPPER.convertValue(value, CredentialDto.class);
-        } catch (Exception e ) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Could not get Credential value. Attribute has wrong value: " + value, e);
         }
     }
@@ -251,7 +262,7 @@ public class AttributeDefinitionUtils {
             case NUMBER:
                 try {
                     wrongValue = !isNumeric(attribute.getValue().toString()) && !(attribute.getValue() instanceof String);
-                }catch (Exception e){
+                } catch (Exception e) {
                     wrongValue = true;
                 }
                 break;
@@ -289,7 +300,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static void validateCallback(AttributeCallback callback) {
+    public static void validateCallback(AttributeCallback callback, RequestAttributeCallback request) {
         List<ValidationError> errors = new ArrayList<>();
 
         if (StringUtils.isBlank(callback.getCallbackContext())) {
@@ -326,13 +337,13 @@ public class AttributeDefinitionUtils {
                     for (AttributeValueTarget target : mapping.getTargets()) {
                         switch (target) {
                             case PATH_VARIABLE:
-                                if (callback.getPathVariables() == null || callback.getPathVariables().isEmpty()) {
+                                if (request.getPathVariables() == null || request.getPathVariables().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback path variables not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (callback.getPathVariables().get(mapping.getTo()) == null) {
+                                if (request.getPathVariables().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback path variable {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
@@ -344,13 +355,13 @@ public class AttributeDefinitionUtils {
                                 }
                                 break;
                             case REQUEST_PARAMETER:
-                                if (callback.getQueryParameters() == null || callback.getQueryParameters().isEmpty()) {
+                                if (request.getQueryParameters() == null || request.getQueryParameters().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback query parameters not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (callback.getQueryParameters().get(mapping.getTo()) == null) {
+                                if (request.getQueryParameters().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback query parameters {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
@@ -362,13 +373,13 @@ public class AttributeDefinitionUtils {
                                 }
                                 break;
                             case BODY:
-                                if (callback.getRequestBody() == null || callback.getRequestBody().isEmpty()) {
+                                if (request.getRequestBody() == null || request.getRequestBody().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback request body not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (callback.getRequestBody().get(mapping.getTo()) == null) {
+                                if (request.getRequestBody().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback request body key {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
@@ -404,7 +415,7 @@ public class AttributeDefinitionUtils {
     }
 
     public static List<AttributeDefinition> clientAttributeConverter(List<RequestAttributeDto> attributes) {
-        if(attributes == null){
+        if (attributes == null) {
             return new ArrayList<>();
         }
         List<AttributeDefinition> convertedDefinition = new ArrayList<>();
@@ -418,18 +429,80 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static List<RequestAttributeDto> getClientAttributes(List<AttributeDefinition> attributes) {
-        if(attributes == null){
+    public static List<AttributeDefinition> responseAttributeConverter(List<ResponseAttributeDto> attributes) {
+        if (attributes == null) {
             return new ArrayList<>();
         }
-        List<RequestAttributeDto> convertedDefinition = new ArrayList<>();
-        for (AttributeDefinition clt : attributes) {
-            RequestAttributeDto atr = new RequestAttributeDto();
+        List<AttributeDefinition> convertedDefinition = new ArrayList<>();
+        for (ResponseAttributeDto clt : attributes) {
+            AttributeDefinition atr = new AttributeDefinition();
             atr.setValue(clt.getValue());
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());
+            atr.setType(clt.getType());
+            atr.setLabel(clt.getLabel());
             convertedDefinition.add(atr);
         }
+        return convertedDefinition;
+    }
+
+    public static List<RequestAttributeDto> getClientAttributes(List<?> attributes) {
+        if (attributes == null || attributes.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<RequestAttributeDto> convertedDefinition = new ArrayList<>();
+        if (attributes.get(0) instanceof AttributeDefinition) {
+            List<AttributeDefinition> itrAttributes = (List<AttributeDefinition>) attributes;
+            for (AttributeDefinition clt : itrAttributes) {
+                RequestAttributeDto atr = new RequestAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                convertedDefinition.add(atr);
+        }} else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            List<ResponseAttributeDto> itrAttributes = (List<ResponseAttributeDto>) attributes;
+            for (ResponseAttributeDto clt : itrAttributes) {
+                RequestAttributeDto atr = new RequestAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                convertedDefinition.add(atr);
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
+        }
+        return convertedDefinition;
+    }
+
+    public static List<ResponseAttributeDto> getResponseAttributes(List<?> attributes) {
+        if (attributes == null || attributes.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<ResponseAttributeDto> convertedDefinition = new ArrayList<>();
+        if (attributes.get(0) instanceof AttributeDefinition) {
+            List<AttributeDefinition> itrAttributes = (List<AttributeDefinition>) attributes;
+            for (AttributeDefinition clt : itrAttributes) {
+                ResponseAttributeDto atr = new ResponseAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                atr.setLabel(clt.getLabel());
+                atr.setType(clt.getType());
+                convertedDefinition.add(atr);
+            }
+        } else if (attributes.get(0) instanceof RequestAttributeDto) {
+            List<RequestAttributeDto> itrAttributes = (List<RequestAttributeDto>) attributes;
+            for (RequestAttributeDto clt : itrAttributes) {
+                ResponseAttributeDto atr = new ResponseAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                convertedDefinition.add(atr);
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
+        }
+
         return convertedDefinition;
     }
 }

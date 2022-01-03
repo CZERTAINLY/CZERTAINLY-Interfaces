@@ -1,7 +1,7 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.*;
-import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.ResponseAttributeDto;
 import com.czertainly.api.model.core.connector.AuthType;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
@@ -52,7 +52,7 @@ public abstract class BaseApiClient {
 
     protected WebClient webClient;
 
-    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, AuthType authType, List<AttributeDefinition> authAttributes) {
+    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, AuthType authType, List<ResponseAttributeDto> authAttributes) {
 
         WebClient.RequestBodySpec request;
 
@@ -98,7 +98,7 @@ public abstract class BaseApiClient {
         return (WebClient.RequestBodyUriSpec) request;
     }
 
-    private SslContext createSslContext(List<AttributeDefinition> attributes) {
+    private SslContext createSslContext(List<ResponseAttributeDto> attributes) {
         try {
             KeyManager km = null;
             String keyStoreData = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE, attributes);

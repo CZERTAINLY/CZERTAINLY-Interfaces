@@ -1,6 +1,5 @@
 package com.czertainly.api.model.core.admin;
 
-import com.czertainly.api.model.common.Identified;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import io.swagger.v3.oas.annotations.media.Schema;
