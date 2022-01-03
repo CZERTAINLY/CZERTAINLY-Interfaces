@@ -469,7 +469,7 @@ public class AttributeDefinitionUtils {
                 convertedDefinition.add(atr);
             }
         } else {
-            throw new IllegalArgumentException("Invalid argument to provided to get requestAttributes");
+            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
         }
         return convertedDefinition;
     }
@@ -500,7 +500,7 @@ public class AttributeDefinitionUtils {
                 convertedDefinition.add(atr);
             }
         } else {
-            throw new IllegalArgumentException("Invalid argument to provided to get responseAttributes");
+            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
         }
 
         return convertedDefinition;
