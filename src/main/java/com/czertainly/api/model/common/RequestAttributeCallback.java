@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class RequestAttributeCallback {
 
-    @Schema(description = "UUID of the attribute")
+    @Schema(description = "UUID of the Attribute")
     private String uuid;
 
-    @Schema(description = "Name of the attribute",
+    @Schema(description = "Name of the Attribute",
             required = true)
     private String name;
 
