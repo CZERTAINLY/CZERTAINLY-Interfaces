@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1")
-@Tag(name = "Callback Management API", description = "Callback Management API")
+@Tag(name = "Callback API", description = "Callback API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.*;
 
 public interface CallbackController {
 
-	@Operation(summary = "Connector Callback API", description = "Method to trigger the callback for Authority Instances, Discovery.")
+	@Operation(summary = "Connector Callback API", description = "API to trigger the Callback for Connector.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
 	@RequestMapping(path = "/connectors/{uuid}/{functionGroup}/{kind}/callback", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
@@ -57,11 +57,11 @@ public interface CallbackController {
 						   @Parameter(description = "Kind") @PathVariable String kind,
 						   @RequestBody RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "RA Profile Callback API", description = "Method for Callbacks associated with RA Profile Creation and Update")
+	@Operation(summary = "RA Profile Callback API", description = "API to trigger the Callback for RA Profile.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
 	@RequestMapping(path = "/{authorityUuid}/callback", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
-	public Object raProfileCallback(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+	public Object raProfileCallback(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
 						   @RequestBody RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
 
 	}
