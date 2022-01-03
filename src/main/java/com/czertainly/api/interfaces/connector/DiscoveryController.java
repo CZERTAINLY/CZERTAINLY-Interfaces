@@ -1,7 +1,6 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryDataRequestDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryProviderDto;

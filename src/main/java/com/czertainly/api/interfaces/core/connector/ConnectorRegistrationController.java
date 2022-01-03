@@ -2,12 +2,9 @@ package com.czertainly.api.interfaces.core.connector;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.client.connector.ConnectRequestDto;
 import com.czertainly.api.model.client.connector.ConnectorRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.core.connector.ConnectorDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

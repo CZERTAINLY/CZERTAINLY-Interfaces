@@ -4,17 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.connector.ConnectDto;
-import com.czertainly.api.model.client.connector.ConnectRequestDto;
-import com.czertainly.api.model.client.connector.ConnectorRequestDto;
-import com.czertainly.api.model.client.connector.ConnectorUpdateRequestDto;
-import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
-import com.czertainly.api.model.common.AttributeCallback;
-import com.czertainly.api.model.common.AttributeDefinition;
-import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.HealthDto;
-import com.czertainly.api.model.common.RequestAttributeDto;
-import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.client.connector.*;
+import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -179,12 +170,6 @@ public interface ConnectorController {
 	public void validateAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
 									  @Parameter(description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttributeDto> attributes)
 			throws NotFoundException, ConnectorException;
-
-	@Operation(summary = "Callback API")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
-	@RequestMapping(path = "/{uuid}/callback", method = RequestMethod.POST, consumes = {
-			"application/json" }, produces = { "application/json" })
-	public Object callback(@Parameter(description = "Connector UUID") @PathVariable String uuid, @RequestBody AttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
 
 	@Operation(summary = "Delete multiple Connectors")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connectors deleted"),

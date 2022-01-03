@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.connector;
 
-import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -24,7 +24,7 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
     private AuthType authType;
     @Schema(description = "List of Attributes for the authentication type",
             required = false)
-    private List<AttributeDefinition> authAttributes;
+    private List<ResponseAttributeDto> authAttributes;
     @Schema(description = "Status of the Connector",
             example = "CONNECTED",
             required = true)
@@ -54,11 +54,11 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
         this.authType = authType;
     }
 
-    public List<AttributeDefinition> getAuthAttributes() {
+    public List<ResponseAttributeDto> getAuthAttributes() {
         return authAttributes;
     }
 
-    public void setAuthAttributes(List<AttributeDefinition> authAttributes) {
+    public void setAuthAttributes(List<ResponseAttributeDto> authAttributes) {
         this.authAttributes = authAttributes;
     }
 

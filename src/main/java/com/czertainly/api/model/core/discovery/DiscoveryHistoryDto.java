@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.discovery;
 
-import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -66,7 +66,7 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
             description = "List of Discovery Attributes",
             required = true
     )
-    private List<AttributeDefinition> attributes;
+    private List<ResponseAttributeDto> attributes;
     @Schema(
             description = "Metadata of the Discovery"
     )
@@ -145,11 +145,11 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
         this.connectorUuid = connectorUuid;
     }
 
-    public List<AttributeDefinition> getAttributes() {
+    public List<ResponseAttributeDto> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeDefinition> attributes) {
+    public void setAttributes(List<ResponseAttributeDto> attributes) {
         this.attributes = attributes;
     }
 
