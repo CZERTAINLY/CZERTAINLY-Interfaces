@@ -47,7 +47,7 @@ import java.util.List;
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
         })
-@Tag(name = "Client Operations API", description = "Client API for managing End Entities and Certificates")
+@Tag(name = "Legacy Client Operations API", description = "Client API for managing End Entities and Certificates")
 public interface ClientOperationController {
 
     @Operation(summary = "Issue Certificate")
