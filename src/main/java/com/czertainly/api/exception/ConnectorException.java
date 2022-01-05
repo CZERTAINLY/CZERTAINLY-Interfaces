@@ -1,6 +1,6 @@
 package com.czertainly.api.exception;
 
-import com.czertainly.api.model.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.ConnectorDto;
 
 public class ConnectorException extends Exception {
 

@@ -1,9 +1,9 @@
 package com.czertainly.util;
 
-import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.*;
-import com.czertainly.api.model.credential.CredentialDto;
+import com.czertainly.api.model.common.*;
+import com.czertainly.api.model.core.credential.CredentialDto;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,11 +16,11 @@ public class AttributeDefinitionUtilsTest {
     @Test
     public void testGetAttribute() {
         String attributeName = "testAttribute";
-        List<AttributeDefinition> attributes = createAttributes(attributeName, 1234);
+        List<RequestAttributeDto> attributes = createAttributes(attributeName, 1234);
 
-        AttributeDefinition attribute = getAttributeDefinition(attributeName, attributes);
+        RequestAttributeDto attribute = getRequestAttributes(attributeName, attributes);
         Assertions.assertNotNull(attribute);
-        Assertions.assertTrue(containsAttributeDefinition(attributeName, attributes));
+        Assertions.assertTrue(containsRequestAttributes(attributeName, attributes));
         Assertions.assertEquals(attributes.get(0), attribute);
     }
 
@@ -39,17 +39,17 @@ public class AttributeDefinitionUtilsTest {
 
         List<AttributeDefinition> attributes = List.of(attribute1, attribute2);
 
-        Integer value1 = getAttributeValue(attribute1Name, attributes);
+        Integer value1 = AttributeDefinitionUtils.getAttributeValue(attribute1Name, attributes);
         Assertions.assertNotNull(value1);
         Assertions.assertTrue(containsAttributeDefinition(attribute1Name, attributes));
         Assertions.assertEquals(attribute1.getValue(), value1);
 
-        String value2 = getAttributeValue(attribute2Name, attributes);
+        String value2 = AttributeDefinitionUtils.getAttributeValue(attribute2Name, attributes);
         Assertions.assertNotNull(value2);
         Assertions.assertTrue(containsAttributeDefinition(attribute2Name, attributes));
         Assertions.assertEquals(attribute2.getValue(), value2);
 
-        Object value3 = getAttributeValue("wrongName", attributes);
+        Object value3 = AttributeDefinitionUtils.getAttributeValue("wrongName", attributes);
         Assertions.assertNull(value3);
         Assertions.assertFalse(containsAttributeDefinition("wrongName", attributes));
     }
@@ -62,11 +62,11 @@ public class AttributeDefinitionUtilsTest {
         attribute1Value.put("uuid", UUID.randomUUID().toString());
         attribute1Value.put("name", "testName");
 
-        AttributeDefinition attribute1 = new AttributeDefinition();
+        RequestAttributeDto attribute1 = new RequestAttributeDto();
         attribute1.setName(attribute1Name);
         attribute1.setValue(attribute1Value);
 
-        List<AttributeDefinition> attributes = List.of(attribute1);
+        List<RequestAttributeDto> attributes = List.of(attribute1);
 
         NameAndUuidDto dto = getNameAndUuidValue(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
@@ -77,18 +77,18 @@ public class AttributeDefinitionUtilsTest {
     @Test
     public void testGetAttributeCredentialValue() {
         String attribute1Name = "testAttribute1";
-        List<AttributeDefinition> credentialAttributes = createAttributes("credAttr", 987);
+        List<RequestAttributeDto> credentialAttributes = createAttributes("credAttr", 987);
 
         HashMap<String, Object> attribute1Value = new HashMap<>();
         attribute1Value.put("uuid", UUID.randomUUID().toString());
         attribute1Value.put("name", "testName");
         attribute1Value.put("attributes", credentialAttributes);
 
-        AttributeDefinition attribute1 = new AttributeDefinition();
+        RequestAttributeDto attribute1 = new RequestAttributeDto();
         attribute1.setName(attribute1Name);
         attribute1.setValue(attribute1Value);
 
-        List<AttributeDefinition> attributes = List.of(attribute1);
+        List<RequestAttributeDto> attributes = List.of(attribute1);
 
         CredentialDto dto = getCredentialValue(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
@@ -105,7 +105,7 @@ public class AttributeDefinitionUtilsTest {
         Assertions.assertNotNull(attrs);
         Assertions.assertEquals(7, attrs.size());
 
-        NameAndIdDto endEntityProfile = getNameAndIdValue("endEntityProfile", attrs);
+        NameAndIdDto endEntityProfile = getNameAndIdValue("endEntityProfile", AttributeDefinitionUtils.getClientAttributes(attrs));
         Assertions.assertNotNull(endEntityProfile);
         Assertions.assertEquals(0, endEntityProfile.getId());
         Assertions.assertEquals("DemoTLSServerEndEntityProfile", endEntityProfile.getName());
@@ -119,18 +119,17 @@ public class AttributeDefinitionUtilsTest {
     public void testValidateAttributes_success() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        int attributeValue = 1234;
+        String attributeValue = "1234";
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
+        attribute.setUuid(attributeId);
         attribute.setValue(attributeValue);
 
         validateAttributes(List.of(definition), List.of(attribute));
@@ -143,7 +142,7 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
@@ -162,14 +161,13 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
+        attribute.setUuid(attributeId);
         attribute.setValue(null); // cause or failure
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
@@ -191,15 +189,14 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setValidationRegex(validationRegex);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
+        attribute.setUuid(attributeId);
         attribute.setValue(attributeValue);
 
         validateAttributes(List.of(definition), List.of(attribute));
@@ -216,16 +213,89 @@ public class AttributeDefinitionUtilsTest {
 
         AttributeDefinition definition = new AttributeDefinition();
         definition.setName(attributeName);
-        definition.setId(attributeId);
+        definition.setUuid(attributeId);
         definition.setType(BaseAttributeDefinitionTypes.STRING);
         definition.setValidationRegex(validationRegex);
         definition.setRequired(true);
 
-        AttributeDefinition attribute = new AttributeDefinition();
+        RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setId(attributeId);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
+        attribute.setUuid(attributeId);
         attribute.setValue(attributeValue);
+
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_credentialMap() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+
+        LinkedHashMap<String, Object> credentialData = new LinkedHashMap<>();
+        credentialData.put("name", "testName");
+        credentialData.put("uuid", "testUuid");
+        attribute.setValue(credentialData);
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_credentialDto() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setValue(new CredentialDto());
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_credentialFail() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.CREDENTIAL);
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setValue(123l); // cause or failure
+
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_unknownAttribute() {
+        String attributeName = "testAttribute1";
+
+        AttributeDefinition definition = new AttributeDefinition();
+        definition.setName(attributeName);
+        definition.setType(BaseAttributeDefinitionTypes.STRING);
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName("unknown-attribute");  // cause or failure
+        attribute.setValue("123");
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method
@@ -247,9 +317,11 @@ public class AttributeDefinitionUtilsTest {
         callback.setCallbackContext("v1/test");
         callback.setCallbackMethod("GET");
         callback.setMappings(mappings);
-        callback.setPathVariables(Map.ofEntries(Map.entry("credentialKind", "softKeyStore")));
 
-        validateCallback(callback); // should not throw exception
+        RequestAttributeCallback callbackRequest = new RequestAttributeCallback();
+        callbackRequest.setPathVariables(Map.ofEntries(Map.entry("credentialKind", "softKeyStore")));
+
+        validateCallback(callback, callbackRequest); // should not throw exception
     }
 
     @Test
@@ -273,11 +345,13 @@ public class AttributeDefinitionUtilsTest {
         callback.setCallbackContext("core/getCredentials");
         callback.setCallbackMethod("GET");
         callback.setMappings(mappings);
-        callback.setPathVariables(Map.ofEntries(Map.entry("credentialKind", "softKeyStore")));
-        callback.setQueryParameters(Map.ofEntries(Map.entry("toQueryParam", 1234)));
+
+        RequestAttributeCallback callbackRequest = new RequestAttributeCallback();
+        callbackRequest.setPathVariables(Map.ofEntries(Map.entry("credentialKind", "softKeyStore")));
+        callbackRequest.setQueryParameters(Map.ofEntries(Map.entry("toQueryParam", 1234)));
 
 
-        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> validateCallback(callback));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> validateCallback(callback, callbackRequest));
 
         Assertions.assertNotNull(exception.getErrors());
         Assertions.assertFalse(exception.getErrors().isEmpty());

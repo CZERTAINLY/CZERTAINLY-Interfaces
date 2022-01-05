@@ -1,26 +1,25 @@
 package com.czertainly.core.util;
 
-import com.czertainly.api.model.*;
-import com.czertainly.api.model.credential.CredentialDto;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.*;
+import com.czertainly.api.model.core.credential.CredentialDto;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class AttributeDefinitionUtils {
 
-    private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public static AttributeDefinition getAttributeDefinition(String name, List<AttributeDefinition> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
@@ -31,17 +30,59 @@ public class AttributeDefinitionUtils {
         return definition != null;
     }
 
-    public static <T extends Object> T getAttributeValue(String name, List<AttributeDefinition> attributes) {
-        AttributeDefinition definition = getAttributeDefinition(name, attributes);
-
-        if (definition == null || definition.getValue() == null) {
+    public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
+        if (attributes.size() == 0) {
             return null;
         }
+        if (attributes.get(0) instanceof RequestAttributeDto) {
+            List<RequestAttributeDto> reloadedAttributes = (List<RequestAttributeDto>) attributes;
+            return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        } else if (attributes.get(0) instanceof AttributeDefinition) {
+            List<AttributeDefinition> reloadedAttributes = (List<AttributeDefinition>) attributes;
+            return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        }else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            List<ResponseAttributeDto> reloadedAttributes = (List<ResponseAttributeDto>) attributes;
+            return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid Object to get Attribute value");
+        }
 
-        return (T) definition.getValue();
     }
 
-    public static NameAndIdDto getNameAndIdValue(String name, List<AttributeDefinition> attributes) {
+    public static boolean containsRequestAttributes(String name, List<RequestAttributeDto> attributes) {
+        RequestAttributeDto definition = getRequestAttributes(name, attributes);
+        return definition != null;
+    }
+
+    public static <T extends Object> T getAttributeValue(String name, List<?> attributes) {
+        if (attributes.size() == 0) {
+            return null;
+        }
+        if (attributes.get(0) instanceof RequestAttributeDto) {
+            RequestAttributeDto definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getValue() == null) {
+                return null;
+            }
+            return (T) definition.getValue();
+        } else if (attributes.get(0) instanceof AttributeDefinition) {
+            AttributeDefinition definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getValue() == null) {
+                return null;
+            }
+            return (T) definition.getValue();
+        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            ResponseAttributeDto definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getValue() == null) {
+                return null;
+            }
+            return (T) definition.getValue();
+        }else {
+            throw new IllegalArgumentException("Invalid Object to get Attribute value");
+        }
+    }
+
+    public static NameAndIdDto getNameAndIdValue(String name, List<RequestAttributeDto> attributes) {
         Serializable value = getAttributeValue(name, attributes);
 
         if (!(value instanceof Map)) {
@@ -56,7 +97,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static NameAndUuidDto getNameAndUuidValue(String name, List<AttributeDefinition> attributes) {
+    public static NameAndUuidDto getNameAndUuidValue(String name, List<RequestAttributeDto> attributes) {
         Serializable value = getAttributeValue(name, attributes);
 
         if (!(value instanceof Map)) {
@@ -71,7 +112,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static CredentialDto getCredentialValue(String name, List<AttributeDefinition> attributes) {
+    public static CredentialDto getCredentialValue(String name, List<RequestAttributeDto> attributes) {
         Serializable value = getAttributeValue(name, attributes);
 
         if (!(value instanceof Map)) {
@@ -80,7 +121,7 @@ public class AttributeDefinitionUtils {
 
         try {
             return ATTRIBUTES_OBJECT_MAPPER.convertValue(value, CredentialDto.class);
-        } catch (Exception e ) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Could not get Credential value. Attribute has wrong value: " + value, e);
         }
     }
@@ -108,11 +149,38 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static void validateAttributes(List<AttributeDefinition> definitions, List<AttributeDefinition> attributes) throws ValidationException {
+    public static List<AttributeDefinition> mergeAttributes(List<AttributeDefinition> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
+        if (definitions == null || attributes == null) {
+            return List.of();
+        }
+
+        List<AttributeDefinition> attributeDefinitions = clientAttributeConverter(attributes);
+        return attributeDefinitions.stream()
+                .map(a -> {
+                    AttributeDefinition definition = getAttributeDefinition(a.getName(), definitions);
+                    if (definition == null) {
+                        return a;
+                    }
+
+                    AttributeDefinition extended = new AttributeDefinition(definition);
+                    extended.setValue(a.getValue());
+                    return extended;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public static void validateAttributes(List<AttributeDefinition> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         List<ValidationError> errors = new ArrayList<>();
 
+        // If attribute identified by id not in definitions - throw error
+        for (RequestAttributeDto attribute : attributes) {
+            if (!containsAttributeDefinition(attribute.getName(), definitions)) {
+                errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
+            }
+        }
+
         for (AttributeDefinition definition : definitions) {
-            AttributeDefinition attribute = getAttributeDefinition(definition.getName(), attributes);
+            RequestAttributeDto attribute = getRequestAttributes(definition.getName(), attributes);
 
             if (attribute == null) {
                 if (definition.isRequired()) {
@@ -121,21 +189,28 @@ public class AttributeDefinitionUtils {
                 continue; // skip other validations
             }
 
-            if (StringUtils.isBlank(attribute.getId())) {
-                errors.add(ValidationError.create("Id of attribute not set.", definition.getName()));
-            }
-
-            if (attribute.getType() == null) {
-                errors.add(ValidationError.create("Type of attribute {} not set.", definition.getName()));
-            }
-
             Serializable attributeValue = attribute.getValue();
 
             if (definition.isRequired() && attributeValue == null) {
                 errors.add(ValidationError.create("Value of required attribute {} not set.", definition.getName()));
+                continue; // required attribute has no value, skip other validations
             }
 
-            if (attributeValue instanceof String && definition.getValidationRegex() != null) {
+            if (definition.isReadOnly()) {
+                Serializable definitionValue = definition.getValue();
+                if (definitionValue == null || !definitionValue.equals(attributeValue)) {
+                    errors.add(ValidationError.create(
+                            "Wrong value of read only attribute {}. Definition value = {} and attribute value = {}.",
+                            definition.getName(),
+                            definitionValue,
+                            attributeValue));
+                }
+            }
+
+            validateAttributeValue(definition, attribute, errors);
+
+            if (BaseAttributeDefinitionTypes.STRING.equals(definition.getType())
+                    && definition.getValidationRegex() != null) {
                 Pattern pattern;
                 try {
                     pattern = Pattern.compile(definition.getValidationRegex());
@@ -161,7 +236,71 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static void validateCallback(AttributeCallback callback) {
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    private static void validateAttributeValue(AttributeDefinition definition, RequestAttributeDto attribute, List<ValidationError> errors) {
+
+        if (definition.getType() == null) {
+            errors.add(ValidationError.create("Type of attribute definition {} not set.", definition.getName()));
+        }
+
+        boolean wrongValue = false;
+        switch (definition.getType()) {
+            case STRING:
+                wrongValue = !(attribute.getValue() instanceof String);
+                break;
+            case NUMBER:
+                try {
+                    wrongValue = !isNumeric(attribute.getValue().toString()) && !(attribute.getValue() instanceof String);
+                } catch (Exception e) {
+                    wrongValue = true;
+                }
+                break;
+            case SECRET:
+                // no type validation for secrets
+                break;
+            case FILE:
+                boolean isString = attribute.getValue() instanceof String;
+                if (isString) {
+                    try {
+                        Base64.getDecoder().decode(String.valueOf(attribute.getValue()));
+                    } catch (Exception e) {
+                        wrongValue = true;
+                    }
+                } else {
+                    wrongValue = true;
+                }
+                break;
+            case BOOLEAN:
+                wrongValue = !(attribute.getValue() instanceof Boolean);
+                break;
+            case LIST:
+//                wrongValue = !((Collection) definition.getValue()).contains(attribute.getValue());
+                break;
+            case CREDENTIAL:
+                wrongValue = !(attribute.getValue() instanceof CredentialDto) && !(attribute.getValue() instanceof Map);
+                break;
+            default:
+                errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", definition.getName(), definition.getType()));
+                break;
+        }
+
+        if (wrongValue) {
+            errors.add(ValidationError.create("Attribute {} of type {} has wrong value {}.", definition.getName(), definition.getType(), attribute.getValue()));
+        }
+    }
+
+    public static void validateCallback(AttributeCallback callback, RequestAttributeCallback request) {
         List<ValidationError> errors = new ArrayList<>();
 
         if (StringUtils.isBlank(callback.getCallbackContext())) {
@@ -198,13 +337,13 @@ public class AttributeDefinitionUtils {
                     for (AttributeValueTarget target : mapping.getTargets()) {
                         switch (target) {
                             case PATH_VARIABLE:
-                                if (callback.getPathVariables() == null || callback.getPathVariables().isEmpty()) {
+                                if (request.getPathVariables() == null || request.getPathVariables().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback path variables not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (callback.getPathVariables().get(mapping.getTo()) == null) {
+                                if (request.getPathVariables().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback path variable {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
@@ -216,13 +355,13 @@ public class AttributeDefinitionUtils {
                                 }
                                 break;
                             case REQUEST_PARAMETER:
-                                if (callback.getQueryParameters() == null || callback.getQueryParameters().isEmpty()) {
+                                if (request.getQueryParameters() == null || request.getQueryParameters().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback query parameters not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (callback.getQueryParameters().get(mapping.getTo()) == null) {
+                                if (request.getQueryParameters().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback query parameters {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
@@ -234,13 +373,13 @@ public class AttributeDefinitionUtils {
                                 }
                                 break;
                             case BODY:
-                                if (callback.getRequestBody() == null || callback.getRequestBody().isEmpty()) {
+                                if (request.getRequestBody() == null || request.getRequestBody().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback request body not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (callback.getRequestBody().get(mapping.getTo()) == null) {
+                                if (request.getRequestBody().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback request body key {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
@@ -256,23 +395,114 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<AttributeDefinition> createAttributes(String name, Serializable value) {
-        AttributeDefinition attribute = new AttributeDefinition();
-        attribute.setId(UUID.randomUUID().toString());
+    public static List<RequestAttributeDto> createAttributes(String name, Serializable value) {
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setUuid(UUID.randomUUID().toString());
         attribute.setName(name);
-        attribute.setType(BaseAttributeDefinitionTypes.STRING);
         attribute.setValue(value);
         return createAttributes(attribute);
     }
 
-    public static List<AttributeDefinition> createAttributes(AttributeDefinition attribute) {
-        List<AttributeDefinition> attributes = createAttributes();
+    public static List<RequestAttributeDto> createAttributes(RequestAttributeDto attribute) {
+        List<RequestAttributeDto> attributes = createAttributes();
         attributes.add(attribute);
 
         return attributes;
     }
 
-    public static List<AttributeDefinition> createAttributes() {
+    public static List<RequestAttributeDto> createAttributes() {
         return new ArrayList<>();
+    }
+
+    public static List<AttributeDefinition> clientAttributeConverter(List<RequestAttributeDto> attributes) {
+        if (attributes == null) {
+            return new ArrayList<>();
+        }
+        List<AttributeDefinition> convertedDefinition = new ArrayList<>();
+        for (RequestAttributeDto clt : attributes) {
+            AttributeDefinition atr = new AttributeDefinition();
+            atr.setValue(clt.getValue());
+            atr.setName(clt.getName());
+            atr.setUuid(clt.getUuid());
+            convertedDefinition.add(atr);
+        }
+        return convertedDefinition;
+    }
+
+    public static List<AttributeDefinition> responseAttributeConverter(List<ResponseAttributeDto> attributes) {
+        if (attributes == null) {
+            return new ArrayList<>();
+        }
+        List<AttributeDefinition> convertedDefinition = new ArrayList<>();
+        for (ResponseAttributeDto clt : attributes) {
+            AttributeDefinition atr = new AttributeDefinition();
+            atr.setValue(clt.getValue());
+            atr.setName(clt.getName());
+            atr.setUuid(clt.getUuid());
+            atr.setType(clt.getType());
+            atr.setLabel(clt.getLabel());
+            convertedDefinition.add(atr);
+        }
+        return convertedDefinition;
+    }
+
+    public static List<RequestAttributeDto> getClientAttributes(List<?> attributes) {
+        if (attributes == null || attributes.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<RequestAttributeDto> convertedDefinition = new ArrayList<>();
+        if (attributes.get(0) instanceof AttributeDefinition) {
+            List<AttributeDefinition> itrAttributes = (List<AttributeDefinition>) attributes;
+            for (AttributeDefinition clt : itrAttributes) {
+                RequestAttributeDto atr = new RequestAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                convertedDefinition.add(atr);
+        }} else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            List<ResponseAttributeDto> itrAttributes = (List<ResponseAttributeDto>) attributes;
+            for (ResponseAttributeDto clt : itrAttributes) {
+                RequestAttributeDto atr = new RequestAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                convertedDefinition.add(atr);
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
+        }
+        return convertedDefinition;
+    }
+
+    public static List<ResponseAttributeDto> getResponseAttributes(List<?> attributes) {
+        if (attributes == null || attributes.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<ResponseAttributeDto> convertedDefinition = new ArrayList<>();
+        if (attributes.get(0) instanceof AttributeDefinition) {
+            List<AttributeDefinition> itrAttributes = (List<AttributeDefinition>) attributes;
+            for (AttributeDefinition clt : itrAttributes) {
+                ResponseAttributeDto atr = new ResponseAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                atr.setLabel(clt.getLabel());
+                atr.setType(clt.getType());
+                convertedDefinition.add(atr);
+            }
+        } else if (attributes.get(0) instanceof RequestAttributeDto) {
+            List<RequestAttributeDto> itrAttributes = (List<RequestAttributeDto>) attributes;
+            for (RequestAttributeDto clt : itrAttributes) {
+                ResponseAttributeDto atr = new ResponseAttributeDto();
+                atr.setValue(clt.getValue());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                convertedDefinition.add(atr);
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
+        }
+
+        return convertedDefinition;
     }
 }
