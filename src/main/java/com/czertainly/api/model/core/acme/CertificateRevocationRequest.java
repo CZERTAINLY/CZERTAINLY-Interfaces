@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
-import com.czertainly.api.model.ca.RevocationReason;
+
+import com.czertainly.api.model.core.authority.RevocationReason;
 
 /**
  * This class contains the fields to be used by the client for revoking a certificate issued to the

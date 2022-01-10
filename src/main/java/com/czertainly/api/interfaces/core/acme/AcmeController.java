@@ -1,14 +1,21 @@
 package com.czertainly.api.interfaces.core.acme;
 
 import com.czertainly.api.exception.AcmeProblemDocumentException;
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.core.acme.Authorization;
 import com.czertainly.api.model.core.acme.Challenge;
 import com.czertainly.api.model.core.acme.Directory;
 import com.czertainly.api.model.core.acme.Order;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.spec.InvalidKeySpecException;
 
 /**
  * This class contains the list of end points supported for the ACME implementation
@@ -46,11 +53,14 @@ public interface AcmeController {
     ResponseEntity<Authorization> getAuthorizations(@PathVariable String acmeProfileName, @PathVariable String authorizationId) throws NotFoundException;
 
     @RequestMapping(path="/chall/{challengeId}", method = RequestMethod.POST)
-    ResponseEntity<Challenge> validateChallenge(@PathVariable String acmeProfileName, @PathVariable String challengeId) throws NotFoundException;
+    ResponseEntity<Challenge> validateChallenge(@PathVariable String acmeProfileName, @PathVariable String challengeId) throws NotFoundException, NoSuchAlgorithmException, InvalidKeySpecException;
+
+    @RequestMapping(path="/order/{orderId}", method = RequestMethod.POST)
+    ResponseEntity<Order> getOrder(@PathVariable String acmeProfileName, @PathVariable String orderId) throws NotFoundException;
 
     @RequestMapping(path="/order/{orderId}/finalize", method = RequestMethod.POST)
-    ResponseEntity<Order> finalize(@PathVariable String acmeProfileName, @PathVariable String orderId, @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException, JsonProcessingException;
+    ResponseEntity<Order> finalize(@PathVariable String acmeProfileName, @PathVariable String orderId, @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException;
 
     @RequestMapping(path="/cert/{certificateId}", method = RequestMethod.POST)
-    void downloadCertificate(@PathVariable String acmeProfileName, @PathVariable String certificateId);
+    ResponseEntity<Resource> downloadCertificate(@PathVariable String acmeProfileName, @PathVariable String certificateId) throws NotFoundException, CertificateException;
 }
