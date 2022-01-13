@@ -1,12 +1,16 @@
 package com.czertainly.api.model.core.acme;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * This class contains the parameter for the problem documents or errors during the ACME
  * process. This is based on the RFC7807
  */
-public class ProblemDocument {
+public class ProblemDocument implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * Type of the problem
      */
@@ -91,10 +95,14 @@ public class ProblemDocument {
     }
 
     public ProblemDocument(String type, String title, String detail) {
-        this.type = type;
-        this.title = title;
-        this.detail = detail;
+        setType(type);
+        setTitle(title);
+        setDetail(detail);
     }
 
-
+    public ProblemDocument(Problem problem) {
+        setType(problem.getType());
+        setTitle(problem.getTitle());
+        setDetail(problem.getDetail());
+    }
 }

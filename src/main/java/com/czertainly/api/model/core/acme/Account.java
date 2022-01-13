@@ -31,6 +31,13 @@ public class Account {
     private boolean termsOfServiceAgreed;
 
     /**
+     * If this field is present
+     * with the value "true", then the server MUST NOT create a new
+     * account if one does not already exist.  This allows a client to
+     * look up an account URL based on an account key
+     */
+    private boolean onlyReturnExisting;
+    /**
      * This field indicates the binding and approval from the owner of NON-ACME account to this ACME account.
      * This is an optional field and cannot be updated by the client
      */
@@ -80,5 +87,13 @@ public class Account {
 
     public void setOrders(String orders) {
         this.orders = orders;
+    }
+
+    public boolean isOnlyReturnExisting() {
+        return onlyReturnExisting;
+    }
+
+    public void setOnlyReturnExisting(boolean onlyReturnExisting) {
+        this.onlyReturnExisting = onlyReturnExisting;
     }
 }
