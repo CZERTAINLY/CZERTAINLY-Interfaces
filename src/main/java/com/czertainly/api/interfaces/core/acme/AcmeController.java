@@ -24,7 +24,7 @@ import java.util.List;
 public interface AcmeController {
 
     @RequestMapping(path = "/directory", method = RequestMethod.GET)
-    ResponseEntity<Directory> getDirectory(@PathVariable String acmeProfileName);
+    ResponseEntity<Directory> getDirectory(@PathVariable String acmeProfileName) throws NotFoundException;
 
     @RequestMapping(path="/new-nonce")
     ResponseEntity<?> getNonce(@PathVariable String acmeProfileName);

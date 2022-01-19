@@ -1,0 +1,108 @@
+package com.czertainly.api.interfaces.core.web;
+
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.acme.AcmeProfileRequestDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.core.acme.AcmeProfileDto;
+import com.czertainly.api.model.core.acme.AcmeProfileListDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/v1/acmeProfiles")
+@Tag(name = "ACME Profile Management API", description = "ACME Profile Management API")
+@ApiResponses(
+		value = {
+				@ApiResponse(
+						responseCode = "400",
+						description = "Bad Request",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "404",
+						description = "Not Found",
+						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "500",
+						description = "Internal Server Error",
+						content = @Content
+				)
+		})
+public interface AcmeProfileController {
+
+	@Operation(summary = "Get list of ACME Profiles")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile list retrieved")})
+	@RequestMapping(produces = {"application/json"})
+	public List<AcmeProfileListDto> listAcmeProfile();
+
+	@Operation(summary = "Get details of ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile detail retrieved") })
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
+	public AcmeProfileDto getAcmeProfile(@PathVariable String uuid) throws NotFoundException;
+
+	@Operation(summary = "Create ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "ACME Profile created") })
+	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
+	public ResponseEntity<UuidDto> createAcmeProfile(@RequestBody AcmeProfileRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException;
+
+	@Operation(summary = "Update ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile updated") })
+	@RequestMapping(method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	public AcmeProfileDto updateAcmeProfile(@RequestBody AcmeProfileDto request) throws NotFoundException;
+
+	@Operation(summary = "Delete ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profile deleted") })
+	@RequestMapping(path="/{uuid}", method = RequestMethod.DELETE, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteAcmeProfile(@PathVariable String uuid) throws NotFoundException;
+
+	@Operation(summary = "Enable ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile enabled") })
+	@RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void enableAcmeProfile(@PathVariable String uuid) throws NotFoundException;
+
+	@Operation(summary = "Disable ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile disabled") })
+	@RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void disableAcmeProfile(@PathVariable String uuid) throws NotFoundException;
+
+	@Operation(summary = "Enable Multiple ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles enabled") })
+	@RequestMapping(path = "/enable", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void bulkEnableAcmeProfile(@RequestBody List<String> uuids);
+
+	@Operation(summary = "Disable Multiple ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles disabled") })
+	@RequestMapping(path = "/disable", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void bulkDisableAcmeProfile(@RequestBody List<String> uuids);
+
+	@Operation(summary = "Delete Multiple ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles deleted") })
+	@RequestMapping(path = "/delete", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void bulkDeleteAcmeProfile(@RequestBody List<String> uuids);
+
+	@Operation(summary = "Update RA Profile for ACME Profile")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles Updated") })
+	@RequestMapping(path = "/{uuid}/raprofile/{raProfileUuid}", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateRaProfile(@PathVariable String uuid, @PathVariable String raProfileUuid ) throws NotFoundException;
+}

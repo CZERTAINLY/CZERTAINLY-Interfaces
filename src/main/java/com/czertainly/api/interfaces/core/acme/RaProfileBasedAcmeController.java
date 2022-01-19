@@ -1,46 +1,67 @@
 package com.czertainly.api.interfaces.core.acme;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.czertainly.api.exception.AcmeProblemDocumentException;
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.core.acme.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 /**
  * This class contains the list of end points supported for the ACME implementation
- * in CZERTAINLY. This controller is different from the ACME controller as this implements the
- * list of end points based on the RA Profile.
+ * in CZERTAINLY
  */
 @RestController
-@RequestMapping("acme/raprofile/{raProfileName}")
-interface RaProfileBasedAcmeController {
+@RequestMapping("/acme/raProfile/{raProfileName}")
+public interface RaProfileBasedAcmeController {
 
     @RequestMapping(path = "/directory", method = RequestMethod.GET)
-    void getDirectory(@PathVariable String raProfileName);
+    ResponseEntity<Directory> getDirectory(@PathVariable String raProfileName) throws NotFoundException;
 
     @RequestMapping(path="/new-nonce")
-    void getNonce(@PathVariable String raProfileName);
+    ResponseEntity<?> getNonce(@PathVariable String raProfileName);
 
     @RequestMapping(path = "/new-nonce", method = RequestMethod.HEAD)
-    void headNonce(@PathVariable String raProfileName);
+    ResponseEntity<?> headNonce(@PathVariable String raProfileName);
 
     @RequestMapping(path="/new-account", method = RequestMethod.POST)
-    void newAccount(@PathVariable String raProfileName);
+    ResponseEntity<?> newAccount(@PathVariable String raProfileName, @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @RequestMapping(path="/acct/{accountId}", method = RequestMethod.POST)
-    void updateAccount(@PathVariable String raProfileName, @PathVariable String accountId);
+    ResponseEntity<Account> updateAccount(@PathVariable String raProfileName, @PathVariable String accountId, @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @RequestMapping(path = "/key-change", method = RequestMethod.POST)
-    void keyRollover(@PathVariable String raProfileName);
+    ResponseEntity<?> keyRollover(@PathVariable String raProfileName, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 
     @RequestMapping(path="/new-order", method=RequestMethod.POST)
-    void newOrder(@PathVariable String raProfileName);
+    ResponseEntity<Order> newOrder(@PathVariable String raProfileName, @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @RequestMapping("/orders/{accountId}")
-    void listOrders(@PathVariable String raProfileName, @PathVariable String accountId);
+    ResponseEntity<List<Order>> listOrders(@PathVariable String raProfileName, @PathVariable String accountId) throws NotFoundException;
+
+    @RequestMapping(path="/authz/{authorizationId}", method = RequestMethod.POST)
+    ResponseEntity<Authorization> getAuthorizations(@PathVariable String raProfileName, @PathVariable String authorizationId, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
+
+    @RequestMapping(path="/chall/{challengeId}", method = RequestMethod.POST)
+    ResponseEntity<Challenge> validateChallenge(@PathVariable String raProfileName, @PathVariable String challengeId) throws NotFoundException, NoSuchAlgorithmException, InvalidKeySpecException;
+
+    @RequestMapping(path="/order/{orderId}", method = RequestMethod.POST)
+    ResponseEntity<Order> getOrder(@PathVariable String raProfileName, @PathVariable String orderId) throws NotFoundException;
 
     @RequestMapping(path="/order/{orderId}/finalize", method = RequestMethod.POST)
-    void finalize(@PathVariable String raProfileName, @PathVariable String orderId);
+    ResponseEntity<Order> finalize(@PathVariable String raProfileName, @PathVariable String orderId, @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException;
 
     @RequestMapping(path="/cert/{certificateId}", method = RequestMethod.POST)
-    void downloadCertificate(@PathVariable String raProfileName, @PathVariable String certificateId);
+    ResponseEntity<Resource> downloadCertificate(@PathVariable String raProfileName, @PathVariable String certificateId) throws NotFoundException, CertificateException;
+
+    @RequestMapping(path = "/revoke-cert", method = RequestMethod.POST)
+    ResponseEntity<?> revokeCertificate(@PathVariable String raProfileName, @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, CertificateException;
 }
