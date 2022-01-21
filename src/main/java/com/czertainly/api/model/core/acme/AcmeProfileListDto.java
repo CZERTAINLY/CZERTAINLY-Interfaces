@@ -3,15 +3,26 @@ package com.czertainly.api.model.core.acme;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 public class AcmeProfileListDto extends NameAndUuidDto {
 
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            required = true)
     private boolean isEnabled;
+    @Schema(description = "ACME Profile Description",
+            required = false)
     private String description;
+    @Schema(description = "Name of the RA Profile",
+            required = false)
     private String raProfileName;
+    @Schema(description = "UUID Of RA Profile",
+            required = false)
     private String raProfileUuid;
+    @Schema(description = "URL of the ACME directory",
+            required = false)
     private String directoryUrl;
 
     public boolean isEnabled() {

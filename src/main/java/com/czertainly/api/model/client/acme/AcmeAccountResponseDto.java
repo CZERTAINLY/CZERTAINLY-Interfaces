@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.acme;
 
 import com.czertainly.api.model.core.acme.AccountStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -10,21 +11,85 @@ import java.util.List;
  */
 public class AcmeAccountResponseDto {
 
+    @Schema(
+            description = "ID of the Account",
+            required = true
+    )
     private String accountId;
+    @Schema(
+            description = "UUID of the Account",
+            required = true
+    )
     private String uuid;
+    @Schema(
+            description = "Enabled flag. enabled=true, disabled=false",
+            required = true
+    )
     private Boolean isEnabled;
+    @Schema(
+            description = "Order count for the Account",
+            required = true
+    )
     private Integer totalOrders;
+    @Schema(
+            description = "Number of successful Orders",
+            required = true
+    )
     private Integer successfulOrders;
+    @Schema(
+            description = "Number of failed Orders",
+            required = true
+    )
     private Integer failedOrders;
+    @Schema(
+            description = "Number of pending Orders",
+            required = true
+    )
     private Integer pendingOrders;
+    @Schema(
+            description = "Number of Valid Orders",
+            required = true
+    )
     private Integer validOrders;
+    @Schema(
+            description = "Number of processing Orders",
+            required = true
+    )
     private Integer processingOrders;
+    @Schema(
+            description = "Status of the Account",
+            required = true
+    )
     private AccountStatus status;
+    @Schema(
+            description = "Contact information",
+            required = true
+    )
     private List<String> contact;
+    @Schema(
+            description = "Terms of Service Agreed",
+            required = true
+    )
     private Boolean termsOfServiceAgreed;
+    @Schema(
+            description = "Name of the RA Profile",
+            required = true
+    )
     private String raProfileName;
+    @Schema(
+            description = "UUID of the RA Profile",
+            required = true
+    )
     private String raProfileUuid;
+    @Schema(
+            description = "Name of the ACME Profile",
+            required = true
+    )
     private String acmeProfileName;
+    @Schema(
+            description = "UUID of the ACME Profile",
+            required = true
+    )
     private String acmeProfileUuid;
 
     public String getAccountId() {

@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.acme;
 
 import com.czertainly.api.model.core.acme.AccountStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
@@ -10,12 +11,40 @@ import java.util.List;
  */
 public class AcmeAccountListResponseDto {
 
+    @Schema(
+            description = "ID of the account",
+            required = true
+    )
     private String accountId;
+    @Schema(
+            description = "UUID of the Account",
+            required = true
+    )
     private String uuid;
+    @Schema(
+            description = "enabled flag. true = enabled, false=disabled",
+            required = true
+    )
     private Boolean isEnabled;
+    @Schema(
+            description = "Total number of Orders",
+            required = true
+    )
     private Integer totalOrders;
+    @Schema(
+            description = "Status of the account",
+            required = true
+    )
     private AccountStatus status;
+    @Schema(
+            description = "Name of the RA Profile",
+            required = true
+    )
     private String raProfileName;
+    @Schema(
+            description = "Name of the ACME Profile",
+            required = true
+    )
     private String acmeProfileName;
 
     public String getAccountId() {

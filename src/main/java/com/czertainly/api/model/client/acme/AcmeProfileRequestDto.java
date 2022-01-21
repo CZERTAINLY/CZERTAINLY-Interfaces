@@ -2,23 +2,70 @@ package com.czertainly.api.model.client.acme;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public class AcmeProfileRequestDto extends NameAndUuidDto {
+public class AcmeProfileRequestDto {
 
+    @Schema(
+            description = "Name of the ACME Profile"
+    )
+    private String name;
+
+    @Schema(
+            description = "Description of the Profile"
+    )
     private String description;
+    @Schema(
+            description = "Terms of Servicce URL"
+    )
     private String termsOfServiceUrl;
+    @Schema(
+            description = "Website URL"
+    )
     private String websiteUrl;
+    @Schema(
+            description = "DNS Resolver IP"
+    )
     private String dnsResolverIp;
+    @Schema(
+            description = "DNS Resolver Port"
+    )
     private String dnsResolverPort;
+    @Schema(
+            description = "RA Profile UUID"
+    )
     private String raProfileUuid;
+    @Schema(
+            description = "Retry Interval for the Orders"
+    )
     private Integer retryInterval;
+    @Schema(
+            description = "Change needed for new terms of service"
+    )
     private Boolean termsOfServiceChangeApproval;
+    @Schema(
+            description = "Order Validity"
+    )
     private Integer validity;
+    @Schema(
+            description = "List of Attributes for new Certificate issuance",
+            required = true
+    )
     private List<RequestAttributeDto> issueCertificateAttributes;
+    @Schema(
+            description = "List of Attributes for Certificate revocation",
+            required = true
+    )
     private List<RequestAttributeDto> revokeCertificateAttributes;
+    @Schema(
+            description = "Is Contact mandatory for new account?"
+    )
     private Boolean insistContact;
+    @Schema(
+            description = "is new Account must agree to terms of service?"
+    )
     private Boolean insistTermsOfService;
 
     public String getTermsOfServiceUrl() {
@@ -123,6 +170,14 @@ public class AcmeProfileRequestDto extends NameAndUuidDto {
 
     public void setInsistTermsOfService(Boolean insistTermsOfService) {
         this.insistTermsOfService = insistTermsOfService;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public AcmeProfileRequestDto() {

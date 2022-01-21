@@ -24,7 +24,7 @@ import java.util.List;
 public interface AcmeController {
 
     @RequestMapping(path = "/directory", method = RequestMethod.GET)
-    ResponseEntity<Directory> getDirectory(@PathVariable String acmeProfileName) throws NotFoundException;
+    ResponseEntity<Directory> getDirectory(@PathVariable String acmeProfileName) throws NotFoundException, AcmeProblemDocumentException;
 
     @RequestMapping(path="/new-nonce")
     ResponseEntity<?> getNonce(@PathVariable String acmeProfileName);
@@ -45,16 +45,16 @@ public interface AcmeController {
     ResponseEntity<Order> newOrder(@PathVariable String acmeProfileName, @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @RequestMapping("/orders/{accountId}")
-    ResponseEntity<List<Order>> listOrders(@PathVariable String acmeProfileName, @PathVariable String accountId) throws NotFoundException;
+    ResponseEntity<List<Order>> listOrders(@PathVariable String acmeProfileName, @PathVariable String accountId) throws NotFoundException, AcmeProblemDocumentException;
 
     @RequestMapping(path="/authz/{authorizationId}", method = RequestMethod.POST)
     ResponseEntity<Authorization> getAuthorizations(@PathVariable String acmeProfileName, @PathVariable String authorizationId, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 
     @RequestMapping(path="/chall/{challengeId}", method = RequestMethod.POST)
-    ResponseEntity<Challenge> validateChallenge(@PathVariable String acmeProfileName, @PathVariable String challengeId) throws NotFoundException, NoSuchAlgorithmException, InvalidKeySpecException;
+    ResponseEntity<Challenge> validateChallenge(@PathVariable String acmeProfileName, @PathVariable String challengeId) throws NotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, AcmeProblemDocumentException;
 
     @RequestMapping(path="/order/{orderId}", method = RequestMethod.POST)
-    ResponseEntity<Order> getOrder(@PathVariable String acmeProfileName, @PathVariable String orderId) throws NotFoundException;
+    ResponseEntity<Order> getOrder(@PathVariable String acmeProfileName, @PathVariable String orderId) throws NotFoundException, AcmeProblemDocumentException;
 
     @RequestMapping(path="/order/{orderId}/finalize", method = RequestMethod.POST)
     ResponseEntity<Order> finalize(@PathVariable String acmeProfileName, @PathVariable String orderId, @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException;

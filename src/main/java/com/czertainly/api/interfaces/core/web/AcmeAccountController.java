@@ -5,7 +5,10 @@ import com.czertainly.api.model.client.acme.AcmeAccountListResponseDto;
 import com.czertainly.api.model.client.acme.AcmeAccountResponseDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -47,41 +50,47 @@ public interface AcmeAccountController {
     @Operation(summary = "Details of ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Account detail retrieved")})
     @RequestMapping(path = "/{uuid}", produces = {"application/json"})
-    public AcmeAccountResponseDto getAcmeAccount(@PathVariable String uuid) throws NotFoundException;
+    public AcmeAccountResponseDto getAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Enable ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Account enabled")})
     @RequestMapping(path = "/{uuid}/enable", produces = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void enableAcmeAccount(@PathVariable String uuid) throws NotFoundException;
+    public void enableAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disable ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Account disabled")})
     @RequestMapping(path = "/{uuid}/disable", produces = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void  disableAcmeAccount(@PathVariable String uuid) throws NotFoundException;
+    public void  disableAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
 
-    @Operation(summary = "Delete ACME Account")
+    @Operation(summary = "Revoke ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Account deleted")})
     @RequestMapping(path = "/{uuid}", produces = {"application/json"}, method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void  deleteAcmeAccount(@PathVariable String uuid) throws NotFoundException;
+    public void revokeAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Enable multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Accounts enabled")})
     @RequestMapping(path = "/enable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void bulkEnableAcmeAccount(@RequestBody List<String> uuids) throws NotFoundException;
+    public void bulkEnableAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids) throws NotFoundException;
 
     @Operation(summary = "Disable multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Accounts disabled")})
     @RequestMapping(path = "/disable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void  bulkDisableAcmeAccount(@RequestBody List<String> uuids) throws NotFoundException;
+    public void  bulkDisableAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids) throws NotFoundException;
 
-    @Operation(summary = "Delete multiple ACME Accounts")
+    @Operation(summary = "Revoke multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts deleted")})
-    @RequestMapping(path = "/delete", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/revoke", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void  bulkDeleteAcmeAccount(@RequestBody List<String> uuids) throws NotFoundException;
+    public void bulkRevokeAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids) throws NotFoundException;
 }
