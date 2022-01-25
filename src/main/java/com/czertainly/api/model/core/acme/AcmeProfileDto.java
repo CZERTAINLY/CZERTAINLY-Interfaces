@@ -11,44 +11,35 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
     private boolean isEnabled;
-    @Schema(description = "ACME Profile description",
-            required = true)
+    @Schema(description = "ACME Profile description")
     private String description;
-    @Schema(description = "Terms of Service URL",
-            required = false)
+    @Schema(description = "Terms of Service URL")
     private String termsOfServiceUrl;
-    @Schema(description = "DNS Resolver IP",
-            required = false)
+    @Schema(description = "Website URL")
+    private String websiteUrl;
+    @Schema(description = "DNS Resolver IP")
     private String dnsResolverIp;
-    @Schema(description = "DNS Resolver Port",
-            required = false)
+    @Schema(description = "DNS Resolver Port")
     private String dnsResolverPort;
-    @Schema(description = "RA Profile",
-            required = false)
+    @Schema(description = "RA Profile")
     private RaProfileDto raProfile;
-    @Schema(description = "Retry Interval for ACME client requests",
-            required = false)
+    @Schema(description = "Retry Interval for ACME client requests")
     private Integer retryInterval;
-    @Schema(description = "New approval needed for terms of service change?",
-            required = false)
+    @Schema(description = "New approval needed for terms of service change?")
     private Boolean termsOfServiceChangeApproval;
-    @Schema(description = "Order Validity",
-            required = false)
+    @Schema(description = "Order Validity")
     private Integer validity;
-    @Schema(description = "ACME Directory URL",
-            required = false)
+    @Schema(description = "ACME Directory URL")
     private String directoryUrl;
-    @Schema(description = "Is Contact mandatory for new Accounts?",
-            required = false)
+    @Schema(description = "Terms of Service Change URL")
+    private String termsOfServiceChangeUrl;
+    @Schema(description = "Is Contact mandatory for new Accounts?")
     private Boolean insistContact;
-    @Schema(description = "Is agreeing to terms of service mandatory for new Account?",
-            required = false)
+    @Schema(description = "Is agreeing to terms of service mandatory for new Account?")
     private Boolean insistTermsOfService;
-    @Schema(description = "List of Attributes to issue a new Certificate",
-            required = false)
+    @Schema(description = "List of Attributes to issue a new Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;
-    @Schema(description = "List of Attribute for certificate revocation",
-            required = false)
+    @Schema(description = "List of Attribute for certificate revocation")
     private List<ResponseAttributeDto> revokeCertificateAttributes;
 
     public boolean isEnabled() {
@@ -161,6 +152,22 @@ public class AcmeProfileDto extends NameAndUuidDto {
 
     public void setInsistTermsOfService(Boolean insistTermsOfService) {
         this.insistTermsOfService = insistTermsOfService;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public String getTermsOfServiceChangeUrl() {
+        return termsOfServiceChangeUrl;
+    }
+
+    public void setTermsOfServiceChangeUrl(String termsOfServiceChangeUrl) {
+        this.termsOfServiceChangeUrl = termsOfServiceChangeUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     public AcmeProfileDto() {

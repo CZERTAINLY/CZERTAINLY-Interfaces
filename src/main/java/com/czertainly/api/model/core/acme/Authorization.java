@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 /**
@@ -10,12 +12,20 @@ public class Authorization {
     /**
      * Identifier that the account is authorized to represent
      */
+    @Schema(
+            description = "ACME Identifier",
+            required = true
+    )
     private Identifier identifier;
 
     /**
      * Status of the Authorization Object. Possible values are "pending", "valid", "invalid", "deactivated",
      * "expired" and "revoked"
      */
+    @Schema(
+            description = "ACME Authorization status",
+            required = true
+    )
     private AuthorizationStatus status;
 
     /**
@@ -24,12 +34,20 @@ public class Authorization {
      *
      * This field is required if the object is "valid" by status
      */
+    @Schema(
+            description = "Expiry of Authorization",
+            required = false
+    )
     private String expires;
 
     /**
      *List of the authorization objects that the client is entitles to complete to prove the ownership
      * of the domain.
      */
+    @Schema(
+            description = "Challenges",
+            required = false
+    )
     private List<Challenge> challenges;
 
     /**

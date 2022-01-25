@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 /**
@@ -12,6 +14,8 @@ public class Order {
      * and "invalid".
      * This is a mandatory field
      */
+    @Schema(description = "Status of the Order",
+            required = true)
     private OrderStatus status;
 
     /**
@@ -19,12 +23,14 @@ public class Order {
      * specified in RFC3339 (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
+    @Schema(description = "Expiry time of the Order")
     private String expires;
 
     /**
      * Array of the identifier that the order pertains to
      * This is a mandatory parameter
      */
+    @Schema(description = "List of Order identifiers")
     private List<Identifier> identifiers;
 
     /**
@@ -32,6 +38,8 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
+    @Schema(description = "",
+            required = true)
     private String notBefore;
 
     /**
@@ -39,6 +47,8 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
+    @Schema(description = "",
+            required = true)
     private String notAfter;
 
     /**
@@ -46,6 +56,7 @@ public class Order {
      * This field should be structured as defined in RFC7801
      * This is a non mandatory field
      */
+    @Schema(description = "Errors in Order")
     private ProblemDocument error;
 
     /**
@@ -53,18 +64,21 @@ public class Order {
      * Only after the authorizations, the server will issue the certificate. This will also include the list of
      * authorizations that client has completed for the same list of identifiers
      */
+    @Schema(description = "List of URLs to check for Authorizations")
     private List<String> authorizations;
 
     /**
      * URL for finalizing the order and asking the server to issue the certificate once the authorizations
      * are satisfied
      */
+    @Schema(description = "URL to finalize the order. Mandatory if the Order is in ready state")
     private String finalize;
 
     /**
      * URL for the client to download the certificate that has been issues in response to the order.
      * This is a non-mandatory field
      */
+    @Schema(description = "Certificate Download URL")
     private String certificate;
 
     public OrderStatus getStatus() {

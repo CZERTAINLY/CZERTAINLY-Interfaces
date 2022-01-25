@@ -3,8 +3,6 @@ package com.czertainly.api.model.client.acme;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
-
 /**
  * This class contains set of properties to represent
  * the account object from ACME.

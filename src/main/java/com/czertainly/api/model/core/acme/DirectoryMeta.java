@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 /**
@@ -10,11 +12,13 @@ public class DirectoryMeta {
     /**
      * URL for the terms and service to be accepted by the clients
      */
+    @Schema(description = "Terms of service URL")
     private String termsOfService;
 
     /**
      * URL of the website for the acme configuration
      */
+    @Schema(description = "Website URL")
     private String website;
 
     /**
@@ -25,6 +29,8 @@ public class DirectoryMeta {
     /**
      * Boolean value of the need of external account requirement
      */
+    @Schema(description = "External Account Binding flag",
+            required = true)
     private Boolean externalAccountRequired;
 
     public String getTermsOfService() {

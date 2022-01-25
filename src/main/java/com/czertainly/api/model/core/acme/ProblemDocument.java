@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,16 +16,21 @@ public class ProblemDocument implements Serializable {
     /**
      * Type of the problem
      */
+    @Schema(description = "Type of the ACME Problem",
+            required = true)
     private String type;
 
     /**
      * Title of the problem. In short words
      */
+    @Schema(description = "ACME Problem title")
     private String title;
 
     /**
      * Details of the problem. These statements should be understandable by the user
      */
+    @Schema(description = "ACME Problem detail",
+            required = true)
     private String detail;
 
     /**
@@ -35,12 +42,14 @@ public class ProblemDocument implements Serializable {
     /**
      * Subproblems if more than one error is occurred
      */
+    @Schema(description = "List of subproblems related to error")
     private List<ProblemDocument> subproblems;
 
     /**
      * List of supported algorithms supported by the server.
      * This field is mandatory if the client signs the JWS by some unsupported algorithm
      */
+    @Schema(description = "List of supported Algorithm")
     private List<String> algorithms;
 
     public String getType() {

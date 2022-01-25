@@ -32,6 +32,10 @@ public class RaProfileDto extends NameAndUuidDto {
             required = true)
     private Boolean enabled;
 
+    @Schema(description = "List of protocols enabled",
+            required = false)
+    private List<String> enabledProtocols;
+
     @Override
     public String getUuid() {
         return uuid;
@@ -87,6 +91,14 @@ public class RaProfileDto extends NameAndUuidDto {
 
     public void setAuthorityInstanceName(String authorityInstanceName) {
         this.authorityInstanceName = authorityInstanceName;
+    }
+
+    public List<String> getEnabledProtocols() {
+        return enabledProtocols;
+    }
+
+    public void setEnabledProtocols(List<String> enabledProtocols) {
+        this.enabledProtocols = enabledProtocols;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * Class represents the dto for the client to send for finalizing the order.
  */
@@ -9,6 +11,10 @@ public class CertificateFinalizeRequest {
      * base64url-encoded version of the DER format.  (Note: Because this field uses base64url, and does not include
      * headers, it is different from PEM.)
      */
+    @Schema(
+            description = "CSR in Base64url-encoded version of the DER format",
+            required = true
+    )
     private String csr;
 
     public String getCsr() {

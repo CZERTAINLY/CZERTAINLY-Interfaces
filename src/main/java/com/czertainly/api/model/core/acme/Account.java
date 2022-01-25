@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 /**
@@ -13,6 +15,10 @@ public class Account {
      * and "revoked".  The value "deactivated" should be used to indicate client-initiated
      * deactivation whereas "revoked" should be used to indicate server-initiated deactivation.
      **/
+    @Schema(
+            description = "Status of the ACME Account",
+            required = true
+    )
     private AccountStatus status;
 
     /**
@@ -20,6 +26,9 @@ public class Account {
      * to contact the client for issues related to this account.
      * This is an optional parameter.
      */
+    @Schema(
+            description = "Contacts"
+    )
     private List<String> contact;
 
     /**
@@ -28,6 +37,9 @@ public class Account {
      * client
      * This is a non-mandatory field
      */
+    @Schema(
+            description = "Terms of Service Agreed flag. Yes = true, No = false"
+    )
     private boolean termsOfServiceAgreed;
 
     /**
@@ -36,6 +48,10 @@ public class Account {
      * account if one does not already exist.  This allows a client to
      * look up an account URL based on an account key
      */
+    @Schema(
+            description = "Existing Account return flag. true = Yes, false = No",
+            defaultValue = "false"
+    )
     private boolean onlyReturnExisting;
     /**
      * This field indicates the binding and approval from the owner of NON-ACME account to this ACME account.
@@ -47,6 +63,10 @@ public class Account {
      * Represents the URL of from which the list of orders for this account can be fetched.
      * This is a mandatory field.
      */
+    @Schema(
+            description = "Orders URL for the Account",
+            required = true
+    )
     private String orders;
 
     public AccountStatus getStatus() {

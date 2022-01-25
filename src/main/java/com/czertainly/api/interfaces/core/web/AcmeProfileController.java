@@ -64,8 +64,8 @@ public interface AcmeProfileController {
 
 	@Operation(summary = "Update ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile updated") })
-	@RequestMapping(method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
-	public AcmeProfileDto updateAcmeProfile(@RequestBody AcmeProfileDto request) throws NotFoundException;
+	@RequestMapping(path="/{uuid}", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	public AcmeProfileDto updateAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @RequestBody AcmeProfileRequestDto request) throws ConnectorException;
 
 	@Operation(summary = "Delete ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profile deleted") })
@@ -113,5 +113,5 @@ public interface AcmeProfileController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles Updated") })
 	@RequestMapping(path = "/{uuid}/raprofile/{raProfileUuid}", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateRaProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid ) throws NotFoundException;
+	public void updateRaProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 }
