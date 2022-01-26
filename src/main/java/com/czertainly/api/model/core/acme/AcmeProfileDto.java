@@ -33,9 +33,9 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private String directoryUrl;
     @Schema(description = "Changes of Terms of Service URL")
     private String termsOfServiceChangeUrl;
-    @Schema(description = "Contact mandatory for new Accounts")
+    @Schema(description = "Require Contact information for new Account")
     private Boolean requireContact;
-    @Schema(description = "Agreeing to Terms of Service mandatory for new Account")
+    @Schema(description = "Require new Account to agree on Terms of Service")
     private Boolean requireTermsOfService;
     @Schema(description = "List of Attributes to issue a Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;

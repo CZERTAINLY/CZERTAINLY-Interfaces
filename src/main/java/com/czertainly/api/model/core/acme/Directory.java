@@ -16,10 +16,10 @@ public class Directory {
     private String newNonce;
 
     /**
-     * URL for the new account. This url will be used by the ACME clients to request for
-     * new account registration.
+     * URL for the new Account. This url will be used by the ACME clients to request for
+     * new Account registration.
      */
-    @Schema(description = "URL for the new account",
+    @Schema(description = "URL for the new Account",
             required = true)
     private String newAccount;
 
@@ -48,10 +48,10 @@ public class Directory {
     private String revokeCert;
 
     /**
-     * URL for changing the key of an account. This url will be used by the ACME clients to request for
-     * a new key change for an account
+     * URL for changing the key of an Account. This url will be used by the ACME clients to request for
+     * a new key change for an Account
      */
-    @Schema(description = " URL for changing the key of an account",
+    @Schema(description = " URL for changing the key of an Account",
             required = true)
     private String keyChange;
 

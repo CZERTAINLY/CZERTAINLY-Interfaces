@@ -1,8 +1,8 @@
-package com.czertainly.api.model.core.acme;
+package com.czertainly.api.model.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class AcmeJwsBody {
+public class JwsBody {
 
     @Schema(
             description = "Protected field of JWS",

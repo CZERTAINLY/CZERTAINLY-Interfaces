@@ -47,7 +47,7 @@ public interface AcmeAccountController {
     public List<AcmeAccountListResponseDto> listAcmeAccount();
 
     @Operation(summary = "Details of ACME Account")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Account detail retrieved")})
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Account details retrieved")})
     @RequestMapping(path = "/{uuid}", produces = {"application/json"})
     public AcmeAccountResponseDto getAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
 

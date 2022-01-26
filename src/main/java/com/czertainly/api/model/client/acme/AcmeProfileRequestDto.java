@@ -46,7 +46,7 @@ public class AcmeProfileRequestDto {
     private Boolean termsOfServiceChangeDisable;
 
     @Schema(
-            description = "Updated Terms of Service URL"
+            description = "Changes of Terms of Service URL"
     )
     private String termsOfServiceChangeUrl;
     @Schema(

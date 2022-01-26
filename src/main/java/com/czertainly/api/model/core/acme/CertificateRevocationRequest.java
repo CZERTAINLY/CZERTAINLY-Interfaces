@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Fields to be used by the client for revoking a certificate issued to the
- * same account
+ * same Account
  */
 public class CertificateRevocationRequest {
     /**

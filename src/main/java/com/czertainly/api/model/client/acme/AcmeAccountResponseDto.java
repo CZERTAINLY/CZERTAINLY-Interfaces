@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * This class contains set of properties to represent
- * the account object from ACME.
+ * the Account object from ACME.
  */
 public class AcmeAccountResponseDto {
 

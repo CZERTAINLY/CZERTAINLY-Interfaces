@@ -53,7 +53,7 @@ public interface AcmeProfileController {
 	public List<AcmeProfileListDto> listAcmeProfile();
 
 	@Operation(summary = "Get details of ACME Profile")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile detail retrieved") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile details retrieved") })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = { "application/json" })
 	public AcmeProfileDto getAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException;
 

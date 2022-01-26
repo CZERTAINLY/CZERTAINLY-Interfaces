@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * This class contains set of properties to represent
- * the account object from ACME.
+ * the Account object from ACME.
  */
 public class AcmeAccountListResponseDto {
 
     @Schema(
-            description = "ID of the account",
+            description = "ID of the Account",
             required = true
     )
     private String accountId;
