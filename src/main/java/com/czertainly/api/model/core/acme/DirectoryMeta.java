@@ -12,7 +12,7 @@ public class DirectoryMeta {
     /**
      * URL for the terms and service to be accepted by the clients
      */
-    @Schema(description = "Terms of service URL")
+    @Schema(description = "Terms of Service URL")
     private String termsOfService;
 
     /**

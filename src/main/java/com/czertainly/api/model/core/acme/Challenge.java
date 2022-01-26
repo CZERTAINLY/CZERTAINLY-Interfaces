@@ -10,7 +10,7 @@ public class Challenge {
     /**
      * Type of the challenge encoded in the object
      */
-    @Schema(description = "Type of challenge. Either http-01 or dns-01",
+    @Schema(description = "Type of Challenge. Either http-01 or dns-01",
             required = true)
     private String type;
 
@@ -25,7 +25,7 @@ public class Challenge {
      * Status of the challenge. The possible values are "pending", "processing", "valid", "invalid"
      * This is a mandatory field.
      */
-    @Schema(description = "Challenge Status",
+    @Schema(description = "Challenge status",
             required = true)
     private ChallengeStatus status;
 
@@ -42,13 +42,13 @@ public class Challenge {
      * [RFC7807].  Multiple errors can be indicated by using subproblems.
      * A challenge object with an error MUST have status equal to "invalid".
      */
-    @Schema(description = "Errors in challenge validation")
+    @Schema(description = "Errors in Challenge validation")
     private ProblemDocument error;
 
     /**
      * Random string generated using the SecureRandom class of JAVA to provide a cryptography random key
      */
-    @Schema(description = "Token for the challenge",
+    @Schema(description = "Token for the Challenge",
             required = true)
     private String token;
 

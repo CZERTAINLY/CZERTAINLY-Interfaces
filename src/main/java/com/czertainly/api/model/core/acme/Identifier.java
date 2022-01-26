@@ -10,7 +10,7 @@ public class Identifier {
      * Field represents the type of the identifier. This field primarily defined the
      * DNS identifier types
      */
-    @Schema(description = "Type of the identifier",
+    @Schema(description = "Type of the Identifier",
             required = true)
     private String type;
 

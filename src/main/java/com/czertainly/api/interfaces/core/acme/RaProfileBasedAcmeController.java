@@ -66,7 +66,7 @@ public interface RaProfileBasedAcmeController {
     ResponseEntity<?> headNonce(@Parameter(description = "RA Profile Name") @PathVariable String raProfileName);
 
     @Operation(summary = "Create Account")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New account created")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Account created")})
     @RequestMapping(path="/new-account", method = RequestMethod.POST)
     ResponseEntity<?> newAccount(@Parameter(description = "RA Profile Name") @PathVariable String raProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "New Account JWS Payload", content = @Content(schema = @Schema(implementation = NewAccountRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;

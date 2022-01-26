@@ -15,7 +15,7 @@ public class NewAccountRequest {
      * to contact the client for issues related to this account.
      * This is an optional parameter.
      */
-    @Schema(description = "Contact information for the account")
+    @Schema(description = "Contact information for the Account. Required if the Mandatory flag is set in ACME Profile")
     private List<String> contact;
 
     /**
@@ -24,7 +24,7 @@ public class NewAccountRequest {
      * client
      * This is a non-mandatory field
      */
-    @Schema(description = "Terms of Service agreed flag. true = Yes, false = No")
+    @Schema(description = "Terms of Service agreed flag. true = Yes, false = No. Required if the Mandatory flag is set in ACME Profile")
     private boolean termsOfServiceAgreed;
 
     /**
@@ -34,7 +34,7 @@ public class NewAccountRequest {
      * client
      * This is a non-mandatory field
      */
-    @Schema(description = "Return existing account only flag")
+    @Schema(description = "Return existing Account only flag")
     private boolean onlyReturnExisting;
 
     /**
@@ -48,7 +48,7 @@ public class NewAccountRequest {
      * Represents the URL of from which the list of orders for this account can be fetched.
      * This is a mandatory field.
      */
-    @Schema(description = "List of Orders URL")
+    @Schema(description = "URL to get the list of Orders for the Account")
     private String orders;
 
 

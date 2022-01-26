@@ -23,20 +23,20 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private String dnsResolverPort;
     @Schema(description = "RA Profile")
     private RaProfileDto raProfile;
-    @Schema(description = "Retry Interval for ACME client requests")
+    @Schema(description = "Retry interval for ACME client requests")
     private Integer retryInterval;
-    @Schema(description = "New approval needed for terms of service change?")
-    private Boolean termsOfServiceChangeApproval;
+    @Schema(description = "Disable new Orders (Change in Terms of Service)")
+    private Boolean termsOfServiceChangeDisable;
     @Schema(description = "Order Validity")
     private Integer validity;
     @Schema(description = "ACME Directory URL")
     private String directoryUrl;
     @Schema(description = "Terms of Service Change URL")
     private String termsOfServiceChangeUrl;
-    @Schema(description = "Is Contact mandatory for new Accounts?")
-    private Boolean insistContact;
-    @Schema(description = "Is agreeing to terms of service mandatory for new Account?")
-    private Boolean insistTermsOfService;
+    @Schema(description = "Contact mandatory for new Accounts")
+    private Boolean requireContact;
+    @Schema(description = "Agreeing to terms of service mandatory for new Account")
+    private Boolean requireTermsOfService;
     @Schema(description = "List of Attributes to issue a new Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;
     @Schema(description = "List of Attribute for certificate revocation")
@@ -106,12 +106,12 @@ public class AcmeProfileDto extends NameAndUuidDto {
         this.retryInterval = retryInterval;
     }
 
-    public Boolean getTermsOfServiceChangeApproval() {
-        return termsOfServiceChangeApproval;
+    public Boolean getTermsOfServiceChangeDisable() {
+        return termsOfServiceChangeDisable;
     }
 
-    public void setTermsOfServiceChangeApproval(Boolean termsOfServiceChangeApproval) {
-        this.termsOfServiceChangeApproval = termsOfServiceChangeApproval;
+    public void setTermsOfServiceChangeDisable(Boolean termsOfServiceChangeDisable) {
+        this.termsOfServiceChangeDisable = termsOfServiceChangeDisable;
     }
 
     public Integer getValidity() {
@@ -138,20 +138,20 @@ public class AcmeProfileDto extends NameAndUuidDto {
         this.description = description;
     }
 
-    public Boolean getInsistContact() {
-        return insistContact;
+    public Boolean getRequireContact() {
+        return requireContact;
     }
 
-    public void setInsistContact(Boolean insistContact) {
-        this.insistContact = insistContact;
+    public void setRequireContact(Boolean requireContact) {
+        this.requireContact = requireContact;
     }
 
-    public Boolean getInsistTermsOfService() {
-        return insistTermsOfService;
+    public Boolean getRequireTermsOfService() {
+        return requireTermsOfService;
     }
 
-    public void setInsistTermsOfService(Boolean insistTermsOfService) {
-        this.insistTermsOfService = insistTermsOfService;
+    public void setRequireTermsOfService(Boolean requireTermsOfService) {
+        this.requireTermsOfService = requireTermsOfService;
     }
 
     public String getWebsiteUrl() {

@@ -37,13 +37,18 @@ public class AcmeProfileRequestDto {
     )
     private String raProfileUuid;
     @Schema(
-            description = "Retry Interval for the Orders"
+            description = "Retry interval for the Orders"
     )
     private Integer retryInterval;
     @Schema(
-            description = "Change needed for new terms of service"
+            description = "Change needed for new Terms of Service"
     )
     private Boolean termsOfServiceChangeApproval;
+
+    @Schema(
+            description = "Updated Terms of Service URL"
+    )
+    private String termsOfServiceChangeUrl;
     @Schema(
             description = "Order Validity"
     )
@@ -177,6 +182,14 @@ public class AcmeProfileRequestDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTermsOfServiceChangeUrl() {
+        return termsOfServiceChangeUrl;
+    }
+
+    public void setTermsOfServiceChangeUrl(String termsOfServiceChangeUrl) {
+        this.termsOfServiceChangeUrl = termsOfServiceChangeUrl;
     }
 
     public AcmeProfileRequestDto() {

@@ -38,7 +38,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "",
+    @Schema(description = "notBefore field in the certificate",
             required = true)
     private String notBefore;
 
@@ -47,7 +47,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "",
+    @Schema(description = "notAfter field in the certificate",
             required = true)
     private String notAfter;
 
@@ -78,7 +78,7 @@ public class Order {
      * URL for the client to download the certificate that has been issues in response to the order.
      * This is a non-mandatory field
      */
-    @Schema(description = "Certificate Download URL")
+    @Schema(description = "Certificate download URL")
     private String certificate;
 
     public OrderStatus getStatus() {

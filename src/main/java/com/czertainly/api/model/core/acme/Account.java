@@ -17,6 +17,7 @@ public class Account {
      **/
     @Schema(
             description = "Status of the ACME Account",
+            ref = "www.3key.company",
             required = true
     )
     private AccountStatus status;
@@ -38,7 +39,7 @@ public class Account {
      * This is a non-mandatory field
      */
     @Schema(
-            description = "Terms of Service Agreed flag. Yes = true, No = false"
+            description = "Terms of Service agreed flag. Yes = true, No = false"
     )
     private boolean termsOfServiceAgreed;
 
@@ -64,7 +65,7 @@ public class Account {
      * This is a mandatory field.
      */
     @Schema(
-            description = "Orders URL for the Account",
+            description = "URL to get the list of Orders for the Account",
             required = true
     )
     private String orders;

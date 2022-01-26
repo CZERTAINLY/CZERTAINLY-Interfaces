@@ -58,7 +58,7 @@ public class Directory {
     /**
      * Meta data for the directory object. This will contain the meta data like termsOfService etc..
      */
-    @Schema(description = "Directory mmetadata",
+    @Schema(description = "Directory metadata",
             required = true)
     private DirectoryMeta meta;
 

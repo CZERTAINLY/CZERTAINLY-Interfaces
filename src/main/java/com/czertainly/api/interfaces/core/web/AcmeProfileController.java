@@ -85,7 +85,7 @@ public interface AcmeProfileController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void disableAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
-	@Operation(summary = "Enable Multiple ACME Profile")
+	@Operation(summary = "Enable multiple ACME Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles enabled") })
 	@RequestMapping(path = "/enable", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -101,7 +101,7 @@ public interface AcmeProfileController {
 			description = "ACME Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids);
 
-	@Operation(summary = "Delete Multiple ACME Profile")
+	@Operation(summary = "Delete multiple ACME Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles deleted") })
 	@RequestMapping(path = "/delete", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)

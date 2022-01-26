@@ -2,10 +2,13 @@ package com.czertainly.api.exception;
 
 import com.czertainly.api.model.core.acme.Problem;
 import com.czertainly.api.model.core.acme.ProblemDocument;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 
 public class AcmeProblemDocumentException extends Exception {
+    @Schema(description = "HTTP Status code corresponding to the error")
     private int httpStatusCode;
+    @Schema(description = "ACME Problem document mentioned in RFC")
     private ProblemDocument problemDocument;
 
     public int getHttpStatusCode() {
