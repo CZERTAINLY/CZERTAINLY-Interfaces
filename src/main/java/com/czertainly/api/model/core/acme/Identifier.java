@@ -3,7 +3,7 @@ package com.czertainly.api.model.core.acme;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * This class in the project represents the identifiers used across the ACME implementation
+ * Project represents the identifiers used across the ACME implementation
  */
 public class Identifier {
     /**

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 public class AcmeProblemDocumentException extends Exception {
     @Schema(description = "HTTP Status code corresponding to the error")
     private int httpStatusCode;
-    @Schema(description = "ACME Problem document mentioned in RFC")
+    @Schema(description = "ACME Problem document described in RFC8555")
     private ProblemDocument problemDocument;
 
     public int getHttpStatusCode() {

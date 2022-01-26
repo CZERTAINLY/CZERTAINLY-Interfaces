@@ -5,17 +5,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class AcmeJwsBody {
 
     @Schema(
-            description = "Protected Field of JWS",
+            description = "Protected field of JWS",
             required = true
     )
     private String protectedField;
     @Schema(
-            description = "JWS Payload",
+            description = "JWS payload",
             required = true
     )
     private String payload;
     @Schema(
-            description = "JWS Signature",
+            description = "JWS signature",
             required = true
     )
     private String signature;

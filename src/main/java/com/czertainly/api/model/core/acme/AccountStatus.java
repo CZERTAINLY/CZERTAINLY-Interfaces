@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 /**
  * This class contains the mapping of the ENUM to the possible values of the
- * status of ACME account
+ * status of ACME Account
  */
 public enum AccountStatus {
 

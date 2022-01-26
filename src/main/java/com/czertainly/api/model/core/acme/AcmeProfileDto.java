@@ -17,29 +17,29 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private String termsOfServiceUrl;
     @Schema(description = "Website URL")
     private String websiteUrl;
-    @Schema(description = "DNS Resolver IP")
+    @Schema(description = "DNS Resolver IP address")
     private String dnsResolverIp;
-    @Schema(description = "DNS Resolver Port")
+    @Schema(description = "DNS Resolver port number")
     private String dnsResolverPort;
     @Schema(description = "RA Profile")
     private RaProfileDto raProfile;
     @Schema(description = "Retry interval for ACME client requests")
     private Integer retryInterval;
-    @Schema(description = "Disable new Orders (Change in Terms of Service)")
+    @Schema(description = "Disable new Orders (change in Terms of Service)")
     private Boolean termsOfServiceChangeDisable;
-    @Schema(description = "Order Validity")
+    @Schema(description = "Order validity")
     private Integer validity;
-    @Schema(description = "ACME Directory URL")
+    @Schema(description = "ACME directory URL")
     private String directoryUrl;
-    @Schema(description = "Terms of Service Change URL")
+    @Schema(description = "Terms of Service change URL")
     private String termsOfServiceChangeUrl;
     @Schema(description = "Contact mandatory for new Accounts")
     private Boolean requireContact;
-    @Schema(description = "Agreeing to terms of service mandatory for new Account")
+    @Schema(description = "Agreeing to Terms of Service mandatory for new Account")
     private Boolean requireTermsOfService;
-    @Schema(description = "List of Attributes to issue a new Certificate")
+    @Schema(description = "List of Attributes to issue a Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;
-    @Schema(description = "List of Attribute for certificate revocation")
+    @Schema(description = "List of Attribute to revoke a Certificate")
     private List<ResponseAttributeDto> revokeCertificateAttributes;
 
     public boolean isEnabled() {

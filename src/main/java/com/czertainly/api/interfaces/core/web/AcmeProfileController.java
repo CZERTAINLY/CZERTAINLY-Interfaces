@@ -110,7 +110,7 @@ public interface AcmeProfileController {
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids);
 
 	@Operation(summary = "Update RA Profile for ACME Profile")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles Updated") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles updated") })
 	@RequestMapping(path = "/{uuid}/raprofile/{raProfileUuid}", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updateRaProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;

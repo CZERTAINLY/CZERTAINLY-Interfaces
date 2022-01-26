@@ -3,21 +3,21 @@ package com.czertainly.api.model.core.acme;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * This class represents the list of the parameters for the challenge object in the
+ * List of the parameters for the challenge object in the
  * ACME protocol
  */
 public class Challenge {
     /**
-     * Type of the challenge encoded in the object
+     * Type of the challenge encoded in the object.
      */
     @Schema(description = "Type of Challenge. Either http-01 or dns-01",
             required = true)
-    private String type;
+    private ChallengeType type;
 
     /**
-     * URL to which the response can be posted after the client completes the challange
+     * URL to which the response can be posted after the client completes the Challenge
      */
-    @Schema(description = "URL of the Challenge",
+    @Schema(description = "URL to which the response can be posted after the client completes the Challenge",
             required = true)
     private String url;
 
@@ -34,7 +34,7 @@ public class Challenge {
      * specified in RFC3339.
      * This is a Non-Mandatory parameter bus is required if the status of the status field is set to valid
      */
-    @Schema(description = "Timestamp at which the challenge is validated")
+    @Schema(description = "Timestamp at which the Challenge is validated")
     private String validated;
 
     /**
@@ -52,11 +52,11 @@ public class Challenge {
             required = true)
     private String token;
 
-    public String getType() {
+    public ChallengeType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ChallengeType type) {
         this.type = type;
     }
 

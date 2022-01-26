@@ -17,7 +17,7 @@ public class AcmeProfileRequestDto {
     )
     private String description;
     @Schema(
-            description = "Terms of Servicce URL"
+            description = "Terms of Service URL"
     )
     private String termsOfServiceUrl;
     @Schema(
@@ -25,11 +25,11 @@ public class AcmeProfileRequestDto {
     )
     private String websiteUrl;
     @Schema(
-            description = "DNS Resolver IP"
+            description = "DNS Resolver IP address"
     )
     private String dnsResolverIp;
     @Schema(
-            description = "DNS Resolver Port"
+            description = "DNS Resolver port number"
     )
     private String dnsResolverPort;
     @Schema(
@@ -41,9 +41,9 @@ public class AcmeProfileRequestDto {
     )
     private Integer retryInterval;
     @Schema(
-            description = "Change needed for new Terms of Service"
+            description = "Disable new Orders due to change in Terms of Service"
     )
-    private Boolean termsOfServiceChangeApproval;
+    private Boolean termsOfServiceChangeDisable;
 
     @Schema(
             description = "Updated Terms of Service URL"
@@ -54,23 +54,23 @@ public class AcmeProfileRequestDto {
     )
     private Integer validity;
     @Schema(
-            description = "List of Attributes for new Certificate issuance",
+            description = "List of Attributes to issue Certificate",
             required = true
     )
     private List<RequestAttributeDto> issueCertificateAttributes;
     @Schema(
-            description = "List of Attributes for Certificate revocation",
+            description = "List of Attributes to revoke Certificate",
             required = true
     )
     private List<RequestAttributeDto> revokeCertificateAttributes;
     @Schema(
-            description = "Is Contact mandatory for new account?"
+            description = "Require contact information for new Account"
     )
-    private Boolean insistContact;
+    private Boolean requireContact;
     @Schema(
-            description = "is new Account must agree to terms of service?"
+            description = "Require new Account to agree on Terms of Service"
     )
-    private Boolean insistTermsOfService;
+    private Boolean requireTermsOfService;
 
     public String getTermsOfServiceUrl() {
         return termsOfServiceUrl;
@@ -128,12 +128,12 @@ public class AcmeProfileRequestDto {
         this.retryInterval = retryInterval;
     }
 
-    public Boolean getTermsOfServiceChangeApproval() {
-        return termsOfServiceChangeApproval;
+    public Boolean getTermsOfServiceChangeDisable() {
+        return termsOfServiceChangeDisable;
     }
 
-    public void setTermsOfServiceChangeApproval(Boolean termsOfServiceChangeApproval) {
-        this.termsOfServiceChangeApproval = termsOfServiceChangeApproval;
+    public void setTermsOfServiceChangeDisable(Boolean termsOfServiceChangeDisable) {
+        this.termsOfServiceChangeDisable = termsOfServiceChangeDisable;
     }
 
     public Integer getValidity() {
@@ -160,20 +160,20 @@ public class AcmeProfileRequestDto {
         this.description = description;
     }
 
-    public Boolean getInsistContact() {
-        return insistContact;
+    public Boolean getRequireContact() {
+        return requireContact;
     }
 
-    public void setInsistContact(Boolean insistContact) {
-        this.insistContact = insistContact;
+    public void setRequireContact(Boolean requireContact) {
+        this.requireContact = requireContact;
     }
 
-    public Boolean getInsistTermsOfService() {
-        return insistTermsOfService;
+    public Boolean getRequireTermsOfService() {
+        return requireTermsOfService;
     }
 
-    public void setInsistTermsOfService(Boolean insistTermsOfService) {
-        this.insistTermsOfService = insistTermsOfService;
+    public void setRequireTermsOfService(Boolean requireTermsOfService) {
+        this.requireTermsOfService = requireTermsOfService;
     }
 
     public String getName() {

@@ -8,23 +8,18 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 /**
- * List of possible status for the Authorization object in
- * ACME protocol
+ * ENUM representing the possible values for the ACME Challenge type
  */
-public enum AuthorizationStatus {
-    PENDING("pending"),
-    VALID("valid"),
-    INVALID("invalid"),
-    DEACTIVATED("deactivated"),
-    EXPIRED("expired"),
-    REVOKED("revoked");
+public enum ChallengeType {
+    HTTP01("http-01"),
+    DNS01("dns-01");
 
     /**
-     * Status code for any given status
+     * Type of Challenge code
      */
     private final String code;
 
-    AuthorizationStatus(String code) {
+    ChallengeType(String code) {
         this.code = code;
     }
 
@@ -34,11 +29,11 @@ public enum AuthorizationStatus {
     }
 
     @JsonCreator
-    public static AuthorizationStatus findByCode(String code) {
-        return Arrays.stream(AuthorizationStatus.values())
+    public static ChallengeType findByCode(String code) {
+        return Arrays.stream(ChallengeType.values())
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown ACME authorization status code {}", code)));
+                        new ValidationException(ValidationError.create("Unknown ACME Challenge Type {}", code)));
     }
 }

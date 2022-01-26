@@ -6,28 +6,28 @@ import java.util.List;
 
 /**
  * Class represents the objects and parameters for the client to be sent for the
- * new certificate issuance order.
+ * new order.
  */
 public class CertificateIssuanceRequest {
     /**
-     * List of the identifiers that the client wishes to submit an order for
+     * List of the identifiers that the client wishes to submit an order for.
      */
-    @Schema(description = "Identifiers for the Order",
+    @Schema(description = "List of Identifiers for the Order",
             required = true)
     private List<Identifier> identifiers;
 
     /**
      * The requested value of notBefore field in the certificate. The date format
-     * is as defined in the RFC3339
+     * is as defined in the RFC3339.
      */
-    @Schema(description = "Not Before field in Certificate")
+    @Schema(description = "Requested value of notBefore field in the certificate")
     private String notBefore;
 
     /**
-     * The requested value of notAter field in the certificate. The format of the certificate
-     * is as defined in the RFC3339
+     * The requested value of notAfter field in the certificate. The format of the certificate
+     * is as defined in the RFC3339.
      */
-    @Schema(description = "Not After field in Certificate",
+    @Schema(description = "Requested value of notAfter field in the certificate",
             required = true)
     private String notAfter;
 

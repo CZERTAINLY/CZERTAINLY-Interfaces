@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * This class contains the parameter for the problem documents or errors during the ACME
+ * Parameter for the problem documents or errors during the ACME
  * process. This is based on the RFC7807
  */
 public class ProblemDocument implements Serializable {
@@ -35,7 +35,7 @@ public class ProblemDocument implements Serializable {
 
     /**
      * URL of the changes if something needs to be approved. Used in ACME to notify the new instance of
-     * terms of service to be agreed by the client to continue with the ACME operations
+     * Terms of Service to be agreed by the client to continue with the ACME operations
      */
     private String instance;
 
@@ -49,7 +49,7 @@ public class ProblemDocument implements Serializable {
      * List of supported algorithms supported by the server.
      * This field is mandatory if the client signs the JWS by some unsupported algorithm
      */
-    @Schema(description = "List of supported algorithm")
+    @Schema(description = "List of supported algorithms")
     private List<String> algorithms;
 
     public String getType() {

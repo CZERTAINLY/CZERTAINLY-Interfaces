@@ -20,7 +20,7 @@ public class AcmeAccountListResponseDto {
     )
     private String uuid;
     @Schema(
-            description = "enabled flag. true = enabled, false=disabled",
+            description = "Enabled flag. true = enabled, false=disabled",
             required = true
     )
     private Boolean isEnabled;
@@ -30,7 +30,7 @@ public class AcmeAccountListResponseDto {
     )
     private Integer totalOrders;
     @Schema(
-            description = "Status of the account",
+            description = "Status of the Account",
             required = true
     )
     private AccountStatus status;

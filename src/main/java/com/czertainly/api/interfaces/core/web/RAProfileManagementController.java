@@ -5,10 +5,10 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.client.SimplifiedClientDto;
-import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequest;
+import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
-import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponse;
+import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
@@ -143,24 +143,24 @@ public interface RAProfileManagementController {
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                     @RequestBody List<String> uuids) throws NotFoundException;
 
-    @Operation(summary = "Get ACME for RA Profile")
+    @Operation(summary = "Get ACME details for RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME details retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/{uuid}/acme", method = RequestMethod.GET, produces = {"application/json"})
-    public RaProfileAcmeDetailResponse getAcmeForRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid)
+    public RaProfileAcmeDetailResponseDto getAcmeForRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid)
             throws NotFoundException;
 
     @Operation(summary = "Activate ACME for RA Profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME Activated"),
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME activated"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/{uuid}/activateAcme", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    public RaProfileAcmeDetailResponse activateAcmeForRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid, @RequestBody ActivateAcmeForRaProfileRequest request)
+    public RaProfileAcmeDetailResponseDto activateAcmeForRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid, @RequestBody ActivateAcmeForRaProfileRequestDto request)
             throws ConnectorException;
 
     @Operation(summary = "Deactivate ACME for RA Profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME Deactivated"),
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME deactivated"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/{uuid}/deactivateAcme", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})

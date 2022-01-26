@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
- * This class contains the response for meta field in the directory list API
+ * Response for meta field in the directory list API
  */
 public class DirectoryMeta {
 
@@ -20,11 +20,6 @@ public class DirectoryMeta {
      */
     @Schema(description = "Website URL")
     private String website;
-
-    /**
-     * CAA Identities to be used in the configuration
-     */
-    private List<String> caaIdentities;
 
     /**
      * Boolean value of the need of external account requirement
@@ -47,14 +42,6 @@ public class DirectoryMeta {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public List<String> getCaaIdentities() {
-        return caaIdentities;
-    }
-
-    public void setCaaIdentities(List<String> caaIdentities) {
-        this.caaIdentities = caaIdentities;
     }
 
     public Boolean getExternalAccountRequired() {

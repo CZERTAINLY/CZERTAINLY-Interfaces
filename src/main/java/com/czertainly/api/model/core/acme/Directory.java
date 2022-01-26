@@ -3,31 +3,31 @@ package com.czertainly.api.model.core.acme;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * This class represents the parameters and fields that are part of the ACME
+ * Parameters and fields that are part of the ACME
  * directory response for the directory API
  */
 public class Directory {
     /**
      * URL for the new nonce. This url will be used by the ACME clients to request for
-     * new Nonce Values
+     * new Nonce values.
      */
-    @Schema(description = "URL to get new nonce",
+    @Schema(description = "URL to get new Nonce",
             required = true)
     private String newNonce;
 
     /**
      * URL for the new account. This url will be used by the ACME clients to request for
-     * new account registration
+     * new account registration.
      */
-    @Schema(description = "New Account creation URL",
+    @Schema(description = "URL for the new account",
             required = true)
     private String newAccount;
 
     /**
-     * URL for the new order. This url will be used by the ACME clients to request for
+     * URL for the new Order. This url will be used by the ACME clients to request for
      * new Order for certificates
      */
-    @Schema(description = "New Order creation URL",
+    @Schema(description = "URL for the new Order",
             required = true)
     private String newOrder;
 
@@ -35,7 +35,7 @@ public class Directory {
      * URL for the new AuthZ. This url will be used by the ACME clients to request for
      * new Authz request
      */
-    @Schema(description = "New Authorization creation URL",
+    @Schema(description = "URL for the new AuthZ",
             required = true)
     private String newAuthz;
 
@@ -43,7 +43,7 @@ public class Directory {
      * URL for revoking a certificate. This url will be used by the ACME clients to request for
      * new certificate revocation
      */
-    @Schema(description = "Certificate revocation creation URL",
+    @Schema(description = "URL for revoking a certificate",
             required = true)
     private String revokeCert;
 
@@ -51,14 +51,14 @@ public class Directory {
      * URL for changing the key of an account. This url will be used by the ACME clients to request for
      * a new key change for an account
      */
-    @Schema(description = "Key Rollover URL",
+    @Schema(description = " URL for changing the key of an account",
             required = true)
     private String keyChange;
 
     /**
-     * Meta data for the directory object. This will contain the meta data like termsOfService etc..
+     * Metadata for the directory object. This will contain the metadata like termsOfService etc..
      */
-    @Schema(description = "Directory metadata",
+    @Schema(description = "Metadata for the directory object",
             required = true)
     private DirectoryMeta meta;
 

@@ -5,14 +5,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public class ActivateAcmeForRaProfileRequest {
+public class ActivateAcmeForRaProfileRequestDto {
     @Schema(description = "ACME Profile UUID",
             required = true)
     private String acmeProfileUuid;
-    @Schema(description = "List of Attributes for new Certificate",
+    @Schema(description = "List of Attributes to issue Certificate",
             required = true)
     private List<RequestAttributeDto> issueCertificateAttributes;
-    @Schema(description = "List of Attributes for Certificate revocation",
+    @Schema(description = "List of Attributes to revoke Certificate",
             required = true)
     private List<RequestAttributeDto> revokeCertificateAttributes;
 

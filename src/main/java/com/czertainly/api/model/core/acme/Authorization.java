@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
- * This class represents the parameters and fields for the Authorization Object
+ * Parameters and fields for the Authorization Object
  * in the ACME protocol
  */
 public class Authorization {
     /**
-     * Identifier that the account is authorized to represent
+     * Identifier that the Account is authorized to represent
      */
     @Schema(
             description = "ACME Identifier",
@@ -45,7 +45,7 @@ public class Authorization {
      * of the domain.
      */
     @Schema(
-            description = "Challenges",
+            description = "List of Challenges (http-01, dns-01) for the client to satisfy",
             required = false
     )
     private List<Challenge> challenges;

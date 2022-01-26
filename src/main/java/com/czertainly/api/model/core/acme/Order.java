@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
- * This class contains set of properties to represent
+ * Set of properties to represent
  * the Order object from the ACME for an Account.
  */
 public class Order {
@@ -19,7 +19,7 @@ public class Order {
     private OrderStatus status;
 
     /**
-     * Timestamp after which the server will consider the order as invalid. This is encoded in the time format
+     * Timestamp after which the server will consider the Order as invalid. This is encoded in the time format
      * specified in RFC3339 (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
@@ -27,32 +27,32 @@ public class Order {
     private String expires;
 
     /**
-     * Array of the identifier that the order pertains to
+     * Array of the identifier that the Order pertains to
      * This is a mandatory parameter
      */
-    @Schema(description = "List of Order identifiers")
+    @Schema(description = "List of Order Identifiers")
     private List<Identifier> identifiers;
 
     /**
-     * notBefore field in the certificate. The format of the field is as defined in RFC3339
+     * Value of notBefore field in the certificate. The format of the field is as defined in RFC3339
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "notBefore field in the certificate",
+    @Schema(description = "Value of notBefore field in the Certificate",
             required = true)
     private String notBefore;
 
     /**
-     * notAfter field in the certificate. The format of the field is as defined in RFC3339
+     * Value of notAfter field in the certificate. The format of the field is as defined in RFC3339
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "notAfter field in the certificate",
+    @Schema(description = "Value of notAfter field in the Certificate",
             required = true)
     private String notAfter;
 
     /**
-     * Errors that occurred during the processing of  order if anything raises
+     * Errors that occurred during the processing of  Order if anything raises
      * This field should be structured as defined in RFC7801
      * This is a non mandatory field
      */
@@ -68,7 +68,7 @@ public class Order {
     private List<String> authorizations;
 
     /**
-     * URL for finalizing the order and asking the server to issue the certificate once the authorizations
+     * URL for finalizing the Order and asking the server to issue the certificate once the authorizations
      * are satisfied
      */
     @Schema(description = "URL to finalize the order. Mandatory if the Order is in ready state")
