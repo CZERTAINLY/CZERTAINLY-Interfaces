@@ -15,7 +15,7 @@ public class NewAccountRequest {
      * to contact the client for issues related to this account.
      * This is an optional parameter.
      */
-    @Schema(description = "List of contact for the Account. Required if the required flag is set in ACME Profile")
+    @Schema(description = "List of contacts for the Account. Required if the required flag is set in ACME Profile")
     private List<String> contact;
 
     /**

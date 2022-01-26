@@ -29,9 +29,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/acme/{acmeProfileName}")
-@Tag(name = "ACME API", description = "ACME End Points Controller. This controller contains the end points for ACME " +
+@Tag(name = "ACME RA Profile API", description = "It contains the end points for ACME " +
         "clients to request for ACME related operations. These end points are to be used by the ACME Profile " +
-        "configuration that contains default RA Profile. These end points require ACME Profile name in the path variable")
+        "configuration that contains default RA Profile.")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -58,7 +58,7 @@ public interface AcmeController {
     ResponseEntity<Directory> getDirectory(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "New Nonce")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New nonce retrieved")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New Nonce retrieved")})
     @RequestMapping(path = "/new-nonce")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     ResponseEntity<?> getNonce(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName);

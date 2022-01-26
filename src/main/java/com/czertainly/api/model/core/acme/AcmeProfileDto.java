@@ -31,7 +31,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private Integer validity;
     @Schema(description = "ACME directory URL")
     private String directoryUrl;
-    @Schema(description = "Terms of Service change URL")
+    @Schema(description = "Changes of Terms of Service URL")
     private String termsOfServiceChangeUrl;
     @Schema(description = "Contact mandatory for new Accounts")
     private Boolean requireContact;
@@ -39,7 +39,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private Boolean requireTermsOfService;
     @Schema(description = "List of Attributes to issue a Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;
-    @Schema(description = "List of Attribute to revoke a Certificate")
+    @Schema(description = "List of Attributes to revoke a Certificate")
     private List<ResponseAttributeDto> revokeCertificateAttributes;
 
     public boolean isEnabled() {
