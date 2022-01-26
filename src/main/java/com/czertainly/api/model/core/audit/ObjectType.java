@@ -22,5 +22,7 @@ public enum ObjectType {
     GROUP,
     CERTIFICATE,
     STATISTICS,
+    ACME_PROFILE,
+    ACME_ACCOUNT,
     LOCALHOST;
 }
