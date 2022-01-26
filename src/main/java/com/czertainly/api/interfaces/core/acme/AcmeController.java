@@ -28,9 +28,9 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/acme/{acmeProfileName}")
-@Tag(name = "ACME RA Profile API", description = "It contains the end points for ACME " +
-        "clients to request for ACME related operations. These end points are to be used by the ACME Profiles " +
-        " that contains default RA Profile.")
+@Tag(name = "ACME API", description = "Interfaces used by ACME clients to request ACME related operations. " +
+        "ACME Profile defines the behaviour for the specific ACME configuration. When the ACME Profile contains " +
+        "default RA Profile, it can be used by the ACME clients to request operations on their specific URL.")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -51,7 +51,7 @@ import java.util.List;
         })
 public interface AcmeController {
 
-    @Operation(summary = "Get Directory")
+    @Operation(summary = "Get Directory information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Directory information retrieved")})
     @RequestMapping(path = "/directory", method = RequestMethod.GET)
     ResponseEntity<Directory> getDirectory(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName) throws NotFoundException, AcmeProblemDocumentException;

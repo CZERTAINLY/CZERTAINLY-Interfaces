@@ -30,7 +30,7 @@ public class Order {
      * Array of the Identifier that the Order pertains to
      * This is a mandatory parameter
      */
-    @Schema(description = "List of Order Identifiers")
+    @Schema(description = "List of Order Identifiers", required = true)
     private List<Identifier> identifiers;
 
     /**
@@ -38,8 +38,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Value of notBefore field in the Certificate",
-            required = true)
+    @Schema(description = "Value of notBefore field in the Certificate")
     private String notBefore;
 
     /**
@@ -47,8 +46,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Value of notAfter field in the Certificate",
-            required = true)
+    @Schema(description = "Value of notAfter field in the Certificate")
     private String notAfter;
 
     /**

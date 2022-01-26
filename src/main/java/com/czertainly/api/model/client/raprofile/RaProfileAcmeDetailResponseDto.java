@@ -11,7 +11,7 @@ public class RaProfileAcmeDetailResponseDto extends NameAndUuidDto {
     @Schema(description = "ACME availability flag - true = yes; false = no",
             required = true)
     private Boolean isAcmeAvailable;
-    @Schema(description = "ACME directory URL",
+    @Schema(description = "ACME Directory URL",
             required = true)
     private String directoryUrl;
     @Schema(description = "List of Attributes to issue Certificate",

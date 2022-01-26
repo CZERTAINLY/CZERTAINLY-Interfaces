@@ -45,7 +45,7 @@ public class Authorization {
      * of the domain.
      */
     @Schema(
-            description = "List of Challenges (http-01, dns-01) for the client to complete",
+            description = "List of Challenges for the client to complete",
             required = false
     )
     private List<Challenge> challenges;

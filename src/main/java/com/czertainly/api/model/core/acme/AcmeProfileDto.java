@@ -29,7 +29,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private Boolean termsOfServiceChangeDisable;
     @Schema(description = "Order validity")
     private Integer validity;
-    @Schema(description = "ACME directory URL")
+    @Schema(description = "ACME Directory URL")
     private String directoryUrl;
     @Schema(description = "Changes of Terms of Service URL")
     private String termsOfServiceChangeUrl;

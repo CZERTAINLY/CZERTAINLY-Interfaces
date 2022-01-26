@@ -18,7 +18,5 @@ public enum OperationType {
     CALLBACK,
     CONNECT,
     FORCE_DELETE,
-    FINALIZE,
-    DOWNLOAD,
     APPROVE;
 }

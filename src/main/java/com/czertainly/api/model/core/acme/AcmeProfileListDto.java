@@ -14,7 +14,7 @@ public class AcmeProfileListDto extends NameAndUuidDto {
     private String raProfileName;
     @Schema(description = "UUID of RA Profile")
     private String raProfileUuid;
-    @Schema(description = "URL of the ACME directory")
+    @Schema(description = "URL of the ACME Directory")
     private String directoryUrl;
 
     public boolean isEnabled() {

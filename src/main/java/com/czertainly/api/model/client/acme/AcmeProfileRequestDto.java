@@ -13,7 +13,7 @@ public class AcmeProfileRequestDto {
     private String name;
 
     @Schema(
-            description = "Description of the Profile"
+            description = "Description of the ACME Profile"
     )
     private String description;
     @Schema(

@@ -31,10 +31,10 @@ public class Directory {
     private String newOrder;
 
     /**
-     * URL for the new AuthZ. This url will be used by the ACME clients to request for
+     * URL for the new Authorization. This url will be used by the ACME clients to request for
      * new Authz request
      */
-    @Schema(description = "URL for the new AuthZ",
+    @Schema(description = "URL for the new Authorization",
             required = true)
     private String newAuthz;
 
@@ -55,9 +55,9 @@ public class Directory {
     private String keyChange;
 
     /**
-     * Metadata for the directory object. This will contain the metadata like termsOfService etc..
+     * Metadata for the Directory object. This will contain the metadata like termsOfService etc..
      */
-    @Schema(description = "Metadata for the directory object",
+    @Schema(description = "Metadata for the Directory object",
             required = true)
     private DirectoryMeta meta;
 

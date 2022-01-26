@@ -41,8 +41,8 @@ import java.util.List;
         })
 public interface AcmeAccountController {
 
-    @Operation(summary = "List ACME Account")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Account list retrieved")})
+    @Operation(summary = "List ACME Accounts")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Accounts list retrieved")})
     @RequestMapping(produces = {"application/json"})
     public List<AcmeAccountListResponseDto> listAcmeAccount();
 

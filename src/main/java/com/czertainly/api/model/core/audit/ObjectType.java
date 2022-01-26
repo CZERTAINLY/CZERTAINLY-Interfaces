@@ -24,6 +24,5 @@ public enum ObjectType {
     STATISTICS,
     ACME_PROFILE,
     ACME_ACCOUNT,
-    ACME_CLIENT,
     LOCALHOST;
 }

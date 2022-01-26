@@ -33,15 +33,8 @@ public class NewAccountRequest {
      * client.
      * This is a non-mandatory field.
      */
-    @Schema(description = "Return existing Account only flag")
+    @Schema(description = "Return existing Account only flag", defaultValue = "false")
     private boolean onlyReturnExisting;
-
-    /**
-     * Represents the URL of from which the list of Orders for this Account can be fetched.
-     * This is a mandatory field.
-     */
-    @Schema(description = "URL to get the list of Orders for the Account")
-    private String orders;
 
 
     public List<String> getContact() {
@@ -66,13 +59,5 @@ public class NewAccountRequest {
 
     public void setOnlyReturnExisting(boolean onlyReturnExisting) {
         this.onlyReturnExisting = onlyReturnExisting;
-    }
-
-    public String getOrders() {
-        return orders;
-    }
-
-    public void setOrders(String orders) {
-        this.orders = orders;
     }
 }
