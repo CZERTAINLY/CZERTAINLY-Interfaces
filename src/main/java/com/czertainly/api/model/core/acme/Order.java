@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Order {
     /**
-     * Status represents the status of the order. Possible values are "pending", "ready", "processing", "valid"
+     * Status represents the status of the Order. Possible values are "pending", "ready", "processing", "valid"
      * and "invalid".
      * This is a mandatory field
      */
@@ -27,14 +27,14 @@ public class Order {
     private String expires;
 
     /**
-     * Array of the identifier that the Order pertains to
+     * Array of the Identifier that the Order pertains to
      * This is a mandatory parameter
      */
     @Schema(description = "List of Order Identifiers")
     private List<Identifier> identifiers;
 
     /**
-     * Value of notBefore field in the certificate. The format of the field is as defined in RFC3339
+     * Value of notBefore field in the Certificate. The format of the field is as defined in RFC3339
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
@@ -43,7 +43,7 @@ public class Order {
     private String notBefore;
 
     /**
-     * Value of notAfter field in the certificate. The format of the field is as defined in RFC3339
+     * Value of notAfter field in the Certificate. The format of the field is as defined in RFC3339
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
@@ -54,31 +54,31 @@ public class Order {
     /**
      * Errors that occurred during the processing of  Order if anything raises
      * This field should be structured as defined in RFC7801
-     * This is a non mandatory field
+     * This is a non-mandatory field
      */
     @Schema(description = "Errors in Order")
     private ProblemDocument error;
 
     /**
-     * List of authorizations that the client needs to complete for the server to allow the finalization of the order.
-     * Only after the authorizations, the server will issue the certificate. This will also include the list of
-     * authorizations that client has completed for the same list of identifiers
+     * List of Authorizations that the client needs to complete for the server to allow the finalization of the Order.
+     * Only after the Authorizations, the server will issue the Certificate. This will also include the list of
+     * Authorizations that client has completed for the same list of identifiers
      */
     @Schema(description = "List of URLs to check for Authorizations")
     private List<String> authorizations;
 
     /**
-     * URL for finalizing the Order and asking the server to issue the certificate once the authorizations
+     * URL for finalizing the Order and asking the server to issue the Certificate once the Authorizations
      * are satisfied
      */
-    @Schema(description = "URL to finalize the order. Mandatory if the Order is in ready state")
+    @Schema(description = "URL to finalize the Order. Mandatory if the Order is in ready state")
     private String finalize;
 
     /**
-     * URL for the client to download the certificate that has been issues in response to the order.
+     * URL for the client to download the Certificate that has been issues in response to the Order.
      * This is a non-mandatory field
      */
-    @Schema(description = "Certificate download URL")
+    @Schema(description = "URL to download the Certificate")
     private String certificate;
 
     public OrderStatus getStatus() {

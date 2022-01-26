@@ -4,8 +4,7 @@ import com.czertainly.api.model.core.acme.AccountStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * This class contains set of properties to represent
- * the Account object from ACME.
+ * Set of properties to represent the Account object from ACME.
  */
 public class AcmeAccountListResponseDto {
 

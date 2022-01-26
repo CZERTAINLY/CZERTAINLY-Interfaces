@@ -64,7 +64,7 @@ public class AcmeProfileRequestDto {
     )
     private List<RequestAttributeDto> revokeCertificateAttributes;
     @Schema(
-            description = "Require Contact information for new Account"
+            description = "Require contact information for new Account"
     )
     private Boolean requireContact;
     @Schema(

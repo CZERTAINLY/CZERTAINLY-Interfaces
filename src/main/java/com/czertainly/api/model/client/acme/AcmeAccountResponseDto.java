@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
- * This class contains set of properties to represent
- * the Account object from ACME.
+ * Set of properties to represent the Account object from ACME.
  */
 public class AcmeAccountResponseDto {
 
@@ -47,7 +46,7 @@ public class AcmeAccountResponseDto {
     )
     private Integer pendingOrders;
     @Schema(
-            description = "Number of Valid Orders",
+            description = "Number of valid Orders",
             required = true
     )
     private Integer validOrders;

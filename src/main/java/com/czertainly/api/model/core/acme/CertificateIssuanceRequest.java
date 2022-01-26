@@ -5,12 +5,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
- * Class represents the objects and parameters for the client to be sent for the
- * new order.
+ * Parameters for the client to be sent for the new Order.
  */
 public class CertificateIssuanceRequest {
     /**
-     * List of the identifiers that the client wishes to submit an order for.
+     * List of the Identifiers that the client wishes to submit an Order for.
      */
     @Schema(description = "List of Identifiers for the Order",
             required = true)

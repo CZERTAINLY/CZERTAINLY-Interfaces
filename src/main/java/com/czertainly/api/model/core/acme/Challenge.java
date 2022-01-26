@@ -3,14 +3,13 @@ package com.czertainly.api.model.core.acme;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * List of the parameters for the challenge object in the
- * ACME protocol
+ * List of the parameters for the challenge object in the ACME protocol
  */
 public class Challenge {
     /**
-     * Type of the challenge encoded in the object.
+     * Type of the Challenge encoded in the object.
      */
-    @Schema(description = "Type of Challenge. Either http-01 or dns-01",
+    @Schema(description = "Type of Challenge",
             required = true)
     private ChallengeType type;
 
@@ -22,7 +21,7 @@ public class Challenge {
     private String url;
 
     /**
-     * Status of the challenge. The possible values are "pending", "processing", "valid", "invalid"
+     * Status of the Challenge. The possible values are "pending", "processing", "valid", "invalid"
      * This is a mandatory field.
      */
     @Schema(description = "Challenge status",
@@ -30,7 +29,7 @@ public class Challenge {
     private ChallengeStatus status;
 
     /**
-     * Time at which the server validated this challenge. This data is encoded in the format
+     * Time at which the server validated this Challenge. This data is encoded in the format
      * specified in RFC3339.
      * This is a Non-Mandatory parameter bus is required if the status of the status field is set to valid
      */
@@ -38,7 +37,7 @@ public class Challenge {
     private String validated;
 
     /**
-     * Error that occurred while the server was validating the challenge, if any, structured as a problem document
+     * Error that occurred while the server was validating the Challenge, if any, structured as a problem document
      * [RFC7807].  Multiple errors can be indicated by using subproblems.
      * A challenge object with an error MUST have status equal to "invalid".
      */

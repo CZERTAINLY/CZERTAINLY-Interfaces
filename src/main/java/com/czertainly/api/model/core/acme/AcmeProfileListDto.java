@@ -8,17 +8,13 @@ public class AcmeProfileListDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
     private boolean isEnabled;
-    @Schema(description = "ACME Profile description",
-            required = false)
+    @Schema(description = "ACME Profile description")
     private String description;
-    @Schema(description = "Name of the RA Profile",
-            required = false)
+    @Schema(description = "Name of the RA Profile")
     private String raProfileName;
-    @Schema(description = "UUID of RA Profile",
-            required = false)
+    @Schema(description = "UUID of RA Profile")
     private String raProfileUuid;
-    @Schema(description = "URL of the ACME directory",
-            required = false)
+    @Schema(description = "URL of the ACME directory")
     private String directoryUrl;
 
     public boolean isEnabled() {

@@ -24,14 +24,13 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 /**
- * This class contains the list of end points supported for the ACME implementation
- * in CZERTAINLY
+ * List of end points supported for the ACME implementation in CZERTAINLY
  */
 @RestController
 @RequestMapping("/acme/{acmeProfileName}")
 @Tag(name = "ACME RA Profile API", description = "It contains the end points for ACME " +
-        "clients to request for ACME related operations. These end points are to be used by the ACME Profile " +
-        "configuration that contains default RA Profile.")
+        "clients to request for ACME related operations. These end points are to be used by the ACME Profiles " +
+        " that contains default RA Profile.")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -64,22 +63,21 @@ public interface AcmeController {
     ResponseEntity<?> getNonce(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName);
 
     @Operation(summary = "New Nonce")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New Nonce retrieved")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Nonce retrieved")})
     @RequestMapping(path = "/new-nonce", method = RequestMethod.HEAD)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     ResponseEntity<?> headNonce(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName);
 
     @Operation(summary = "Create Account")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Account created")})
     @RequestMapping(path = "/new-account", method = RequestMethod.POST)
     ResponseEntity<?> newAccount(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "New Account JWS Payload", content = @Content(schema = @Schema(implementation = Account.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
+            description = "New Account JWS payload", content = @Content(schema = @Schema(implementation = Account.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @Operation(summary = "Update Account")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "ACME Account updated")})
     @RequestMapping(path = "/acct/{accountId}", method = RequestMethod.POST)
     ResponseEntity<Account> updateAccount(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @Parameter(description = "Account ID") @PathVariable String accountId, @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "New Account JWS Payload", content = @Content(schema = @Schema(implementation = NewAccountRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
+            description = "New Account JWS payload", content = @Content(schema = @Schema(implementation = NewAccountRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @Operation(summary = "Key Rollover")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Account key updated")})
@@ -90,7 +88,7 @@ public interface AcmeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Order request created")})
     @RequestMapping(path = "/new-order", method = RequestMethod.POST)
     ResponseEntity<Order> newOrder(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "New Order JWS Payload", content = @Content(schema = @Schema(implementation = CertificateIssuanceRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
+            description = "New Order JWS payload", content = @Content(schema = @Schema(implementation = CertificateIssuanceRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @Operation(summary = "List Orders")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Orders list retrieved")})
@@ -116,7 +114,7 @@ public interface AcmeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order finalized")})
     @RequestMapping(path = "/order/{orderId}/finalize", method = RequestMethod.POST)
     ResponseEntity<Order> finalize(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @Parameter(description = "Order Id") @PathVariable String orderId, @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Finalize Order JWS Payload", content = @Content(schema = @Schema(implementation = CertificateFinalizeRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException;
+            description = "Finalize Order JWS payload", content = @Content(schema = @Schema(implementation = CertificateFinalizeRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException;
 
     @Operation(summary = "Download Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate content retrieved")})
@@ -127,5 +125,5 @@ public interface AcmeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate revoked")})
     @RequestMapping(path = "/revoke-cert", method = RequestMethod.POST)
     ResponseEntity<?> revokeCertificate(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Certificate Revocation JWS Payload", content = @Content(schema = @Schema(implementation = CertificateRevocationRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, CertificateException;
+            description = "Certificate Revocation JWS payload", content = @Content(schema = @Schema(implementation = CertificateRevocationRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, CertificateException;
 }

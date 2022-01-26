@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 public class CertificateRevocationRequest {
     /**
-     * The certificate to be revoked, in the base64url-encoded version of the DER format.  (Note: Because this field
+     * The Certificate to be revoked, in the base64url-encoded version of the DER format.  (Note: Because this field
      * uses base64url, and does not include headers, it is different from PEM.).
      */
     @Schema(description = "Certificate in base64url-encoded version of DER format",
@@ -18,7 +18,7 @@ public class CertificateRevocationRequest {
     private String certificate;
 
     /**
-     * Reason for the certificate revocation. The reason is as specified by the RFC5280
+     * Reason for the Certificate revocation. The reason is as specified by the RFC5280
      * The value is optional. If none of the reason is given, then the server can leave the reason blank for OCSP
      * meaning the server can set the code for revocation is UNSPECIFIED.
      */

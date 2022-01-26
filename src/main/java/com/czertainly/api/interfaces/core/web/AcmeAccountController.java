@@ -64,7 +64,7 @@ public interface AcmeAccountController {
     public void  disableAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Revoke ACME Account")
-    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Account deleted")})
+    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Account revoked")})
     @RequestMapping(path = "/{uuid}", produces = {"application/json"}, method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void revokeAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
@@ -86,7 +86,7 @@ public interface AcmeAccountController {
             examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids) throws NotFoundException;
 
     @Operation(summary = "Revoke multiple ACME Accounts")
-    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts deleted")})
+    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts revoked")})
     @RequestMapping(path = "/revoke", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bulkRevokeAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(

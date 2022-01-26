@@ -14,22 +14,22 @@ public class ProblemDocument implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Type of the problem
+     * Type of the problem.
      */
-    @Schema(description = "Type of the ACME Problem",
+    @Schema(description = "Type of the ACME problem",
             required = true)
     private String type;
 
     /**
-     * Title of the problem. In short words
+     * Title of the problem. In short words.
      */
-    @Schema(description = "ACME Problem title")
+    @Schema(description = "ACME problem title")
     private String title;
 
     /**
-     * Details of the problem. These statements should be understandable by the user
+     * Details of the problem. These statements should be understandable by the user.
      */
-    @Schema(description = "ACME Problem detail",
+    @Schema(description = "ACME problem details",
             required = true)
     private String detail;
 

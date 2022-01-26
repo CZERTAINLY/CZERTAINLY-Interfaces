@@ -5,18 +5,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 /**
- * Response for meta field in the directory list API
+ * Response for meta field in the Directory list API
  */
 public class DirectoryMeta {
 
     /**
-     * URL for the terms and service to be accepted by the clients
+     * URL for the Terms and Service to be accepted by the clients
      */
     @Schema(description = "Terms of Service URL")
     private String termsOfService;
 
     /**
-     * URL of the website for the acme configuration
+     * URL of the website for the ACME configuration
      */
     @Schema(description = "Website URL")
     private String website;

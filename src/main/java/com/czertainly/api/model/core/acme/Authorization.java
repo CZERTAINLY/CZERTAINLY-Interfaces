@@ -29,7 +29,7 @@ public class Authorization {
     private AuthorizationStatus status;
 
     /**
-     * Timestamp after which the server will consider the authorization as Invalid.
+     * Timestamp after which the server will consider the Authorization as Invalid.
      * The value is encoded in the format defined by RFC3339
      *
      * This field is required if the object is "valid" by status
@@ -41,11 +41,11 @@ public class Authorization {
     private String expires;
 
     /**
-     *List of the authorization objects that the client is entitles to complete to prove the ownership
+     *List of the Authorization objects that the client is entitles to complete to prove the ownership
      * of the domain.
      */
     @Schema(
-            description = "List of Challenges (http-01, dns-01) for the client to satisfy",
+            description = "List of Challenges (http-01, dns-01) for the client to complete",
             required = false
     )
     private List<Challenge> challenges;

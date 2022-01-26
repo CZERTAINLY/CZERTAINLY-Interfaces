@@ -8,8 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 /**
- * This class contains the mapping of the ENUM to the possible values of the
- * status of ACME Account
+ * Mapping of the ENUM to the possible values of the status of ACME Account
  */
 public enum AccountStatus {
 

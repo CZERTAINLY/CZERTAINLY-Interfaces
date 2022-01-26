@@ -8,8 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 /**
- * List of possible status for the Authorization object in
- * ACME protocol
+ * List of possible status for the Authorization object in ACME protocol
  */
 public enum AuthorizationStatus {
     PENDING("pending"),

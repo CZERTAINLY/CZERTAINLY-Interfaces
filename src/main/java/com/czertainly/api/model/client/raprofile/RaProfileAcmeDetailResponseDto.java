@@ -8,7 +8,7 @@ import java.util.List;
 
 public class RaProfileAcmeDetailResponseDto extends NameAndUuidDto {
 
-    @Schema(description = "Available flag - true = yes; false = no",
+    @Schema(description = "ACME availability flag - true = yes; false = no",
             required = true)
     private Boolean isAcmeAvailable;
     @Schema(description = "ACME directory URL",

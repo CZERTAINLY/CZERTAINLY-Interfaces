@@ -3,12 +3,11 @@ package com.czertainly.api.model.core.acme;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Parameters and fields that are part of the ACME
- * directory response for the directory API
+ * Parameters and fields that are part of the ACME Directory response for the Directory API
  */
 public class Directory {
     /**
-     * URL for the new nonce. This url will be used by the ACME clients to request for
+     * URL for the new Nonce. This url will be used by the ACME clients to request for
      * new Nonce values.
      */
     @Schema(description = "URL to get new Nonce",
@@ -25,7 +24,7 @@ public class Directory {
 
     /**
      * URL for the new Order. This url will be used by the ACME clients to request for
-     * new Order for certificates
+     * new Order
      */
     @Schema(description = "URL for the new Order",
             required = true)
@@ -40,8 +39,8 @@ public class Directory {
     private String newAuthz;
 
     /**
-     * URL for revoking a certificate. This url will be used by the ACME clients to request for
-     * new certificate revocation
+     * URL for revoking a Certificate. This url will be used by the ACME clients to request for
+     * new Certificate revocation
      */
     @Schema(description = "URL for revoking a certificate",
             required = true)

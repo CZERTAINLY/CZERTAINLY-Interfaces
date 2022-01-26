@@ -3,20 +3,20 @@ package com.czertainly.api.model.core.acme;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Project represents the identifiers used across the ACME implementation
+ * Identifiers used across the ACME implementation
  */
 public class Identifier {
     /**
-     * Field represents the type of the identifier. This field primarily defined the
-     * DNS identifier types
+     * Field represents the type of the Identifier. This field primarily defined the
+     * DNS Identifier types
      */
     @Schema(description = "Type of the Identifier",
             required = true)
     private String type;
 
     /**
-     * Represents the value of the identifier in {@link Identifier#type}
-     * This field is the identifier itself
+     * Represents the value of the Identifier in {@link Identifier#type}
+     * This field is the Identifier itself
      */
     @Schema(description = "Value of Identifier",
             required = true)
@@ -27,7 +27,6 @@ public class Identifier {
 
     /**
      * Below are the default getters and setters for the above defined parameters
-     * @return
      */
     public String getType() {
         return type;
