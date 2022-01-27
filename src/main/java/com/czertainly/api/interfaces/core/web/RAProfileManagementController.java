@@ -9,6 +9,7 @@ import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequest
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
+import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
@@ -167,4 +168,16 @@ public interface RAProfileManagementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deactivateAcmeForRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid)
             throws NotFoundException;
+
+    @Operation(summary = "Get revocation Attributes")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes list obtained") })
+    @RequestMapping(path = "{uuid}/revoke/attributes", method = RequestMethod.GET, produces = {"application/json"})
+    List<AttributeDefinition> listRevokeCertificateAttributes(
+            @Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
+
+    @Operation(summary = "Get issue Certificate Attributes")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes list obtained")})
+    @RequestMapping(path = "{uuid}/issue/attributes", method = RequestMethod.GET, produces = {"application/json"})
+    List<AttributeDefinition> listIssueCertificateAttributes(
+            @Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 }
