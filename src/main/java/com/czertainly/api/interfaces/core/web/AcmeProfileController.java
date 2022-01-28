@@ -5,6 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.acme.AcmeProfileRequestDto;
+import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.acme.AcmeProfileDto;
@@ -70,8 +71,7 @@ public interface AcmeProfileController {
 	@Operation(summary = "Delete ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profile deleted") })
 	@RequestMapping(path="/{uuid}", method = RequestMethod.DELETE, produces = { "application/json" })
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException;
+	public List<ForceDeleteMessageDto> deleteAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Enable ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile enabled") })
@@ -104,10 +104,17 @@ public interface AcmeProfileController {
 	@Operation(summary = "Delete multiple ACME Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profiles deleted") })
 	@RequestMapping(path = "/delete", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = { "application/json" })
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkDeleteAcmeProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	public List<ForceDeleteMessageDto> bulkDeleteAcmeProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "ACME Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids);
+
+	@Operation(summary = "Force delete multiple ACME Profiles")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profiles forced to delete"),
+			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+	@RequestMapping(path = "/delete/force", method = RequestMethod.DELETE, produces = {"application/json"})
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void bulkForceRemoveACMEProfiles(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
 	@Operation(summary = "Update RA Profile for ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile updated") })
