@@ -30,7 +30,7 @@ public class AcmeProblemDocumentException extends Exception {
     }
 
     public AcmeProblemDocumentException(HttpStatus httpStatus, Problem problem, String detail) {
-        this(httpStatus, new ProblemDocument(problem));
-        problem.setDetail(detail);
+        this(httpStatus, new ProblemDocument(problem.getType(), problem.getTitle(), detail));
+
     }
 }
