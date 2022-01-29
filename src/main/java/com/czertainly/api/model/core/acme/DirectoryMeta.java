@@ -25,8 +25,15 @@ public class DirectoryMeta {
      * Boolean value of the need of external account requirement
      */
     @Schema(description = "External Account Binding flag",
-            required = true)
+            required = false)
     private Boolean externalAccountRequired;
+
+    /**
+     * CAA record validation list of hostnames
+     */
+    @Schema(description = "Array of CAA record validation servers",
+            required = false)
+    private String[] caaIdentities;
 
     public String getTermsOfService() {
         return termsOfService;
@@ -51,4 +58,8 @@ public class DirectoryMeta {
     public void setExternalAccountRequired(Boolean externalAccountRequired) {
         this.externalAccountRequired = externalAccountRequired;
     }
+
+    public String[] getCaaIdentities() { return caaIdentities; }
+
+    public void setCaaIdentities(String[] caaIdentities) { this.caaIdentities = caaIdentities; }
 }
