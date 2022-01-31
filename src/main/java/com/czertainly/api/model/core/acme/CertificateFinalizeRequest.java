@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Dto for the client to send for finalizing the Order.
@@ -24,4 +26,12 @@ public class CertificateFinalizeRequest {
     public void setCsr(String csr) {
         this.csr = csr;
     }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("csr", csr)
+                .toString();
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.List;
@@ -114,4 +116,16 @@ public class ProblemDocument implements Serializable {
         setTitle(problem.getTitle());
         setDetail(problem.getDetail());
     }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("type", type)
+                .append("title", title)
+                .append("detail", detail)
+                .append("instance", instance)
+                .append("algorithms", algorithms)
+                .toString();
+    }
+
 }

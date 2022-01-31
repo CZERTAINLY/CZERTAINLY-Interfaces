@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Identifiers used across the ACME implementation
@@ -42,5 +44,13 @@ public class Identifier {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("type", type)
+                .append("value", value)
+                .toString();
     }
 }

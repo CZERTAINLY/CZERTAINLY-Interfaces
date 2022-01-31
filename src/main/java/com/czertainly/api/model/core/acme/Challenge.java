@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * List of the parameters for the challenge object in the ACME protocol
@@ -97,5 +99,17 @@ public class Challenge {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("type", type)
+                .append("url", url)
+                .append("status", status)
+                .append("validated", validated)
+                .append("error", error)
+                .append("token", token)
+                .toString();
     }
 }

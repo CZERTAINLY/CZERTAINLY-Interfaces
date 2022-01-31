@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -93,5 +95,16 @@ public class Authorization {
 
     public void setWildcard(Boolean wildcard) {
         this.wildcard = wildcard;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("identifier", identifier)
+                .append("status", status)
+                .append("expires", expires)
+                .append("challenges", challenges)
+                .append("wildcard", wildcard)
+                .toString();
     }
 }

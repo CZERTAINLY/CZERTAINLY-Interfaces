@@ -4,6 +4,8 @@ import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.ResponseAttributeDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -171,5 +173,27 @@ public class AcmeProfileDto extends NameAndUuidDto {
     }
 
     public AcmeProfileDto() {
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("isEnabled", isEnabled)
+                .append("description", description)
+                .append("termsOfServiceUrl", termsOfServiceUrl)
+                .append("websiteUrl", websiteUrl)
+                .append("dnsResolverIp", dnsResolverIp)
+                .append("dnsResolverPort", dnsResolverPort)
+                .append("raProfile", raProfile)
+                .append("retryInterval", retryInterval)
+                .append("termsOfServiceChangeDisable", termsOfServiceChangeDisable)
+                .append("validity", validity)
+                .append("directoryUrl", directoryUrl)
+                .append("termsOfServiceChangeUrl", termsOfServiceChangeUrl)
+                .append("requireContact", requireContact)
+                .append("requireTermsOfService", requireTermsOfService)
+                .append("issueCertificateAttributes", issueCertificateAttributes)
+                .append("revokeCertificateAttributes", revokeCertificateAttributes)
+                .toString();
     }
 }
