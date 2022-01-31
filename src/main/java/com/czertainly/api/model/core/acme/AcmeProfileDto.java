@@ -12,7 +12,7 @@ import java.util.List;
 public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
-    private boolean isEnabled;
+    private boolean enabled;
     @Schema(description = "ACME Profile description")
     private String description;
     @Schema(description = "Terms of Service URL")
@@ -45,11 +45,11 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private List<ResponseAttributeDto> revokeCertificateAttributes;
 
     public boolean isEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+        this.enabled = enabled;
     }
 
     public String getTermsOfServiceUrl() {
@@ -108,7 +108,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
         this.retryInterval = retryInterval;
     }
 
-    public Boolean getTermsOfServiceChangeDisable() {
+    public Boolean isTermsOfServiceChangeDisable() {
         return termsOfServiceChangeDisable;
     }
 
@@ -140,7 +140,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
         this.description = description;
     }
 
-    public Boolean getRequireContact() {
+    public Boolean isRequireContact() {
         return requireContact;
     }
 
@@ -148,7 +148,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
         this.requireContact = requireContact;
     }
 
-    public Boolean getRequireTermsOfService() {
+    public Boolean isRequireTermsOfService() {
         return requireTermsOfService;
     }
 
@@ -178,7 +178,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("isEnabled", isEnabled)
+                .append("isEnabled", enabled)
                 .append("description", description)
                 .append("termsOfServiceUrl", termsOfServiceUrl)
                 .append("websiteUrl", websiteUrl)

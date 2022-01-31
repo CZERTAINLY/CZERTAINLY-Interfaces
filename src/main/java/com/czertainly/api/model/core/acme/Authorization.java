@@ -89,7 +89,7 @@ public class Authorization {
         this.challenges = challenges;
     }
 
-    public Boolean getWildcard() {
+    public Boolean isWildcard() {
         return wildcard;
     }
 

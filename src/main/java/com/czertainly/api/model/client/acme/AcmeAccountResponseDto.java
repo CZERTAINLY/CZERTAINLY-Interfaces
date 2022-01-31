@@ -24,7 +24,7 @@ public class AcmeAccountResponseDto {
             description = "Enabled flag. enabled=true, disabled=false",
             required = true
     )
-    private Boolean isEnabled;
+    private Boolean enabled;
     @Schema(
             description = "Order count for the Account",
             required = true
@@ -107,12 +107,12 @@ public class AcmeAccountResponseDto {
         this.uuid = uuid;
     }
 
-    public Boolean getEnabled() {
-        return isEnabled;
+    public Boolean isEnabled() {
+        return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
-        isEnabled = enabled;
+        this.enabled = enabled;
     }
 
     public Integer getTotalOrders() {
@@ -139,7 +139,7 @@ public class AcmeAccountResponseDto {
         this.contact = contact;
     }
 
-    public Boolean getTermsOfServiceAgreed() {
+    public Boolean isTermsOfServiceAgreed() {
         return termsOfServiceAgreed;
     }
 
