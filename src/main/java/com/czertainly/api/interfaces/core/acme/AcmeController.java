@@ -81,7 +81,8 @@ public interface AcmeController {
             description = "New Account JWS payload", content = @Content(schema = @Schema(implementation = NewAccountRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @Operation(summary = "Key Rollover")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Account key updated")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Account key updated"),
+            @ApiResponse(responseCode = "409", description = "Conflict. Key already exists")})
     @RequestMapping(path = "/key-change", method = RequestMethod.POST)
     ResponseEntity<?> keyRollover(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 

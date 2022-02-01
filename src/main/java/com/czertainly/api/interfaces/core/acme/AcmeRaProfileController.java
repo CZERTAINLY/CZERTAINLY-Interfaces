@@ -65,9 +65,8 @@ public interface AcmeRaProfileController {
     ResponseEntity<?> getNonce(@Parameter(description = "RA Profile name") @PathVariable String raProfileName);
 
     @Operation(summary = "New Nonce")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New Nonce retrieved")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Nonce retrieved")})
     @RequestMapping(path = "/new-nonce", method = RequestMethod.HEAD)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     ResponseEntity<?> headNonce(@Parameter(description = "RA Profile name") @PathVariable String raProfileName);
 
     @Operation(summary = "Create Account")
@@ -84,7 +83,8 @@ public interface AcmeRaProfileController {
             description = "New Account JWS payload", content = @Content(schema = @Schema(implementation = NewAccountRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @Operation(summary = "Key Rollover")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Account key updated")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Account key updated"),
+            @ApiResponse(responseCode = "409", description = "Conflict. Key already exists")})
     @RequestMapping(path = "/key-change", method = RequestMethod.POST)
     ResponseEntity<?> keyRollover(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 
