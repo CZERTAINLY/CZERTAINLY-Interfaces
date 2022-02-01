@@ -68,7 +68,8 @@ public interface AcmeController {
     ResponseEntity<?> headNonce(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName);
 
     @Operation(summary = "Create Account")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Account created")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Account created"),
+            @ApiResponse(responseCode = "200", description = "Existing Account retrieved")})
     @RequestMapping(path = "/new-account", method = RequestMethod.POST)
     ResponseEntity<?> newAccount(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "New Account JWS payload", content = @Content(schema = @Schema(implementation = Account.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
@@ -85,7 +86,7 @@ public interface AcmeController {
     ResponseEntity<?> keyRollover(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "Request new Order")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Order request created")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Order request created")})
     @RequestMapping(path = "/new-order", method = RequestMethod.POST)
     ResponseEntity<Order> newOrder(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "New Order JWS payload", content = @Content(schema = @Schema(implementation = CertificateIssuanceRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;

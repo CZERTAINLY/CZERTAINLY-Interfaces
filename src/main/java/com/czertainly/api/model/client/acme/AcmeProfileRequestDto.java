@@ -128,7 +128,7 @@ public class AcmeProfileRequestDto {
         this.retryInterval = retryInterval;
     }
 
-    public Boolean getTermsOfServiceChangeDisable() {
+    public Boolean isTermsOfServiceChangeDisable() {
         return termsOfServiceChangeDisable;
     }
 
@@ -160,7 +160,7 @@ public class AcmeProfileRequestDto {
         this.description = description;
     }
 
-    public Boolean getRequireContact() {
+    public Boolean isRequireContact() {
         return requireContact;
     }
 
@@ -168,7 +168,7 @@ public class AcmeProfileRequestDto {
         this.requireContact = requireContact;
     }
 
-    public Boolean getRequireTermsOfService() {
+    public Boolean isRequireTermsOfService() {
         return requireTermsOfService;
     }
 

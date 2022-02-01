@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Parameters and fields that are part of the ACME Directory response for the Directory API
@@ -115,5 +117,18 @@ public class Directory {
 
     public void setMeta(DirectoryMeta meta) {
         this.meta = meta;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("newNonce", newNonce)
+                .append("newAccount", newAccount)
+                .append("newOrder", newOrder)
+                .append("newAuthz", newAuthz)
+                .append("revokeCert", revokeCert)
+                .append("keyChange", keyChange)
+                .append("meta", meta)
+                .toString();
     }
 }

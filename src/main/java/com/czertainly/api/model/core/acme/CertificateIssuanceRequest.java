@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -52,5 +54,14 @@ public class CertificateIssuanceRequest {
 
     public void setNotAfter(String notAfter) {
         this.notAfter = notAfter;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("identifiers", identifiers)
+                .append("notBefore", notBefore)
+                .append("notAfter", notAfter)
+                .toString();
     }
 }

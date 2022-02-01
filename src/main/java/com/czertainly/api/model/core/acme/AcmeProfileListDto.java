@@ -2,12 +2,14 @@ package com.czertainly.api.model.core.acme;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class AcmeProfileListDto extends NameAndUuidDto {
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
-    private boolean isEnabled;
+    private boolean enabled;
     @Schema(description = "ACME Profile description")
     private String description;
     @Schema(description = "Name of the RA Profile")
@@ -18,11 +20,11 @@ public class AcmeProfileListDto extends NameAndUuidDto {
     private String directoryUrl;
 
     public boolean isEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
+        this.enabled = enabled;
     }
 
     public String getRaProfileName() {
@@ -58,5 +60,16 @@ public class AcmeProfileListDto extends NameAndUuidDto {
     }
 
     public AcmeProfileListDto() {
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("isEnabled", enabled)
+                .append("description", description)
+                .append("raProfileName", raProfileName)
+                .append("raProfileUuid", raProfileUuid)
+                .append("directoryUrl", directoryUrl)
+                .toString();
     }
 }
