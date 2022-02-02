@@ -50,7 +50,7 @@ public interface AcmeProfileController {
 
 	@Operation(summary = "Get list of ACME Profiles")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile list retrieved")})
-	@RequestMapping(produces = {"application/json"})
+	@RequestMapping(produces = {"application/json"}, method = RequestMethod.GET)
 	public List<AcmeProfileListDto> listAcmeProfile();
 
 	@Operation(summary = "Get details of ACME Profile")
