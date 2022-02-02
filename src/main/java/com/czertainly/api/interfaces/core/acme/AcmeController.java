@@ -63,7 +63,7 @@ public interface AcmeController {
 
     @Operation(summary = "New Nonce")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New Nonce retrieved")})
-    @RequestMapping(path = "/new-nonce")
+    @RequestMapping(path = "/new-nonce", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     ResponseEntity<?> getNonce(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName);
 
@@ -100,7 +100,7 @@ public interface AcmeController {
 
     @Operation(summary = "List Orders")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Orders list retrieved")})
-    @RequestMapping("/orders/{accountId}")
+    @RequestMapping(path = "/orders/{accountId}", method = RequestMethod.POST)
     ResponseEntity<List<Order>> listOrders(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @Parameter(description = "Account Id") @PathVariable String accountId) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "Get Authorizations for an Order")
