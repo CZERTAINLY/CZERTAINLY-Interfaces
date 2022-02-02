@@ -12,82 +12,98 @@ public class AcmeAccountResponseDto {
 
     @Schema(
             description = "ID of the Account",
-            required = true
+            required = true,
+            example = "TtrgfYTR6F"
     )
     private String accountId;
     @Schema(
             description = "UUID of the Account",
-            required = true
+            required = true,
+            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
     )
     private String uuid;
     @Schema(
             description = "Enabled flag. enabled=true, disabled=false",
-            required = true
+            required = true,
+            example = "false"
     )
     private Boolean enabled;
     @Schema(
             description = "Order count for the Account",
-            required = true
+            required = true,
+            example = "23"
     )
     private Integer totalOrders;
     @Schema(
             description = "Number of successful Orders",
-            required = true
+            required = true,
+            example = "2"
     )
     private Integer successfulOrders;
     @Schema(
             description = "Number of failed Orders",
-            required = true
+            required = true,
+            example = "239"
     )
     private Integer failedOrders;
     @Schema(
             description = "Number of pending Orders",
-            required = true
+            required = true,
+            example = "24"
     )
     private Integer pendingOrders;
     @Schema(
             description = "Number of valid Orders",
-            required = true
+            required = true,
+            example = "23"
     )
     private Integer validOrders;
     @Schema(
             description = "Number of processing Orders",
-            required = true
+            required = true,
+            example = "27"
     )
     private Integer processingOrders;
     @Schema(
             description = "Status of the Account",
-            required = true
+            required = true,
+            example = "VALID"
     )
     private AccountStatus status;
     @Schema(
             description = "Contact information",
-            required = true
+            required = true,
+            example = "mailTo: someadmin@domain.com"
     )
     private List<String> contact;
     @Schema(
             description = "Terms of Service Agreed",
-            required = true
+            required = true,
+            example = "true"
     )
     private Boolean termsOfServiceAgreed;
     @Schema(
             description = "Name of the RA Profile",
-            required = true
+            required = true,
+            example = "RA Profile 1"
     )
     private String raProfileName;
     @Schema(
             description = "UUID of the RA Profile",
-            required = true
+            required = true,
+            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
     )
     private String raProfileUuid;
     @Schema(
             description = "Name of the ACME Profile",
-            required = true
+            required = true,
+            example = "ACME Profile 1"
     )
     private String acmeProfileName;
     @Schema(
             description = "UUID of the ACME Profile",
-            required = true
+            required = true,
+            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
     )
     private String acmeProfileUuid;
 

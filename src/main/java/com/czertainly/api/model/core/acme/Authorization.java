@@ -26,7 +26,8 @@ public class Authorization {
      */
     @Schema(
             description = "ACME Authorization status",
-            required = true
+            required = true,
+            example = "pending"
     )
     private AuthorizationStatus status;
 
@@ -38,7 +39,7 @@ public class Authorization {
      */
     @Schema(
             description = "Expiry of Authorization",
-            required = false
+            example = "2016-01-05T14:09:07.99Z"
     )
     private String expires;
 
@@ -47,14 +48,17 @@ public class Authorization {
      * of the domain.
      */
     @Schema(
-            description = "List of Challenges for the client to complete",
-            required = false
+            description = "List of Challenges for the client to complete"
     )
     private List<Challenge> challenges;
 
     /**
      * True if the certificate is wildcard
      */
+    @Schema(
+            description = "Is wildcard certificate",
+            example = "false"
+    )
     private Boolean wildcard;
 
     public Identifier getIdentifier() {

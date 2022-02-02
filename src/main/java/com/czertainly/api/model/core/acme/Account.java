@@ -18,7 +18,8 @@ public class Account {
      **/
     @Schema(
             description = "Status of the ACME Account",
-            required = true
+            required = true,
+            example = "valid"
     )
     private AccountStatus status;
 
@@ -28,7 +29,8 @@ public class Account {
      * This is an optional parameter.
      */
     @Schema(
-            description = "List of contacts for ACME Account"
+            description = "List of contacts for ACME Account",
+            example = "[\"mailTo:someadmin@domain.com\"]"
     )
     private List<String> contact;
 
@@ -39,21 +41,10 @@ public class Account {
      * This is a non-mandatory field.
      */
     @Schema(
-            description = "Terms of Service agreed flag. Yes = true, No = false"
+            description = "Terms of Service agreed flag. Yes = true, No = false",
+            example = "true"
     )
     private boolean termsOfServiceAgreed;
-
-    /**
-     * If this field is present
-     * with the value "true", then the server MUST NOT create a new
-     * Account if one does not already exist.  This allows a client to
-     * look up an Account URL based on an Account key.
-     */
-    @Schema(
-            description = "Existing Account return flag. true = Yes, false = No",
-            defaultValue = "false"
-    )
-    private boolean onlyReturnExisting;
 
     /**
      * Represents the URL of from which the list of Orders for this Account can be fetched.
@@ -61,7 +52,9 @@ public class Account {
      */
     @Schema(
             description = "URL to get the list of Orders for the Account",
-            required = true
+            required = true,
+            example = "http://some-server.com/acme/orders/JHJGfgf34s"
+
     )
     private String orders;
 
@@ -97,21 +90,12 @@ public class Account {
         this.orders = orders;
     }
 
-    public boolean isOnlyReturnExisting() {
-        return onlyReturnExisting;
-    }
-
-    public void setOnlyReturnExisting(boolean onlyReturnExisting) {
-        this.onlyReturnExisting = onlyReturnExisting;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("status", status)
                 .append("contact", contact)
                 .append("termsOfServiceAgreed", termsOfServiceAgreed)
-                .append("onlyReturnExisting", onlyReturnExisting)
                 .append("orders", orders)
                 .toString();
     }

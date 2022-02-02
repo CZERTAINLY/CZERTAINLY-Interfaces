@@ -19,26 +19,29 @@ public class ProblemDocument implements Serializable {
      * Type of the problem.
      */
     @Schema(description = "Type of the ACME problem",
-            required = true)
+            required = true,
+            example = "orderNotFound")
     private String type;
 
     /**
      * Title of the problem. In short words.
      */
-    @Schema(description = "ACME problem title")
+    @Schema(description = "ACME problem title", example = "Order Not Found")
     private String title;
 
     /**
      * Details of the problem. These statements should be understandable by the user.
      */
     @Schema(description = "ACME problem details",
-            required = true)
+            required = true, example = "Requested order is not found")
     private String detail;
 
     /**
      * URL of the changes if something needs to be approved. Used in ACME to notify the new instance of
      * Terms of Service to be agreed by the client to continue with the ACME operations
      */
+    @Schema(description = "URL of the changes if something needs to be approved",
+            required = true, example = "https://some-company.com/instances/changes")
     private String instance;
 
     /**
@@ -51,7 +54,7 @@ public class ProblemDocument implements Serializable {
      * List of supported algorithms supported by the server.
      * This field is mandatory if the client signs the JWS by some unsupported algorithm
      */
-    @Schema(description = "List of supported algorithms")
+    @Schema(description = "List of supported algorithms", example = "ES256")
     private List<String> algorithms;
 
     public String getType() {

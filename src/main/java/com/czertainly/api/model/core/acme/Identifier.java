@@ -13,7 +13,8 @@ public class Identifier {
      * DNS Identifier types
      */
     @Schema(description = "Type of the Identifier",
-            required = true)
+            required = true,
+            example = "dns")
     private String type;
 
     /**
@@ -21,7 +22,8 @@ public class Identifier {
      * This field is the Identifier itself
      */
     @Schema(description = "Value of Identifier",
-            required = true)
+            required = true,
+            example = "www.some-domain.com")
     private String value;
 
     public Identifier() {

@@ -21,15 +21,14 @@ public class CertificateIssuanceRequest {
      * The requested value of notBefore field in the certificate. The date format
      * is as defined in the RFC3339.
      */
-    @Schema(description = "Requested value of notBefore field in the certificate")
+    @Schema(description = "Requested value of notBefore field in the certificate", example = "2016-01-05T14:09:07.99Z")
     private String notBefore;
 
     /**
      * The requested value of notAfter field in the certificate. The format of the certificate
      * is as defined in the RFC3339.
      */
-    @Schema(description = "Requested value of notAfter field in the certificate",
-            required = true)
+    @Schema(description = "Requested value of notAfter field in the certificate", example = "2016-01-05T14:09:07.99Z")
     private String notAfter;
 
     public List<Identifier> getIdentifiers() {

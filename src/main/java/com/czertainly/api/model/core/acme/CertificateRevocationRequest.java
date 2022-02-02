@@ -25,7 +25,8 @@ public class CertificateRevocationRequest {
      * meaning the server can set the code for revocation is UNSPECIFIED.
      */
     @Schema(description = "Reason for revocation",
-            required = true)
+            required = true,
+            example = "1")
     private RevocationReason reason;
 
     public String getCertificate() {

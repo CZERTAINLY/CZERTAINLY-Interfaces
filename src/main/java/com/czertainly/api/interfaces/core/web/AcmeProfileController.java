@@ -4,6 +4,7 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.acme.AcmeProfileEditRequestDto;
 import com.czertainly.api.model.client.acme.AcmeProfileRequestDto;
 import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -66,7 +67,7 @@ public interface AcmeProfileController {
 	@Operation(summary = "Update ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile updated") })
 	@RequestMapping(path="/{uuid}", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
-	public AcmeProfileDto updateAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @RequestBody AcmeProfileRequestDto request) throws ConnectorException;
+	public AcmeProfileDto updateAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @RequestBody AcmeProfileEditRequestDto request) throws ConnectorException;
 
 	@Operation(summary = "Delete ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profile deleted") })

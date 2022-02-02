@@ -14,27 +14,28 @@ public class DirectoryMeta {
     /**
      * URL for the Terms and Service to be accepted by the clients
      */
-    @Schema(description = "Terms of Service URL")
+    @Schema(description = "Terms of Service URL", example = "https://sample-url.com/termsOfService")
     private String termsOfService;
 
     /**
      * URL of the website for the ACME configuration
      */
-    @Schema(description = "Website URL")
+    @Schema(description = "Website URL", example = "https://sample-company.com")
     private String website;
 
     /**
      * Boolean value of the need of external account requirement
      */
     @Schema(description = "External Account Binding flag",
-            required = false)
+            defaultValue = "false")
     private Boolean externalAccountRequired;
 
     /**
      * CAA record validation list of hostnames
      */
     @Schema(description = "Array of CAA record validation servers",
-            required = false)
+            required = false,
+            example = "[\"Identity 1\", \"Identity 2\"]")
     private String[] caaIdentities;
 
     public String getTermsOfService() {
