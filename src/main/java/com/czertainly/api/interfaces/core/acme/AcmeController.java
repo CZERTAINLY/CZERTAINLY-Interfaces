@@ -39,6 +39,11 @@ import java.util.List;
                         content = @Content(schema = @Schema(implementation = AcmeProblemDocumentException.class))
                 ),
                 @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema(implementation = AcmeProblemDocumentException.class))
+                ),
+                @ApiResponse(
                         responseCode = "403",
                         description = "Forbidden",
                         content = @Content(schema = @Schema(implementation = AcmeProblemDocumentException.class))
@@ -68,8 +73,8 @@ public interface AcmeController {
     ResponseEntity<?> headNonce(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName);
 
     @Operation(summary = "Create Account")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Account created"),
-            @ApiResponse(responseCode = "200", description = "Existing Account retrieved")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Existing Account retrieved"),
+            @ApiResponse(responseCode = "201", description = "New Account created")})
     @RequestMapping(path = "/new-account", method = RequestMethod.POST)
     ResponseEntity<?> newAccount(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "New Account JWS payload", content = @Content(schema = @Schema(implementation = Account.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
@@ -84,7 +89,8 @@ public interface AcmeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Account key updated"),
             @ApiResponse(responseCode = "409", description = "Conflict. Key already exists")})
     @RequestMapping(path = "/key-change", method = RequestMethod.POST)
-    ResponseEntity<?> keyRollover(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
+    ResponseEntity<?> keyRollover(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Key rollover JWS payload") @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "Request new Order")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Order request created")})
