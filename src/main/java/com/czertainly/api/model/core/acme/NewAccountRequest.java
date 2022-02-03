@@ -17,7 +17,7 @@ public class NewAccountRequest {
      * This is an optional parameter.
      */
     @Schema(description = "List of contacts for the Account. Required if the required flag is set in ACME Profile",
-            example = "[\"mailTo:someadmin@domain.com\"]")
+            example = "[\"mailto:someadmin@domain.com\"]")
     private List<String> contact;
 
     /**

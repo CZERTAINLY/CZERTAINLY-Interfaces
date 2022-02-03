@@ -73,7 +73,7 @@ public class AcmeAccountResponseDto {
     @Schema(
             description = "Contact information",
             required = true,
-            example = "mailTo: someadmin@domain.com"
+            example = "mailto: someadmin@domain.com"
     )
     private List<String> contact;
     @Schema(

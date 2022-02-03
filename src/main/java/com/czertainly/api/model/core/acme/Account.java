@@ -30,7 +30,7 @@ public class Account {
      */
     @Schema(
             description = "List of contacts for ACME Account",
-            example = "[\"mailTo:someadmin@domain.com\"]"
+            example = "[\"mailto:someadmin@domain.com\"]"
     )
     private List<String> contact;
 
