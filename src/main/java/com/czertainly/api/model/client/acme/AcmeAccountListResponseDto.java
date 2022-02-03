@@ -10,37 +10,44 @@ public class AcmeAccountListResponseDto {
 
     @Schema(
             description = "ID of the Account",
-            required = true
+            required = true,
+            example = "HJAT6gc7i6"
     )
     private String accountId;
     @Schema(
             description = "UUID of the Account",
-            required = true
+            required = true,
+            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
     )
     private String uuid;
     @Schema(
             description = "Enabled flag. true = enabled, false=disabled",
-            required = true
+            required = true,
+            example = "false"
     )
     private Boolean enabled;
     @Schema(
             description = "Total number of Orders",
-            required = true
+            required = true,
+            example = "4"
     )
     private Integer totalOrders;
     @Schema(
             description = "Status of the Account",
-            required = true
+            required = true,
+            example = "VALID"
     )
     private AccountStatus status;
     @Schema(
             description = "Name of the RA Profile",
-            required = true
+            required = true,
+            example = "RAProfile1"
     )
     private String raProfileName;
     @Schema(
             description = "Name of the ACME Profile",
-            required = true
+            required = true,
+            example = "ACMEProfile1"
     )
     private String acmeProfileName;
 

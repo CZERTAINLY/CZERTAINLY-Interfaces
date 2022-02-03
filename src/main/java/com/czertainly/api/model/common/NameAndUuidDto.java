@@ -9,9 +9,11 @@ import java.io.Serializable;
 public class NameAndUuidDto implements Serializable {
 
     @Schema(description = "Object identifier",
+            example = "7b55ge1c-844f-11dc-a8a3-0242ac120002",
             required = true)
     protected String uuid;
     @Schema(description = "Object Name",
+            example = "Name",
             required = true)
     protected String name;
 

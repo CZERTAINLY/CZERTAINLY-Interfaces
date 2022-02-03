@@ -12,14 +12,16 @@ public class Challenge {
      * Type of the Challenge encoded in the object.
      */
     @Schema(description = "Type of Challenge",
-            required = true)
+            required = true,
+            example = "dns-01")
     private ChallengeType type;
 
     /**
      * URL to which the response can be posted after the client completes the Challenge
      */
     @Schema(description = "URL to which the response can be posted after the client completes the Challenge",
-            required = true)
+            required = true,
+            example = "https://some-server.com/api/acme/chall/JHjhrt&6hf")
     private String url;
 
     /**
@@ -35,7 +37,7 @@ public class Challenge {
      * specified in RFC3339.
      * This is a Non-Mandatory parameter bus is required if the status of the status field is set to valid
      */
-    @Schema(description = "Timestamp at which the Challenge is validated")
+    @Schema(description = "Timestamp at which the Challenge is validated", format = "date-time", type = "string")
     private String validated;
 
     /**
@@ -50,7 +52,8 @@ public class Challenge {
      * Random string generated using the SecureRandom class of JAVA to provide a cryptography random key
      */
     @Schema(description = "Token for the Challenge",
-            required = true)
+            required = true,
+            example = "JGuyIUgkRGFYTER658ykjfYFur76fkFitur7FGHRiytrkfIruFF")
     private String token;
 
     public ChallengeType getType() {

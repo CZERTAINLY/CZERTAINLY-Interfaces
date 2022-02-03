@@ -17,7 +17,8 @@ public class Order {
      * This is a mandatory field
      */
     @Schema(description = "Status of the Order",
-            required = true)
+            required = true,
+            example = "pending")
     private OrderStatus status;
 
     /**
@@ -25,14 +26,16 @@ public class Order {
      * specified in RFC3339 (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Expiry time of the Order")
+    @Schema(description = "Expiry time of the Order",
+            format = "date-time",
+            type = "string")
     private String expires;
 
     /**
      * Array of the Identifier that the Order pertains to
      * This is a mandatory parameter
      */
-    @Schema(description = "List of Order Identifiers", required = true)
+    @Schema(description = "List of Order Identifiers")
     private List<Identifier> identifiers;
 
     /**
@@ -40,7 +43,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Value of notBefore field in the Certificate")
+    @Schema(description = "Value of notBefore field in the Certificate", format = "date-time", type = "string")
     private String notBefore;
 
     /**
@@ -48,7 +51,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Value of notAfter field in the Certificate")
+    @Schema(description = "Value of notAfter field in the Certificate", format = "date-time", type = "string")
     private String notAfter;
 
     /**
@@ -64,21 +67,21 @@ public class Order {
      * Only after the Authorizations, the server will issue the Certificate. This will also include the list of
      * Authorizations that client has completed for the same list of identifiers
      */
-    @Schema(description = "List of URLs to check for Authorizations")
+    @Schema(description = "List of URLs to check for Authorizations", example = "[\"https://someserver.com/api/acme/authz/YT65KFut6\"]")
     private List<String> authorizations;
 
     /**
      * URL for finalizing the Order and asking the server to issue the Certificate once the Authorizations
      * are satisfied
      */
-    @Schema(description = "URL to finalize the Order. Mandatory if the Order is in ready state")
+    @Schema(description = "URL to finalize the Order. Mandatory if the Order is in ready state", example = "https://someserver.com/api/acme/order/YT65KFut6/finalize")
     private String finalize;
 
     /**
      * URL for the client to download the Certificate that has been issues in response to the Order.
      * This is a non-mandatory field
      */
-    @Schema(description = "URL to download the Certificate")
+    @Schema(description = "URL to download the Certificate", example = "https://someserver.com/api/acme/cert/YT65KFut6")
     private String certificate;
 
     public OrderStatus getStatus() {

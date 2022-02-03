@@ -5,14 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public class AcmeProfileRequestDto {
-
-    @Schema(
-            description = "Name of the ACME Profile",
-            required = true,
-            example = "Profile Name 1"
-    )
-    private String name;
+public class AcmeProfileEditRequestDto {
 
     @Schema(
             description = "Description of the ACME Profile",
@@ -52,6 +45,18 @@ public class AcmeProfileRequestDto {
             example = "60"
     )
     private Integer retryInterval;
+    @Schema(
+            description = "Disable new Orders due to change in Terms of Service",
+            defaultValue = "false",
+            example = "false"
+    )
+    private Boolean termsOfServiceChangeDisable;
+
+    @Schema(
+            description = "Changes of Terms of Service URL",
+            example = "https://sample-url.com/termsOfService/change"
+    )
+    private String termsOfServiceChangeUrl;
     @Schema(
             description = "Order Validity",
             defaultValue = "36000",
@@ -137,6 +142,14 @@ public class AcmeProfileRequestDto {
         this.retryInterval = retryInterval;
     }
 
+    public Boolean isTermsOfServiceChangeDisable() {
+        return termsOfServiceChangeDisable;
+    }
+
+    public void setTermsOfServiceChangeDisable(Boolean termsOfServiceChangeDisable) {
+        this.termsOfServiceChangeDisable = termsOfServiceChangeDisable;
+    }
+
     public Integer getValidity() {
         return validity;
     }
@@ -177,14 +190,14 @@ public class AcmeProfileRequestDto {
         this.requireTermsOfService = requireTermsOfService;
     }
 
-    public String getName() {
-        return name;
+    public String getTermsOfServiceChangeUrl() {
+        return termsOfServiceChangeUrl;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTermsOfServiceChangeUrl(String termsOfServiceChangeUrl) {
+        this.termsOfServiceChangeUrl = termsOfServiceChangeUrl;
     }
 
-    public AcmeProfileRequestDto() {
+    public AcmeProfileEditRequestDto() {
     }
 }
