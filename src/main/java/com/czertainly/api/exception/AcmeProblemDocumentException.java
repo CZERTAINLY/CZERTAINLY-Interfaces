@@ -5,11 +5,15 @@ import com.czertainly.api.model.core.acme.ProblemDocument;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
+
 public class AcmeProblemDocumentException extends Exception {
     @Schema(description = "HTTP Status code corresponding to the error")
     private int httpStatusCode;
     @Schema(description = "ACME Problem document described in RFC8555")
     private ProblemDocument problemDocument;
+    @Schema(description = "Additional headers for the response")
+    private Map<String, String> additionalHeaders;
 
     public int getHttpStatusCode() {
         return httpStatusCode;
@@ -19,10 +23,21 @@ public class AcmeProblemDocumentException extends Exception {
         return problemDocument;
     }
 
+    public Map<String, String> getAdditionalHeaders() {
+        return additionalHeaders;
+    }
+
     public AcmeProblemDocumentException(HttpStatus httpStatus, ProblemDocument problemDocument) {
         super();
         this.httpStatusCode = httpStatus.value();
         this.problemDocument = problemDocument;
+    }
+
+    public AcmeProblemDocumentException(HttpStatus httpStatus, ProblemDocument problemDocument, Map additionalHeaders) {
+        super();
+        this.httpStatusCode = httpStatus.value();
+        this.problemDocument = problemDocument;
+        this.additionalHeaders = additionalHeaders;
     }
 
     public AcmeProblemDocumentException(HttpStatus httpStatus, Problem problem) {
