@@ -20,20 +20,20 @@ public class ProblemDocument implements Serializable {
      */
     @Schema(description = "Type of the ACME problem",
             required = true,
-            example = "orderNotFound")
+            example = "notFound")
     private String type;
 
     /**
      * Title of the problem. In short words.
      */
-    @Schema(description = "ACME problem title", example = "Order Not Found")
+    @Schema(description = "ACME problem title", example = "Not Found")
     private String title;
 
     /**
      * Details of the problem. These statements should be understandable by the user.
      */
     @Schema(description = "ACME problem details",
-            required = true, example = "Requested order is not found")
+            required = true, example = "Requested object is not found")
     private String detail;
 
     /**

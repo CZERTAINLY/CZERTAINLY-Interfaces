@@ -39,7 +39,8 @@ public class Authorization {
      */
     @Schema(
             description = "Expiry of Authorization",
-            example = "2016-01-05T14:09:07.99Z"
+            format = "date-time",
+            type = "string"
     )
     private String expires;
 

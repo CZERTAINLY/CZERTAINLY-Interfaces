@@ -15,7 +15,8 @@ public class CertificateFinalizeRequest {
      */
     @Schema(
             description = "CSR in Base64url-encoded version of the DER format",
-            required = true
+            required = true,
+            example = "<base64url-encoded version of the DER format>"
     )
     private String csr;
 

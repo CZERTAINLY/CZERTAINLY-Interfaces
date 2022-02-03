@@ -16,7 +16,8 @@ public class CertificateRevocationRequest {
      * uses base64url, and does not include headers, it is different from PEM.).
      */
     @Schema(description = "Certificate in base64url-encoded version of DER format",
-            required = true)
+            required = true,
+            example = "<base64url-encoded version of the DER format>")
     private String certificate;
 
     /**

@@ -26,7 +26,9 @@ public class Order {
      * specified in RFC3339 (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Expiry time of the Order", example = "2016-01-05T14:09:07.99Z")
+    @Schema(description = "Expiry time of the Order",
+            format = "date-time",
+            type = "string")
     private String expires;
 
     /**
@@ -41,7 +43,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Value of notBefore field in the Certificate", example = "2016-01-05T14:09:07.99Z")
+    @Schema(description = "Value of notBefore field in the Certificate", format = "date-time", type = "string")
     private String notBefore;
 
     /**
@@ -49,7 +51,7 @@ public class Order {
      * (2016-01-20T14:09:07.99Z)
      * This is an optional parameter
      */
-    @Schema(description = "Value of notAfter field in the Certificate", example = "2016-01-05T14:09:07.99Z")
+    @Schema(description = "Value of notAfter field in the Certificate", format = "date-time", type = "string")
     private String notAfter;
 
     /**

@@ -115,7 +115,9 @@ public interface AcmeProfileController {
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/delete/force", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkForceRemoveACMEProfiles(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+	public void bulkForceRemoveACMEProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+			description = "ACME Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
 	@Operation(summary = "Update RA Profile for ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile updated") })

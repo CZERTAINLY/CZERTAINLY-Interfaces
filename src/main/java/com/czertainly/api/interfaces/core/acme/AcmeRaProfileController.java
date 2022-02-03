@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains the list of end points supported for the ACME implementation
@@ -88,14 +90,14 @@ public interface AcmeRaProfileController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "ACME Account updated")})
     @RequestMapping(path="/acct/{accountId}", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/json"})
     ResponseEntity<Account> updateAccount(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Account ID") @PathVariable String accountId, @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "New Account JWS payload", content = @Content(schema = @Schema(implementation = NewAccountRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
+            description = "Account JWS payload", content = @Content(schema = @Schema(implementation = NewAccountRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, NotFoundException;
 
     @Operation(summary = "Key Rollover")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Account key updated", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "409", description = "Conflict. Key already exists", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDocument.class)))})
     @RequestMapping(path = "/key-change", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/json"})
     ResponseEntity<?> keyRollover(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Key rollover JWS payload") @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
+            description = "Key Rollover JWS Payload", content = @Content(schema = @Schema(implementation = KeyRollover.class))) @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "Request new Order")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Order request created")})
@@ -106,21 +108,25 @@ public interface AcmeRaProfileController {
     @Operation(summary = "List Orders")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Orders list retrieved")})
     @RequestMapping(path= "/orders/{accountId}", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/json"})
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List Orders JWS Payload", required = true, content = @Content(mediaType = "application/jose+json", examples = {@ExampleObject(value = "")}))
     ResponseEntity<List<Order>> listOrders(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Account Id") @PathVariable String accountId) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "Get Authorizations for an Order")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authorizations retrieved")})
     @RequestMapping(path="/authz/{authorizationId}", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/json"})
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Get Authorization of Order JWS Payload", required = true, content = @Content(mediaType = "application/jose+json", examples = {@ExampleObject(value = "")}))
     ResponseEntity<Authorization> getAuthorizations(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Authorization Id") @PathVariable String authorizationId, @RequestBody String jwsBody) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "Validate Challenge")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Challenge validation initiated")})
     @RequestMapping(path="/chall/{challengeId}", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/json"})
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Initiate Challenge validation JWS Payload", required = true, content = @Content(schema = @Schema(implementation = Map.class), mediaType = "application/jose+json", examples = {@ExampleObject(value = "{}")}))
     ResponseEntity<Challenge> validateChallenge(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Challenge Id") @PathVariable String challengeId) throws NotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, AcmeProblemDocumentException;
 
     @Operation(summary = "Get Order details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order details retrieved")})
     @RequestMapping(path="/order/{orderId}", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/json"})
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Get Order details payload", required = true, content = @Content(mediaType = "application/jose+json", examples = {@ExampleObject(value = "")}))
     ResponseEntity<Order> getOrder(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Order Id") @PathVariable String orderId) throws NotFoundException, AcmeProblemDocumentException;
 
     @Operation(summary = "Finalize Order")
@@ -132,6 +138,7 @@ public interface AcmeRaProfileController {
     @Operation(summary = "Download Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate content retrieved as file", content = @Content(schema = @Schema(hidden = true)))})
     @RequestMapping(path="/cert/{certificateId}", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/pem-certificate-chain"})
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Download Certificate Payload", required = true, content = @Content(mediaType = "application/jose+json", examples = {@ExampleObject(value = "")}))
     ResponseEntity<Resource> downloadCertificate(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Certificate Id") @PathVariable String certificateId) throws NotFoundException, CertificateException;
 
     @Operation(summary = "Revoke Certificate")

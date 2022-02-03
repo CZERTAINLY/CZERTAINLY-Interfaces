@@ -37,7 +37,7 @@ public class Challenge {
      * specified in RFC3339.
      * This is a Non-Mandatory parameter bus is required if the status of the status field is set to valid
      */
-    @Schema(description = "Timestamp at which the Challenge is validated", example = "2016-01-05T14:09:07.99Z")
+    @Schema(description = "Timestamp at which the Challenge is validated", format = "date-time", type = "string")
     private String validated;
 
     /**
