@@ -35,7 +35,7 @@ public class DirectoryMeta {
      */
     @Schema(description = "Array of CAA record validation servers",
             required = false,
-            example = "[\"Identity 1\", \"Identity 2\"]")
+            example = "[\"example1.com\", \"example2.com\"]")
     private String[] caaIdentities;
 
     public String getTermsOfService() {
