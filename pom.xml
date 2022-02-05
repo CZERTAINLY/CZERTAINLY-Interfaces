@@ -6,9 +6,34 @@
 
     <groupId>com.czertainly</groupId>
     <artifactId>interfaces</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
     <name>CZERTAINLY-Interfaces</name>
     <packaging>jar</packaging>
+
+    <description>CZERTAINLY - interfaces definitions and common objects for the platform</description>
+    <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces/blob/develop/LICENSE.md</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>CZERTAINLY</name>
+            <email>getinfo@czertainly.com</email>
+            <organization>CZERTAINLY s.r.o.</organization>
+            <organizationUrl>https://www.czertainly.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com:3KeyCompany/CZERTAINLY-Interfaces.git</connection>
+        <developerConnection>scm:git:ssh://github.com:3KeyCompany/CZERTAINLY-Interfaces.git</developerConnection>
+        <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -77,13 +102,32 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
-        <repository>
+    <profiles>
+        <profile>
+            <id>ossrh</id>
+            <distributionManagement>
+                <repository>
+                    <id>ossrh</id>
+                    <name>Central Repository OSSRH</name>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2</url>
+                </repository>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <profile>
             <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/3keycompany/czertainly-interfaces</url>
-        </repository>
-    </distributionManagement>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Packages</name>
+                    <url>https://maven.pkg.github.com/3keycompany/czertainly-interfaces</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
 	<build>
 		<plugins>

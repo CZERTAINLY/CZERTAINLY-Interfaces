@@ -13,9 +13,9 @@ Each `Connector` must implement a specific `Function Group` that defines the fun
 `Function Groups` can be combined, for example, a `Connector` can implement both `Credential Provider` and `Authority Provider` `Function Group`, however `Kinds` cannot be mixed.
 
 Each `Connector` has to implement the following interfaces:
-- [Attributes](src/main/java/com/czertainly/api/interfaces/AttributesController.java)
-- [Health](src/main/java/com/czertainly/api/interfaces/HealthController.java)
-- [Info](src/main/java/com/czertainly/api/interfaces/InfoController.java)
+- [Attributes](src/main/java/com/czertainly/api/interfaces/connector/AttributesController.java)
+- [Health](src/main/java/com/czertainly/api/interfaces/connector/HealthController.java)
+- [Info](src/main/java/com/czertainly/api/interfaces/connector/InfoController.java)
 
 CZERTAINLY supports the following `Connector` `Function Groups`:
 
@@ -36,3 +36,11 @@ The `Core` interfaces can be split into the following groups:
 
 You can find the detailed description of the interfaces in the following sections:
 - [Core interfaces](src/main/java/com/czertainly/api/interfaces/core)
+
+## Protocol interfaces
+
+`Protocol` interfaces can be used to create a custom implementation and behaviour for standard certificate management protocols.
+
+The following interfaces are available:
+- [ACME interface](src/main/java/com/czertainly/api/interfaces/core/acme/AcmeController.java)
+- [RA Profile ACME interface](src/main/java/com/czertainly/api/interfaces/core/acme/AcmeRaProfileController.java)

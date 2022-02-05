@@ -149,6 +149,18 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static List<RequestAttributeDto> deserializeRequestAttributes(String attributesJson) {
+        if (attributesJson == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributesJson, new TypeReference<List<RequestAttributeDto>>() {
+            });
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public static List<AttributeDefinition> mergeAttributes(List<AttributeDefinition> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         if (definitions == null || attributes == null) {
             return List.of();
