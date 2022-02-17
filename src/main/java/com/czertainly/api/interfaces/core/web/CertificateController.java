@@ -126,9 +126,9 @@ public interface CertificateController {
 			throws NotFoundException;
 	
 	@Operation(summary = "Upload a new Certificate")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
 	@RequestMapping(path = "/upload", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public ResponseEntity<?> upload(@RequestBody UploadCertificateRequestDto request)
+	public ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request)
 			throws AlreadyExistException, CertificateException;
 	
 	@Operation(summary = "Delete multiple certificates")
