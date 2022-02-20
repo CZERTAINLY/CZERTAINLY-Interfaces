@@ -38,6 +38,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Publish to GitHub Packages
-        run: mvn --batch-mode -Pgithub -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} source:jar javadoc:jar deploy
+        run: mvn --batch-mode -Pgithub source:jar javadoc:jar deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

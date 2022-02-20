@@ -19,11 +19,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - id: install-secret-key
-        name: Install gpg secret key
-        run: |
-          (echo -n "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | base64 --decode | gpg --batch --import
-          gpg --list-secret-keys --keyid-format LONG
       - name: Cache Maven packages
         uses: actions/cache@v1
         with:
@@ -33,7 +28,7 @@ jobs:
       - name: Verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        run: mvn -B -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} verify
+        run: mvn -B verify
   build:
     if: github.event_name != 'pull_request'
     name: Build
@@ -46,11 +41,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - id: install-secret-key
-        name: Install gpg secret key
-        run: |
-          (echo -n "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | base64 --decode | gpg --batch --import
-          gpg --list-secret-keys --keyid-format LONG
       - name: Cache SonarQube packages
         uses: actions/cache@v1
         with:
@@ -68,4 +58,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
