@@ -8,6 +8,7 @@ import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequest
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
+import com.czertainly.api.model.core.certificate.search.SearchFieldDataDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,8 +49,8 @@ public interface CertificateController {
 	
 	@Operation(summary = "List Certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of all the certificates")})
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-	public List<CertificateDto> listCertificate(@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer end);
+	@RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
+	public List<CertificateDto> listCertificate(@RequestBody CertificateSearchRequestDto request);
 	
 	@Operation(summary = "Get Certificate Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
@@ -142,5 +143,10 @@ public interface CertificateController {
 	@RequestMapping(path = "/validate", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void validateAllCertificate();
+
+	@Operation(summary = "Get Certificate searchable field information")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved") })
+	@RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
+	public List<SearchFieldDataDto> getSearchableFieldInformation();
 	
 }
