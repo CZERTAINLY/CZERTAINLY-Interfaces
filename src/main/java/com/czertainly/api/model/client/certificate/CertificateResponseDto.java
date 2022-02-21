@@ -35,4 +35,20 @@ public class CertificateResponseDto {
     public Integer getTotalPages() {
         return totalPages;
     }
+
+    public void setCertificates(List<CertificateDto> certificates) {
+        this.certificates = certificates;
+    }
+
+    public void setItemsPerPage(Integer itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public void setTotalPages(Integer totalPages) {
+        this.totalPages = totalPages;
+    }
 }

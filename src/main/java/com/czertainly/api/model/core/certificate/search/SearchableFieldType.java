@@ -1,5 +1,8 @@
 package com.czertainly.api.model.core.certificate.search;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 
 public enum SearchableFieldType {
@@ -16,10 +19,12 @@ public enum SearchableFieldType {
         this.code = string;
     }
 
+    @JsonValue
     public String getCode() {
         return code;
     }
 
+    @JsonCreator
     public static SearchableFieldType fromCode(String code) {
         return Arrays.stream(values())
                 .filter(e -> e.code.equals(code))

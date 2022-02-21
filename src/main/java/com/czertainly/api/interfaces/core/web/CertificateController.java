@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequestDto;
@@ -50,7 +51,7 @@ public interface CertificateController {
 	@Operation(summary = "List Certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of all the certificates")})
 	@RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
-	public List<CertificateDto> listCertificate(@RequestBody CertificateSearchRequestDto request);
+	public CertificateResponseDto listCertificate(@RequestBody CertificateSearchRequestDto request) throws ValidationException;
 	
 	@Operation(summary = "Get Certificate Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})

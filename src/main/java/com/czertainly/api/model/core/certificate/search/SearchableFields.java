@@ -1,7 +1,9 @@
 package com.czertainly.api.model.core.certificate.search;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
-import java.util.Map;
 
 public enum SearchableFields {
     COMMON_NAME("commonName"),
@@ -13,8 +15,9 @@ public enum SearchableFields {
     OWNER("owner"),
     ISSUER_COMMON_NAME("issuerCommonName"),
     SIGNATURE_ALGORITHM("signatureAlgorithm"),
-    FINGERPRINT("fingerPrint"),
-    EXPIRES("expires")
+    FINGERPRINT("fingerprint"),
+    NOT_AFTER("notAfter"),
+    NOT_BEFORE("notAfter")
     ;
 
     private final String field;
@@ -23,26 +26,12 @@ public enum SearchableFields {
         this.field = string;
     }
 
+    @JsonValue
     public String getCode() {
         return field;
     }
 
-    public String getCodeFormatted() {
-        Map<String, String> propertyMap = Map.ofEntries(
-                Map.entry("commonName","common_name"),
-                Map.entry("serialNumber","serial_number"),
-                Map.entry("raProfileName","ra_profile_id"),
-                Map.entry("entityName","entity_id"),
-                Map.entry("status","status"),
-                Map.entry("groupName","group_id"),
-                Map.entry("owner","owner"),
-                Map.entry("issuerCommonName","issuer_common_name"),
-                Map.entry("signatureAlgorithm","signature_algorithm"),
-                Map.entry("fingerPrint","fingerprint")
-                );
-        return propertyMap.get(field);
-    }
-
+    @JsonCreator
     public static SearchableFields fromCode(String field) {
         return Arrays.stream(values())
                 .filter(e -> e.field.equals(field))

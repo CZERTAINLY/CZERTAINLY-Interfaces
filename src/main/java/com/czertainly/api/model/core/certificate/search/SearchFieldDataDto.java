@@ -2,7 +2,6 @@ package com.czertainly.api.model.core.certificate.search;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class SearchFieldDataDto {
@@ -23,7 +22,7 @@ public class SearchFieldDataDto {
     private List<SearchCondition> conditions;
 
     @Schema(description = "Available values for the field")
-    private List<String> value;
+    private List<Object> value;
 
     @Schema(description = "Multivalue falg. true = yes, false = no")
     private Boolean multiValue;
@@ -60,11 +59,11 @@ public class SearchFieldDataDto {
         this.conditions = conditions;
     }
 
-    public List<String> getValue() {
+    public List<Object> getValue() {
         return value;
     }
 
-    public void setValue(List<String> value) {
+    public void setValue(List<Object> value) {
         this.value = value;
     }
 
