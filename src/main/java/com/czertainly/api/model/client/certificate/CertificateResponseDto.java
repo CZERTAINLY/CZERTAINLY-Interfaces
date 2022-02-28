@@ -20,6 +20,9 @@ public class CertificateResponseDto {
     @Schema(description = "Total number of pages available", required = true)
     private Integer totalPages;
 
+    @Schema(description = "Total number of search hits", required = true)
+    private Long totalItems;
+
     public List<CertificateDto> getCertificates() {
         return certificates;
     }
@@ -50,5 +53,13 @@ public class CertificateResponseDto {
 
     public void setTotalPages(Integer totalPages) {
         this.totalPages = totalPages;
+    }
+
+    public Long getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(Long totalItems) {
+        this.totalItems = totalItems;
     }
 }

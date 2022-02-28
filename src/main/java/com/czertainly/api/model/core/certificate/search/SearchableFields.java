@@ -8,10 +8,10 @@ import java.util.Arrays;
 public enum SearchableFields {
     COMMON_NAME("commonName"),
     SERIAL_NUMBER("serialNumber"),
-    RA_PROFILE_NAME("raProfileName"),
-    ENTITY_NAME("entityName"),
+    RA_PROFILE_NAME("raProfile"),
+    ENTITY_NAME("entity"),
     STATUS("status"),
-    GROUP_NAME("groupName"),
+    GROUP_NAME("group"),
     OWNER("owner"),
     ISSUER_COMMON_NAME("issuerCommonName"),
     SIGNATURE_ALGORITHM("signatureAlgorithm"),

@@ -134,10 +134,9 @@ public interface CertificateController {
 			throws AlreadyExistException, CertificateException;
 	
 	@Operation(summary = "Delete multiple certificates")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificates deleted") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificates deleted") })
 	@RequestMapping(path = "/delete", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkRemoveCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
+	public List<String> bulkRemoveCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
 
 	@Operation(summary = "Validate Certificates of Status Unknown")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate Validation Initiated") })
