@@ -17,7 +17,7 @@ public enum SearchableFields {
     SIGNATURE_ALGORITHM("signatureAlgorithm"),
     FINGERPRINT("fingerprint"),
     NOT_AFTER("notAfter"),
-    NOT_BEFORE("notAfter")
+    NOT_BEFORE("notBefore")
     ;
 
     private final String field;
