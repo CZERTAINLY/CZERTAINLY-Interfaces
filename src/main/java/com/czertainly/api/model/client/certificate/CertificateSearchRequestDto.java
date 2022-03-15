@@ -1,9 +1,7 @@
 package com.czertainly.api.model.client.certificate;
 
-import com.czertainly.api.model.core.certificate.search.SearchCondition;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class CertificateSearchRequestDto {

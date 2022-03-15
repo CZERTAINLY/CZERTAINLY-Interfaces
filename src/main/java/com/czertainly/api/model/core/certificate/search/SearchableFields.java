@@ -17,7 +17,19 @@ public enum SearchableFields {
     SIGNATURE_ALGORITHM("signatureAlgorithm"),
     FINGERPRINT("fingerprint"),
     NOT_AFTER("notAfter"),
-    NOT_BEFORE("notBefore")
+    NOT_BEFORE("notBefore"),
+    PUBLIC_KEY_ALGORITHM("publicKeyAlgorithm"),
+    KEY_SIZE("keySize"),
+    KEY_USAGE("keyUsage"),
+    BASIC_CONSTRAINTS("basicConstraints"),
+    META("meta"),
+    SUBJECT_ALTERNATIVE_NAMES("subjectAlternativeNames"),
+    SUBJECTDN("subjectDn"),
+    ISSUERDN("issuerDn"),
+    ISSUER_SERIAL_NUMBER("issuerSerialNumber"),
+    OCSP_VALIDATION("ocspValidation"),
+    CRL_VALIDATION("crlValidation"),
+    SIGNATURE_VALIDATION("signatureValidation")
     ;
 
     private final String field;

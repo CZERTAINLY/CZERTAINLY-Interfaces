@@ -1,8 +1,5 @@
 package com.czertainly.api.model.core.certificate.search;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.Arrays;
 
 public enum SearchCondition {
@@ -11,8 +8,15 @@ public enum SearchCondition {
     GREATER(">"),
     LESSER("<"),
     CONTAINS("LIKE"),
+    NOT_CONTAINS("NOT LIKE"),
+    STARTS_WITH("LIKE"),
+    ENDS_WITH("LIKE"),
     EMPTY("IS NULL"),
-    NOT_EMPTY("IS NOT NULL")
+    NOT_EMPTY("IS NOT NULL"),
+    SUCCESS("success"),
+    FAILED("failed"),
+    UNKNOWN("unknown"),
+    NOT_CHECKED("not_checked")
     ;
 
     private final String code;
