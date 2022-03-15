@@ -67,7 +67,7 @@ public class SearchFieldDataDto {
         this.value = value;
     }
 
-    public Boolean getMultiValue() {
+    public Boolean isMultiValue() {
         return multiValue;
     }
 

@@ -144,7 +144,7 @@ public interface CertificateController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void validateAllCertificate();
 
-	@Operation(summary = "Get Certificate searchable field information")
+	@Operation(summary = "Get Certificate searchable fields information")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved") })
 	@RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
 	public List<SearchFieldDataDto> getSearchableFieldInformation();

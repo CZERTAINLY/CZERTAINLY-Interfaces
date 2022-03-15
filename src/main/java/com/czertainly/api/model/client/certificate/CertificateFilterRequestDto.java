@@ -7,13 +7,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 
 public class CertificateFilterRequestDto {
-    @Schema(description = "Field of the search", required = true)
+    @Schema(description = "Field to search", required = true)
     private SearchableFields field;
 
-    @Schema(description = "Condition for the field of search", required = true)
+    @Schema(description = "Condition for the search", required = true)
     private SearchCondition condition;
 
-    @Schema(description = "Value for the search")
+    @Schema(description = "Value to match")
     private Serializable value;
 
 

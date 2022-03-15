@@ -23,7 +23,7 @@ public class MultipleRAProfileUpdateDto {
 	private List<CertificateFilterRequestDto> filters;
 
 	@Schema(
-			description = "All selected status. true = yes, false = no. Mandatory if filters field should be used"
+			description = "Match all based on filter flag. true = yes, false = no. Mandatory if filters field should be used"
 	)
 	private Boolean allSelect;
 

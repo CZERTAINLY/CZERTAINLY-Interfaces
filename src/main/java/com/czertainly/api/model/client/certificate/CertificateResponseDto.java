@@ -15,10 +15,10 @@ public class CertificateResponseDto {
     @Schema(description = "Page number for the request", required = true)
     private Integer pageNumber;
 
-    @Schema(description = "Total number of pages available", required = true)
+    @Schema(description = "Number of pages available", required = true)
     private Integer totalPages;
 
-    @Schema(description = "Total number of search hits", required = true)
+    @Schema(description = "Number of items available", required = true)
     private Long totalItems;
 
     public List<CertificateDto> getCertificates() {
