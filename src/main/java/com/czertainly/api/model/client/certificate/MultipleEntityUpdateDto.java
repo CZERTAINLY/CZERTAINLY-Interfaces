@@ -13,7 +13,7 @@ public class MultipleEntityUpdateDto {
 	private String uuid;
 	
 	@Schema(
-            description = "List of UUIDs of the Certificates"
+            description = "List of Certificate UUIDs"
     )
 	private List<String> certificateUuids;
 

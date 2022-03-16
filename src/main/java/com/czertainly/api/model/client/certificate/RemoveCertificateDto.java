@@ -7,7 +7,7 @@ import java.util.List;
 public class RemoveCertificateDto {
 	
 	@Schema(
-            description = "UUIDs of the Certificate"
+			description = "List of Certificate UUIDs"
     )
 	private List<String> uuids;
 

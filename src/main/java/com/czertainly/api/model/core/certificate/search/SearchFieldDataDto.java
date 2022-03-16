@@ -9,7 +9,7 @@ public class SearchFieldDataDto {
             required = true)
     private SearchableFields field;
 
-    @Schema(description = "Name of the field to be displayed in the FE",
+    @Schema(description = "Label for the field",
             required = true)
     private String label;
 
@@ -24,7 +24,7 @@ public class SearchFieldDataDto {
     @Schema(description = "Available values for the field")
     private Object value;
 
-    @Schema(description = "Multivalue falg. true = yes, false = no")
+    @Schema(description = "Multivalue flag. true = yes, false = no")
     private Boolean multiValue;
 
     public SearchableFields getField() {

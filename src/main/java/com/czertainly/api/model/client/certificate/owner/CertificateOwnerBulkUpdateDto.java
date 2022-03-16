@@ -14,7 +14,7 @@ public class CertificateOwnerBulkUpdateDto {
 	private String owner;
 	
 	@Schema(
-            description = "List of Certificate UUIDs"
+			description = "List of Certificate UUIDs"
     )
 	private List<String> certificateUuids;
 
