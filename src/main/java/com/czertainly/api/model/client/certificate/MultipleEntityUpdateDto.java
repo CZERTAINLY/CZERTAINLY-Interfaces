@@ -22,11 +22,6 @@ public class MultipleEntityUpdateDto {
 	)
 	private List<CertificateFilterRequestDto> filters;
 
-	@Schema(
-			description = "Match all based on filter flag. true = yes, false = no. Mandatory if filters field should be used"
-	)
-	private Boolean allSelect;
-
 	public String getUuid() {
 		return uuid;
 	}
@@ -51,11 +46,4 @@ public class MultipleEntityUpdateDto {
 		this.filters = filters;
 	}
 
-	public Boolean isAllSelect() {
-		return allSelect;
-	}
-
-	public void setAllSelect(Boolean allSelect) {
-		this.allSelect = allSelect;
-	}
 }

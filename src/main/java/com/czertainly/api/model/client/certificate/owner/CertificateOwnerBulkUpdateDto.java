@@ -23,11 +23,6 @@ public class CertificateOwnerBulkUpdateDto {
 	)
 	private List<CertificateFilterRequestDto> filters;
 
-	@Schema(
-			description = "All selected status. true = yes, false = no. Mandatory if filters field should be used"
-	)
-	private Boolean allSelect;
-
 	public String getOwner() {
 		return owner;
 	}
@@ -50,13 +45,5 @@ public class CertificateOwnerBulkUpdateDto {
 
 	public void setFilters(List<CertificateFilterRequestDto> filters) {
 		this.filters = filters;
-	}
-
-	public Boolean isAllSelect() {
-		return allSelect;
-	}
-
-	public void setAllSelect(Boolean allSelect) {
-		this.allSelect = allSelect;
 	}
 }
