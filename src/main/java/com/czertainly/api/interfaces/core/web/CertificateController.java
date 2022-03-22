@@ -161,7 +161,7 @@ public interface CertificateController {
 			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificates deleted") })
 	@RequestMapping(path = "/delete", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public List<String> bulkRemoveCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
+	public BulkOperationResponse bulkRemoveCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
 
 	@Operation(summary = "Validate Certificates of Status Unknown")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate Validation Initiated") })
