@@ -20,8 +20,8 @@ public enum CertificateEvent {
     UPLOAD("Upload Certificate")
     ;
 
-    @Schema(description = "Certificate Action",
-            example = "valid", required = true)
+    @Schema(description = "Certificate Event",
+            example = "Issue Certificate", required = true)
     private String code;
 
     CertificateEvent(String code) {
@@ -39,6 +39,6 @@ public enum CertificateEvent {
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown status {}", code)));
+                        new ValidationException(ValidationError.create("Unknown event {}", code)));
     }
 }
