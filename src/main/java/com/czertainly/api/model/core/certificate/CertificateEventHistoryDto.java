@@ -3,31 +3,32 @@ package com.czertainly.api.model.core.certificate;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
-public class CertificateHistory {
-    @Schema(description = "UUID of the history", required = true)
+public class CertificateEventHistoryDto {
+    @Schema(description = "UUID of the event", required = true)
     private String uuid;
 
     @Schema(description = "UUID of the Certificate", required = true)
     private String certificateUuid;
 
-    @Schema(description = "Created time", required = true)
+    @Schema(description = "Event creation time", required = true)
     private LocalDateTime created;
 
     @Schema(description = "Created By", required = true)
     private String createdBy;
 
-    @Schema(description = "Action type", required = true)
-    private CertificateAction action;
+    @Schema(description = "Event type", required = true)
+    private CertificateEvent event;
 
-    @Schema(description = "Status of the action", required = true)
-    private CertificateActionStatus status;
+    @Schema(description = "Event result", required = true)
+    private CertificateEventStatus status;
 
-    @Schema(description = "Message for the action", required = true)
+    @Schema(description = "Event message", required = true)
     private String message;
 
-    @Schema(description = "Additional information for the action")
-    private Object additionalInformation;
+    @Schema(description = "Additional information for the event")
+    private HashMap<String, String> additionalInformation;
 
     public String getUuid() {
         return uuid;
@@ -61,19 +62,19 @@ public class CertificateHistory {
         this.createdBy = createdBy;
     }
 
-    public CertificateAction getAction() {
-        return action;
+    public CertificateEvent getEvent() {
+        return event;
     }
 
-    public void setAction(CertificateAction action) {
-        this.action = action;
+    public void setEvent(CertificateEvent event) {
+        this.event = event;
     }
 
-    public CertificateActionStatus getStatus() {
+    public CertificateEventStatus getStatus() {
         return status;
     }
 
-    public void setStatus(CertificateActionStatus status) {
+    public void setStatus(CertificateEventStatus status) {
         this.status = status;
     }
 
@@ -85,11 +86,11 @@ public class CertificateHistory {
         this.message = message;
     }
 
-    public Object getAdditionalInformation() {
+    public HashMap<String, String> getAdditionalInformation() {
         return additionalInformation;
     }
 
-    public void setAdditionalInformation(Object additionalInformation) {
+    public void setAdditionalInformation(HashMap<String, String> additionalInformation) {
         this.additionalInformation = additionalInformation;
     }
 }

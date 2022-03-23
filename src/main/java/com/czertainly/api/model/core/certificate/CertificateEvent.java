@@ -8,8 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
-public enum CertificateAction {
-    ADD("Add Certificate to Inventory"),
+public enum CertificateEvent {
     ISSUE("Issue Certificate"),
     RENEW("Renew Certificate"),
     REVOKE("Revoke Certificate"),
@@ -25,7 +24,7 @@ public enum CertificateAction {
             example = "valid", required = true)
     private String code;
 
-    CertificateAction(String code) {
+    CertificateEvent(String code) {
         this.code = code;
     }
 
@@ -35,8 +34,8 @@ public enum CertificateAction {
     }
 
     @JsonCreator
-    public static CertificateAction findByCode(String code) {
-        return Arrays.stream(CertificateAction.values())
+    public static CertificateEvent findByCode(String code) {
+        return Arrays.stream(CertificateEvent.values())
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

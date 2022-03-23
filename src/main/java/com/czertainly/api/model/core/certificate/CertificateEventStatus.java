@@ -1,8 +1,6 @@
 package com.czertainly.api.model.core.certificate;
 
-public enum CertificateActionStatus {
+public enum CertificateEventStatus {
     SUCCESS,
     FAILED,
-    PARTIAL,
-    WARNING
 }
