@@ -8,6 +8,7 @@ import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequest
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
+import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -142,5 +143,11 @@ public interface CertificateController {
 	@RequestMapping(path = "/validate", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void validateAllCertificate();
+
+
+	@Operation(summary = "Get Certificate event history")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
+	@RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
+	public List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 	
 }
