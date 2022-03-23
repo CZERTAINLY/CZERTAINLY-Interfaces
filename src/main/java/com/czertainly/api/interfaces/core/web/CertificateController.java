@@ -145,7 +145,7 @@ public interface CertificateController {
 	public void validateAllCertificate();
 
 
-	@Operation(summary = "Get Certificate action history")
+	@Operation(summary = "Get Certificate event history")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
 	@RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
 	public List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
