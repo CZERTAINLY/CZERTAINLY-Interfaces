@@ -10,6 +10,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.certificate.search.SearchFieldDataDto;
+import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -173,5 +174,10 @@ public interface CertificateController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved") })
 	@RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
 	public List<SearchFieldDataDto> getSearchableFieldInformation();
+
+	@Operation(summary = "Get Certificate event history")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
+	@RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
+	public List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 	
 }
