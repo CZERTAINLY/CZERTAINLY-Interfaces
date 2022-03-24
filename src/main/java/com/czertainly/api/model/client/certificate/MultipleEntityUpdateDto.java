@@ -13,10 +13,14 @@ public class MultipleEntityUpdateDto {
 	private String uuid;
 	
 	@Schema(
-            description = "List of UUIDs of the Certificates",
-            required = true
+            description = "List of Certificate UUIDs"
     )
 	private List<String> certificateUuids;
+
+	@Schema(
+			description = "Certificate filter input"
+	)
+	private List<CertificateFilterRequestDto> filters;
 
 	public String getUuid() {
 		return uuid;
@@ -33,4 +37,13 @@ public class MultipleEntityUpdateDto {
 	public void setCertificateUuids(List<String> certificateUuids) {
 		this.certificateUuids = certificateUuids;
 	}
+
+	public List<CertificateFilterRequestDto> getFilters() {
+		return filters;
+	}
+
+	public void setFilters(List<CertificateFilterRequestDto> filters) {
+		this.filters = filters;
+	}
+
 }

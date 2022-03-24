@@ -2,12 +2,14 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
+import com.czertainly.api.model.core.certificate.search.SearchFieldDataDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -49,8 +51,8 @@ public interface CertificateController {
 	
 	@Operation(summary = "List Certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of all the certificates")})
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-	public List<CertificateDto> listCertificate(@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer end);
+	@RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
+	public CertificateResponseDto listCertificate(@RequestBody CertificateSearchRequestDto request) throws ValidationException;
 	
 	@Operation(summary = "Get Certificate Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
@@ -98,28 +100,48 @@ public interface CertificateController {
 	public void check(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
 			throws CertificateException, IOException, NotFoundException;
 	
-	@Operation(summary = "Update RA Profile for multiple Certificates")
+	@Operation(summary = "Update RA Profile for multiple Certificates", description = "In this operation, when the list of " +
+			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
+			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
+			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
+			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
+			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile updated") })
 	@RequestMapping(path = "/ra-profile", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkUpdateRaProfile(@RequestBody MultipleRAProfileUpdateDto request)
 			throws NotFoundException;
 	
-	@Operation(summary = "Update group for multiple Certificates")
+	@Operation(summary = "Update Group for multiple Certificates", description = "In this operation, when the list of " +
+			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
+			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
+			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
+			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
+			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group updated")})
 	@RequestMapping(path = "/group", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkUpdateCertificateGroup(@RequestBody MultipleGroupUpdateDto request)
 			throws NotFoundException;
 	
-	@Operation(summary = "Update Entity for multiple Certificates")
+	@Operation(summary = "Update Entity for multiple Certificates", description = "In this operation, when the list of " +
+			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
+			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
+			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
+			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
+			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entity updated")})
 	@RequestMapping(path = "/entity", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkUpdateEntity(@RequestBody MultipleEntityUpdateDto request)
 			throws NotFoundException;
 	
-	@Operation(summary = "Update Owner for multiple Certificates")
+	@Operation(summary = "Update Owner for multiple Certificates", description = "In this operation, when the list of " +
+			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
+			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
+			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
+			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
+			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Owner updated")})
 	@RequestMapping(path = "/owner", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -132,11 +154,15 @@ public interface CertificateController {
 	public ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request)
 			throws AlreadyExistException, CertificateException;
 	
-	@Operation(summary = "Delete multiple certificates")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificates deleted") })
+	@Operation(summary = "Delete multiple certificates", description = "In this operation, when the list of " +
+			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
+			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
+			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
+			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
+			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificates deleted") })
 	@RequestMapping(path = "/delete", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkRemoveCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
+	public BulkOperationResponse bulkRemoveCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
 
 	@Operation(summary = "Validate Certificates of Status Unknown")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate Validation Initiated") })
@@ -144,6 +170,10 @@ public interface CertificateController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void validateAllCertificate();
 
+	@Operation(summary = "Get Certificate searchable fields information")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved") })
+	@RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
+	public List<SearchFieldDataDto> getSearchableFieldInformation();
 
 	@Operation(summary = "Get Certificate event history")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
