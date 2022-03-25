@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.certificate.search;
+package com.czertainly.api.model.core.search;
 
 import java.util.Arrays;
 

@@ -9,8 +9,8 @@ import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequest
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
-import com.czertainly.api.model.core.certificate.search.SearchFieldDataDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,7 +52,7 @@ public interface CertificateController {
 	@Operation(summary = "List Certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of all the certificates")})
 	@RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
-	public CertificateResponseDto listCertificate(@RequestBody CertificateSearchRequestDto request) throws ValidationException;
+	public CertificateResponseDto listCertificate(@RequestBody SearchRequestDto request) throws ValidationException;
 	
 	@Operation(summary = "Get Certificate Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})

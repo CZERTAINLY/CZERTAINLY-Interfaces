@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.certificate.owner;
 
-import com.czertainly.api.model.client.certificate.CertificateFilterRequestDto;
+import com.czertainly.api.model.client.certificate.SearchFilterRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class CertificateOwnerBulkUpdateDto {
 	@Schema(
 			description = "Certificate filter input"
 	)
-	private List<CertificateFilterRequestDto> filters;
+	private List<SearchFilterRequestDto> filters;
 
 	public String getOwner() {
 		return owner;
@@ -39,11 +39,11 @@ public class CertificateOwnerBulkUpdateDto {
 		this.certificateUuids = certificateUuids;
 	}
 
-	public List<CertificateFilterRequestDto> getFilters() {
+	public List<SearchFilterRequestDto> getFilters() {
 		return filters;
 	}
 
-	public void setFilters(List<CertificateFilterRequestDto> filters) {
+	public void setFilters(List<SearchFilterRequestDto> filters) {
 		this.filters = filters;
 	}
 }

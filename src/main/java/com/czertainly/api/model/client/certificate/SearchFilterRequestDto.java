@@ -1,12 +1,12 @@
 package com.czertainly.api.model.client.certificate;
 
-import com.czertainly.api.model.core.certificate.search.SearchCondition;
-import com.czertainly.api.model.core.certificate.search.SearchableFields;
+import com.czertainly.api.model.core.search.SearchCondition;
+import com.czertainly.api.model.core.search.SearchableFields;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 
-public class CertificateFilterRequestDto {
+public class SearchFilterRequestDto {
     @Schema(description = "Field to search", required = true)
     private SearchableFields field;
 
