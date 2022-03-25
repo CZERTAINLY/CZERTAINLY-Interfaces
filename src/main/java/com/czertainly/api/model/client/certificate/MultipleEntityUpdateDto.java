@@ -20,7 +20,7 @@ public class MultipleEntityUpdateDto {
 	@Schema(
 			description = "Certificate filter input"
 	)
-	private List<CertificateFilterRequestDto> filters;
+	private List<SearchFilterRequestDto> filters;
 
 	public String getUuid() {
 		return uuid;
@@ -38,11 +38,11 @@ public class MultipleEntityUpdateDto {
 		this.certificateUuids = certificateUuids;
 	}
 
-	public List<CertificateFilterRequestDto> getFilters() {
+	public List<SearchFilterRequestDto> getFilters() {
 		return filters;
 	}
 
-	public void setFilters(List<CertificateFilterRequestDto> filters) {
+	public void setFilters(List<SearchFilterRequestDto> filters) {
 		this.filters = filters;
 	}
 

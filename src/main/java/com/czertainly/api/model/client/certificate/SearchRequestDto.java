@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
-public class CertificateSearchRequestDto {
+public class SearchRequestDto {
 
     @Schema(description = "Certificate filter input")
-    private List<CertificateFilterRequestDto> filters;
+    private List<SearchFilterRequestDto> filters;
 
     @Schema(description = "Number of entries per page", defaultValue = "10", maximum = "1000")
     private Integer itemsPerPage;
@@ -15,11 +15,11 @@ public class CertificateSearchRequestDto {
     @Schema(description = "Page number for the request", defaultValue = "1")
     private Integer pageNumber;
 
-    public List<CertificateFilterRequestDto> getFilters() {
+    public List<SearchFilterRequestDto> getFilters() {
         return filters;
     }
 
-    public void setFilters(List<CertificateFilterRequestDto> filters) {
+    public void setFilters(List<SearchFilterRequestDto> filters) {
         this.filters = filters;
     }
 

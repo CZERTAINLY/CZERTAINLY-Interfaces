@@ -17,7 +17,8 @@ public enum CertificateEvent {
     UPDATE_ENTITY("Update Entity"),
     UPDATE_GROUP("Update Group"),
     UPDATE_OWNER("Update Owner"),
-    UPLOAD("Upload Certificate")
+    UPLOAD("Upload Certificate"),
+    DISCOVERY("Certificate Discovered")
     ;
 
     @Schema(description = "Certificate Event",

@@ -14,7 +14,7 @@ public class RemoveCertificateDto {
 	@Schema(
 			description = "Certificate filter input"
 	)
-	private List<CertificateFilterRequestDto> filters;
+	private List<SearchFilterRequestDto> filters;
 
 	public List<String> getUuids() {
 		return uuids;
@@ -24,11 +24,11 @@ public class RemoveCertificateDto {
 		this.uuids = uuids;
 	}
 
-	public List<CertificateFilterRequestDto> getFilters() {
+	public List<SearchFilterRequestDto> getFilters() {
 		return filters;
 	}
 
-	public void setFilters(List<CertificateFilterRequestDto> filters) {
+	public void setFilters(List<SearchFilterRequestDto> filters) {
 		this.filters = filters;
 	}
 }
