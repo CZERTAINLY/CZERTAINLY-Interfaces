@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum SearchableFields {
     COMMON_NAME("commonName"),
@@ -34,6 +37,34 @@ public enum SearchableFields {
 
     private final String field;
 
+    private final Map<String, String> nativeCodeMap = Stream.of(new String[][] {
+            { "commonName", "common_name" },
+            { "serialNumber", "serial_number" },
+            {"raProfile","ra_profile_id"},
+            {"entity","entity_id"},
+            {"status","status"},
+            {"group","group_id"},
+            {"owner","owner"},
+            {"issuerCommonName","issuer_common_name"},
+            {"signatureAlgorithm","signature_algorithm"},
+            {"fingerprint","fingerprint"},
+            {"notAfter","not_after"},
+            {"notBefore","not_before"},
+            {"publicKeyAlgorithm","public_key_algorithm"},
+            {"keySize","key_size"},
+            {"keyUsage","key_usage"},
+            {"basicConstraints","basic_constraints"},
+            {"meta","meta"},
+            {"subjectAlternativeNames","subject_alternative_names"},
+            {"subjectDn","subject_dn"},
+            {"issuerDn","issuer_dn"},
+            {"issuerSerialNumber","issuer_serial_number"},
+            {"ocspValidation","ocspValidation"},
+            {"crlValidation","ocspValidation"},
+            {"signatureValidation","ocspValidation"},
+
+    }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
     SearchableFields(String string) {
         this.field = string;
     }
@@ -41,6 +72,10 @@ public enum SearchableFields {
     @JsonValue
     public String getCode() {
         return field;
+    }
+
+    public String getNativeCode(){
+        return nativeCodeMap.get(field);
     }
 
     @JsonCreator
