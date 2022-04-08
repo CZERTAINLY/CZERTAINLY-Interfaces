@@ -17,6 +17,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -178,7 +179,7 @@ public abstract class BaseApiClient {
             Throwable unwrapped = Exceptions.unwrap(e);
             logger.error(unwrapped.getMessage(), unwrapped);
 
-            if (unwrapped instanceof IOException) {
+            if (unwrapped instanceof IOException || unwrapped instanceof WebClientRequestException) {
                 throw new ConnectorCommunicationException(unwrapped.getMessage(), unwrapped, connector);
             } else if (unwrapped instanceof ConnectorException) {
                 ConnectorException ce = (ConnectorException) unwrapped;
