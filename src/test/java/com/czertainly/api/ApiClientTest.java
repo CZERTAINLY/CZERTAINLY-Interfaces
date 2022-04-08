@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -53,7 +54,9 @@ public class ApiClientTest {
                     "certificate")
         );
 
-        Assertions.assertEquals(UnknownHostException.class, cause.getCause().getClass());
+        WebClientRequestException e = (WebClientRequestException) cause.getCause();
+        Assertions.assertEquals(WebClientRequestException.class, cause.getCause().getClass());
+        Assertions.assertEquals(UnknownHostException.class, e.getCause().getClass());
     }
 
     @Test
@@ -69,7 +72,9 @@ public class ApiClientTest {
                         "certificate")
         );
 
-        Assertions.assertEquals(ConnectException.class, cause.getCause().getCause().getClass());
+        WebClientRequestException e = (WebClientRequestException) cause.getCause();
+        Assertions.assertEquals(WebClientRequestException.class, cause.getCause().getClass());
+        Assertions.assertEquals(ConnectException.class, e.getCause().getCause().getClass());
     }
 
     @Test

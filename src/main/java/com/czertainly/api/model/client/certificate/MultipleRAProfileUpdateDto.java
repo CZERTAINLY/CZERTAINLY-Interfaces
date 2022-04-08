@@ -13,10 +13,14 @@ public class MultipleRAProfileUpdateDto {
 	private String uuid;
 	
 	@Schema(
-            description = "List of UUIDs of the Certificates",
-            required = true
+			description = "List of Certificate UUIDs"
     )
 	private List<String> certificateUuids;
+
+	@Schema(
+			description = "Certificate filter input"
+	)
+	private List<SearchFilterRequestDto> filters;
 
 	public String getUuid() {
 		return uuid;
@@ -32,5 +36,13 @@ public class MultipleRAProfileUpdateDto {
 
 	public void setCertificateUuids(List<String> certificateUuids) {
 		this.certificateUuids = certificateUuids;
+	}
+
+	public List<SearchFilterRequestDto> getFilters() {
+		return filters;
+	}
+
+	public void setFilters(List<SearchFilterRequestDto> filters) {
+		this.filters = filters;
 	}
 }

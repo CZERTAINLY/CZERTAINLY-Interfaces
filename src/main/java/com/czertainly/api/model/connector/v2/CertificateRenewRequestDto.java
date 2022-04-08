@@ -24,6 +24,12 @@ public class CertificateRenewRequestDto {
             required = true)
     private String certificate;
 
+    @Schema(
+            description = "Metadata for the Certificate",
+            required = true
+    )
+    private String meta;
+
     public String getPkcs10() {
         return pkcs10;
     }
@@ -46,6 +52,14 @@ public class CertificateRenewRequestDto {
 
     public void setCertificate(String certificate) {
         this.certificate = certificate;
+    }
+
+    public String getMeta() {
+        return meta;
+    }
+
+    public void setMeta(String meta) {
+        this.meta = meta;
     }
 
     @Override
