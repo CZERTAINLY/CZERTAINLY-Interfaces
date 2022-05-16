@@ -2,12 +2,17 @@ package com.czertainly.api.interfaces.connector.entity;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.RequestAttributeDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +28,7 @@ import java.util.List;
         name = "Entity Management API",
         description = "Management interfaces to control Entities in the platform. " +
                 "Entities can be created, edited, removed. Support for the bulk operation and listing of available " +
-                "Entities for the automation."
+                "Entities for the automation. Location attributes and validation."
 )
 @ApiResponses(
         value = {
@@ -79,6 +84,13 @@ public interface EntityController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Entity instance created"
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Attribute validation failed",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute validation error message")),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})
+
                     )
             })
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
@@ -111,4 +123,39 @@ public interface EntityController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
+    @Operation(
+            summary = "List Entity Location Attributes"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Entity Location Attributes retrieved"
+                    )
+            })
+    @RequestMapping(path = "/{entityUuid}/location/attributes", method = RequestMethod.GET, produces = {"application/json"})
+    List<AttributeDefinition> listLocationAttributes(
+            @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
+
+    @Operation(
+            summary = "Validate Location Attributes"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Entity Location Attributes validation completed"
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Attribute validation failed",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute validation error message")),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})
+
+                    )
+            })
+    @RequestMapping(path = "/{entityUuid}/location/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    void validateLocationAttributes(
+            @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
+            @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
 }
