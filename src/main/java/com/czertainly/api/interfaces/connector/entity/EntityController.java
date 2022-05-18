@@ -60,7 +60,10 @@ public interface EntityController {
                             description = "Entity instances retrieved"
                     )
             })
-    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
     List<EntityInstanceDto> listEntityInstances();
 
     @Operation(
@@ -73,7 +76,11 @@ public interface EntityController {
                             description = "Entity instance retrieved"
                     )
             })
-    @RequestMapping(path = "/{entityUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(
+            path = "/{entityUuid}",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
     EntityInstanceDto getEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
     @Operation(
@@ -93,7 +100,11 @@ public interface EntityController {
 
                     )
             })
-    @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
     EntityInstanceDto createEntityInstance(@RequestBody EntityInstanceRequestDto request) throws AlreadyExistException;
 
     @Operation(
@@ -106,7 +117,12 @@ public interface EntityController {
                             description = "Entity instance updated"
                     )
             })
-    @RequestMapping(path = "/{entityUuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(
+            path = "/{entityUuid}",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
     EntityInstanceDto updateEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid, @RequestBody EntityInstanceRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -119,7 +135,11 @@ public interface EntityController {
                             description = "Entity instance removed"
                     )
             })
-    @RequestMapping(path = "/{entityUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @RequestMapping(
+            path = "/{entityUuid}",
+            method = RequestMethod.DELETE,
+            produces = {"application/json"}
+    )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
@@ -133,7 +153,11 @@ public interface EntityController {
                             description = "Entity Location Attributes retrieved"
                     )
             })
-    @RequestMapping(path = "/{entityUuid}/location/attributes", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(
+            path = "/{entityUuid}/location/attributes",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
     List<AttributeDefinition> listLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
@@ -154,7 +178,12 @@ public interface EntityController {
 
                     )
             })
-    @RequestMapping(path = "/{entityUuid}/location/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(
+            path = "/{entityUuid}/location/attributes/validate",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
     void validateLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;

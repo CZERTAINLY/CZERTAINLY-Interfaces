@@ -83,7 +83,8 @@ public interface LocationController {
             path = "/push",
             method = RequestMethod.POST,
             consumes = {"application/json"},
-            produces = {"application/json"})
+            produces = {"application/json"}
+    )
     PushCertificateResponseDto pushCertificateToLocation(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
             @RequestBody PushCertificateRequestDto request
@@ -149,7 +150,8 @@ public interface LocationController {
             path = "/remove",
             method = RequestMethod.POST,
             consumes = {"application/json"},
-            produces = {"application/json"})
+            produces = {"application/json"}
+    )
     RemoveCertificateResponseDto removeCertificateFromLocation(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
             @RequestBody RemoveCertificateRequestDto request
@@ -169,7 +171,8 @@ public interface LocationController {
             path = "/csr",
             method = RequestMethod.POST,
             consumes = {"application/json"},
-            produces = {"application/json"})
+            produces = {"application/json"}
+    )
     GenerateCsrResponseDto generateCsrLocation(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
             @RequestBody GenerateCsrRequestDto request
