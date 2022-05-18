@@ -1,12 +1,12 @@
 package com.czertainly.api.interfaces.connector.entity;
 
+import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.AttributeDefinition;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.RequestAttributeDto;
-import com.czertainly.api.model.connector.entity.LocationCsrDto;
-import com.czertainly.api.model.connector.entity.LocationDetailDto;
+import com.czertainly.api.model.connector.entity.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -49,9 +49,6 @@ import java.util.List;
         })
 public interface LocationController {
 
-    // connect and return details about the location
-    // get certificates from the location
-
     @Operation(
             summary = "Get information about the Location content. All identified certificates are returned"
     )
@@ -67,16 +64,13 @@ public interface LocationController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
-    LocationDetailDto getLocationDetail(
+    LocationDetailResponseDto getLocationDetail(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> locationAttributes
-    );
-
-    // push certificate to the location
-    // needs attributes
+            @RequestBody LocationDetailRequestDto request
+    ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Push the certificate into the Location"
+            summary = "Push the Certificate into the Location"
     )
     @ApiResponses(
             value = {
@@ -90,11 +84,10 @@ public interface LocationController {
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"})
-    void pushCertificateToLocation(
+    PushCertificateResponseDto pushCertificateToLocation(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> locationAttributes,
-            @RequestBody List<RequestAttributeDto> pushAttributes
-    );
+            @RequestBody PushCertificateRequestDto request
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "List of Attributes to push Certificate into Location"
@@ -142,8 +135,6 @@ public interface LocationController {
             @RequestBody List<RequestAttributeDto> pushAttributes
     ) throws NotFoundException, ValidationException;
 
-    // remove certificate from the location
-
     @Operation(
             summary = "Remove Certificate from Location"
     )
@@ -159,15 +150,10 @@ public interface LocationController {
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"})
-    void removeCertificateFromLocation(
+    RemoveCertificateResponseDto removeCertificateFromLocation(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> locationAttributes,
-            @RequestBody List<RequestAttributeDto> pushAttributes
-    );
-
-
-    // generate CSR for the location
-    // needs attributes
+            @RequestBody RemoveCertificateRequestDto request
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Generate key pair and CSR for the Location"
@@ -184,11 +170,10 @@ public interface LocationController {
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"})
-    LocationCsrDto generateCsrLocation(
+    GenerateCsrResponseDto generateCsrLocation(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> locationAttributes,
-            @RequestBody List<RequestAttributeDto> pushAttributes
-    );
+            @RequestBody GenerateCsrRequestDto request
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "List of Attributes to generate key pair and CSR"
