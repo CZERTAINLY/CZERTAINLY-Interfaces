@@ -58,7 +58,7 @@ public class EditLocationRequestDto {
         this.attributes = attributes;
     }
 
-    public Boolean getEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 

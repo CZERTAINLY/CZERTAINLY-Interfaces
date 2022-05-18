@@ -73,7 +73,7 @@ public class AddLocationRequestDto {
         this.attributes = attributes;
     }
 
-    public Boolean getEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
