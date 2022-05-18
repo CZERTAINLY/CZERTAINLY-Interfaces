@@ -10,8 +10,6 @@ public class StatisticsDto {
     private Long totalCertificates;
 	@Schema(description = "Number of Groups")
     private Long totalGroups;
-	@Schema(description = "Number of Entities")
-    private Long totalEntities;
 	@Schema(description = "Number of Discoveries triggered")
     private Long totalDiscoveries;
 	@Schema(description = "Number of Connectors added")
@@ -27,11 +25,9 @@ public class StatisticsDto {
 	@Schema(description = "Number of Clients added")
     private Long totalClients;
 
-    // Data of the certificate count by group, entity and RA Profile assignment
+    // Data of the certificate count by group, and RA Profile assignment
 	@Schema(description = "Map of Certificate count by Group")
     private Map<String, Long> groupStatByCertificateCount;
-	@Schema(description = "Map of Certificate count by Entity")
-    private Map<String, Long> entityStatByCertificateCount;
 	@Schema(description = "Map of Certificate count by RA Profile")
     private Map<String, Long> raProfileStatByCertificateCount;
 
@@ -71,14 +67,6 @@ public class StatisticsDto {
 
     public void setTotalGroups(Long totalGroups) {
         this.totalGroups = totalGroups;
-    }
-
-    public Long getTotalEntities() {
-        return totalEntities;
-    }
-
-    public void setTotalEntities(Long totalEntities) {
-        this.totalEntities = totalEntities;
     }
 
     public Long getTotalDiscoveries() {
@@ -143,14 +131,6 @@ public class StatisticsDto {
 
     public void setGroupStatByCertificateCount(Map<String, Long> groupStatByCertificateCount) {
         this.groupStatByCertificateCount = groupStatByCertificateCount;
-    }
-
-    public Map<String, Long> getEntityStatByCertificateCount() {
-        return entityStatByCertificateCount;
-    }
-
-    public void setEntityStatByCertificateCount(Map<String, Long> entityStatByCertificateCount) {
-        this.entityStatByCertificateCount = entityStatByCertificateCount;
     }
 
     public Map<String, Long> getRaProfileStatByCertificateCount() {
