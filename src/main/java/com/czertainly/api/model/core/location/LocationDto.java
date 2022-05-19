@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class representing Location
@@ -30,7 +31,26 @@ public class LocationDto extends NameAndUuidDto {
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
-    private Boolean enabled;
+    private boolean enabled;
+
+    @Schema(description = "If the location supports multiple Certificates",
+            defaultValue = "false",
+            required = true
+    )
+    private boolean supportMultipleEntries;
+
+    @Schema(description = "If the location supports key management operations",
+            defaultValue = "false",
+            required = true
+    )
+    private boolean supportKeyManagement;
+
+    @Schema(description = "List of Certificates in Location",
+            required = true)
+    private List<CertificateInLocationDto> certificates;
+
+    @Schema(description = "Location metadata")
+    private Map<String, Object> metadata;
 
     public String getDescription() {
         return description;
@@ -64,12 +84,44 @@ public class LocationDto extends NameAndUuidDto {
         this.attributes = attributes;
     }
 
-    public Boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isSupportMultipleEntries() {
+        return supportMultipleEntries;
+    }
+
+    public void setSupportMultipleEntries(boolean supportMultipleEntries) {
+        this.supportMultipleEntries = supportMultipleEntries;
+    }
+
+    public boolean isSupportKeyManagement() {
+        return supportKeyManagement;
+    }
+
+    public void setSupportKeyManagement(boolean supportKeyManagement) {
+        this.supportKeyManagement = supportKeyManagement;
+    }
+
+    public Map<String, Object> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, Object> metadata) {
+        this.metadata = metadata;
+    }
+
+    public List<CertificateInLocationDto> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(List<CertificateInLocationDto> certificates) {
+        this.certificates = certificates;
     }
 
     @Override
@@ -82,6 +134,9 @@ public class LocationDto extends NameAndUuidDto {
                 .append("attributes", attributes)
                 .append("enabled", enabled)
                 .append("entityInstanceName", entityInstanceName)
+                .append("supportMultipleEntries", supportMultipleEntries)
+                .append("supportKeyManagement", supportKeyManagement)
+                .append("metadata", metadata)
                 .toString();
     }
 }

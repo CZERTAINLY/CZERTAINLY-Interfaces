@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.location.AddLocationRequestDto;
 import com.czertainly.api.model.client.location.EditLocationRequestDto;
 import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
@@ -120,7 +117,7 @@ public interface LocationManagementController {
     )
     ResponseEntity<?> addLocation(
             @RequestBody AddLocationRequestDto request
-    ) throws AlreadyExistException, ValidationException, ConnectorException;
+    ) throws AlreadyExistException, ValidationException, ConnectorException, CertificateException;
 
     @Operation(
             summary = "Get information about the Location"
@@ -166,7 +163,7 @@ public interface LocationManagementController {
     LocationDto editLocation(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody EditLocationRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, CertificateException;
 
     @Operation(
             summary = "Delete Location"
@@ -321,16 +318,32 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/issue/{raProfileUuid}",
+            path = "{locationUuid}/issue",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
     LocationDto issueCertificate(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
-            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @RequestBody IssueToLocationRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, java.security.cert.CertificateException, AlreadyExistException;
 
-    // update location data
+    @Operation(
+            summary = "Update and sync Location content"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Content updated"
+                    )
+            })
+    @RequestMapping(
+            path = "{locationUuid}/sync",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    LocationDto updateLocationContent(
+            @Parameter(description = "Location UUID") @PathVariable String locationUuid
+    ) throws ConnectorException, CertificateException;
 }

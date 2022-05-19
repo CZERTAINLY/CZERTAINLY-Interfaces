@@ -13,23 +13,53 @@ import java.util.List;
 public class IssueToLocationRequestDto {
 
     @Schema(
-            description = "List of csr Attributes for Location",
+            description = "RA Profile UUID",
             required = true
     )
-    private List<RequestAttributeDto> attributes;
+    private String raProfileUuid;
 
-    public List<RequestAttributeDto> getAttributes() {
-        return attributes;
+    @Schema(
+            description = "List of CSR Attributes for Location",
+            required = true
+    )
+    private List<RequestAttributeDto> csrAttributes;
+
+    @Schema(
+            description = "List of certificate issue Attributes for RA Profile",
+            required = true
+    )
+    private List<RequestAttributeDto> issueAttributes;
+
+    public String getRaProfileUuid() {
+        return raProfileUuid;
     }
 
-    public void setAttributes(List<RequestAttributeDto> attributes) {
-        this.attributes = attributes;
+    public void setRaProfileUuid(String raProfileUuid) {
+        this.raProfileUuid = raProfileUuid;
+    }
+
+    public List<RequestAttributeDto> getCsrAttributes() {
+        return csrAttributes;
+    }
+
+    public void setCsrAttributes(List<RequestAttributeDto> csrAttributes) {
+        this.csrAttributes = csrAttributes;
+    }
+
+    public List<RequestAttributeDto> getIssueAttributes() {
+        return issueAttributes;
+    }
+
+    public void setIssueAttributes(List<RequestAttributeDto> issueAttributes) {
+        this.issueAttributes = issueAttributes;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("attributes", attributes)
+                .append("raProfileUuid", raProfileUuid)
+                .append("csrAttributes", csrAttributes)
+                .append("issueAttributes", issueAttributes)
                 .toString();
     }
 }

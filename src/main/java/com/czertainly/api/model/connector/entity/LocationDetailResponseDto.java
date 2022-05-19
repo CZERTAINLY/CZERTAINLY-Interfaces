@@ -1,6 +1,5 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,7 +13,7 @@ public class LocationDetailResponseDto {
             description = "List of Certificates in the Location",
             required = true
     )
-    private List<CertificateDataResponseDto> certificates;
+    private List<CertificateLocationDto> certificates;
 
     @Schema(
             description = "Location metadata",
@@ -36,11 +35,11 @@ public class LocationDetailResponseDto {
     )
     private boolean supportKeyManagement;
 
-    public List<CertificateDataResponseDto> getCertificates() {
+    public List<CertificateLocationDto> getCertificates() {
         return certificates;
     }
 
-    public void setCertificates(List<CertificateDataResponseDto> certificates) {
+    public void setCertificates(List<CertificateLocationDto> certificates) {
         this.certificates = certificates;
     }
 
@@ -71,6 +70,7 @@ public class LocationDetailResponseDto {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("metadata", metadata)
                 .append("multipleEntries", multipleEntries)
                 .append("supportKeyManagement", supportKeyManagement)
                 .toString();
