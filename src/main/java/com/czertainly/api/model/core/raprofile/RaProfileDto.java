@@ -36,6 +36,12 @@ public class RaProfileDto extends NameAndUuidDto {
             required = false)
     private List<String> enabledProtocols;
 
+    @Schema(description = "Compliance Profile Name", example = "Compliance Profile 1")
+    private String complianceProfileName;
+
+    @Schema(description = "Compliance Profile UUID", example = "c35bc88c-d0ef-11ec-9d64-0242ac120003")
+    private String complianceProfileUuid;
+
     @Override
     public String getUuid() {
         return uuid;
@@ -101,6 +107,22 @@ public class RaProfileDto extends NameAndUuidDto {
         this.enabledProtocols = enabledProtocols;
     }
 
+    public String getComplianceProfileName() {
+        return complianceProfileName;
+    }
+
+    public void setComplianceProfileName(String complianceProfileName) {
+        this.complianceProfileName = complianceProfileName;
+    }
+
+    public String getComplianceProfileUuid() {
+        return complianceProfileUuid;
+    }
+
+    public void setComplianceProfileUuid(String complianceProfileUuid) {
+        this.complianceProfileUuid = complianceProfileUuid;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -111,6 +133,8 @@ public class RaProfileDto extends NameAndUuidDto {
                 .append("attributes", attributes)
                 .append("enabled", enabled)
                 .append("authorityInstanceName", authorityInstanceName)
+                .append("complianceProfileName", complianceProfileName)
+                .append("complianceProfileUuid", complianceProfileUuid)
                 .toString();
     }
 }
