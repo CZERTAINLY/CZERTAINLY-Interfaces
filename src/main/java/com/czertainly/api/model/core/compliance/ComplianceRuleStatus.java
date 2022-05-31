@@ -15,7 +15,7 @@ the overall compliance status
  */
 public enum ComplianceRuleStatus {
     COMPLIANT ("compliant"),
-    NON_COMPLIANT ("notCompliant"),
+    NON_COMPLIANT ("nonCompliant"),
     NOT_APPLICABLE ("notApplicable"),
     ;
     @Schema(description = "Compliance Rule Status",
