@@ -16,7 +16,7 @@ the compliance status of the individual rules
  */
 public enum ComplianceStatus {
     COMPLIANT ("compliant"),
-    NON_COMPLIANT ("notCompliant"),
+    NON_COMPLIANT ("nonCompliant"),
     NOT_CHECKED ("notChecked"),
     UNKNOWN ("unknown")
     ;
