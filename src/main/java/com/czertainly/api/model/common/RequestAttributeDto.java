@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -19,6 +20,7 @@ public class RequestAttributeDto {
             description = "UUID of the Attribute",
             example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
     )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
 
     /**

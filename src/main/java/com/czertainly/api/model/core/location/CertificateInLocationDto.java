@@ -1,7 +1,9 @@
 package com.czertainly.api.model.core.location;
 
+import com.czertainly.api.model.common.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
 import java.util.Map;
 
 public class CertificateInLocationDto {
@@ -29,6 +31,16 @@ public class CertificateInLocationDto {
             required = true
     )
     private Map<String, Object> metadata;
+
+    @Schema(
+            description = "Applied push attributes"
+    )
+    private List<RequestAttributeDto> pushAttributes;
+
+    @Schema(
+            description = "Applied issue attributes"
+    )
+    private List<RequestAttributeDto> csrAttributes;
 
     @Schema(
             description = "If the Certificate in Location has associated private key",
@@ -67,6 +79,22 @@ public class CertificateInLocationDto {
 
     public void setMetadata(Map<String, Object> metadata) {
         this.metadata = metadata;
+    }
+
+    public List<RequestAttributeDto> getPushAttributes() {
+        return pushAttributes;
+    }
+
+    public void setPushAttributes(List<RequestAttributeDto> pushAttributes) {
+        this.pushAttributes = pushAttributes;
+    }
+
+    public List<RequestAttributeDto> getCsrAttributes() {
+        return csrAttributes;
+    }
+
+    public void setCsrAttributes(List<RequestAttributeDto> csrAttributes) {
+        this.csrAttributes = csrAttributes;
     }
 
     public boolean isWithKey() {
