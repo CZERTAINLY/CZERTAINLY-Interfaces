@@ -285,7 +285,7 @@ public interface LocationManagementController {
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody PushToLocationRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, LocationException;
 
     @Operation(
             summary = "Remove Certificate from Location"
@@ -326,7 +326,7 @@ public interface LocationManagementController {
     LocationDto issueCertificate(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody IssueToLocationRequestDto request
-    ) throws ConnectorException, java.security.cert.CertificateException, AlreadyExistException;
+    ) throws ConnectorException, java.security.cert.CertificateException, AlreadyExistException, LocationException;
 
     @Operation(
             summary = "Update and sync Location content"
