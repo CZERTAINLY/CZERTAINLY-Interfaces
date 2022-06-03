@@ -346,4 +346,24 @@ public interface LocationManagementController {
     LocationDto updateLocationContent(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws ConnectorException, CertificateException;
+
+    @Operation(
+            summary = "Automatically renew Certificate in the Location"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Content updated"
+                    )
+            })
+    @RequestMapping(
+            path = "{locationUuid}/renew/{certificateUuid}",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    LocationDto updateLocationContent(
+            @Parameter(description = "Location UUID") @PathVariable String locationUuid,
+            @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
+    ) throws ConnectorException, java.security.cert.CertificateException, AlreadyExistException, LocationException;
 }
