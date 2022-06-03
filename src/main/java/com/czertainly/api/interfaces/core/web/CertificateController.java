@@ -10,6 +10,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -160,5 +161,24 @@ public interface CertificateController {
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
 	@RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
 	public List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
-	
+
+	@Operation(
+			summary = "List of available Locations for the Certificate"
+	)
+	@ApiResponses(
+			value = {
+					@ApiResponse(
+							responseCode = "200",
+							description = "Locations retrieved"
+					)
+			})
+	@RequestMapping(
+			method = RequestMethod.GET,
+			path = "/{certificateUuid}/locations",
+			produces = {"application/json"}
+	)
+	List<LocationDto> listLocations(
+			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
+	) throws NotFoundException;
+
 }
