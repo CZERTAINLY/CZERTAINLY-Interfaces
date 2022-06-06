@@ -117,7 +117,7 @@ public interface LocationManagementController {
     )
     ResponseEntity<?> addLocation(
             @RequestBody AddLocationRequestDto request
-    ) throws AlreadyExistException, ValidationException, ConnectorException, CertificateException;
+    ) throws NotFoundException, AlreadyExistException, LocationException;
 
     @Operation(
             summary = "Get information about the Location"
@@ -163,7 +163,7 @@ public interface LocationManagementController {
     LocationDto editLocation(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody EditLocationRequestDto request
-    ) throws ConnectorException, CertificateException;
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Delete Location"
@@ -244,7 +244,7 @@ public interface LocationManagementController {
     )
     List<AttributeDefinition> listPushAttributes(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
-    ) throws ConnectorException;
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Get CSR generate Attributes"
@@ -263,7 +263,7 @@ public interface LocationManagementController {
     )
     List<AttributeDefinition> listCsrAttributes(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
-    ) throws ConnectorException;
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Push Certificate to Location"
@@ -285,7 +285,7 @@ public interface LocationManagementController {
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody PushToLocationRequestDto request
-    ) throws ConnectorException, LocationException;
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Remove Certificate from Location"
@@ -305,7 +305,7 @@ public interface LocationManagementController {
     LocationDto removeCertificate(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
-    ) throws ConnectorException;
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Issue Certificate for Location"
@@ -326,7 +326,7 @@ public interface LocationManagementController {
     LocationDto issueCertificate(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody IssueToLocationRequestDto request
-    ) throws ConnectorException, java.security.cert.CertificateException, AlreadyExistException, LocationException;
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Update and sync Location content"
@@ -345,7 +345,7 @@ public interface LocationManagementController {
     )
     LocationDto updateLocationContent(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
-    ) throws ConnectorException, CertificateException;
+    ) throws NotFoundException, LocationException;
 
     @Operation(
             summary = "Automatically renew Certificate in the Location"
@@ -365,5 +365,5 @@ public interface LocationManagementController {
     LocationDto updateLocationContent(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
-    ) throws ConnectorException, java.security.cert.CertificateException, AlreadyExistException, LocationException;
+    ) throws NotFoundException, LocationException;
 }
