@@ -133,7 +133,7 @@ public interface EntityInstanceController {
 			})
 	@RequestMapping(
 			path = "/{entityUuid}",
-			method = RequestMethod.POST,
+			method = RequestMethod.PATCH,
 			consumes = {"application/json"},
 			produces = {"application/json"}
 	)
@@ -154,8 +154,7 @@ public interface EntityInstanceController {
 			})
 	@RequestMapping(
 			path = "/{entityUuid}",
-			method = RequestMethod.DELETE,
-			produces = {"application/json"})
+			method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void removeEntityInstance(
 			@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
@@ -188,14 +187,20 @@ public interface EntityInstanceController {
 					@ApiResponse(
 							responseCode = "200",
 							description = "Attributes validated"
+					),
+					@ApiResponse(
+							responseCode = "422",
+							description = "Unprocessable Entity",
+							content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+							examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
 					)
 			})
 	@RequestMapping(
 			path = "/{entityUuid}/location/attributes/validate",
 			method = RequestMethod.POST,
-			consumes = {"application/json"},
-			produces = {"application/json"}
+			consumes = {"application/json"}
 	)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void validateLocationAttributes(
 			@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
 			@RequestBody List<RequestAttributeDto> attributes

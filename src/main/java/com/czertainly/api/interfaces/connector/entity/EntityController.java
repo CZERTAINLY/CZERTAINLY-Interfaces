@@ -119,7 +119,7 @@ public interface EntityController {
             })
     @RequestMapping(
             path = "/{entityUuid}",
-            method = RequestMethod.POST,
+            method = RequestMethod.PUT,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -137,8 +137,7 @@ public interface EntityController {
             })
     @RequestMapping(
             path = "/{entityUuid}",
-            method = RequestMethod.DELETE,
-            produces = {"application/json"}
+            method = RequestMethod.DELETE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
@@ -181,9 +180,9 @@ public interface EntityController {
     @RequestMapping(
             path = "/{entityUuid}/location/attributes/validate",
             method = RequestMethod.POST,
-            consumes = {"application/json"},
-            produces = {"application/json"}
+            consumes = {"application/json"}
     )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;

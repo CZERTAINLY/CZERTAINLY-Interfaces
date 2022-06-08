@@ -66,7 +66,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
     public EntityInstanceDto updateEntityInstance(ConnectorDto connector, String entityUuid, EntityInstanceRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector.getAuthType(), connector.getAuthAttributes());
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_IDENTIFIED_CONTEXT, entityUuid)
@@ -103,14 +103,14 @@ public class EntityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateLocationAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateLocationAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
 
-        return processRequest(r -> r
+        processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_LOCATION_ATTRS_VALIDATE_CONTEXT, entityUuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
-                .toEntity(Boolean.class)
+                .toEntity(Void.class)
                 .block().getBody(),
                 request,
                 connector);

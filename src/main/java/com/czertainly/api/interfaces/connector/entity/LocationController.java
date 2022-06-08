@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -128,9 +129,9 @@ public interface LocationController {
     @RequestMapping(
             path = "/push/attributes/validate",
             method = RequestMethod.POST,
-            consumes = {"application/json"},
-            produces = {"application/json"}
+            consumes = {"application/json"}
     )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void validatePushCertificateAttributes(
             @Parameter(description = "Entity Instance UUID") @PathVariable String entityUuid,
             @RequestBody List<RequestAttributeDto> pushAttributes
@@ -216,9 +217,9 @@ public interface LocationController {
     @RequestMapping(
             path = "/csr/attributes/validate",
             method = RequestMethod.POST,
-            consumes = {"application/json"},
-            produces = {"application/json"}
+            consumes = {"application/json"}
     )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateGenerateCsrAttributes(
             @Parameter(description = "Entity Instance UUID") @PathVariable String entityUuid,
             @RequestBody List<RequestAttributeDto> csrAttributes

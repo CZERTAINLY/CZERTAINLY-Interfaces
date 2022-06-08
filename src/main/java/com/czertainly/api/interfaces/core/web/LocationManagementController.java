@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/locations")
@@ -72,25 +73,8 @@ public interface LocationManagementController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<LocationDto> listLocations();
-
-    @Operation(
-            summary = "List of available Locations by Status"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Locations retrieved"
-                    )
-            })
-    @RequestMapping(
-            method = RequestMethod.GET,
-            params = {"isEnabled"},
-            produces = {"application/json"}
-    )
     List<LocationDto> listLocations(
-            @RequestParam Boolean isEnabled
+            @RequestParam Optional<Boolean> enabled
     );
 
     @Operation(
@@ -105,7 +89,7 @@ public interface LocationManagementController {
                     ),
                     @ApiResponse(
                             responseCode = "422",
-                            description = "Unprocessible Entity",
+                            description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
                     )
@@ -156,7 +140,7 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "/{locationUuid}",
-            method = RequestMethod.POST,
+            method = RequestMethod.PATCH,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -177,8 +161,7 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "/{locationUuid}",
-            method = RequestMethod.DELETE,
-            produces = {"application/json"}
+            method = RequestMethod.DELETE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeLocation(
@@ -197,9 +180,7 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "/{locationUuid}/disable",
-            method = RequestMethod.PUT,
-            consumes = {"application/json"},
-            produces = {"application/json"}
+            method = RequestMethod.PATCH
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableLocation(
@@ -218,9 +199,7 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "/{locationUuid}/enable",
-            method = RequestMethod.PUT,
-            consumes = {"application/json"},
-            produces = {"application/json"}
+            method = RequestMethod.PATCH
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableLocation(
@@ -340,7 +319,7 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "{locationUuid}/sync",
-            method = RequestMethod.GET,
+            method = RequestMethod.PUT,
             produces = {"application/json"}
     )
     LocationDto updateLocationContent(
@@ -359,10 +338,10 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "{locationUuid}/renew/{certificateUuid}",
-            method = RequestMethod.GET,
+            method = RequestMethod.PATCH,
             produces = {"application/json"}
     )
-    LocationDto updateLocationContent(
+    LocationDto renewCertificateInLocation(
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
     ) throws NotFoundException, LocationException;
