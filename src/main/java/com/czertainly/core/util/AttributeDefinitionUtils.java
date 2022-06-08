@@ -137,6 +137,17 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static String serializeRequestAttributes(List<RequestAttributeDto> attributes) {
+        if (attributes == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.writeValueAsString(attributes);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public static List<AttributeDefinition> deserialize(String attributesJson) {
         if (attributesJson == null) {
             return null;

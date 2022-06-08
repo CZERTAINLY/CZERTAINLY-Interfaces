@@ -1,8 +1,8 @@
 package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
-import com.czertainly.api.model.core.certificate.entity.EntityDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
+import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class CertificateDto {
 
@@ -68,8 +69,8 @@ public class CertificateDto {
     private String fingerprint;
     @Schema(description = "Subject alternative names")
     private Map<String, Object> subjectAlternativeNames;
-    @Schema(description = "Entity associated to the Certificate")
-    private EntityDto entity;
+    @Schema(description = "Locations associated to the Certificate")
+    private Set<LocationDto> locations;
     @Schema(description = "Group associated to the Certificate")
     private GroupDto group;
     @Schema(description = "Certificate Owner")
@@ -258,12 +259,12 @@ public class CertificateDto {
         this.raProfile = raProfileDTO;
     }
 
-    public EntityDto getEntity() {
-        return entity;
+    public Set<LocationDto> getLocations() {
+        return locations;
     }
 
-    public void setEntity(EntityDto entity) {
-        this.entity = entity;
+    public void setLocations(Set<LocationDto> locations) {
+        this.locations = locations;
     }
 
     public GroupDto getGroup() {

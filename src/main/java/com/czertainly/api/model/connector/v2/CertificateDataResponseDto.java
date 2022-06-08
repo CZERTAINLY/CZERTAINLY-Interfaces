@@ -1,5 +1,6 @@
 package com.czertainly.api.model.connector.v2;
 
+import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -25,6 +26,11 @@ public class CertificateDataResponseDto {
             required = true
     )
     private String meta;
+
+    @Schema(description = "Type of the Certificate",
+            defaultValue = "X509",
+            required = false)
+    private CertificateType certificateType;
 
     public String getCertificateData() {
         return certificateData;
