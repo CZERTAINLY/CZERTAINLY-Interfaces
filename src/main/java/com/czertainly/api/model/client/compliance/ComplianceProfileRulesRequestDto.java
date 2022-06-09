@@ -15,6 +15,11 @@ public class ComplianceProfileRulesRequestDto {
             example = "c35bc88c-d0ef-11ec-9d64-0242ac120005")
     private String connectorUuid;
 
+    @Schema(description = "Kind of the Compliance Provider",
+            required = true,
+            example = "x509")
+    private String kind;
+
     @Schema(description = "Rules for new Compliance Profiles")
     private List<ComplianceRequestRulesDto> rules;
 
@@ -45,12 +50,21 @@ public class ComplianceProfileRulesRequestDto {
         this.groups = groups;
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("connectorUuid", connectorUuid)
                 .append("rules", rules)
                 .append("groups", groups)
+                .append("kind", kind)
                 .toString();
     }
 }

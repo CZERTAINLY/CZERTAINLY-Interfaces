@@ -11,12 +11,6 @@ import java.util.List;
 
 public class ComplianceProfileDto extends NameAndUuidDto {
 
-    @Schema(
-            description = "Enabled flag. true = enabled, false = disabled",
-            defaultValue = "false"
-    )
-    private Boolean enabled;
-
     @Schema(description = "List of rules", required = true)
     private List<ComplianceConnectorAndRulesDto> rules;
 
@@ -41,14 +35,6 @@ public class ComplianceProfileDto extends NameAndUuidDto {
         this.raProfiles = raProfiles;
     }
 
-    public Boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -56,7 +42,6 @@ public class ComplianceProfileDto extends NameAndUuidDto {
                 .append("name", name)
                 .append("rules", rules)
                 .append("raProfiles", raProfiles)
-                .append("enabled", enabled)
                 .toString();
     }
 }

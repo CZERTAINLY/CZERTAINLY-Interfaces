@@ -53,11 +53,11 @@ public class ComplianceGroupsListResponseDto {
         this.kind = kind;
     }
 
-    public List<ComplianceGroupsResponseDto> getRules() {
+    public List<ComplianceGroupsResponseDto> getGroups() {
         return groups;
     }
 
-    public void setRules(List<ComplianceGroupsResponseDto> groups) {
+    public void setGroups(List<ComplianceGroupsResponseDto> groups) {
         this.groups = groups;
     }
 

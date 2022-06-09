@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/complianceProvider/{kind}")
@@ -65,7 +66,7 @@ public interface ComplianceRulesController {
                     )
             }
     )
-    ComplianceRulesResponseDto getRules(@Parameter(description = "Connector kind") @PathVariable String kind)
+    List<ComplianceRulesResponseDto> getRules(@Parameter(description = "Connector kind") @PathVariable String kind)
             throws IOException, NotFoundException;
 
     @GetMapping(
@@ -83,7 +84,7 @@ public interface ComplianceRulesController {
                     )
             }
     )
-    ComplianceGroupsResponseDto getGroups(@Parameter(description = "Connector kind") @PathVariable String kind)
+    List<ComplianceGroupsResponseDto> getGroups(@Parameter(description = "Connector kind") @PathVariable String kind)
             throws IOException, NotFoundException;
 
     @GetMapping(
@@ -101,7 +102,7 @@ public interface ComplianceRulesController {
                     )
             }
     )
-    ComplianceRulesResponseDto getGroupRules(@Parameter(description = "Connector kind") @PathVariable String kind,
-                                          @Parameter(description = "Group kind") @PathVariable String uuid)
+    List<ComplianceRulesResponseDto> getGroupRules(@Parameter(description = "Connector kind") @PathVariable String kind,
+                                                   @Parameter(description = "Group kind") @PathVariable String uuid)
             throws IOException, NotFoundException;
 }

@@ -15,6 +15,9 @@ public class ComplianceGroupsResponseDto {
     @Schema(description = "Name of the group", required = true, example = "RFC")
     private String name;
 
+    @Schema(description = "Description of the group", required = false, example = "Sample description of the group")
+    private String description;
+
     //Default getters and setters
 
     public String getUuid() {
@@ -33,11 +36,20 @@ public class ComplianceGroupsResponseDto {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
+                .append("description", description)
                 .toString();
     }
 }
