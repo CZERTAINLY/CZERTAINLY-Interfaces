@@ -22,6 +22,9 @@ public class ComplianceRulesResponseDto {
     @Schema(description = "Rule attributes")
     private List<AttributeDefinition> attributes;
 
+    @Schema(description = "Description of the rule", example = "Sample rule description")
+    private String description;
+
     //Default getters and setters
 
     public String getUuid() {
@@ -48,12 +51,21 @@ public class ComplianceRulesResponseDto {
         this.attributes = attributes;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("attributes", attributes)
+                .append("description", description)
                 .toString();
     }
 }

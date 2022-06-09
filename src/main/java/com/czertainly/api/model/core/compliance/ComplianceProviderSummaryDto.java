@@ -1,42 +1,38 @@
 package com.czertainly.api.model.core.compliance;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.core.raprofile.ReducedRaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 public class ComplianceProviderSummaryDto {
     @Schema(description = "Name of the Compliance Provider", required = true)
-    private String name;
+    private String connectorName;
 
     @Schema(description = "Number of rules for the Provider")
-    private Integer rules;
+    private Integer numberOfRules;
 
     //Default getters and setters
-    public String getName() {
-        return name;
+    public String getConnectorName() {
+        return connectorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setConnectorName(String connectorName) {
+        this.connectorName = connectorName;
     }
 
-    public Integer getRules() {
-        return rules;
+    public Integer getNumberOfRules() {
+        return numberOfRules;
     }
 
-    public void setRules(Integer rules) {
-        this.rules = rules;
+    public void setNumberOfRules(Integer numberOfRules) {
+        this.numberOfRules = numberOfRules;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("name", name)
-                .append("rules", rules)
+                .append("name", connectorName)
+                .append("rules", numberOfRules)
                 .toString();
     }
 }

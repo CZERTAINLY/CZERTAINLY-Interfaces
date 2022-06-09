@@ -69,7 +69,7 @@ public interface ComplianceProfileController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Compliance Profile details retrieved")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
     public ComplianceProfileDto getComplianceProfile(@Parameter(description = "Compliance Profile UUID")
-                                                         @PathVariable String uuid);
+                                                         @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Add Compliance Profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "New Compliance profile added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
@@ -115,7 +115,7 @@ public interface ComplianceProfileController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Compliance rules retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})), })
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/rules", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public List<ComplianceRulesListResponseDto> getComplianceRules(@RequestBody ComplianceRulesListRequestDto request)
             throws NotFoundException, ConnectorException;
 
@@ -123,7 +123,7 @@ public interface ComplianceProfileController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Compliance groups retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})), })
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/groups", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public List<ComplianceGroupsListResponseDto> getComplianceGroups(@RequestBody ComplianceGroupsListRequestDto request)
             throws NotFoundException, ConnectorException;
 

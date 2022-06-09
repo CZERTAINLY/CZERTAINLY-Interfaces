@@ -1,7 +1,5 @@
 package com.czertainly.api.model.core.compliance;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,30 +8,33 @@ import java.util.List;
 
 public class ComplianceConnectorAndRulesDto {
     @Schema(description = "Name of the Compliance Provider")
-    private String name;
+    private String connectorName;
 
     @Schema(description = "UUID of the Compliance Provider")
-    private String uuid;
+    private String connectorUuid;
+
+    @Schema(description = "Kind of the Compliance Provider")
+    private String kind;
 
     @Schema(description = "Rules associated")
     private List<ComplianceRulesDto> rules;
 
     //Default getters and setters
 
-    public String getName() {
-        return name;
+    public String getConnectorName() {
+        return connectorName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setConnectorName(String connectorName) {
+        this.connectorName = connectorName;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getConnectorUuid() {
+        return connectorUuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setConnectorUuid(String connectorUuid) {
+        this.connectorUuid = connectorUuid;
     }
 
     public List<ComplianceRulesDto> getRules() {
@@ -44,12 +45,21 @@ public class ComplianceConnectorAndRulesDto {
         this.rules = rules;
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("uuid", uuid)
-                .append("name",name)
+                .append("uuid", connectorUuid)
+                .append("name", connectorName)
                 .append("rules", rules)
+                .append("kind", kind)
                 .toString();
     }
 }
