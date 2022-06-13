@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -127,10 +126,12 @@ public class AttributeDefinitionUtils {
             throw new IllegalArgumentException("Could not get Credential value. Attribute has wrong value: " + content);
         }
 
-        try {
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(content, CredentialDto.class);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Could not get Credential value. Attribute has wrong value: " + content, e);
+        Map<String, ?> valueMap = (Map) content;
+        if (valueMap.containsKey("value") && valueMap.containsKey("data")) {
+            Object credentialData = valueMap.get("data");
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(credentialData, CredentialDto.class);
+        } else {
+            throw new IllegalArgumentException("Could not get Credential value. Attribute has wrong value: " + content);
         }
     }
 
@@ -310,7 +311,9 @@ public class AttributeDefinitionUtils {
                     BaseAttributeContent<Boolean> booleanContent = (BaseAttributeContent<Boolean>) attributeContent;
                     break;
                 case CREDENTIAL:
-                    wrongValue = !(attributeContent instanceof CredentialDto) && !(attributeContent instanceof Map);
+                    JsonAttributeContent credentialContent = (JsonAttributeContent) attributeContent;
+                    wrongValue = !(credentialContent.getData() instanceof CredentialDto);
+                    //wrongValue = !(attributeContent instanceof CredentialDto) && !(attributeContent instanceof Map);
                     break;
                 case DATE:
                     BaseAttributeContent<Date> dateContent = (BaseAttributeContent<Date>) attributeContent;

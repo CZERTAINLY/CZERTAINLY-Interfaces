@@ -4,6 +4,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.*;
 import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.content.JsonAttributeContent;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +58,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeNameAndUuidValue() {
+    public void testGetAttributeNameAndUuidContent() {
         String attribute1Name = "testAttribute1";
 
         HashMap<String, Object> attribute1Value = new HashMap<>();
@@ -82,14 +83,19 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeCredentialValue() {
+    public void testGetAttributeCredentialContent() {
         String attribute1Name = "testAttribute1";
         List<RequestAttributeDto> credentialAttributes = createAttributes("credAttr", 987);
 
         HashMap<String, Object> attribute1Value = new HashMap<>();
-        attribute1Value.put("uuid", UUID.randomUUID().toString());
-        attribute1Value.put("name", "testName");
-        attribute1Value.put("attributes", credentialAttributes);
+
+        HashMap<String, Object> attribute2Value = new HashMap<>();
+        attribute2Value.put("uuid", UUID.randomUUID().toString());
+        attribute2Value.put("name", "testName");
+        attribute2Value.put("attributes", credentialAttributes);
+
+        attribute1Value.put("data", attribute2Value);
+        attribute1Value.put("value", attribute1Name);
 
         RequestAttributeDto attribute1 = new RequestAttributeDto();
         attribute1.setName(attribute1Name);
@@ -99,8 +105,8 @@ public class AttributeDefinitionUtilsTest {
 
         CredentialDto dto = getCredentialContent(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
-        Assertions.assertEquals(attribute1Value.get("uuid"), dto.getUuid());
-        Assertions.assertEquals(attribute1Value.get("name"), dto.getName());
+        Assertions.assertEquals(attribute2Value.get("uuid"), dto.getUuid());
+        Assertions.assertEquals(attribute2Value.get("name"), dto.getName());
         Assertions.assertEquals(credentialAttributes.get(0).getName(), dto.getAttributes().get(0).getName());
     }
 
@@ -255,10 +261,13 @@ public class AttributeDefinitionUtilsTest {
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
 
-        LinkedHashMap<String, Object> credentialData = new LinkedHashMap<>();
-        credentialData.put("name", "testName");
-        credentialData.put("uuid", "testUuid");
-        attribute.setContent(credentialData);
+        CredentialDto credential = new CredentialDto();
+        credential.setName("testName");
+        credential.setUuid("testUuid");
+
+        JsonAttributeContent credentialContent = new JsonAttributeContent("Test Credential", credential);
+
+        attribute.setContent(credentialContent);
 
         validateAttributes(List.of(definition), List.of(attribute));
     }
@@ -271,9 +280,11 @@ public class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setType(AttributeType.CREDENTIAL);
 
+        JsonAttributeContent credentialContent = new JsonAttributeContent(attributeName, new CredentialDto());
+
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
-        attribute.setContent(new CredentialDto());
+        attribute.setContent(credentialContent);
 
         validateAttributes(List.of(definition), List.of(attribute));
     }
