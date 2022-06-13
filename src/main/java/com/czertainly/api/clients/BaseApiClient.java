@@ -1,7 +1,9 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.*;
-import com.czertainly.api.model.common.ResponseAttributeDto;
+import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
 import com.czertainly.api.model.core.connector.AuthType;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
@@ -68,12 +70,12 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case BASIC:
-                String username = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_USERNAME, authAttributes);
-                String password = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_PASSWORD, authAttributes);
+                BaseAttributeContent<String> username = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes);
+                BaseAttributeContent<String> password = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes);
 
                 request = webClient
                         .method(method)
-                        .headers(h -> h.setBasicAuth(username, password));
+                        .headers(h -> h.setBasicAuth(username.getValue(), password.getValue()));
                 break;
             case CERTIFICATE:
                 SslContext sslContext = createSslContext(authAttributes);
@@ -83,12 +85,12 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case API_KEY:
-                String apiKeyHeader = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_API_KEY_HEADER, authAttributes);
-                String apiKey = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_API_KEY, authAttributes);
+                BaseAttributeContent<String> apiKeyHeader = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes);
+                BaseAttributeContent<String> apiKey = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes);
 
                 request = webClient
                         .method(method)
-                        .headers(h -> h.set(apiKeyHeader, apiKey));
+                        .headers(h -> h.set(apiKeyHeader.getValue(), apiKey.getValue()));
                 break;
             case JWT:
                 throw new UnsupportedOperationException("JWT is unimplemented");
@@ -102,28 +104,28 @@ public abstract class BaseApiClient {
     private SslContext createSslContext(List<ResponseAttributeDto> attributes) {
         try {
             KeyManager km = null;
-            String keyStoreData = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE, attributes);
-            if (keyStoreData != null && !keyStoreData.isEmpty()) {
+            FileAttributeContent keyStoreData = (FileAttributeContent) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE, attributes);
+            if (keyStoreData != null && !keyStoreData.getValue().isEmpty()) {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                String keyStoreType = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE_TYPE, attributes);
-                String keyStorePassword = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
-                byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData);
+                BaseAttributeContent<String> keyStoreType = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes);
+                BaseAttributeContent<String> keyStorePassword = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
+                byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData.getValue());
 
-                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword, keyStoreType), keyStorePassword.toCharArray());
+                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword.getValue(), keyStoreType.getValue()), keyStorePassword.getValue().toCharArray());
                 km = kmf.getKeyManagers()[0];
             }
 
             TrustManager tm = null;
-            String trustStoreData = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE, attributes);
-            if (trustStoreData != null && !trustStoreData.isEmpty()) {
+            FileAttributeContent trustStoreData = (FileAttributeContent) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE, attributes);
+            if (trustStoreData != null && !trustStoreData.getValue().isEmpty()) {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                String trustStoreType = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
-                String trustStorePassword = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
-                byte[] trustStoreBytes = Base64.getDecoder().decode(keyStoreData);
+                BaseAttributeContent<String> trustStoreType = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
+                BaseAttributeContent<String> trustStorePassword = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
+                byte[] trustStoreBytes = Base64.getDecoder().decode(keyStoreData.getValue());
 
-                tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword, trustStoreType));
+                tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getValue(), trustStoreType.getValue()));
                 tm = tmf.getTrustManagers()[0];
             }
 

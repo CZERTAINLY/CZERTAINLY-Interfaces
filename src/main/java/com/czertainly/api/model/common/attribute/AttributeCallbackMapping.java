@@ -1,4 +1,4 @@
-package com.czertainly.api.model.common;
+package com.czertainly.api.model.common.attribute;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -29,7 +29,7 @@ public class AttributeCallbackMapping {
             description = "Type of the attribute. " +
                     "It is optional and must be set only if special behaviour is needed."
     )
-    private BaseAttributeDefinitionTypes attributeType;
+    private AttributeType attributeType;
 
     /**
      * Name of the path variable or request param or body field which is to be used to assign value of attribute
@@ -84,7 +84,7 @@ public class AttributeCallbackMapping {
      * @param to - {@link AttributeCallbackMapping#to}
      * @param target - {@link AttributeValueTarget}
      */
-    public AttributeCallbackMapping(String from, BaseAttributeDefinitionTypes attributeType, String to, AttributeValueTarget target) {
+    public AttributeCallbackMapping(String from, AttributeType attributeType, String to, AttributeValueTarget target) {
         this.from = from;
         this.attributeType = attributeType;
         this.to = to;
@@ -122,7 +122,7 @@ public class AttributeCallbackMapping {
      * @param to - {@link AttributeCallbackMapping#to}
      * @param targets - Set of {@link AttributeValueTarget}
      */
-    public AttributeCallbackMapping(String from, BaseAttributeDefinitionTypes attributeType, String to, Set<AttributeValueTarget> targets) {
+    public AttributeCallbackMapping(String from, AttributeType attributeType, String to, Set<AttributeValueTarget> targets) {
         this.from = from;
         this.to = to;
         this.attributeType = attributeType;
@@ -149,11 +149,11 @@ public class AttributeCallbackMapping {
         this.from = from;
     }
 
-    public BaseAttributeDefinitionTypes getAttributeType() {
+    public AttributeType getAttributeType() {
         return attributeType;
     }
 
-    public void setAttributeType(BaseAttributeDefinitionTypes attributeType) {
+    public void setAttributeType(AttributeType attributeType) {
         this.attributeType = attributeType;
     }
 

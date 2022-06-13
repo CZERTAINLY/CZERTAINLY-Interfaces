@@ -1,13 +1,11 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.RequestAttributeDto;
-import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
-import java.util.Map;
 
 public class LocationDetailRequestDto {
 

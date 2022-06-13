@@ -1,11 +1,8 @@
-package com.czertainly.api.model.common;
+package com.czertainly.api.model.common.attribute;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * This class contains set of properties to represent
@@ -17,134 +14,131 @@ public class AttributeDefinition {
      * UUID of the Attribute
      **/
     @Schema(
-            description = "UUID of the Attribute",
+            description = "UUID of the Attribute for unique identification",
             example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
             required = true
     )
     private String uuid;
 
     /**
-     * Name of the Attribute, can be used as key for form field label text
+     * Name of the Attribute for processing
      **/
     @Schema(
-            description = "Name of the Attribute",
+            description = "Name of the Attribute that is used for identification",
             example = "Attribute",
             required = true
     )
     private String name;
+
+    /**
+     * Content of the Attribute
+     **/
+    @Schema(
+            description = "Content of the Attribute"
+    )
+    private Object content;
     
     /**
-    * Label of the Attribute, Can be used to display the field name in the User Interface
+    * Friendly name of the Attribute
     **/
    @Schema(
-           description = "Label of the the Attribute",
+           description = "Friendly name of the the Attribute",
            example = "Attribute Name",
            required = true
    )
    private String label;
 
     /**
-     * Type of the Attribute, base types are defined in {@link BaseAttributeDefinitionTypes}
+     * Type of the Attribute, base types are defined in {@link AttributeType}
      **/
     @Schema(
             description = "Type of the Attribute",
             required = true
     )
-    private BaseAttributeDefinitionTypes type;
+    private AttributeType type;
 
     /**
-     * Boolean determining if the Attribute is required, value has to be set
+     * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
      **/
     @Schema(
-            description = "Boolean determining if the Attribute is required",
+            description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
             defaultValue = "false",
             required = true
     )
     private boolean required = false;
 
     /**
-     * Boolean determining if the Attribute is read only, value can not be changed
+     * Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.
      **/
     @Schema(
-            description = "Boolean determining if the Attribute is read only",
+            description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.",
             defaultValue = "false",
             required = true
     )
     private boolean readOnly = false;
 
     /**
-     * Boolean determining if the Attribute is editable, value can not be edited after is saved
+     * Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.
      **/
     @Schema(
-            description = "Boolean determining if the Attribute is editable",
-            defaultValue = "true",
-            required = true
-    )
-    private boolean editable = true;
-
-    /**
-     * Boolean determining if the Attribute is visible and can be displayed
-     **/
-    @Schema(
-            description = "Boolean determining if the Attribute is visible and can be displayed",
+            description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
             defaultValue = "true",
             required = true
     )
     private boolean visible = true;
 
     /**
-     * Boolean determining if the Attribute has value composed of multiple items
+     * Boolean determining if the Attribute contains list of values in the content
      **/
     @Schema(
-            description = "Boolean determining if the Attribute has value composed from multiple items",
+            description = "Boolean determining if the Attribute contains list of values in the content",
             defaultValue = "false",
             required = true
     )
-    private Boolean multiValue = false;
+    private boolean list = false;
 
     /**
-     * Optional description of the Attribute, should contain help for setting proper value
+     * Optional description of the Attribute, should contain helper text on what is expected
      **/
     @Schema(
-            description = "Optional description of the Attribute, should contain help for setting proper value",
-            required = false
+            description = "Optional description of the Attribute, should contain helper text on what is expected"
     )
     private String description;
 
     /**
-     * Optional regular expression used for validating the Attribute value
+     * Optional regular expression used for validating the Attribute content
      **/
     @Schema(
-            description = "Optional regular expression used for validating the Attribute value",
-            required = false
+            description = "Optional regular expression used for validating the Attribute content"
     )
     private String validationRegex;
 
     /**
-     * Optional list of other Attribute names and values on which it depends on
+     * Optional definition of callback for getting the content of the Attribute based on the action
      **/
     @Schema(
-            description = "Optional list of other Attribute names and values on which it depends on",
-            required = false
-    )
-    private List<AttributeDependency> dependsOn;
-
-    /**
-     * Optional definition of callback for getting needed data
-     **/
-    @Schema(
-            description = "Optional definition of callback for helper methods",
-            required = false
+            description = "Optional definition of callback for getting the content of the Attribute based on the action"
     )
     private AttributeCallback attributeCallback;
 
     /**
-     * Value of the Attribute, has to be serializable
+     * Boolean determining if the Attribute can have multiple values
      **/
     @Schema(
-            description = "Value of the Attribute"
+            description = "Boolean determining if the Attribute can have multiple values",
+            defaultValue = "false",
+            required = true
     )
-    private Serializable value;
+    private boolean multiSelect = false;
+
+    /**
+     * Group of the Attribute, used for the logical grouping of the Attribute
+     **/
+    @Schema(
+            description = "Group of the Attribute, used for the logical grouping of the Attribute",
+            example = "requiredAttributes"
+    )
+    private String group;
 
     public AttributeDefinition() {
         super();
@@ -153,18 +147,18 @@ public class AttributeDefinition {
     public AttributeDefinition(AttributeDefinition original) {
         this.uuid = original.uuid;
         this.name = original.name;
+        this.content = original.content;
         this.label = original.label;
         this.type = original.type;
         this.required = original.required;
         this.readOnly = original.readOnly;
-        this.editable = original.editable;
         this.visible = original.visible;
-        this.multiValue = original.multiValue;
+        this.list = original.list;
         this.description = original.description;
         this.validationRegex = original.validationRegex;
-        this.dependsOn = original.dependsOn;
         this.attributeCallback = original.attributeCallback;
-        this.value = original.value;
+        this.multiSelect = original.multiSelect;
+        this.group = original.group;
     }
 
     public String getUuid() {
@@ -183,19 +177,27 @@ public class AttributeDefinition {
         this.name = name;
     }
 
+    public Object getContent() {
+        return content;
+    }
+
+    public void setContent(Object content) {
+        this.content = content;
+    }
+
     public String getLabel() {
-		return label;
-	}
+        return label;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	public BaseAttributeDefinitionTypes getType() {
+    public AttributeType getType() {
         return type;
     }
 
-    public void setType(BaseAttributeDefinitionTypes type) {
+    public void setType(AttributeType type) {
         this.type = type;
     }
 
@@ -215,14 +217,6 @@ public class AttributeDefinition {
         this.readOnly = readOnly;
     }
 
-    public boolean isEditable() {
-        return editable;
-    }
-
-    public void setEditable(boolean editable) {
-        this.editable = editable;
-    }
-
     public boolean isVisible() {
         return visible;
     }
@@ -231,12 +225,12 @@ public class AttributeDefinition {
         this.visible = visible;
     }
 
-    public Boolean isMultiValue() {
-        return multiValue;
+    public boolean isList() {
+        return list;
     }
 
-    public void setMultiValue(Boolean multiValue) {
-        this.multiValue = multiValue;
+    public void setList(boolean list) {
+        this.list = list;
     }
 
     public String getDescription() {
@@ -255,14 +249,6 @@ public class AttributeDefinition {
         this.validationRegex = validationRegex;
     }
 
-    public List<AttributeDependency> getDependsOn() {
-        return dependsOn;
-    }
-
-    public void setDependsOn(List<AttributeDependency> dependsOn) {
-        this.dependsOn = dependsOn;
-    }
-
     public AttributeCallback getAttributeCallback() {
         return attributeCallback;
     }
@@ -271,12 +257,20 @@ public class AttributeDefinition {
         this.attributeCallback = attributeCallback;
     }
 
-    public Serializable getValue() {
-        return value;
+    public boolean isMultiSelect() {
+        return multiSelect;
     }
 
-    public void setValue(Serializable value) {
-        this.value = value;
+    public void setMultiSelect(boolean multiSelect) {
+        this.multiSelect = multiSelect;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     @Override
@@ -284,17 +278,16 @@ public class AttributeDefinition {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
+                .append("content", content)
                 .append("type", type)
                 .append("required", required)
                 .append("readOnly", readOnly)
-                .append("editable", editable)
                 .append("visible", visible)
-                .append("multiValue", multiValue)
                 .append("description", description)
                 .append("validationRegex", validationRegex)
-                .append("dependsOn", dependsOn)
                 .append("attributeCallback", attributeCallback)
-                .append("value", value)
+                .append("multiSelect", multiSelect)
+                .append("group", group)
                 .toString();
     }
 }
