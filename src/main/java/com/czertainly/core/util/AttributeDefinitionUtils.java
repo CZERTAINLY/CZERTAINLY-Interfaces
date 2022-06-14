@@ -4,9 +4,7 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.*;
-import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
-import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
-import com.czertainly.api.model.common.attribute.content.JsonAttributeContent;
+import com.czertainly.api.model.common.attribute.content.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -343,7 +341,7 @@ public class AttributeDefinitionUtils {
                     //wrongValue = !(attributeContent instanceof CredentialDto) && !(attributeContent instanceof Map);
                     break;
                 case DATE:
-                    BaseAttributeContent<Date> dateContent = (BaseAttributeContent<Date>) attributeContent;
+                    DateAttributeContent dateContent = (DateAttributeContent) attributeContent;
                     break;
                 case FLOAT:
                     BaseAttributeContent<Float> floatContent = (BaseAttributeContent<Float>) attributeContent;
@@ -355,10 +353,10 @@ public class AttributeDefinitionUtils {
                     BaseAttributeContent<String> textContent = (BaseAttributeContent<String>) attributeContent;
                     break;
                 case TIME:
-                    BaseAttributeContent<LocalTime> timeContent = (BaseAttributeContent<LocalTime>) attributeContent;
+                    TimeAttributeContent timeContent = (TimeAttributeContent) attributeContent;
                     break;
                 case DATETIME:
-                    BaseAttributeContent<LocalDateTime> datetimeContent = (BaseAttributeContent<LocalDateTime>) attributeContent;
+                    DateTimeAttributeContent datetimeContent = (DateTimeAttributeContent) attributeContent;
                     break;
                 default:
                     errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", definition.getName(), definition.getType()));
