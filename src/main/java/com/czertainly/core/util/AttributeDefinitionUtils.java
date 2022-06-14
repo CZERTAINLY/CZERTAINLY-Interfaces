@@ -310,7 +310,7 @@ public class AttributeDefinitionUtils {
         }
 
         Object attributeContent = attribute.getContent();
-        if (!definition.isList()) {
+        if (!definition.isMultiSelect()) {
             List<Object> attributeContentList = new ArrayList<Object>();
             attributeContentList.add(attributeContent);
             attributeContent = attributeContentList;
