@@ -3,13 +3,18 @@ package com.czertainly.util;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.*;
-import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
-import com.czertainly.api.model.common.attribute.content.JsonAttributeContent;
+import com.czertainly.api.model.common.attribute.content.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.czertainly.core.util.AttributeDefinitionUtils.*;
@@ -439,5 +444,75 @@ public class AttributeDefinitionUtilsTest {
         BaseAttributeContent<Integer> data = getAttributeContent("testJsonAttribute", attrs, BaseAttributeContent.class);
 
         Assertions.assertEquals(1234, data.getValue());
+    }
+
+    @Test
+    public void testGetAttributeDateTimeContent_success() throws ParseException {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testJsonAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test date and time\",\n" +
+                "      \"dateTime\": \"2011-12-03 10:15:30\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        DateTimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContent.class);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        String dateInString = "2011-12-03 10:15:30";
+        LocalDateTime date = LocalDateTime.parse(dateInString, formatter);
+
+        Assertions.assertEquals(date, data.getDateTime());
+    }
+
+    @Test
+    public void testGetAttributeDateContent_success() throws ParseException {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testJsonAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test date\",\n" +
+                "      \"date\": \"2001-07-04\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        DateAttributeContent data = getAttributeContent("testJsonAttribute", attrs, DateAttributeContent.class);
+
+        String dateInString = "2001-07-04";
+        LocalDate localDate = LocalDate.parse(dateInString);
+
+        Assertions.assertEquals(localDate, data.getDate());
+    }
+
+    @Test
+    public void testGetAttributeTimeContent_success() throws ParseException {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testJsonAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test date\",\n" +
+                "      \"time\": \"12:14:25\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        TimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContent.class);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        String dateInString = "12:14:25";
+        LocalTime localTime = LocalTime.parse(dateInString);
+
+        Assertions.assertEquals(localTime, data.getTime());
     }
 }

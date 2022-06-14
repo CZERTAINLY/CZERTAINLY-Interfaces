@@ -6,8 +6,8 @@ public class BaseAttributeContent<T> {
 
     public BaseAttributeContent() { }
 
-    public BaseAttributeContent(T content) {
-        this.value = content;
+    public BaseAttributeContent(T value) {
+        this.value = value;
     }
 
     public T getValue() {
