@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class DateTimeAttributeContent {
 
