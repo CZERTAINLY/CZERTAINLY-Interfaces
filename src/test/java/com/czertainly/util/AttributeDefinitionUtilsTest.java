@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -451,7 +451,7 @@ public class AttributeDefinitionUtilsTest {
                 "  {\n" +
                 "    \"name\": \"testJsonAttribute\",\n" +
                 "    \"content\": {\n" +
-                "      \"value\": \"2011-12-03 10:15:30\"\n" +
+                "      \"value\": \"2011-12-03T10:15:30+01:00\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "]";
@@ -460,10 +460,8 @@ public class AttributeDefinitionUtilsTest {
 
         DateTimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContent.class);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        String dateInString = "2011-12-03 10:15:30";
-        LocalDateTime date = LocalDateTime.parse(dateInString, formatter);
+        String dateInString = "2011-12-03T10:15:30+01:00";
+        ZonedDateTime date = ZonedDateTime.parse(dateInString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 
         Assertions.assertEquals(date, data.getValue());
     }

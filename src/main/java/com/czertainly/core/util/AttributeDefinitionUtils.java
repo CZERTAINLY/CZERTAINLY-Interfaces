@@ -13,8 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -312,51 +314,130 @@ public class AttributeDefinitionUtils {
         }
 
         Object attributeContent = attribute.getContent();
-        if (definition.isList()) {
-            attributeContent = (((List<?>) attribute.getContent()).get(0));
+        if (!definition.isList()) {
+            List<Object> attributeContentList = new ArrayList<Object>();
+            attributeContentList.add(attributeContent);
+            attributeContent = attributeContentList;
         }
+
+        // TODO: checking all items in the list for the type
 
         boolean wrongValue = false;
         try {
             switch (definition.getType()) {
                 case STRING:
-                    BaseAttributeContent<String> stringContent = (BaseAttributeContent<String>) attributeContent;
+                    for (BaseAttributeContent<String> stringBaseAttributeContent : ((List<BaseAttributeContent<String>>) attributeContent)) {
+                        if (stringBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case INTEGER:
-                    BaseAttributeContent<Integer> integerContent = (BaseAttributeContent<Integer>) attributeContent;
+                    for (BaseAttributeContent<Integer> integerBaseAttributeContent : ((List<BaseAttributeContent<Integer>>) attributeContent)) {
+                        if (integerBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case SECRET:
-                    BaseAttributeContent<String> secretContent = (BaseAttributeContent<String>) attributeContent;
+                    for (BaseAttributeContent<String> secretBaseAttributeContent : ((List<BaseAttributeContent<String>>) attributeContent)) {
+                        if (secretBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case FILE:
-                    FileAttributeContent fileContent = (FileAttributeContent) attributeContent;
-                    Base64.getDecoder().decode(fileContent.getValue());
+                    for (FileAttributeContent fileBaseAttributeContent : ((List<FileAttributeContent>) attributeContent)) {
+                        if (fileBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                        Base64.getDecoder().decode(fileBaseAttributeContent.getValue());
+                    }
                     break;
                 case BOOLEAN:
-                    BaseAttributeContent<Boolean> booleanContent = (BaseAttributeContent<Boolean>) attributeContent;
+                    for (BaseAttributeContent<Boolean> booleanBaseAttributeContent : ((List<BaseAttributeContent<Boolean>>) attributeContent)) {
+                        if (booleanBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case CREDENTIAL:
-                    JsonAttributeContent credentialContent = (JsonAttributeContent) attributeContent;
-                    wrongValue = !(credentialContent.getData() instanceof CredentialDto);
-                    //wrongValue = !(attributeContent instanceof CredentialDto) && !(attributeContent instanceof Map);
+                    for (JsonAttributeContent credentialBaseAttributeContent : ((List<JsonAttributeContent>) attributeContent)) {
+                        if (credentialBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                        if (!(credentialBaseAttributeContent.getData() instanceof CredentialDto)) {
+                            errors.add(ValidationError.create("Wrong data of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case DATE:
-                    DateAttributeContent dateContent = (DateAttributeContent) attributeContent;
+                    for (DateAttributeContent dateBaseAttributeContent : ((List<DateAttributeContent>) attributeContent)) {
+                        if (dateBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case FLOAT:
-                    BaseAttributeContent<Float> floatContent = (BaseAttributeContent<Float>) attributeContent;
+                    for (BaseAttributeContent<Float> floatBaseAttributeContent : ((List<BaseAttributeContent<Float>>) attributeContent)) {
+                        if (floatBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case JSON:
-                    JsonAttributeContent jsonContent = (JsonAttributeContent) attributeContent;
+                    for (JsonAttributeContent jsonBaseAttributeContent : ((List<JsonAttributeContent>) attributeContent)) {
+                        if (jsonBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case TEXT:
-                    BaseAttributeContent<String> textContent = (BaseAttributeContent<String>) attributeContent;
+                    for (BaseAttributeContent<String> textBaseAttributeContent : ((List<BaseAttributeContent<String>>) attributeContent)) {
+                        if (textBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case TIME:
-                    TimeAttributeContent timeContent = (TimeAttributeContent) attributeContent;
+                    for (TimeAttributeContent timeBaseAttributeContent : ((List<TimeAttributeContent>) attributeContent)) {
+                        if (timeBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 case DATETIME:
-                    DateTimeAttributeContent datetimeContent = (DateTimeAttributeContent) attributeContent;
+                    for (DateTimeAttributeContent dateTimeBaseAttributeContent : ((List<DateTimeAttributeContent>) attributeContent)) {
+                        if (dateTimeBaseAttributeContent.getValue() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                    }
                     break;
                 default:
                     errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", definition.getName(), definition.getType()));

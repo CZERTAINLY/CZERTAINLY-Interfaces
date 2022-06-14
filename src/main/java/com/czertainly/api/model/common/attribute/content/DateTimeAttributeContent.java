@@ -3,29 +3,30 @@ package com.czertainly.api.model.common.attribute.content;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DateTimeAttributeContent {
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime value;
+    // ISO_OFFSET_DATE_TIME	Date Time with Offset	2011-12-03T10:15:30+01:00'
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
+    private ZonedDateTime value;
 
     public DateTimeAttributeContent() { }
 
-    public DateTimeAttributeContent(LocalDateTime value) {
+    public DateTimeAttributeContent(ZonedDateTime value) {
         this.value = value;
     }
 
-    public LocalDateTime getValue() {
+    public ZonedDateTime getValue() {
         return value;
     }
 
-    public void setValue(LocalDateTime value) {
+    public void setValue(ZonedDateTime value) {
         this.value = value;
     }
 }
