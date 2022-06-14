@@ -13,7 +13,7 @@ public class ComplianceProfileRequestDto {
     @Schema(description = "Description of the Compliance Profile", example = "Profile 1")
     private String description;
 
-    @Schema(description = "List of rules and groups")
+    @Schema(description = "Rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later")
     private List<ComplianceProfileRulesRequestDto> rules;
 
     public String getName() {
@@ -24,14 +24,6 @@ public class ComplianceProfileRequestDto {
         this.name = name;
     }
 
-    public List<ComplianceProfileRulesRequestDto> getRules() {
-        return rules;
-    }
-
-    public void setRules(List<ComplianceProfileRulesRequestDto> rules) {
-        this.rules = rules;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -40,12 +32,20 @@ public class ComplianceProfileRequestDto {
         this.description = description;
     }
 
+    public List<ComplianceProfileRulesRequestDto> getRules() {
+        return rules;
+    }
+
+    public void setRules(List<ComplianceProfileRulesRequestDto> rules) {
+        this.rules = rules;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
-                .append("rules", rules)
                 .append("description", description)
+                .append("rules", rules)
                 .toString();
     }
 }
