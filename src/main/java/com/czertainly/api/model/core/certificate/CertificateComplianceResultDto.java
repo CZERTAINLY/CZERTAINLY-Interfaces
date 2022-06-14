@@ -21,6 +21,9 @@ public class CertificateComplianceResultDto {
     @Schema(description = "UUID of the Compliance Provider", required = true, example = "c35bc88c-d0ef-11ec-9d64-0242ac120003")
     private String connectorUuid;
 
+    @Schema(description = "Kind of the Compliance Provider", required = true, example = "default")
+    private String kind;
+
     @Schema(description = "Compliance status", required = true, example = "compliant")
     private ComplianceStatus status;
 
@@ -61,6 +64,14 @@ public class CertificateComplianceResultDto {
         this.rules = rules;
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -68,6 +79,7 @@ public class CertificateComplianceResultDto {
                 .append("rules", rules)
                 .append("connectorName", connectorName)
                 .append("connectorUuid", connectorUuid)
+                .append("kind", kind)
                 .toString();
     }
 }
