@@ -6,6 +6,8 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.connector.*;
 import com.czertainly.api.model.common.*;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -156,7 +158,7 @@ public interface ConnectorController {
 	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}/attributes", method = RequestMethod.GET, produces = {
 			"application/json" })
 	public List<AttributeDefinition> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
-												   @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
+                                                   @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
 	
 	@Operation(summary = "Get attributes of all Function Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})

@@ -1,4 +1,4 @@
-package com.czertainly.api.model.common;
+package com.czertainly.api.model.common.attribute;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;

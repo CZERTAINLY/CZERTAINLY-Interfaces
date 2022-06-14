@@ -1,17 +1,16 @@
-package com.czertainly.api.model.common;
+package com.czertainly.api.model.common.attribute;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
-
 /**
  * This class contains set of properties to represent
- * an Attribute definition provided by the client
+ * an Attribute definition including its value for the
+ * detail API responses
  */
-public class RequestAttributeDto {
+public class ResponseAttributeDto {
 
     /**
      * UUID of the Attribute
@@ -34,22 +33,42 @@ public class RequestAttributeDto {
     private String name;
 
     /**
-     * Value of the Attribute, has to be serializable
+    * Label of the Attribute, Can be used to display the field name in the User Interface
+    **/
+   @Schema(
+           description = "Label of the the Attribute",
+           example = "Attribute Name",
+           required = true
+   )
+   private String label;
+
+    /**
+     * Type of the Attribute, base types are defined in {@link AttributeType}
      **/
     @Schema(
-            description = "Value of the Attribute",
+            description = "Type of the Attribute",
             required = true
     )
-    private Serializable value;
+    private AttributeType type;
 
-    public RequestAttributeDto() {
+    /**
+     * Content of the Attribute
+     **/
+    @Schema(
+            description = "Content of the Attribute"
+    )
+    private Object content;
+
+    public ResponseAttributeDto() {
         super();
     }
 
-    public RequestAttributeDto(RequestAttributeDto original) {
+    public ResponseAttributeDto(ResponseAttributeDto original) {
         this.uuid = original.uuid;
         this.name = original.name;
-        this.value = original.value;
+        this.label = original.label;
+        this.type = original.type;
+        this.content = original.content;
     }
 
     public String getUuid() {
@@ -68,12 +87,28 @@ public class RequestAttributeDto {
         this.name = name;
     }
 
-    public Serializable getValue() {
-        return value;
+    public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public AttributeType getType() {
+        return type;
     }
 
-    public void setValue(Serializable value) {
-        this.value = value;
+    public void setType(AttributeType type) {
+        this.type = type;
+    }
+
+    public Object getContent() {
+        return content;
+    }
+
+    public void setContent(Object content) {
+        this.content = content;
     }
 
     @Override
@@ -81,7 +116,8 @@ public class RequestAttributeDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
-                .append("value", value)
+                .append("type", type)
+                .append("content", content)
                 .toString();
     }
 }
