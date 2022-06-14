@@ -4,6 +4,8 @@ public class JsonAttributeContent extends BaseAttributeContent<String> {
 
     private Object data;
 
+    public JsonAttributeContent() { }
+
     public JsonAttributeContent(String value, Object data) {
         super(value);
         this.data = data;

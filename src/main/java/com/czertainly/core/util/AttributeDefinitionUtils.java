@@ -87,6 +87,33 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static <T extends Object> T getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
+        if (attributes.size() == 0) {
+            return null;
+        }
+        if (attributes.get(0) instanceof RequestAttributeDto) {
+            RequestAttributeDto definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getContent() == null) {
+                return null;
+            }
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), clazz);
+        } else if (attributes.get(0) instanceof AttributeDefinition) {
+            AttributeDefinition definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getContent() == null) {
+                return null;
+            }
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), clazz);
+        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            ResponseAttributeDto definition = getRequestAttributes(name, attributes);
+            if (definition == null || definition.getContent() == null) {
+                return null;
+            }
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), clazz);
+        }else {
+            throw new IllegalArgumentException("Invalid Object to get Attribute value");
+        }
+    }
+
     public static NameAndIdDto getNameAndIdData(String name, List<RequestAttributeDto> attributes) {
         Object content = getAttributeContent(name, attributes);
 

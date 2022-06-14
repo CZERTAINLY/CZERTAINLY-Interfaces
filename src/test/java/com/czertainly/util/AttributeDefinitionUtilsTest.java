@@ -381,4 +381,63 @@ public class AttributeDefinitionUtilsTest {
         Assertions.assertFalse(exception.getErrors().isEmpty());
         Assertions.assertEquals(2, exception.getErrors().size());
     }
+
+    @Test
+    public void testGetAttributeJsonContent_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testJsonAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Item\",\n" +
+                "      \"data\": {\n" +
+                "        \"customField\": 1234,\n" +
+                "        \"exists\": true,\n" +
+                "        \"name\": \"testingName\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        JsonAttributeContent data = getAttributeContent("testJsonAttribute", attrs, JsonAttributeContent.class);
+
+        Assertions.assertEquals("Item", data.getValue());
+    }
+
+    @Test
+    public void testGetAttributeStringContent_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testJsonAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Item\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        BaseAttributeContent<String> data = getAttributeContent("testJsonAttribute", attrs, BaseAttributeContent.class);
+
+        Assertions.assertEquals("Item", data.getValue());
+    }
+
+    @Test
+    public void testGetAttributeInetegerContent_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testJsonAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": 1234\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        BaseAttributeContent<Integer> data = getAttributeContent("testJsonAttribute", attrs, BaseAttributeContent.class);
+
+        Assertions.assertEquals(1234, data.getValue());
+    }
 }

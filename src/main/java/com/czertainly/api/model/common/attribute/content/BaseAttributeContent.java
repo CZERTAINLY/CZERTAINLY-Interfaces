@@ -4,6 +4,8 @@ public class BaseAttributeContent<T> {
 
     private T value;
 
+    public BaseAttributeContent() { }
+
     public BaseAttributeContent(T content) {
         this.value = content;
     }

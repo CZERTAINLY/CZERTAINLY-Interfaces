@@ -5,6 +5,8 @@ public class FileAttributeContent extends BaseAttributeContent<String> {
     private String fileName;
     private String contentType;
 
+    public FileAttributeContent() { }
+
     public FileAttributeContent(String value, String fileName, String contentType) {
         super(value);
         this.fileName = fileName;
