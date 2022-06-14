@@ -13,7 +13,6 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -452,8 +451,7 @@ public class AttributeDefinitionUtilsTest {
                 "  {\n" +
                 "    \"name\": \"testJsonAttribute\",\n" +
                 "    \"content\": {\n" +
-                "      \"value\": \"Test date and time\",\n" +
-                "      \"dateTime\": \"2011-12-03 10:15:30\"\n" +
+                "      \"value\": \"2011-12-03 10:15:30\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "]";
@@ -467,7 +465,7 @@ public class AttributeDefinitionUtilsTest {
         String dateInString = "2011-12-03 10:15:30";
         LocalDateTime date = LocalDateTime.parse(dateInString, formatter);
 
-        Assertions.assertEquals(date, data.getDateTime());
+        Assertions.assertEquals(date, data.getValue());
     }
 
     @Test
@@ -476,8 +474,7 @@ public class AttributeDefinitionUtilsTest {
                 "  {\n" +
                 "    \"name\": \"testJsonAttribute\",\n" +
                 "    \"content\": {\n" +
-                "      \"value\": \"Test date\",\n" +
-                "      \"date\": \"2001-07-04\"\n" +
+                "      \"value\": \"2001-07-04\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "]";
@@ -489,7 +486,7 @@ public class AttributeDefinitionUtilsTest {
         String dateInString = "2001-07-04";
         LocalDate localDate = LocalDate.parse(dateInString);
 
-        Assertions.assertEquals(localDate, data.getDate());
+        Assertions.assertEquals(localDate, data.getValue());
     }
 
     @Test
@@ -498,8 +495,7 @@ public class AttributeDefinitionUtilsTest {
                 "  {\n" +
                 "    \"name\": \"testJsonAttribute\",\n" +
                 "    \"content\": {\n" +
-                "      \"value\": \"Test date\",\n" +
-                "      \"time\": \"12:14:25\"\n" +
+                "      \"value\": \"12:14:25\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "]";
@@ -513,6 +509,6 @@ public class AttributeDefinitionUtilsTest {
         String dateInString = "12:14:25";
         LocalTime localTime = LocalTime.parse(dateInString);
 
-        Assertions.assertEquals(localTime, data.getTime());
+        Assertions.assertEquals(localTime, data.getValue());
     }
 }
