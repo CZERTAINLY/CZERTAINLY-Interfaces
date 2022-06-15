@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AttributeMigrationUtils {
-    private static Logger logger = LoggerFactory.getLogger(AttributeMigrationUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(AttributeMigrationUtils.class);
 
     public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName) throws SQLException, JsonProcessingException {
         logger.info("Migrating Table: {}, Column: {}", tableName, columnName);
@@ -82,7 +82,7 @@ public class AttributeMigrationUtils {
         attributeDefinition.setList(isAttributeList((String) oldAttribute.get("type")));
         if (oldAttribute.get("attributeCallback") != null) {
             ObjectMapper mapper = new ObjectMapper();
-            String callbackAsString = null;
+            String callbackAsString;
             try {
                 callbackAsString = mapper.writeValueAsString(oldAttribute.get("attributeCallback"));
                 AttributeCallback attributeCallback = mapper.readValue(callbackAsString, AttributeCallback.class);
@@ -97,7 +97,7 @@ public class AttributeMigrationUtils {
     }
 
     private static AttributeType getAttributeType(Object oldValue, String oldAttributeType) {
-        logger.debug("Old Value: {} Old Type:", oldValue, oldAttributeType);
+        logger.debug("Old Value: {} Old Type: {}", oldValue, oldAttributeType);
         if (oldAttributeType.equals("LIST")) {
             if (oldValue instanceof List) {
                 if (((List<?>) oldValue).get(0) instanceof String) {
@@ -130,7 +130,7 @@ public class AttributeMigrationUtils {
     }
 
     private static Object getAttributeValue(Object oldValue, String oldType) {
-        logger.debug("Old Value: {} Old Type:", oldValue, oldType);
+        logger.debug("Old Value: {} Old Type: {}", oldValue, oldType);
         if (oldType.equals("FILE")) {
             return new FileAttributeContent() {{
                 setValue((String) oldValue);
@@ -196,6 +196,6 @@ public class AttributeMigrationUtils {
                 }};
             }
         }
-        throw new RuntimeException("Unable to recognize value");
+        throw new RuntimeException("Unsupported attribute type: " + oldType);
     }
 }
