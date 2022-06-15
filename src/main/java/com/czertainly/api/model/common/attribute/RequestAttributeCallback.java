@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -7,6 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.Serializable;
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestAttributeCallback {
 
     @Schema(description = "UUID of the Attribute")

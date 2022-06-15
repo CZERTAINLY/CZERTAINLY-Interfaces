@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * This class contains set of properties to represent
  * an Attribute definition including its value.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AttributeDefinition {
 
     /**
@@ -104,7 +105,6 @@ public class AttributeDefinition {
     @Schema(
             description = "Optional description of the Attribute, should contain helper text on what is expected"
     )
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
     /**
@@ -113,7 +113,6 @@ public class AttributeDefinition {
     @Schema(
             description = "Optional regular expression used for validating the Attribute content"
     )
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String validationRegex;
 
     /**
@@ -122,7 +121,6 @@ public class AttributeDefinition {
     @Schema(
             description = "Optional definition of callback for getting the content of the Attribute based on the action"
     )
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private AttributeCallback attributeCallback;
 
     /**
@@ -142,7 +140,6 @@ public class AttributeDefinition {
             description = "Group of the Attribute, used for the logical grouping of the Attribute",
             example = "requiredAttributes"
     )
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String group;
 
     public AttributeDefinition() {

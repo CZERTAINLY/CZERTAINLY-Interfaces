@@ -3,13 +3,12 @@ package com.czertainly.api.model.common.attribute.content;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FileAttributeContent extends BaseAttributeContent<String> {
     @Schema(description = "Name of the file", example = "example.txt")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String fileName;
 
     @Schema(description = "Content-Type of the data", example="xml")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String contentType;
 
     public FileAttributeContent() { }

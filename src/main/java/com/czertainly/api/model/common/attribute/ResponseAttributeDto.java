@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * an Attribute definition including its value for the
  * detail API responses
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseAttributeDto {
 
     /**

@@ -23,7 +23,7 @@ public class AttributeMigrationUtils {
         List<String> migrationCommands = new ArrayList<>();
         while (rows.next()) {
             List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
-            List<Map<String, Object>> oldAttributeValue = mapper.readValue(rows.getString(columnName), new TypeReference<List<Map<String, Object>>>() {
+            List<Map<String, Object>> oldAttributeValue = mapper.readValue(rows.getString(columnName), new TypeReference<>() {
             });
             for (Map<String, Object> item : oldAttributeValue) {
                 attributeDefinitions.add(getNewAttributes(item));
@@ -130,8 +130,8 @@ public class AttributeMigrationUtils {
             }};
         }
         if (oldValue instanceof String) {
-            return new BaseAttributeContent() {{
-                setValue(oldValue);
+            return new BaseAttributeContent<String>() {{
+                setValue((String) oldValue);
             }};
         } else if (oldValue instanceof Float) {
             return new BaseAttributeContent<Float>() {{
