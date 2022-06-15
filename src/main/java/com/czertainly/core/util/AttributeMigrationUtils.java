@@ -22,15 +22,15 @@ public class AttributeMigrationUtils {
     private static final Logger logger = LoggerFactory.getLogger(AttributeMigrationUtils.class);
 
     public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName) throws SQLException, JsonProcessingException {
-        logger.info("Migrating Table: {}, Column: {}", tableName, columnName);
+        logger.debug("Migrating Table: {}, Column: {}", tableName, columnName);
         ObjectMapper mapper = new ObjectMapper();
         List<String> migrationCommands = new ArrayList<>();
         while (rows.next()) {
+            logger.debug("Migrating record with Id: {}", rows.getString("id"));
             List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
             List<Map<String, Object>> oldAttributeValue = mapper.readValue(rows.getString(columnName), new TypeReference<>() {
             });
             for (Map<String, Object> item : oldAttributeValue) {
-                logger.debug("Migrating Attribute: {}", item);
                 attributeDefinitions.add(getNewAttributes(item));
             }
             String updateCommand;
@@ -40,7 +40,6 @@ public class AttributeMigrationUtils {
             } else {
                 updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE id = " + rows.getString("id") + ";";
             }
-            logger.debug("Update Command: {}", updateCommand);
             migrationCommands.add(updateCommand);
         }
         return migrationCommands;
@@ -85,12 +84,10 @@ public class AttributeMigrationUtils {
                 throw new RuntimeException("Unable to process callback data for attribute " + oldAttribute.get("name"));
             }
         }
-        logger.debug("New definition: {}", attributeDefinition);
         return attributeDefinition;
     }
 
     private static AttributeType getAttributeType(Object oldValue, String oldAttributeType) {
-        logger.debug("Old Value: {} Old Type: {}", oldValue, oldAttributeType);
         if (oldAttributeType.equals("LIST")) {
             if (oldValue instanceof List) {
                 if (((List<?>) oldValue).get(0) instanceof String) {
@@ -127,7 +124,6 @@ public class AttributeMigrationUtils {
     }
 
     private static Object getAttributeValue(Object oldValue, String oldType) {
-        logger.debug("Old Value: {} Old Type: {}", oldValue, oldType);
         if (oldType.equals("FILE")) {
             return new FileAttributeContent() {{
                 setValue((String) oldValue);
@@ -201,5 +197,4 @@ public class AttributeMigrationUtils {
         }
         throw new RuntimeException("Unsupported attribute type: " + oldType);
     }
-
 }
