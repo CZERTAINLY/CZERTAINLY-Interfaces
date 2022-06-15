@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -103,6 +104,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Optional description of the Attribute, should contain helper text on what is expected"
     )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
     /**
@@ -111,6 +113,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Optional regular expression used for validating the Attribute content"
     )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String validationRegex;
 
     /**
@@ -119,6 +122,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Optional definition of callback for getting the content of the Attribute based on the action"
     )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private AttributeCallback attributeCallback;
 
     /**
@@ -138,6 +142,7 @@ public class AttributeDefinition {
             description = "Group of the Attribute, used for the logical grouping of the Attribute",
             example = "requiredAttributes"
     )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String group;
 
     public AttributeDefinition() {
