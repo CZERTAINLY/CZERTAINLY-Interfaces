@@ -35,9 +35,9 @@ public class AttributeMigrationUtils {
             }
             String updateCommand;
             String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
-            if(tableName.equals("certificate_location")){
+            if (tableName.equals("certificate_location")) {
                 updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE " + columnName + " = " + rows.getString(columnName) + ";";
-            }else {
+            } else {
                 updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE id = " + rows.getString("id") + ";";
             }
             logger.debug("Update Command: {}", updateCommand);
@@ -54,26 +54,21 @@ public class AttributeMigrationUtils {
         attributeDefinition.setReadOnly((Boolean) oldAttribute.get("readOnly"));
         if (oldAttribute.get("required") != null) {
             attributeDefinition.setRequired((Boolean) oldAttribute.get("required"));
-        } else {
-            attributeDefinition.setRequired(true);
         }
         if (oldAttribute.get("description") != null) {
             attributeDefinition.setDescription(((String) oldAttribute.get("description")).replaceAll("'", "''"));
         }
         if (oldAttribute.get("visible") != null) {
             attributeDefinition.setVisible((Boolean) oldAttribute.get("visible"));
-        } else {
-            attributeDefinition.setVisible(true);
         }
         if (oldAttribute.get("multiValue") != null) {
             attributeDefinition.setList((Boolean) oldAttribute.get("multiValue"));
-        } else {
-            attributeDefinition.setList(false);
         }
         if (oldAttribute.get("validationRegex") != null) {
             attributeDefinition.setValidationRegex(((String) oldAttribute.get("validationRegex")).replaceAll("'", "''"));
         }
         if (oldAttribute.get("value") != null) {
+            attributeDefinition.setMultiSelect(isMultiselect(oldAttribute.get("value")));
             attributeDefinition.setContent(getAttributeValue(oldAttribute.get("value"), (String) oldAttribute.get("type")));
         }
         attributeDefinition.setType(getAttributeType(oldAttribute.get("value"), (String) oldAttribute.get("type")));
@@ -123,6 +118,10 @@ public class AttributeMigrationUtils {
         return AttributeType.fromCode((oldAttributeType).toLowerCase());
     }
 
+    private static Boolean isMultiselect(Object oldValue) {
+        return oldValue instanceof List;
+    }
+
     private static Boolean isAttributeList(String oldAttributeType) {
         return oldAttributeType.equals("LIST");
     }
@@ -153,11 +152,16 @@ public class AttributeMigrationUtils {
         } else if (oldValue instanceof List || oldType.equals("LIST") || oldType.equals("CREDENTIAL")) {
             if (oldValue instanceof List) {
                 if (((List<?>) oldValue).get(0) instanceof String) {
-                    return new BaseAttributeContent<>() {{
-                        setValue(oldValue);
-                    }};
-                }else if(((List<?>) oldValue).get(0) instanceof Map) {
-                    for (Map<String, Object> insValue : (List<Map<String, Object>>)oldValue) {
+                    List<BaseAttributeContent<String>> multiObject = new ArrayList<>();
+                    for (String innerValue : ((List<String>) oldValue)) {
+                        multiObject.add(new BaseAttributeContent<>() {{
+                            setValue(innerValue);
+                        }});
+                    }
+                    return multiObject;
+                } else if (((List<?>) oldValue).get(0) instanceof Map) {
+                    List<JsonAttributeContent> multiObject = new ArrayList<>();
+                    for (Map<String, Object> insValue : (List<Map<String, Object>>) oldValue) {
                         String primKey;
                         if (insValue.containsKey("name")) {
                             primKey = (String) insValue.get("name");
@@ -169,11 +173,12 @@ public class AttributeMigrationUtils {
                             }
                         }
                         String finalPrimKey = primKey;
-                        return new JsonAttributeContent() {{
+                        multiObject.add(new JsonAttributeContent() {{
                             setValue(finalPrimKey);
-                            setData(oldValue);
-                        }};
+                            setData(insValue);
+                        }});
                     }
+                    return multiObject;
                 }
             } else {
                 String primKey;

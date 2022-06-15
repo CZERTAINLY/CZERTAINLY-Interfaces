@@ -35,4 +35,22 @@ public class AttributeMigrationUtilsTest {
         Assertions.assertTrue(attributeDefinitions.get(1).isMultiSelect());
     }
 
+    @Test
+    public void testMultiSelectAttributeJSON() throws JsonProcessingException {
+        String attribute = "[{\"uuid\":\"83c0f20b-4789-44f2-abd2-a84c131d5e97\",\"name\":\"template\",\"label\":\"Template\",\"type\":\"LIST\",\"required\":false,\"readOnly\":false,\"editable\":true,\"visible\":true,\"multiValue\":true,\"description\":null,\"validationRegex\":null,\"dependsOn\":null,\"attributeCallback\":{\"callbackContext\":\"/v1/discoveryProvider/listTemplate/{caInstance}\",\"callbackMethod\":\"GET\",\"mappings\":[{\"from\":\"caInstance\",\"attributeType\":null,\"to\":\"caInstance\",\"targets\":[\"pathVariable\"],\"value\":null}]},\"value\":[{\"name\":\"testName\",\"uuid\":\"83c0f20b-4789-44f2-abd2-a84c131d5e97\"},{\"name\":\"testName\",\"uuid\":\"83c0f20b-4789-44f2-abd2-a84c131d5e97\"},{\"name\":\"testName\",\"uuid\":\"83c0f20b-4789-44f2-abd2-a84c131d5e97\"}]}]";
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
+
+        List<Map<String, Object>> oldAttributeValue = mapper.readValue(attribute, new TypeReference<>() {
+        });
+        for (Map<String, Object> item : oldAttributeValue) {
+            attributeDefinitions.add(getNewAttributes(item));
+        }
+        String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
+        Assertions.assertNotNull(serializedAttributes);
+        Assertions.assertTrue(attributeDefinitions.get(0).isMultiSelect());
+        Assertions.assertTrue(attributeDefinitions.get(0).getContent() instanceof List);
+    }
+
 }
