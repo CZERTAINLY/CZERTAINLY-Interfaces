@@ -26,7 +26,12 @@ public class AttributeMigrationUtils {
         ObjectMapper mapper = new ObjectMapper();
         List<String> migrationCommands = new ArrayList<>();
         while (rows.next()) {
-            logger.debug("Migrating record with Id: {}", rows.getString("id"));
+            // the certificate_location table has composite key
+            if (tableName.equals("certificate_location")) {
+                logger.debug("Migrating record with Location Id: {}, Certificate Id: {}", rows.getString("location_id"), rows.getString("certificate_id"));
+            } else {
+                logger.debug("Migrating record with Id: {}", rows.getString("id"));
+            }
             List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
             List<Map<String, Object>> oldAttributeValue = mapper.readValue(rows.getString(columnName), new TypeReference<>() {
             });
@@ -36,7 +41,7 @@ public class AttributeMigrationUtils {
             String updateCommand;
             String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
             if (tableName.equals("certificate_location")) {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE " + columnName + " = " + rows.getString(columnName) + ";";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE location_id = " + rows.getString("location_id") + " AND certificate_id = " + rows.getString("certificate_id") + ";";
             } else {
                 updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE id = " + rows.getString("id") + ";";
             }
