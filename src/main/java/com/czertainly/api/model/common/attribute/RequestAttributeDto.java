@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * This class contains set of properties to represent
  * an Attribute definition provided by the client
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestAttributeDto {
 
     /**
@@ -18,7 +19,6 @@ public class RequestAttributeDto {
             description = "UUID of the Attribute",
             example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
     )
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
 
     /**
