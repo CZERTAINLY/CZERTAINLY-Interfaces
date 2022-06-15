@@ -66,14 +66,12 @@ public class AttributeMigrationUtils {
             attributeDefinition.setVisible(true);
         }
         if (oldAttribute.get("multiValue") != null) {
-            attributeDefinition.setMultiSelect((Boolean) oldAttribute.get("multiValue"));
+            attributeDefinition.setList((Boolean) oldAttribute.get("multiValue"));
         } else {
-            attributeDefinition.setMultiSelect(false);
+            attributeDefinition.setList(false);
         }
         if (oldAttribute.get("validationRegex") != null) {
             attributeDefinition.setValidationRegex(((String) oldAttribute.get("validationRegex")).replaceAll("'", "''"));
-        } else {
-            attributeDefinition.setMultiSelect(false);
         }
         if (oldAttribute.get("value") != null) {
             attributeDefinition.setContent(getAttributeValue(oldAttribute.get("value"), (String) oldAttribute.get("type")));
@@ -88,8 +86,8 @@ public class AttributeMigrationUtils {
                 AttributeCallback attributeCallback = mapper.readValue(callbackAsString, AttributeCallback.class);
                 attributeDefinition.setAttributeCallback(attributeCallback);
             } catch (JsonProcessingException e) {
-                logger.error("Unable to serialize callback, {}", oldAttribute.get("attributeCallback"));
-                throw new RuntimeException("Unable to serialize callbacks");
+                logger.error("Unable to process callback data for attribute {}", oldAttribute.get("name"));
+                throw new RuntimeException("Unable to process callback data for attribute " + oldAttribute.get("name"));
             }
         }
         logger.debug("New definition: {}", attributeDefinition);
@@ -198,4 +196,5 @@ public class AttributeMigrationUtils {
         }
         throw new RuntimeException("Unsupported attribute type: " + oldType);
     }
+
 }
