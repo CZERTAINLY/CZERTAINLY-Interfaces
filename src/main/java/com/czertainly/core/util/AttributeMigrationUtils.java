@@ -89,6 +89,7 @@ public class AttributeMigrationUtils {
                 attributeDefinition.setAttributeCallback(attributeCallback);
             } catch (JsonProcessingException e) {
                 logger.error("Unable to serialize callback, {}", oldAttribute.get("attributeCallback"));
+                throw new RuntimeException("Unable to serialize callbacks");
             }
         }
         logger.debug("New definition: {}", attributeDefinition);
