@@ -55,7 +55,9 @@ public class AttributeMigrationUtils {
         attributeDefinition.setLabel(((String) oldAttribute.get("label")).replaceAll("'", "''"));
         attributeDefinition.setName(((String) oldAttribute.get("name")).replaceAll("'", "''"));
         attributeDefinition.setUuid((String) oldAttribute.get("uuid"));
-        attributeDefinition.setReadOnly((Boolean) oldAttribute.get("readOnly"));
+        if (oldAttribute.get("readOnly") != null) {
+            attributeDefinition.setReadOnly((Boolean) oldAttribute.get("readOnly"));
+        }
         if (oldAttribute.get("required") != null) {
             attributeDefinition.setRequired((Boolean) oldAttribute.get("required"));
         }
@@ -76,7 +78,7 @@ public class AttributeMigrationUtils {
             attributeDefinition.setContent(getAttributeValue(oldAttribute.get("value"), (String) oldAttribute.get("type")));
         }
         attributeDefinition.setType(getAttributeType(oldAttribute.get("value"), (String) oldAttribute.get("type")));
-        attributeDefinition.setList(isAttributeList((String) oldAttribute.get("type")));
+
         if (oldAttribute.get("attributeCallback") != null) {
             ObjectMapper mapper = new ObjectMapper();
             String callbackAsString;
@@ -93,12 +95,26 @@ public class AttributeMigrationUtils {
     }
 
     private static AttributeType getAttributeType(Object oldValue, String oldAttributeType) {
+        oldAttributeType = oldAttributeType.toUpperCase();
         if (oldAttributeType.equals("LIST")) {
             if (oldValue instanceof List) {
+                if (((List) oldValue).isEmpty()) {
+                    // If the old attribute is empty list, it is not possible to derive the original type.
+                    // So STRING is used as default Attribute Type
+                    return AttributeType.STRING;
+                }
                 if (((List<?>) oldValue).get(0) instanceof String) {
                     return AttributeType.STRING;
-                } else {
+                } else if (((List<?>) oldValue).get(0) instanceof Integer) {
+                    return AttributeType.INTEGER;
+                } else if (((List<?>) oldValue).get(0) instanceof Float) {
+                    return AttributeType.FLOAT;
+                } else if (((List<?>) oldValue).get(0) instanceof Boolean) {
+                    return AttributeType.BOOLEAN;
+                } else if (((List<?>) oldValue).get(0) instanceof Map) {
                     return AttributeType.JSON;
+                } else {
+                    throw new RuntimeException("Unsupported attribute type in LIST: " + oldAttributeType);
                 }
             } else if (oldValue instanceof Map) {
                 return AttributeType.JSON;
@@ -108,6 +124,8 @@ public class AttributeMigrationUtils {
                 return AttributeType.INTEGER;
             } else if (oldValue instanceof Float) {
                 return AttributeType.FLOAT;
+            } else if (oldValue instanceof Boolean) {
+                return AttributeType.BOOLEAN;
             }
         }
         if (oldValue instanceof Integer) {
@@ -124,11 +142,8 @@ public class AttributeMigrationUtils {
         return oldValue instanceof List;
     }
 
-    private static Boolean isAttributeList(String oldAttributeType) {
-        return oldAttributeType.equals("LIST");
-    }
-
     private static Object getAttributeValue(Object oldValue, String oldType) {
+        oldType = oldType.toUpperCase();
         if (oldType.equals("FILE")) {
             return new FileAttributeContent() {{
                 setValue((String) oldValue);
@@ -152,6 +167,9 @@ public class AttributeMigrationUtils {
             }};
         } else if (oldValue instanceof List || oldType.equals("LIST") || oldType.equals("CREDENTIAL")) {
             if (oldValue instanceof List) {
+                if (((List) oldValue).isEmpty()) {
+                    return new ArrayList<>();
+                }
                 if (((List<?>) oldValue).get(0) instanceof String) {
                     List<BaseAttributeContent<String>> multiObject = new ArrayList<>();
                     for (String innerValue : ((List<String>) oldValue)) {
@@ -160,46 +178,59 @@ public class AttributeMigrationUtils {
                         }});
                     }
                     return multiObject;
+                } else if (((List<?>) oldValue).get(0) instanceof Integer) {
+                    List<BaseAttributeContent<Integer>> multiObject = new ArrayList<>();
+                    for (Integer innerValue : ((List<Integer>) oldValue)) {
+                        multiObject.add(new BaseAttributeContent<>() {{
+                            setValue(innerValue);
+                        }});
+                    }
+                    return multiObject;
+                } else if (((List<?>) oldValue).get(0) instanceof Float) {
+                    List<BaseAttributeContent<Float>> multiObject = new ArrayList<>();
+                    for (Float innerValue : ((List<Float>) oldValue)) {
+                        multiObject.add(new BaseAttributeContent<>() {{
+                            setValue(innerValue);
+                        }});
+                    }
+                    return multiObject;
+                } else if (((List<?>) oldValue).get(0) instanceof Boolean) {
+                    List<BaseAttributeContent<Boolean>> multiObject = new ArrayList<>();
+                    for (Boolean innerValue : ((List<Boolean>) oldValue)) {
+                        multiObject.add(new BaseAttributeContent<>() {{
+                            setValue(innerValue);
+                        }});
+                    }
+                    return multiObject;
                 } else if (((List<?>) oldValue).get(0) instanceof Map) {
                     List<JsonAttributeContent> multiObject = new ArrayList<>();
                     for (Map<String, Object> insValue : (List<Map<String, Object>>) oldValue) {
-                        String primKey;
-                        if (insValue.containsKey("name")) {
-                            primKey = (String) insValue.get("name");
-                        } else {
-                            try {
-                                primKey = (String) insValue.get(insValue.keySet().stream().findFirst().orElse("error"));
-                            } catch (Exception e) {
-                                primKey = "error";
-                            }
-                        }
-                        String finalPrimKey = primKey;
-                        multiObject.add(new JsonAttributeContent() {{
-                            setValue(finalPrimKey);
-                            setData(insValue);
-                        }});
+                        multiObject.add(getJsonAttribute(insValue));
                     }
                     return multiObject;
                 }
             } else {
-                String primKey;
-                Map<String, Object> insValue = (Map<String, Object>) oldValue;
-                if (insValue.containsKey("name")) {
-                    primKey = (String) insValue.get("name");
-                } else {
-                    try {
-                        primKey = (String) insValue.get(insValue.keySet().stream().findFirst().orElse("error"));
-                    } catch (Exception e) {
-                        primKey = "error";
-                    }
-                }
-                String finalPrimKey = primKey;
-                return new JsonAttributeContent() {{
-                    setValue(finalPrimKey);
-                    setData(oldValue);
-                }};
+                return getJsonAttribute((Map<String, Object>) oldValue);
             }
         }
         throw new RuntimeException("Unsupported attribute type: " + oldType);
+    }
+
+    private static JsonAttributeContent getJsonAttribute(Map<String, Object> oldJsonValue) {
+        String primKey;
+        if (oldJsonValue.containsKey("name")) {
+            primKey = (String) oldJsonValue.get("name");
+        } else {
+            try {
+                primKey = (String) oldJsonValue.get(oldJsonValue.keySet().stream().findFirst().orElse(""));
+            } catch (Exception e) {
+                primKey = "error";
+            }
+        }
+        String finalPrimKey = primKey;
+        return new JsonAttributeContent() {{
+            setValue(finalPrimKey);
+            setData(oldJsonValue);
+        }};
     }
 }
