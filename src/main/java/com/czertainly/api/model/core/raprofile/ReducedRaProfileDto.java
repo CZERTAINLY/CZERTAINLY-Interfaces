@@ -1,12 +1,9 @@
 package com.czertainly.api.model.core.raprofile;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /**
  * Class representing RA profile
