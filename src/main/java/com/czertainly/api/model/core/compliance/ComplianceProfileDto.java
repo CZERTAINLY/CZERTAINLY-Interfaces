@@ -14,6 +14,9 @@ public class ComplianceProfileDto extends NameAndUuidDto {
     @Schema(description = "List of rules", required = true)
     private List<ComplianceConnectorAndRulesDto> rules;
 
+    @Schema(description = "List of groups", required = true)
+    private List<ComplianceConnectorAndGroupsDto> groups;
+
     @Schema(description = "List of associated RA Profiles")
     private List<ReducedRaProfileDto> raProfiles;
 
@@ -35,6 +38,14 @@ public class ComplianceProfileDto extends NameAndUuidDto {
         this.raProfiles = raProfiles;
     }
 
+    public List<ComplianceConnectorAndGroupsDto> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<ComplianceConnectorAndGroupsDto> groups) {
+        this.groups = groups;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -42,6 +53,7 @@ public class ComplianceProfileDto extends NameAndUuidDto {
                 .append("name", name)
                 .append("rules", rules)
                 .append("raProfiles", raProfiles)
+                .append("groups", groups)
                 .toString();
     }
 }

@@ -11,6 +11,9 @@ public class ComplianceProviderSummaryDto {
     @Schema(description = "Number of rules for the Provider")
     private Integer numberOfRules;
 
+    @Schema(description = "Number of groups for the Provider")
+    private Integer numberOfGroups;
+
     //Default getters and setters
     public String getConnectorName() {
         return connectorName;
@@ -28,11 +31,20 @@ public class ComplianceProviderSummaryDto {
         this.numberOfRules = numberOfRules;
     }
 
+    public Integer getNumberOfGroups() {
+        return numberOfGroups;
+    }
+
+    public void setNumberOfGroups(Integer numberOfGroups) {
+        this.numberOfGroups = numberOfGroups;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", connectorName)
                 .append("rules", numberOfRules)
+                .append("groups", numberOfGroups)
                 .toString();
     }
 }

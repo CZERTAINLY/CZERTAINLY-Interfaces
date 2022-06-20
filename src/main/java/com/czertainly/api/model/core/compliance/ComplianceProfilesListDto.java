@@ -22,6 +22,7 @@ public class ComplianceProfilesListDto extends NameAndUuidDto {
         this.rules = rules;
     }
 
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
