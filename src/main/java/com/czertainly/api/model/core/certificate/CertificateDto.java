@@ -83,7 +83,7 @@ public class CertificateDto {
     @Schema(description = "Certificate validation result")
     private Map<String, CertificateValidationDto> certificateValidationResult;
     @Schema(description = "Certificate compliance check result")
-    private List<CertificateComplianceResultDto> complianceResult;
+    private List<CertificateComplianceResultDto> nonCompliantRules;
     @Schema(description = "Certificate compliance status")
     private ComplianceStatus complianceStatus;
 
@@ -305,12 +305,12 @@ public class CertificateDto {
         this.certificateValidationResult = certificateValidationResult;
     }
 
-    public List<CertificateComplianceResultDto> getComplianceResult() {
-        return complianceResult;
+    public List<CertificateComplianceResultDto> getNonCompliantRules() {
+        return nonCompliantRules;
     }
 
-    public void setComplianceResult(List<CertificateComplianceResultDto> complianceResult) {
-        this.complianceResult = complianceResult;
+    public void setNonCompliantRules(List<CertificateComplianceResultDto> nonCompliantRules) {
+        this.nonCompliantRules = nonCompliantRules;
     }
 
     public ComplianceStatus getComplianceStatus() {

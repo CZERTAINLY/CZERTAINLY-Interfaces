@@ -14,7 +14,7 @@ by the Core from the Connector once the compliance check is completed.
  */
 public class ComplianceResponseDto {
 
-    @Schema(description = "Status of the compliance check", required = true, example = "compliant")
+    @Schema(description = "Status of the compliance check", required = true, example = "ok")
     private ComplianceStatus status;
 
     @Schema(description = "List of rules applied and their status")

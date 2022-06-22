@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -16,13 +17,13 @@ database as a JSON field
 public class CertificateComplianceStorageDto {
 
     @Schema(description = "Compliant Rules")
-    private List<Long> ok;
+    private List<Long> ok = new ArrayList<>();
 
     @Schema(description = "Non Compliant Rules")
-    private List<Long> nok;
+    private List<Long> nok = new ArrayList<>();
 
     @Schema(description = "Not Applicable Rules")
-    private List<Long> na;
+    private List<Long> na = new ArrayList<>();
 
 
     public List<Long> getOk() {

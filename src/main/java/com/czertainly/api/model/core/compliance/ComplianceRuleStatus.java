@@ -14,12 +14,12 @@ used only to define the status of individual rules. This object should not be us
 the overall compliance status
  */
 public enum ComplianceRuleStatus {
-    COMPLIANT ("compliant"),
-    NON_COMPLIANT ("nonCompliant"),
-    NOT_APPLICABLE ("notApplicable"),
+    OK("ok"),
+    NOK("nok"),
+    NA("na"),
     ;
     @Schema(description = "Compliance Rule Status",
-            example = "compliant", required = true)
+            example = "ok", required = true)
     private String code;
 
     ComplianceRuleStatus(String code) {

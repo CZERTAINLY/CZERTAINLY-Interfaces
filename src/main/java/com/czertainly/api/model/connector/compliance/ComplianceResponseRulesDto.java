@@ -17,7 +17,7 @@ public class ComplianceResponseRulesDto {
     @Schema(description = "Name of the rule", required = true, example = "Rule1")
     private String name;
 
-    @Schema(description = "Rule status", required = true, example = "compliant")
+    @Schema(description = "Rule status", required = true, example = "ok")
     private ComplianceRuleStatus status;
 
     //Default getters and setters

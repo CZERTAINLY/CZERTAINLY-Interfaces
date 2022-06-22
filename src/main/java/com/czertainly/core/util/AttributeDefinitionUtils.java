@@ -322,7 +322,9 @@ public class AttributeDefinitionUtils {
         try {
             switch (definition.getType()) {
                 case STRING:
-                    for (BaseAttributeContent<String> stringBaseAttributeContent : ((List<BaseAttributeContent<String>>) attributeContent)) {
+                    for (Object a : ((List<BaseAttributeContent<String>>) attributeContent)) {
+
+                        BaseAttributeContent<String> stringBaseAttributeContent = BaseAttributeContent.class.cast(a);
                         if (stringBaseAttributeContent.getValue() == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
                             wrongValue = true;

@@ -15,13 +15,12 @@ define the status of overall compliance. This object should not be used to defin
 the compliance status of the individual rules
  */
 public enum ComplianceStatus {
-    COMPLIANT ("compliant"),
-    NON_COMPLIANT ("nonCompliant"),
-    NOT_CHECKED ("notChecked"),
-    UNKNOWN ("unknown")
+    OK("ok"),
+    NOK("nok"),
+    NA("na")
     ;
     @Schema(description = "Compliance Status",
-            example = "compliant", required = true)
+            example = "ok", required = true)
     private String code;
 
     ComplianceStatus(String code) {

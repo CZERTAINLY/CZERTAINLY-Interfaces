@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.connector.compliance.ComplianceResponseRulesDto;
+import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,17 +19,14 @@ public class CertificateComplianceResultDto {
     @Schema(description = "Name of the Compliance Provider", required = true, example = "Provider1")
     private String connectorName;
 
-    @Schema(description = "UUID of the Compliance Provider", required = true, example = "c35bc88c-d0ef-11ec-9d64-0242ac120003")
-    private String connectorUuid;
+    @Schema(description = "Name of the rule",required = true, example = "RuleName")
+    private String ruleName;
 
-    @Schema(description = "Kind of the Compliance Provider", required = true, example = "default")
-    private String kind;
+    @Schema(description = "Description of the rule",required = true, example = "Description sample")
+    private String ruleDescription;
 
-    @Schema(description = "Compliance status", required = true, example = "compliant")
-    private ComplianceStatus status;
-
-    @Schema(description = "List of rules applied and status of each rule")
-    private List<ComplianceResponseRulesDto> rules;
+    @Schema(description = "Status of the rule",required = true, example = "nok")
+    private ComplianceRuleStatus status;
 
     //Default getters and setters
 
@@ -40,46 +38,38 @@ public class CertificateComplianceResultDto {
         this.connectorName = connectorName;
     }
 
-    public String getConnectorUuid() {
-        return connectorUuid;
+
+    public String getRuleName() {
+        return ruleName;
     }
 
-    public void setConnectorUuid(String connectorUuid) {
-        this.connectorUuid = connectorUuid;
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
     }
 
-    public ComplianceStatus getStatus() {
+    public ComplianceRuleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ComplianceStatus status) {
+    public void setStatus(ComplianceRuleStatus status) {
         this.status = status;
     }
 
-    public List<ComplianceResponseRulesDto> getRules() {
-        return rules;
+    public String getRuleDescription() {
+        return ruleDescription;
     }
 
-    public void setRules(List<ComplianceResponseRulesDto> rules) {
-        this.rules = rules;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
+    public void setRuleDescription(String ruleDescription) {
+        this.ruleDescription = ruleDescription;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("status", status)
-                .append("rules", rules)
+                .append("ruleName", ruleName)
                 .append("connectorName", connectorName)
-                .append("connectorUuid", connectorUuid)
-                .append("kind", kind)
+                .append("status", status)
+                .append("ruleDescription", ruleDescription)
                 .toString();
     }
 }

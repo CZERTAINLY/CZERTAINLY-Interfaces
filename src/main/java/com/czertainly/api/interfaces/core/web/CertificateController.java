@@ -181,4 +181,10 @@ public interface CertificateController {
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
 	) throws NotFoundException;
 
+	@Operation(summary = "Initiate Certificate Compliance Check")
+	@ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
+	@RequestMapping(path = "/compliance", method = RequestMethod.POST, produces = {"application/json"})
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void checkCompliance(@RequestBody CertificateComplianceCheckDto request) throws NotFoundException;
+
 }

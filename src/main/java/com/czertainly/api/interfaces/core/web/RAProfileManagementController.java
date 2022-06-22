@@ -4,11 +4,13 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.certificate.CertificateComplianceCheckDto;
 import com.czertainly.api.model.client.client.SimplifiedClientDto;
 import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
+import com.czertainly.api.model.client.raprofile.RaProfileComplianceCheckDto;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
@@ -180,4 +182,10 @@ public interface RAProfileManagementController {
     @RequestMapping(path = "{uuid}/issue/attributes", method = RequestMethod.GET, produces = {"application/json"})
     List<AttributeDefinition> listIssueCertificateAttributes(
             @Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
+
+    @Operation(summary = "Initiate Certificate Compliance Check")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
+    @RequestMapping(path = "/compliance", method = RequestMethod.POST, produces = {"application/json"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void checkCompliance(@RequestBody RaProfileComplianceCheckDto request) throws NotFoundException;
 }
