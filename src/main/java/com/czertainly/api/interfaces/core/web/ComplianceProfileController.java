@@ -106,7 +106,7 @@ public interface ComplianceProfileController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addRule(@Parameter(description = "Compliance Profile UUID")
                             @PathVariable String uuid, @RequestBody ComplianceRuleAdditionRequestDto request)
-            throws AlreadyExistException, NotFoundException;
+            throws AlreadyExistException, NotFoundException, ValidationException;
 
     @Operation(summary = "Delete rule from a Compliance Profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "New group is added to the profile"),
