@@ -173,12 +173,21 @@ public interface ComplianceProfileController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile association successful"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})), })
-    @RequestMapping(path = "/{uuid}/raprofile", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/raprofile/associate", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associateProfiles(@Parameter(description = "Compliance Profile UUID") @PathVariable String uuid,
                                   @RequestBody RaProfileAssociationRequestDto raProfiles)
             throws NotFoundException, ConnectorException;
 
+    @Operation(summary = "Disassociate Compliance Profile to RA Profile")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile disassociation successful"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})), })
+    @RequestMapping(path = "/{uuid}/raprofile/disassociate", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void disassociateProfiles(@Parameter(description = "Compliance Profile UUID") @PathVariable String uuid,
+                                  @RequestBody RaProfileAssociationRequestDto raProfiles)
+            throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Initiate Certificate Compliance Check")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
