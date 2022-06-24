@@ -1,6 +1,6 @@
 package com.czertainly.api.model.common.attribute.content;
 
-public class BaseAttributeContent<T> {
+public class BaseAttributeContent<T> extends AttributeContent {
 
     private T value;
 

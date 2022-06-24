@@ -598,4 +598,20 @@ public class AttributeDefinitionUtils {
 
         return convertedDefinition;
     }
+
+    public static <T> T getAttributeContentValue(String attributeName, List<?> attributes, Class<?> clazz) {
+        AttributeContent content = (AttributeContent) AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, clazz);
+        if (content != null) {
+            return content.getValue();
+        }
+        return null;
+    }
+
+    public static <T> T getJsonAttributeContentData(String attributeName, List<?> attributes, Class<?> clazz) {
+        JsonAttributeContent content = AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, JsonAttributeContent.class);
+        if (content != null) {
+            return (T) ATTRIBUTES_OBJECT_MAPPER.convertValue(content.getData(), clazz);
+        }
+        return null;
+    }
 }

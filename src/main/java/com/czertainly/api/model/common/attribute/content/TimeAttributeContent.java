@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
 import java.time.LocalTime;
 
-public class TimeAttributeContent {
+public class TimeAttributeContent extends AttributeContent {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
