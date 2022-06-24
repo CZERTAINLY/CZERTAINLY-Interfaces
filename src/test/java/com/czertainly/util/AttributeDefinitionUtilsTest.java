@@ -509,4 +509,59 @@ public class AttributeDefinitionUtilsTest {
 
         Assertions.assertEquals(localTime, data.getValue());
     }
+
+    @Test
+    public void testGetStringAttributeContentValue_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testStringAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test String Value\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        String value = getAttributeContentValue("testStringAttribute", attrs, BaseAttributeContent.class);
+
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("Test String Value", value);
+    }
+
+    @Test
+    public void testGetFileAttributeContentValue_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testFileAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test File Value\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContent.class);
+
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("Test File Value", value);
+    }
+
+    @Test
+    public void testGetAttributeContentValue_fail() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testFileAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test File Value\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        String value = getAttributeContentValue("testStringAttribute", attrs, FileAttributeContent.class);
+        Assertions.assertNull(value);
+    }
 }

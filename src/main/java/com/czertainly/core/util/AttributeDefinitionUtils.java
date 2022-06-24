@@ -598,4 +598,20 @@ public class AttributeDefinitionUtils {
 
         return convertedDefinition;
     }
+
+    public static <T> T getAttributeContentValue(String attributeName, List<?> attributes, Class<?> clazz) {
+        AttributeContent content = (AttributeContent) AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, clazz);
+        if (content != null) {
+            return content.getValue();
+        }
+        return null;
+    }
+
+    public static Object getJsonAttributeContentData(String attributeName, List<?> attributes) {
+        JsonAttributeContent content = AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, JsonAttributeContent.class);
+        if (content != null) {
+            return content.getData();
+        }
+        return null;
+    }
 }
