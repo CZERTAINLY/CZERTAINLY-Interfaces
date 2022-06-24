@@ -607,10 +607,10 @@ public class AttributeDefinitionUtils {
         return null;
     }
 
-    public static Object getJsonAttributeContentData(String attributeName, List<?> attributes) {
+    public static <T> T getJsonAttributeContentData(String attributeName, List<?> attributes, Class<?> clazz) {
         JsonAttributeContent content = AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, JsonAttributeContent.class);
         if (content != null) {
-            return content.getData();
+            return (T) ATTRIBUTES_OBJECT_MAPPER.convertValue(content.getData(), clazz);
         }
         return null;
     }

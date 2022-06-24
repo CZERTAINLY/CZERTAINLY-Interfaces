@@ -564,4 +564,27 @@ public class AttributeDefinitionUtilsTest {
         String value = getAttributeContentValue("testStringAttribute", attrs, FileAttributeContent.class);
         Assertions.assertNull(value);
     }
+
+    @Test
+    public void testGetCredentialAttributeContent_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testCredentialAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test Credential Value\",\n" +
+                "      \"data\": {\n" +
+                "        \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
+                "        \"name\": \"Test Credential\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        NameAndUuidDto data = getJsonAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class);
+
+        Assertions.assertNotNull(data);
+        Assertions.assertEquals(data.getClass(), NameAndUuidDto.class);
+    }
 }
