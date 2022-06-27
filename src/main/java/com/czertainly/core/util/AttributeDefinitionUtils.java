@@ -84,7 +84,7 @@ public class AttributeDefinitionUtils {
     }
 
     public static <T extends Object> T getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
-        if (attributes.size() == 0) {
+        if (attributes == null || attributes.size() == 0) {
             return null;
         }
         if (attributes.get(0) instanceof RequestAttributeDto) {
