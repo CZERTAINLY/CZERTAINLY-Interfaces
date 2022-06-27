@@ -614,4 +614,32 @@ public class AttributeDefinitionUtils {
         }
         return null;
     }
+
+    public static <T> List<T> getAttributeContentValueList(String attributeName, List<?> attributes, Class<?> clazz) {
+        // TODO: validation that the attribute is multiSelect, if it make sense, because the request attribute can be without this flag
+        List<?> list = getAttributeContent(attributeName, attributes);
+        if (list != null) {
+            List<T> listContent = new ArrayList<>();
+            for (Object item : list) {
+                AttributeContent ac = (AttributeContent) ATTRIBUTES_OBJECT_MAPPER.convertValue(item, clazz);
+                listContent.add(ac.getValue());
+            }
+            return listContent;
+        }
+        return null;
+    }
+
+    public static <T> List<T> getJsonAttributeContentDataList(String attributeName, List<?> attributes, Class<?> clazz) {
+        // TODO: validation that the attribute is multiSelect, if it make sense, because the request attribute can be without this flag
+        List<?> list = getAttributeContent(attributeName, attributes);
+        if (list != null) {
+            List<T> listContent = new ArrayList<>();
+            for (Object item : list) {
+                JsonAttributeContent ac = ATTRIBUTES_OBJECT_MAPPER.convertValue(item, JsonAttributeContent.class);
+                listContent.add((T) ATTRIBUTES_OBJECT_MAPPER.convertValue(ac.getData(), clazz));
+            }
+            return listContent;
+        }
+        return null;
+    }
 }

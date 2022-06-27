@@ -587,4 +587,63 @@ public class AttributeDefinitionUtilsTest {
         Assertions.assertNotNull(data);
         Assertions.assertEquals(data.getClass(), NameAndUuidDto.class);
     }
+
+    @Test
+    public void testGetAttributeContentAsListOfString_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testAttributeListString\",\n" +
+                "    \"content\": [\n" +
+                "      {\n" +
+                "        \"value\": \"string1\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"value\": \"string2\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"value\": \"string3\"\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        List<String> listString = getAttributeContentValueList("testAttributeListString", attrs, BaseAttributeContent.class);
+
+        Assertions.assertNotNull(listString);
+        Assertions.assertEquals(3, listString.size());
+    }
+
+    @Test
+    public void testGetJsonAttributeContentAsListOfUuidAndName_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testCredentialAttribute\",\n" +
+                "    \"content\": [\n" +
+                "      {\n" +
+                "        \"value\": \"Test Credential Value 1\",\n" +
+                "        \"data\": {\n" +
+                "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
+                "          \"name\": \"Test Credential 1\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"value\": \"Test Credential Value 2\",\n" +
+                "        \"data\": {\n" +
+                "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
+                "          \"name\": \"Test Credential 2\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        List<String> listData = getJsonAttributeContentDataList("testCredentialAttribute", attrs, NameAndUuidDto.class);
+
+        Assertions.assertNotNull(listData);
+        Assertions.assertEquals(2, listData.size());
+    }
 }
