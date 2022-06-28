@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
+import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -81,6 +82,10 @@ public class CertificateDto {
     private String issuerSerialNumber;
     @Schema(description = "Certificate validation result")
     private Map<String, CertificateValidationDto> certificateValidationResult;
+    @Schema(description = "Certificate compliance check result")
+    private List<CertificateComplianceResultDto> nonCompliantRules;
+    @Schema(description = "Certificate compliance status")
+    private ComplianceStatus complianceStatus;
 
 
     public String getUuid() {
@@ -298,5 +303,21 @@ public class CertificateDto {
 
     public void setCertificateValidationResult(Map<String, CertificateValidationDto> certificateValidationResult) {
         this.certificateValidationResult = certificateValidationResult;
+    }
+
+    public List<CertificateComplianceResultDto> getNonCompliantRules() {
+        return nonCompliantRules;
+    }
+
+    public void setNonCompliantRules(List<CertificateComplianceResultDto> nonCompliantRules) {
+        this.nonCompliantRules = nonCompliantRules;
+    }
+
+    public ComplianceStatus getComplianceStatus() {
+        return complianceStatus;
+    }
+
+    public void setComplianceStatus(ComplianceStatus complianceStatus) {
+        this.complianceStatus = complianceStatus;
     }
 }
