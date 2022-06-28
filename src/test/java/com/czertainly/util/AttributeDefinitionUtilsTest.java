@@ -509,4 +509,141 @@ public class AttributeDefinitionUtilsTest {
 
         Assertions.assertEquals(localTime, data.getValue());
     }
+
+    @Test
+    public void testGetStringAttributeContentValue_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testStringAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test String Value\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        String value = getAttributeContentValue("testStringAttribute", attrs, BaseAttributeContent.class);
+
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("Test String Value", value);
+    }
+
+    @Test
+    public void testGetFileAttributeContentValue_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testFileAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test File Value\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContent.class);
+
+        Assertions.assertNotNull(value);
+        Assertions.assertEquals("Test File Value", value);
+    }
+
+    @Test
+    public void testGetAttributeContentValue_fail() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testFileAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test File Value\"\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        String value = getAttributeContentValue("testStringAttribute", attrs, FileAttributeContent.class);
+        Assertions.assertNull(value);
+    }
+
+    @Test
+    public void testGetCredentialAttributeContent_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testCredentialAttribute\",\n" +
+                "    \"content\": {\n" +
+                "      \"value\": \"Test Credential Value\",\n" +
+                "      \"data\": {\n" +
+                "        \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
+                "        \"name\": \"Test Credential\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        NameAndUuidDto data = getJsonAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class);
+
+        Assertions.assertNotNull(data);
+        Assertions.assertEquals(data.getClass(), NameAndUuidDto.class);
+    }
+
+    @Test
+    public void testGetAttributeContentAsListOfString_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testAttributeListString\",\n" +
+                "    \"content\": [\n" +
+                "      {\n" +
+                "        \"value\": \"string1\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"value\": \"string2\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"value\": \"string3\"\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        List<String> listString = getAttributeContentValueList("testAttributeListString", attrs, BaseAttributeContent.class);
+
+        Assertions.assertNotNull(listString);
+        Assertions.assertEquals(3, listString.size());
+    }
+
+    @Test
+    public void testGetJsonAttributeContentAsListOfUuidAndName_success() {
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"name\": \"testCredentialAttribute\",\n" +
+                "    \"content\": [\n" +
+                "      {\n" +
+                "        \"value\": \"Test Credential Value 1\",\n" +
+                "        \"data\": {\n" +
+                "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
+                "          \"name\": \"Test Credential 1\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"value\": \"Test Credential Value 2\",\n" +
+                "        \"data\": {\n" +
+                "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
+                "          \"name\": \"Test Credential 2\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]";
+
+        List<AttributeDefinition> attrs = deserialize(attrData);
+
+        List<String> listData = getJsonAttributeContentDataList("testCredentialAttribute", attrs, NameAndUuidDto.class);
+
+        Assertions.assertNotNull(listData);
+        Assertions.assertEquals(2, listData.size());
+    }
 }
