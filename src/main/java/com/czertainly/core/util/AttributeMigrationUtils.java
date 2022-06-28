@@ -74,7 +74,17 @@ public class AttributeMigrationUtils {
             attributeDefinition.setValidationRegex(((String) oldAttribute.get("validationRegex")).replaceAll("'", "''"));
         }
         if (oldAttribute.get("value") != null) {
-            attributeDefinition.setMultiSelect(isMultiselect(oldAttribute.get("value")));
+            if(oldAttribute.get("type").equals("CREDENTIAL")){
+                List<AttributeDefinition> innerAttributeDefinitions = new ArrayList<>();
+                List<Map<String, Object>> oldAttributeValue = (List<Map<String, Object>>) ((Map<String, Object>) oldAttribute.get("value")).get("attributes");
+                for (Map<String, Object> item : oldAttributeValue) {
+                    innerAttributeDefinitions.add(getNewAttributes(item));
+                }
+                attributeDefinition.setMultiSelect(false);
+                ((Map<String, Object>) oldAttribute.get("value")).put("attributes", innerAttributeDefinitions);
+            }else {
+                attributeDefinition.setMultiSelect(isMultiselect(oldAttribute.get("value")));
+            }
             attributeDefinition.setContent(getAttributeValue(oldAttribute.get("value"), (String) oldAttribute.get("type")));
         }
         attributeDefinition.setType(getAttributeType(oldAttribute.get("value"), (String) oldAttribute.get("type")));

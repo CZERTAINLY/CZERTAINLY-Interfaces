@@ -53,4 +53,20 @@ public class AttributeMigrationUtilsTest {
         Assertions.assertTrue(attributeDefinitions.get(0).getContent() instanceof List);
     }
 
+
+    @Test
+    public void testMultiSelectAttributeCredential() throws JsonProcessingException {
+        String attribute = "[{\"uuid\":\"93ca0ba2-3863-4ffa-a469-fd14ab3992bf\",\"name\":\"address\",\"label\":\"MS-ADCS Address\",\"type\":\"STRING\",\"required\":true,\"readOnly\":false,\"editable\":true,\"visible\":true,\"multiValue\":false,\"description\":\"Address of ADCS server.\",\"validationRegex\":\"^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])|(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\\\-]*[a-zA-Z0-9])\\\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\\\-]*[A-Za-z0-9]))$\",\"dependsOn\":null,\"attributeCallback\":null,\"value\":\"demo\"},{\"uuid\":\"d9f79ba6-47e5-437b-a7bc-82dbafa9cf01\",\"name\":\"https\",\"label\":\"HTTPS Enabled\",\"type\":\"BOOLEAN\",\"required\":true,\"readOnly\":false,\"editable\":true,\"visible\":true,\"multiValue\":false,\"description\":\"Use https for connection with ADCS server.\",\"validationRegex\":null,\"dependsOn\":null,\"attributeCallback\":null,\"value\":false},{\"uuid\":\"9587a320-a487-4084-9645-0b6c24636fa6\",\"name\":\"port\",\"label\":\"Port\",\"type\":\"NUMBER\",\"required\":true,\"readOnly\":false,\"editable\":true,\"visible\":true,\"multiValue\":false,\"description\":\"Define WinRM port, default port for http is 5985 and for https 5986.\",\"validationRegex\":null,\"dependsOn\":null,\"attributeCallback\":null,\"value\":5985},{\"uuid\":\"d9f79ba6-47e5-437b-a7bc-82dbafa9cf03\",\"name\":\"credential\",\"label\":\"Credential\",\"type\":\"CREDENTIAL\",\"required\":true,\"readOnly\":false,\"editable\":true,\"visible\":true,\"multiValue\":false,\"description\":\"Credential for the communication\",\"validationRegex\":null,\"dependsOn\":null,\"attributeCallback\":{\"callbackContext\":\"core/getCredentials\",\"callbackMethod\":\"GET\",\"mappings\":[{\"from\":null,\"attributeType\":null,\"to\":\"credentialKind\",\"targets\":[\"pathVariable\"],\"value\":\"Basic\"}]},\"value\":{\"uuid\":\"224c5e7e-b733-4441-922a-0158b4897886\",\"name\":\"lab02-ADCS\",\"kind\":\"Basic\",\"attributes\":[{\"uuid\":\"fe2d6d35-fb3d-4ea0-9f0b-7e39be93beeb\",\"name\":\"username\",\"label\":\"Username\",\"type\":\"STRING\",\"value\":\"userx\"},{\"uuid\":\"04506d45-c865-4ddc-b6fc-117ee5d5c8e7\",\"name\":\"password\",\"label\":\"Password\",\"type\":\"SECRET\",\"value\":\"password\"}],\"enabled\":true,\"connectorUuid\":\"2793f559-65b6-4f1a-8877-dc93bc596b41\",\"connectorName\":\"Common-Credential-Provider\"}}]";
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
+
+        List<Map<String, Object>> oldAttributeValue = mapper.readValue(attribute, new TypeReference<>() {
+        });
+        for (Map<String, Object> item : oldAttributeValue) {
+            attributeDefinitions.add(getNewAttributes(item));
+        }
+        String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
+        Assertions.assertNotNull(serializedAttributes);
+    }
 }
