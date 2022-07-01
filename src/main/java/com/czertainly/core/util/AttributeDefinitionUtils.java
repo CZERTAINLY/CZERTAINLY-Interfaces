@@ -318,7 +318,7 @@ public class AttributeDefinitionUtils {
                     case FLOAT:
                     case TEXT:
                         BaseAttributeContent<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BaseAttributeContent.class);
-                        if (stringBaseAttributeContent.getValue() == null) {
+                        if (stringBaseAttributeContent.getValue() == null || AttributeType.getClass(definition.getType()) == null || !stringBaseAttributeContent.getValue().getClass().isAssignableFrom(AttributeType.getClass(definition.getType()))) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
                             wrongValue = true;
                             break;

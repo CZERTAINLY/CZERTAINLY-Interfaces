@@ -36,6 +36,23 @@ public enum AttributeType {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
     }
+
+    public static Class getClass(AttributeType code) {
+        switch (code) {
+            case STRING:
+            case SECRET:
+            case TEXT:
+                return String.class;
+            case INTEGER:
+                return Integer.class;
+            case BOOLEAN:
+                return Boolean.class;
+            case FLOAT:
+                return Float.class;
+            default:
+                return null;
+        }
+    }
     
     private static class Constants {
     	/** Simple text Attribute **/
