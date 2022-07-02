@@ -111,51 +111,15 @@ public class AttributeDefinitionUtils {
     }
 
     public static NameAndIdDto getNameAndIdData(String name, List<RequestAttributeDto> attributes) {
-        Object content = getAttributeContent(name, attributes);
-
-        if (!(content instanceof Map)) {
-            throw new IllegalArgumentException("Could not get NameAndId value. Attribute has wrong value: " + content);
-        }
-
-        Map<?, ?> valueMap = (Map<?, ?>) content;
-        if (valueMap.containsKey("value") && valueMap.containsKey("data")) {
-            Object nameAndIdData = valueMap.get("data");
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(nameAndIdData, NameAndIdDto.class);
-        } else {
-            throw new IllegalArgumentException("Could not get NameAndId value. Attribute has wrong value: " + content);
-        }
+        return getJsonAttributeContentData(name, attributes, NameAndIdDto.class);
     }
 
     public static NameAndUuidDto getNameAndUuidData(String name, List<RequestAttributeDto> attributes) {
-        Object content = getAttributeContent(name, attributes);
-
-        if (!(content instanceof Map)) {
-            throw new IllegalArgumentException("Could not get NameAndUuid value. Attribute has wrong value: " + content);
-        }
-
-        Map<?, ?> valueMap = (Map<?, ?>) content;
-        if (valueMap.containsKey("value") && valueMap.containsKey("data")) {
-            Object nameAndUuidData = valueMap.get("data");
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(nameAndUuidData, NameAndUuidDto.class);
-        } else {
-            throw new IllegalArgumentException("Could not get NameAndUuid value. Attribute has wrong value: " + content);
-        }
+        return getJsonAttributeContentData(name, attributes, NameAndUuidDto.class);
     }
 
     public static CredentialDto getCredentialContent(String name, List<RequestAttributeDto> attributes) {
-        Object content = getAttributeContent(name, attributes);
-
-        if (!(content instanceof Map)) {
-            throw new IllegalArgumentException("Could not get Credential value. Attribute has wrong value: " + content);
-        }
-
-        Map<?, ?> valueMap = (Map<?, ?>) content;
-        if (valueMap.containsKey("value") && valueMap.containsKey("data")) {
-            Object credentialData = valueMap.get("data");
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(credentialData, CredentialDto.class);
-        } else {
-            throw new IllegalArgumentException("Could not get Credential value. Attribute has wrong value: " + content);
-        }
+        return getJsonAttributeContentData(name, attributes, CredentialDto.class);
     }
 
     public static String serialize(List<AttributeDefinition> attributes) {
