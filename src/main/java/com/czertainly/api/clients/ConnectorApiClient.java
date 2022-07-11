@@ -21,13 +21,13 @@ public class ConnectorApiClient extends BaseApiClient {
     }
 
     public List<InfoResponse> listSupportedFunctions(ConnectorDto connector) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CONNECTOR_BASE_CONTEXT)
-                .retrieve()
-                .toEntity(MAP_TYPE_REF)
-                .block().getBody(),
+                        .uri(connector.getUrl() + CONNECTOR_BASE_CONTEXT)
+                        .retrieve()
+                        .toEntity(MAP_TYPE_REF)
+                        .block().getBody(),
                 request,
                 connector);
     }

@@ -29,7 +29,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
     public List<EntityInstanceDto> listEntityInstances(ConnectorDto connector) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_BASE_CONTEXT)
@@ -41,7 +41,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
     public EntityInstanceDto getEntityInstance(ConnectorDto connector, String entityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_IDENTIFIED_CONTEXT, entityUuid)
@@ -53,7 +53,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
     public EntityInstanceDto createEntityInstance(ConnectorDto connector, EntityInstanceRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_BASE_CONTEXT)
@@ -66,7 +66,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
     public EntityInstanceDto updateEntityInstance(ConnectorDto connector, String entityUuid, EntityInstanceRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_IDENTIFIED_CONTEXT, entityUuid)
@@ -79,7 +79,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
     public void removeEntityInstance(ConnectorDto connector, String entityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_IDENTIFIED_CONTEXT, entityUuid)
@@ -92,7 +92,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
 
 
     public List<AttributeDefinition> listLocationAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_LOCATION_ATTRS_CONTEXT, entityUuid)
@@ -104,7 +104,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
     public void validateLocationAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_LOCATION_ATTRS_VALIDATE_CONTEXT, entityUuid)

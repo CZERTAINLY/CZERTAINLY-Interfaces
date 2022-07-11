@@ -31,7 +31,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public LocationDetailResponseDto getLocationDetail(ConnectorDto connector, String entityUuid, LocationDetailRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_BASE_CONTEXT, entityUuid)
@@ -44,7 +44,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public PushCertificateResponseDto pushCertificateToLocation(ConnectorDto connector, String entityUuid, PushCertificateRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_PUSH_CONTEXT, entityUuid)
@@ -57,7 +57,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public List<AttributeDefinition> listPushCertificateAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_PUSH_ATTRS_CONTEXT, entityUuid)
@@ -69,7 +69,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public void validatePushCertificateAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> pushAttributes) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_PUSH_ATTRS_VALIDATE_CONTEXT, entityUuid)
@@ -82,7 +82,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public RemoveCertificateResponseDto removeCertificateFromLocation(ConnectorDto connector, String entityUuid, RemoveCertificateRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_REMOVE_CONTEXT, entityUuid)
@@ -95,7 +95,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public GenerateCsrResponseDto generateCsrLocation(ConnectorDto connector, String entityUuid, GenerateCsrRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_CSR_CONTEXT, entityUuid)
@@ -108,7 +108,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public List<AttributeDefinition> listGenerateCsrAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_CSR_ATTRS_CONTEXT, entityUuid)
@@ -120,7 +120,7 @@ public class LocationApiClient extends BaseApiClient {
     }
 
     public void validateGenerateCsrAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> pushAttributes) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_CSR_ATTRS_VALIDATE_CONTEXT, entityUuid)

@@ -20,7 +20,7 @@ public class DiscoveryApiClient extends BaseApiClient {
 
 
     public DiscoveryProviderDto discoverCertificates(ConnectorDto connector, DiscoveryRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + DISCOVERY_BASE_CONTEXT)
@@ -33,7 +33,7 @@ public class DiscoveryApiClient extends BaseApiClient {
     }
 
     public DiscoveryProviderDto getDiscoveryData(ConnectorDto connector, DiscoveryDataRequestDto requestDto, String uuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                         .uri(connector.getUrl() + DISCOVERY_GET_CONTEXT, uuid)

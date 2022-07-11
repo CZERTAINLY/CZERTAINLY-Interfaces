@@ -5,9 +5,6 @@ import com.czertainly.api.model.connector.compliance.ComplianceGroupsResponseDto
 import com.czertainly.api.model.connector.compliance.ComplianceRequestDto;
 import com.czertainly.api.model.connector.compliance.ComplianceResponseDto;
 import com.czertainly.api.model.connector.compliance.ComplianceRulesResponseDto;
-import com.czertainly.api.model.connector.discovery.DiscoveryDataRequestDto;
-import com.czertainly.api.model.connector.discovery.DiscoveryProviderDto;
-import com.czertainly.api.model.connector.discovery.DiscoveryRequestDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -44,7 +41,7 @@ public class ComplianceApiClient extends BaseApiClient {
                     .forEach(q -> uriBuilder.queryParam(CERTIFICATE_TYPE_QUERY_HEADER, q));
         }
         uri = uriBuilder.build();
-        WebClient.RequestBodySpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes()).uri(uri);
+        WebClient.RequestBodySpec request = prepareRequest(HttpMethod.GET, connector, true).uri(uri);
 
         return processRequest(r -> r
                 .retrieve()
@@ -56,7 +53,7 @@ public class ComplianceApiClient extends BaseApiClient {
 
 
     public List<ComplianceGroupsResponseDto> getComplianceGroups(ConnectorDto connector, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                         .uri(connector.getUrl() + COMPLIANCE_GROUP_GET_CONTEXT, kind)
@@ -69,7 +66,7 @@ public class ComplianceApiClient extends BaseApiClient {
 
 
     public List<ComplianceRulesResponseDto> getComplianceGroupRules(ConnectorDto connector, String kind, String uuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                         .uri(connector.getUrl() + COMPLIANCE_GROUP_RULE_CONTEXT, kind, uuid)
@@ -81,7 +78,7 @@ public class ComplianceApiClient extends BaseApiClient {
     }
 
     public ComplianceResponseDto checkCompliance(ConnectorDto connector, String kind, ComplianceRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                         .uri(connector.getUrl() + COMPLIANCE_CONTEXT, kind)

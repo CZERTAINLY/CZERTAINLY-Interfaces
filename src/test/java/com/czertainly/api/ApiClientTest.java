@@ -6,7 +6,9 @@ import com.czertainly.api.exception.ConnectorClientException;
 import com.czertainly.api.exception.ConnectorCommunicationException;
 import com.czertainly.api.exception.ConnectorServerException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -45,6 +47,7 @@ public class ApiClientTest {
     public void testGetAttributes_unknownHost() {
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("wrong-host:1234");
+        connector.setStatus(ConnectorStatus.CONNECTED);
 
         Throwable cause = Assertions.assertThrows(ConnectorCommunicationException.class, () ->
             // tested method
@@ -63,6 +66,7 @@ public class ApiClientTest {
     public void testGetAttributes_connectionRefused() {
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("localhost:1234");
+        connector.setStatus(ConnectorStatus.CONNECTED);
 
         Throwable cause = Assertions.assertThrows(ConnectorCommunicationException.class, () ->
                 // tested method
@@ -89,6 +93,7 @@ public class ApiClientTest {
 
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("localhost:3665");
+        connector.setStatus(ConnectorStatus.CONNECTED);
 
         NotFoundException cause = Assertions.assertThrows(NotFoundException.class, () ->
                 // tested method
@@ -114,6 +119,7 @@ public class ApiClientTest {
 
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("localhost:3665");
+        connector.setStatus(ConnectorStatus.CONNECTED);
 
         ConnectorClientException cause = Assertions.assertThrows(ConnectorClientException.class, () ->
                 // tested method
@@ -140,6 +146,7 @@ public class ApiClientTest {
 
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("localhost:3665");
+        connector.setStatus(ConnectorStatus.CONNECTED);
 
         ConnectorServerException cause = Assertions.assertThrows(ConnectorServerException.class, () ->
                 // tested method
@@ -152,5 +159,19 @@ public class ApiClientTest {
         Assertions.assertEquals(bodyString, cause.getMessage());
         Assertions.assertEquals(connector, cause.getConnector());
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, cause.getHttpStatus());
+    }
+
+
+    @Test
+    public void testGetAttributes_waitingForApproval() {
+
+        ConnectorDto connector = new ConnectorDto();
+        connector.setUrl("localhost:3665");
+        connector.setStatus(ConnectorStatus.WAITING_FOR_APPROVAL);
+
+        Assertions.assertThrows(ValidationException.class, () -> attributeApiClient.listAttributeDefinitions(
+                connector,
+                FunctionGroupCode.CREDENTIAL_PROVIDER,
+                "certificate"));
     }
 }
