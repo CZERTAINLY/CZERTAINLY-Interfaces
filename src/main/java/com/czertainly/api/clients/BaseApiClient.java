@@ -4,8 +4,8 @@ import com.czertainly.api.exception.*;
 import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
-import com.czertainly.api.model.core.connector.AuthType;
 import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.czertainly.core.util.KeyStoreUtils;
 import io.netty.handler.ssl.SslContext;
@@ -55,17 +55,21 @@ public abstract class BaseApiClient {
 
     protected WebClient webClient;
 
-    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, AuthType authType, List<ResponseAttributeDto> authAttributes) {
-
+    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, Boolean validateConnectorStatus) {
+        if(validateConnectorStatus){
+            validateConnectorStatus(connector.getStatus());
+        }
         WebClient.RequestBodySpec request;
 
         // for backward compatibility
-        if (authType == null) {
+        if (connector.getAuthType() == null) {
             request = webClient.method(method);
             return (WebClient.RequestBodyUriSpec) request;
         }
 
-        switch (authType) {
+        List<ResponseAttributeDto> authAttributes = connector.getAuthAttributes();
+
+        switch (connector.getAuthType()) {
             case NONE:
                 request = webClient.method(method);
                 break;
@@ -95,10 +99,16 @@ public abstract class BaseApiClient {
             case JWT:
                 throw new UnsupportedOperationException("JWT is unimplemented");
             default:
-                throw new IllegalArgumentException("Unknown auth type " + authType);
+                throw new IllegalArgumentException("Unknown auth type " + connector.getAuthType());
         }
 
         return (WebClient.RequestBodyUriSpec) request;
+    }
+
+    public void validateConnectorStatus(ConnectorStatus connectorStatus) throws ValidationException {
+        if(connectorStatus.equals(ConnectorStatus.WAITING_FOR_APPROVAL)){
+            throw new ValidationException(ValidationError.create("Connector has invalid status: Waiting For Approval"));
+        }
     }
 
     private SslContext createSslContext(List<ResponseAttributeDto> attributes) {

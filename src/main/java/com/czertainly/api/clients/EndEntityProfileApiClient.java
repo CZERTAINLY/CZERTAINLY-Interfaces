@@ -20,7 +20,7 @@ public class EndEntityProfileApiClient extends BaseApiClient {
     }
 
     public List<NameAndIdDto> listEndEntityProfiles(ConnectorDto connector, String authorityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_PROFILE_BASE_CONTEXT, authorityUuid)
@@ -32,7 +32,7 @@ public class EndEntityProfileApiClient extends BaseApiClient {
     }
 
     public List<NameAndIdDto> listCertificateProfiles(ConnectorDto connector, String authorityUuid, int endEntityProfileId) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_PROFILE_CERT_PROFILE_CONTEXT, authorityUuid, endEntityProfileId)
@@ -44,7 +44,7 @@ public class EndEntityProfileApiClient extends BaseApiClient {
     }
 
     public List<NameAndIdDto> listCAsInProfile(ConnectorDto connector, String authorityUuid, int endEntityProfileId) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_PROFILE_CAS_IN_PROFILE_CONTEXT, authorityUuid, endEntityProfileId)

@@ -31,7 +31,7 @@ public class AttributeApiClient extends BaseApiClient {
     }
 
     public List<AttributeDefinition> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
@@ -43,7 +43,7 @@ public class AttributeApiClient extends BaseApiClient {
     }
 
     public Void validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttributeDto> attributes, String functionGroupType) throws ValidationException, ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ATTRIBUTE_VALIDATION_CONTEXT, functionGroupCode.getCode(), functionGroupType)
@@ -75,7 +75,7 @@ public class AttributeApiClient extends BaseApiClient {
         }
 
         WebClient.RequestBodySpec request =
-                prepareRequest(method, connector.getAuthType(), connector.getAuthAttributes())
+                prepareRequest(method, connector, true)
                         .uri(uri);
 
         if (callbackRequest.getRequestBody() != null) {

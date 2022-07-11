@@ -11,10 +11,7 @@ import java.util.Arrays;
 public enum ConnectorStatus {
 
     WAITING_FOR_APPROVAL("waitingForApproval"),
-    REGISTERED("registered"),
     CONNECTED("connected"),
-    UNAVAILABLE("unavailable"),
-    MISCONFIGURED("misconfigured"),
     FAILED("failed"),
     OFFLINE("offline")
     ;
