@@ -21,6 +21,7 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 public class ApiClientTest {
 
@@ -169,9 +170,10 @@ public class ApiClientTest {
         connector.setUrl("localhost:3665");
         connector.setStatus(ConnectorStatus.WAITING_FOR_APPROVAL);
 
-        Assertions.assertThrows(ValidationException.class, () -> attributeApiClient.listAttributeDefinitions(
+        Assertions.assertThrows(ValidationException.class, () -> attributeApiClient.validateAttributes(
                 connector,
                 FunctionGroupCode.CREDENTIAL_PROVIDER,
+                new ArrayList<>(),
                 "certificate"));
     }
 }
