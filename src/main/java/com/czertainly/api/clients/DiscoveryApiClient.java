@@ -44,4 +44,16 @@ public class DiscoveryApiClient extends BaseApiClient {
                 request,
                 connector);
     }
+
+    public void removeDiscovery(ConnectorDto connector, String uuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
+
+        processRequest(r -> r
+                        .uri(connector.getUrl() + DISCOVERY_GET_CONTEXT, uuid)
+                        .retrieve()
+                        .toEntity(Void.class)
+                        .block().getBody(),
+                request,
+                connector);
+    }
 }
