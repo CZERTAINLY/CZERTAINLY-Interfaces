@@ -15,8 +15,11 @@ import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import java.io.Serializable;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AttributeApiClient extends BaseApiClient {
 
@@ -65,11 +68,19 @@ public class AttributeApiClient extends BaseApiClient {
         if (callbackRequest.getQueryParameters() != null) {
             callbackRequest.getQueryParameters().entrySet().stream()
                     .filter(q -> q.getValue() != null)
-                    .forEach(q -> uriBuilder.queryParam(q.getKey(), q.getValue()));
+                    .forEach(q -> uriBuilder.queryParam(q.getKey(), q.getValue() instanceof Map ? ((Map) q.getValue()).get("value") : q.getValue()));
         }
 
         if (callbackRequest.getPathVariables() != null) {
-            uri = uriBuilder.build(callbackRequest.getPathVariables());
+            Map<String, Serializable> updatedPathVariables = new HashMap<>();
+            for(Map.Entry<String,Serializable> entry : callbackRequest.getPathVariables().entrySet()){
+                if( entry.getValue() instanceof Map){
+                    updatedPathVariables.put(entry.getKey(), (Serializable) ((Map)entry.getValue()).get("value"));
+                }else{
+                    updatedPathVariables.put(entry.getKey(), entry.getValue());
+                }
+            }
+            uri = uriBuilder.build(updatedPathVariables);
         } else {
             uri = uriBuilder.build();
         }
