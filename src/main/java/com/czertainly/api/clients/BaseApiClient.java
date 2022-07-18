@@ -24,10 +24,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
@@ -74,8 +71,8 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case BASIC:
-                BaseAttributeContent<String> username = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes);
-                BaseAttributeContent<String> password = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes);
+                BaseAttributeContent<String> username = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes);
+                BaseAttributeContent<String> password = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes);
 
                 request = webClient
                         .method(method)
@@ -89,8 +86,8 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case API_KEY:
-                BaseAttributeContent<String> apiKeyHeader = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes);
-                BaseAttributeContent<String> apiKey = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes);
+                BaseAttributeContent<String> apiKeyHeader = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes);
+                BaseAttributeContent<String> apiKey = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes);
 
                 request = webClient
                         .method(method)
@@ -114,29 +111,46 @@ public abstract class BaseApiClient {
     private SslContext createSslContext(List<ResponseAttributeDto> attributes) {
         try {
             KeyManager km = null;
-            FileAttributeContent keyStoreData = (FileAttributeContent) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE, attributes);
+            FileAttributeContent keyStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE, attributes);
             if (keyStoreData != null && !keyStoreData.getValue().isEmpty()) {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                BaseAttributeContent<String> keyStoreType = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes);
-                BaseAttributeContent<String> keyStorePassword = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
+                BaseAttributeContent<String> keyStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes);
+                BaseAttributeContent<String> keyStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
                 byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData.getValue());
 
                 kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword.getValue(), keyStoreType.getValue()), keyStorePassword.getValue().toCharArray());
                 km = kmf.getKeyManagers()[0];
             }
 
-            TrustManager tm = null;
-            FileAttributeContent trustStoreData = (FileAttributeContent) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE, attributes);
+            TrustManager tm;
+            FileAttributeContent trustStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE, attributes);
             if (trustStoreData != null && !trustStoreData.getValue().isEmpty()) {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                BaseAttributeContent<String> trustStoreType = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
-                BaseAttributeContent<String> trustStorePassword = (BaseAttributeContent<String>) AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
-                byte[] trustStoreBytes = Base64.getDecoder().decode(keyStoreData.getValue());
+                BaseAttributeContent<String> trustStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
+                BaseAttributeContent<String> trustStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
+                byte[] trustStoreBytes = Base64.getDecoder().decode(trustStoreData.getValue());
 
                 tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getValue(), trustStoreType.getValue()));
                 tm = tmf.getTrustManagers()[0];
+            } else { // trust all
+                tm = new TrustManager[]{
+                        new X509TrustManager() {
+                            @Override
+                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                            }
+
+                            @Override
+                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                            }
+
+                            @Override
+                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                                return new java.security.cert.X509Certificate[]{};
+                            }
+                        }
+                }[0];
             }
 
             return SslContextBuilder
