@@ -25,7 +25,8 @@ CZERTAINLY supports the following `Connector` `Function Groups`:
 | `Discovery Provider` | Provides an interface to search for a certificates within a specific technology and sources | <ul><li>[Discovery](src/main/java/com/czertainly/api/interfaces/connector/DiscoveryController.java)</li></ul> |
 | `Legacy Authority Provider` | Provides a connection with the certification authority and certificate management functions | <ul><li>[Certificate](src/main/java/com/czertainly/api/interfaces/connector/CertificateController.java)</li><li>[EndEntity](src/main/java/com/czertainly/api/interfaces/connector/EndEntityController.java)</li><li>[EndEntityProfiles](src/main/java/com/czertainly/api/interfaces/connector/EndEntityProfilesController.java)</li></ul> |
 | `v2 Authority Provider` | Provides a connection with the certification authority and certificate management functions | <ul><li>[Certificate](src/main/java/com/czertainly/api/interfaces/connector/v2/CertificateController.java)</li></ul> |
-
+| `Entity Provider` | Provides the functionality to push the certificate to entities, discover certificates from entities | <ul><li>[Entity](src/main/java/com/czertainly/api/interfaces/connector/entity/EntityController.java)</li><li>[Location](src/main/java/com/czertainly/api/interfaces/connector/entity/LocationController.java)</li></ul> |
+| `Compliance Provider` | Provides functionality to check the compliance of certificates based on rules | <ul><li>[Compliance](src/main/java/com/czertainly/api/interfaces/connector/ComplianceController.java)</li><li>[Compliance Rules](src/main/java/com/czertainly/api/interfaces/connector/ComplianceRulesController.java)</li></ul> |
 ## Core interfaces
 
 `Core` interfaces are the interfaces that are used by the platform to communicate with the `Connectors` and the clients.
