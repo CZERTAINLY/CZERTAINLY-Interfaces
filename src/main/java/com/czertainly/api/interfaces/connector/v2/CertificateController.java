@@ -1,5 +1,7 @@
 package com.czertainly.api.interfaces.connector.v2;
 
+import com.czertainly.api.exception.CertificateException;
+import com.czertainly.api.exception.CertificateOperationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
@@ -100,7 +102,7 @@ public interface CertificateController {
     @RequestMapping(path = "/issue", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateDataResponseDto issueCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody CertificateSignRequestDto request) throws NotFoundException;
+            @RequestBody CertificateSignRequestDto request) throws NotFoundException, CertificateOperationException;
 
     @Operation(
             summary = "Renew Certificate"
@@ -121,7 +123,7 @@ public interface CertificateController {
     @RequestMapping(path = "/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     CertificateDataResponseDto renewCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody CertificateRenewRequestDto request) throws NotFoundException;
+            @RequestBody CertificateRenewRequestDto request) throws NotFoundException, CertificateOperationException;
 
     @Operation(
             summary = "List of Attributes to revoke Certificate"
@@ -183,5 +185,5 @@ public interface CertificateController {
     @RequestMapping(path = "/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     void revokeCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody CertRevocationDto request) throws NotFoundException;
+            @RequestBody CertRevocationDto request) throws NotFoundException, CertificateOperationException;
 }
