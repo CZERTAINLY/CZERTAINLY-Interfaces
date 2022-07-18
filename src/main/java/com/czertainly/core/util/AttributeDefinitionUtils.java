@@ -203,7 +203,7 @@ public class AttributeDefinitionUtils {
 
             if (attribute == null) {
                 if (definition.isRequired()) {
-                    errors.add(ValidationError.create("Required attribute {} not found.", definition.getName()));
+                    errors.add(ValidationError.create("Required attribute {} not found.", definition.getLabel()));
                 }
                 continue; // skip other validations
             }
@@ -211,7 +211,7 @@ public class AttributeDefinitionUtils {
             Object attributeContent = attribute.getContent();
 
             if (definition.isRequired() && attributeContent == null) {
-                errors.add(ValidationError.create("Value of required attribute {} not set.", definition.getName()));
+                errors.add(ValidationError.create("Value of required attribute {} not set.", definition.getLabel()));
                 continue; // required attribute has no value, skip other validations
             }
 
@@ -220,7 +220,7 @@ public class AttributeDefinitionUtils {
                 if (definitionContent == null || !definitionContent.equals(attributeContent)) {
                     errors.add(ValidationError.create(
                             "Wrong value of read only attribute {}. Definition value = {} and attribute value = {}.",
-                            definition.getName(),
+                            definition.getLabel(),
                             definitionContent,
                             attributeContent));
                 }
@@ -239,13 +239,13 @@ public class AttributeDefinitionUtils {
                         errors.add(ValidationError.create(
                                 "Value {} of attribute {} doesn't match regex {}",
                                 attributeContent,
-                                definition.getName(),
+                                definition.getLabel(),
                                 definition.getValidationRegex()));
                     }
                 } catch (Exception e) {
                     errors.add(ValidationError.create(
                             "Could not validate value of field {} due to error {}",
-                            definition.getName(),
+                            definition.getLabel(),
                             ExceptionUtils.getRootCauseMessage(e)));
                 }
             }
@@ -259,7 +259,7 @@ public class AttributeDefinitionUtils {
     private static void validateAttributeContent(AttributeDefinition definition, RequestAttributeDto attribute, List<ValidationError> errors) {
 
         if (definition.getType() == null) {
-            errors.add(ValidationError.create("Type of attribute definition {} not set.", definition.getName()));
+            errors.add(ValidationError.create("Type of attribute definition {} not set.", definition.getLabel()));
         }
 
         Object attributeContent = attribute.getContent();
@@ -283,7 +283,7 @@ public class AttributeDefinitionUtils {
                     case TEXT:
                         BaseAttributeContent<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BaseAttributeContent.class);
                         if (stringBaseAttributeContent.getValue() == null || AttributeType.getClass(definition.getType()) == null || !stringBaseAttributeContent.getValue().getClass().isAssignableFrom(AttributeType.getClass(definition.getType()))) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
@@ -291,7 +291,7 @@ public class AttributeDefinitionUtils {
                     case FILE:
                         FileAttributeContent fileBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, FileAttributeContent.class);
                         if (fileBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
@@ -300,13 +300,13 @@ public class AttributeDefinitionUtils {
                     case CREDENTIAL:
                         JsonAttributeContent credentialBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, JsonAttributeContent.class);
                         if (credentialBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         CredentialDto credentialDto = ATTRIBUTES_OBJECT_MAPPER.convertValue(credentialBaseAttributeContent.getData(), CredentialDto.class);
                         if (credentialDto == null) {
-                            errors.add(ValidationError.create("Wrong data of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong data of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
@@ -314,7 +314,7 @@ public class AttributeDefinitionUtils {
                     case DATE:
                         DateAttributeContent dateBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, DateAttributeContent.class);
                         if (dateBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
@@ -322,7 +322,7 @@ public class AttributeDefinitionUtils {
                     case JSON:
                         JsonAttributeContent jsonBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, JsonAttributeContent.class);
                         if (jsonBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
@@ -330,7 +330,7 @@ public class AttributeDefinitionUtils {
                     case TIME:
                         TimeAttributeContent timeBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TimeAttributeContent.class);
                         if (timeBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
@@ -338,13 +338,13 @@ public class AttributeDefinitionUtils {
                     case DATETIME:
                         DateTimeAttributeContent dateTimeBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, DateTimeAttributeContent.class);
                         if (dateTimeBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getName(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         break;
                     default:
-                        errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", definition.getName(), definition.getType()));
+                        errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", definition.getLabel(), definition.getType()));
                         break;
                 }
             }
@@ -353,7 +353,7 @@ public class AttributeDefinitionUtils {
         }
 
         if (wrongValue) {
-            errors.add(ValidationError.create("Attribute {} of type {} has wrong value.", definition.getName(), definition.getType()));
+            errors.add(ValidationError.create("Attribute {} of type {} has wrong value.", definition.getLabel(), definition.getType()));
         }
     }
 
