@@ -121,7 +121,7 @@ public interface AcmeProfileController {
 
 	@Operation(summary = "Update RA Profile for ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile updated") })
-	@RequestMapping(path = "/{uuid}/raprofile/{raProfileUuid}", method = RequestMethod.DELETE, consumes = { "application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/raprofile/{raProfileUuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updateRaProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 }
