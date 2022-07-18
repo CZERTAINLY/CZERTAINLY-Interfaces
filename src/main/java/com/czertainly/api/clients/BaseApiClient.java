@@ -110,6 +110,8 @@ public abstract class BaseApiClient {
 
     private SslContext createSslContext(List<ResponseAttributeDto> attributes) {
         try {
+            SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+
             KeyManager km = null;
             FileAttributeContent keyStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE, attributes);
             if (keyStoreData != null && !keyStoreData.getValue().isEmpty()) {
@@ -123,6 +125,8 @@ public abstract class BaseApiClient {
                 km = kmf.getKeyManagers()[0];
             }
 
+            sslContextBuilder.keyManager(km);
+
             TrustManager tm;
             FileAttributeContent trustStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE, attributes);
             if (trustStoreData != null && !trustStoreData.getValue().isEmpty()) {
@@ -134,31 +138,11 @@ public abstract class BaseApiClient {
 
                 tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getValue(), trustStoreType.getValue()));
                 tm = tmf.getTrustManagers()[0];
-            } else { // trust all
-                tm = new TrustManager[]{
-                        new X509TrustManager() {
-                            @Override
-                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
-                            }
 
-                            @Override
-                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
-                            }
-
-                            @Override
-                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                                return new java.security.cert.X509Certificate[]{};
-                            }
-                        }
-                }[0];
+                sslContextBuilder.trustManager(tm);
             }
 
-            return SslContextBuilder
-                    .forClient()
-                    .keyManager(km)
-                    .trustManager(tm)
-                    .protocols("TLSv1.2")
-                    .build();
+            return sslContextBuilder.protocols("TLSv1.2").build();
         } catch (Exception e) {
             throw new IllegalStateException("Failed to initialize SslContext.", e);
         }
