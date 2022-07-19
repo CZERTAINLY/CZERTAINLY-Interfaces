@@ -133,7 +133,7 @@ public interface AcmeRaProfileController {
     @Operation(summary = "Finalize Order", externalDocs = @ExternalDocumentation(description = "RFC 8555, section 7.4", url = "https://datatracker.ietf.org/doc/html/rfc8555#:~:text=the%20order%20resource%27s-,finalize,-URL.%0A%20%20%20The%20POST"))
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Order finalized")})
     @RequestMapping(path="/order/{orderId}/finalize", method = RequestMethod.POST, consumes = {"application/jose+json"}, produces = {"application/json"})
-    ResponseEntity<Order> finalize(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Order Id") @PathVariable String orderId, @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    ResponseEntity<Order> finalizeOrder(@Parameter(description = "RA Profile name") @PathVariable String raProfileName, @Parameter(description = "Order Id") @PathVariable String orderId, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Finalize Order JWS payload", content = @Content(schema = @Schema(implementation = CertificateFinalizeRequest.class))) @RequestBody String jwsBody) throws AcmeProblemDocumentException, ConnectorException, JsonProcessingException, CertificateException, AlreadyExistException;
 
     @Operation(summary = "Download Certificate", externalDocs = @ExternalDocumentation(description = "RFC 8555, section 7.4.2", url = "https://datatracker.ietf.org/doc/html/rfc8555#section-7.4.2"))

@@ -10,6 +10,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -80,13 +81,6 @@ public interface CertificateController {
 	public void updateCertificateGroup(@Parameter(description = "Certificate UUID") @PathVariable String uuid,
 			@RequestBody CertificateUpdateGroupDto request) throws NotFoundException;
 	
-	@Operation(summary = "Update Entity for a Certificate")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entity updated")})
-	@RequestMapping(path = "/{uuid}/entity", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateEntity(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateEntityDto request)
-			throws NotFoundException;
-	
 	@Operation(summary = "Update Owner for a Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Owner updated")})
 	@RequestMapping(path = "/{uuid}/owner", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
@@ -122,18 +116,6 @@ public interface CertificateController {
 	@RequestMapping(path = "/group", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkUpdateCertificateGroup(@RequestBody MultipleGroupUpdateDto request)
-			throws NotFoundException;
-	
-	@Operation(summary = "Update Entity for multiple Certificates", description = "In this operation, when the list of " +
-			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
-			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
-			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
-			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
-			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Entity updated")})
-	@RequestMapping(path = "/entity", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkUpdateEntity(@RequestBody MultipleEntityUpdateDto request)
 			throws NotFoundException;
 	
 	@Operation(summary = "Update Owner for multiple Certificates", description = "In this operation, when the list of " +
@@ -179,5 +161,30 @@ public interface CertificateController {
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
 	@RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
 	public List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
-	
+
+	@Operation(
+			summary = "List of available Locations for the Certificate"
+	)
+	@ApiResponses(
+			value = {
+					@ApiResponse(
+							responseCode = "200",
+							description = "Locations retrieved"
+					)
+			})
+	@RequestMapping(
+			method = RequestMethod.GET,
+			path = "/{certificateUuid}/locations",
+			produces = {"application/json"}
+	)
+	List<LocationDto> listLocations(
+			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
+	) throws NotFoundException;
+
+	@Operation(summary = "Initiate Certificate Compliance Check")
+	@ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
+	@RequestMapping(path = "/compliance", method = RequestMethod.POST, produces = {"application/json"})
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void checkCompliance(@RequestBody CertificateComplianceCheckDto request) throws NotFoundException;
+
 }

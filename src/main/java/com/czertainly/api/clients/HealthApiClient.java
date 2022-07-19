@@ -15,7 +15,7 @@ public class HealthApiClient extends BaseApiClient {
     }
 
     public HealthDto checkHealth(ConnectorDto connector) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + HEALTH_BASE_CONTEXT)

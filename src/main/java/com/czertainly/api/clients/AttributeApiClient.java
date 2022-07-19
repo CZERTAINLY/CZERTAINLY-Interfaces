@@ -2,10 +2,10 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.AttributeCallback;
-import com.czertainly.api.model.common.AttributeDefinition;
-import com.czertainly.api.model.common.RequestAttributeCallback;
-import com.czertainly.api.model.common.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.AttributeCallback;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,8 +15,11 @@ import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import java.io.Serializable;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AttributeApiClient extends BaseApiClient {
 
@@ -31,7 +34,7 @@ public class AttributeApiClient extends BaseApiClient {
     }
 
     public List<AttributeDefinition> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
@@ -43,7 +46,7 @@ public class AttributeApiClient extends BaseApiClient {
     }
 
     public Void validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttributeDto> attributes, String functionGroupType) throws ValidationException, ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ATTRIBUTE_VALIDATION_CONTEXT, functionGroupCode.getCode(), functionGroupType)
@@ -65,17 +68,25 @@ public class AttributeApiClient extends BaseApiClient {
         if (callbackRequest.getQueryParameters() != null) {
             callbackRequest.getQueryParameters().entrySet().stream()
                     .filter(q -> q.getValue() != null)
-                    .forEach(q -> uriBuilder.queryParam(q.getKey(), q.getValue()));
+                    .forEach(q -> uriBuilder.queryParam(q.getKey(), q.getValue() instanceof Map ? ((Map) q.getValue()).get("value") : q.getValue()));
         }
 
         if (callbackRequest.getPathVariables() != null) {
-            uri = uriBuilder.build(callbackRequest.getPathVariables());
+            Map<String, Serializable> updatedPathVariables = new HashMap<>();
+            for(Map.Entry<String,Serializable> entry : callbackRequest.getPathVariables().entrySet()){
+                if( entry.getValue() instanceof Map){
+                    updatedPathVariables.put(entry.getKey(), (Serializable) ((Map)entry.getValue()).get("value"));
+                }else{
+                    updatedPathVariables.put(entry.getKey(), entry.getValue());
+                }
+            }
+            uri = uriBuilder.build(updatedPathVariables);
         } else {
             uri = uriBuilder.build();
         }
 
         WebClient.RequestBodySpec request =
-                prepareRequest(method, connector.getAuthType(), connector.getAuthAttributes())
+                prepareRequest(method, connector, true)
                         .uri(uri);
 
         if (callbackRequest.getRequestBody() != null) {

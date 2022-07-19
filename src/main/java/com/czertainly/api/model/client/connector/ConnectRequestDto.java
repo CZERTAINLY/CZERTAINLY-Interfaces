@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.connector;
 
-import com.czertainly.api.model.common.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.AuthType;
 import io.swagger.v3.oas.annotations.media.Schema;
 

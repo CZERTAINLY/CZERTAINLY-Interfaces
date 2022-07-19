@@ -8,6 +8,8 @@ import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
 import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
 import com.czertainly.api.model.common.*;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

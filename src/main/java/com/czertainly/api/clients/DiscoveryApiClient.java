@@ -20,7 +20,7 @@ public class DiscoveryApiClient extends BaseApiClient {
 
 
     public DiscoveryProviderDto discoverCertificates(ConnectorDto connector, DiscoveryRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + DISCOVERY_BASE_CONTEXT)
@@ -33,13 +33,25 @@ public class DiscoveryApiClient extends BaseApiClient {
     }
 
     public DiscoveryProviderDto getDiscoveryData(ConnectorDto connector, DiscoveryDataRequestDto requestDto, String uuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                         .uri(connector.getUrl() + DISCOVERY_GET_CONTEXT, uuid)
                         .body(Mono.just(requestDto), DiscoveryDataRequestDto.class)
                         .retrieve()
                         .toEntity(DiscoveryProviderDto.class)
+                        .block().getBody(),
+                request,
+                connector);
+    }
+
+    public void removeDiscovery(ConnectorDto connector, String uuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
+
+        processRequest(r -> r
+                        .uri(connector.getUrl() + DISCOVERY_GET_CONTEXT, uuid)
+                        .retrieve()
+                        .toEntity(Void.class)
                         .block().getBody(),
                 request,
                 connector);

@@ -13,6 +13,12 @@ public class ClientCertificateRenewRequestDto {
             required = true)
     private String pkcs10;
 
+    @Schema(
+            description = "True to replace renewed certificate in the associated locations",
+            defaultValue = "false"
+    )
+    public boolean replaceInLocations;
+
     public String getPkcs10() {
         return pkcs10;
     }
@@ -21,10 +27,19 @@ public class ClientCertificateRenewRequestDto {
         this.pkcs10 = pkcs10;
     }
 
+    public boolean isReplaceInLocations() {
+        return replaceInLocations;
+    }
+
+    public void setReplaceInLocations(boolean replaceInLocations) {
+        this.replaceInLocations = replaceInLocations;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("pkcs10", pkcs10)
+                .append("replaceInLocations", replaceInLocations)
                 .toString();
     }
 }

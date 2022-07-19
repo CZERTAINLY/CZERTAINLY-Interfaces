@@ -1,9 +1,11 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.*;
-import com.czertainly.api.model.common.ResponseAttributeDto;
-import com.czertainly.api.model.core.connector.AuthType;
+import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
 import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.czertainly.core.util.KeyStoreUtils;
 import io.netty.handler.ssl.SslContext;
@@ -22,10 +24,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
@@ -53,27 +52,31 @@ public abstract class BaseApiClient {
 
     protected WebClient webClient;
 
-    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, AuthType authType, List<ResponseAttributeDto> authAttributes) {
-
+    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, Boolean validateConnectorStatus) {
+        if(validateConnectorStatus){
+            validateConnectorStatus(connector.getStatus());
+        }
         WebClient.RequestBodySpec request;
 
         // for backward compatibility
-        if (authType == null) {
+        if (connector.getAuthType() == null) {
             request = webClient.method(method);
             return (WebClient.RequestBodyUriSpec) request;
         }
 
-        switch (authType) {
+        List<ResponseAttributeDto> authAttributes = connector.getAuthAttributes();
+
+        switch (connector.getAuthType()) {
             case NONE:
                 request = webClient.method(method);
                 break;
             case BASIC:
-                String username = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_USERNAME, authAttributes);
-                String password = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_PASSWORD, authAttributes);
+                BaseAttributeContent<String> username = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes);
+                BaseAttributeContent<String> password = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes);
 
                 request = webClient
                         .method(method)
-                        .headers(h -> h.setBasicAuth(username, password));
+                        .headers(h -> h.setBasicAuth(username.getValue(), password.getValue()));
                 break;
             case CERTIFICATE:
                 SslContext sslContext = createSslContext(authAttributes);
@@ -83,56 +86,63 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case API_KEY:
-                String apiKeyHeader = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_API_KEY_HEADER, authAttributes);
-                String apiKey = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_API_KEY, authAttributes);
+                BaseAttributeContent<String> apiKeyHeader = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes);
+                BaseAttributeContent<String> apiKey = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes);
 
                 request = webClient
                         .method(method)
-                        .headers(h -> h.set(apiKeyHeader, apiKey));
+                        .headers(h -> h.set(apiKeyHeader.getValue(), apiKey.getValue()));
                 break;
             case JWT:
                 throw new UnsupportedOperationException("JWT is unimplemented");
             default:
-                throw new IllegalArgumentException("Unknown auth type " + authType);
+                throw new IllegalArgumentException("Unknown auth type " + connector.getAuthType());
         }
 
         return (WebClient.RequestBodyUriSpec) request;
     }
 
+    public void validateConnectorStatus(ConnectorStatus connectorStatus) throws ValidationException {
+        if(connectorStatus.equals(ConnectorStatus.WAITING_FOR_APPROVAL)){
+            throw new ValidationException(ValidationError.create("Connector has invalid status: Waiting For Approval"));
+        }
+    }
+
     private SslContext createSslContext(List<ResponseAttributeDto> attributes) {
         try {
+            SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
+
             KeyManager km = null;
-            String keyStoreData = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE, attributes);
-            if (keyStoreData != null && !keyStoreData.isEmpty()) {
+            FileAttributeContent keyStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE, attributes);
+            if (keyStoreData != null && !keyStoreData.getValue().isEmpty()) {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                String keyStoreType = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE_TYPE, attributes);
-                String keyStorePassword = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
-                byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData);
+                BaseAttributeContent<String> keyStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes);
+                BaseAttributeContent<String> keyStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes);
+                byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData.getValue());
 
-                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword, keyStoreType), keyStorePassword.toCharArray());
+                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword.getValue(), keyStoreType.getValue()), keyStorePassword.getValue().toCharArray());
                 km = kmf.getKeyManagers()[0];
             }
 
-            TrustManager tm = null;
-            String trustStoreData = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE, attributes);
-            if (trustStoreData != null && !trustStoreData.isEmpty()) {
+            sslContextBuilder.keyManager(km);
+
+            TrustManager tm;
+            FileAttributeContent trustStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE, attributes);
+            if (trustStoreData != null && !trustStoreData.getValue().isEmpty()) {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                String trustStoreType = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
-                String trustStorePassword = AttributeDefinitionUtils.getAttributeValue(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
-                byte[] trustStoreBytes = Base64.getDecoder().decode(keyStoreData);
+                BaseAttributeContent<String> trustStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes);
+                BaseAttributeContent<String> trustStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes);
+                byte[] trustStoreBytes = Base64.getDecoder().decode(trustStoreData.getValue());
 
-                tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword, trustStoreType));
+                tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getValue(), trustStoreType.getValue()));
                 tm = tmf.getTrustManagers()[0];
+
+                sslContextBuilder.trustManager(tm);
             }
 
-            return SslContextBuilder
-                    .forClient()
-                    .keyManager(km)
-                    .trustManager(tm)
-                    .protocols("TLSv1.2")
-                    .build();
+            return sslContextBuilder.protocols("TLSv1.2").build();
         } catch (Exception e) {
             throw new IllegalStateException("Failed to initialize SslContext.", e);
         }

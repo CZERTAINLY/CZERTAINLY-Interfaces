@@ -28,7 +28,7 @@ public class CertificateEventHistoryDto {
     private String message;
 
     @Schema(description = "Additional information for the event")
-    private HashMap<String, String> additionalInformation;
+    private HashMap<String, Object> additionalInformation;
 
     public String getUuid() {
         return uuid;
@@ -86,11 +86,11 @@ public class CertificateEventHistoryDto {
         this.message = message;
     }
 
-    public HashMap<String, String> getAdditionalInformation() {
+    public HashMap<String, Object> getAdditionalInformation() {
         return additionalInformation;
     }
 
-    public void setAdditionalInformation(HashMap<String, String> additionalInformation) {
+    public void setAdditionalInformation(HashMap<String, Object> additionalInformation) {
         this.additionalInformation = additionalInformation;
     }
 }

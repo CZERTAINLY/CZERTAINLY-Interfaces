@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -90,5 +91,23 @@ public interface DiscoveryController {
             }
     )
     DiscoveryProviderDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid, @RequestBody DiscoveryDataRequestDto request) throws IOException, NotFoundException;
+
+    @DeleteMapping(
+            path = "/discover/{uuid}",
+            produces = {"application/json"}
+    )
+    @Operation(
+            summary = "Delete Discovery"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Discovery information deleted"
+                    )
+            }
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws IOException, NotFoundException;
 
 }

@@ -3,8 +3,8 @@ package com.czertainly.api.clients.v2;
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.AttributeDefinition;
-import com.czertainly.api.model.common.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.connector.v2.CertRevocationDto;
 import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
 import com.czertainly.api.model.connector.v2.CertificateRenewRequestDto;
@@ -40,7 +40,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public List<AttributeDefinition> listIssueCertificateAttributes(ConnectorDto connector, String authorityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_ISSUE_ATTRIBUTES_CONTEXT, authorityUuid)
@@ -52,7 +52,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public Boolean validateIssueCertificateAttributes(ConnectorDto connector, String authorityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_ISSUE_ATTRIBUTES_VALIDATE_CONTEXT, authorityUuid)
@@ -65,7 +65,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public CertificateDataResponseDto issueCertificate(ConnectorDto connector, String authorityUuid, CertificateSignRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_ISSUE_CONTEXT, authorityUuid)
@@ -78,7 +78,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public CertificateDataResponseDto renewCertificate(ConnectorDto connector, String authorityUuid, CertificateRenewRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_RENEW_CONTEXT, authorityUuid)
@@ -91,7 +91,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public List<AttributeDefinition> listRevokeCertificateAttributes(ConnectorDto connector, String authorityUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_REVOKE_ATTRIBUTES_CONTEXT, authorityUuid)
@@ -103,7 +103,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public Boolean validateRevokeCertificateAttributes(ConnectorDto connector, String authorityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_REVOKE_ATTRIBUTES_VALIDATE_CONTEXT, authorityUuid)
@@ -116,7 +116,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public void revokeCertificate(ConnectorDto connector, String authorityUuid, CertRevocationDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityUuid)

@@ -22,7 +22,7 @@ public class EndEntityApiClient extends BaseApiClient {
     }
 
     public List<EndEntityDto> listEntities(ConnectorDto connector, String authorityUuid, String endEntityProfileName) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_BASE_CONTEXT, authorityUuid, endEntityProfileName)
@@ -34,7 +34,7 @@ public class EndEntityApiClient extends BaseApiClient {
     }
 
     public EndEntityDto getEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)
@@ -46,7 +46,7 @@ public class EndEntityApiClient extends BaseApiClient {
     }
 
     public void createEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, AddEndEntityRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_BASE_CONTEXT, authorityUuid, endEntityProfileName)
@@ -59,7 +59,7 @@ public class EndEntityApiClient extends BaseApiClient {
     }
 
     public void updateEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName, EditEndEntityRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)
@@ -72,7 +72,7 @@ public class EndEntityApiClient extends BaseApiClient {
     }
 
     public void revokeAndDeleteEndEntity(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_IDENTIFIED_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)
@@ -84,7 +84,7 @@ public class EndEntityApiClient extends BaseApiClient {
     }
 
     public void resetPassword(ConnectorDto connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + END_ENTITY_RESET_PASSWORD_CONTEXT, authorityUuid, endEntityProfileName, endEntityName)

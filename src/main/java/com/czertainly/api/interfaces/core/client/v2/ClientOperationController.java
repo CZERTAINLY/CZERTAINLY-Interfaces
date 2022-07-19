@@ -1,12 +1,13 @@
 package com.czertainly.api.interfaces.core.client.v2;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.CertificateOperationException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.v2.ClientCertificateDataResponseDto;
 import com.czertainly.api.model.core.v2.ClientCertificateRenewRequestDto;
 import com.czertainly.api.model.core.v2.ClientCertificateRevocationDto;
@@ -93,7 +94,7 @@ public interface ClientOperationController {
     ClientCertificateDataResponseDto renewCertificate(
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-            @RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException;
+            @RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, CertificateOperationException;
     
 	@Operation(summary = "Get revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes obtained") })

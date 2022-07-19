@@ -10,6 +10,10 @@ public class DiscoveryDataRequestDto {
             required = true)
     private String name;
 
+    @Schema(description = "Discovery Kind",
+            required = true)
+    private String kind;
+
     @Schema(description = "Starting index of the Certificate",
             required = true)
     private Integer startIndex;
@@ -42,9 +46,21 @@ public class DiscoveryDataRequestDto {
         this.endIndex = endIndex;
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("name", name)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("name", name)
+                .append("kind", kind)
+                .append("startIndex", startIndex)
+                .append("endIndex", endIndex)
                 .toString();
     }
 }

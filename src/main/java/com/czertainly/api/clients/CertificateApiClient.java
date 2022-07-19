@@ -20,7 +20,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public CertificateSignResponseDto issueCertificate(ConnectorDto connector, String authorityUuid, String endEntityProfileName, CertificateSignRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_ISSUE_CONTEXT, authorityUuid, endEntityProfileName)
@@ -33,7 +33,7 @@ public class CertificateApiClient extends BaseApiClient {
     }
 
     public void revokeCertificate(ConnectorDto connector, String authorityUuid, String endEntityProfileName, CertRevocationDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector.getAuthType(), connector.getAuthAttributes());
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityUuid, endEntityProfileName)
