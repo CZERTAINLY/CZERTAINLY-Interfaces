@@ -155,26 +155,18 @@ public class AttributeMigrationUtils {
     private static Object getAttributeValue(Object oldValue, String oldType) {
         oldType = oldType.toUpperCase();
         if (oldType.equals("FILE")) {
-            return new FileAttributeContent() {{
-                setValue((String) oldValue);
-            }};
+            FileAttributeContent content = new FileAttributeContent();
+            content.setValue((String) oldValue);
+            return content;
         }
         if (oldValue instanceof String) {
-            return new BaseAttributeContent<String>() {{
-                setValue((String) oldValue);
-            }};
+            return new BaseAttributeContent<>((String) oldValue);
         } else if (oldValue instanceof Float) {
-            return new BaseAttributeContent<Float>() {{
-                setValue((Float) oldValue);
-            }};
+            return new BaseAttributeContent<>((Float) oldValue);
         } else if (oldValue instanceof Boolean) {
-            return new BaseAttributeContent<Boolean>() {{
-                setValue((Boolean) oldValue);
-            }};
+            return new BaseAttributeContent<>((Boolean) oldValue);
         } else if (oldValue instanceof Integer) {
-            return new BaseAttributeContent<Integer>() {{
-                setValue((Integer) oldValue);
-            }};
+            return new BaseAttributeContent<>((Integer) oldValue);
         } else if (oldValue instanceof List || oldType.equals("LIST") || oldType.equals("CREDENTIAL")) {
             if (oldValue instanceof List) {
                 if (((List) oldValue).isEmpty()) {
@@ -183,33 +175,25 @@ public class AttributeMigrationUtils {
                 if (((List<?>) oldValue).get(0) instanceof String) {
                     List<BaseAttributeContent<String>> multiObject = new ArrayList<>();
                     for (String innerValue : ((List<String>) oldValue)) {
-                        multiObject.add(new BaseAttributeContent<>() {{
-                            setValue(innerValue);
-                        }});
+                        multiObject.add(new BaseAttributeContent<>(innerValue));
                     }
                     return multiObject;
                 } else if (((List<?>) oldValue).get(0) instanceof Integer) {
                     List<BaseAttributeContent<Integer>> multiObject = new ArrayList<>();
                     for (Integer innerValue : ((List<Integer>) oldValue)) {
-                        multiObject.add(new BaseAttributeContent<>() {{
-                            setValue(innerValue);
-                        }});
+                        multiObject.add(new BaseAttributeContent<>(innerValue));
                     }
                     return multiObject;
                 } else if (((List<?>) oldValue).get(0) instanceof Float) {
                     List<BaseAttributeContent<Float>> multiObject = new ArrayList<>();
                     for (Float innerValue : ((List<Float>) oldValue)) {
-                        multiObject.add(new BaseAttributeContent<>() {{
-                            setValue(innerValue);
-                        }});
+                        multiObject.add(new BaseAttributeContent<>(innerValue));
                     }
                     return multiObject;
                 } else if (((List<?>) oldValue).get(0) instanceof Boolean) {
                     List<BaseAttributeContent<Boolean>> multiObject = new ArrayList<>();
                     for (Boolean innerValue : ((List<Boolean>) oldValue)) {
-                        multiObject.add(new BaseAttributeContent<>() {{
-                            setValue(innerValue);
-                        }});
+                        multiObject.add(new BaseAttributeContent<>(innerValue));
                     }
                     return multiObject;
                 } else if (((List<?>) oldValue).get(0) instanceof Map) {
@@ -238,9 +222,7 @@ public class AttributeMigrationUtils {
             }
         }
         String finalPrimKey = primKey;
-        return new JsonAttributeContent() {{
-            setValue(finalPrimKey);
-            setData(oldJsonValue);
-        }};
+
+        return new JsonAttributeContent(finalPrimKey, oldJsonValue);
     }
 }
