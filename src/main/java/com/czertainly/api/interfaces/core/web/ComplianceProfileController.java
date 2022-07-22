@@ -5,7 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.compliance.*;
-import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
@@ -156,7 +156,7 @@ public interface ComplianceProfileController {
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
-    public List<ForceDeleteMessageDto> bulkRemoveComplianceProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    public List<BulkActionMessageDto> bulkRemoveComplianceProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Compliance Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                                                    @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
@@ -167,7 +167,7 @@ public interface ComplianceProfileController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/force", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void bulkForceRemoveComplianceProfiles(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+    public List<BulkActionMessageDto> bulkForceRemoveComplianceProfiles(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Associate Compliance Profile to RA Profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile association successful"),
