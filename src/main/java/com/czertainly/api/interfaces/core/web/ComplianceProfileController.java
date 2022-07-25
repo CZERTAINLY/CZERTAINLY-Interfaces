@@ -162,11 +162,10 @@ public interface ComplianceProfileController {
                                                                    @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Force delete Compliance Profiles")
-    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Compliance Profiles forced to delete"),
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Compliance Profiles forced to delete"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/force", method = RequestMethod.DELETE, produces = {"application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public List<BulkActionMessageDto> bulkForceRemoveComplianceProfiles(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Associate Compliance Profile to RA Profile")
