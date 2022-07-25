@@ -72,7 +72,7 @@ public interface AcmeProfileController {
 	@Operation(summary = "Delete ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profile deleted") })
 	@RequestMapping(path="/{uuid}", method = RequestMethod.DELETE, produces = { "application/json" })
-	public List<BulkActionMessageDto> deleteAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException;
+	public void deleteAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
 	@Operation(summary = "Enable ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile enabled") })
