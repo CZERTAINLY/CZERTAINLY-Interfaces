@@ -5,9 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 /**
  * Response containing signed certificate data
  */

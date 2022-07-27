@@ -18,7 +18,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.cert.CertificateException;
 import java.util.List;
@@ -60,7 +65,7 @@ public interface DiscoveryController {
 	@Operation(summary = "List Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available Discoveries")})
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-	public List<DiscoveryHistoryDto> listDiscovery();
+	public List<DiscoveryHistoryDto> listDiscoveries();
 	
 	@Operation(summary = "Discovery Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Discovery details retrieved")})
@@ -79,13 +84,13 @@ public interface DiscoveryController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discovery deleted")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void removeDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
+	public void deleteDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Delete Multiple Discoveries")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discoveries deleted")})
 	@RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkRemoveDiscovery(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	public void bulkDeleteDiscovery(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Discovery UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
 										@RequestBody List<String> discoveryUuids) throws NotFoundException;

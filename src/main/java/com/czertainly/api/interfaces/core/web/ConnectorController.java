@@ -4,8 +4,14 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.connector.*;
-import com.czertainly.api.model.common.*;
+import com.czertainly.api.model.client.connector.ConnectDto;
+import com.czertainly.api.model.client.connector.ConnectRequestDto;
+import com.czertainly.api.model.client.connector.ConnectorRequestDto;
+import com.czertainly.api.model.client.connector.ConnectorUpdateRequestDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.HealthDto;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
@@ -21,7 +27,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.ConnectException;
 import java.util.List;
@@ -92,20 +104,20 @@ public interface ConnectorController {
 	public ResponseEntity<?> createConnector(@RequestBody ConnectorRequestDto request)
 			throws AlreadyExistException, ConnectorException;
 
-	@Operation(summary = "Update a Connector")
+	@Operation(summary = "Edit a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector updated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
 			"application/json" })
-	public ConnectorDto updateConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid, @RequestBody ConnectorUpdateRequestDto request)
+	public ConnectorDto editConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid, @RequestBody ConnectorUpdateRequestDto request)
 			throws ConnectorException;
 
 	@Operation(summary = "Delete a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connector deleted")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void removeConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException;
+	public void deleteConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Connect to a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector connected"),
@@ -178,7 +190,7 @@ public interface ConnectorController {
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
-	public List<BulkActionMessageDto> bulkRemoveConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	public List<BulkActionMessageDto> bulkDeleteConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Connector UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
 															   @RequestBody List<String> uuids) throws NotFoundException, ValidationException, ConnectorException;
@@ -188,7 +200,7 @@ public interface ConnectorController {
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/force", method = RequestMethod.DELETE, produces = {"application/json"})
-	public List<BulkActionMessageDto> bulkForceRemoveConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	public List<BulkActionMessageDto> forceDeleteConnector(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Connector UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
 											 @RequestBody List<String> uuids) throws NotFoundException, ValidationException;

@@ -1,6 +1,5 @@
 package com.czertainly.api.model.common;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class BulkActionMessageDto extends NameAndUuidDto {

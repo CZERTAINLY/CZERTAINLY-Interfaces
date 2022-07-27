@@ -1,11 +1,8 @@
 package com.czertainly.api.model.client.compliance;
 
-import com.czertainly.api.model.connector.compliance.ComplianceRequestRulesDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 public class ComplianceProfileRulesDeletionRequestDto {
     @Schema(description = "UUID of the Compliance Provider",

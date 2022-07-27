@@ -4,7 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.client.entity.EntityInstanceRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceUpdateRequestDto;
-import com.czertainly.api.model.common.*;
+import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.entity.EntityInstanceDto;
@@ -19,7 +20,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -118,7 +124,7 @@ public interface EntityInstanceController {
 	) throws AlreadyExistException, ConnectorException;
 
 	@Operation(
-			summary = "Update Entity instance"
+			summary = "Edit Entity instance"
 	)
 	@ApiResponses(
 			value = {
@@ -139,13 +145,13 @@ public interface EntityInstanceController {
 			consumes = {"application/json"},
 			produces = {"application/json"}
 	)
-	EntityInstanceDto updateEntityInstance(
+	EntityInstanceDto editEntityInstance(
 			@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
 			@RequestBody EntityInstanceUpdateRequestDto request
 	) throws ConnectorException;
 
 	@Operation(
-			summary = "Remove Entity instance"
+			summary = "Delete Entity instance"
 	)
 	@ApiResponses(
 			value = {
@@ -158,7 +164,7 @@ public interface EntityInstanceController {
 			path = "/{entityUuid}",
 			method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void removeEntityInstance(
+	void deleteEntityInstance(
 			@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
 	) throws ConnectorException;
 

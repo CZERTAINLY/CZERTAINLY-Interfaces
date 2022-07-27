@@ -1,13 +1,9 @@
 package com.czertainly.api.model.core.certificate;
 
-import com.czertainly.api.model.connector.compliance.ComplianceResponseRulesDto;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
-import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /*
 Contains the list of parameters returned by the Compliance Provider after
