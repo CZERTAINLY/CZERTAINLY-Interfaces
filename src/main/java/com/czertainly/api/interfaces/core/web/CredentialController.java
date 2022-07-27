@@ -120,13 +120,4 @@ public interface CredentialController {
             description = "Credential UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                                             @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
-
-    @Operation(summary = "Force delete multiple Credentials")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credentials forced to delete"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/force", method = RequestMethod.DELETE, produces = {"application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void forceDeleteCredential(@Parameter(description = "Credential UUIDs") @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
-
 }
