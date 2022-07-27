@@ -21,7 +21,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
@@ -53,7 +58,7 @@ public interface CertificateController {
 	@Operation(summary = "List Certificates")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of all the certificates")})
 	@RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
-	public CertificateResponseDto listCertificate(@RequestBody SearchRequestDto request) throws ValidationException;
+	public CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request) throws ValidationException;
 	
 	@Operation(summary = "Get Certificate Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
@@ -61,11 +66,11 @@ public interface CertificateController {
 	public CertificateDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
 			throws NotFoundException, CertificateException, IOException;
 	
-	@Operation(summary = "Remove a certificate")
+	@Operation(summary = "Delete a certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate deleted")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void removeCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+	public void deleteCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Update RA Profile for a Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile updated")})
@@ -144,7 +149,7 @@ public interface CertificateController {
 			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificates deleted") })
 	@RequestMapping(path = "/delete", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public BulkOperationResponse bulkRemoveCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
+	public BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
 
 	@Operation(summary = "Validate Certificates of Status Unknown")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate Validation Initiated") })

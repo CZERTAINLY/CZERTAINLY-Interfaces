@@ -5,8 +5,8 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.client.AddClientRequestDto;
 import com.czertainly.api.model.client.client.EditClientRequestDto;
-import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.client.ClientDto;
@@ -21,7 +21,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.cert.CertificateException;
 import java.util.List;
@@ -66,9 +71,9 @@ public interface ClientManagementController {
     public List<ClientDto> listClients();
 
     @Operation(summary = "Add a new client")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New client added", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New client added", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    public ResponseEntity<?> addClient(@RequestBody AddClientRequestDto request)
+    public ResponseEntity<UuidDto> createClient(@RequestBody AddClientRequestDto request)
             throws CertificateException, AlreadyExistException, NotFoundException, ValidationException;
 
     @Operation(summary = "Get the details of a client")
@@ -83,17 +88,17 @@ public interface ClientManagementController {
     public ClientDto editClient(@Parameter(description = "Client UUID") @PathVariable String uuid, @RequestBody EditClientRequestDto request)
             throws CertificateException, NotFoundException, AlreadyExistException;
 
-    @Operation(summary = "Remove a client")
+    @Operation(summary = "Delete a client")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Client Deleted")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeClient(@Parameter(description = "Client UUID") @PathVariable String uuid) throws NotFoundException;
+    public void deleteClient(@Parameter(description = "Client UUID") @PathVariable String uuid) throws NotFoundException;
 
-    @Operation(summary = "Remove multiple client")
+    @Operation(summary = "Delete multiple client")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Clients Deleted")})
     @RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<List<BulkActionMessageDto>> bulkRemoveClient(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    public ResponseEntity<List<BulkActionMessageDto>> bulkDeleteClient(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Client UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                      @RequestBody List<String> clientUuids) throws NotFoundException;

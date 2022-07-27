@@ -4,9 +4,16 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.compliance.*;
-import com.czertainly.api.model.common.BulkActionMessageDto;
+import com.czertainly.api.model.client.compliance.ComplianceGroupRequestDto;
+import com.czertainly.api.model.client.compliance.ComplianceGroupsListResponseDto;
+import com.czertainly.api.model.client.compliance.ComplianceProfileComplianceCheckDto;
+import com.czertainly.api.model.client.compliance.ComplianceProfileRequestDto;
+import com.czertainly.api.model.client.compliance.ComplianceRuleAdditionRequestDto;
+import com.czertainly.api.model.client.compliance.ComplianceRuleDeletionRequestDto;
+import com.czertainly.api.model.client.compliance.ComplianceRulesListResponseDto;
+import com.czertainly.api.model.client.compliance.RaProfileAssociationRequestDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateType;
@@ -23,7 +30,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -138,11 +151,11 @@ public interface ComplianceProfileController {
                                 @PathVariable String uuid, @RequestBody ComplianceGroupRequestDto request)
             throws NotFoundException;
 
-    @Operation(summary = "Remove Compliance Profile")
+    @Operation(summary = "Delete Compliance Profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Compliance Profile deleted")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable String uuid) throws NotFoundException;
+    public void deleteComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
 
     @Operation(summary = "Get RA Profiles for a Compliance Profile")
@@ -156,7 +169,7 @@ public interface ComplianceProfileController {
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
-    public List<BulkActionMessageDto> bulkRemoveComplianceProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    public List<BulkActionMessageDto> bulkDeleteComplianceProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Compliance Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                                                    @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
@@ -166,7 +179,7 @@ public interface ComplianceProfileController {
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/force", method = RequestMethod.DELETE, produces = {"application/json"})
-    public List<BulkActionMessageDto> bulkForceRemoveComplianceProfiles(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+    public List<BulkActionMessageDto> forceDeleteComplianceProfiles(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Associate Compliance Profile to RA Profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile association successful"),

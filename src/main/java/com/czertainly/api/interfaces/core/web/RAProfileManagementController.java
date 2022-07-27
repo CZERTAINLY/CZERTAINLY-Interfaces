@@ -4,16 +4,15 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.certificate.CertificateComplianceCheckDto;
 import com.czertainly.api.model.client.client.SimplifiedClientDto;
 import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
 import com.czertainly.api.model.client.raprofile.RaProfileComplianceCheckDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +25,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -73,12 +78,12 @@ public interface RAProfileManagementController {
     @RequestMapping(method = RequestMethod.GET, params = {"isEnabled"}, produces = {"application/json"})
     public List<RaProfileDto> listRaProfiles(@RequestParam Boolean isEnabled);
 
-    @Operation(summary = "Add RA Profile")
+    @Operation(summary = "Create RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "RA Profile added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    public ResponseEntity<?> addRaProfile(@RequestBody AddRaProfileRequestDto request)
+    public ResponseEntity<?> createRaProfile(@RequestBody AddRaProfileRequestDto request)
             throws AlreadyExistException, ValidationException, NotFoundException, ConnectorException;
 
     @Operation(summary = "Details of RA Profile")
@@ -98,7 +103,7 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile deleted")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
+    public void deleteRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disable RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile disabled")})
@@ -123,7 +128,7 @@ public interface RAProfileManagementController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void bulkRemoveRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    public void bulkDeleteRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                     @RequestBody List<String> uuids) throws NotFoundException, ValidationException;

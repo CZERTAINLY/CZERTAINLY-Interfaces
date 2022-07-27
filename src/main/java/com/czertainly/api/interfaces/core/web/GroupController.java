@@ -17,7 +17,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -60,23 +65,23 @@ public interface GroupController {
 	public ResponseEntity<?> createGroup(@RequestBody GroupRequestDto request)
 			throws AlreadyExistException, NotFoundException;
 	
-	@Operation(summary = "Update Group")
+	@Operation(summary = "Edit Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group updated")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public GroupDto updateGroup(@Parameter(description = "Group UUID") @PathVariable String uuid, @RequestBody GroupRequestDto request)
+	public GroupDto editGroup(@Parameter(description = "Group UUID") @PathVariable String uuid, @RequestBody GroupRequestDto request)
 			throws NotFoundException;
 	
-	@Operation(summary = "Remove Group")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group removed") })
+	@Operation(summary = "Delete Group")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group deleted") })
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void removeGroup(@Parameter(description = "Group UUID") @PathVariable String uuid) throws NotFoundException;
+	public void deleteGroup(@Parameter(description = "Group UUID") @PathVariable String uuid) throws NotFoundException;
 
-	@Operation(summary = "Remove multiple Groups")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Groups removed") })
+	@Operation(summary = "Delete multiple Groups")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Groups deleted") })
 	@RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkRemoveGroup(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	public void bulkDeleteGroup(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Group UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
 											   @RequestBody List<String> groupUuids) throws NotFoundException;
