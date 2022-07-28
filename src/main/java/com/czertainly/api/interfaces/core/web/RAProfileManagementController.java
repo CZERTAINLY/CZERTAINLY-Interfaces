@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/raprofiles")
@@ -71,12 +72,7 @@ public interface RAProfileManagementController {
     @Operation(summary = "List of available RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "RA Profiles retrieved")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    public List<RaProfileDto> listRaProfiles();
-
-    @Operation(summary = "List of available RA Profiles by Status")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "RA Profiles retrieved")})
-    @RequestMapping(method = RequestMethod.GET, params = {"isEnabled"}, produces = {"application/json"})
-    public List<RaProfileDto> listRaProfiles(@RequestParam Boolean isEnabled);
+    public List<RaProfileDto> listRaProfiles(Optional<Boolean> enabled);
 
     @Operation(summary = "Create RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "RA Profile added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
