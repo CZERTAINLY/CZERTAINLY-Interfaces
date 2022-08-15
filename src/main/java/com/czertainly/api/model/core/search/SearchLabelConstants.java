@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.search;
 
 import com.czertainly.api.model.core.certificate.CertificateStatus;
+import com.czertainly.api.model.core.compliance.ComplianceStatus;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public final class SearchLabelConstants {
     private static final String OCSP_VALIDATION_LABEL = "OCSP Validation";
     private static final String CRL_VALIDATION_LABEL = "CRL Validation";
     private static final String SIGNATURE_VALIDATION_LABEL = "Signature Validation";
+    private static final String COMPLIANCE_STATUS = "Compliance Status";
 
     public static final SearchFieldDataDto COMMON_NAME_FILTER = getSearchField(SearchableFields.COMMON_NAME,
             COMMON_NAME_LABEL,
@@ -117,6 +119,15 @@ public final class SearchLabelConstants {
             SearchableFieldType.LIST,
             List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
+
+    public static final SearchFieldDataDto COMPLIANCE_STATUS_FILTER = getSearchField(SearchableFields.COMPLIANCE_STATUS,
+            COMPLIANCE_STATUS,
+            true,
+            List.of(ComplianceStatus.OK.toString(), ComplianceStatus.NOK.toString(), ComplianceStatus.NA.toString()),
+            SearchableFieldType.LIST,
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
+    );
+
     public static final SearchFieldDataDto GROUP_NAME_FILTER = getSearchField(SearchableFields.GROUP_NAME,
             GROUP_NAME_LABEL,
             true,

@@ -42,6 +42,8 @@ public class StatisticsDto {
     private Map<String, Long> certificateStatByBasicConstraints;
 	@Schema(description = "Map of Certificate count by status")
     private Map<String, Long> certificateStatByStatus;
+    @Schema(description = "Map of Certificate count by compliance status")
+    private Map<String, Long> certificateStatByComplianceStatus;
 
     //Other Entities by Status
 	@Schema(description = "Map of Connector count by status")
@@ -211,6 +213,14 @@ public class StatisticsDto {
 
     public void setCertificateStatByStatus(Map<String, Long> certificateStatByStatus) {
         this.certificateStatByStatus = certificateStatByStatus;
+    }
+
+    public Map<String, Long> getCertificateStatByComplianceStatus() {
+        return certificateStatByComplianceStatus;
+    }
+
+    public void setCertificateStatByComplianceStatus(Map<String, Long> certificateStatByComplianceStatus) {
+        this.certificateStatByComplianceStatus = certificateStatByComplianceStatus;
     }
 
     public StatisticsDto() {
