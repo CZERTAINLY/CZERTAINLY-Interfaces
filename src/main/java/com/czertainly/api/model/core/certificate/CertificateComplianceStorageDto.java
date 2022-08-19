@@ -15,37 +15,37 @@ database as a JSON field
 public class CertificateComplianceStorageDto {
 
     @Schema(description = "Compliant Rules")
-    private List<Long> ok = new ArrayList<>();
+    private List<String> ok = new ArrayList<>();
 
     @Schema(description = "Non Compliant Rules")
-    private List<Long> nok = new ArrayList<>();
+    private List<String> nok = new ArrayList<>();
 
     @Schema(description = "Not Applicable Rules")
-    private List<Long> na = new ArrayList<>();
+    private List<String> na = new ArrayList<>();
 
 
-    public List<Long> getOk() {
+    public List<String> getOk() {
 
         return ok;
     }
 
-    public void setOk(List<Long> ok) {
+    public void setOk(List<String> ok) {
         this.ok = ok;
     }
 
-    public List<Long> getNok() {
+    public List<String> getNok() {
         return nok;
     }
 
-    public void setNok(List<Long> nok) {
+    public void setNok(List<String> nok) {
         this.nok = nok;
     }
 
-    public List<Long> getNa() {
+    public List<String> getNa() {
         return na;
     }
 
-    public void setNa(List<Long> na) {
+    public void setNa(List<String> na) {
         this.na = na;
     }
 
