@@ -15,6 +15,7 @@ import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.ConnectException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/connectors")
@@ -73,22 +75,10 @@ import java.util.Map;
 
 public interface ConnectorController {
 
-	@Operation(summary = "List of all Connectors")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List Connectors")})
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-	public List<ConnectorDto> listConnectors();
-
-	//TODO - Merge the below 2
-	@Operation(summary = "List Connectors by Function Group")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors")})
-	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup" }, produces = {"application/json"})
-	public List<ConnectorDto> listConnectorsByFunctionGroup(@RequestParam FunctionGroupCode functionGroup)
-			throws NotFoundException;
-
 	@Operation(summary = "List Connectors by Function Group and Kind")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors")})
 	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup", "kind" }, produces = {"application/json"})
-	public List<ConnectorDto> listConnectors(@RequestParam FunctionGroupCode functionGroup, @RequestParam String kind)
+	public List<ConnectorDto> listConnectors(@RequestParam Optional<FunctionGroupCode> functionGroup, @RequestParam Optional<String> kind, @RequestParam Optional<ConnectorStatus> status)
 			throws NotFoundException;
 
 	@Operation(summary = "Get details of a Connector")
@@ -157,7 +147,7 @@ public interface ConnectorController {
 
 	@Operation(summary = "Approve a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector Approved") })
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/approve", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void approve(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 

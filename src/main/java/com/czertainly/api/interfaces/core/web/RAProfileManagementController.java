@@ -114,7 +114,7 @@ public interface RAProfileManagementController {
     @Operation(summary = "List authorized Clients of RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of clients of RA Profile")})
     @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/users", method = RequestMethod.GET, produces = {"application/json"})
-    List<SimplifiedClientDto> listClients(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
+    List<SimplifiedClientDto> listUsers(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Delete multiple RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
@@ -159,7 +159,7 @@ public interface RAProfileManagementController {
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/activate/{acmeProfileUuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RaProfileAcmeDetailResponseDto activateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody ActivateAcmeForRaProfileRequestDto request)
+    RaProfileAcmeDetailResponseDto activateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @RequestBody ActivateAcmeForRaProfileRequestDto request)
             throws ConnectorException;
 
     @Operation(summary = "Deactivate ACME for RA Profile")
