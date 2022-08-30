@@ -12,12 +12,6 @@ import java.util.List;
  */
 public class AddLocationRequestDto {
 
-    @Schema(
-            description = "UUID of the Entity instance",
-            required = true
-    )
-    private String entityInstanceUuid;
-
     @Schema
             (description = "Location name",
             required = true
@@ -40,14 +34,6 @@ public class AddLocationRequestDto {
             defaultValue = "false"
     )
     private Boolean enabled;
-
-    public String getEntityInstanceUuid() {
-        return entityInstanceUuid;
-    }
-
-    public void setEntityInstanceUuid(String entityInstanceUuid) {
-        this.entityInstanceUuid = entityInstanceUuid;
-    }
 
     public String getName() {
         return name;
@@ -84,7 +70,6 @@ public class AddLocationRequestDto {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("entityInstanceUuid", entityInstanceUuid)
                 .append("name", name)
                 .append("description", description)
                 .append("attributes", attributes)

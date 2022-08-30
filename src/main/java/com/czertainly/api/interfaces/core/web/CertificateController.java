@@ -5,7 +5,6 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
-import com.czertainly.api.model.client.certificate.owner.CertificateOwnerRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
@@ -33,7 +32,7 @@ import java.security.cert.CertificateException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/certificate")
+@RequestMapping("/v1/certificates")
 @Tag(name = "Certificate Inventory API", description = "Certificate Inventory API")
 @ApiResponses(
 		value = {
@@ -71,70 +70,33 @@ public interface CertificateController {
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
-	
-	@Operation(summary = "Update RA Profile for a Certificate")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile updated")})
-	@RequestMapping(path = "/{uuid}/ra-profile", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+
+	//TODO - Merge the DTO and update implementation
+	@Operation(summary = "Update Certificate Objects")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate objects updated")})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateRaProfile(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateRAProfileDto request)
+	public void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
 			throws NotFoundException;
-	
-	@Operation(summary = "Update Group for a Certificate")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group updated")})
-	@RequestMapping(path = "/{uuid}/group", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateCertificateGroup(@Parameter(description = "Certificate UUID") @PathVariable String uuid,
-			@RequestBody CertificateUpdateGroupDto request) throws NotFoundException;
-	
-	@Operation(summary = "Update Owner for a Certificate")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Owner updated")})
-	@RequestMapping(path = "/{uuid}/owner", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateOwner(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateOwnerRequestDto request)
-			throws NotFoundException;
-	
+
 	@Operation(summary = "Initiate Certificate validation")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate validation initiated")})
 	@RequestMapping(method = RequestMethod.GET, path = "/{uuid}/validate", produces = {"application/json"})
 	public void check(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
 			throws CertificateException, IOException, NotFoundException;
 	
-	@Operation(summary = "Update RA Profile for multiple Certificates", description = "In this operation, when the list of " +
+	@Operation(summary = "Update RA Profile, Group, Owner for multiple Certificates", description = "In this operation, when the list of " +
 			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
 			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
 			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
 			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
 			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "RA Profile updated") })
-	@RequestMapping(path = "/ra-profile", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate objects updated") })
+	@RequestMapping(path = "/ra-profile", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkUpdateRaProfile(@RequestBody MultipleRAProfileUpdateDto request)
+	public void bulkUpdateCertificateObjects(@RequestBody MultipleCertificateObjectUpdateDto request)
 			throws NotFoundException;
-	
-	@Operation(summary = "Update Group for multiple Certificates", description = "In this operation, when the list of " +
-			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
-			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
-			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
-			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
-			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group updated")})
-	@RequestMapping(path = "/group", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkUpdateCertificateGroup(@RequestBody MultipleGroupUpdateDto request)
-			throws NotFoundException;
-	
-	@Operation(summary = "Update Owner for multiple Certificates", description = "In this operation, when the list of " +
-			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
-			"be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
-			"the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
-			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
-			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Owner updated")})
-	@RequestMapping(path = "/owner", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkUpdateOwner(@RequestBody CertificateOwnerBulkUpdateDto request)
-			throws NotFoundException;
-	
+
 	@Operation(summary = "Upload a new Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
 	@RequestMapping(path = "/upload", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})

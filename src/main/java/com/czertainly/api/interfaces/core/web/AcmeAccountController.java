@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/acmeAccounts")
+@RequestMapping("/v1")
 @Tag(name = "ACME Account Management API", description = "ACME Account Management API")
 @ApiResponses(
         value = {
@@ -48,35 +48,35 @@ public interface AcmeAccountController {
 
     @Operation(summary = "List ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Accounts list retrieved")})
-    @RequestMapping(produces = {"application/json"}, method = RequestMethod.GET)
+    @RequestMapping(path = "/acmeAccounts", produces = {"application/json"}, method = RequestMethod.GET)
     public List<AcmeAccountListResponseDto> listAcmeAccounts();
 
     @Operation(summary = "Details of ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Account details retrieved")})
-    @RequestMapping(path = "/{uuid}", produces = {"application/json"}, method = RequestMethod.GET)
-    public AcmeAccountResponseDto getAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
+    @RequestMapping(path = "/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}", produces = {"application/json"}, method = RequestMethod.GET)
+    public AcmeAccountResponseDto getAcmeAccount(@Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @Parameter(description = "ACME Account UUID") @PathVariable String acmeAccountUuid) throws NotFoundException;
 
     @Operation(summary = "Enable ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Account enabled")})
-    @RequestMapping(path = "/{uuid}/enable", produces = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}/enable", produces = {"application/json"}, method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void enableAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
+    public void enableAcmeAccount(@Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @Parameter(description = "ACME Account UUID") @PathVariable String acmeAccountUuid) throws NotFoundException;
 
     @Operation(summary = "Disable ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Account disabled")})
-    @RequestMapping(path = "/{uuid}/disable", produces = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}/disable", produces = {"application/json"}, method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void  disableAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
+    public void  disableAcmeAccount(@Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @Parameter(description = "ACME Account UUID") @PathVariable String acmeAccountUuid) throws NotFoundException;
 
     @Operation(summary = "Revoke ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Account revoked")})
-    @RequestMapping(path = "/{uuid}", produces = {"application/json"}, method = RequestMethod.DELETE)
+    @RequestMapping(path = "/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}", produces = {"application/json"}, method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void revokeAcmeAccount(@Parameter(description = "ACME Account UUID") @PathVariable String uuid) throws NotFoundException;
+    public void revokeAcmeAccount(@Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @Parameter(description = "ACME Account UUID") @PathVariable String acmeAccountUuid) throws NotFoundException;
 
     @Operation(summary = "Enable multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts enabled")})
-    @RequestMapping(path = "/enable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/acmeAccounts/enable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bulkEnableAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -84,7 +84,7 @@ public interface AcmeAccountController {
 
     @Operation(summary = "Disable multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts disabled")})
-    @RequestMapping(path = "/disable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/acmeAccounts/disable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void  bulkDisableAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -92,7 +92,7 @@ public interface AcmeAccountController {
 
     @Operation(summary = "Revoke multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts revoked")})
-    @RequestMapping(path = "/revoke", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/acmeAccounts/revoke", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bulkRevokeAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),

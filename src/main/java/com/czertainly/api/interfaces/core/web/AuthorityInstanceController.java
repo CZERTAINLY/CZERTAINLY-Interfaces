@@ -88,7 +88,7 @@ public interface AuthorityInstanceController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instance details updated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = { "application/json" }, produces = {
 			"application/json" })
 	public AuthorityInstanceDto editAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody AuthorityInstanceUpdateRequestDto request)
 			throws NotFoundException, ConnectorException;
@@ -112,12 +112,12 @@ public interface AuthorityInstanceController {
 
 	@Operation(summary = "List RA Profile Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
-	@RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}/attributes/raProfile", method = RequestMethod.GET, produces = {"application/json"})
 	public List<AttributeDefinition> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate RA Profile Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attribute information validated")})
-	@RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST, consumes = {
+	@RequestMapping(path = "/{uuid}/attributes/raProfile/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
 	public void validateRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody List<RequestAttributeDto> attributes)
 			throws NotFoundException, ConnectorException;

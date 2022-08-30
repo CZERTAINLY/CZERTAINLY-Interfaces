@@ -78,6 +78,7 @@ public interface ConnectorController {
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<ConnectorDto> listConnectors();
 
+	//TODO - Merge the below 2
 	@Operation(summary = "List Connectors by Function Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors")})
 	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup" }, produces = {"application/json"})
@@ -108,7 +109,7 @@ public interface ConnectorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector updated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = { "application/json" }, produces = {
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = { "application/json" }, produces = {
 			"application/json" })
 	public ConnectorDto editConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid, @RequestBody ConnectorUpdateRequestDto request)
 			throws ConnectorException;
@@ -167,19 +168,19 @@ public interface ConnectorController {
 
 	@Operation(summary = "Get Attributes from a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
-	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}/attributes", method = RequestMethod.GET, produces = {
+	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
 			"application/json" })
 	public List<AttributeDefinition> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
                                                    @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
 	
 	@Operation(summary = "Get attributes of all Function Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
-	@RequestMapping(path = "/{uuid}/attributes-all", method = RequestMethod.GET, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}/attributes", method = RequestMethod.GET, produces = {"application/json"})
 	public Map<FunctionGroupCode, Map<String, List<AttributeDefinition>>> getAttributesAll(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes Validated")})
-	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}/attributes/validate", method = RequestMethod.POST, consumes = {
+	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}/validate", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
 	public void validateAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
 									  @Parameter(description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttributeDto> attributes)

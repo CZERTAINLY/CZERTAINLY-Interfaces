@@ -141,7 +141,7 @@ public interface EntityInstanceController {
 			})
 	@RequestMapping(
 			path = "/{entityUuid}",
-			method = RequestMethod.PATCH,
+			method = RequestMethod.PUT,
 			consumes = {"application/json"},
 			produces = {"application/json"}
 	)
@@ -179,7 +179,7 @@ public interface EntityInstanceController {
 					)
 			})
 	@RequestMapping(
-			path = "/{entityUuid}/location/attributes",
+			path = "/{entityUuid}/attributes/location",
 			method = RequestMethod.GET,
 			produces = {"application/json"}
 	)
@@ -204,7 +204,7 @@ public interface EntityInstanceController {
 					)
 			})
 	@RequestMapping(
-			path = "/{entityUuid}/location/attributes/validate",
+			path = "/{entityUuid}/attributes/location/validate",
 			method = RequestMethod.POST,
 			consumes = {"application/json"}
 	)

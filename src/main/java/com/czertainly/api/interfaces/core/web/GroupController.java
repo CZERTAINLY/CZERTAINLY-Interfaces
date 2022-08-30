@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/groups")
+@RequestMapping("/v1/certificateGroups")
 @Tag(name = "Certificate Group API", description = "Certificate Group API")
 @ApiResponses(
 		value = {
@@ -67,7 +67,7 @@ public interface GroupController {
 	
 	@Operation(summary = "Edit Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group updated")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	public GroupDto editGroup(@Parameter(description = "Group UUID") @PathVariable String uuid, @RequestBody GroupRequestDto request)
 			throws NotFoundException;
 	

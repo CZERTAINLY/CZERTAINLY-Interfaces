@@ -45,9 +45,9 @@ public interface AuthController {
 	@RequestMapping(path = "/profile", method = RequestMethod.GET, produces = {"application/json"})
 	public AuthProfileDto profile() throws NotFoundException;
 
-	@Operation(summary = "Edit Profile Information")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Edit Profile") })
-	@RequestMapping(path = "/profile", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void editProfile(@RequestBody EditAuthProfileDto authProfileDTO) throws NotFoundException;
+	@Operation(summary = "Get user permission")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Permission of the user fetched")})
+	@RequestMapping(path = "/permission", method = RequestMethod.GET, produces = {"application/json"})
+	public Object getPermission() throws NotFoundException;
+
 }

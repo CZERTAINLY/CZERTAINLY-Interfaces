@@ -85,7 +85,7 @@ public interface CredentialController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Credential updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {
             "application/json"})
     public CredentialDto editCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid, @RequestBody CredentialUpdateRequestDto request)
             throws NotFoundException, ConnectorException;
@@ -100,13 +100,13 @@ public interface CredentialController {
 
     @Operation(summary = "Enable Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential enabled")})
-    @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enableCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disable Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential disabled")})
-    @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disableCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
 
