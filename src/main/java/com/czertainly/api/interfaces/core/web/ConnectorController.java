@@ -77,7 +77,7 @@ public interface ConnectorController {
 
 	@Operation(summary = "List Connectors by Function Group and Kind")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List all Connectors")})
-	@RequestMapping(method = RequestMethod.GET, params = { "functionGroup", "kind" }, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public List<ConnectorDto> listConnectors(@RequestParam Optional<FunctionGroupCode> functionGroup, @RequestParam Optional<String> kind, @RequestParam Optional<ConnectorStatus> status)
 			throws NotFoundException;
 
