@@ -76,51 +76,62 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "RA Profile added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @RequestBody AddRaProfileRequestDto request)
             throws AlreadyExistException, ValidationException, ConnectorException;
 
     @Operation(summary = "Details of RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "RA Profile details retrieved")})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.GET, produces = {"application/json"})
     RaProfileDto getRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
+
+    @Operation(summary = "Details of RA Profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "RA Profile details retrieved")})
+    @RequestMapping(path = "/raProfiles/{raProfileUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    RaProfileDto getRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Edit RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     RaProfileDto editRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody EditRaProfileRequestDto request)
             throws ConnectorException;
 
     @Operation(summary = "Delete RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile deleted")})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
+    @Operation(summary = "Delete RA Profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile deleted")})
+    @RequestMapping(path = "/raProfiles/{raProfileUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
+
     @Operation(summary = "Disable RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile disabled")})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Enable RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile enabled")})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "List authorized Clients of RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of clients of RA Profile")})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/users", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/users", method = RequestMethod.GET, produces = {"application/json"})
     List<SimplifiedClientDto> listUsers(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Delete multiple RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles", method = RequestMethod.DELETE, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void bulkDeleteRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -149,7 +160,7 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME details retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme", method = RequestMethod.GET, produces = {"application/json"})
     RaProfileAcmeDetailResponseDto getAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                        @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws NotFoundException;
@@ -158,7 +169,7 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME activated"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/activate/{acmeProfileUuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/activate/{acmeProfileUuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     RaProfileAcmeDetailResponseDto activateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @RequestBody ActivateAcmeForRaProfileRequestDto request)
             throws ConnectorException;
 
@@ -166,20 +177,20 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME deactivated"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/deactivate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/deactivate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deactivateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws NotFoundException;
 
     @Operation(summary = "Get revocation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes list obtained")})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
     List<AttributeDefinition> listRevokeCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                               @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
     @Operation(summary = "Get issue Certificate Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes list obtained")})
-    @RequestMapping(path = "/v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue", method = RequestMethod.GET, produces = {"application/json"})
     List<AttributeDefinition> listIssueCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                              @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
