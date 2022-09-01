@@ -33,7 +33,7 @@ import java.security.cert.CertificateException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v2/operations/{raProfileUuid}")
+@RequestMapping("/v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}")
 @Tag(name = "v2 Client Operations API", description = "v2 Client Operations API")
 @ApiResponses(
 		value = {
@@ -71,6 +71,7 @@ public interface ClientOperationController {
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/attributes/issue", method = RequestMethod.GET, produces = {"application/json"})
 	List<AttributeDefinition> listIssueCertificateAttributes(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException, ConnectorException;
     
 	@Operation(summary = "Validate issue Certificate Attributes")
@@ -79,6 +80,7 @@ public interface ClientOperationController {
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/attributes/issue/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	void validateIssueCertificateAttributes(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
 	
@@ -88,6 +90,7 @@ public interface ClientOperationController {
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ClientCertificateDataResponseDto issueCertificate(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @RequestBody ClientCertificateSignRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException;
     
@@ -97,6 +100,7 @@ public interface ClientOperationController {
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/certificates/{certificateUuid}/renew", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ClientCertificateDataResponseDto renewCertificate(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, CertificateOperationException;
@@ -105,12 +109,14 @@ public interface ClientOperationController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes obtained") })
     @RequestMapping(path = "/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
 	List<AttributeDefinition> listRevokeCertificateAttributes(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException, ConnectorException;
     
 	@Operation(summary = "Validate revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
     @RequestMapping(path = "/attributes/revoke/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	void validateRevokeCertificateAttributes(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
     
@@ -119,6 +125,7 @@ public interface ClientOperationController {
     @RequestMapping(path = "/certificates/{certificateUuid}/revoke", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
     void revokeCertificate(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException;
