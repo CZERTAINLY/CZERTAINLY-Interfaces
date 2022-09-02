@@ -50,6 +50,11 @@ public interface AuditLogController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Export of audit logs")})
 	@RequestMapping(path = "/export" ,method = RequestMethod.GET, produces = {"application/json"})
     public ResponseEntity<Resource> exportAuditLogs(AuditLogFilter filter, Pageable pageable);
+
+	@Operation(summary = "Purge Audit logs")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Audit logs purged")})
+	@RequestMapping(path = "/purge" ,method = RequestMethod.GET, produces = {"application/json"})
+	public void purgeAuditLogs(AuditLogFilter filter, Pageable pageable);
 	
 	@Operation(summary = "List Audit Objects")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit Objects") })
