@@ -9,10 +9,22 @@ import java.util.List;
 
 public class ComplianceProfilesListDto extends NameAndUuidDto {
 
+    @Schema(description = "Compliance Profile description")
+    private String description;
+
     @Schema(description = "Rules summary", required = true)
     private List<ComplianceProviderSummaryDto> rules;
 
     //Default getters and setters
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<ComplianceProviderSummaryDto> getRules() {
         return rules;
@@ -28,6 +40,7 @@ public class ComplianceProfilesListDto extends NameAndUuidDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
+                .append("description", description)
                 .append("rules", rules)
                 .toString();
     }
