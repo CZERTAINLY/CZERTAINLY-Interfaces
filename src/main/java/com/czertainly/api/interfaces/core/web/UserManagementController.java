@@ -3,6 +3,7 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.core.auth.AddUserRequestDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.czertainly.api.model.core.auth.UserDto;
 import com.czertainly.api.model.core.auth.UserRequestDto;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.cert.CertificateException;
 import java.util.List;
 
 @RestController
@@ -63,7 +65,7 @@ public interface UserManagementController {
 	@Operation(summary = "Create User")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "User details retrieved")})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	public ResponseEntity<UuidDto> createUser(@RequestBody UserRequestDto request) throws NotFoundException;
+	public ResponseEntity<UuidDto> createUser(@RequestBody AddUserRequestDto request) throws NotFoundException, CertificateException;
 
 	@Operation(summary = "Update User")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "User details updated")})
