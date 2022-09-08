@@ -92,7 +92,7 @@ public interface CertificateController {
 			"the filter criteria. To apply this change for all the Certificates in the inventory, " +
 			"provide an empty array \"[]\" for the value of \"filters\" in the request body")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate objects updated") })
-	@RequestMapping(path = "/ra-profile", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void bulkUpdateCertificateObjects(@RequestBody MultipleCertificateObjectUpdateDto request)
 			throws NotFoundException;

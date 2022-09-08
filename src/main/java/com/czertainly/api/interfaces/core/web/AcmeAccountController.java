@@ -70,13 +70,13 @@ public interface AcmeAccountController {
 
     @Operation(summary = "Revoke ACME Account")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Account revoked")})
-    @RequestMapping(path = "/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}", produces = {"application/json"}, method = RequestMethod.DELETE)
+    @RequestMapping(path = "/acmeProfiles/{acmeProfileUuid}/acmeAccounts/{acmeAccountUuid}", produces = {"application/json"}, method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void revokeAcmeAccount(@Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @Parameter(description = "ACME Account UUID") @PathVariable String acmeAccountUuid) throws NotFoundException;
 
     @Operation(summary = "Enable multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts enabled")})
-    @RequestMapping(path = "/acmeAccounts/enable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/acmeAccounts/enable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void bulkEnableAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -84,7 +84,7 @@ public interface AcmeAccountController {
 
     @Operation(summary = "Disable multiple ACME Accounts")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Accounts disabled")})
-    @RequestMapping(path = "/acmeAccounts/disable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PUT)
+    @RequestMapping(path = "/acmeAccounts/disable", produces = {"application/json"}, consumes = {"application/json"}, method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void  bulkDisableAcmeAccount(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "ACME Account UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
