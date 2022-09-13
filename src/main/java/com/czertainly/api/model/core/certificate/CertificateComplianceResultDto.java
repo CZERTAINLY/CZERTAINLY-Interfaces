@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.certificate;
 
+import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.connector.compliance.ComplianceResponseRulesDto;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -23,6 +25,9 @@ public class CertificateComplianceResultDto {
 
     @Schema(description = "Status of the rule",required = true, example = "nok")
     private ComplianceRuleStatus status;
+
+    @Schema(description = "Attributes of the rule")
+    private List<ResponseAttributeDto> attributes;
 
     //Default getters and setters
 
@@ -59,6 +64,14 @@ public class CertificateComplianceResultDto {
         this.ruleDescription = ruleDescription;
     }
 
+    public List<ResponseAttributeDto> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<ResponseAttributeDto> attributes) {
+        this.attributes = attributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -66,6 +79,7 @@ public class CertificateComplianceResultDto {
                 .append("connectorName", connectorName)
                 .append("status", status)
                 .append("ruleDescription", ruleDescription)
+                .append("attributes", attributes)
                 .toString();
     }
 }
