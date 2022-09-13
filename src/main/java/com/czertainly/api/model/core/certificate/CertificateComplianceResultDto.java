@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
+
 /*
 Contains the list of parameters returned by the Compliance Provider after
 checking the certificate for compliance. This response will be received
