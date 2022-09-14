@@ -14,6 +14,9 @@ public class SimplifiedRaProfileDto extends NameAndUuidDto {
             required = true)
     private Boolean enabled;
 
+    @Schema(description = "Authority Instance UUID")
+    private String authorityInstanceUuid;
+
     public Boolean getEnabled() {
         return enabled;
     }
@@ -22,12 +25,21 @@ public class SimplifiedRaProfileDto extends NameAndUuidDto {
         this.enabled = enabled;
     }
 
+    public String getAuthorityInstanceUuid() {
+        return authorityInstanceUuid;
+    }
+
+    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
+        this.authorityInstanceUuid = authorityInstanceUuid;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("enabled", enabled)
+                .append("authorityInstanceUuid", authorityInstanceUuid)
                 .toString();
     }
 }

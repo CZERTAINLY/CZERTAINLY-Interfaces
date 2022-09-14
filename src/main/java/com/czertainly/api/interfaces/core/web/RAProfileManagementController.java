@@ -112,13 +112,13 @@ public interface RAProfileManagementController {
 
     @Operation(summary = "Disable RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile disabled")})
-    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Enable RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile enabled")})
-    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/enable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
@@ -131,9 +131,9 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles", method = RequestMethod.DELETE, produces = {"application/json"})
+    @RequestMapping(path = "/raProfiles", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDeleteRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void bulkDeleteRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
     @RequestBody List<String> uuids) throws NotFoundException, ValidationException;

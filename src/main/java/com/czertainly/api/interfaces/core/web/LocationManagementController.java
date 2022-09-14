@@ -173,7 +173,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}",
             method = RequestMethod.DELETE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -193,7 +193,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/disable",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/disable",
             method = RequestMethod.PATCH
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -213,7 +213,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/enable",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/enable",
             method = RequestMethod.PATCH
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -233,7 +233,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/push",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/push",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
@@ -253,7 +253,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/issue",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/issue",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
@@ -273,7 +273,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
             method = RequestMethod.PUT,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -296,7 +296,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
             method = RequestMethod.DELETE,
             produces = {"application/json"}
     )
@@ -317,7 +317,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/certificates",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -339,7 +339,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/sync",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/sync",
             method = RequestMethod.PUT,
             produces = {"application/json"}
     )
@@ -359,7 +359,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/v1/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
             method = RequestMethod.PATCH,
             produces = {"application/json"}
     )

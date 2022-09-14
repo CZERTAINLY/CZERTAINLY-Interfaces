@@ -158,7 +158,7 @@ public interface ConnectorController {
 
 	@Operation(summary = "Get Attributes from a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
-	@RequestMapping(path = "/{uuid}/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
+	@RequestMapping(path = "/{uuid}/attributes/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
 			"application/json" })
 	public List<AttributeDefinition> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
                                                    @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
