@@ -27,6 +27,9 @@ public class UserDto {
     @Schema(description = "User Certificate details")
     private UserCertificateDto certificate;
 
+    @Schema(description = "Is System user. True = Yes, False = No")
+    private Boolean systemUser;
+
     public String getUuid() {
         return uuid;
     }
@@ -83,6 +86,14 @@ public class UserDto {
         this.certificate = certificate;
     }
 
+    public Boolean getSystemUser() {
+        return systemUser;
+    }
+
+    public void setSystemUser(Boolean systemUser) {
+        this.systemUser = systemUser;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -93,6 +104,7 @@ public class UserDto {
                 .append("email", email)
                 .append("certificate", certificate)
                 .append("enabled", enabled)
+                .append("systemUser", systemUser)
                 .toString();
     }
 }

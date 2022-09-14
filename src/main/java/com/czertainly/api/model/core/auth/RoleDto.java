@@ -9,6 +9,17 @@ public class RoleDto extends NameAndUuidDto {
     @Schema(description = "Description of the user")
     private String description;
 
+    @Schema(description = "Is system role. True = Yes, False = No")
+    private Boolean systemRole;
+
+    public Boolean getSystemRole() {
+        return systemRole;
+    }
+
+    public void setSystemRole(Boolean systemRole) {
+        this.systemRole = systemRole;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -23,6 +34,7 @@ public class RoleDto extends NameAndUuidDto {
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("description", description)
+                .append("systemRole", systemRole)
                 .toString();
     }
 }
