@@ -10,6 +10,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.certificate.CertificateValidationDto;
 import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/certificate")
@@ -90,7 +92,7 @@ public interface CertificateController {
 	
 	@Operation(summary = "Initiate Certificate validation")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate validation initiated")})
-	@RequestMapping(method = RequestMethod.GET, path = "/{uuid}/validate", produces = {"application/json"})
+	@RequestMapping(method = RequestMethod.PUT, path = "/{uuid}/validate", produces = {"application/json"})
 	public void check(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
 			throws CertificateException, IOException, NotFoundException;
 	
@@ -187,4 +189,9 @@ public interface CertificateController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void checkCompliance(@RequestBody CertificateComplianceCheckDto request) throws NotFoundException;
 
+	@Operation(summary = "Get Certificate Validation Result")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate validation detail retrieved")})
+	@RequestMapping(path = "/{uuid}/validate", method = RequestMethod.GET, produces = {"application/json"})
+	public Map<String, CertificateValidationDto> getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
+			throws NotFoundException, CertificateException, IOException;
 }

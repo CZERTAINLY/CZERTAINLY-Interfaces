@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.raprofile;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.core.compliance.ComplianceProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -36,11 +37,8 @@ public class RaProfileDto extends NameAndUuidDto {
             required = false)
     private List<String> enabledProtocols;
 
-    @Schema(description = "Compliance Profile Name", example = "Compliance Profile 1")
-    private String complianceProfileName;
-
-    @Schema(description = "Compliance Profile UUID", example = "c35bc88c-d0ef-11ec-9d64-0242ac120003")
-    private String complianceProfileUuid;
+    @Schema(description = "Compliance Profiles")
+    private List<ComplianceProfileDto> complianceProfiles;
 
     @Override
     public String getUuid() {
@@ -107,20 +105,12 @@ public class RaProfileDto extends NameAndUuidDto {
         this.enabledProtocols = enabledProtocols;
     }
 
-    public String getComplianceProfileName() {
-        return complianceProfileName;
+    public List<ComplianceProfileDto> getComplianceProfiles() {
+        return complianceProfiles;
     }
 
-    public void setComplianceProfileName(String complianceProfileName) {
-        this.complianceProfileName = complianceProfileName;
-    }
-
-    public String getComplianceProfileUuid() {
-        return complianceProfileUuid;
-    }
-
-    public void setComplianceProfileUuid(String complianceProfileUuid) {
-        this.complianceProfileUuid = complianceProfileUuid;
+    public void setComplianceProfiles(List<ComplianceProfileDto> complianceProfiles) {
+        this.complianceProfiles = complianceProfiles;
     }
 
     @Override
@@ -133,8 +123,7 @@ public class RaProfileDto extends NameAndUuidDto {
                 .append("attributes", attributes)
                 .append("enabled", enabled)
                 .append("authorityInstanceName", authorityInstanceName)
-                .append("complianceProfileName", complianceProfileName)
-                .append("complianceProfileUuid", complianceProfileUuid)
+                .append("complianceProfiles", complianceProfiles)
                 .toString();
     }
 }

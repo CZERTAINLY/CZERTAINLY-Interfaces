@@ -5,18 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
-public class ComplianceProfilesListDto extends NameAndUuidDto {
-
-    @Schema(description = "Compliance Profile description")
+public class ComplianceGroupsDto extends NameAndUuidDto {
+    @Schema(description = "Description of the group", example = "Sample group description")
     private String description;
-
-    @Schema(description = "Rules summary", required = true)
-    private List<ComplianceProviderSummaryDto> rules;
-
-    //Default getters and setters
-
 
     public String getDescription() {
         return description;
@@ -26,22 +17,12 @@ public class ComplianceProfilesListDto extends NameAndUuidDto {
         this.description = description;
     }
 
-    public List<ComplianceProviderSummaryDto> getRules() {
-        return rules;
-    }
-
-    public void setRules(List<ComplianceProviderSummaryDto> rules) {
-        this.rules = rules;
-    }
-
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("description", description)
-                .append("rules", rules)
                 .toString();
     }
 }

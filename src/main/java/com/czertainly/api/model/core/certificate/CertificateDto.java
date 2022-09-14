@@ -80,8 +80,6 @@ public class CertificateDto {
     private CertificateType certificateType;
     @Schema(description = "Serial number of the issuer")
     private String issuerSerialNumber;
-    @Schema(description = "Certificate validation result")
-    private Map<String, CertificateValidationDto> certificateValidationResult;
     @Schema(description = "Certificate compliance check result")
     private List<CertificateComplianceResultDto> nonCompliantRules;
     @Schema(description = "Certificate compliance status")
@@ -295,14 +293,6 @@ public class CertificateDto {
 
     public void setIssuerSerialNumber(String issuerSerialNumber) {
         this.issuerSerialNumber = issuerSerialNumber;
-    }
-
-    public Map<String, CertificateValidationDto> getCertificateValidationResult() {
-        return certificateValidationResult;
-    }
-
-    public void setCertificateValidationResult(Map<String, CertificateValidationDto> certificateValidationResult) {
-        this.certificateValidationResult = certificateValidationResult;
     }
 
     public List<CertificateComplianceResultDto> getNonCompliantRules() {

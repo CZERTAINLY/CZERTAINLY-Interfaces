@@ -6,7 +6,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
-import com.czertainly.api.model.client.connector.ForceDeleteMessageDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.RequestAttributeDto;
@@ -121,15 +121,14 @@ public interface AuthorityInstanceController {
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
 
-	public List<ForceDeleteMessageDto> bulkRemoveAuthorityInstance(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	public List<BulkActionMessageDto> bulkRemoveAuthorityInstance(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Authority Instance UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
 																	   @RequestBody List<String> uuids) throws NotFoundException, ConnectorException, ValidationException;
 	@Operation(summary = "Force delete multiple Authority instances")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Authority instances forced to delete"),
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authority instances forced to delete"),
 			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/force", method = RequestMethod.DELETE, produces = {"application/json"})
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkForceRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+	public List<BulkActionMessageDto> bulkForceRemoveAuthorityInstance(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 }

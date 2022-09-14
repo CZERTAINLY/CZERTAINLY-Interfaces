@@ -18,7 +18,7 @@ public class ComplianceConnectorAndGroupsDto {
     private String kind;
 
     @Schema(description = "Groups associated")
-    private List<NameAndUuidDto> groups;
+    private List<ComplianceGroupsDto> groups;
 
     //Default getters and setters
 
@@ -46,11 +46,11 @@ public class ComplianceConnectorAndGroupsDto {
         this.kind = kind;
     }
 
-    public List<NameAndUuidDto> getGroups() {
+    public List<ComplianceGroupsDto> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<NameAndUuidDto> groups) {
+    public void setGroups(List<ComplianceGroupsDto> groups) {
         this.groups = groups;
     }
 

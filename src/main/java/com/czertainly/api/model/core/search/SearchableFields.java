@@ -14,6 +14,7 @@ public enum SearchableFields {
     RA_PROFILE_NAME("raProfile"),
     ENTITY_NAME("entity"),
     STATUS("status"),
+    COMPLIANCE_STATUS("complianceStatus"),
     GROUP_NAME("group"),
     OWNER("owner"),
     ISSUER_COMMON_NAME("issuerCommonName"),
