@@ -2,6 +2,8 @@ package com.czertainly.api.model.client.acme;
 
 import com.czertainly.api.model.core.acme.AccountStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Set of properties to represent the Account object from ACME.
@@ -50,6 +52,13 @@ public class AcmeAccountListResponseDto {
             example = "ACMEProfile1"
     )
     private String acmeProfileName;
+
+    @Schema(
+            description = "UUID of the ACME Profile",
+            required = true,
+            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
+    )
+    private String acmeProfileUuid;
 
     public String getAccountId() {
         return accountId;
@@ -106,5 +115,27 @@ public class AcmeAccountListResponseDto {
 
     public void setAcmeProfileName(String acmeProfileName) {
         this.acmeProfileName = acmeProfileName;
+    }
+
+    public String getAcmeProfileUuid() {
+        return acmeProfileUuid;
+    }
+
+    public void setAcmeProfileUuid(String acmeProfileUuid) {
+        this.acmeProfileUuid = acmeProfileUuid;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("accountId", accountId)
+                .append("uuid", uuid)
+                .append("enabled", enabled)
+                .append("totalOrders", totalOrders)
+                .append("status", status)
+                .append("raProfileName", raProfileName)
+                .append("acmeProfileName", acmeProfileName)
+                .append("acmeProfileUuid", acmeProfileUuid)
+                .toString();
     }
 }

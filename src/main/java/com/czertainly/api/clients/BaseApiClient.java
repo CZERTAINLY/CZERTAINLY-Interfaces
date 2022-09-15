@@ -1,6 +1,12 @@
 package com.czertainly.api.clients;
 
-import com.czertainly.api.exception.*;
+import com.czertainly.api.exception.ConnectorClientException;
+import com.czertainly.api.exception.ConnectorCommunicationException;
+import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.ConnectorServerException;
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
@@ -24,7 +30,10 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
-import javax.net.ssl.*;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;

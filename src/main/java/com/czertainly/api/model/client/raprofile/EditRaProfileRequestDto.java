@@ -12,10 +12,6 @@ public class EditRaProfileRequestDto {
     @Schema(description = "Description of RA Profile")
     private String description;
 
-    @Schema(description = "Authority instance UUID",
-            required = true)
-    private String authorityInstanceUuid;
-
     @Schema(description = "List of Attributes for RA Profile",
             required = true)
     private List<RequestAttributeDto> attributes;
@@ -29,14 +25,6 @@ public class EditRaProfileRequestDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getAuthorityInstanceUuid() {
-        return authorityInstanceUuid;
-    }
-
-    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
-        this.authorityInstanceUuid = authorityInstanceUuid;
     }
 
     public List<RequestAttributeDto> getAttributes() {
@@ -63,7 +51,6 @@ public class EditRaProfileRequestDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("description", description)
-                .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("attributes", attributes)
                 .toString();
     }

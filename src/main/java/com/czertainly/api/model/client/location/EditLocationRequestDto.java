@@ -18,12 +18,6 @@ public class EditLocationRequestDto {
     private String description;
 
     @Schema(
-            description = "Entity instance UUID",
-            required = true
-    )
-    private String entityInstanceUuid;
-
-    @Schema(
             description = "List of Attributes for Location",
             required = true
     )
@@ -40,14 +34,6 @@ public class EditLocationRequestDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getEntityInstanceUuid() {
-        return entityInstanceUuid;
-    }
-
-    public void setEntityInstanceUuid(String entityInstanceUuid) {
-        this.entityInstanceUuid = entityInstanceUuid;
     }
 
     public List<RequestAttributeDto> getAttributes() {
@@ -70,7 +56,6 @@ public class EditLocationRequestDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("description", description)
-                .append("entityInstanceUuid", entityInstanceUuid)
                 .append("attributes", attributes)
                 .toString();
     }

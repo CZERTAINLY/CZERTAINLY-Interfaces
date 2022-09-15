@@ -12,10 +12,6 @@ import java.util.List;
  */
 public class AddRaProfileRequestDto {
 
-    @Schema(description = "UUID of the Authority instance",
-            required = true)
-    private String authorityInstanceUuid;
-
     @Schema(description = "RA Profile name",
             required = true)
     private String name;
@@ -30,13 +26,6 @@ public class AddRaProfileRequestDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled", defaultValue = "false")
     private Boolean enabled;
 
-    public String getAuthorityInstanceUuid() {
-        return authorityInstanceUuid;
-    }
-
-    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
-        this.authorityInstanceUuid = authorityInstanceUuid;
-    }
 
     public Boolean getEnabled() {
         return enabled;
@@ -77,7 +66,6 @@ public class AddRaProfileRequestDto {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("name", name)
                 .append("description", description)
                 .append("attributes", attributes)

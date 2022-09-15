@@ -1,9 +1,21 @@
 package com.czertainly.util;
 
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.*;
-import com.czertainly.api.model.common.attribute.*;
-import com.czertainly.api.model.common.attribute.content.*;
+import com.czertainly.api.model.common.NameAndIdDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.attribute.AttributeCallback;
+import com.czertainly.api.model.common.attribute.AttributeCallbackMapping;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.AttributeType;
+import com.czertainly.api.model.common.attribute.AttributeValueTarget;
+import com.czertainly.api.model.common.attribute.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.content.DateAttributeContent;
+import com.czertainly.api.model.common.attribute.content.DateTimeAttributeContent;
+import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
+import com.czertainly.api.model.common.attribute.content.JsonAttributeContent;
+import com.czertainly.api.model.common.attribute.content.TimeAttributeContent;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +26,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import static com.czertainly.core.util.AttributeDefinitionUtils.*;
 

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 		})
 
 public interface StatisticsController {
-	@Operation(summary = "Get Dashboard/Statictics Details")
+	@Operation(summary = "Get Dashboard/Statistics Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Details retrieved")})
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
 	public StatisticsDto getStatistics();

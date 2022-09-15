@@ -11,7 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -41,9 +45,9 @@ public interface AuthController {
 	@RequestMapping(path = "/profile", method = RequestMethod.GET, produces = {"application/json"})
 	public AuthProfileDto profile() throws NotFoundException;
 
-	@Operation(summary = "Edit Profile Information")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Edit Profile") })
-	@RequestMapping(path = "/profile", method = RequestMethod.PUT, consumes = {"application/json"}, produces = { "application/json" })
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void editProfile(@RequestBody EditAuthProfileDto authProfileDTO) throws NotFoundException;
+	@Operation(summary = "Get user permission")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Permission of the user fetched")})
+	@RequestMapping(path = "/permission", method = RequestMethod.GET, produces = {"application/json"})
+	public Object getPermission() throws NotFoundException;
+
 }

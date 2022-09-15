@@ -1,13 +1,15 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.*;
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.LocationException;
+import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.location.AddLocationRequestDto;
 import com.czertainly.api.model.client.location.EditLocationRequestDto;
 import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
 import com.czertainly.api.model.client.location.PushToLocationRequestDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.common.attribute.AttributeDefinition;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,13 +22,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/locations")
+@RequestMapping("/v1")
 @Tag(name = "Location Management API", description = "Location Management API")
 @ApiResponses(
         value = {
@@ -70,6 +78,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
+            path = "/locations",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
@@ -91,15 +100,17 @@ public interface LocationManagementController {
                             responseCode = "422",
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
                     )
             })
     @RequestMapping(
+            path = "/entities/{entityUuid}/locations",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
     ResponseEntity<?> addLocation(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @RequestBody AddLocationRequestDto request
     ) throws NotFoundException, AlreadyExistException, LocationException;
 
@@ -114,11 +125,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/{locationUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
     LocationDto getLocation(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException;
 
@@ -135,16 +147,17 @@ public interface LocationManagementController {
                             responseCode = "422",
                             description = "Unprocessible Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
                     )
             })
     @RequestMapping(
-            path = "/{locationUuid}",
-            method = RequestMethod.PATCH,
+            path = "/entities/{entityUuid}/locations/{locationUuid}",
+            method = RequestMethod.PUT,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
     LocationDto editLocation(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody EditLocationRequestDto request
     ) throws NotFoundException, LocationException;
@@ -160,11 +173,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/{locationUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}",
             method = RequestMethod.DELETE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeLocation(
+    void deleteLocation(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException;
 
@@ -179,11 +193,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/{locationUuid}/disable",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/disable",
             method = RequestMethod.PATCH
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableLocation(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException;
 
@@ -198,11 +213,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/{locationUuid}/enable",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/enable",
             method = RequestMethod.PATCH
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableLocation(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException;
 
@@ -217,11 +233,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/push/attributes",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/push",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<AttributeDefinition> listPushAttributes(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;
 
@@ -236,11 +253,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/issue/attributes",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/issue",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<AttributeDefinition> listCsrAttributes(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;
 
@@ -255,12 +273,13 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/push/{certificateUuid}",
-            method = RequestMethod.POST,
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
+            method = RequestMethod.PUT,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
     LocationDto pushCertificate(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody PushToLocationRequestDto request
@@ -277,11 +296,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/remove/{certificateUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
             method = RequestMethod.DELETE,
             produces = {"application/json"}
     )
     LocationDto removeCertificate(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
     ) throws NotFoundException, LocationException;
@@ -297,12 +317,13 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/issue",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
     LocationDto issueCertificate(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody IssueToLocationRequestDto request
     ) throws NotFoundException, LocationException;
@@ -318,11 +339,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/sync",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/sync",
             method = RequestMethod.PUT,
             produces = {"application/json"}
     )
     LocationDto updateLocationContent(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;
 
@@ -337,11 +359,12 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "{locationUuid}/renew/{certificateUuid}",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
             method = RequestMethod.PATCH,
             produces = {"application/json"}
     )
     LocationDto renewCertificateInLocation(
+            @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
     ) throws NotFoundException, LocationException;
