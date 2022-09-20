@@ -8,13 +8,13 @@ import java.util.List;
 
 public class ObjectPermissionsDto {
 
-    @Schema(description = "UUID of the Object")
+    @Schema(description = "UUID of the Object", required = true)
     private String uuid;
 
-    @Schema(description = "Allowed list")
+    @Schema(description = "Allowed Action list", required = true)
     private List<String> allow;
 
-    @Schema(description = "Denied list")
+    @Schema(description = "Denied Action list", required = true)
     private List<String> deny;
 
     public String getUuid() {

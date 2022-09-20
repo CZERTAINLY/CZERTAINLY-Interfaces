@@ -6,13 +6,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class MergedPermissionsDto {
+public class RolePermissionsRequestDto {
 
-    @Schema(description = "Allow all resources, True = Yes, False = No")
+    @Schema(description = "Allow all resources, True = Yes, False = No", required = true)
     private Boolean allowAllResources;
 
-    @Schema(description = "Resources")
-    private List<ResourcePermissionsDto> resources;
+    @Schema(description = "Resources", required = true)
+    private List<ResourcePermissionsRequestDto> resources;
 
     public Boolean getAllowAllResources() {
         return allowAllResources;
@@ -22,11 +22,11 @@ public class MergedPermissionsDto {
         this.allowAllResources = allowAllResources;
     }
 
-    public List<ResourcePermissionsDto> getResources() {
+    public List<ResourcePermissionsRequestDto> getResources() {
         return resources;
     }
 
-    public void setResources(List<ResourcePermissionsDto> resources) {
+    public void setResources(List<ResourcePermissionsRequestDto> resources) {
         this.resources = resources;
     }
 

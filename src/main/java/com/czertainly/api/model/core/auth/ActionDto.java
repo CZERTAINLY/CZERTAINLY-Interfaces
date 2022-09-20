@@ -7,15 +7,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ActionDto extends NameAndUuidDto {
 
-    @Schema(description = "Resource")
-    private ResourceDto resource;
+    @Schema(description = "Resource label", required = true)
+    private String displayName;
 
-    public ResourceDto getResource() {
-        return resource;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setResource(ResourceDto resource) {
-        this.resource = resource;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ActionDto extends NameAndUuidDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
-                .append("resource", resource)
+                .append("displayName", displayName)
                 .toString();
     }
 }

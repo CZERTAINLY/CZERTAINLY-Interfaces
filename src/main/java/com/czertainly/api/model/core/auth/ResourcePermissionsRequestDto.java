@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class ResourcePermissionsDto {
+public class ResourcePermissionsRequestDto {
 
     @Schema(description = "Name of the Resource", required = true)
     private String name;
@@ -17,7 +17,7 @@ public class ResourcePermissionsDto {
     @Schema(description = "List of actions permitted", required = true)
     private List<String> actions;
 
-    @Schema(description = "Object permissions", required = true)
+    @Schema(description = "Object permissions")
     private List<ObjectPermissionsDto> objects;
 
     public String getName() {

@@ -9,7 +9,7 @@ public class RoleDto extends NameAndUuidDto {
     @Schema(description = "Description of the user")
     private String description;
 
-    @Schema(description = "Is system role. True = Yes, False = No")
+    @Schema(description = "Is system role. True = Yes, False = No", required = true)
     private Boolean systemRole;
 
     public Boolean getSystemRole() {
