@@ -21,13 +21,10 @@ public class UserDto {
     @Schema(description = "Email of the user")
     private String email;
 
-    @Schema(description = "Status of the user. True = Enabled, False = Disabled")
+    @Schema(description = "Status of the user. True = Enabled, False = Disabled", required = true)
     private Boolean enabled;
 
-    @Schema(description = "User Certificate details")
-    private UserCertificateDto certificate;
-
-    @Schema(description = "Is System user. True = Yes, False = No")
+    @Schema(description = "Is System user. True = Yes, False = No", required = true)
     private Boolean systemUser;
 
     public String getUuid() {
@@ -78,14 +75,6 @@ public class UserDto {
         this.enabled = enabled;
     }
 
-    public UserCertificateDto getCertificate() {
-        return certificate;
-    }
-
-    public void setCertificate(UserCertificateDto certificate) {
-        this.certificate = certificate;
-    }
-
     public Boolean getSystemUser() {
         return systemUser;
     }
@@ -102,7 +91,6 @@ public class UserDto {
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)
-                .append("certificate", certificate)
                 .append("enabled", enabled)
                 .append("systemUser", systemUser)
                 .toString();

@@ -6,15 +6,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class ObjectPermissionsDto {
+public class ObjectPermissionsRequestDto {
 
     @Schema(description = "UUID of the Object", required = true)
     private String uuid;
 
-    @Schema(description = "Allowed Action list", required = true)
+    @Schema(description = "Allowed Action list")
     private List<String> allow;
 
-    @Schema(description = "Denied Action list", required = true)
+    @Schema(description = "Denied Action list")
     private List<String> deny;
 
     public String getUuid() {

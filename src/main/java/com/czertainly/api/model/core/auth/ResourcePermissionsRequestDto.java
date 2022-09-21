@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class ResourcePermissionsDto {
+public class ResourcePermissionsRequestDto {
 
     @Schema(description = "Name of the Resource", required = true)
     private String name;
@@ -14,11 +14,11 @@ public class ResourcePermissionsDto {
     @Schema(description = "Allow all actions. True = Yes, False = No", required = true)
     private Boolean allowAllActions;
 
-    @Schema(description = "List of actions permitted", required = true)
+    @Schema(description = "List of actions permitted")
     private List<String> actions;
 
-    @Schema(description = "Object permissions", required = true)
-    private List<ObjectPermissionsDto> objects;
+    @Schema(description = "Object permissions")
+    private List<ObjectPermissionsRequestDto> objects;
 
     public String getName() {
         return name;
@@ -44,11 +44,11 @@ public class ResourcePermissionsDto {
         this.actions = actions;
     }
 
-    public List<ObjectPermissionsDto> getObjects() {
+    public List<ObjectPermissionsRequestDto> getObjects() {
         return objects;
     }
 
-    public void setObjects(List<ObjectPermissionsDto> objects) {
+    public void setObjects(List<ObjectPermissionsRequestDto> objects) {
         this.objects = objects;
     }
 

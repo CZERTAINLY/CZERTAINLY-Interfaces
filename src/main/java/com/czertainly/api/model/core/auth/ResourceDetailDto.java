@@ -7,27 +7,25 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class RoleDetailDto extends RoleDto {
+public class ResourceDetailDto extends ResourceDto {
 
-    @Schema(description = "List of Users with the role", required = true)
-    private List<UserDto> users;
+    @Schema(description = "List of Actions for the Resource", required = true)
+    private List<ActionDto> actions;
 
-    public List<UserDto> getUsers() {
-        return users;
+    public List<ActionDto> getActions() {
+        return actions;
     }
 
-    public void setUsers(List<UserDto> users) {
-        this.users = users;
+    public void setActions(List<ActionDto> actions) {
+        this.actions = actions;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("uuid", uuid)
                 .append("name", name)
-                .append("users", users)
-                .append("description", getDescription())
-                .append("systemRole", getSystemRole())
+                .append("uuid", uuid)
+                .append("actions", actions)
                 .toString();
     }
 }
