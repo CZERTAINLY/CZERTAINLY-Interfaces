@@ -5,6 +5,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.AddUserRequestDto;
 import com.czertainly.api.model.core.auth.RoleDto;
 import com.czertainly.api.model.core.auth.SubjectPermissionsDto;
+import com.czertainly.api.model.core.auth.UpdateUserRequestDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.czertainly.api.model.core.auth.UserDto;
 import com.czertainly.api.model.core.auth.UserUpdateRequestDto;
@@ -70,7 +71,7 @@ public interface UserManagementController {
     @Operation(summary = "Update User")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User details updated")})
     @RequestMapping(path = "/{userUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	UserDetailDto updateUser(@Parameter(description = "User UUID") @PathVariable String userUuid, @RequestBody UserUpdateRequestDto request) throws NotFoundException;
+	UserDetailDto updateUser(@Parameter(description = "User UUID") @PathVariable String userUuid, @RequestBody UpdateUserRequestDto request) throws NotFoundException, CertificateException;
 
     @Operation(summary = "Enable User")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User enabled")})
