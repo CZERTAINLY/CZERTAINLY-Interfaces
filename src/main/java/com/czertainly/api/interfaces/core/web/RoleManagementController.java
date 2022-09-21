@@ -3,6 +3,7 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.ObjectPermissionsDto;
+import com.czertainly.api.model.core.auth.ObjectPermissionsRequestDto;
 import com.czertainly.api.model.core.auth.ResourcePermissionsDto;
 import com.czertainly.api.model.core.auth.RoleDetailDto;
 import com.czertainly.api.model.core.auth.RoleDto;
@@ -104,16 +105,16 @@ public interface RoleManagementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void addResourcePermissionObjects(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
 															@Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
-															@RequestBody List<ObjectPermissionsDto> request) throws NotFoundException;
+															@RequestBody List<ObjectPermissionsRequestDto> request) throws NotFoundException;
 
     @Operation(summary = "Update Resource Objects to a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource Objects added")})
     @RequestMapping(path = "/{roleUuid}/permissions/{resourceUuid}/objects/{objectUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateResourcePermissionObjects(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
-															   @Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
-															   @Parameter(description = "Object UUID") @PathVariable String objectUuid,
-															   @RequestBody List<ObjectPermissionsDto> request) throws NotFoundException;
+                                         @Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
+                                         @Parameter(description = "Object UUID") @PathVariable String objectUuid,
+                                         @RequestBody ObjectPermissionsRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Update Resource Objects to a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource Objects added")})

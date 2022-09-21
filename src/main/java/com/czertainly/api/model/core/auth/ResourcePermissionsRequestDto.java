@@ -14,11 +14,11 @@ public class ResourcePermissionsRequestDto {
     @Schema(description = "Allow all actions. True = Yes, False = No", required = true)
     private Boolean allowAllActions;
 
-    @Schema(description = "List of actions permitted", required = true)
+    @Schema(description = "List of actions permitted")
     private List<String> actions;
 
     @Schema(description = "Object permissions")
-    private List<ObjectPermissionsDto> objects;
+    private List<ObjectPermissionsRequestDto> objects;
 
     public String getName() {
         return name;
@@ -44,11 +44,11 @@ public class ResourcePermissionsRequestDto {
         this.actions = actions;
     }
 
-    public List<ObjectPermissionsDto> getObjects() {
+    public List<ObjectPermissionsRequestDto> getObjects() {
         return objects;
     }
 
-    public void setObjects(List<ObjectPermissionsDto> objects) {
+    public void setObjects(List<ObjectPermissionsRequestDto> objects) {
         this.objects = objects;
     }
 

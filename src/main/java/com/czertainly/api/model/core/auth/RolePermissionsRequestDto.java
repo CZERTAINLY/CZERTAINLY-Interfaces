@@ -11,7 +11,7 @@ public class RolePermissionsRequestDto {
     @Schema(description = "Allow all resources, True = Yes, False = No", required = true)
     private Boolean allowAllResources;
 
-    @Schema(description = "Resources", required = true)
+    @Schema(description = "Resources")
     private List<ResourcePermissionsRequestDto> resources;
 
     public Boolean getAllowAllResources() {

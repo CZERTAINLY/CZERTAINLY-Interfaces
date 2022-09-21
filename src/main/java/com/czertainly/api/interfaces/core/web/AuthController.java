@@ -3,6 +3,8 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.AuthenticationResponseDto;
+import com.czertainly.api.model.core.auth.ResourceDetailDto;
+import com.czertainly.api.model.core.auth.UserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -39,6 +43,10 @@ public interface AuthController {
     @Operation(summary = "Profile Authorization")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authenticate a user")})
     @RequestMapping(path = "/profile", method = RequestMethod.GET, produces = {"application/json"})
-    AuthenticationResponseDto profile() throws NotFoundException;
+    UserDto profile() throws NotFoundException;
 
+    @Operation(summary = "Get all Resources")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Resources retrieved successfully")})
+    @RequestMapping(path = "/resources", method = RequestMethod.GET, produces = {"application/json"})
+    List<ResourceDetailDto> getAllResources() throws NotFoundException;
 }
