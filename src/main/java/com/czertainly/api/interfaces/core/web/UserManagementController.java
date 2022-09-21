@@ -114,6 +114,6 @@ public interface UserManagementController {
     @Operation(summary = "Get User permissions")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User permissions removed")})
     @RequestMapping(path = "/{userUuid}/permissions", method = RequestMethod.GET, produces = {"application/json"})
-	SubjectPermissionsDto getPermissions(@Parameter(description = "User UUID") @PathVariable String userUuid, @Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
+	SubjectPermissionsDto getPermissions(@Parameter(description = "User UUID") @PathVariable String userUuid) throws NotFoundException;
 
 }
