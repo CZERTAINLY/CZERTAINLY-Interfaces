@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class UserUpdateRequestDto {
+public class UpdateUserRequestDto {
 
     @Schema(description = "First name of the user")
     private String firstName;
@@ -15,11 +15,17 @@ public class UserUpdateRequestDto {
     @Schema(description = "Email of the user", required = true)
     private String email;
 
-    @Schema(description = "UUID of the Certificate")
-    private String certificateUuid;
+    @Schema(
+            description = "Base64 Content of the admin certificate",
+            required = false
+    )
+    private String certificateData;
 
-    @Schema(description = "Fingerprint of the Certificate")
-    private String certificateFingerprint;
+    @Schema(
+            description = "UUID of the existing certificate in the Inventory. Mandatory if certificate is not provided",
+            required = false
+    )
+    private String certificateUuid;
 
     public String getFirstName() {
         return firstName;
@@ -53,12 +59,12 @@ public class UserUpdateRequestDto {
         this.certificateUuid = certificateUuid;
     }
 
-    public String getCertificateFingerprint() {
-        return certificateFingerprint;
+    public String getCertificateData() {
+        return certificateData;
     }
 
-    public void setCertificateFingerprint(String certificateFingerprint) {
-        this.certificateFingerprint = certificateFingerprint;
+    public void setCertificateData(String certificateData) {
+        this.certificateData = certificateData;
     }
 
     @Override
@@ -68,7 +74,7 @@ public class UserUpdateRequestDto {
                 .append("lastName", lastName)
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
-                .append("certificateFingerprint", certificateFingerprint)
+                .append("certificateData", certificateData)
                 .toString();
     }
 }

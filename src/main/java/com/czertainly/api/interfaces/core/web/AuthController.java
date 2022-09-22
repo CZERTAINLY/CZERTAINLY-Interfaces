@@ -5,6 +5,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.AuthenticationResponseDto;
 import com.czertainly.api.model.core.auth.ResourceDetailDto;
 import com.czertainly.api.model.core.auth.UserDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +44,7 @@ public interface AuthController {
     @Operation(summary = "Profile Authorization")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authenticate a user")})
     @RequestMapping(path = "/profile", method = RequestMethod.GET, produces = {"application/json"})
-    UserDto profile() throws NotFoundException;
+    UserDto profile() throws NotFoundException, JsonProcessingException;
 
     @Operation(summary = "Get all Resources")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Resources retrieved successfully")})

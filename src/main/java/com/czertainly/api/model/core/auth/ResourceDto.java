@@ -11,17 +11,17 @@ public class ResourceDto extends NameAndUuidDto {
     private String displayName;
 
     @Schema(description = "Listing Endpoint")
-    private String listingEndPoint;
+    private String listObjectsEndpoint;
 
     @Schema(description = "If resource has Object access permissions. True = Yes, False = No", required = true)
     private Boolean objectAccess;
 
-    public String getListingEndPoint() {
-        return listingEndPoint;
+    public String getListObjectsEndpoint() {
+        return listObjectsEndpoint;
     }
 
-    public void setListingEndPoint(String listingEndPoint) {
-        this.listingEndPoint = listingEndPoint;
+    public void setListObjectsEndpoint(String listObjectsEndpoint) {
+        this.listObjectsEndpoint = listObjectsEndpoint;
     }
 
     public String getDisplayName() {
@@ -45,7 +45,7 @@ public class ResourceDto extends NameAndUuidDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
                 .append("uuid", uuid)
-                .append("listingEndPoint", listingEndPoint)
+                .append("listingEndPoint", listObjectsEndpoint)
                 .append("displayName", displayName)
                 .append("objectAccess", objectAccess)
                 .toString();

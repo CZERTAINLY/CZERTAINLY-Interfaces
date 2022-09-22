@@ -15,7 +15,7 @@ public class UserRequestDto {
     @Schema(description = "Last name of the user")
     private String lastName;
 
-    @Schema(description = "Email of the user", required = true)
+    @Schema(description = "Email of the user")
     private String email;
 
     @Schema(description = "Status of the user. True = Enabled, False = Disabled")
