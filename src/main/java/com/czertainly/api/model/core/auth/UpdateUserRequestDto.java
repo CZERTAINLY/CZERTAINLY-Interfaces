@@ -15,9 +15,6 @@ public class UpdateUserRequestDto {
     @Schema(description = "Email of the user", required = true)
     private String email;
 
-    @Schema(description = "Status of the user. True = Enabled, False = Disabled")
-    private Boolean enabled;
-
     @Schema(
             description = "Base64 Content of the admin certificate",
             required = false
@@ -54,14 +51,6 @@ public class UpdateUserRequestDto {
         this.email = email;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getCertificateUuid() {
         return certificateUuid;
     }
@@ -85,7 +74,6 @@ public class UpdateUserRequestDto {
                 .append("lastName", lastName)
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
-                .append("enabled", enabled)
                 .append("certificateData", certificateData)
                 .toString();
     }

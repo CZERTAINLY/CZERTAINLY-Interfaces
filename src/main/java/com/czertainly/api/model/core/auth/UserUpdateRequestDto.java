@@ -15,9 +15,6 @@ public class UserUpdateRequestDto {
     @Schema(description = "Email of the user", required = true)
     private String email;
 
-    @Schema(description = "Status of the user. True = Enabled, False = Disabled")
-    private Boolean enabled;
-
     @Schema(description = "UUID of the Certificate")
     private String certificateUuid;
 
@@ -48,14 +45,6 @@ public class UserUpdateRequestDto {
         this.email = email;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getCertificateUuid() {
         return certificateUuid;
     }
@@ -79,7 +68,6 @@ public class UserUpdateRequestDto {
                 .append("lastName", lastName)
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
-                .append("enabled", enabled)
                 .append("certificateFingerprint", certificateFingerprint)
                 .toString();
     }
