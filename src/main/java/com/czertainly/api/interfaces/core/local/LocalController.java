@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 @RestController
@@ -46,5 +47,5 @@ public interface LocalController {
     @RequestMapping(path = "/admins", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<UserDetailDto> addAdmin(
             @RequestBody AddUserRequestDto request)
-            throws CertificateException, NotFoundException;
+            throws CertificateException, NotFoundException, NoSuchAlgorithmException;
 }
