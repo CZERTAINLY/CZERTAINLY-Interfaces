@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.local;
 
+import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.AddUserRequestDto;
@@ -47,5 +48,5 @@ public interface LocalController {
     @RequestMapping(path = "/admins", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<UserDetailDto> addAdmin(
             @RequestBody AddUserRequestDto request)
-            throws CertificateException, NotFoundException, NoSuchAlgorithmException;
+            throws CertificateException, NotFoundException, NoSuchAlgorithmException, AlreadyExistException;
 }
