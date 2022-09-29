@@ -63,7 +63,8 @@ import java.util.List;
 public interface LocationController {
 
     @Operation(
-            summary = "Get information about the Location content. All identified certificates are returned"
+            summary = "Get Location Details",
+            description = "Get information about the Location content. All identified certificates are returned"
     )
     @ApiResponses(
             value = {
@@ -83,7 +84,8 @@ public interface LocationController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Push the Certificate into the Location"
+            summary = "Push Certificate",
+            description = "Push the Certificate into the Location"
     )
     @ApiResponses(
             value = {
@@ -104,7 +106,8 @@ public interface LocationController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "List of Attributes to push Certificate into Location"
+            summary = "List Push Certificate Attributes",
+            description = "List of Attributes to push Certificate into Location"
     )
     @ApiResponses(
             value = {
@@ -123,7 +126,8 @@ public interface LocationController {
     ) throws NotFoundException;
 
     @Operation(
-            summary = "Validate list of Attributes to push Certificate into Location"
+            summary = "Validate Push Certificate Attributes",
+            description = "Validate list of Attributes to push Certificate into Location"
     )
     @ApiResponses(
             value = {
@@ -150,7 +154,8 @@ public interface LocationController {
     ) throws NotFoundException, ValidationException;
 
     @Operation(
-            summary = "Remove Certificate from Location"
+            summary = "Remove Certificate",
+            description = "Remove Certificate from Location"
     )
     @ApiResponses(
             value = {
@@ -171,7 +176,8 @@ public interface LocationController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Generate key pair and CSR for the Location"
+            summary = "Generate CSR",
+            description = "Generate key pair and CSR for the Location"
     )
     @ApiResponses(
             value = {
@@ -192,7 +198,8 @@ public interface LocationController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "List of Attributes to generate key pair and CSR"
+            summary = "List CSR Attributes",
+            description = "List of Attributes to generate key pair and CSR"
     )
     @ApiResponses(
             value = {
@@ -211,7 +218,8 @@ public interface LocationController {
     ) throws NotFoundException;
 
     @Operation(
-            summary = "Validate list of Attributes to generate key pair and CSR"
+            summary = "Validate CSR Attributes",
+            description = "Validate list of Attributes to generate key pair and CSR"
     )
     @ApiResponses(
             value = {
