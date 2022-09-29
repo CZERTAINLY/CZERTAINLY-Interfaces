@@ -68,7 +68,7 @@ import java.util.Optional;
 public interface LocationManagementController {
 
     @Operation(
-            summary = "List of available Locations"
+            summary = "List Locations"
     )
     @ApiResponses(
             value = {
@@ -115,7 +115,7 @@ public interface LocationManagementController {
     ) throws NotFoundException, AlreadyExistException, LocationException;
 
     @Operation(
-            summary = "Get information about the Location"
+            summary = "Get Location Details"
     )
     @ApiResponses(
             value = {
@@ -243,7 +243,7 @@ public interface LocationManagementController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Get CSR generate Attributes"
+            summary = "Get CSR Attributes"
     )
     @ApiResponses(
             value = {
@@ -307,7 +307,7 @@ public interface LocationManagementController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Issue Certificate for Location"
+            summary = "Issue Certificate to Location"
     )
     @ApiResponses(
             value = {
@@ -329,7 +329,7 @@ public interface LocationManagementController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Update and sync Location content"
+            summary = "Sync Location content"
     )
     @ApiResponses(
             value = {
@@ -349,7 +349,7 @@ public interface LocationManagementController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Automatically renew Certificate in the Location"
+            summary = "Renew Certificate in Location"
     )
     @ApiResponses(
             value = {

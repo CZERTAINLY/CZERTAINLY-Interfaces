@@ -56,7 +56,8 @@ import java.util.List;
 public interface EntityController {
 
     @Operation(
-            summary = "List available Entity instances"
+            summary = "List Entity instances",
+            description = "List available Entity instances"
     )
     @ApiResponses(
             value = {
@@ -72,7 +73,7 @@ public interface EntityController {
     List<EntityInstanceDto> listEntityInstances();
 
     @Operation(
-            summary = "Get Entity instance"
+            summary = "Get Entity instance details"
     )
     @ApiResponses(
             value = {
