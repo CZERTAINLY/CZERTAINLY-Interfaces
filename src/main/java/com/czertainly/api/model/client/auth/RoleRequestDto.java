@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.auth;
+package com.czertainly.api.model.client.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,28 +11,6 @@ public class RoleRequestDto {
 
     @Schema(description = "Description for the role")
     private String description;
-
-    @Schema(description = "Is System User")
-    private Boolean systemRole;
-
-    @Schema(description = "Permissions for the role")
-    private RolePermissionsRequestDto permissions;
-
-    public Boolean getSystemRole() {
-        return systemRole;
-    }
-
-    public void setSystemRole(Boolean systemRole) {
-        this.systemRole = systemRole;
-    }
-
-    public RolePermissionsRequestDto getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(RolePermissionsRequestDto permissions) {
-        this.permissions = permissions;
-    }
 
     public String getName() {
         return name;
@@ -55,8 +33,6 @@ public class RoleRequestDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
                 .append("description", description)
-                .append("permissions", permissions)
-                .append("systemRole", systemRole)
                 .toString();
     }
 }

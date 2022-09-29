@@ -1,15 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.client.auth.RoleRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.core.auth.ObjectPermissionsDto;
-import com.czertainly.api.model.core.auth.ObjectPermissionsRequestDto;
-import com.czertainly.api.model.core.auth.ResourcePermissionsDto;
-import com.czertainly.api.model.core.auth.RoleDetailDto;
-import com.czertainly.api.model.core.auth.RoleDto;
-import com.czertainly.api.model.core.auth.RolePermissionsRequestDto;
-import com.czertainly.api.model.core.auth.RoleRequestDto;
-import com.czertainly.api.model.core.auth.SubjectPermissionsDto;
+import com.czertainly.api.model.core.auth.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,12 +48,12 @@ public interface RoleManagementController {
     @Operation(summary = "List Roles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of roles fetched")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-	List<RoleDto> listRoles();
+    List<RoleDto> listRoles();
 
     @Operation(summary = "Get role details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role details retrieved")})
     @RequestMapping(path = "/{roleUuid}", method = RequestMethod.GET, produces = {"application/json"})
-	RoleDetailDto getRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
+    RoleDetailDto getRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
 
     @Operation(summary = "Create Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Role created")})
@@ -69,43 +63,43 @@ public interface RoleManagementController {
     @Operation(summary = "Update Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role details updated")})
     @RequestMapping(path = "/{roleUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	RoleDetailDto updateRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid, @RequestBody RoleRequestDto request) throws NotFoundException;
+    RoleDetailDto updateRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid, @RequestBody RoleRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Role deleted")})
     @RequestMapping(path = "/{roleUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	void deleteRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
+    void deleteRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
 
     @Operation(summary = "Get Permissions of a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role permissions retrieved")})
     @RequestMapping(path = "/{roleUuid}/permissions", method = RequestMethod.GET, produces = {"application/json"})
-	SubjectPermissionsDto getRolePermissions(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
+    SubjectPermissionsDto getRolePermissions(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
 
     @Operation(summary = "Add permissions to Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User roles updated")})
     @RequestMapping(path = "/{roleUuid}/permissions", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	SubjectPermissionsDto savePermissions(@Parameter(description = "Role UUID") @PathVariable String roleUuid, @RequestBody RolePermissionsRequestDto request) throws NotFoundException;
+    SubjectPermissionsDto savePermissions(@Parameter(description = "Role UUID") @PathVariable String roleUuid, @RequestBody RolePermissionsRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Get Resources of a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role resources retrieved")})
     @RequestMapping(path = "/{roleUuid}/permissions/{resourceUuid}", method = RequestMethod.GET, produces = {"application/json"})
-	ResourcePermissionsDto getRoleResourcePermissions(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
-													  @Parameter(description = "Resource UUID") @PathVariable String resourceUuid) throws NotFoundException;
+    ResourcePermissionsDto getRoleResourcePermissions(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
+                                                      @Parameter(description = "Resource UUID") @PathVariable String resourceUuid) throws NotFoundException;
 
     @Operation(summary = "Get Resource Objects of a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Resource Objects retrieved")})
     @RequestMapping(path = "/{roleUuid}/permissions/{resourceUuid}/objects", method = RequestMethod.GET, produces = {"application/json"})
-	List<ObjectPermissionsDto> getResourcePermissionObjects(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
-															@Parameter(description = "Resource UUID") @PathVariable String resourceUuid) throws NotFoundException;
+    List<ObjectPermissionsDto> getResourcePermissionObjects(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
+                                                            @Parameter(description = "Resource UUID") @PathVariable String resourceUuid) throws NotFoundException;
 
     @Operation(summary = "Add Resource Objects to a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource Objects added")})
     @RequestMapping(path = "/{roleUuid}/permissions/{resourceUuid}/objects", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void addResourcePermissionObjects(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
-															@Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
-															@RequestBody List<ObjectPermissionsRequestDto> request) throws NotFoundException;
+                                      @Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
+                                      @RequestBody List<ObjectPermissionsRequestDto> request) throws NotFoundException;
 
     @Operation(summary = "Update Resource Objects to a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource Objects added")})
@@ -121,6 +115,6 @@ public interface RoleManagementController {
     @RequestMapping(path = "/{roleUuid}/permissions/{resourceUuid}/objects/{objectUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeResourcePermissionObjects(@Parameter(description = "Role UUID") @PathVariable String roleUuid,
-															   @Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
-															   @Parameter(description = "Object UUID") @PathVariable String objectUuid) throws NotFoundException;
+                                         @Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
+                                         @Parameter(description = "Object UUID") @PathVariable String objectUuid) throws NotFoundException;
 }

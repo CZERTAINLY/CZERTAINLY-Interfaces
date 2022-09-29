@@ -1,10 +1,13 @@
-package com.czertainly.api.model.core.auth;
+package com.czertainly.api.model.client.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class UpdateUserRequestDto {
+public class AddUserRequestDto {
+
+    @Schema(description = "Username of the user", required = true, example = "user1")
+    private String username;
 
     @Schema(description = "First name of the user")
     private String firstName;
@@ -14,6 +17,9 @@ public class UpdateUserRequestDto {
 
     @Schema(description = "Email of the user", required = true)
     private String email;
+
+    @Schema(description = "Status of the user. True = Enabled, False = Disabled")
+    private Boolean enabled;
 
     @Schema(
             description = "Base64 Content of the admin certificate",
@@ -26,6 +32,14 @@ public class UpdateUserRequestDto {
             required = false
     )
     private String certificateUuid;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -51,6 +65,14 @@ public class UpdateUserRequestDto {
         this.email = email;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public String getCertificateUuid() {
         return certificateUuid;
     }
@@ -70,10 +92,12 @@ public class UpdateUserRequestDto {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("username", username)
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
+                .append("enabled", enabled)
                 .append("certificateData", certificateData)
                 .toString();
     }

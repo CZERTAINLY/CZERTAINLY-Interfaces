@@ -2,10 +2,10 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.core.auth.AddUserRequestDto;
+import com.czertainly.api.model.client.auth.AddUserRequestDto;
 import com.czertainly.api.model.core.auth.RoleDto;
 import com.czertainly.api.model.core.auth.SubjectPermissionsDto;
-import com.czertainly.api.model.core.auth.UpdateUserRequestDto;
+import com.czertainly.api.model.client.auth.UpdateUserRequestDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.czertainly.api.model.core.auth.UserDto;
 import io.swagger.v3.oas.annotations.Operation;

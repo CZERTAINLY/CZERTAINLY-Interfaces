@@ -27,6 +27,9 @@ public class UserRequestDto {
     @Schema(description = "Fingerprint of the Certificate")
     private String certificateFingerprint;
 
+    @Schema(description = "Is System User")
+    private Boolean systemUser;
+
     public String getUsername() {
         return username;
     }
@@ -83,6 +86,14 @@ public class UserRequestDto {
         this.certificateFingerprint = certificateFingerprint;
     }
 
+    public Boolean getSystemUser() {
+        return systemUser;
+    }
+
+    public void setSystemUser(Boolean systemUser) {
+        this.systemUser = systemUser;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -93,6 +104,7 @@ public class UserRequestDto {
                 .append("certificateUuid", certificateUuid)
                 .append("enabled", enabled)
                 .append("certificateFingerprint", certificateFingerprint)
+                .append("systemUser", systemUser)
                 .toString();
     }
 }

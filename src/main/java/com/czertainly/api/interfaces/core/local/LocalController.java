@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.core.local;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.core.auth.AddUserRequestDto;
+import com.czertainly.api.model.client.auth.AddUserRequestDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
