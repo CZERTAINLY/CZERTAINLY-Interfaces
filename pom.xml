@@ -6,7 +6,7 @@
 
     <groupId>com.czertainly</groupId>
     <artifactId>interfaces</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <name>CZERTAINLY-Interfaces</name>
     <packaging>jar</packaging>
 
