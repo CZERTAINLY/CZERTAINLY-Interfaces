@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.RoleRequestDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,12 +31,12 @@ import java.util.List;
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "500",
