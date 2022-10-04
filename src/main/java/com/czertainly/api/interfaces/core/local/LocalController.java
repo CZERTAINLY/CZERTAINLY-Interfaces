@@ -2,8 +2,9 @@ package com.czertainly.api.interfaces.core.local;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.client.admin.AddAdminRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.client.auth.AddUserRequestDto;
+import com.czertainly.api.model.core.auth.UserDetailDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 @RestController
@@ -44,7 +46,7 @@ public interface LocalController {
     @Operation(summary = "Create Administrator")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Admin created")})
     @RequestMapping(path = "/admins", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<?> addAdmin(
-            @RequestBody AddAdminRequestDto request)
-            throws CertificateException, NotFoundException, AlreadyExistException;
+    ResponseEntity<UserDetailDto> addAdmin(
+            @RequestBody AddUserRequestDto request)
+            throws CertificateException, NotFoundException, NoSuchAlgorithmException, AlreadyExistException;
 }

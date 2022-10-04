@@ -1,10 +1,10 @@
-package com.czertainly.api.model.core.auth;
+package com.czertainly.api.model.client.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class UserRequestDto {
+public class AddUserRequestDto {
 
     @Schema(description = "Username of the user", required = true, example = "user1")
     private String username;
@@ -21,14 +21,15 @@ public class UserRequestDto {
     @Schema(description = "Status of the user. True = Enabled, False = Disabled")
     private Boolean enabled;
 
-    @Schema(description = "UUID of the Certificate")
+    @Schema(
+            description = "Base64 Content of the user certificate"
+    )
+    private String certificateData;
+
+    @Schema(
+            description = "UUID of the existing certificate in the Inventory"
+    )
     private String certificateUuid;
-
-    @Schema(description = "Fingerprint of the Certificate")
-    private String certificateFingerprint;
-
-    @Schema(description = "Is System User")
-    private Boolean systemUser;
 
     public String getUsername() {
         return username;
@@ -78,20 +79,12 @@ public class UserRequestDto {
         this.certificateUuid = certificateUuid;
     }
 
-    public String getCertificateFingerprint() {
-        return certificateFingerprint;
+    public String getCertificateData() {
+        return certificateData;
     }
 
-    public void setCertificateFingerprint(String certificateFingerprint) {
-        this.certificateFingerprint = certificateFingerprint;
-    }
-
-    public Boolean getSystemUser() {
-        return systemUser;
-    }
-
-    public void setSystemUser(Boolean systemUser) {
-        this.systemUser = systemUser;
+    public void setCertificateData(String certificateData) {
+        this.certificateData = certificateData;
     }
 
     @Override
@@ -103,8 +96,7 @@ public class UserRequestDto {
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
                 .append("enabled", enabled)
-                .append("certificateFingerprint", certificateFingerprint)
-                .append("systemUser", systemUser)
+                .append("certificateData", certificateData)
                 .toString();
     }
 }

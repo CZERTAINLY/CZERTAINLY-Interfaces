@@ -4,7 +4,6 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.client.SimplifiedClientDto;
 import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
@@ -122,11 +121,6 @@ public interface RAProfileManagementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
-    @Operation(summary = "List authorized Clients of RA Profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of clients of RA Profile")})
-    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/users", method = RequestMethod.GET, produces = {"application/json"})
-    List<SimplifiedClientDto> listUsers(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
-
     @Operation(summary = "Delete multiple RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profiles deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -136,7 +130,7 @@ public interface RAProfileManagementController {
     void bulkDeleteRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-    @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+                             @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Disable multiple RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profiles disabled")})
