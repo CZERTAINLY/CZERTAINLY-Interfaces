@@ -15,21 +15,19 @@ public class AddUserRequestDto {
     @Schema(description = "Last name of the user")
     private String lastName;
 
-    @Schema(description = "Email of the user", required = true)
+    @Schema(description = "Email of the user")
     private String email;
 
     @Schema(description = "Status of the user. True = Enabled, False = Disabled")
     private Boolean enabled;
 
     @Schema(
-            description = "Base64 Content of the admin certificate",
-            required = false
+            description = "Base64 Content of the user certificate"
     )
     private String certificateData;
 
     @Schema(
-            description = "UUID of the existing certificate in the Inventory. Mandatory if certificate is not provided",
-            required = false
+            description = "UUID of the existing certificate in the Inventory"
     )
     private String certificateUuid;
 
