@@ -233,7 +233,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/entities/{entityUuid}/locations/{locationUuid}/push",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/attributes/push",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
@@ -253,7 +253,7 @@ public interface LocationManagementController {
                     )
             })
     @RequestMapping(
-            path = "/entities/{entityUuid}/locations/{locationUuid}/issue",
+            path = "/entities/{entityUuid}/locations/{locationUuid}/attributes/issue",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
