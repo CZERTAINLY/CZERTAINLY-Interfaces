@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public interface ClientOperationController {
     ClientCertificateSignResponseDto issueCertificate(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody ClientCertificateSignRequestDto request)
-            throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException;
+            throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException, NoSuchAlgorithmException;
 
     @Operation(summary = "Revoke Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate revoked")})

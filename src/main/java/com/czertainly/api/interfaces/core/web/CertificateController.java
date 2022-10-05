@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +104,7 @@ public interface CertificateController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
 	@RequestMapping(path = "/upload", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request)
-			throws AlreadyExistException, CertificateException;
+			throws AlreadyExistException, CertificateException, NoSuchAlgorithmException;
 	
 	@Operation(summary = "Delete multiple certificates", description = "In this operation, when the list of " +
 			"Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
