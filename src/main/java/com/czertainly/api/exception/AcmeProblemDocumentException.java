@@ -28,13 +28,13 @@ public class AcmeProblemDocumentException extends Exception {
     }
 
     public AcmeProblemDocumentException(HttpStatus httpStatus, ProblemDocument problemDocument) {
-        super();
+        super(problemDocument.getDetail());
         this.httpStatusCode = httpStatus.value();
         this.problemDocument = problemDocument;
     }
 
     public AcmeProblemDocumentException(HttpStatus httpStatus, ProblemDocument problemDocument, Map additionalHeaders) {
-        super();
+        super(problemDocument.getDetail());
         this.httpStatusCode = httpStatus.value();
         this.problemDocument = problemDocument;
         this.additionalHeaders = additionalHeaders;
