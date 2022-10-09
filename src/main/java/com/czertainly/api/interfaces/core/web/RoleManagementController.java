@@ -7,7 +7,9 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -71,6 +73,19 @@ public interface RoleManagementController {
     @RequestMapping(path = "/{roleUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
+
+    @Operation(summary = "Get Role Users")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role users retrieved")})
+    @RequestMapping(path = "/{roleUuid}/users", method = RequestMethod.GET, produces = {"application/json"})
+    List<UserDto> getRoleUsers(@Parameter(description = "Role UUID") @PathVariable String roleUuid) throws NotFoundException;
+
+    @Operation(summary = "Add users to Role")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role users updated")})
+    @RequestMapping(path = "/{roleUuid}/users", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    RoleDetailDto updateUsers(@Parameter(description = "Role UUID") @PathVariable String roleUuid, @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "User UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+    @RequestBody List<String> userUuids) throws NotFoundException;
 
     @Operation(summary = "Get Permissions of a Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role permissions retrieved")})

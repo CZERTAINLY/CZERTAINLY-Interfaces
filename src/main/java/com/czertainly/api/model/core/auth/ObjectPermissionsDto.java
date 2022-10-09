@@ -11,6 +11,9 @@ public class ObjectPermissionsDto {
     @Schema(description = "UUID of the Object", required = true)
     private String uuid;
 
+    @Schema(description = "Name of the Object", required = true)
+    private String name;
+
     @Schema(description = "Allowed Action list", required = true)
     private List<String> allow;
 
@@ -24,6 +27,10 @@ public class ObjectPermissionsDto {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public List<String> getAllow() {
         return allow;
