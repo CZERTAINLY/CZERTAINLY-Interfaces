@@ -108,6 +108,7 @@ public class UserRequestDto {
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)
+                .append("description", description)
                 .append("certificateUuid", certificateUuid)
                 .append("enabled", enabled)
                 .append("certificateFingerprint", certificateFingerprint)
