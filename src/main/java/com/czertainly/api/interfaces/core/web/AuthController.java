@@ -1,10 +1,10 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.client.auth.UpdateUserRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.core.auth.AuthenticationResponseDto;
 import com.czertainly.api.model.core.auth.ResourceDetailDto;
-import com.czertainly.api.model.core.auth.UserDto;
+import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,10 +12,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.cert.CertificateException;
 import java.util.List;
 
 @RestController
@@ -44,7 +46,12 @@ public interface AuthController {
     @Operation(summary = "Profile Authorization")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authenticate a user")})
     @RequestMapping(path = "/profile", method = RequestMethod.GET, produces = {"application/json"})
-    UserDto profile() throws NotFoundException, JsonProcessingException;
+    UserDetailDto profile() throws NotFoundException, JsonProcessingException;
+
+    @Operation(summary = "Update User Profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authenticate a user")})
+    @RequestMapping(path = "/profile", method = RequestMethod.PUT, produces = {"application/json"})
+    UserDetailDto updateUserProfile(@RequestBody UpdateUserRequestDto request) throws NotFoundException, JsonProcessingException, CertificateException;
 
     @Operation(summary = "Get all Resources")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Resources retrieved successfully")})
