@@ -15,6 +15,9 @@ public class UserUpdateRequestDto {
     @Schema(description = "Email of the user", required = true)
     private String email;
 
+    @Schema(description = "Description of the user")
+    private String description;
+
     @Schema(description = "UUID of the Certificate")
     private String certificateUuid;
 
@@ -44,6 +47,10 @@ public class UserUpdateRequestDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
 
     public String getCertificateUuid() {
         return certificateUuid;

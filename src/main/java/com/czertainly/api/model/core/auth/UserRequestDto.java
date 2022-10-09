@@ -18,6 +18,9 @@ public class UserRequestDto {
     @Schema(description = "Email of the user")
     private String email;
 
+    @Schema(description = "Description of the user")
+    private String description;
+
     @Schema(description = "Status of the user. True = Enabled, False = Disabled")
     private Boolean enabled;
 
@@ -61,6 +64,10 @@ public class UserRequestDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
 
     public Boolean getEnabled() {
         return enabled;
