@@ -98,6 +98,7 @@ public class UserDto {
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)
+                .append("description", description)
                 .append("enabled", enabled)
                 .append("systemUser", systemUser)
                 .toString();

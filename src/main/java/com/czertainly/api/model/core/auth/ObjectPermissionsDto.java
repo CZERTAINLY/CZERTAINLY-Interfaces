@@ -52,6 +52,7 @@ public class ObjectPermissionsDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
+                .append("name", name)
                 .append("allow", allow)
                 .append("deny", deny)
                 .toString();

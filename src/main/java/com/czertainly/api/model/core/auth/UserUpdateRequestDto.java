@@ -74,6 +74,7 @@ public class UserUpdateRequestDto {
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)
+                .append("description", description)
                 .append("certificateUuid", certificateUuid)
                 .append("certificateFingerprint", certificateFingerprint)
                 .toString();

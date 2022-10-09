@@ -38,6 +38,7 @@ public class UserDetailDto extends UserDto {
                 .append("firstName", getFirstName())
                 .append("lastName", getLastName())
                 .append("email", getEmail())
+                .append("description", getDescription())
                 .append("certificate", certificate)
                 .append("enabled", getEnabled())
                 .append("roles", roles)
