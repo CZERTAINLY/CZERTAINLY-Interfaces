@@ -114,11 +114,12 @@ public interface ComplianceProfileController {
             throws AlreadyExistException, NotFoundException, ValidationException;
 
     @Operation(summary = "Delete rule from a Compliance Profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New group is added to the profile"),
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New group is added to the profile"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @RequestMapping(path = "/{uuid}/rules", method = RequestMethod.DELETE, consumes = {"application/json"}, produces = {"application/json"})
-    ComplianceProfileRuleDto removeRule(@Parameter(description = "Compliance Profile UUID")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void removeRule(@Parameter(description = "Compliance Profile UUID")
                     @PathVariable String uuid, @RequestBody ComplianceRuleDeletionRequestDto request)
             throws NotFoundException;
 
