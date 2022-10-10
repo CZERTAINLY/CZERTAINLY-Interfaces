@@ -4,13 +4,7 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.compliance.ComplianceGroupRequestDto;
-import com.czertainly.api.model.client.compliance.ComplianceGroupsListResponseDto;
-import com.czertainly.api.model.client.compliance.ComplianceProfileRequestDto;
-import com.czertainly.api.model.client.compliance.ComplianceRuleAdditionRequestDto;
-import com.czertainly.api.model.client.compliance.ComplianceRuleDeletionRequestDto;
-import com.czertainly.api.model.client.compliance.ComplianceRulesListResponseDto;
-import com.czertainly.api.model.client.compliance.RaProfileAssociationRequestDto;
+import com.czertainly.api.model.client.compliance.*;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -111,12 +105,11 @@ public interface ComplianceProfileController {
             throws AlreadyExistException, ConnectorException;
 
     @Operation(summary = "Add rule to a Compliance Profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New rule is deleted from the profile"),
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New rule is deleted from the profile"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @RequestMapping(path = "/{uuid}/rules", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void addRule(@Parameter(description = "Compliance Profile UUID")
+    ComplianceProfileRuleDto addRule(@Parameter(description = "Compliance Profile UUID")
                  @PathVariable String uuid, @RequestBody ComplianceRuleAdditionRequestDto request)
             throws AlreadyExistException, NotFoundException, ValidationException;
 
