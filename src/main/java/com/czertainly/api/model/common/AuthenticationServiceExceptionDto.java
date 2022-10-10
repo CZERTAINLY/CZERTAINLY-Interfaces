@@ -1,6 +1,7 @@
 package com.czertainly.api.model.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 
 public class AuthenticationServiceExceptionDto {
 
@@ -30,7 +31,7 @@ public class AuthenticationServiceExceptionDto {
     }
 
     public Integer getStatusCode() {
-        return statusCode;
+        return statusCode = HttpStatus.BAD_REQUEST.value();
     }
 
     public void setStatusCode(Integer statusCode) {

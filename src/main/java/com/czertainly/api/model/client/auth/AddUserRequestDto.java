@@ -9,6 +9,9 @@ public class AddUserRequestDto {
     @Schema(description = "Username of the user", required = true, example = "user1")
     private String username;
 
+    @Schema(description = "Description of the user")
+    private String description;
+
     @Schema(description = "First name of the user")
     private String firstName;
 
@@ -87,10 +90,19 @@ public class AddUserRequestDto {
         this.certificateData = certificateData;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("username", username)
+                .append("description", description)
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)

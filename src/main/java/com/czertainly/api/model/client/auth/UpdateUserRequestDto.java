@@ -6,6 +6,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class UpdateUserRequestDto {
 
+    @Schema(description = "Description of the user")
+    private String description;
+
     @Schema(description = "First name of the user")
     private String firstName;
 
@@ -67,10 +70,19 @@ public class UpdateUserRequestDto {
         this.certificateData = certificateData;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("firstName", firstName)
+                .append("description", description)
                 .append("lastName", lastName)
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
