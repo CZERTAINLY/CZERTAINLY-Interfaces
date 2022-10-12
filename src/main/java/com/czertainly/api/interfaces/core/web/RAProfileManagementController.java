@@ -4,13 +4,16 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto;
 import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.core.compliance.ComplianceProfileDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -196,4 +199,12 @@ public interface RAProfileManagementController {
             description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                          @RequestBody List<String> uuids) throws NotFoundException;
+
+    @Operation(summary = "Get Compliance Profiles for an RA Profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance Profiles retrieved")})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/complianceProfiles", method = RequestMethod.GET, produces = {"application/json"})
+    List<SimplifiedComplianceProfileDto> getAssociatedComplianceProfiles(@Parameter(description = "Authority UUID")
+                                                         @PathVariable String authorityUuid,
+                                                                         @Parameter(description = "RA Profile UUID")
+                                                         @PathVariable String raProfileUuid) throws NotFoundException;
 }

@@ -37,9 +37,6 @@ public class RaProfileDto extends NameAndUuidDto {
             required = false)
     private List<String> enabledProtocols;
 
-    @Schema(description = "Compliance Profiles")
-    private List<ComplianceProfileDto> complianceProfiles;
-
     @Override
     public String getUuid() {
         return uuid;
@@ -105,13 +102,6 @@ public class RaProfileDto extends NameAndUuidDto {
         this.enabledProtocols = enabledProtocols;
     }
 
-    public List<ComplianceProfileDto> getComplianceProfiles() {
-        return complianceProfiles;
-    }
-
-    public void setComplianceProfiles(List<ComplianceProfileDto> complianceProfiles) {
-        this.complianceProfiles = complianceProfiles;
-    }
 
     @Override
     public String toString() {
@@ -123,7 +113,6 @@ public class RaProfileDto extends NameAndUuidDto {
                 .append("attributes", attributes)
                 .append("enabled", enabled)
                 .append("authorityInstanceName", authorityInstanceName)
-                .append("complianceProfiles", complianceProfiles)
                 .toString();
     }
 }
