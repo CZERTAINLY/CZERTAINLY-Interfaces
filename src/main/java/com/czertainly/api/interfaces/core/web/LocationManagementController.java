@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.location.AddLocationRequestDto;
@@ -326,7 +327,7 @@ public interface LocationManagementController {
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody IssueToLocationRequestDto request
-    ) throws NotFoundException, LocationException;
+    ) throws ConnectorException, LocationException;
 
     @Operation(
             summary = "Sync Location content"
@@ -367,5 +368,5 @@ public interface LocationManagementController {
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
-    ) throws NotFoundException, LocationException;
+    ) throws ConnectorException, LocationException;
 }

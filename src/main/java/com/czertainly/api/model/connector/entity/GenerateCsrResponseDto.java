@@ -7,12 +7,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Map;
 
 public class GenerateCsrResponseDto {
 
     @Schema(description = "Base64-encoded certificate signing request",
             required = true)
     private String csr;
+
+    @Schema(description = "CSR Metadata")
+    private Map<String, Object> metadata;
 
     @Schema(description = "Type of the certificate expected to be issued",
             required = false)
@@ -46,6 +50,14 @@ public class GenerateCsrResponseDto {
 
     public void setPushAttributes(List<RequestAttributeDto> pushAttributes) {
         this.pushAttributes = pushAttributes;
+    }
+
+    public Map<String, Object> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, Object> metadata) {
+        this.metadata = metadata;
     }
 
     @Override

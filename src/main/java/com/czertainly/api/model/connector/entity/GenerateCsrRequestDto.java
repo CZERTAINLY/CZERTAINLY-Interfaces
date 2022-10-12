@@ -21,6 +21,9 @@ public class GenerateCsrRequestDto {
     )
     private List<RequestAttributeDto> csrAttributes;
 
+    @Schema(description = "Is the request for renewal of Certificate", required = true)
+    private Boolean renewal;
+
     public List<RequestAttributeDto> getLocationAttributes() {
         return locationAttributes;
     }
@@ -37,11 +40,20 @@ public class GenerateCsrRequestDto {
         this.csrAttributes = csrAttributes;
     }
 
+    public Boolean isRenewal() {
+        return renewal;
+    }
+
+    public void setRenewal(Boolean renewal) {
+        this.renewal = renewal;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("locationAttributes", locationAttributes)
                 .append("csrAttributes", csrAttributes)
+                .append("isRenewalRequest", renewal)
                 .toString();
     }
 }
