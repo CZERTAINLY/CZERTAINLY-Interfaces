@@ -105,7 +105,7 @@ public interface ComplianceProfileController {
             throws AlreadyExistException, ConnectorException;
 
     @Operation(summary = "Add rule to a Compliance Profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New rule is deleted from the profile"),
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New rule added to the profile"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @RequestMapping(path = "/{uuid}/rules", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
