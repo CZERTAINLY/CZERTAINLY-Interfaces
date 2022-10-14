@@ -11,6 +11,17 @@ public class PushCertificateResponseDto {
     )
     private Map<String, Object> certificateMetadata;
 
+    @Schema(description = "Is the certificate contains key")
+    private Boolean withKey;
+
+    public boolean isWithKey() {
+        return withKey;
+    }
+
+    public void setWithKey(boolean hasPrivateKey) {
+        this.withKey = hasPrivateKey;
+    }
+
     public Map<String, Object> getCertificateMetadata() {
         return certificateMetadata;
     }
