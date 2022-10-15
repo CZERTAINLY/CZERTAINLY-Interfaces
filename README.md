@@ -27,13 +27,10 @@ CZERTAINLY supports the following `Connector` `Function Groups`:
 | `v2 Authority Provider` | Provides a connection with the certification authority and certificate management functions | <ul><li>[Certificate](src/main/java/com/czertainly/api/interfaces/connector/v2/CertificateController.java)</li></ul> |
 | `Entity Provider` | Provides the functionality to push the certificate to entities, discover certificates from entities | <ul><li>[Entity](src/main/java/com/czertainly/api/interfaces/connector/entity/EntityController.java)</li><li>[Location](src/main/java/com/czertainly/api/interfaces/connector/entity/LocationController.java)</li></ul> |
 | `Compliance Provider` | Provides functionality to check the compliance of certificates based on rules | <ul><li>[Compliance](src/main/java/com/czertainly/api/interfaces/connector/ComplianceController.java)</li><li>[Compliance Rules](src/main/java/com/czertainly/api/interfaces/connector/ComplianceRulesController.java)</li></ul> |
+
 ## Core interfaces
 
 `Core` interfaces are the interfaces that are used by the platform to communicate with the `Connectors` and the clients.
-
-The `Core` interfaces can be split into the following groups:
-- Administration interface
-- Client operations interface
 
 You can find the detailed description of the interfaces in the following sections:
 - [Core interfaces](src/main/java/com/czertainly/api/interfaces/core)

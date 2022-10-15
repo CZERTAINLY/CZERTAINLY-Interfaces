@@ -3,7 +3,12 @@ package com.czertainly.api.interfaces.core.client;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.client.authority.*;
+import com.czertainly.api.model.client.authority.ClientAddEndEntityRequestDto;
+import com.czertainly.api.model.client.authority.ClientCertificateRevocationDto;
+import com.czertainly.api.model.client.authority.ClientCertificateSignRequestDto;
+import com.czertainly.api.model.client.authority.ClientCertificateSignResponseDto;
+import com.czertainly.api.model.client.authority.ClientEditEndEntityRequestDto;
+import com.czertainly.api.model.client.authority.ClientEndEntityDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,8 +17,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
 
@@ -56,7 +66,7 @@ public interface ClientOperationController {
     ClientCertificateSignResponseDto issueCertificate(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody ClientCertificateSignRequestDto request)
-            throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException;
+            throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException, NoSuchAlgorithmException;
 
     @Operation(summary = "Revoke Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate revoked")})

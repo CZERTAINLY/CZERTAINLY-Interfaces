@@ -4,7 +4,6 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.client.credential.CredentialRequestDto;
 import com.czertainly.api.model.client.credential.CredentialUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -21,7 +20,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -77,32 +81,32 @@ public interface CredentialController {
     public ResponseEntity<?> createCredential(@RequestBody CredentialRequestDto request)
             throws AlreadyExistException, NotFoundException, ConnectorException;
 
-    @Operation(summary = "Update Credential")
+    @Operation(summary = "Edit Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Credential updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {
             "application/json"})
-    public CredentialDto updateCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid, @RequestBody CredentialUpdateRequestDto request)
+    public CredentialDto editCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid, @RequestBody CredentialUpdateRequestDto request)
             throws NotFoundException, ConnectorException;
 
-    @Operation(summary = "Remove Credential")
+    @Operation(summary = "Delete Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
+    public void deleteCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Enable Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential enabled")})
-    @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enableCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disable Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential disabled")})
-    @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disableCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -112,17 +116,8 @@ public interface CredentialController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void bulkRemoveCredential(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    public void bulkDeleteCredential(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Credential UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                                             @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
-
-    @Operation(summary = "Force delete multiple Credentials")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credentials forced to delete"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/force", method = RequestMethod.DELETE, produces = {"application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void bulkForceRemoveCredential(@Parameter(description = "Credential UUIDs") @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
-
 }
