@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.acme;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;

@@ -12,7 +12,7 @@ import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
 import com.czertainly.api.model.core.compliance.ComplianceProfileDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -182,13 +182,13 @@ public interface RAProfileManagementController {
     @Operation(summary = "Get revocation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
-    List<AttributeDefinition> listRevokeCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+    List<BaseAttribute> listRevokeCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                               @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
     @Operation(summary = "Get issue Certificate Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue", method = RequestMethod.GET, produces = {"application/json"})
-    List<AttributeDefinition> listIssueCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+    List<BaseAttribute> listIssueCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                              @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
     @Operation(summary = "Initiate Certificate Compliance Check")

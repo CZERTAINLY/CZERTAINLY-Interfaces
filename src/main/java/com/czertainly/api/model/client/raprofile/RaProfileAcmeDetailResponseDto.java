@@ -1,7 +1,7 @@
 package com.czertainly.api.model.client.raprofile;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;

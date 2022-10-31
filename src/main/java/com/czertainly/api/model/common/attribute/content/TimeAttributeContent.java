@@ -8,24 +8,27 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 
 import java.time.LocalTime;
 
-public class TimeAttributeContent extends AttributeContent {
+public class TimeAttributeContent extends BaseAttributeContent<LocalTime> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
-    private LocalTime value;
+    private LocalTime data;
 
-    public TimeAttributeContent() { }
-
-    public TimeAttributeContent(LocalTime value) {
-        this.value = value;
+    public TimeAttributeContent() {
     }
 
-    public LocalTime getValue() {
-        return value;
+    public TimeAttributeContent(LocalTime data) {
+        this.data = data;
     }
 
-    public void setValue(LocalTime value) {
-        this.value = value;
+    @Override
+    public LocalTime getData() {
+        return data;
+    }
+
+    @Override
+    public void setData(LocalTime data) {
+        this.data = data;
     }
 }

@@ -6,8 +6,8 @@ import com.czertainly.api.model.client.entity.EntityInstanceRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.entity.EntityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -183,7 +183,7 @@ public interface EntityInstanceController {
 			method = RequestMethod.GET,
 			produces = {"application/json"}
 	)
-	List<AttributeDefinition> listLocationAttributes(
+	List<BaseAttribute> listLocationAttributes(
 			@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
 	) throws ConnectorException;
 

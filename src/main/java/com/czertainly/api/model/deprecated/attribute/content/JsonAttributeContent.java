@@ -1,4 +1,4 @@
-package com.czertainly.api.model.common.attribute.content;
+package com.czertainly.api.model.deprecated.attribute.content;
 
 public class JsonAttributeContent extends BaseAttributeContent<String> {
 

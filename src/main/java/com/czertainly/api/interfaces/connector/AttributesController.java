@@ -2,8 +2,8 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -66,7 +66,7 @@ public interface AttributesController {
                     )
             }
     )
-    List<AttributeDefinition> listAttributeDefinitions(@Parameter(description = "Kind") @PathVariable String kind);
+    List<BaseAttribute> listAttributeDefinitions(@Parameter(description = "Kind") @PathVariable String kind);
 
     @PostMapping(
             path = "/validate",

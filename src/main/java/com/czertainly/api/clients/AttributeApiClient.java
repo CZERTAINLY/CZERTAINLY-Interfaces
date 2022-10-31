@@ -2,10 +2,10 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.attribute.AttributeCallback;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeCallback;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.callback.RequestAttributeCallback;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,13 +33,13 @@ public class AttributeApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<AttributeDefinition> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
+    public List<BaseAttribute> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
                 .retrieve()
-                .toEntityList(AttributeDefinition.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);
@@ -65,15 +65,15 @@ public class AttributeApiClient extends BaseApiClient {
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
         uriBuilder.path(callback.getCallbackContext());
 
-        if (callbackRequest.getQueryParameters() != null) {
-            callbackRequest.getQueryParameters().entrySet().stream()
+        if (callbackRequest.getRequestParameter() != null) {
+            callbackRequest.getRequestParameter().entrySet().stream()
                     .filter(q -> q.getValue() != null)
                     .forEach(q -> uriBuilder.queryParam(q.getKey(), q.getValue() instanceof Map ? ((Map) q.getValue()).get("value") : q.getValue()));
         }
 
-        if (callbackRequest.getPathVariables() != null) {
+        if (callbackRequest.getPathVariable() != null) {
             Map<String, Serializable> updatedPathVariables = new HashMap<>();
-            for(Map.Entry<String,Serializable> entry : callbackRequest.getPathVariables().entrySet()){
+            for(Map.Entry<String,Serializable> entry : callbackRequest.getPathVariable().entrySet()){
                 if( entry.getValue() instanceof Map){
                     updatedPathVariables.put(entry.getKey(), (Serializable) ((Map)entry.getValue()).get("value"));
                 }else{
@@ -89,8 +89,8 @@ public class AttributeApiClient extends BaseApiClient {
                 prepareRequest(method, connector, true)
                         .uri(uri);
 
-        if (callbackRequest.getRequestBody() != null) {
-            request.bodyValue(callbackRequest.getRequestBody());
+        if (callbackRequest.getBody() != null) {
+            request.bodyValue(callbackRequest.getBody());
         }
 
         return processRequest(r -> r

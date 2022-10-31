@@ -1,37 +1,31 @@
 package com.czertainly.api.model.common.attribute.content;
 
+import com.czertainly.api.model.common.attribute.content.data.FileAttributeContentData;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FileAttributeContent extends BaseAttributeContent<String> {
-    @Schema(description = "Name of the file", example = "example.txt")
-    private String fileName;
+public class FileAttributeContent extends BaseAttributeContent<FileAttributeContentData> {
 
-    @Schema(description = "Content-Type of the data", example="xml")
-    private String contentType;
+    @Schema(description = "File Content", required = true)
+    private FileAttributeContentData data;
 
-    public FileAttributeContent() { }
-
-    public FileAttributeContent(String value, String fileName, String contentType) {
-        super(value);
-        this.fileName = fileName;
-        this.contentType = contentType;
+    public FileAttributeContent(String reference, FileAttributeContentData data) {
+        super(reference, data);
+        this.data = data;
     }
 
-    public String getFileName() {
-        return fileName;
+    public FileAttributeContent() {
+        super();
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    @Override
+    public FileAttributeContentData getData() {
+        return data;
     }
 
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    @Override
+    public void setData(FileAttributeContentData data) {
+        this.data = data;
     }
 }

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -32,12 +32,12 @@ public class CertificateLocationDto {
     @Schema(
             description = "List of Attributes to replace Certificate"
     )
-    private List<AttributeDefinition> pushAttributes;
+    private List<BaseAttribute> pushAttributes;
 
     @Schema(
             description = "List of Attributes to renew Certificate"
     )
-    private List<AttributeDefinition> csrAttributes;
+    private List<BaseAttribute> csrAttributes;
 
     public String getCertificateData() {
         return certificateData;
@@ -71,19 +71,19 @@ public class CertificateLocationDto {
         this.withKey = withKey;
     }
 
-    public List<AttributeDefinition> getPushAttributes() {
+    public List<BaseAttribute> getPushAttributes() {
         return pushAttributes;
     }
 
-    public void setPushAttributes(List<AttributeDefinition> pushAttributes) {
+    public void setPushAttributes(List<BaseAttribute> pushAttributes) {
         this.pushAttributes = pushAttributes;
     }
 
-    public List<AttributeDefinition> getCsrAttributes() {
+    public List<BaseAttribute> getCsrAttributes() {
         return csrAttributes;
     }
 
-    public void setCsrAttributes(List<AttributeDefinition> csrAttributes) {
+    public void setCsrAttributes(List<BaseAttribute> csrAttributes) {
         this.csrAttributes = csrAttributes;
     }
 

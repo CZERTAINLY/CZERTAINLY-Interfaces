@@ -4,14 +4,14 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
 import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -113,7 +113,7 @@ public interface AuthorityInstanceController {
 	@Operation(summary = "List RA Profile Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
 	@RequestMapping(path = "/{uuid}/attributes/raProfile", method = RequestMethod.GET, produces = {"application/json"})
-	public List<AttributeDefinition> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
+	public List<BaseAttribute> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate RA Profile Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attribute information validated")})

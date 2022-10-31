@@ -8,24 +8,25 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
 
-public class DateAttributeContent extends AttributeContent {
+public class DateAttributeContent extends BaseAttributeContent<LocalDate> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate value;
+    private LocalDate data;
 
-    public DateAttributeContent() { }
-
-    public DateAttributeContent(LocalDate value) {
-        this.value = value;
+    public DateAttributeContent() {
     }
 
-    public LocalDate getValue() {
-        return value;
+    public DateAttributeContent(LocalDate data) {
+        this.data = data;
     }
 
-    public void setValue(LocalDate value) {
-        this.value = value;
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 }

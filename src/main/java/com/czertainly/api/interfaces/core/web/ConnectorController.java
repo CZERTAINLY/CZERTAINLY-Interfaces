@@ -12,8 +12,8 @@ import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.HealthDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
@@ -160,13 +160,13 @@ public interface ConnectorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
 	@RequestMapping(path = "/{uuid}/attributes/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
 			"application/json" })
-	public List<AttributeDefinition> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
+	public List<BaseAttribute> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
                                                    @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
 	
 	@Operation(summary = "Get attributes of all Function Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
 	@RequestMapping(path = "/{uuid}/attributes", method = RequestMethod.GET, produces = {"application/json"})
-	public Map<FunctionGroupCode, Map<String, List<AttributeDefinition>>> getAttributesAll(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
+	public Map<FunctionGroupCode, Map<String, List<BaseAttribute>>> getAttributesAll(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes Validated")})

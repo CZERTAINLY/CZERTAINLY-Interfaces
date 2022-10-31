@@ -4,8 +4,8 @@ import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.connector.entity.GenerateCsrRequestDto;
 import com.czertainly.api.model.connector.entity.GenerateCsrResponseDto;
 import com.czertainly.api.model.connector.entity.LocationDetailRequestDto;
@@ -121,7 +121,7 @@ public interface LocationController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listPushCertificateAttributes(
+    List<BaseAttribute> listPushCertificateAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
     ) throws NotFoundException;
 
@@ -213,7 +213,7 @@ public interface LocationController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listGenerateCsrAttributes(
+    List<BaseAttribute> listGenerateCsrAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
     ) throws NotFoundException;
 

@@ -1,4 +1,4 @@
-package com.czertainly.api.model.common.attribute;
+package com.czertainly.api.model.deprecated.attribute;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;

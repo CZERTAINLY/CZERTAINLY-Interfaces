@@ -1,4 +1,4 @@
-package com.czertainly.api.model.common.attribute;
+package com.czertainly.api.model.deprecated.attribute;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,10 +7,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * This class contains set of properties to represent
- * an Attribute definition provided by the client
+ * an Attribute definition including its value for the
+ * detail API responses
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RequestAttributeDto {
+public class ResponseAttributeDto {
 
     /**
      * UUID of the Attribute
@@ -19,10 +20,11 @@ public class RequestAttributeDto {
             description = "UUID of the Attribute",
             example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
     )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
 
     /**
-     * Name of the Attribute
+     * Name of the Attribute, can be used as key for form field label text
      **/
     @Schema(
             description = "Name of the Attribute",
@@ -32,21 +34,41 @@ public class RequestAttributeDto {
     private String name;
 
     /**
+    * Label of the Attribute, Can be used to display the field name in the User Interface
+    **/
+   @Schema(
+           description = "Label of the the Attribute",
+           example = "Attribute Name",
+           required = true
+   )
+   private String label;
+
+    /**
+     * Type of the Attribute, base types are defined in {@link AttributeType}
+     **/
+    @Schema(
+            description = "Type of the Attribute",
+            required = true
+    )
+    private AttributeType type;
+
+    /**
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute",
-            required = true
+            description = "Content of the Attribute"
     )
     private Object content;
 
-    public RequestAttributeDto() {
+    public ResponseAttributeDto() {
         super();
     }
 
-    public RequestAttributeDto(RequestAttributeDto original) {
+    public ResponseAttributeDto(ResponseAttributeDto original) {
         this.uuid = original.uuid;
         this.name = original.name;
+        this.label = original.label;
+        this.type = original.type;
         this.content = original.content;
     }
 
@@ -66,6 +88,22 @@ public class RequestAttributeDto {
         this.name = name;
     }
 
+    public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public AttributeType getType() {
+        return type;
+    }
+
+    public void setType(AttributeType type) {
+        this.type = type;
+    }
+
     public Object getContent() {
         return content;
     }
@@ -79,6 +117,7 @@ public class RequestAttributeDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
+                .append("type", type)
                 .append("content", content)
                 .toString();
     }
