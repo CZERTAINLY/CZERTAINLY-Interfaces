@@ -72,7 +72,7 @@ jobs:
       - name: Trigger build OpenAPI
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_ACTIONS_PERSONAL_ACCESS_TOKEN }}
           script: |
             github.rest.actions.createWorkflowDispatch({
               owner: '3KeyCompany',
