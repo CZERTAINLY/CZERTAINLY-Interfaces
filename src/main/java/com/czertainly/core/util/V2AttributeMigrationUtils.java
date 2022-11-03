@@ -53,6 +53,9 @@ public class V2AttributeMigrationUtils {
             }
             List<BaseAttribute> attributeDefinitions = new ArrayList<>();
             List<AttributeDefinition> oldAttributeValue = AttributeDefinitionUtils.deserialize(rows.getString(columnName));
+            if(oldAttributeValue == null){
+                continue;
+            }
             for (AttributeDefinition item : oldAttributeValue) {
                 attributeDefinitions.add(getNewAttributes(item));
             }
