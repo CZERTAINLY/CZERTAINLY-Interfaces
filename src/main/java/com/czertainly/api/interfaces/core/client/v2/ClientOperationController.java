@@ -6,7 +6,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.v2.ClientCertificateDataResponseDto;
 import com.czertainly.api.model.core.v2.ClientCertificateRenewRequestDto;

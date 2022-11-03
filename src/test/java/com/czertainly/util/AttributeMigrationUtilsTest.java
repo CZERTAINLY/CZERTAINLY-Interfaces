@@ -1,6 +1,6 @@
 package com.czertainly.util;
 
-import com.czertainly.api.model.deprecated.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
 import com.czertainly.core.deprecated.AttributeDefinitionUtils;
 import com.czertainly.core.util.AttributeMigrationUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;

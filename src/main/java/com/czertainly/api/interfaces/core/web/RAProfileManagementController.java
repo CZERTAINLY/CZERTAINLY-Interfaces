@@ -9,11 +9,9 @@ import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequest
 import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
 import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
-import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
-import com.czertainly.api.model.core.compliance.ComplianceProfileDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

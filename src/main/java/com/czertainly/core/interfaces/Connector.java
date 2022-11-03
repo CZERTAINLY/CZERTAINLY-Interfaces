@@ -1,6 +1,6 @@
 package com.czertainly.core.interfaces;
 
-import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 
 import java.util.List;
 

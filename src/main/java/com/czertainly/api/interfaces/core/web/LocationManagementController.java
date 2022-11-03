@@ -10,7 +10,7 @@ import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
 import com.czertainly.api.model.client.location.PushToLocationRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

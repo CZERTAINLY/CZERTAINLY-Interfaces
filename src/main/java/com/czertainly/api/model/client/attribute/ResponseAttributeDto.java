@@ -1,8 +1,8 @@
 package com.czertainly.api.model.client.attribute;
 
-import com.czertainly.api.model.common.attribute.AttributeType;
-import com.czertainly.api.model.common.attribute.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.v2.AttributeType;
+import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -56,6 +56,16 @@ public class ResponseAttributeDto {
             required = true
     )
     private AttributeContentType type;
+
+    /**
+     * Content Type of the Attribute
+     **/
+    @Schema(
+            description = "Content Type of the Attribute",
+            example = "Attribute",
+            required = true
+    )
+    private AttributeContentType contentType;
 
     /**
      * Content of the Attribute
@@ -115,6 +125,14 @@ public class ResponseAttributeDto {
 
     public void setContent(List<BaseAttributeContent> content) {
         this.content = content;
+    }
+
+    public AttributeContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(AttributeContentType contentType) {
+        this.contentType = contentType;
     }
 
     @Override

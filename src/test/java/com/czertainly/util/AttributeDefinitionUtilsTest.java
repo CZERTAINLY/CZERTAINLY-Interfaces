@@ -3,16 +3,16 @@ package com.czertainly.util;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.AttributeProperties;
-import com.czertainly.api.model.common.attribute.DataAttribute;
-import com.czertainly.api.model.common.attribute.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
-import com.czertainly.api.model.common.attribute.AttributeType;
+import com.czertainly.api.model.common.attribute.v2.AttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.callback.AttributeCallbackMapping;
-import com.czertainly.api.model.common.attribute.callback.AttributeValueTarget;
-import com.czertainly.api.model.common.attribute.callback.RequestAttributeCallback;
-import com.czertainly.api.model.common.attribute.content.*;
+import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
+import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
+import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
@@ -54,19 +54,19 @@ public class AttributeDefinitionUtilsTest {
         attribute2.setName(attribute2Name);
         attribute2.setContent(List.of(new StringAttributeContent("value")));
 
-        List<DataAttribute> attributes = List.of(attribute1, attribute2);
+        List<BaseAttribute> attributes = List.of(attribute1, attribute2);
 
-        Object value1 = AttributeDefinitionUtils.getAttributeContent(attribute1Name, attributes);
+        Object value1 = AttributeDefinitionUtils.getAttributeContent(attribute1Name, attributes, false);
         Assertions.assertNotNull(value1);
         Assertions.assertTrue(containsAttributeDefinition(attribute1Name, attributes));
         Assertions.assertEquals(attribute1.getContent(), value1);
 
-        Object value2 = AttributeDefinitionUtils.getAttributeContent(attribute2Name, attributes);
+        Object value2 = AttributeDefinitionUtils.getAttributeContent(attribute2Name, attributes, false);
         Assertions.assertNotNull(value2);
         Assertions.assertTrue(containsAttributeDefinition(attribute2Name, attributes));
         Assertions.assertEquals(attribute2.getContent(), value2);
 
-        Object value3 = AttributeDefinitionUtils.getAttributeContent("wrongName", attributes);
+        Object value3 = AttributeDefinitionUtils.getAttributeContent("wrongName", attributes, false);
         Assertions.assertNull(value3);
         Assertions.assertFalse(containsAttributeDefinition("wrongName", attributes));
     }
@@ -125,7 +125,7 @@ public class AttributeDefinitionUtilsTest {
                 "{\"name\": \"sendNotifications\", \"content\": [{\"reference\": \"\", \"data\": false}]}, " +
                 "{\"name\": \"keyRecoverable\", \"content\": [{\"reference\": \"\", \"data\": true}]}]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
         Assertions.assertNotNull(attrs);
         Assertions.assertEquals(7, attrs.size());
 
@@ -429,7 +429,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         ObjectAttributeContent data = getAttributeContent("testJsonAttribute", attrs, ObjectAttributeContent.class).get(0);
 
@@ -447,7 +447,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         StringAttributeContent data = getAttributeContent("testJsonAttribute", attrs, StringAttributeContent.class).get(0);
 
@@ -465,7 +465,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         IntegerAttributeContent data = getAttributeContent("testJsonAttribute", attrs, IntegerAttributeContent.class).get(0);
 
@@ -483,7 +483,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         DateTimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContent.class).get(0);
 
@@ -504,7 +504,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         DateAttributeContent data = getAttributeContent("testJsonAttribute", attrs, DateAttributeContent.class).get(0);
 
@@ -525,7 +525,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         TimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContent.class).get(0);
 
@@ -548,7 +548,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         String value = getAttributeContentValue("testStringAttribute", attrs, StringAttributeContent.class).get(0).getData();
 
@@ -567,7 +567,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContent.class).get(0).getData().getContent();
 
@@ -590,9 +590,9 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        NameAndUuidDto data = (NameAndUuidDto) getObjectAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class).get(0);
+        NameAndUuidDto data = getObjectAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class).get(0);
 
         Assertions.assertNotNull(data);
         Assertions.assertEquals(data.getClass(), NameAndUuidDto.class);
@@ -605,19 +605,19 @@ public class AttributeDefinitionUtilsTest {
                 "    \"name\": \"testAttributeListString\",\n" +
                 "    \"content\": [\n" +
                 "      {\n" +
-                "        \"value\": \"string1\"\n" +
+                "        \"data\": \"string1\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"value\": \"string2\"\n" +
+                "        \"data\": \"string2\"\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"value\": \"string3\"\n" +
+                "        \"data\": \"string3\"\n" +
                 "      }\n" +
                 "    ]\n" +
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         List<String> listString = getAttributeContentValueList("testAttributeListString", attrs, BaseAttributeContent.class);
 
@@ -649,7 +649,7 @@ public class AttributeDefinitionUtilsTest {
                 "  }\n" +
                 "]";
 
-        List<DataAttribute> attrs = deserialize(attrData);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         List<String> listData = getObjectAttributeContentDataList("testCredentialAttribute", attrs, NameAndUuidDto.class);
 

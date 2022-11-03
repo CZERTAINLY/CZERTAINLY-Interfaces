@@ -11,7 +11,7 @@ import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

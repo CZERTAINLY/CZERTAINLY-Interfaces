@@ -3,7 +3,7 @@ package com.czertainly.api.clients.v2;
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.connector.v2.CertRevocationDto;
 import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;

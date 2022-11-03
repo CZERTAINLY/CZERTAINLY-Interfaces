@@ -1,6 +1,6 @@
 package com.czertainly.core.deprecated;
 
-import com.czertainly.api.model.deprecated.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

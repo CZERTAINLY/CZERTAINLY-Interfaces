@@ -2,10 +2,11 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.attribute.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.AbstractBaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.callback.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.core.ParameterizedTypeReference;
@@ -41,6 +42,18 @@ public class AttributeApiClient extends BaseApiClient {
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
                 .block().getBody(),
+                request,
+                connector);
+    }
+
+    public List<AbstractBaseAttribute> listAttributeDefinitions1(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
+
+        return processRequest(r -> r
+                        .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
+                        .retrieve()
+                        .toEntityList(AbstractBaseAttribute.class)
+                        .block().getBody(),
                 request,
                 connector);
     }

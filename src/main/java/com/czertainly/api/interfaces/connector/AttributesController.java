@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
