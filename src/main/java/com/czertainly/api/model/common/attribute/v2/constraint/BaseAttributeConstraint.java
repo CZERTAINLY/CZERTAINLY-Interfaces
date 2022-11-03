@@ -23,6 +23,9 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint{
         this.type = type;
     }
 
+    public BaseAttributeConstraint() {
+    }
+
     public String getDescription() {
         return description;
     }
@@ -47,6 +50,7 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint{
         this.type = type;
     }
 
+    @Override
     public T getData() {
         return data;
     }

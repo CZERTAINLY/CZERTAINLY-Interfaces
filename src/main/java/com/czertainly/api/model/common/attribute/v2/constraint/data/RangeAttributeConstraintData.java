@@ -11,6 +11,9 @@ public class RangeAttributeConstraintData {
     @Schema(description = "ENd of the range for validation")
     private Integer to;
 
+    public RangeAttributeConstraintData() {
+    }
+
     public Integer getFrom() {
         return from;
     }

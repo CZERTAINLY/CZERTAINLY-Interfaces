@@ -14,6 +14,9 @@ public class RegexpAttributeConstraint extends BaseAttributeConstraint<String> {
         this.data = data;
     }
 
+    public RegexpAttributeConstraint() {
+    }
+
     @Override
     public String getData() {
         return data;

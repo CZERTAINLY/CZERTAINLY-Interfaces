@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraint;
+import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -52,7 +53,7 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     @Schema(
             description = "Optional regular expressions and constraints used for validating the Attribute content"
     )
-    private List<AttributeConstraint> constraints;
+    private List<BaseAttributeConstraint> constraints;
 
     /**
      * Optional definition of callback for getting the content of the Attribute based on the action
@@ -104,11 +105,11 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
         this.properties = properties;
     }
 
-    public List<AttributeConstraint> getConstraints() {
+    public List<BaseAttributeConstraint> getConstraints() {
         return constraints;
     }
 
-    public void setConstraints(List<AttributeConstraint> constraints) {
+    public void setConstraints(List<BaseAttributeConstraint> constraints) {
         this.constraints = constraints;
     }
 

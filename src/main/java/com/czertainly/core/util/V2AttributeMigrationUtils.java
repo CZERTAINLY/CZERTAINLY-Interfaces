@@ -9,8 +9,8 @@ import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
-import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
+import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.data.FileAttributeContentData;
@@ -41,15 +41,15 @@ public class V2AttributeMigrationUtils {
     private static final Logger logger = LoggerFactory.getLogger(V2AttributeMigrationUtils.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName) throws SQLException, JsonProcessingException {
+    public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName, String rowIdentifier) throws SQLException, JsonProcessingException {
         logger.debug("Migrating Table: {}, Column: {}", tableName, columnName);
         List<String> migrationCommands = new ArrayList<>();
         while (rows.next()) {
             // the certificate_location table has composite key
             if (tableName.equals("certificate_location")) {
-                logger.debug("Migrating record with Location Uuid: {}, Certificate Uuid: {}", rows.getString("location_uuid"), rows.getString("certificate_uuid"));
+                logger.debug("Migrating record with Location id: {}, Certificate id: {}", rows.getString("location_uuid"), rows.getString("certificate_uuid"));
             } else {
-                logger.debug("Migrating record with UUID: {}", rows.getString("uuid"));
+                logger.debug("Migrating record with is: {}", rows.getString(rowIdentifier));
             }
             List<BaseAttribute> attributeDefinitions = new ArrayList<>();
             List<AttributeDefinition> oldAttributeValue = AttributeDefinitionUtils.deserialize(rows.getString(columnName));
@@ -59,9 +59,9 @@ public class V2AttributeMigrationUtils {
             String updateCommand;
             String serializedAttributes = com.czertainly.core.util.AttributeDefinitionUtils.serialize(attributeDefinitions);
             if (tableName.equals("certificate_location")) {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes.replace("'","") + "' WHERE location_uuid = '" + rows.getString("location_uuid") + "' AND certificate_uuid = '" + rows.getString("certificate_uuid") + "';";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes.replace("'", "") + "' WHERE location_uuid = '" + rows.getString("location_uuid") + "' AND certificate_uuid = '" + rows.getString("certificate_uuid") + "';";
             } else {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes.replace("'","") + "' WHERE uuid = '" + rows.getString("uuid") + "';";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes.replace("'", "") + "' WHERE " + rowIdentifier + " = '" + rows.getString(rowIdentifier) + "';";
             }
             migrationCommands.add(updateCommand);
         }
@@ -88,14 +88,14 @@ public class V2AttributeMigrationUtils {
         attribute.setDescription(oldAttribute.getDescription());
         attribute.setType(com.czertainly.api.model.common.attribute.v2.AttributeType.DATA);
         attribute.setContentType(getAttributeContentType(oldAttribute.getType()));
-        attribute.setContent(getAttributeContent(oldAttribute.getType() != null ? oldAttribute.getType(): AttributeType.STRING, oldAttribute.getContent()));
+        attribute.setContent(getAttributeContent(oldAttribute.getType() != null ? oldAttribute.getType() : AttributeType.STRING, oldAttribute.getContent()));
         attribute.setProperties(properties);
         attribute.setAttributeCallback(getAttributeCallback(oldAttribute.getAttributeCallback()));
         attribute.setConstraints(getAttributeConstraint(oldAttribute.getValidationRegex()));
         return attribute;
     }
 
-    private static List<AttributeConstraint> getAttributeConstraint(String regex) {
+    private static List<BaseAttributeConstraint> getAttributeConstraint(String regex) {
         if (regex == null) {
             return null;
         }
@@ -154,7 +154,7 @@ public class V2AttributeMigrationUtils {
                     attributeContents.add(new IntegerAttributeContent(oldContent.getValue().toString(), Integer.parseInt(oldContent.getValue().toString())));
                     break;
                 case BOOLEAN:
-                    if(oldContent.getValue() instanceof Boolean) {
+                    if (oldContent.getValue() instanceof Boolean) {
                         attributeContents.add(new BooleanAttributeContent((Boolean) oldContent.getValue()));
                     } else {
                         String otherValue = oldContent.getValue().toString().toLowerCase();

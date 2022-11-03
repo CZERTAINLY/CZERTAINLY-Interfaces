@@ -15,6 +15,9 @@ public class DateTimeAttributeConstraint extends BaseAttributeConstraint<DateTim
         this.data = data;
     }
 
+    public DateTimeAttributeConstraint() {
+    }
+
     @Override
     public DateTimeAttributeConstraintData getData() {
         return data;

@@ -15,6 +15,9 @@ public class RangeAttributeConstraint extends BaseAttributeConstraint<RangeAttri
         this.data = data;
     }
 
+    public RangeAttributeConstraint() {
+    }
+
     @Override
     public RangeAttributeConstraintData getData() {
         return data;
