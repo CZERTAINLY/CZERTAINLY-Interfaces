@@ -42,11 +42,11 @@ public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
             description = "Properties of the Attributes",
             required = true
     )
-    private BaseAttributeProperties properties;
+    private InfoAttributeProperties properties;
 
 
     public InfoAttribute() {
-        super();
+        super(AttributeType.INFO);
     }
 
     public List<BaseAttributeContent> getContent() {
@@ -65,11 +65,11 @@ public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
         this.contentType = contentType;
     }
 
-    public BaseAttributeProperties getProperties() {
+    public InfoAttributeProperties getProperties() {
         return properties;
     }
 
-    public void setProperties(BaseAttributeProperties properties) {
+    public void setProperties(InfoAttributeProperties properties) {
         this.properties = properties;
     }
 

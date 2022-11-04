@@ -6,7 +6,7 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.AttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeProperties;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
@@ -225,12 +225,12 @@ public class AttributeDefinitionUtils {
         for (DataAttribute definition : dataDefinitions) {
             RequestAttributeDto attribute = getRequestAttributes(definition.getName(), attributes);
             Boolean isRequired = false;
-            AttributeProperties properties = definition.getProperties();
+            DataAttributeProperties properties = definition.getProperties();
             if(properties != null) {
                 isRequired = definition.getProperties().isRequired();
             }
             if(properties == null){
-                properties = new AttributeProperties();
+                properties = new DataAttributeProperties();
             }
             if (attribute == null) {
                 if (isRequired) {
@@ -288,9 +288,9 @@ public class AttributeDefinitionUtils {
     }
 
     private static void validateAttributeContent(DataAttribute definition, RequestAttributeDto attribute, List<ValidationError> errors) {
-        AttributeProperties properties = definition.getProperties();
+        DataAttributeProperties properties = definition.getProperties();
         if(properties == null){
-            properties = new AttributeProperties();
+            properties = new DataAttributeProperties();
         }
         if (definition.getType() == null) {
             errors.add(ValidationError.create("Type of attribute definition {} not set.", properties.getLabel()));
@@ -566,7 +566,7 @@ public class AttributeDefinitionUtils {
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());
             atr.setContentType(clt.getType());
-            AttributeProperties properties = new AttributeProperties();
+            DataAttributeProperties properties = new DataAttributeProperties();
             properties.setLabel(clt.getLabel());
             atr.setProperties(properties);
             convertedDefinition.add(atr);
@@ -611,7 +611,7 @@ public class AttributeDefinitionUtils {
             List<DataAttribute> itrAttributes = (List<DataAttribute>) attributes;
             for (DataAttribute clt : itrAttributes) {
                 if(clt.getProperties() == null ){
-                    clt.setProperties(new AttributeProperties());
+                    clt.setProperties(new DataAttributeProperties());
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
                 atr.setContent(clt.getContent());

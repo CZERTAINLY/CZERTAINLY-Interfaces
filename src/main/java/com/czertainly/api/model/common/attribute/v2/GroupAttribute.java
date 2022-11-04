@@ -44,7 +44,7 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
     private AttributeCallback attributeCallback;
 
     public GroupAttribute() {
-        super();
+        super(AttributeType.GROUP);
     }
 
     public List<BaseAttribute> getContent() {

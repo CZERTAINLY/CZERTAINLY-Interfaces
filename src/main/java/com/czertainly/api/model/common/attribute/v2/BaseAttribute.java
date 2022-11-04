@@ -44,7 +44,15 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
     )
     private String description;
 
-    @Schema(description = "Content of the Attribute", required = true)
+    @Schema(
+            description = "Content of the Attribute",
+            required = true,
+            anyOf = {
+                    DataAttribute.class,
+                    InfoAttribute.class,
+                    GroupAttribute.class
+            }
+    )
     private T content;
 
     /**
@@ -56,6 +64,13 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
             defaultValue = "DATA"
     )
     private AttributeType type = AttributeType.DATA;
+
+    public BaseAttribute() {
+    }
+
+    public BaseAttribute(AttributeType type) {
+        this.type = type;
+    }
 
     @Override
     public String getUuid() {

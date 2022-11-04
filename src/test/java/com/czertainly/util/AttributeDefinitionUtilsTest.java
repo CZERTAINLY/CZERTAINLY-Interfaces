@@ -3,7 +3,7 @@ package com.czertainly.util;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.AttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeProperties;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
@@ -151,7 +151,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.STRING);
 
-        AttributeProperties properties = new AttributeProperties();
+        DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
         definition.setProperties(properties);
 
@@ -174,7 +174,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.STRING);
 
-        AttributeProperties properties = new AttributeProperties();
+        DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
         definition.setProperties(properties);
 
@@ -197,7 +197,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.STRING);
 
-        AttributeProperties properties = new AttributeProperties();
+        DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
         definition.setProperties(properties);
 
@@ -231,7 +231,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.STRING);
 
-        AttributeProperties properties = new AttributeProperties();
+        DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
         definition.setProperties(properties);
 
@@ -260,7 +260,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.STRING);
 
-        AttributeProperties properties = new AttributeProperties();
+        DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
         definition.setProperties(properties);
 

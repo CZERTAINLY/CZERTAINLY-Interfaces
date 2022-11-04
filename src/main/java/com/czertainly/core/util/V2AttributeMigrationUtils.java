@@ -3,7 +3,7 @@ package com.czertainly.core.util;
 import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.v1.AttributeType;
 import com.czertainly.api.model.common.attribute.v1.content.JsonAttributeContent;
-import com.czertainly.api.model.common.attribute.v2.AttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeProperties;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
@@ -77,7 +77,7 @@ public class V2AttributeMigrationUtils {
 
         DataAttribute attribute = new DataAttribute();
 
-        AttributeProperties properties = new AttributeProperties();
+        DataAttributeProperties properties = new DataAttributeProperties();
         properties.setList(oldAttribute.isList());
         properties.setMulti(oldAttribute.isMultiSelect());
         properties.setReadOnly(oldAttribute.isReadOnly());

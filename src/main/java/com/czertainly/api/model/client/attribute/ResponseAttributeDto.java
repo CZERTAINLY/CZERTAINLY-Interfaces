@@ -55,7 +55,7 @@ public class ResponseAttributeDto {
             description = "Type of the Attribute",
             required = true
     )
-    private AttributeContentType type;
+    private AttributeType type;
 
     /**
      * Content Type of the Attribute
@@ -77,14 +77,6 @@ public class ResponseAttributeDto {
 
     public ResponseAttributeDto() {
         super();
-    }
-
-    public ResponseAttributeDto(ResponseAttributeDto original) {
-        this.uuid = original.uuid;
-        this.name = original.name;
-        this.label = original.label;
-        this.type = original.type;
-        this.content = original.content;
     }
 
     public String getUuid() {
@@ -111,11 +103,11 @@ public class ResponseAttributeDto {
         this.label = label;
     }
 
-    public AttributeContentType getType() {
+    public AttributeType getType() {
         return type;
     }
 
-    public void setType(AttributeContentType type) {
+    public void setType(AttributeType type) {
         this.type = type;
     }
 
@@ -142,6 +134,7 @@ public class ResponseAttributeDto {
                 .append("name", name)
                 .append("label", label)
                 .append("type", type)
+                .append("contentType", contentType)
                 .append("content", content)
                 .toString();
     }

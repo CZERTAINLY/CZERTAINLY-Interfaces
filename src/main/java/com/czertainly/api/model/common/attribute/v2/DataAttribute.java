@@ -1,7 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
@@ -45,7 +44,7 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
             description = "Properties of the Attributes",
             required = true
     )
-    private AttributeProperties properties;
+    private DataAttributeProperties properties;
 
     /**
      * List of constraints for the Attributes
@@ -64,11 +63,11 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     private AttributeCallback attributeCallback;
 
     public DataAttribute() {
-        super();
+        super(AttributeType.DATA);
     }
 
     public DataAttribute(DataAttribute original) {
-        super();
+        super(AttributeType.DATA);
         setUuid(original.getUuid());
         setName(original.getName());
         this.content = original.content;
@@ -97,11 +96,11 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
         this.contentType = contentType;
     }
 
-    public AttributeProperties getProperties() {
+    public DataAttributeProperties getProperties() {
         return properties;
     }
 
-    public void setProperties(AttributeProperties properties) {
+    public void setProperties(DataAttributeProperties properties) {
         this.properties = properties;
     }
 
@@ -120,7 +119,6 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     public void setAttributeCallback(AttributeCallback attributeCallback) {
         this.attributeCallback = attributeCallback;
     }
-
 
 
     @Override

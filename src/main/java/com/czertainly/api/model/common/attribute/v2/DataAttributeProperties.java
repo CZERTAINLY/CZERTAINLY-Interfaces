@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class AttributeProperties extends BaseAttributeProperties {
+public class DataAttributeProperties extends InfoAttributeProperties {
 
     /**
      * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
