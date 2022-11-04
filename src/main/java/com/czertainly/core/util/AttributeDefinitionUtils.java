@@ -2,49 +2,43 @@ package com.czertainly.core.util;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.AttributeCallback;
-import com.czertainly.api.model.common.attribute.AttributeCallbackMapping;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.AttributeType;
-import com.czertainly.api.model.common.attribute.AttributeValueTarget;
-import com.czertainly.api.model.common.attribute.RequestAttributeCallback;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.common.attribute.content.AttributeContent;
-import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
-import com.czertainly.api.model.common.attribute.content.DateAttributeContent;
-import com.czertainly.api.model.common.attribute.content.DateTimeAttributeContent;
-import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
-import com.czertainly.api.model.common.attribute.content.JsonAttributeContent;
-import com.czertainly.api.model.common.attribute.content.TimeAttributeContent;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.AttributeType;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
+import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
+import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class AttributeDefinitionUtils {
 
     private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    public static AttributeDefinition getAttributeDefinition(String name, List<AttributeDefinition> attributes) {
+    public static <T extends BaseAttribute> T getAttributeDefinition(String name, List<T> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
     }
 
-    public static boolean containsAttributeDefinition(String name, List<AttributeDefinition> attributes) {
-        AttributeDefinition definition = getAttributeDefinition(name, attributes);
+    public static <T extends BaseAttribute> boolean containsAttributeDefinition(String name, List<T> attributes) {
+        BaseAttribute definition = getAttributeDefinition(name, attributes);
         return definition != null;
     }
 
@@ -55,14 +49,13 @@ public class AttributeDefinitionUtils {
         if (attributes.get(0) instanceof RequestAttributeDto) {
             List<RequestAttributeDto> reloadedAttributes = (List<RequestAttributeDto>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        } else if (attributes.get(0) instanceof AttributeDefinition) {
-            List<AttributeDefinition> reloadedAttributes = (List<AttributeDefinition>) attributes;
+        } else if (attributes.get(0) instanceof BaseAttribute) {
+            List<BaseAttribute> reloadedAttributes = (List<BaseAttribute>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        }else if (attributes.get(0) instanceof ResponseAttributeDto) {
+        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
             List<ResponseAttributeDto> reloadedAttributes = (List<ResponseAttributeDto>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
 
@@ -73,7 +66,7 @@ public class AttributeDefinitionUtils {
         return definition != null;
     }
 
-    public static <T extends Object> T getAttributeContent(String name, List<?> attributes) {
+    public static <T extends Object> T getAttributeContent(String name, List<?> attributes, Boolean singleItem) {
         if (attributes.size() == 0) {
             return null;
         }
@@ -82,25 +75,37 @@ public class AttributeDefinitionUtils {
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
-            return (T) definition.getContent();
-        } else if (attributes.get(0) instanceof AttributeDefinition) {
-            AttributeDefinition definition = getRequestAttributes(name, attributes);
+            if(!singleItem) {
+                return (T) definition.getContent();
+            } else {
+                return ((List<T>)definition.getContent()).get(0);
+            }
+        } else if (attributes.get(0) instanceof BaseAttribute) {
+            BaseAttribute definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
-            return (T) definition.getContent();
+            if(!singleItem) {
+                return (T) definition.getContent();
+            }else {
+                return ((List<T>)definition.getContent()).get(0);
+            }
         } else if (attributes.get(0) instanceof ResponseAttributeDto) {
             ResponseAttributeDto definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
-            return (T) definition.getContent();
-        }else {
+            if(!singleItem){
+                return (T) definition.getContent();
+            } else {
+                return ((List<T>)definition.getContent()).get(0);
+            }
+        } else {
             throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
     }
 
-    public static <T extends Object> T getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
+    public static <T extends Object> List<T> getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
         if (attributes == null || attributes.size() == 0) {
             return null;
         }
@@ -109,37 +114,39 @@ public class AttributeDefinitionUtils {
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), clazz);
-        } else if (attributes.get(0) instanceof AttributeDefinition) {
-            AttributeDefinition definition = getRequestAttributes(name, attributes);
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
+        } else if (attributes.get(0) instanceof BaseAttribute) {
+            BaseAttribute definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), clazz);
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
         } else if (attributes.get(0) instanceof ResponseAttributeDto) {
             ResponseAttributeDto definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), clazz);
-        }else {
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
+        } else {
             throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
     }
 
     public static NameAndIdDto getNameAndIdData(String name, List<RequestAttributeDto> attributes) {
-        return getJsonAttributeContentData(name, attributes, NameAndIdDto.class);
+        ObjectAttributeContent converted = getObjectAttributeContentData(name, attributes, ObjectAttributeContent.class).get(0);
+        return ATTRIBUTES_OBJECT_MAPPER.convertValue(converted.getData(), NameAndIdDto.class);
     }
 
     public static NameAndUuidDto getNameAndUuidData(String name, List<RequestAttributeDto> attributes) {
-        return getJsonAttributeContentData(name, attributes, NameAndUuidDto.class);
+        ObjectAttributeContent converted = getObjectAttributeContentData(name, attributes, ObjectAttributeContent.class).get(0);
+        return ATTRIBUTES_OBJECT_MAPPER.convertValue(converted.getData(), NameAndUuidDto.class);
     }
 
     public static CredentialDto getCredentialContent(String name, List<RequestAttributeDto> attributes) {
-        return getJsonAttributeContentData(name, attributes, CredentialDto.class);
+        return getObjectAttributeContentData(name, attributes, CredentialAttributeContent.class).get(0).getData();
     }
 
-    public static String serialize(List<AttributeDefinition> attributes) {
+    public static <T extends BaseAttribute> String serialize(List<T> attributes) {
         if (attributes == null) {
             return null;
         }
@@ -161,13 +168,12 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<AttributeDefinition> deserialize(String attributesJson) {
+    public static <T extends BaseAttribute> List<T> deserialize(String attributesJson, Class<T> clazz) {
         if (attributesJson == null) {
             return null;
         }
         try {
-            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributesJson, new TypeReference<>() {
-            });
+            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributesJson, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -185,29 +191,30 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<AttributeDefinition> mergeAttributes(List<AttributeDefinition> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
+    public static List<DataAttribute> mergeAttributes(List<BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         if (definitions == null || attributes == null) {
             return List.of();
         }
 
-        List<AttributeDefinition> attributeDefinitions = clientAttributeConverter(attributes);
+        List<DataAttribute> attributeDefinitions = clientAttributeConverter(attributes);
         return attributeDefinitions.stream()
                 .map(a -> {
-                    AttributeDefinition definition = getAttributeDefinition(a.getName(), definitions);
+                    DataAttribute definition = (DataAttribute) getAttributeDefinition(a.getName(), definitions);
                     if (definition == null) {
                         return a;
                     }
 
-                    AttributeDefinition extended = new AttributeDefinition(definition);
+                    DataAttribute extended = new DataAttribute(definition);
                     extended.setContent(a.getContent());
                     return extended;
                 })
                 .collect(Collectors.toList());
     }
 
-    public static void validateAttributes(List<AttributeDefinition> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
+    //TODO - Rework
+    public static void validateAttributes(List<BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         List<ValidationError> errors = new ArrayList<>();
-
+        List<DataAttribute> dataDefinitions = (List<DataAttribute>)(Object)definitions.stream().filter(e -> e.getType().equals(AttributeType.DATA)).collect(Collectors.toList());
         // If attribute identified by id not in definitions - throw error
         for (RequestAttributeDto attribute : attributes) {
             if (!containsAttributeDefinition(attribute.getName(), definitions)) {
@@ -215,29 +222,36 @@ public class AttributeDefinitionUtils {
             }
         }
 
-        for (AttributeDefinition definition : definitions) {
+        for (DataAttribute definition : dataDefinitions) {
             RequestAttributeDto attribute = getRequestAttributes(definition.getName(), attributes);
-
+            Boolean isRequired = false;
+            DataAttributeProperties properties = definition.getProperties();
+            if(properties != null) {
+                isRequired = definition.getProperties().isRequired();
+            }
+            if(properties == null){
+                properties = new DataAttributeProperties();
+            }
             if (attribute == null) {
-                if (definition.isRequired()) {
-                    errors.add(ValidationError.create("Required attribute {} not found.", definition.getLabel()));
+                if (isRequired) {
+                    errors.add(ValidationError.create("Required attribute {} not found.", properties.getLabel()));
                 }
                 continue; // skip other validations
             }
 
             Object attributeContent = attribute.getContent();
 
-            if (definition.isRequired() && attributeContent == null) {
-                errors.add(ValidationError.create("Value of required attribute {} not set.", definition.getLabel()));
+            if (isRequired && attributeContent == null) {
+                errors.add(ValidationError.create("Value of required attribute {} not set.", properties.getLabel()));
                 continue; // required attribute has no value, skip other validations
             }
 
-            if (definition.isReadOnly()) {
+            if (properties != null && properties.isReadOnly()) {
                 Object definitionContent = definition.getContent();
                 if (definitionContent == null || !definitionContent.equals(attributeContent)) {
                     errors.add(ValidationError.create(
                             "Wrong value of read only attribute {}. Definition value = {} and attribute value = {}.",
-                            definition.getLabel(),
+                            properties.getLabel(),
                             definitionContent,
                             attributeContent));
                 }
@@ -245,27 +259,27 @@ public class AttributeDefinitionUtils {
 
             validateAttributeContent(definition, attribute, errors);
 
-            if (AttributeType.STRING.equals(definition.getType())
-                    && definition.getValidationRegex() != null) {
-                Pattern pattern;
-                try {
-                    pattern = Pattern.compile(definition.getValidationRegex());
-                    BaseAttributeContent<String> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(attributeContent, BaseAttributeContent.class);
-                    Matcher matcher = pattern.matcher(content.getValue());
-                    if (!matcher.matches()) {
-                        errors.add(ValidationError.create(
-                                "Value {} of attribute {} doesn't match regex {}",
-                                attributeContent,
-                                definition.getLabel(),
-                                definition.getValidationRegex()));
-                    }
-                } catch (Exception e) {
-                    errors.add(ValidationError.create(
-                            "Could not validate value of field {} due to error {}",
-                            definition.getLabel(),
-                            ExceptionUtils.getRootCauseMessage(e)));
-                }
-            }
+//            if (AttributeContentType.STRING.equals(definition.getType())
+//                    && definition.getValidationRegex() != null) {
+//                Pattern pattern;
+//                try {
+//                    pattern = Pattern.compile(definition.getValidationRegex());
+//                    BaseAttributeContent<String> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(attributeContent, BaseAttributeContent.class);
+//                    Matcher matcher = pattern.matcher(content.getValue());
+//                    if (!matcher.matches()) {
+//                        errors.add(ValidationError.create(
+//                                "Value {} of attribute {} doesn't match regex {}",
+//                                attributeContent,
+//                                definition.getLabel(),
+//                                definition.getValidationRegex()));
+//                    }
+//                } catch (Exception e) {
+//                    errors.add(ValidationError.create(
+//                            "Could not validate value of field {} due to error {}",
+//                            definition.getLabel(),
+//                            ExceptionUtils.getRootCauseMessage(e)));
+//                }
+//            }
         }
 
         if (!errors.isEmpty()) {
@@ -273,95 +287,133 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    private static void validateAttributeContent(AttributeDefinition definition, RequestAttributeDto attribute, List<ValidationError> errors) {
-
+    private static void validateAttributeContent(DataAttribute definition, RequestAttributeDto attribute, List<ValidationError> errors) {
+        DataAttributeProperties properties = definition.getProperties();
+        if(properties == null){
+            properties = new DataAttributeProperties();
+        }
         if (definition.getType() == null) {
-            errors.add(ValidationError.create("Type of attribute definition {} not set.", definition.getLabel()));
+            errors.add(ValidationError.create("Type of attribute definition {} not set.", properties.getLabel()));
         }
 
         Object attributeContent = attribute.getContent();
-        if (!definition.isMultiSelect()) {
-            List<Object> attributeContentList = new ArrayList<Object>();
-            attributeContentList.add(attributeContent);
-            attributeContent = attributeContentList;
-        }
+//        if (properties != null && !properties.isMulti()) {
+//            List<Object> attributeContentList = new ArrayList<Object>();
+//            attributeContentList.add(attributeContent);
+//            attributeContent = attributeContentList;
+//        }
 
         // TODO: checking all items in the list for the type
 
         boolean wrongValue = false;
         try {
-            for ( Object baseAttributeContent : (List<Object>) attributeContent) {
-                switch (definition.getType()) {
+            for (Object baseAttributeContent : (List<Object>) attributeContent) {
+                switch (definition.getContentType()) {
                     case STRING:
+                        BaseAttributeContent<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, StringAttributeContent.class);
+                        if (stringBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !stringBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                        break;
                     case INTEGER:
+                        BaseAttributeContent<?> integerBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, IntegerAttributeContent.class);
+                        if (integerBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !integerBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                        break;
                     case SECRET:
+                        BaseAttributeContent<?> secretBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, SecretAttributeContent.class);
+                        if (secretBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !secretBaseAttributeContent.getData().getClass().isAssignableFrom(SecretAttributeContentData.class)) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                        break;
                     case BOOLEAN:
+                        BaseAttributeContent<?> boolBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BooleanAttributeContent.class);
+                        if (boolBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !boolBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                        break;
                     case FLOAT:
+                        BaseAttributeContent<?> floatBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, FloatAttributeContent.class);
+                        if (floatBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !floatBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
+                        break;
                     case TEXT:
-                        BaseAttributeContent<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BaseAttributeContent.class);
-                        if (stringBaseAttributeContent.getValue() == null || AttributeType.getClass(definition.getType()) == null || !stringBaseAttributeContent.getValue().getClass().isAssignableFrom(AttributeType.getClass(definition.getType()))) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                        BaseAttributeContent<?> textBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TextAttributeContent.class);
+                        if (textBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !textBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         break;
                     case FILE:
                         FileAttributeContent fileBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, FileAttributeContent.class);
-                        if (fileBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                        if (fileBaseAttributeContent.getData() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
-                        Base64.getDecoder().decode(fileBaseAttributeContent.getValue());
+                        Base64.getDecoder().decode(fileBaseAttributeContent.getData().getContent());
                         break;
                     case CREDENTIAL:
-                        JsonAttributeContent credentialBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, JsonAttributeContent.class);
-                        if (credentialBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                        CredentialAttributeContent credentialBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, CredentialAttributeContent.class);
+                        if (credentialBaseAttributeContent.getData() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         CredentialDto credentialDto = ATTRIBUTES_OBJECT_MAPPER.convertValue(credentialBaseAttributeContent.getData(), CredentialDto.class);
                         if (credentialDto == null) {
-                            errors.add(ValidationError.create("Wrong data of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                            errors.add(ValidationError.create("Wrong data of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         break;
                     case DATE:
                         DateAttributeContent dateBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, DateAttributeContent.class);
-                        if (dateBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                        if (dateBaseAttributeContent.getData() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         break;
-                    case JSON:
-                        JsonAttributeContent jsonBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, JsonAttributeContent.class);
-                        if (jsonBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                    case OBJECT:
+                        ObjectAttributeContent jsonBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, ObjectAttributeContent.class);
+                        if (jsonBaseAttributeContent.getData() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         break;
                     case TIME:
                         TimeAttributeContent timeBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TimeAttributeContent.class);
-                        if (timeBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                        if (timeBaseAttributeContent.getData() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         break;
                     case DATETIME:
                         DateTimeAttributeContent dateTimeBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, DateTimeAttributeContent.class);
-                        if (dateTimeBaseAttributeContent.getValue() == null) {
-                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", definition.getLabel(), definition.getType()));
+                        if (dateTimeBaseAttributeContent.getData() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
                         }
                         break;
                     default:
-                        errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", definition.getLabel(), definition.getType()));
+                        errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", properties.getLabel(), definition.getType()));
                         break;
                 }
             }
@@ -370,7 +422,7 @@ public class AttributeDefinitionUtils {
         }
 
         if (wrongValue) {
-            errors.add(ValidationError.create("Attribute {} of type {} has wrong value.", definition.getLabel(), definition.getType()));
+            errors.add(ValidationError.create("Attribute {} of type {} has wrong value.", properties.getLabel(), definition.getType()));
         }
     }
 
@@ -411,49 +463,49 @@ public class AttributeDefinitionUtils {
                     for (AttributeValueTarget target : mapping.getTargets()) {
                         switch (target) {
                             case PATH_VARIABLE:
-                                if (request.getPathVariables() == null || request.getPathVariables().isEmpty()) {
+                                if (request.getPathVariable() == null || request.getPathVariable().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback path variables not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (request.getPathVariables().get(mapping.getTo()) == null) {
+                                if (request.getPathVariable().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback path variable {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
                                 }
-                                if (AttributeType.CREDENTIAL.equals(mapping.getAttributeType())) {
+                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeType())) {
                                     errors.add(ValidationError.create(
                                             "Callback mapping {} invalid. Type {} not allowed for path variable", mapping, mapping.getAttributeType()));
                                     break;
                                 }
                                 break;
                             case REQUEST_PARAMETER:
-                                if (request.getQueryParameters() == null || request.getQueryParameters().isEmpty()) {
+                                if (request.getRequestParameter() == null || request.getRequestParameter().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback query parameters not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (request.getQueryParameters().get(mapping.getTo()) == null) {
+                                if (request.getRequestParameter().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback query parameters {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
                                 }
-                                if (AttributeType.CREDENTIAL.equals(mapping.getAttributeType())) {
+                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeType())) {
                                     errors.add(ValidationError.create(
                                             "Callback mapping {} invalid. Type {} not allowed for query parameter", mapping, mapping.getAttributeType()));
                                     break;
                                 }
                                 break;
                             case BODY:
-                                if (request.getRequestBody() == null || request.getRequestBody().isEmpty()) {
+                                if (request.getBody() == null || request.getBody().isEmpty()) {
                                     errors.add(ValidationError.create(
                                             "Callback request body not set, but mapping require it {}", mapping));
                                     break;
                                 }
 
-                                if (request.getRequestBody().get(mapping.getTo()) == null) {
+                                if (request.getBody().get(mapping.getTo()) == null) {
                                     errors.add(ValidationError.create(
                                             "Callback request body key {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
@@ -469,7 +521,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<RequestAttributeDto> createAttributes(String name, Object value) {
+    public static List<RequestAttributeDto> createAttributes(String name, List<BaseAttributeContent> value) {
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setUuid(UUID.randomUUID().toString());
         attribute.setName(name);
@@ -488,13 +540,13 @@ public class AttributeDefinitionUtils {
         return new ArrayList<>();
     }
 
-    public static List<AttributeDefinition> clientAttributeConverter(List<RequestAttributeDto> attributes) {
+    public static List<DataAttribute> clientAttributeConverter(List<RequestAttributeDto> attributes) {
         if (attributes == null) {
             return new ArrayList<>();
         }
-        List<AttributeDefinition> convertedDefinition = new ArrayList<>();
+        List<DataAttribute> convertedDefinition = new ArrayList<>();
         for (RequestAttributeDto clt : attributes) {
-            AttributeDefinition atr = new AttributeDefinition();
+            DataAttribute atr = new DataAttribute();
             atr.setContent(clt.getContent());
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());
@@ -503,18 +555,20 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static List<AttributeDefinition> responseAttributeConverter(List<ResponseAttributeDto> attributes) {
+    public static List<DataAttribute> responseAttributeConverter(List<ResponseAttributeDto> attributes) {
         if (attributes == null) {
             return new ArrayList<>();
         }
-        List<AttributeDefinition> convertedDefinition = new ArrayList<>();
+        List<DataAttribute> convertedDefinition = new ArrayList<>();
         for (ResponseAttributeDto clt : attributes) {
-            AttributeDefinition atr = new AttributeDefinition();
+            DataAttribute atr = new DataAttribute();
             atr.setContent(clt.getContent());
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());
-            atr.setType(clt.getType());
-            atr.setLabel(clt.getLabel());
+            atr.setContentType(clt.getContentType());
+            DataAttributeProperties properties = new DataAttributeProperties();
+            properties.setLabel(clt.getLabel());
+            atr.setProperties(properties);
             convertedDefinition.add(atr);
         }
         return convertedDefinition;
@@ -525,15 +579,15 @@ public class AttributeDefinitionUtils {
             return new ArrayList<>();
         }
         List<RequestAttributeDto> convertedDefinition = new ArrayList<>();
-        if (attributes.get(0) instanceof AttributeDefinition) {
-            List<AttributeDefinition> itrAttributes = (List<AttributeDefinition>) attributes;
-            for (AttributeDefinition clt : itrAttributes) {
+        if (attributes.get(0) instanceof BaseAttribute) {
+            for (BaseAttribute clt : (List<BaseAttribute>)attributes) {
                 RequestAttributeDto atr = new RequestAttributeDto();
-                atr.setContent(clt.getContent());
+                atr.setContent((List<BaseAttributeContent>) clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
                 convertedDefinition.add(atr);
-        }} else if (attributes.get(0) instanceof ResponseAttributeDto) {
+            }
+        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
             List<ResponseAttributeDto> itrAttributes = (List<ResponseAttributeDto>) attributes;
             for (ResponseAttributeDto clt : itrAttributes) {
                 RequestAttributeDto atr = new RequestAttributeDto();
@@ -553,15 +607,19 @@ public class AttributeDefinitionUtils {
             return new ArrayList<>();
         }
         List<ResponseAttributeDto> convertedDefinition = new ArrayList<>();
-        if (attributes.get(0) instanceof AttributeDefinition) {
-            List<AttributeDefinition> itrAttributes = (List<AttributeDefinition>) attributes;
-            for (AttributeDefinition clt : itrAttributes) {
+        if (attributes.get(0) instanceof DataAttribute) {
+            List<DataAttribute> itrAttributes = (List<DataAttribute>) attributes;
+            for (DataAttribute clt : itrAttributes) {
+                if(clt.getProperties() == null ){
+                    clt.setProperties(new DataAttributeProperties());
+                }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
                 atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
-                atr.setLabel(clt.getLabel());
+                atr.setLabel(clt.getProperties().getLabel());
                 atr.setType(clt.getType());
+                atr.setContentType(clt.getContentType());
                 convertedDefinition.add(atr);
             }
         } else if (attributes.get(0) instanceof RequestAttributeDto) {
@@ -580,43 +638,55 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static <T> T getAttributeContentValue(String attributeName, List<?> attributes, Class<?> clazz) {
-        AttributeContent content = (AttributeContent) AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, clazz);
+    public static <T> List<T> getAttributeContentValue(String attributeName, List<?> attributes, Class<T> clazz) {
+        List<T> content = AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, clazz);
         if (content != null) {
-            return content.getValue();
+            return content;
         }
         return null;
     }
 
-    public static <T> T getJsonAttributeContentData(String attributeName, List<?> attributes, Class<?> clazz) {
-        JsonAttributeContent content = AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, JsonAttributeContent.class);
+    public static <T> T getSingleItemAttributeContentValue(String attributeName, List<?> attributes, Class<T> clazz) {
+        List<T> content = AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, clazz);
+        if (content != null && !content.isEmpty()) {
+            return content.get(0);
+        }
+        try {
+            return clazz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static <T> List<T> getObjectAttributeContentData(String attributeName, List<?> attributes, Class<T> clazz) {
+        List<ObjectAttributeContent> content = AttributeDefinitionUtils.getAttributeContent(attributeName, attributes, ObjectAttributeContent.class);
         if (content != null) {
-            return (T) ATTRIBUTES_OBJECT_MAPPER.convertValue(content.getData(), clazz);
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue(content, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
         }
         return null;
     }
 
     public static <T> List<T> getAttributeContentValueList(String attributeName, List<?> attributes, Class<?> clazz) {
         // TODO: validation that the attribute is multiSelect, if it make sense, because the request attribute can be without this flag
-        List<?> list = getAttributeContent(attributeName, attributes);
+        List<?> list = getAttributeContent(attributeName, attributes, false);
         if (list != null) {
             List<T> listContent = new ArrayList<>();
             for (Object item : list) {
-                AttributeContent ac = (AttributeContent) ATTRIBUTES_OBJECT_MAPPER.convertValue(item, clazz);
-                listContent.add(ac.getValue());
+                BaseAttributeContent ac = (BaseAttributeContent) ATTRIBUTES_OBJECT_MAPPER.convertValue(item, clazz);
+                listContent.add((T) ac.getData());
             }
             return listContent;
         }
         return null;
     }
 
-    public static <T> List<T> getJsonAttributeContentDataList(String attributeName, List<?> attributes, Class<?> clazz) {
+    public static <T> List<T> getObjectAttributeContentDataList(String attributeName, List<?> attributes, Class<?> clazz) {
         // TODO: validation that the attribute is multiSelect, if it make sense, because the request attribute can be without this flag
-        List<?> list = getAttributeContent(attributeName, attributes);
+        List<?> list = getAttributeContent(attributeName, attributes, false);
         if (list != null) {
             List<T> listContent = new ArrayList<>();
             for (Object item : list) {
-                JsonAttributeContent ac = ATTRIBUTES_OBJECT_MAPPER.convertValue(item, JsonAttributeContent.class);
+                ObjectAttributeContent ac = ATTRIBUTES_OBJECT_MAPPER.convertValue(item, ObjectAttributeContent.class);
                 listContent.add((T) ATTRIBUTES_OBJECT_MAPPER.convertValue(ac.getData(), clazz));
             }
             return listContent;

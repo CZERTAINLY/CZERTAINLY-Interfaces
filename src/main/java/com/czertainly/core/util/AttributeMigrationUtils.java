@@ -1,11 +1,12 @@
 package com.czertainly.core.util;
 
-import com.czertainly.api.model.common.attribute.AttributeCallback;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.AttributeType;
-import com.czertainly.api.model.common.attribute.content.BaseAttributeContent;
-import com.czertainly.api.model.common.attribute.content.FileAttributeContent;
-import com.czertainly.api.model.common.attribute.content.JsonAttributeContent;
+import com.czertainly.api.model.common.attribute.v1.AttributeCallback;
+import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v1.AttributeType;
+import com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.v1.content.FileAttributeContent;
+import com.czertainly.api.model.common.attribute.v1.content.JsonAttributeContent;
+import com.czertainly.core.deprecated.AttributeDefinitionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

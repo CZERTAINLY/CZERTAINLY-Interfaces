@@ -4,8 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -163,7 +163,7 @@ public interface EntityController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listLocationAttributes(
+    List<BaseAttribute> listLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
     @Operation(

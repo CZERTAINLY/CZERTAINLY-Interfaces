@@ -1,8 +1,8 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.connector.entity.GenerateCsrRequestDto;
 import com.czertainly.api.model.connector.entity.GenerateCsrResponseDto;
 import com.czertainly.api.model.connector.entity.LocationDetailRequestDto;
@@ -63,13 +63,13 @@ public class LocationApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<AttributeDefinition> listPushCertificateAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
+    public List<BaseAttribute> listPushCertificateAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_PUSH_ATTRS_CONTEXT, entityUuid)
                 .retrieve()
-                .toEntityList(AttributeDefinition.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);
@@ -114,13 +114,13 @@ public class LocationApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<AttributeDefinition> listGenerateCsrAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
+    public List<BaseAttribute> listGenerateCsrAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_CSR_ATTRS_CONTEXT, entityUuid)
                 .retrieve()
-                .toEntityList(AttributeDefinition.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);

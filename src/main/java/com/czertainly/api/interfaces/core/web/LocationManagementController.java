@@ -10,7 +10,7 @@ import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
 import com.czertainly.api.model.client.location.PushToLocationRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -238,7 +238,7 @@ public interface LocationManagementController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listPushAttributes(
+    List<BaseAttribute> listPushAttributes(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;
@@ -258,7 +258,7 @@ public interface LocationManagementController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listCsrAttributes(
+    List<BaseAttribute> listCsrAttributes(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;

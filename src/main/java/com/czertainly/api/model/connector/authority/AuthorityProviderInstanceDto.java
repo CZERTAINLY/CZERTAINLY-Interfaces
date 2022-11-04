@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.authority;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -12,14 +12,14 @@ public class AuthorityProviderInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
             required = true)
-    private List<AttributeDefinition> attributes;
+    private List<BaseAttribute> attributes;
 
 
-    public List<AttributeDefinition> getAttributes() {
+    public List<BaseAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeDefinition> attributes) {
+    public void setAttributes(List<BaseAttribute> attributes) {
         this.attributes = attributes;
     }
 

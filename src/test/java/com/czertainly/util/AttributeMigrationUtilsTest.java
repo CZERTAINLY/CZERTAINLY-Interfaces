@@ -1,7 +1,8 @@
 package com.czertainly.util;
 
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.core.util.AttributeDefinitionUtils;
+import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
+import com.czertainly.core.deprecated.AttributeDefinitionUtils;
+import com.czertainly.core.util.AttributeMigrationUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static com.czertainly.core.util.AttributeMigrationUtils.getNewAttributes;
 
 public class AttributeMigrationUtilsTest {
 
@@ -27,7 +26,7 @@ public class AttributeMigrationUtilsTest {
         List<Map<String, Object>> oldAttributeValue = mapper.readValue(attribute, new TypeReference<>() {
         });
         for (Map<String, Object> item : oldAttributeValue) {
-            attributeDefinitions.add(getNewAttributes(item));
+            attributeDefinitions.add(AttributeMigrationUtils.getNewAttributes(item));
         }
         String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
 
@@ -45,7 +44,7 @@ public class AttributeMigrationUtilsTest {
         List<Map<String, Object>> oldAttributeValue = mapper.readValue(attribute, new TypeReference<>() {
         });
         for (Map<String, Object> item : oldAttributeValue) {
-            attributeDefinitions.add(getNewAttributes(item));
+            attributeDefinitions.add(AttributeMigrationUtils.getNewAttributes(item));
         }
         String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
         Assertions.assertNotNull(serializedAttributes);
@@ -64,7 +63,7 @@ public class AttributeMigrationUtilsTest {
         List<Map<String, Object>> oldAttributeValue = mapper.readValue(attribute, new TypeReference<>() {
         });
         for (Map<String, Object> item : oldAttributeValue) {
-            attributeDefinitions.add(getNewAttributes(item));
+            attributeDefinitions.add(AttributeMigrationUtils.getNewAttributes(item));
         }
         String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
         Assertions.assertNotNull(serializedAttributes);
