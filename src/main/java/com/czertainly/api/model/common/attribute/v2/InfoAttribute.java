@@ -1,7 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
-import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -21,7 +20,21 @@ public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute"
+            description = "Content of the Attribute",
+            oneOf = {
+                    BooleanAttributeContent.class,
+                    CredentialAttributeContent.class,
+                    DateAttributeContent.class,
+                    DateTimeAttributeContent.class,
+                    FileAttributeContent.class,
+                    FloatAttributeContent.class,
+                    IntegerAttributeContent.class,
+                    ObjectAttributeContent.class,
+                    SecretAttributeContent.class,
+                    StringAttributeContent.class,
+                    TextAttributeContent.class,
+                    TimeAttributeContent.class,
+            }
     )
     private List<BaseAttributeContent> content;
 

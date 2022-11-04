@@ -1,5 +1,8 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 
 /**
@@ -26,15 +29,34 @@ public enum AttributeContentType {
         this.code = string;
     }
 
+    @JsonValue
     public String getCode() {
         return code;
     }
 
+    @JsonCreator
     public static AttributeContentType fromCode(String code) {
         return Arrays.stream(values())
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
+    }
+
+    public static Class getClass(AttributeContentType code) {
+        switch (code) {
+            case STRING:
+            case SECRET:
+            case TEXT:
+                return String.class;
+            case INTEGER:
+                return Integer.class;
+            case BOOLEAN:
+                return Boolean.class;
+            case FLOAT:
+                return Float.class;
+            default:
+                return null;
+        }
     }
     
     private static class Constants {

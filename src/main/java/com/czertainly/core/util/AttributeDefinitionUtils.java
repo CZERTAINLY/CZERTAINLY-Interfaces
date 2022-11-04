@@ -565,7 +565,7 @@ public class AttributeDefinitionUtils {
             atr.setContent(clt.getContent());
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());
-            atr.setContentType(clt.getType());
+            atr.setContentType(clt.getContentType());
             DataAttributeProperties properties = new DataAttributeProperties();
             properties.setLabel(clt.getLabel());
             atr.setProperties(properties);
@@ -618,7 +618,7 @@ public class AttributeDefinitionUtils {
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
                 atr.setLabel(clt.getProperties().getLabel());
-                atr.setType(clt.getContentType());
+                atr.setType(clt.getType());
                 atr.setContentType(clt.getContentType());
                 convertedDefinition.add(atr);
             }

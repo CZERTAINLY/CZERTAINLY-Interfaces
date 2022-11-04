@@ -79,7 +79,7 @@ public class V2AttributeMigrationUtils {
 
         DataAttributeProperties properties = new DataAttributeProperties();
         properties.setList(oldAttribute.isList());
-        properties.setMulti(oldAttribute.isMultiSelect());
+        properties.setMultiSelect(oldAttribute.isMultiSelect());
         properties.setReadOnly(oldAttribute.isReadOnly());
         properties.setRequired(oldAttribute.isRequired());
         properties.setLabel(oldAttribute.getLabel());

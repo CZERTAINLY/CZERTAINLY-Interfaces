@@ -1,11 +1,16 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
-public class BaseAttributeContent<T> extends AttributeContent {
+import io.swagger.v3.oas.annotations.media.Schema;
 
+public class BaseAttributeContent<T> extends AttributeContent {
+    @Schema(description = "Content Reference")
     private String reference;
+
+    @Schema(description = "Content Data")
     private T data;
 
-    public BaseAttributeContent() { }
+    public BaseAttributeContent() {
+    }
 
     public BaseAttributeContent(String reference) {
         this.reference = reference;

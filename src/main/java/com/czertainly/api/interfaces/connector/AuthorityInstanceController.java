@@ -3,9 +3,12 @@ package com.czertainly.api.interfaces.connector;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -135,7 +138,8 @@ public interface AuthorityInstanceController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Authority instance updated"
+                            description = "Authority instance updated",
+                            content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}))
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, produces = {"application/json"})

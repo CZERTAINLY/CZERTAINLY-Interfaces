@@ -45,7 +45,7 @@ public class DataAttributeProperties extends InfoAttributeProperties {
             defaultValue = "false",
             required = true
     )
-    private boolean multi = false;
+    private boolean multiSelect = false;
 
     public boolean isRequired() {
         return required;
@@ -71,12 +71,12 @@ public class DataAttributeProperties extends InfoAttributeProperties {
         this.list = list;
     }
 
-    public boolean isMulti() {
-        return multi;
+    public boolean isMultiSelect() {
+        return multiSelect;
     }
 
-    public void setMulti(boolean multi) {
-        this.multi = multi;
+    public void setMultiSelect(boolean multiSelect) {
+        this.multiSelect = multiSelect;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class DataAttributeProperties extends InfoAttributeProperties {
                 .append("required", required)
                 .append("readOnly", readOnly)
                 .append("list", list)
-                .append("multi", multi)
+                .append("multi", multiSelect)
                 .append("label", getLabel())
                 .append("group", getGroup())
                 .append("visible", isVisible())

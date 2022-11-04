@@ -14,6 +14,9 @@ import com.czertainly.api.model.common.HealthDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
@@ -157,7 +160,7 @@ public interface ConnectorController {
 	public HealthDto checkHealth(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException, ConnectorException;
 
 	@Operation(summary = "Get Attributes from a Connector")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received", content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})
 	@RequestMapping(path = "/{uuid}/attributes/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
 			"application/json" })
 	public List<BaseAttribute> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
