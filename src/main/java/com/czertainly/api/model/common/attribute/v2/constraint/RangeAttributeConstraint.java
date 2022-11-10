@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class RangeAttributeConstraint extends BaseAttributeConstraint<RangeAttributeConstraintData> {
 
-    @Schema(description = "Regular Expression Attribute Data")
+    @Schema(description = "Integer Range Attribute Constraint Data")
     private RangeAttributeConstraintData data;
 
     public RangeAttributeConstraint(String description, String errorMessage, AttributeConstraintType type, RangeAttributeConstraintData data) {

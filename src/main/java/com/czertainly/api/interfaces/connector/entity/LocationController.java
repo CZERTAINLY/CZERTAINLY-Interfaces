@@ -6,6 +6,9 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.connector.entity.GenerateCsrRequestDto;
 import com.czertainly.api.model.connector.entity.GenerateCsrResponseDto;
 import com.czertainly.api.model.connector.entity.LocationDetailRequestDto;
@@ -113,7 +116,8 @@ public interface LocationController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes for push retrieved"
+                            description = "Attributes for push retrieved",
+                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
                     )
             })
     @RequestMapping(
@@ -205,7 +209,8 @@ public interface LocationController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes retrieved"
+                            description = "Attributes retrieved",
+                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
                     )
             })
     @RequestMapping(

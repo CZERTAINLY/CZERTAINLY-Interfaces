@@ -8,9 +8,13 @@ import com.czertainly.api.model.client.location.AddLocationRequestDto;
 import com.czertainly.api.model.client.location.EditLocationRequestDto;
 import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
 import com.czertainly.api.model.client.location.PushToLocationRequestDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,6 +47,16 @@ import java.util.Optional;
                         responseCode = "400",
                         description = "Bad Request",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema())
+                ),
+                @ApiResponse(
+                        responseCode = "403",
+                        description = "Forbidden",
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
@@ -230,7 +244,9 @@ public interface LocationManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes list obtained"
+                            description = "Attributes list obtained",
+                            content = {@Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
                     )
             })
     @RequestMapping(
@@ -250,7 +266,9 @@ public interface LocationManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes list obtained"
+                            description = "Attributes list obtained",
+                            content = {@Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
                     )
             })
     @RequestMapping(

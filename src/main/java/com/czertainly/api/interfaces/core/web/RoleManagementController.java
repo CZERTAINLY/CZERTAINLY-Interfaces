@@ -36,6 +36,16 @@ import java.util.List;
                         content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema())
+                ),
+                @ApiResponse(
+                        responseCode = "403",
+                        description = "Forbidden",
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
+                ),
+                @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
                         content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))

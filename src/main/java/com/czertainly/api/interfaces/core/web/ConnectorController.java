@@ -8,10 +8,7 @@ import com.czertainly.api.model.client.connector.ConnectDto;
 import com.czertainly.api.model.client.connector.ConnectRequestDto;
 import com.czertainly.api.model.client.connector.ConnectorRequestDto;
 import com.czertainly.api.model.client.connector.ConnectorUpdateRequestDto;
-import com.czertainly.api.model.common.BulkActionMessageDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.HealthDto;
-import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
@@ -53,6 +50,16 @@ import java.util.Optional;
 						responseCode = "400",
 						description = "Bad Request",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "401",
+						description = "Unauthorized",
+						content = @Content(schema = @Schema())
+				),
+				@ApiResponse(
+						responseCode = "403",
+						description = "Forbidden",
+						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
@@ -160,10 +167,11 @@ public interface ConnectorController {
 	public HealthDto checkHealth(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException, ConnectorException;
 
 	@Operation(summary = "Get Attributes from a Connector")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received", content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received",
+			content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}))))})
 	@RequestMapping(path = "/{uuid}/attributes/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
 			"application/json" })
-	public List<BaseAttribute> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
+	public List<BaseAttribute> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable FunctionGroupCode functionGroup,
                                                    @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
 	
 	@Operation(summary = "Get attributes of all Function Groups")

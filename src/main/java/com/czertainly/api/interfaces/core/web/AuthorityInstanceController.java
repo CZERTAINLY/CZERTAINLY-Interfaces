@@ -7,10 +7,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
-import com.czertainly.api.model.common.BulkActionMessageDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.NameAndIdDto;
-import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
@@ -45,6 +42,16 @@ import java.util.List;
                         responseCode = "400",
                         description = "Bad Request",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema())
+                ),
+                @ApiResponse(
+                        responseCode = "403",
+                        description = "Forbidden",
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
@@ -115,7 +122,7 @@ public interface AuthorityInstanceController {
 
     @Operation(summary = "List RA Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved", content = {@Content(mediaType = "application/json",
-            schema = @Schema(oneOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}))})})
+            array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
     @RequestMapping(path = "/{uuid}/attributes/raProfile", method = RequestMethod.GET, produces = {"application/json"})
 	List<BaseAttribute> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
 

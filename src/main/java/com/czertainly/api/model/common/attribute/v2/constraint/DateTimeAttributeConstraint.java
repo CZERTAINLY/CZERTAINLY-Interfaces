@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class DateTimeAttributeConstraint extends BaseAttributeConstraint<DateTimeAttributeConstraintData> {
 
-    @Schema(description = "Regular Expression Attribute Data")
+    @Schema(description = "DateTime Range Attribute Constraint Data")
     private DateTimeAttributeConstraintData data;
 
     public DateTimeAttributeConstraint(String description, String errorMessage, AttributeConstraintType type, DateTimeAttributeConstraintData data) {
