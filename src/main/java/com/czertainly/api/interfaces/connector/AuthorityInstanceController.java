@@ -13,6 +13,7 @@ import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -139,7 +140,7 @@ public interface AuthorityInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Authority instance updated",
-                            content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}))
+                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, produces = {"application/json"})

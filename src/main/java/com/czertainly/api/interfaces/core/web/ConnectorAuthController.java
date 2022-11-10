@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
@@ -33,6 +34,16 @@ import java.util.Set;
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
 				@ApiResponse(
+						responseCode = "401",
+						description = "Unauthorized",
+						content = @Content(schema = @Schema())
+				),
+				@ApiResponse(
+						responseCode = "403",
+						description = "Forbidden",
+						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
+				),
+				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
@@ -52,7 +63,8 @@ public interface ConnectorAuthController {
 	public Set<AuthType> getAuthenticationTypes();
 
 	@Operation(summary = "Get basic auth Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved", content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}))) })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
+			content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
 	@RequestMapping(path = "/attributes/basic", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getBasicAuthAttributes();
 
@@ -63,7 +75,8 @@ public interface ConnectorAuthController {
 	public void validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get Attributes for certificate auth")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved", content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
+			content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
 	@RequestMapping(path = "/attributes/certificate", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getCertificateAttributes();
 
@@ -74,7 +87,8 @@ public interface ConnectorAuthController {
 	public void validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get API Key auth Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved", content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
+			content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
 	@RequestMapping(path = "/attributes/apiKey", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getApiKeyAuthAttributes();
 
@@ -85,7 +99,8 @@ public interface ConnectorAuthController {
 	public void validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get JWT auth Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved", content = @Content(schema = @Schema(anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
+			content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
 	@RequestMapping(path = "/attributes/jwt", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getJWTAuthAttributes();
 

@@ -12,6 +12,8 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
+import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
@@ -632,14 +634,14 @@ public class AttributeDefinitionUtilsTest {
                 "    \"name\": \"testCredentialAttribute\",\n" +
                 "    \"content\": [\n" +
                 "      {\n" +
-                "        \"value\": \"Test Credential Value 1\",\n" +
+                "        \"reference\": \"Test Credential Value 1\",\n" +
                 "        \"data\": {\n" +
                 "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
                 "          \"name\": \"Test Credential 1\"\n" +
                 "        }\n" +
                 "      },\n" +
                 "      {\n" +
-                "        \"value\": \"Test Credential Value 2\",\n" +
+                "        \"reference\": \"Test Credential Value 2\",\n" +
                 "        \"data\": {\n" +
                 "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
                 "          \"name\": \"Test Credential 2\"\n" +
@@ -655,5 +657,51 @@ public class AttributeDefinitionUtilsTest {
 
         Assertions.assertNotNull(listData);
         Assertions.assertEquals(2, listData.size());
+    }
+
+    @Test
+    public void testGetJsonAttributeConstraints_success() {
+        String regExp = "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])|(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\\\-]*[a-zA-Z0-9])\\\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\\\-]*[A-Za-z0-9]))$";
+
+        String attrData = "[\n" +
+                "  {\n" +
+                "    \"uuid\": \"93ca0ba2-3863-4ffa-a469-fd14ab3992bf\",\n" +
+                "    \"name\": \"address\",\n" +
+                "    \"type\": \"data\",\n" +
+                "    \"contentType\": \"string\",\n" +
+                "    \"properties\": {\n" +
+                "       \"label\": \"Test Credential Value 1\",\n" +
+                "       \"visible\": true,\n" +
+                "       \"required\": true\n" +
+                "    },\n" +
+                "    \"constraints\": [\n" +
+                "      {\n" +
+                "       \"type\": \"regExp\",\n" +
+                "       \"data\": \"" + regExp + "\"\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"content\": [\n" +
+                "      {\n" +
+                "        \"reference\": \"Test Credential Value 1\",\n" +
+                "        \"data\": {\n" +
+                "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
+                "          \"name\": \"Test Credential 1\"\n" +
+                "        }\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"reference\": \"Test Credential Value 2\",\n" +
+                "        \"data\": {\n" +
+                "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
+                "          \"name\": \"Test Credential 2\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]";
+
+        List<DataAttribute> attrs = deserialize(attrData, DataAttribute.class);
+        Assertions.assertEquals(1, attrs.size());
+        Assertions.assertEquals(1, attrs.get(0).getConstraints().size());
+        Assertions.assertEquals(AttributeConstraintType.REGEXP, attrs.get(0).getConstraints().get(0).getType());
     }
 }

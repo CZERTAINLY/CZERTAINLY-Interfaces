@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class RegexpAttributeConstraint extends BaseAttributeConstraint<String> {
 
-    @Schema(description = "Regular Expression Attribute Data")
+    @Schema(description = "Regular Expression Attribute Constraint Data")
     private String data;
 
     public RegexpAttributeConstraint(String description, String errorMessage, AttributeConstraintType type, String data) {
