@@ -11,9 +11,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = DataAttribute.class)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = DataAttribute.class, name = "DATA"),
-        @JsonSubTypes.Type(value = GroupAttribute.class, name = "GROUP"),
-        @JsonSubTypes.Type(value = InfoAttribute.class, name = "INFO")
+        @JsonSubTypes.Type(value = DataAttribute.class, name = "data"),
+        @JsonSubTypes.Type(value = GroupAttribute.class, name = "group"),
+        @JsonSubTypes.Type(value = InfoAttribute.class, name = "info")
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class BaseAttribute<T> extends AbstractBaseAttribute {
