@@ -1,5 +1,8 @@
 package com.czertainly.api.model.common.attribute.v2.constraint;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 
 public enum AttributeConstraintType {
@@ -13,10 +16,12 @@ public enum AttributeConstraintType {
         this.code = string;
     }
 
+    @JsonValue
     public String getCode() {
         return code;
     }
 
+    @JsonCreator
     public static AttributeConstraintType fromCode(String code) {
         return Arrays.stream(values())
                 .filter(e -> e.code.equals(code))

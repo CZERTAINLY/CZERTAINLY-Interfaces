@@ -8,7 +8,7 @@ public class RangeAttributeConstraintData {
     @Schema(description = "Start of the range for validation")
     private Integer from;
 
-    @Schema(description = "ENd of the range for validation")
+    @Schema(description = "End of the range for validation")
     private Integer to;
 
     public RangeAttributeConstraintData() {

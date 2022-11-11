@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.local;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.client.auth.AddUserRequestDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
@@ -29,6 +30,16 @@ import java.security.cert.CertificateException;
                         responseCode = "400",
                         description = "Bad Request",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema())
+                ),
+                @ApiResponse(
+                        responseCode = "403",
+                        description = "Forbidden",
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",

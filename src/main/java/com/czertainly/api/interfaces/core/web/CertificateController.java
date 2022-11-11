@@ -5,6 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.client.certificate.owner.CertificateOwnerBulkUpdateDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
@@ -43,6 +44,16 @@ import java.util.Map;
 						responseCode = "400",
 						description = "Bad Request",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "401",
+						description = "Unauthorized",
+						content = @Content(schema = @Schema())
+				),
+				@ApiResponse(
+						responseCode = "403",
+						description = "Forbidden",
+						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",

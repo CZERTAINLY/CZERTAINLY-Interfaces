@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.model.client.dashboard.StatisticsDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 						responseCode = "400",
 						description = "Bad Request",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "401",
+						description = "Unauthorized",
+						content = @Content(schema = @Schema())
+				),
+				@ApiResponse(
+						responseCode = "403",
+						description = "Forbidden",
+						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",

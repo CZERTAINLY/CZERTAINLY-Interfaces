@@ -58,7 +58,7 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
     @Schema(
             description = "Type of the Attribute",
             required = true,
-            defaultValue = "DATA"
+            defaultValue = "data"
     )
     private AttributeType type = AttributeType.DATA;
 
