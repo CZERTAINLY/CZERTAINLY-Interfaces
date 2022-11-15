@@ -68,16 +68,14 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     /**
      * List of constraints for the Attributes
      **/
-    @ArraySchema(
-        schema = @Schema(
-            description = "Optional regular expressions and constraints used for validating the Attribute content",
-            type = "object",
-            anyOf = {
-                RegexpAttributeConstraint.class,
-                RangeAttributeConstraint.class,
-                DateTimeAttributeConstraint.class
-            }
-        )
+    @Schema(
+        description = "Optional regular expressions and constraints used for validating the Attribute content",
+        type = "object",
+        oneOf = {
+            RegexpAttributeConstraint.class,
+            RangeAttributeConstraint.class,
+            DateTimeAttributeConstraint.class
+        }
     )
     private List<BaseAttributeConstraint> constraints;
 

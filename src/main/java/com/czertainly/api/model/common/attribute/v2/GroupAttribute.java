@@ -27,15 +27,6 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
     private List<BaseAttribute> content;
 
     /**
-     * Type of the Attribute content
-     */
-    @Schema(
-            description = "Type of the Content",
-            required = true
-    )
-    private AttributeContentType contentType;
-
-    /**
      * Optional definition of callback for getting the content of the Attribute based on the action
      **/
     @Schema(
@@ -55,14 +46,6 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
         this.content = content;
     }
 
-    public AttributeContentType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(AttributeContentType contentType) {
-        this.contentType = contentType;
-    }
-
     public AttributeCallback getAttributeCallback() {
         return attributeCallback;
     }
@@ -75,7 +58,6 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("content", content)
-                .append("contentType", contentType)
                 .append("attributeCallback", attributeCallback)
                 .toString();
     }

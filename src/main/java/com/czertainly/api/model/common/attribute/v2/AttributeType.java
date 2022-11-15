@@ -2,12 +2,14 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
 /**
  * This class defines Attribute types.
  */
+@Schema(enumAsRef = true)
 public enum AttributeType {
 
 	DATA(Constants.DATA),
