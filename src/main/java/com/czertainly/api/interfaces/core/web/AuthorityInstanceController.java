@@ -4,14 +4,12 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.AttributesListDto;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -105,26 +103,29 @@ public interface AuthorityInstanceController {
 
     @Operation(summary = "Delete Authority instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Authority instance deleted")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	void deleteAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    void deleteAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
 
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Entity profiles retrieved")})
     @RequestMapping(path = "/{uuid}/endentityprofiles", method = RequestMethod.GET, produces = {"application/json"})
-	List<NameAndIdDto> listEntityProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
+    List<NameAndIdDto> listEntityProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
 
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate profiles retrieved")})
     @RequestMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles", method = RequestMethod.GET, produces = {"application/json"})
-	List<NameAndIdDto> listCertificateProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
+    List<NameAndIdDto> listCertificateProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
             throws ConnectorException;
 
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "CAs in Profile retrieved")})
     @RequestMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/cas", method = RequestMethod.GET, produces = {"application/json"})
 	List<NameAndIdDto> listCAsInProfile(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
             throws ConnectorException;
 
     @Operation(summary = "List RA Profile Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved", content = {@Content(mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
+    @ApiResponses(value = {@ApiResponse(ref = "", responseCode = "200", description = "Attribute information retrieved", content = {@Content(mediaType = "application/json",
+            schema = @Schema(type = "object", implementation = AttributesListDto.class))})})
     @RequestMapping(path = "/{uuid}/attributes/raProfile", method = RequestMethod.GET, produces = {"application/json"})
-	List<BaseAttribute> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
+    List<BaseAttribute> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
 
     @Operation(summary = "Validate RA Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information validated")})

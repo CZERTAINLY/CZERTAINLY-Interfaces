@@ -23,6 +23,7 @@ public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     @Schema(
         description = "Content of the Attribute",
         type = "object",
+        required = true,
         discriminatorProperty = "contentType",
         oneOf = {
             BooleanAttributeContent.class,

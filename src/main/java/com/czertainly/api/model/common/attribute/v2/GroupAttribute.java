@@ -21,8 +21,10 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute",
-            required = true
+            description = "List of all different types of attributes",
+            required = true,
+            type = "object",
+            oneOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}
     )
     private List<BaseAttribute> content;
 

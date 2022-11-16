@@ -46,10 +46,9 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
     )
     private String description;
 
-    @ArraySchema(schema = @Schema(
-            description = "Content of the Attribute",
-            required = true
-    ))
+    @Schema(
+        description = "Content of the Attribute"
+    )
     private T content;
 
     /**

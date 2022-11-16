@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum FunctionGroupCode {
 
     CREDENTIAL_PROVIDER("credentialProvider"),
@@ -17,7 +18,7 @@ public enum FunctionGroupCode {
     ENTITY_PROVIDER("entityProvider"),
     COMPLIANCE_PROVIDER("complianceProvider");
 
-    @Schema(description = "Functional Group code of the Connector",
+    @Schema(description = "Function Group code of the Connector",
             example = "credentialProvider", required = true)
     private String code;
 
