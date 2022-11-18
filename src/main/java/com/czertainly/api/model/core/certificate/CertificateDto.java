@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.certificate;
 
+import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
@@ -59,8 +60,8 @@ public class CertificateDto {
     @Schema(description = "Basic Constraints",
             required = true)
     private String basicConstraints;
-    @Schema(description = "Certificate meta data")
-    private Map<String, Object> meta;
+    @Schema(description = "Certificate metadata")
+    private List<MetadataResponseDto> metadata;
     @Schema(description = "Status of the Certificate",
             required = true)
     private CertificateStatus status;
@@ -182,12 +183,12 @@ public class CertificateDto {
         this.basicConstraints = basicConstraints;
     }
 
-    public Map<String, Object> getMeta() {
-        return meta;
+    public List<MetadataResponseDto> getMetadata() {
+        return metadata;
     }
 
-    public void setMeta(Map<String, Object> meta) {
-        this.meta = meta;
+    public void setMetadata(List<MetadataResponseDto> metadata) {
+        this.metadata = metadata;
     }
 
     public CertificateStatus getStatus() {

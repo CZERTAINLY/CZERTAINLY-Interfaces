@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.discovery;
 
+import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,7 +9,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class DiscoveryHistoryDto extends NameAndUuidDto {
 
@@ -70,7 +70,7 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
     @Schema(
             description = "Metadata of the Discovery"
     )
-    private Map<String, Object> meta;
+    private List<MetadataResponseDto> metadata;
 
     public String getName() {
         return name;
@@ -112,12 +112,12 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
         this.totalCertificatesDiscovered = totalCertificatesDiscovered;
     }
 
-    public Map<String, Object> getMeta() {
-        return meta;
+    public List<MetadataResponseDto> getMetadata() {
+        return metadata;
     }
 
-    public void setMeta(Map<String, Object> meta) {
-        this.meta = meta;
+    public void setMetadata(List<MetadataResponseDto> metadata) {
+        this.metadata = metadata;
     }
 
     public String getUuid() {

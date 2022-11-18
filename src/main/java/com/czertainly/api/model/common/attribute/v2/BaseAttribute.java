@@ -1,6 +1,5 @@
 package com.czertainly.api.model.common.attribute.v2;
 
-import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +12,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataAttribute.class, name = "data"),
         @JsonSubTypes.Type(value = GroupAttribute.class, name = "group"),
-        @JsonSubTypes.Type(value = InfoAttribute.class, name = "info")
+        @JsonSubTypes.Type(value = InfoAttribute.class, name = "info"),
+        @JsonSubTypes.Type(value = InfoAttribute.class, name = "meta"),
+        @JsonSubTypes.Type(value = DataAttribute.class, name = "custom")
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class BaseAttribute<T> extends AbstractBaseAttribute {

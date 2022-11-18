@@ -1,6 +1,7 @@
 package com.czertainly.api.model.connector.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -28,7 +29,7 @@ public class CertificateRenewRequestDto {
             description = "Metadata for the Certificate",
             required = true
     )
-    private String meta;
+    private List<InfoAttribute> meta;
 
     public String getPkcs10() {
         return pkcs10;
@@ -54,11 +55,11 @@ public class CertificateRenewRequestDto {
         this.certificate = certificate;
     }
 
-    public String getMeta() {
+    public List<InfoAttribute> getMeta() {
         return meta;
     }
 
-    public void setMeta(String meta) {
+    public void setMeta(List<InfoAttribute> meta) {
         this.meta = meta;
     }
 

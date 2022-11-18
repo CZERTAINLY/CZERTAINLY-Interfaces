@@ -1,9 +1,12 @@
 package com.czertainly.api.model.connector.v2;
 
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
 
 /**
  * Response containing signed certificate data
@@ -22,7 +25,7 @@ public class CertificateDataResponseDto {
             description = "Metadata for the Certificate",
             required = true
     )
-    private String meta;
+    private List<InfoAttribute> meta;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
@@ -45,11 +48,11 @@ public class CertificateDataResponseDto {
         this.uuid = uuid;
     }
 
-    public String getMeta() {
+    public List<InfoAttribute> getMeta() {
         return meta;
     }
 
-    public void setMeta(String meta) {
+    public void setMeta(List<InfoAttribute> meta) {
         this.meta = meta;
     }
 

@@ -1,7 +1,11 @@
 package com.czertainly.api.model.connector.discovery;
 
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
 import java.util.Map;
 
 public class DiscoveryProviderCertificateDataDto {
@@ -22,26 +26,38 @@ public class DiscoveryProviderCertificateDataDto {
 			description = "Metadata for the Certificate",
 			required = true
 	)
-	private Map<String, Object> meta;
-	
+	private List<InfoAttribute> meta;
+
 	public String getUuid() {
 		return uuid;
 	}
+
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+
 	public String getBase64Content() {
 		return base64Content;
 	}
+
 	public void setBase64Content(String base64Content) {
 		this.base64Content = base64Content;
 	}
-	public Map<String, Object> getMeta() {
+
+	public List<InfoAttribute> getMeta() {
 		return meta;
 	}
-	public void setMeta(Map<String, Object> meta) {
+
+	public void setMeta(List<InfoAttribute> meta) {
 		this.meta = meta;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+				.append("uuid", uuid)
+				.append("base64Content", base64Content)
+				.append("meta", meta)
+				.toString();
+	}
 }
