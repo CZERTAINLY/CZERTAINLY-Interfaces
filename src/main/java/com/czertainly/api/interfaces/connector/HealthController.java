@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/health")
 @Tag(
-        name = "Health check API",
+        name = "Health check",
         description = "Connector Health check API. " +
                 "Connector returns own status and in some cases " +
                 "can return status of services on which it depends like database, HSM and so on."

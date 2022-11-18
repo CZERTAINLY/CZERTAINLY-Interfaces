@@ -4,7 +4,6 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.AttributesListDto;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
@@ -33,7 +32,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/authorities")
-@Tag(name = "Authority Management API", description = "Authority Management API")
+@Tag(name = "Authority Management", description = "Authority Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -122,8 +121,7 @@ public interface AuthorityInstanceController {
             throws ConnectorException;
 
     @Operation(summary = "List RA Profile Attributes")
-    @ApiResponses(value = {@ApiResponse(ref = "", responseCode = "200", description = "Attribute information retrieved", content = {@Content(mediaType = "application/json",
-            schema = @Schema(type = "object", implementation = AttributesListDto.class))})})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
     @RequestMapping(path = "/{uuid}/attributes/raProfile", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException;
 

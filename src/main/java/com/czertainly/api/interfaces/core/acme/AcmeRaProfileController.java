@@ -37,7 +37,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/acme/raProfile/{raProfileName}")
-@Tag(name = "ACME RA Profile API", description = "Interfaces used by ACME clients to request ACME related operations " +
+@Tag(name = "ACME RA Profile", description = "Interfaces used by ACME clients to request ACME related operations " +
         "on top of RA Profile. ACME Profile defines the behaviour for the specific ACME configuration. ACME Profile is " +
         "bound with specific RA Profile and it can be used by the ACME clients to request operations on their specific " +
         "URL. These operations are always specific only for the RA Profile.")

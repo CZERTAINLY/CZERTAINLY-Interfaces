@@ -31,7 +31,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/discoveries")
-@Tag(name = "Discovery Management API", description = "Discovery Management API")
+@Tag(name = "Discovery Management", description = "Discovery Management API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

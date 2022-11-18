@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class StringAttributeContent extends BaseAttributeContent<String> {
 
-    @Schema(description = "String attribute value")
+    @Schema(description = "String attribute value", required = true)
     private String data;
 
     public StringAttributeContent() {

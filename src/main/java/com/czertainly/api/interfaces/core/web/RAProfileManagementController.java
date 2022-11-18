@@ -13,9 +13,6 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +37,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
-@Tag(name = "RA Profile Management API", description = "RA Profile Management API")
+@Tag(name = "RA Profile Management", description = "RA Profile Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -192,15 +189,13 @@ public interface RAProfileManagementController {
             throws NotFoundException;
 
     @Operation(summary = "Get revocation Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes list obtained",
-            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Revocation attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> listRevokeCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                               @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
     @Operation(summary = "Get issue Certificate Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes list obtained",
-            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))})})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Issue certificate attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> listIssueCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                              @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;

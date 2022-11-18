@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalTime;
 
@@ -13,6 +14,7 @@ public class TimeAttributeContent extends BaseAttributeContent<LocalTime> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
+    @Schema(description = "Time attribute value", required = true)
     private LocalTime data;
 
     public TimeAttributeContent() {

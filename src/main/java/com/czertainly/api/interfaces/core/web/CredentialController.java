@@ -32,7 +32,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/credentials")
-@Tag(name = "Credential Management API", description = "Credential Management API")
+@Tag(name = "Credential Management", description = "Credential Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(

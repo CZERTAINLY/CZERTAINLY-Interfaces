@@ -41,7 +41,7 @@ import java.util.List;
                         content = @Content
                 )
         })
-@Tag(name = "End Entity Management API", description = "End Entity Management API")
+@Tag(name = "End Entity Management", description = "End Entity Management API")
 public interface EndEntityController {
 
     @Operation(

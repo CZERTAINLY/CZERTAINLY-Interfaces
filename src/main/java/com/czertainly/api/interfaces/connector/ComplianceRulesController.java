@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/complianceProvider/{kind}")
 @Tag(
-        name = "Compliance Rules API",
+        name = "Compliance Rules",
         description = "Compliance Provider rules API. " +
                 "Used to get the list of rules provided by the connector. " +
                 "These rules will be made available for the users to choose from the list." +

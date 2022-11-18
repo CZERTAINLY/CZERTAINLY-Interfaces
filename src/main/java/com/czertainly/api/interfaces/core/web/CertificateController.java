@@ -37,7 +37,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/certificates")
-@Tag(name = "Certificate Inventory API", description = "Certificate Inventory API")
+@Tag(name = "Certificate Inventory", description = "Certificate Inventory API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

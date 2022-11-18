@@ -4,8 +4,6 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.AttributesListDto;
-import com.czertainly.api.model.client.attribute.AttributesMapDto;
 import com.czertainly.api.model.client.connector.ConnectDto;
 import com.czertainly.api.model.client.connector.ConnectRequestDto;
 import com.czertainly.api.model.client.connector.ConnectorRequestDto;
@@ -42,7 +40,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/connectors")
-@Tag(name = "Connector Management API", description = "Connector Management API")
+@Tag(name = "Connector Management", description = "Connector Management API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
@@ -166,16 +164,14 @@ public interface ConnectorController {
 	public HealthDto checkHealth(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException, ConnectorException;
 
 	@Operation(summary = "Get Attributes from a Connector")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received",
-			content = {@Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = AttributesListDto.class))})})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
 	@RequestMapping(path = "/{uuid}/attributes/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
 			"application/json" })
 	public List<BaseAttribute> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable FunctionGroupCode functionGroup,
                                                    @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
 	
 	@Operation(summary = "Get attributes of all Function Groups")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received",
-			content = {@Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = AttributesMapDto.class))})})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
 	@RequestMapping(path = "/{uuid}/attributes", method = RequestMethod.GET, produces = {"application/json"})
 	public Map<FunctionGroupCode, Map<String, List<BaseAttribute>>> getAttributesAll(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 

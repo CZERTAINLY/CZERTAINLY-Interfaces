@@ -4,9 +4,6 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/{functionalGroup}/{kind}/attributes")
 @Tag(
-        name = "Attributes API",
+        name = "Connector Attributes",
         description = "Connector Attributes API. " +
                 "Provides information about supported Attributes of the connector. " +
                 "Attributes are specific to implementation and gives information about the " +
@@ -65,8 +62,7 @@ public interface AttributesController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes retrieved",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "Attributes retrieved"
                     )
             }
     )

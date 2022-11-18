@@ -24,7 +24,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/v1/complianceProvider/{kind}")
 @Tag(
-        name = "Compliance API",
+        name = "Compliance",
         description = "Compliance Provider API. " +
                 "Used to check the compliance of a certificate. The provider contains the " +
                 "list of rules for checking the compliance. The user can choose the list of compliance checks " +

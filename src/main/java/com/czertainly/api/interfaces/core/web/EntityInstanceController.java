@@ -8,9 +8,6 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.entity.EntityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,7 +31,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/entities")
-@Tag(name = "Entity Management API", description = "Entity Management API")
+@Tag(name = "Entity Management", description = "Entity Management API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
@@ -178,9 +175,7 @@ public interface EntityInstanceController {
 			value = {
 					@ApiResponse(
 							responseCode = "200",
-							description = "Attributes retrieved",
-							content = {@Content(mediaType = "application/json",
-									array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+							description = "Location attributes retrieved"
 					)
 			})
 	@RequestMapping(

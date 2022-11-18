@@ -6,9 +6,6 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.connector.entity.GenerateCsrRequestDto;
 import com.czertainly.api.model.connector.entity.GenerateCsrResponseDto;
 import com.czertainly.api.model.connector.entity.LocationDetailRequestDto;
@@ -39,7 +36,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/entityProvider/entities/{entityUuid}/locations")
 @Tag(
-        name = "Location Operations API",
+        name = "Location Operations",
         description = "Interfaces to control certificates and key stores on Entities. " +
                 "Locations provides capabilities of getting the certificates already on the Entity, " +
                 "pushing new certificates, generation of new key pair and certificate signing requests, " +
@@ -116,8 +113,7 @@ public interface LocationController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes for push retrieved",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "Attributes for push retrieved"
                     )
             })
     @RequestMapping(
@@ -209,8 +205,7 @@ public interface LocationController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes retrieved",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "CSR Attributes retrieved"
                     )
             })
     @RequestMapping(

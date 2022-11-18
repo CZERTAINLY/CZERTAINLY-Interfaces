@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/connector")
-@Tag(name = "Connector Registration API", description = "Connector Registration API")
+@Tag(name = "Connector Registration", description = "Connector Registration API")
 @ApiResponses(
         value = {
                 @ApiResponse(

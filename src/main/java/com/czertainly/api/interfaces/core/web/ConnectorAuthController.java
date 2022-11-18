@@ -1,6 +1,5 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.model.client.attribute.AttributesListDto;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -23,7 +22,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/v1/connectors/auth")
-@Tag(name = "Connector Authentication API", description = "Connector Authentication API")
+@Tag(name = "Connector Authentication", description = "Connector Authentication API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
@@ -61,8 +60,7 @@ public interface ConnectorAuthController {
 	public Set<AuthType> getAuthenticationTypes();
 
 	@Operation(summary = "Get basic auth Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
-			content = {@Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = AttributesListDto.class))})})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/basic", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getBasicAuthAttributes();
 
@@ -73,8 +71,7 @@ public interface ConnectorAuthController {
 	public void validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get Attributes for certificate auth")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
-			content = {@Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = AttributesListDto.class))})})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/certificate", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getCertificateAttributes();
 
@@ -85,8 +82,7 @@ public interface ConnectorAuthController {
 	public void validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get API Key auth Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
-			content = {@Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = AttributesListDto.class))})})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/apiKey", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getApiKeyAuthAttributes();
 
@@ -97,8 +93,7 @@ public interface ConnectorAuthController {
 	public void validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get JWT auth Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved",
-			content = {@Content(mediaType = "application/json", schema = @Schema(type = "object", implementation = AttributesListDto.class))})})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/jwt", method = RequestMethod.GET, produces = {"application/json"})
 	public List<BaseAttribute> getJWTAuthAttributes();
 

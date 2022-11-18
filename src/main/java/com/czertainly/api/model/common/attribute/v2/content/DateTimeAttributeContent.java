@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.ZonedDateTime;
 
@@ -13,6 +14,7 @@ public class DateTimeAttributeContent extends BaseAttributeContent<ZonedDateTime
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
+    @Schema(description = "DateTime attribute value", required = true)
     private ZonedDateTime data;
 
     public DateTimeAttributeContent(ZonedDateTime data) {

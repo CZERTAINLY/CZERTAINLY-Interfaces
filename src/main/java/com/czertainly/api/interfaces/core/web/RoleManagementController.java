@@ -27,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/roles")
-@Tag(name = "Role Management API", description = "Role Management API")
+@Tag(name = "Role Management", description = "Role Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
