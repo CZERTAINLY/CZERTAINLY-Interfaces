@@ -6,9 +6,6 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.connector.v2.CertRevocationDto;
 import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
 import com.czertainly.api.model.connector.v2.CertificateRenewRequestDto;
@@ -32,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v2/authorityProvider/authorities/{uuid}/certificates")
-@Tag(name = "Certificate Management API", description = "Certificate Management API")
+@Tag(name = "Certificate Management", description = "Certificate Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -61,8 +58,7 @@ public interface CertificateController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attribute list retrieved",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "Issue certificate attribute list retrieved"
                     )
     })
     @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET, produces = {"application/json"})
@@ -139,8 +135,7 @@ public interface CertificateController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attribute list retrieved",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "Revoke certificate attribute list retrieved"
                     ),
                     @ApiResponse(
                             responseCode = "422",

@@ -28,7 +28,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/v1/discoveryProvider")
 @Tag(
-        name = "Discovery API",
+        name = "Discovery",
         description = "Discovery Provider API. " +
                 "Used to schedule and establish certificate discovery process. " +
                 "Once the discovery process is started, the progress and the history " +

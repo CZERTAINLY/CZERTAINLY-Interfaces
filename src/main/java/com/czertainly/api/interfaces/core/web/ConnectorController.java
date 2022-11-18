@@ -11,9 +11,6 @@ import com.czertainly.api.model.client.connector.ConnectorUpdateRequestDto;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
@@ -43,7 +40,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/connectors")
-@Tag(name = "Connector Management API", description = "Connector Management API")
+@Tag(name = "Connector Management", description = "Connector Management API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
@@ -116,8 +113,8 @@ public interface ConnectorController {
 
 	@Operation(summary = "Delete a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Connector deleted")})
-	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	public void deleteConnector(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Connect to a Connector")
@@ -138,8 +135,8 @@ public interface ConnectorController {
 
 	@Operation(summary = "Approve multiple Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Approve multiple Connectors")})
-	@RequestMapping(path = "/approve", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RequestMapping(path = "/approve", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
 	public void bulkApprove(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Connector UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
@@ -157,8 +154,8 @@ public interface ConnectorController {
 
 	@Operation(summary = "Approve a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector Approved") })
-	@RequestMapping(path = "/{uuid}/approve", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RequestMapping(path = "/{uuid}/approve", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
 	public void approve(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
 	@Operation(summary = "Check Health of a Connector")
@@ -167,8 +164,7 @@ public interface ConnectorController {
 	public HealthDto checkHealth(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException, ConnectorException;
 
 	@Operation(summary = "Get Attributes from a Connector")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received",
-			content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}))))})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
 	@RequestMapping(path = "/{uuid}/attributes/{functionGroup}/{kind}", method = RequestMethod.GET, produces = {
 			"application/json" })
 	public List<BaseAttribute> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable FunctionGroupCode functionGroup,

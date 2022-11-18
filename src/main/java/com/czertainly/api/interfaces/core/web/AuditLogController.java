@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/auditLogs")
-@Tag(name = "Audit Log API", description = "Audit Log API")
+@Tag(name = "Audit Log", description = "Audit Log API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

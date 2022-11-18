@@ -12,9 +12,6 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +37,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
-@Tag(name = "Location Management API", description = "Location Management API")
+@Tag(name = "Location Management", description = "Location Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -244,9 +241,7 @@ public interface LocationManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes list obtained",
-                            content = {@Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "Push attributes list obtained"
                     )
             })
     @RequestMapping(
@@ -266,9 +261,7 @@ public interface LocationManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes list obtained",
-                            content = {@Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "CSR Attributes list obtained"
                     )
             })
     @RequestMapping(

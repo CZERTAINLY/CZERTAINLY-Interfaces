@@ -26,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
-@Tag(name = "ACME Account Management API", description = "ACME Account Management API")
+@Tag(name = "ACME Account Management", description = "ACME Account Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(

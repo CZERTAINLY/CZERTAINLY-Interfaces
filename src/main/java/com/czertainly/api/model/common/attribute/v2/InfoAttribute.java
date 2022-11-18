@@ -2,7 +2,6 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -15,6 +14,7 @@ import java.util.List;
  * of type Info.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Info attribute contains content that is for information purpose or represents additional information for object (metadata). Its content can not be edited and is not send in requests to store.")
 public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
 
     /**
@@ -23,6 +23,7 @@ public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     @Schema(
         description = "Content of the Attribute",
         type = "object",
+        required = true,
         discriminatorProperty = "contentType",
         oneOf = {
             BooleanAttributeContent.class,

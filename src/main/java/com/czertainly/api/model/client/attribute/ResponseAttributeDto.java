@@ -16,6 +16,7 @@ import java.util.List;
  * detail API responses
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Response attribute with content for object it belongs to")
 public class ResponseAttributeDto {
 
     /**

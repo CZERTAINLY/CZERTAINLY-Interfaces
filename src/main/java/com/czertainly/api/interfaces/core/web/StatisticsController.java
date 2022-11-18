@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/statistics")
-@Tag(name = "Statistics/Dashboard API", description = "Statistics/Dashboard API")
+@Tag(name = "Statistics/Dashboard", description = "Statistics/Dashboard API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

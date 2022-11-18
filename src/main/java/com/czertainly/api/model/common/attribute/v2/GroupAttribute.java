@@ -1,7 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -15,25 +14,18 @@ import java.util.List;
  * of type Group.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Group attribute and its content represents dynamic list of additional attributes retrieved by callback. Its content can not be edited and is not send in requests to store.")
 public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
 
     /**
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute",
-            required = true
+            description = "List of all different types of attributes",
+            type = "object",
+            oneOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}
     )
     private List<BaseAttribute> content;
-
-    /**
-     * Type of the Attribute content
-     */
-    @Schema(
-            description = "Type of the Content",
-            required = true
-    )
-    private AttributeContentType contentType;
 
     /**
      * Optional definition of callback for getting the content of the Attribute based on the action
@@ -59,14 +51,6 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
         this.content = content;
     }
 
-    public AttributeContentType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(AttributeContentType contentType) {
-        this.contentType = contentType;
-    }
-
     public AttributeCallback getAttributeCallback() {
         return attributeCallback;
     }
@@ -79,7 +63,6 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("content", content)
-                .append("contentType", contentType)
                 .append("attributeCallback", attributeCallback)
                 .toString();
     }

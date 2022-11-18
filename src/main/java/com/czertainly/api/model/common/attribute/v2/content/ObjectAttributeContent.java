@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class ObjectAttributeContent extends BaseAttributeContent<Object> {
 
-    @Schema(description = "Object attribute value")
+    @Schema(description = "Object attribute content data", required = true)
     private Object data;
 
     public ObjectAttributeContent() {

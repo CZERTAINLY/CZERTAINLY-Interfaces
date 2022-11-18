@@ -36,7 +36,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/complianceProfiles")
-@Tag(name = "Compliance Profile Management API", description = "Compliance Profile Management API")
+@Tag(name = "Compliance Profile Management", description = "Compliance Profile Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(

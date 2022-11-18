@@ -7,7 +7,6 @@ import com.czertainly.api.model.common.attribute.v2.constraint.RangeAttributeCon
 import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -20,6 +19,7 @@ import java.util.List;
  * of type Data.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.")
 public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
 
     /**
@@ -68,16 +68,14 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     /**
      * List of constraints for the Attributes
      **/
-    @ArraySchema(
-        schema = @Schema(
-            description = "Optional regular expressions and constraints used for validating the Attribute content",
-            type = "object",
-            anyOf = {
-                RegexpAttributeConstraint.class,
-                RangeAttributeConstraint.class,
-                DateTimeAttributeConstraint.class
-            }
-        )
+    @Schema(
+        description = "Optional regular expressions and constraints used for validating the Attribute content",
+        type = "object",
+        oneOf = {
+            RegexpAttributeConstraint.class,
+            RangeAttributeConstraint.class,
+            DateTimeAttributeConstraint.class
+        }
     )
     private List<BaseAttributeConstraint> constraints;
 

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
                         content = @Content
                 )
         })
-@Tag(name = "Certificate Management API", description = "Certificate Management API")
+@Tag(name = "Certificate Management", description = "Certificate Management API")
 public interface CertificateController {
 
     @Operation(

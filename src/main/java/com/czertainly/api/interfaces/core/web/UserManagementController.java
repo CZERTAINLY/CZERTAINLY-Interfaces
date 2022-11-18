@@ -32,7 +32,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
-@Tag(name = "User Management API", description = "User Management API")
+@Tag(name = "User Management", description = "User Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(

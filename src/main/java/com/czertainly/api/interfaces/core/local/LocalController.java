@@ -23,7 +23,7 @@ import java.security.cert.CertificateException;
 
 @RestController
 @RequestMapping("/v1/local")
-@Tag(name = "Local API", description = "API only accessible from localhost")
+@Tag(name = "Local operations", description = "API only accessible from localhost")
 @ApiResponses(
         value = {
                 @ApiResponse(

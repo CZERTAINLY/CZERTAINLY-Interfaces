@@ -6,9 +6,6 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/entityProvider/entities")
 @Tag(
-        name = "Entity Management API",
+        name = "Entity Management",
         description = "Management interfaces to control Entities in the platform. " +
                 "Entities can be created, edited, removed. Support for the bulk operation and listing of available " +
                 "Entities for the automation. Location attributes and validation."
@@ -158,8 +155,7 @@ public interface EntityController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Entity Location Attributes retrieved",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "Entity Location Attributes retrieved"
                     )
             })
     @RequestMapping(

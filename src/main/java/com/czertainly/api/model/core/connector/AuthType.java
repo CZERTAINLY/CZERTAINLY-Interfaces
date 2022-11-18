@@ -2,9 +2,11 @@ package com.czertainly.api.model.core.connector;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum AuthType {
     NONE("none"),
     BASIC("basic"),

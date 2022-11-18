@@ -14,6 +14,7 @@ import java.util.List;
  * an Attribute definition provided by the client
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Request attribute to send attribute content for object")
 public class RequestAttributeDto {
 
     /**

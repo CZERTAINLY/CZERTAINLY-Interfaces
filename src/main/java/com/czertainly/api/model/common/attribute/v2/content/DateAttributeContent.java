@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ public class DateAttributeContent extends BaseAttributeContent<LocalDate> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
+    @Schema(description = "Date attribute value", required = true)
     private LocalDate data;
 
     public DateAttributeContent() {

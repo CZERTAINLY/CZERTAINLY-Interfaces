@@ -1,9 +1,9 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.model.client.attribute.BaseAttributeDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -17,6 +17,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
         @JsonSubTypes.Type(value = DataAttribute.class, name = "custom")
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
+@Schema(implementation = BaseAttributeDto.class)
 public class BaseAttribute<T> extends AbstractBaseAttribute {
 
     /**
@@ -47,10 +48,9 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
     )
     private String description;
 
-    @ArraySchema(schema = @Schema(
-            description = "Content of the Attribute",
-            required = true
-    ))
+    @Schema(
+        description = "Content of the Attribute"
+    )
     private T content;
 
     /**

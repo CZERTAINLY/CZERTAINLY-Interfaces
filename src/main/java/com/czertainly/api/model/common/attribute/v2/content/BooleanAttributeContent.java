@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class BooleanAttributeContent extends BaseAttributeContent<Boolean> {
 
-    @Schema(description = "Boolean attribute value")
+    @Schema(description = "Boolean attribute value", required = true)
     private Boolean data;
 
     public BooleanAttributeContent() {

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class IntegerAttributeContent extends BaseAttributeContent<Integer> {
 
-    @Schema(description = "Integer attribute value")
+    @Schema(description = "Integer attribute value", required = true)
     private Integer data;
 
     public IntegerAttributeContent() {

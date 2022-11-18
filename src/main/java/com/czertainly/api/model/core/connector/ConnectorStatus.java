@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum ConnectorStatus {
 
     WAITING_FOR_APPROVAL("waitingForApproval"),

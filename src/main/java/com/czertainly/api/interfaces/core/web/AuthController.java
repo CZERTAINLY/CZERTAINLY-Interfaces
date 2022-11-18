@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/auth")
-@Tag(name = "Authentication Management API", description = "Authentication Management API")
+@Tag(name = "Authentication Management", description = "Authentication Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(

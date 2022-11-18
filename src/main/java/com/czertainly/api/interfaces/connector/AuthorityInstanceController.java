@@ -6,14 +6,10 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,7 +45,7 @@ import java.util.List;
                         content = @Content
                 )
         })
-@Tag(name = "Authority Management API", description = "Authority Management API")
+@Tag(name = "Authority Management", description = "Authority Management API")
 public interface AuthorityInstanceController {
 
     @Operation(
@@ -59,7 +55,7 @@ public interface AuthorityInstanceController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Authority instances retrieved"
+                            description = "Authority instance list retrieved"
                     )
             })
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
@@ -139,8 +135,7 @@ public interface AuthorityInstanceController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Authority instance updated",
-                            content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(type = "object", anyOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class})))}
+                            description = "RA Profile Attributes retrieved"
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, produces = {"application/json"})
@@ -154,7 +149,7 @@ public interface AuthorityInstanceController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Authority instance updated"
+                            description = "RA Profile Attributes information validated"
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1")
-@Tag(name = "Callback API", description = "Callback API")
+@Tag(name = "Callback", description = "Callback API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class FloatAttributeContent extends BaseAttributeContent<Float> {
 
-    @Schema(description = "Float attribute value")
+    @Schema(description = "Float attribute value", required = true)
     private Float data;
 
     public FloatAttributeContent() {

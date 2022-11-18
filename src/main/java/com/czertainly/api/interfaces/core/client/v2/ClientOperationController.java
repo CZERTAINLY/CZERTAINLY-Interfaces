@@ -36,7 +36,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}")
-@Tag(name = "v2 Client Operations API", description = "v2 Client Operations API")
+@Tag(name = "Client Operations v2", description = "Client Operations v2 API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

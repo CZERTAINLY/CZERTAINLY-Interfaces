@@ -29,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/certificateGroups")
-@Tag(name = "Certificate Group API", description = "Certificate Group API")
+@Tag(name = "Certificate Group", description = "Certificate Group API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

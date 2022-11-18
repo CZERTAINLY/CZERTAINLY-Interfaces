@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SecretAttributeContent extends BaseAttributeContent<SecretAttributeContentData> {
 
-    @Schema(description = "File Content", required = true)
+    @Schema(description = "Secret attribute content data", required = true)
     private SecretAttributeContentData data;
 
     public SecretAttributeContent(String reference, SecretAttributeContentData data) {

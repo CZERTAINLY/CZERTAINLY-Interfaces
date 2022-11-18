@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * detail API responses
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Response metadata attribute instance with content")
 public class ResponseMetadataDto extends ResponseAttributeDto {
 
     @Schema(description = "Source Object Type")

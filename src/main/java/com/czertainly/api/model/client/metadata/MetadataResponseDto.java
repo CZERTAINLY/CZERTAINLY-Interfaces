@@ -1,12 +1,12 @@
 package com.czertainly.api.model.client.metadata;
 
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Schema(description = "Metadata response attributes with their source connector")
 public class MetadataResponseDto {
     @Schema(description = "UUID of the Connector", required = true)
     private String connectorUuid;

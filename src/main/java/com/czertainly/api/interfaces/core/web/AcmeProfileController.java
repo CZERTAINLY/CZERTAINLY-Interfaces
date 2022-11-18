@@ -34,7 +34,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/acmeProfiles")
-@Tag(name = "ACME Profile Management API", description = "ACME Profile Management API")
+@Tag(name = "ACME Profile Management", description = "ACME Profile Management API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
