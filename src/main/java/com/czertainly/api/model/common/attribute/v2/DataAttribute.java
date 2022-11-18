@@ -19,6 +19,7 @@ import java.util.List;
  * of type Data.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.")
 public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
 
     /**

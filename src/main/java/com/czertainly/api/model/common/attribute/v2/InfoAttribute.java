@@ -14,6 +14,7 @@ import java.util.List;
  * of type Info.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Info attribute contains content that is for information purpose or represents additional information for object (metadata). Its content can not be edited and is not send in requests to store.")
 public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
 
     /**

@@ -17,6 +17,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
                 @DiscriminatorMapping(value = "data", schema = DataAttribute.class),
                 @DiscriminatorMapping(value = "info", schema = InfoAttribute.class),
                 @DiscriminatorMapping(value = "group", schema = GroupAttribute.class)
+//                @DiscriminatorMapping(value = "meta", schema = InfoAttribute.class),
+//                @DiscriminatorMapping(value = "custom", schema = DataAttribute.class)
         },
         oneOf = {
                 DataAttribute.class,

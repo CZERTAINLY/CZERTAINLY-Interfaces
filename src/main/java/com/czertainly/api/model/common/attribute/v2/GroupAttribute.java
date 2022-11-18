@@ -14,6 +14,7 @@ import java.util.List;
  * of type Group.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Group attribute and its content represents dynamic list of additional attributes retrieved by callback. Its content can not be edited and is not send in requests to store.")
 public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
 
     /**
@@ -21,7 +22,6 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
      **/
     @Schema(
             description = "List of all different types of attributes",
-            required = true,
             type = "object",
             oneOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}
     )
