@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.location;
 
+import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,7 +8,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class representing Location
@@ -50,7 +50,7 @@ public class LocationDto extends NameAndUuidDto {
     private List<CertificateInLocationDto> certificates;
 
     @Schema(description = "Location metadata")
-    private Map<String, Object> metadata;
+    private List<MetadataResponseDto> metadata;
 
     public String getDescription() {
         return description;
@@ -108,11 +108,11 @@ public class LocationDto extends NameAndUuidDto {
         this.supportKeyManagement = supportKeyManagement;
     }
 
-    public Map<String, Object> getMetadata() {
+    public List<MetadataResponseDto> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Map<String, Object> metadata) {
+    public void setMetadata(List<MetadataResponseDto> metadata) {
         this.metadata = metadata;
     }
 

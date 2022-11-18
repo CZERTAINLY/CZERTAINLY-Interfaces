@@ -14,6 +14,11 @@ public class BooleanAttributeContent extends BaseAttributeContent<Boolean> {
         this.data = data;
     }
 
+    public BooleanAttributeContent(String reference, Boolean data) {
+        super(reference);
+        this.data = data;
+    }
+
     public Boolean getData() {
         return data;
     }

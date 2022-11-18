@@ -1,11 +1,10 @@
 package com.czertainly.api.model.core.location;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
+import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
 
 public class CertificateInLocationDto {
 
@@ -31,7 +30,7 @@ public class CertificateInLocationDto {
             description = "Metadata of the Certificate in Location",
             required = true
     )
-    private List<InfoAttribute> metadata;
+    private List<MetadataResponseDto> metadata;
 
     @Schema(
             description = "Applied push attributes"
@@ -74,11 +73,11 @@ public class CertificateInLocationDto {
         this.serialNumber = serialNumber;
     }
 
-    public List<InfoAttribute> getMetadata() {
+    public List<MetadataResponseDto> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(List<InfoAttribute> metadata) {
+    public void setMetadata(List<MetadataResponseDto> metadata) {
         this.metadata = metadata;
     }
 

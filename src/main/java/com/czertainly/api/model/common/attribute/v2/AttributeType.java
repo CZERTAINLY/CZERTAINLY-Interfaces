@@ -12,9 +12,9 @@ public enum AttributeType {
 
 	DATA(Constants.DATA),
     GROUP(Constants.GROUP),
-	INFO(Constants.INFO),
-    CUSTOM(Constants.CUSTOM),
-    META(Constants.META);
+    INFO(Constants.INFO),
+    META(Constants.META),
+    CUSTOM(Constants.CUSTOM);
 
 
     private final String code;
