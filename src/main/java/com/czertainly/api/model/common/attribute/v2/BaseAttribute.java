@@ -12,7 +12,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataAttribute.class, name = "data"),
         @JsonSubTypes.Type(value = GroupAttribute.class, name = "group"),
-        @JsonSubTypes.Type(value = InfoAttribute.class, name = "info")
+        @JsonSubTypes.Type(value = InfoAttribute.class, name = "info"),
+        @JsonSubTypes.Type(value = InfoAttribute.class, name = "meta"),
+        @JsonSubTypes.Type(value = DataAttribute.class, name = "custom")
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeDto.class)

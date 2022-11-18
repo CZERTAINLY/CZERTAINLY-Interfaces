@@ -39,6 +39,10 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
         super(AttributeType.GROUP);
     }
 
+    public GroupAttribute(String type) {
+        super(AttributeType.fromCode(type));
+    }
+
     public List<BaseAttribute> getContent() {
         return content;
     }

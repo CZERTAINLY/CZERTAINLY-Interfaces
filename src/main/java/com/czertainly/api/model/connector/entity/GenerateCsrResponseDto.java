@@ -1,6 +1,7 @@
 package com.czertainly.api.model.connector.entity;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,7 +17,7 @@ public class GenerateCsrResponseDto {
     private String csr;
 
     @Schema(description = "CSR Metadata")
-    private Map<String, Object> metadata;
+    private List<InfoAttribute> metadata;
 
     @Schema(description = "Type of the certificate expected to be issued",
             required = false)
@@ -52,11 +53,11 @@ public class GenerateCsrResponseDto {
         this.pushAttributes = pushAttributes;
     }
 
-    public Map<String, Object> getMetadata() {
+    public List<InfoAttribute> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Map<String, Object> metadata) {
+    public void setMetadata(List<InfoAttribute> metadata) {
         this.metadata = metadata;
     }
 

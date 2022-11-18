@@ -14,7 +14,10 @@ public enum AttributeType {
 
 	DATA(Constants.DATA),
     GROUP(Constants.GROUP),
-	INFO(Constants.INFO);
+    INFO(Constants.INFO),
+    META(Constants.META),
+    CUSTOM(Constants.CUSTOM);
+
 
     private final String code;
 
@@ -44,5 +47,11 @@ public enum AttributeType {
 
         /** Info Attributes **/
         private static final String INFO = "info";
+
+        /** Custom Attributes **/
+        private static final String CUSTOM = "custom";
+
+        /** Meta Data Attributes **/
+        private static final String META = "meta";
     }
 }

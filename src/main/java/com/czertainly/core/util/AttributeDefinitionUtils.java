@@ -157,12 +157,35 @@ public class AttributeDefinitionUtils {
         }
     }
 
+
+    public static <T extends BaseAttribute> String serialize(T attribute) {
+        if (attribute == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.writeValueAsString(attribute);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public static String serializeRequestAttributes(List<RequestAttributeDto> attributes) {
         if (attributes == null) {
             return null;
         }
         try {
             return ATTRIBUTES_OBJECT_MAPPER.writeValueAsString(attributes);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static <T extends BaseAttributeContent> String serializeAttributeContent(List<T> attributeContent) {
+        if (attributeContent == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.writeValueAsString(attributeContent);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -179,6 +202,17 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static <T extends BaseAttribute> T deserializeSingleAttribute(String attributeJson, Class<T> clazz) {
+        if (attributeJson == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributeJson, clazz);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public static List<RequestAttributeDto> deserializeRequestAttributes(String attributesJson) {
         if (attributesJson == null) {
             return null;
@@ -190,6 +224,18 @@ public class AttributeDefinitionUtils {
             throw new IllegalStateException(e);
         }
     }
+
+    public static <T extends BaseAttributeContent> List<T> deserializeAttributeContent(String attributeContentJson, Class<T> clazz) {
+        if (attributeContentJson == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributeContentJson, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
 
     public static List<DataAttribute> mergeAttributes(List<BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         if (definitions == null || attributes == null) {

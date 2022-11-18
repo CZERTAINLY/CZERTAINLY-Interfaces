@@ -90,6 +90,10 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
         super(AttributeType.DATA);
     }
 
+    public DataAttribute(String type) {
+        super(AttributeType.fromCode(type));
+    }
+
     public DataAttribute(DataAttribute original) {
         super(AttributeType.DATA);
         setUuid(original.getUuid());
