@@ -319,7 +319,8 @@ public interface LocationManagementController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Issue Certificate to Location"
+            summary = "Issue Certificate to Location",
+            operationId = "issueCertificateToLocation"
     )
     @ApiResponses(
             value = {
