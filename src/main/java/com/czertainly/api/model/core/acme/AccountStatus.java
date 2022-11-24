@@ -4,12 +4,14 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
 /**
  * Mapping of the ENUM to the possible values of the status of ACME Account
  */
+@Schema(enumAsRef = true)
 public enum AccountStatus {
 
     VALID("valid"),
