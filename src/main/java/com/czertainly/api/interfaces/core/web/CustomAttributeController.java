@@ -67,76 +67,76 @@ public interface CustomAttributeController {
     @Operation(summary = "List Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "list of available Custom Attributes")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    List<AttributeDefinitionDto> listAttributes();
+    List<AttributeDefinitionDto> listCustomAttributes();
 
-    @Operation(summary = "Attribute details")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute details retrieved")})
+    @Operation(summary = "Custom Attribute details")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute details retrieved")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
-    CustomAttributeDefinitionDetailDto getAttributes(@PathVariable String uuid) throws NotFoundException;
+    CustomAttributeDefinitionDetailDto getCustomAttribute(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Create Custom Attribute")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Attribute created", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Custom Attribute created", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<CustomAttributeDefinitionDetailDto> createAttribute(@RequestBody CustomAttributeCreateRequestDto request)
+    ResponseEntity<CustomAttributeDefinitionDetailDto> createCustomAttribute(@RequestBody CustomAttributeCreateRequestDto request)
             throws AlreadyExistException, NotFoundException;
 
     @Operation(summary = "Edit Custom Attribute")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute updated")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    CustomAttributeDefinitionDetailDto editAttribute(@Parameter(description = "Attribute UUID") @PathVariable String uuid, @RequestBody CustomAttributeUpdateRequestDto request)
+    CustomAttributeDefinitionDetailDto editCustomAttribute(@Parameter(description = "Attribute UUID") @PathVariable String uuid, @RequestBody CustomAttributeUpdateRequestDto request)
             throws NotFoundException;
 
     @Operation(summary = "Delete Custom Attribute")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attribute deleted")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteAttribute(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid) throws NotFoundException;
+    void deleteCustomAttribute(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid) throws NotFoundException;
 
 
     @Operation(summary = "Enable Custom Attribute")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attribute enabled")})
     @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void enableAttribute(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid) throws NotFoundException;
+    void enableCustomAttribute(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disable Custom Attribute")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attribute disabled")})
     @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void disableAttribute(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid) throws NotFoundException;
+    void disableCustomAttribute(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid) throws NotFoundException;
 
-    @Operation(summary = "Delete multiple Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Attributes deleted")})
+    @Operation(summary = "Delete multiple Custom Attributes")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attributes deleted")})
     @RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDeleteAttributes(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void bulkDeleteCustomAttributes(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Attribute UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                               @RequestBody List<String> attributeUuids);
 
-    @Operation(summary = "Enable multiple Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Attributes enabled")})
+    @Operation(summary = "Enable multiple Custom Attributes")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attributes enabled")})
     @RequestMapping(method = RequestMethod.PATCH, path = "/enable", produces = {"application/json"}, consumes = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkEnableAttributes(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void bulkEnableCustomAttributes(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Attribute UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                               @RequestBody List<String> attributeUuids);
 
-    @Operation(summary = "Disable multiple Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Attributes disabled")})
+    @Operation(summary = "Disable multiple Custom Attributes")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attributes disabled")})
     @RequestMapping(method = RequestMethod.PATCH, path = "/disable", produces = {"application/json"}, consumes = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDisableAttributes(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void bulkDisableCustomAttributes(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Attribute UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                @RequestBody List<String> attributeUuids);
 
     @Operation(summary = "Associate Custom Attribute to Resource")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attribute disabled")})
-    @RequestMapping(path = "/{uuid}/resource", method = RequestMethod.PATCH, produces = {"application/json"}, consumes = {"application/json"})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attribute associated to the resources")})
+    @RequestMapping(path = "/{uuid}/resources", method = RequestMethod.PATCH, produces = {"application/json"}, consumes = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateResource(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid, @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void updateResources(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "List of Resources", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"raProfiles\",\"authorities\"]")}))
     @RequestBody List<Resource> resources) throws NotFoundException;
@@ -144,7 +144,7 @@ public interface CustomAttributeController {
     @Operation(summary = "Get Custom Attributes for a resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})
     @RequestMapping(path = "/resources/{resource}", method = RequestMethod.GET, produces = {"application/json"})
-    List<BaseAttribute> getResourceAttributes(@Parameter(description = "Resource Name") @PathVariable Resource resource);
+    List<BaseAttribute> getResourceCustomAttributes(@Parameter(description = "Resource Name") @PathVariable Resource resource);
 
     @Operation(summary = "Get available resources for Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})
