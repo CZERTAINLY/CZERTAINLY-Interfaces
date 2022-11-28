@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -19,7 +19,7 @@ public class LocationDetailResponseDto {
             description = "Location metadata",
             required = false
     )
-    private List<InfoAttribute> metadata;
+    private List<MetadataAttribute> metadata;
 
     @Schema(
             description = "Support for multiple Certificates in the Location",
@@ -43,11 +43,11 @@ public class LocationDetailResponseDto {
         this.certificates = certificates;
     }
 
-    public List<InfoAttribute> getMetadata() {
+    public List<MetadataAttribute> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(List<InfoAttribute> metadata) {
+    public void setMetadata(List<MetadataAttribute> metadata) {
         this.metadata = metadata;
     }
 

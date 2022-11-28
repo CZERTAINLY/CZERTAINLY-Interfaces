@@ -32,22 +32,12 @@ public class AttributeDefinitionDto {
     private String description;
 
     /**
-     * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
-     **/
-    @Schema(
-            description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
-            required = true
-    )
-    private boolean required;
-
-    /**
      * Boolean determining if the Attribute is enabled..
      **/
     @Schema(
-            description = "Boolean determining if the Attribute is enabled.",
-            required = true
+            description = "Boolean determining if the Attribute is enabled. Required only for Custom Attribute"
     )
-    private boolean enabled;
+    private Boolean enabled;
 
     public String getUuid() {
         return uuid;
@@ -81,19 +71,11 @@ public class AttributeDefinitionDto {
         this.description = description;
     }
 
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -104,7 +86,6 @@ public class AttributeDefinitionDto {
                 .append("name", name)
                 .append("contentType", contentType)
                 .append("description", description)
-                .append("required", required)
                 .append("enabled", enabled)
                 .toString();
     }
