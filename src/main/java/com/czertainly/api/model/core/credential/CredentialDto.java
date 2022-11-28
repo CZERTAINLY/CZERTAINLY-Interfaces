@@ -20,6 +20,10 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
             required = true)
     private List<ResponseAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes",
+            required = true)
+    private List<ResponseAttributeDto> customAttributes;
+
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
     private Boolean enabled;
@@ -68,6 +72,14 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     public String getConnectorName() { return connectorName; }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -78,6 +90,7 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
                 .append("enabled", enabled)
                 .append("connectorUuid", connectorUuid)
                 .append("connectorName", connectorName)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

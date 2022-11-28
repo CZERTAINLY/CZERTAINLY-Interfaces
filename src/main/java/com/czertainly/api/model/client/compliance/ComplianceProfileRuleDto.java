@@ -1,7 +1,7 @@
 package com.czertainly.api.model.client.compliance;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;

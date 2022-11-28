@@ -23,6 +23,10 @@ public class CredentialRequestDto implements Serializable {
             required = true)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes",
+            required = true)
+    private List<RequestAttributeDto> customAttributes;
+
     @Schema(description = "UUID of Credential provider Connector",
             required = true)
     private String connectorUuid;
@@ -52,12 +56,20 @@ public class CredentialRequestDto implements Serializable {
         this.attributes = attributes;
     }
 
-    public String  getConnectorUuid() {
+    public String getConnectorUuid() {
         return connectorUuid;
     }
 
     public void setConnectorUuid(String connectorUuid) {
         this.connectorUuid = connectorUuid;
+    }
+
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
     }
 
     @Override
@@ -67,6 +79,7 @@ public class CredentialRequestDto implements Serializable {
                 .append("kind", kind)
                 .append("attributes", attributes)
                 .append("connectorUuid", connectorUuid)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

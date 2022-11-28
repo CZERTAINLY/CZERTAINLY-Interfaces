@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.authority;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,6 +13,9 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
     @Schema(description = "List of Authority instance Attributes",
             required = true)
     private List<ResponseAttributeDto> attributes;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Status of Authority instance",
             required = true)
@@ -67,12 +70,21 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
 
     public void setConnectorName(String connectorName) { this.connectorName = connectorName; }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("status", status)
                 .append("connectorUuid", connectorUuid)
                 .append("connectorName", connectorName)

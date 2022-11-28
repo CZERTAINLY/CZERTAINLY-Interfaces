@@ -29,6 +29,8 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
             example = "CONNECTED",
             required = true)
     private ConnectorStatus status;
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     public List<FunctionGroupDto> getFunctionGroups() {
         return functionGroups;
@@ -70,6 +72,14 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
         this.status = status;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -80,6 +90,7 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
                 .append("status", status)
                 .append("name", name)
                 .append("uuid", uuid)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

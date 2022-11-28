@@ -29,6 +29,9 @@ public class AddLocationRequestDto {
     )
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
+
     @Schema(
             description = "Enabled flag - true = enabled; false = disabled",
             defaultValue = "false"
@@ -67,6 +70,14 @@ public class AddLocationRequestDto {
         this.enabled = enabled;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -74,6 +85,7 @@ public class AddLocationRequestDto {
                 .append("description", description)
                 .append("attributes", attributes)
                 .append("enabled", enabled)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

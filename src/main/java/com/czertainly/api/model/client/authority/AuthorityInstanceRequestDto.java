@@ -17,6 +17,10 @@ public class AuthorityInstanceRequestDto {
             required = true)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes",
+            required = true)
+    private List<RequestAttributeDto> customAttributes;
+
     @Schema(description = "UUID of Authority provider",
             required = true)
     private String connectorUuid;
@@ -58,6 +62,14 @@ public class AuthorityInstanceRequestDto {
         this.kind = kind;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -65,6 +77,7 @@ public class AuthorityInstanceRequestDto {
                 .append("attributes", attributes)
                 .append("connectorUuid", connectorUuid)
                 .append("kind", kind)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

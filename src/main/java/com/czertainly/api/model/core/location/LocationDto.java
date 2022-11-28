@@ -1,8 +1,8 @@
 package com.czertainly.api.model.core.location;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -28,6 +28,9 @@ public class LocationDto extends NameAndUuidDto {
     @Schema(description = "List of Location attributes",
             required = true)
     private List<ResponseAttributeDto> attributes;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
@@ -124,6 +127,14 @@ public class LocationDto extends NameAndUuidDto {
         this.certificates = certificates;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -132,6 +143,7 @@ public class LocationDto extends NameAndUuidDto {
                 .append("description", description)
                 .append("entityInstanceUuid", entityInstanceUuid)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("enabled", enabled)
                 .append("entityInstanceName", entityInstanceName)
                 .append("supportMultipleEntries", supportMultipleEntries)

@@ -13,6 +13,9 @@ public class EntityInstanceUpdateRequestDto {
             required = true)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
+
     public List<RequestAttributeDto> getAttributes() {
         return attributes;
     }
@@ -21,10 +24,19 @@ public class EntityInstanceUpdateRequestDto {
         this.attributes = attributes;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("attributes", attributes)
+                .append("customAttributes", attributes)
                 .toString();
     }
 }

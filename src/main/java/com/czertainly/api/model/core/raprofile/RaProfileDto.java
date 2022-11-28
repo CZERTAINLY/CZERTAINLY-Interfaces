@@ -1,8 +1,7 @@
 package com.czertainly.api.model.core.raprofile;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.core.compliance.ComplianceProfileDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -28,6 +27,9 @@ public class RaProfileDto extends NameAndUuidDto {
     @Schema(description = "List of RA Profiles attributes",
             required = true)
     private List<ResponseAttributeDto> attributes;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
@@ -102,6 +104,13 @@ public class RaProfileDto extends NameAndUuidDto {
         this.enabledProtocols = enabledProtocols;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
 
     @Override
     public String toString() {
@@ -111,6 +120,7 @@ public class RaProfileDto extends NameAndUuidDto {
                 .append("description", description)
                 .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("enabled", enabled)
                 .append("authorityInstanceName", authorityInstanceName)
                 .toString();

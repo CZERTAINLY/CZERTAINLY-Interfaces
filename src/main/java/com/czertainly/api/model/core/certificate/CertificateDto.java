@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.certificate;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
@@ -85,6 +86,8 @@ public class CertificateDto {
     private List<CertificateComplianceResultDto> nonCompliantRules;
     @Schema(description = "Certificate compliance status")
     private ComplianceStatus complianceStatus;
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
 
     public String getUuid() {
@@ -277,6 +280,14 @@ public class CertificateDto {
 
     public void setGroup(GroupDto group) {
         this.group = group;
+    }
+
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class PushToLocationRequestDto {
     )
     private List<RequestAttributeDto> attributes;
 
+
     public List<RequestAttributeDto> getAttributes() {
         return attributes;
     }

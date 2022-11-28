@@ -1,8 +1,11 @@
 package com.czertainly.api.model.client.auth;
 
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
 
 public class UpdateUserRequestDto {
 
@@ -29,6 +32,9 @@ public class UpdateUserRequestDto {
             required = false
     )
     private String certificateUuid;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
 
     public String getFirstName() {
         return firstName;
@@ -78,6 +84,14 @@ public class UpdateUserRequestDto {
         this.description = description;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -87,6 +101,7 @@ public class UpdateUserRequestDto {
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
                 .append("certificateData", certificateData)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }
