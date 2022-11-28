@@ -14,6 +14,10 @@ public class CredentialUpdateRequestDto implements Serializable {
             required = true)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes",
+            required = true)
+    private List<RequestAttributeDto> customAttributes;
+
     public List<RequestAttributeDto> getAttributes() {
         return attributes;
     }
@@ -22,10 +26,19 @@ public class CredentialUpdateRequestDto implements Serializable {
         this.attributes = attributes;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

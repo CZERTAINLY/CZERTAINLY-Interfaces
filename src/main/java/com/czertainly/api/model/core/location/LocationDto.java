@@ -29,6 +29,9 @@ public class LocationDto extends NameAndUuidDto {
             required = true)
     private List<ResponseAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
+
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
     private boolean enabled;
@@ -124,6 +127,14 @@ public class LocationDto extends NameAndUuidDto {
         this.certificates = certificates;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -132,6 +143,7 @@ public class LocationDto extends NameAndUuidDto {
                 .append("description", description)
                 .append("entityInstanceUuid", entityInstanceUuid)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("enabled", enabled)
                 .append("entityInstanceName", entityInstanceName)
                 .append("supportMultipleEntries", supportMultipleEntries)

@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.auth;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,6 +14,9 @@ public class UserDetailDto extends UserDto {
 
     @Schema(description = "Roles for the user", required = true)
     private List<RoleDto> roles;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     public List<RoleDto> getRoles() {
         return roles;
@@ -30,6 +34,14 @@ public class UserDetailDto extends UserDto {
         this.certificate = certificate;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -42,6 +54,7 @@ public class UserDetailDto extends UserDto {
                 .append("certificate", certificate)
                 .append("enabled", getEnabled())
                 .append("roles", roles)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

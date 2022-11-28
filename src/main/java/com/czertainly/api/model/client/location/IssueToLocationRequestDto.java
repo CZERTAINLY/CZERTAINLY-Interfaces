@@ -30,6 +30,9 @@ public class IssueToLocationRequestDto {
     )
     private List<RequestAttributeDto> issueAttributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
+
     public String getRaProfileUuid() {
         return raProfileUuid;
     }
@@ -54,12 +57,21 @@ public class IssueToLocationRequestDto {
         this.issueAttributes = issueAttributes;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("raProfileUuid", raProfileUuid)
                 .append("csrAttributes", csrAttributes)
                 .append("issueAttributes", issueAttributes)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

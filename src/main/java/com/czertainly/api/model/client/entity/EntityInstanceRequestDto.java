@@ -17,6 +17,9 @@ public class EntityInstanceRequestDto {
             required = true)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
+
     @Schema(description = "UUID of Entity Provider",
             required = true)
     private String connectorUuid;
@@ -58,11 +61,20 @@ public class EntityInstanceRequestDto {
         this.kind = kind;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("connectorUuid", connectorUuid)
                 .append("kind", kind)
                 .toString();

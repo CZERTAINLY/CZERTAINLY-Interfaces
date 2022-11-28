@@ -20,6 +20,9 @@ public class ClientCertificateSignRequestDto {
             required = true)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
+
     public String getPkcs10() {
         return pkcs10;
     }
@@ -36,11 +39,20 @@ public class ClientCertificateSignRequestDto {
         this.attributes = attributes;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("pkcs10", pkcs10)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

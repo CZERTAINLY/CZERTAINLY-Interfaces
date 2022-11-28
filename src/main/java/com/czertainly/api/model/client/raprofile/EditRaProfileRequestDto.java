@@ -16,6 +16,9 @@ public class EditRaProfileRequestDto {
             required = true)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
+
     @Schema(description = "Enabled flag - true = enabled; false = disabled")
     private Boolean enabled;
 
@@ -47,11 +50,20 @@ public class EditRaProfileRequestDto {
         return enabled;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("description", description)
                 .append("attributes", attributes)
+                .append("customAttributes", attributes)
                 .toString();
     }
 }

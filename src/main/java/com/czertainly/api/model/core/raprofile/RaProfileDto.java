@@ -29,6 +29,9 @@ public class RaProfileDto extends NameAndUuidDto {
             required = true)
     private List<ResponseAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
+
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
     private Boolean enabled;
@@ -102,6 +105,13 @@ public class RaProfileDto extends NameAndUuidDto {
         this.enabledProtocols = enabledProtocols;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
 
     @Override
     public String toString() {
@@ -111,6 +121,7 @@ public class RaProfileDto extends NameAndUuidDto {
                 .append("description", description)
                 .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("enabled", enabled)
                 .append("authorityInstanceName", authorityInstanceName)
                 .toString();

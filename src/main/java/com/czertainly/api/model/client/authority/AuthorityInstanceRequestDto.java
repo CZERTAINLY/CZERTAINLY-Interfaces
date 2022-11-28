@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.authority;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,6 +17,10 @@ public class AuthorityInstanceRequestDto {
     @Schema(description = "List of Authority instance Attributes",
             required = true)
     private List<RequestAttributeDto> attributes;
+
+    @Schema(description = "List of Custom Attributes",
+            required = true)
+    private List<RequestAttributeDto> customAttributes;
 
     @Schema(description = "UUID of Authority provider",
             required = true)
@@ -58,6 +63,14 @@ public class AuthorityInstanceRequestDto {
         this.kind = kind;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -65,6 +78,7 @@ public class AuthorityInstanceRequestDto {
                 .append("attributes", attributes)
                 .append("connectorUuid", connectorUuid)
                 .append("kind", kind)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

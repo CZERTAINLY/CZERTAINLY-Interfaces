@@ -1,17 +1,10 @@
 package com.czertainly.api.model.common.attribute.v2.constraint;
 
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
-import com.czertainly.api.model.common.attribute.v2.content.DateTimeAttributeContent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class BaseAttributeConstraint<T> extends AttributeConstraint{
+public class BaseAttributeConstraint<T> extends AttributeConstraint {
     @Schema(description = "Description of the constraint")
     private String description;
 
