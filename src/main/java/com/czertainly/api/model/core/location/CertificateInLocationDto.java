@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.location;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -35,12 +36,12 @@ public class CertificateInLocationDto {
     @Schema(
             description = "Applied push attributes"
     )
-    private List<RequestAttributeDto> pushAttributes;
+    private List<ResponseAttributeDto> pushAttributes;
 
     @Schema(
             description = "Applied issue attributes"
     )
-    private List<RequestAttributeDto> csrAttributes;
+    private List<ResponseAttributeDto> csrAttributes;
 
     @Schema(
             description = "If the Certificate in Location has associated private key",
@@ -81,19 +82,19 @@ public class CertificateInLocationDto {
         this.metadata = metadata;
     }
 
-    public List<RequestAttributeDto> getPushAttributes() {
+    public List<ResponseAttributeDto> getPushAttributes() {
         return pushAttributes;
     }
 
-    public void setPushAttributes(List<RequestAttributeDto> pushAttributes) {
+    public void setPushAttributes(List<ResponseAttributeDto> pushAttributes) {
         this.pushAttributes = pushAttributes;
     }
 
-    public List<RequestAttributeDto> getCsrAttributes() {
+    public List<ResponseAttributeDto> getCsrAttributes() {
         return csrAttributes;
     }
 
-    public void setCsrAttributes(List<RequestAttributeDto> csrAttributes) {
+    public void setCsrAttributes(List<ResponseAttributeDto> csrAttributes) {
         this.csrAttributes = csrAttributes;
     }
 

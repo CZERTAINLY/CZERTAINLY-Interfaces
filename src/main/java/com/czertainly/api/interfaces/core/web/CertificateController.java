@@ -143,7 +143,8 @@ public interface CertificateController {
 	public List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(
-			summary = "List of available Locations for the Certificate"
+			summary = "List of available Locations for the Certificate",
+			operationId = "listCertificateLocations"
 	)
 	@ApiResponses(
 			value = {
@@ -161,7 +162,7 @@ public interface CertificateController {
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
 	) throws NotFoundException;
 
-	@Operation(summary = "Initiate Certificate Compliance Check")
+	@Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkCertificatesCompliance")
 	@ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
 	@RequestMapping(path = "/compliance", method = RequestMethod.POST, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)

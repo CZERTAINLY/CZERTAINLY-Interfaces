@@ -96,7 +96,7 @@ public interface RAProfileManagementController {
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.GET, produces = {"application/json"})
     RaProfileDto getRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
-    @Operation(summary = "Details of RA Profile")
+    @Operation(summary = "Details of RA Profile", operationId = "getRaProfileWithoutAuthority")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "RA Profile details retrieved")})
     @RequestMapping(path = "/raProfiles/{raProfileUuid}", method = RequestMethod.GET, produces = {"application/json"})
     RaProfileDto getRaProfile(@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
@@ -115,7 +115,7 @@ public interface RAProfileManagementController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
-    @Operation(summary = "Delete RA Profile")
+    @Operation(summary = "Delete RA Profile", operationId = "deleteRaProfileWithoutAuthority")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile deleted")})
     @RequestMapping(path = "/raProfiles/{raProfileUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -188,19 +188,19 @@ public interface RAProfileManagementController {
     void deactivateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws NotFoundException;
 
-    @Operation(summary = "Get revocation Attributes")
+    @Operation(summary = "Get revocation Attributes", operationId = "listRaProfileRevokeCertificateAttributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Revocation attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> listRevokeCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                               @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
-    @Operation(summary = "Get issue Certificate Attributes")
+    @Operation(summary = "Get issue Certificate Attributes", operationId = "listRaProfileIssueCertificateAttributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Issue certificate attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> listIssueCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                              @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
-    @Operation(summary = "Initiate Certificate Compliance Check")
+    @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkRaProfileCompliance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @RequestMapping(path = "/raProfiles/compliance", method = RequestMethod.POST, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
