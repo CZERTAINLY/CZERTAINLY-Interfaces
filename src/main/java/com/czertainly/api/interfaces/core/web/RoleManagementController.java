@@ -3,7 +3,6 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.RoleRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

@@ -8,7 +8,6 @@ import com.czertainly.api.model.core.auth.ResourceDetailDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

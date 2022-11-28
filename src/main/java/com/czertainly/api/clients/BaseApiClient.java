@@ -1,12 +1,6 @@
 package com.czertainly.api.clients;
 
-import com.czertainly.api.exception.ConnectorClientException;
-import com.czertainly.api.exception.ConnectorCommunicationException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.ConnectorServerException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationError;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.FileAttributeContent;

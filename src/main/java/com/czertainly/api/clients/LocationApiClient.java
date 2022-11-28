@@ -1,16 +1,9 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.connector.entity.GenerateCsrRequestDto;
-import com.czertainly.api.model.connector.entity.GenerateCsrResponseDto;
-import com.czertainly.api.model.connector.entity.LocationDetailRequestDto;
-import com.czertainly.api.model.connector.entity.LocationDetailResponseDto;
-import com.czertainly.api.model.connector.entity.PushCertificateRequestDto;
-import com.czertainly.api.model.connector.entity.PushCertificateResponseDto;
-import com.czertainly.api.model.connector.entity.RemoveCertificateRequestDto;
-import com.czertainly.api.model.connector.entity.RemoveCertificateResponseDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.connector.entity.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
