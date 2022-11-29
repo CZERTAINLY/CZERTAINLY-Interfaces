@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
+
 /**
  * This class contains set of properties to represent
  * an Attribute definition including its value for the
  * detail API responses
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Response metadata attribute instance with content")
 public class ResponseMetadataDto extends ResponseAttributeDto {
 
@@ -19,7 +20,7 @@ public class ResponseMetadataDto extends ResponseAttributeDto {
     private String sourceObjectType;
 
     @Schema(description = "Source Object UUID")
-    private String sourceObjectUuid;
+    private List<String> sourceObjectUuids;
 
     public String getSourceObjectType() {
         return sourceObjectType;
@@ -29,19 +30,19 @@ public class ResponseMetadataDto extends ResponseAttributeDto {
         this.sourceObjectType = sourceObjectType;
     }
 
-    public String getSourceObjectUuid() {
-        return sourceObjectUuid;
+    public List<String> getSourceObjectUuids() {
+        return sourceObjectUuids;
     }
 
-    public void setSourceObjectUuid(String sourceObjectUuid) {
-        this.sourceObjectUuid = sourceObjectUuid;
+    public void setSourceObjectUuids(List<String> sourceObjectUuids) {
+        this.sourceObjectUuids = sourceObjectUuids;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("sourceObjectType", sourceObjectType)
-                .append("sourceObjectUuid", sourceObjectUuid)
+                .append("sourceObjectUuid", sourceObjectUuids)
                 .toString();
     }
 }
