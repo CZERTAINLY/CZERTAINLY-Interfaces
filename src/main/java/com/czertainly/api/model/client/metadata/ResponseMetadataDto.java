@@ -42,7 +42,7 @@ public class ResponseMetadataDto extends ResponseAttributeDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("sourceObjectType", sourceObjectType)
-                .append("sourceObjectUuid", sourceObjectUuids)
+                .append("sourceObjectUuids", sourceObjectUuids)
                 .toString();
     }
 }
