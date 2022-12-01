@@ -1,4 +1,4 @@
-package com.czertainly.api.model.client.attribute;
+package com.czertainly.api.model.client.attribute.custom;
 
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -5,9 +5,7 @@ import com.czertainly.api.model.common.attribute.v1.AttributeType;
 import com.czertainly.api.model.common.attribute.v1.content.JsonAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.DataAttributeProperties;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
@@ -17,6 +15,8 @@ import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeCo
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
+import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.properties.MetadataAttributeProperties;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.deprecated.AttributeDefinitionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -269,7 +269,7 @@ public class V2AttributeMigrationUtils {
                 logger.debug("Metadata - Migrating record with is: {}", rows.getString(rowIdentifier));
             }
 
-            List<InfoAttribute> metadataDefinitions = new ArrayList<>();
+            List<MetadataAttribute> metadataDefinitions = new ArrayList<>();
             if (rows.getString(columnName) == null) {
                 continue;
             }
@@ -293,8 +293,8 @@ public class V2AttributeMigrationUtils {
         return migrationCommands;
     }
 
-    public static List<InfoAttribute> getMetadataMigrationAttributes(String metadata) throws SQLException, JsonProcessingException {
-        List<InfoAttribute> metadataDefinitions = new ArrayList<>();
+    public static List<MetadataAttribute> getMetadataMigrationAttributes(String metadata) throws SQLException, JsonProcessingException {
+        List<MetadataAttribute> metadataDefinitions = new ArrayList<>();
         if (metadata == null) {
             return null;
         }
@@ -309,13 +309,13 @@ public class V2AttributeMigrationUtils {
         return metadataDefinitions;
     }
 
-    public static InfoAttribute getMetadataAttribute(Map.Entry<String, Object> oldMetadata) {
-        InfoAttribute attribute = new InfoAttribute();
+    public static MetadataAttribute getMetadataAttribute(Map.Entry<String, Object> oldMetadata) {
+        MetadataAttribute attribute = new MetadataAttribute();
         attribute.setUuid(null);
         attribute.setName(oldMetadata.getKey());
 
         //Attribute Properties
-        InfoAttributeProperties attributeProperties = new InfoAttributeProperties();
+        MetadataAttributeProperties attributeProperties = new MetadataAttributeProperties();
         attributeProperties.setLabel(camelToHumanForm(oldMetadata.getKey()));
         attributeProperties.setVisible(true);
         attribute.setProperties(attributeProperties);

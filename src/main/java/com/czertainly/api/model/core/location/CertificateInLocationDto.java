@@ -1,6 +1,5 @@
 package com.czertainly.api.model.core.location;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;

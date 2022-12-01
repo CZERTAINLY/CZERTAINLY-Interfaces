@@ -1,10 +1,19 @@
-package com.czertainly.api.model.common.attribute.v2;
+package com.czertainly.api.model.client.attribute.metadata;
 
+import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class InfoAttributeProperties {
+import java.util.List;
+
+public class GlobalMetadataUpdateRequestDto {
+
+    /**
+     * Description of the Attribute
+     */
+    @Schema(description = "Attribute description", required = true)
+    private String description;
 
     /**
      * Friendly name of the Attribute
@@ -21,8 +30,7 @@ public class InfoAttributeProperties {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
-            defaultValue = "true",
-            required = true
+            defaultValue = "true"
     )
     private boolean visible = true;
 
@@ -35,6 +43,14 @@ public class InfoAttributeProperties {
             example = "requiredAttributes"
     )
     private String group;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getLabel() {
         return label;
@@ -63,6 +79,7 @@ public class InfoAttributeProperties {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("description", description)
                 .append("label", label)
                 .append("visible", visible)
                 .append("group", group)

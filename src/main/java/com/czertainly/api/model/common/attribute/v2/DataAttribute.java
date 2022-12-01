@@ -6,6 +6,7 @@ import com.czertainly.api.model.common.attribute.v2.constraint.DateTimeAttribute
 import com.czertainly.api.model.common.attribute.v2.constraint.RangeAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;

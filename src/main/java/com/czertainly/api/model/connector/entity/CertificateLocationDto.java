@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.entity;
 
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,7 +18,7 @@ public class CertificateLocationDto {
     @Schema(
             description = "Metadata of the Certificate related to the Location"
     )
-    private List<InfoAttribute> metadata;
+    private List<MetadataAttribute> metadata;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
@@ -47,11 +47,11 @@ public class CertificateLocationDto {
         this.certificateData = certificateData;
     }
 
-    public List<InfoAttribute> getMetadata() {
+    public List<MetadataAttribute> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(List<InfoAttribute> metadata) {
+    public void setMetadata(List<MetadataAttribute> metadata) {
         this.metadata = metadata;
     }
 

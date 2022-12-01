@@ -1,10 +1,10 @@
-package com.czertainly.api.model.common.attribute.v2;
+package com.czertainly.api.model.common.attribute.v2.properties;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class DataAttributeProperties extends InfoAttributeProperties {
+public class DataAttributeProperties extends BaseAttributeProperties {
 
     /**
      * Boolean determining if the Attribute is required. If true, the Attribute must be provided.

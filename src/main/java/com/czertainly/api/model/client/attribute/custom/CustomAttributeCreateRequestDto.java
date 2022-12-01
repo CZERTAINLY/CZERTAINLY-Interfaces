@@ -1,24 +1,32 @@
-package com.czertainly.api.model.client.attribute;
+package com.czertainly.api.model.client.attribute.custom;
 
-import com.czertainly.api.model.common.attribute.v2.AttributeType;
+import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
-import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
+public class CustomAttributeCreateRequestDto {
 
     /**
-     * Type of the Attribute. For the custom attribute, the type will always be "custom"
+     * Name of the Attribute
      */
-    @Schema(description = "Type of the Attribute",
-            required = true,
-            example = "custom",
-            defaultValue = "custom")
-    private AttributeType type;
+    @Schema(description = "Name of the Attribute", required = true)
+    private String name;
+
+    /**
+     * Content Type of the Attribute
+     */
+    @Schema(description = "Attribute Content Type", required = true)
+    private AttributeContentType contentType;
+
+    /**
+     * Description of the Attribute
+     */
+    @Schema(description = "Attribute description", required = true)
+    private String description;
 
     /**
      * Friendly name of the Attribute
@@ -37,7 +45,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
             description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
             defaultValue = "true"
     )
-    private boolean visible;
+    private boolean visible = true;
 
 
     /**
@@ -49,6 +57,14 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     )
     private String group;
 
+    /**
+     * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
+     **/
+    @Schema(
+            description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
+            defaultValue = "false"
+    )
+    private boolean required = false;
 
     /**
      * Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.
@@ -57,7 +73,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
             description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.",
             defaultValue = "false"
     )
-    private boolean readOnly;
+    private boolean readOnly = false;
 
 
     /**
@@ -67,7 +83,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
             description = "Boolean determining if the Attribute contains list of values in the content",
             defaultValue = "false"
     )
-    private boolean list;
+    private boolean list = false;
 
     /**
      * Boolean determining if the Attribute can have multiple values
@@ -76,7 +92,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
             description = "Boolean determining if the Attribute can have multiple values",
             defaultValue = "false"
     )
-    private boolean multiSelect;
+    private boolean multiSelect = false;
 
     /**
      * Attribute Content
@@ -86,19 +102,28 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     )
     private List<BaseAttributeContent> content;
 
-    /**
-     * List of resources
-     * @return
-     */
-    @Schema(description = "List of resources which are allowed to use the Custom Attribute")
-    private List<Resource> resources;
-
-    public AttributeType getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(AttributeType type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public AttributeContentType getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(AttributeContentType contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLabel() {
@@ -123,6 +148,14 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 
     public boolean isReadOnly() {
@@ -157,26 +190,20 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
         this.content = content;
     }
 
-    public List<Resource> getResources() {
-        return resources;
-    }
-
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("type", type)
+                .append("name", name)
+                .append("contentType", contentType)
+                .append("description", description)
                 .append("label", label)
                 .append("visible", visible)
                 .append("group", group)
+                .append("required", required)
                 .append("readOnly", readOnly)
                 .append("list", list)
                 .append("multiSelect", multiSelect)
                 .append("content", content)
-                .append("resources", resources)
                 .toString();
     }
 }
