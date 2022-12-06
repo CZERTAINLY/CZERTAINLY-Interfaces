@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.metadata;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -19,8 +20,8 @@ public class ResponseMetadataDto extends ResponseAttributeDto {
     @Schema(description = "Source Object Type")
     private String sourceObjectType;
 
-    @Schema(description = "Source Object UUID")
-    private List<String> sourceObjectUuids;
+    @Schema(description = "Source Objects")
+    private List<NameAndUuidDto> sourceObjects;
 
     public String getSourceObjectType() {
         return sourceObjectType;
@@ -30,19 +31,19 @@ public class ResponseMetadataDto extends ResponseAttributeDto {
         this.sourceObjectType = sourceObjectType;
     }
 
-    public List<String> getSourceObjectUuids() {
-        return sourceObjectUuids;
+    public List<NameAndUuidDto> getSourceObjects() {
+        return sourceObjects;
     }
 
-    public void setSourceObjectUuids(List<String> sourceObjectUuids) {
-        this.sourceObjectUuids = sourceObjectUuids;
+    public void setSourceObjects(List<NameAndUuidDto> sourceObjectUuids) {
+        this.sourceObjects = sourceObjectUuids;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("sourceObjectType", sourceObjectType)
-                .append("sourceObjectUuids", sourceObjectUuids)
+                .append("sourceObjectUuids", sourceObjects)
                 .toString();
     }
 }
