@@ -14,7 +14,6 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMa
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -385,7 +384,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case BOOLEAN:
                         BaseAttributeContent<?> boolBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BooleanAttributeContent.class);
-                        if (boolBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null ) {
+                        if (boolBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -401,7 +400,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case TEXT:
                         BaseAttributeContent<?> textBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TextAttributeContent.class);
-                        if (textBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null ) {
+                        if (textBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -745,13 +744,17 @@ public class AttributeDefinitionUtils {
         return null;
     }
 
+    /**
+     * Function return true if the attributes are equal. And returns false if the attribute are not equal
+     *
+     * @param requestAttributes List of request attribute DTOs
+     * @param attributes        List of attribute definitions
+     * @return True if attribute is equal and false if attribute is not equal
+     */
     public static boolean checkAttributeEquality(List<RequestAttributeDto> requestAttributes, List<DataAttribute> attributes) {
         for (RequestAttributeDto requestAttribute : requestAttributes) {
             DataAttribute attribute = getAttributeDefinition(requestAttribute.getName(), attributes);
-            if (attribute == null) {
-                continue;
-            }
-            if (!getAttributeContent(requestAttribute.getName(), requestAttributes, AttributeContentType.getClass(attribute.getContentType())).equals(getAttributeContent(requestAttribute.getName(), attributes, AttributeContentType.getClass(attribute.getContentType())))) {
+            if (attribute == null || !getAttributeContent(requestAttribute.getName(), requestAttributes, AttributeContentType.getClass(attribute.getContentType())).equals(getAttributeContent(requestAttribute.getName(), attributes, AttributeContentType.getClass(attribute.getContentType())))) {
                 return false;
             }
         }
