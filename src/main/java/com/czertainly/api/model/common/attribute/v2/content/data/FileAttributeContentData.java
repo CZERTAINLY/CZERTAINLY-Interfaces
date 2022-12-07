@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.util.MimeType;
 
+import java.util.Objects;
+
 public class FileAttributeContentData {
 
     @Schema(description = "File content", required = true)
@@ -41,6 +43,19 @@ public class FileAttributeContentData {
 
     public void setMimeType(MimeType mimeType) {
         this.mimeType = mimeType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FileAttributeContentData)) return false;
+        FileAttributeContentData that = (FileAttributeContentData) o;
+        return Objects.equals(content, that.content) && Objects.equals(fileName, that.fileName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(content, fileName);
     }
 
     @Override
