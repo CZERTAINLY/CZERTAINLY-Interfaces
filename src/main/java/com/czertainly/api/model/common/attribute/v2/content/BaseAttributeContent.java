@@ -2,6 +2,8 @@ package com.czertainly.api.model.common.attribute.v2.content;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Objects;
+
 public class BaseAttributeContent<T> extends AttributeContent {
     @Schema(description = "Content Reference")
     private String reference;
@@ -36,5 +38,17 @@ public class BaseAttributeContent<T> extends AttributeContent {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        BaseAttributeContent<?> that = (BaseAttributeContent<?>) o;
+        return Objects.equals(this.reference, that.reference);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reference, data);
     }
 }

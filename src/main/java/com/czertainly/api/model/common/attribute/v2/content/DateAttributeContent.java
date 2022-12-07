@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class DateAttributeContent extends BaseAttributeContent<LocalDate> {
 
@@ -30,5 +31,19 @@ public class DateAttributeContent extends BaseAttributeContent<LocalDate> {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DateAttributeContent)) return false;
+        if (!super.equals(o)) return false;
+        DateAttributeContent that = (DateAttributeContent) o;
+        return Objects.equals(data, that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), data);
     }
 }

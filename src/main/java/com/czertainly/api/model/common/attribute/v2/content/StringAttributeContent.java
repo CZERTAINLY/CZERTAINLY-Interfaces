@@ -2,6 +2,8 @@ package com.czertainly.api.model.common.attribute.v2.content;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Objects;
+
 public class StringAttributeContent extends BaseAttributeContent<String> {
 
     @Schema(description = "String attribute value", required = true)
@@ -26,5 +28,18 @@ public class StringAttributeContent extends BaseAttributeContent<String> {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StringAttributeContent)) return false;
+        StringAttributeContent that = (StringAttributeContent) o;
+        return Objects.equals(data, that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data);
     }
 }

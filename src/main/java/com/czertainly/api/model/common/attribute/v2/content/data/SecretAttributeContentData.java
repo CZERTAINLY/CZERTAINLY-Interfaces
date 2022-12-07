@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Objects;
+
 public class SecretAttributeContentData {
 
     @Schema(description = "Secret attribute data")
@@ -38,6 +40,19 @@ public class SecretAttributeContentData {
 
     public void setProtectionLevel(ProtectionLevel protectionLevel) {
         this.protectionLevel = protectionLevel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SecretAttributeContentData)) return false;
+        SecretAttributeContentData that = (SecretAttributeContentData) o;
+        return Objects.equals(this.secret, that.secret);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(secret);
     }
 
     @Override

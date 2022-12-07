@@ -27,4 +27,6 @@ public class CredentialAttributeContent extends BaseAttributeContent<CredentialD
     public void setData(CredentialDto data) {
         this.data = data;
     }
+
+
 }
