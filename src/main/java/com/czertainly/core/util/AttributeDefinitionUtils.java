@@ -361,7 +361,7 @@ public class AttributeDefinitionUtils {
                 switch (definition.getContentType()) {
                     case STRING:
                         BaseAttributeContent<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, StringAttributeContent.class);
-                        if (stringBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !stringBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                        if (stringBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -369,7 +369,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case INTEGER:
                         BaseAttributeContent<?> integerBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, IntegerAttributeContent.class);
-                        if (integerBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !integerBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                        if (integerBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -377,7 +377,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case SECRET:
                         BaseAttributeContent<?> secretBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, SecretAttributeContent.class);
-                        if (secretBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !secretBaseAttributeContent.getData().getClass().isAssignableFrom(SecretAttributeContentData.class)) {
+                        if (secretBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -385,7 +385,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case BOOLEAN:
                         BaseAttributeContent<?> boolBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BooleanAttributeContent.class);
-                        if (boolBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !boolBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                        if (boolBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null ) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -393,7 +393,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case FLOAT:
                         BaseAttributeContent<?> floatBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, FloatAttributeContent.class);
-                        if (floatBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !floatBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                        if (floatBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -401,7 +401,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case TEXT:
                         BaseAttributeContent<?> textBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TextAttributeContent.class);
-                        if (textBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null || !textBaseAttributeContent.getData().getClass().isAssignableFrom(AttributeContentType.getClass(definition.getContentType()))) {
+                        if (textBaseAttributeContent.getData() == null || AttributeContentType.getClass(definition.getContentType()) == null ) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", properties.getLabel(), definition.getType()));
                             wrongValue = true;
                             break;
@@ -743,5 +743,18 @@ public class AttributeDefinitionUtils {
             return listContent;
         }
         return null;
+    }
+
+    public static boolean checkAttributeEquality(List<RequestAttributeDto> requestAttributes, List<DataAttribute> attributes) {
+        for (RequestAttributeDto requestAttribute : requestAttributes) {
+            DataAttribute attribute = getAttributeDefinition(requestAttribute.getName(), attributes);
+            if (attribute == null) {
+                continue;
+            }
+            if (!getAttributeContent(requestAttribute.getName(), requestAttributes, AttributeContentType.getClass(attribute.getContentType())).equals(getAttributeContent(requestAttribute.getName(), attributes, AttributeContentType.getClass(attribute.getContentType())))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
