@@ -1,14 +1,12 @@
-package com.czertainly.api.model.core.discovery;
+package com.czertainly.api.model.client.discovery;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
-import java.util.List;
 
 public class DiscoveryHistoryDto extends NameAndUuidDto {
 
@@ -25,27 +23,25 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
     )
     private DiscoveryStatus status;
 
-    @Schema(
-            description = "Failure/Success Messages",
-            example = "Failed due to network connectivity issues"
-    )
-    private String message;
 
     @Schema(
             description = "Date and time when Discovery started",
             nullable = true
     )
     private Date startTime;
+
     @Schema(
             description = "Date and time when Discovery finished",
             nullable = true
     )
     private Date endTime;
+
     @Schema(
             description = "Number of certificates that are discovered",
             defaultValue = "0"
     )
     private Integer totalCertificatesDiscovered;
+
     @Schema(
             description = "UUID of the Discovery Provider",
             required = true
@@ -57,24 +53,6 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
             required = true
     )
     private String connectorName;
-    @Schema(
-            description = "List of Discovered Certificates",
-            required = true
-    )
-    private List<DiscoveryCertificatesDto> certificate;
-    @Schema(
-            description = "List of Discovery Attributes",
-            required = true
-    )
-    private List<ResponseAttributeDto> attributes;
-
-    @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
-
-    @Schema(
-            description = "Metadata of the Discovery"
-    )
-    private List<MetadataResponseDto> metadata;
 
     public String getName() {
         return name;
@@ -116,29 +94,12 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
         this.totalCertificatesDiscovered = totalCertificatesDiscovered;
     }
 
-    public List<MetadataResponseDto> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(List<MetadataResponseDto> metadata) {
-        this.metadata = metadata;
-    }
-
     public String getUuid() {
         return uuid;
     }
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-
-    public List<DiscoveryCertificatesDto> getCertificate() {
-        return certificate;
-    }
-
-    public void setCertificate(List<DiscoveryCertificatesDto> list) {
-        this.certificate = list;
     }
 
     public String getConnectorUuid() {
@@ -149,28 +110,12 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
         this.connectorUuid = connectorUuid;
     }
 
-    public List<ResponseAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<ResponseAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
-
     public String getKind() {
         return kind;
     }
 
     public void setKind(String kind) {
         this.kind = kind;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getConnectorName() {
@@ -181,20 +126,18 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
         this.connectorName = connectorName;
     }
 
-    public List<ResponseAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("kind", kind)
+                .append("status", status)
+                .append("startTime", startTime)
+                .append("endTime", endTime)
+                .append("totalCertificatesDiscovered", totalCertificatesDiscovered)
+                .append("connectorUuid", connectorUuid)
+                .append("connectorName", connectorName)
                 .append("uuid", uuid)
-                .append("totalCertificatesDiscovered", totalCertificatesDiscovered).toString();
+                .append("name", name)
+                .toString();
     }
-
-
 }

@@ -4,10 +4,11 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.discovery.DiscoveryDto;
+import com.czertainly.api.model.client.discovery.DiscoveryHistoryDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.core.discovery.DiscoveryHistoryDto;
+import com.czertainly.api.model.client.discovery.DiscoveryHistoryDetailDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -81,7 +82,7 @@ public interface DiscoveryController {
 	@Operation(summary = "Discovery Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Discovery details retrieved")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
-	public DiscoveryHistoryDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
+	public DiscoveryHistoryDetailDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
 	
 	@Operation(summary = "Create Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
