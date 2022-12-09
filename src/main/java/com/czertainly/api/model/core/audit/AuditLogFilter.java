@@ -8,52 +8,28 @@ import java.time.LocalDate;
 
 public class AuditLogFilter {
 	
-	@Schema(
-            description = "Author of the action triggered audit log",
-            required = true
-    )
+	@Schema(description = "Author of the action triggered audit log")
     private String author;
 	
-	@Schema(
-            description = "Start time of the filter",
-            required = true
-    )
+	@Schema(description = "Start time of the filter")
     private LocalDate createdFrom;
 	
-	@Schema(
-            description = "End time of the filter",
-            required = true
-    )
+	@Schema(description = "End time of the filter")
     private LocalDate createdTo;
 	
-	@Schema(
-            description = "Status of the filter",
-            required = true
-    )
+	@Schema(description = "Status of the filter")
     private OperationStatusEnum operationStatus;
 	
-	@Schema(
-            description = "Module triggered the action",
-            required = true
-    )
+	@Schema(description = "Module triggered the action")
     private ObjectType origination;
 	
-	@Schema(
-            description = "Module affected by the action",
-            required = true
-    )
+	@Schema(description = "Module affected by the action")
     private ObjectType affected;
 	
-	@Schema(
-            description = "Identifier of the object created",
-            required = true
-    )
+	@Schema(description = "Identifier of the object created")
     private String objectIdentifier;
 	
-	@Schema(
-            description = "Type of the operation",
-            required = true
-    )
+	@Schema(description = "Type of the operation")
     private OperationType operation;
 
     public String getAuthor() {

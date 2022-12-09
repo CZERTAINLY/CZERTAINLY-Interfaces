@@ -2,12 +2,14 @@ package com.czertainly.api.model.core.search;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Schema(enumAsRef = true)
 public enum SearchableFields {
     COMMON_NAME("commonName"),
     SERIAL_NUMBER("serialNumber"),
