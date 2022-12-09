@@ -5,6 +5,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.audit.AuditLogFilter;
 import com.czertainly.api.model.core.audit.AuditLogResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,10 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -57,18 +55,18 @@ public interface AuditLogController {
 	@Operation(summary = "List Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit logs")})
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    public AuditLogResponseDto listAuditLogs(AuditLogFilter filter, Pageable pageable);
+    public AuditLogResponseDto listAuditLogs(@RequestParam(required = false) AuditLogFilter filter, @RequestParam(required = false) Pageable pageable);
 	
 	@Operation(summary = "Export Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Export of audit logs")})
 	@RequestMapping(path = "/export" ,method = RequestMethod.GET, produces = {"application/json"})
-    public ResponseEntity<Resource> exportAuditLogs(AuditLogFilter filter, Pageable pageable);
+    public ResponseEntity<Resource> exportAuditLogs(@RequestParam(required = false) AuditLogFilter filter, @RequestParam(required = false) Pageable pageable);
 
 	@Operation(summary = "Purge Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Audit logs purged")})
 	@RequestMapping(path = "/purge" ,method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void purgeAuditLogs(AuditLogFilter filter, Pageable pageable);
+	public void purgeAuditLogs(@RequestParam(required = false) AuditLogFilter filter, @RequestParam(required = false) Pageable pageable);
 	
 	@Operation(summary = "List Audit Objects")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit Objects") })
