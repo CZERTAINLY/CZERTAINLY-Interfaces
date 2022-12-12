@@ -4,15 +4,19 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.UpdateUserRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.auth.ResourceDetailDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,4 +72,9 @@ public interface AuthController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Resources retrieved successfully")})
     @RequestMapping(path = "/resources", method = RequestMethod.GET, produces = {"application/json"})
     List<ResourceDetailDto> getAllResources() throws NotFoundException;
+
+    @Operation(summary = "Get List of objects for Object Access")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Objects retrieved")})
+    @RequestMapping(path = "/resources/{resourceName}/objects", method = RequestMethod.GET, produces = {"application/json"})
+    List<NameAndUuidDto> getObjectsForResource(@Parameter(description = "Resource Name") @PathVariable Resource resourceName) throws NotFoundException;
 }
