@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComplianceProfileRuleDto extends NameAndUuidDto {
@@ -30,7 +31,7 @@ public class ComplianceProfileRuleDto extends NameAndUuidDto {
     private CertificateType certificateType;
 
     @Schema(description = "List of attributes for the rule", required = true)
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
     @Schema(description = "UUID of the Compliance Profile", required = true)
     private String complianceProfileUuid;

@@ -23,8 +23,7 @@ public class CredentialRequestDto implements Serializable {
             required = true)
     private List<RequestAttributeDto> attributes;
 
-    @Schema(description = "List of Custom Attributes",
-            required = true)
+    @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
     @Schema(description = "UUID of Credential provider Connector",
