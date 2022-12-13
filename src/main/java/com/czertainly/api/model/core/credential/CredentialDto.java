@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CredentialDto extends NameAndUuidDto implements Serializable {
@@ -18,11 +19,10 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "List of Credential Attributes",
             required = true)
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
-    @Schema(description = "List of Custom Attributes",
-            required = true)
-    private List<ResponseAttributeDto> customAttributes;
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes = new ArrayList<>();
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             required = true)
