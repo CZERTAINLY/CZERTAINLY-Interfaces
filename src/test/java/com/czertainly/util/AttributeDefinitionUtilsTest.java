@@ -12,10 +12,14 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMa
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
+import com.czertainly.api.model.common.attribute.v2.constraint.DateTimeAttributeConstraint;
+import com.czertainly.api.model.common.attribute.v2.constraint.RangeAttributeConstraint;
+import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
+import com.czertainly.api.model.common.attribute.v2.constraint.data.DateTimeAttributeConstraintData;
+import com.czertainly.api.model.common.attribute.v2.constraint.data.RangeAttributeConstraintData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
-import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -23,6 +27,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -225,7 +230,7 @@ public class AttributeDefinitionUtilsTest {
 
         //TODO Validation
 
-//        Assertions.assertTrue(attributeContent.getData().matches(validationRegex));
+        Assertions.assertTrue(attributeContent.getData().matches(validationRegex));
 
         DataAttribute definition = new DataAttribute();
         definition.setName(attributeName);
@@ -246,15 +251,17 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    @Disabled
     public void testValidateAttributes_regexFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         StringAttributeContent attributeContent = new StringAttributeContent("12345");
         String validationRegex = "^\\d{4}$";
 
-        //TODO regex
-//        Assertions.assertFalse(attributeContent.getValue().matches(validationRegex));
+        RegexpAttributeConstraint constraint = new RegexpAttributeConstraint();
+        constraint.setType(AttributeConstraintType.REGEXP);
+        constraint.setData(validationRegex);
+
+        Assertions.assertFalse(attributeContent.getData().matches(validationRegex));
 
         DataAttribute definition = new DataAttribute();
         definition.setName(attributeName);
@@ -265,6 +272,7 @@ public class AttributeDefinitionUtilsTest {
         DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
         definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
 
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
@@ -278,6 +286,282 @@ public class AttributeDefinitionUtilsTest {
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
+
+    @Test
+    public void testValidateAttributes_regexPass() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        StringAttributeContent attributeContent = new StringAttributeContent("1234");
+        String validationRegex = "^\\d{4}$";
+
+        RegexpAttributeConstraint constraint = new RegexpAttributeConstraint();
+        constraint.setType(AttributeConstraintType.REGEXP);
+        constraint.setData(validationRegex);
+
+        Assertions.assertTrue(attributeContent.getData().matches(validationRegex));
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.STRING);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_IntegerRange() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        IntegerAttributeContent attributeContent = new IntegerAttributeContent(1234);
+
+        RangeAttributeConstraint constraint = new RangeAttributeConstraint();
+        constraint.setType(AttributeConstraintType.RANGE);
+
+        RangeAttributeConstraintData data = new RangeAttributeConstraintData();
+        data.setFrom(100);
+        data.setTo(2000);
+        constraint.setData(data);
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.INTEGER);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_IntegerRangeFail() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        IntegerAttributeContent attributeContent = new IntegerAttributeContent(2001);
+
+        RangeAttributeConstraint constraint = new RangeAttributeConstraint();
+        constraint.setType(AttributeConstraintType.RANGE);
+
+        RangeAttributeConstraintData data = new RangeAttributeConstraintData();
+        data.setFrom(100);
+        data.setTo(2000);
+        constraint.setData(data);
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.INTEGER);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_IntegerRangeTypeFail() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        StringAttributeContent attributeContent = new StringAttributeContent("2001");
+
+        RangeAttributeConstraint constraint = new RangeAttributeConstraint();
+        constraint.setType(AttributeConstraintType.RANGE);
+
+        RangeAttributeConstraintData data = new RangeAttributeConstraintData();
+        data.setFrom(100);
+        data.setTo(2000);
+        constraint.setData(data);
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.STRING);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_FloatRange() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        FloatAttributeContent attributeContent = new FloatAttributeContent(121.34f);
+
+        RangeAttributeConstraint constraint = new RangeAttributeConstraint();
+        constraint.setType(AttributeConstraintType.RANGE);
+
+        RangeAttributeConstraintData data = new RangeAttributeConstraintData();
+        data.setFrom(100);
+        data.setTo(2000);
+        constraint.setData(data);
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.INTEGER);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_FloatRangeFail() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        FloatAttributeContent attributeContent = new FloatAttributeContent(20.01f);
+
+        RangeAttributeConstraint constraint = new RangeAttributeConstraint();
+        constraint.setType(AttributeConstraintType.RANGE);
+
+        RangeAttributeConstraintData data = new RangeAttributeConstraintData();
+        data.setFrom(100);
+        data.setTo(2000);
+        constraint.setData(data);
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.INTEGER);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
+    @Test
+    public void testValidateAttributes_DateTime() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
+
+        DateTimeAttributeConstraint constraint = new DateTimeAttributeConstraint();
+        constraint.setType(AttributeConstraintType.DATETIME);
+
+        DateTimeAttributeConstraintData data = new DateTimeAttributeConstraintData();
+        data.setFrom(LocalDateTime.now().minusMinutes(10));
+        data.setTo(LocalDateTime.now().plusMinutes(10));
+        constraint.setData(data);
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.DATETIME);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    public void testValidateAttributes_DateTimeFailure() {
+        String attributeName = "testAttribute1";
+        String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
+        DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
+
+        DateTimeAttributeConstraint constraint = new DateTimeAttributeConstraint();
+        constraint.setType(AttributeConstraintType.DATETIME);
+
+        DateTimeAttributeConstraintData data = new DateTimeAttributeConstraintData();
+        data.setFrom(LocalDateTime.now().plusMinutes(5));
+        data.setTo(LocalDateTime.now().plusMinutes(10));
+        constraint.setData(data);
+
+        DataAttribute definition = new DataAttribute();
+        definition.setName(attributeName);
+        definition.setUuid(attributeId);
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.DATETIME);
+
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeDto attribute = new RequestAttributeDto();
+        attribute.setName(attributeName);
+        attribute.setUuid(attributeId);
+        attribute.setContent(List.of(attributeContent));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
+                // tested method
+                validateAttributes(List.of(definition), List.of(attribute))
+        );
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+    }
+
 
     @Test
     public void testValidateAttributes_credentialMap() {
