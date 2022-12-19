@@ -1,11 +1,12 @@
 package com.czertainly.api.config.serializer;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.CredentialAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.SecretAttributeContent;
-import com.czertainly.api.model.core.credential.CredentialDto;
+import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -52,9 +53,9 @@ public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttribut
             gen.writeStartArray();
             for (BaseAttributeContent credential : responseAttributeDto.getContent()) {
                 CredentialAttributeContent credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContent.class);
-                List<ResponseAttributeDto> credentialAttributes = new ArrayList<>();
-                CredentialDto credentialDto = credentialAttributeContent.getData();
-                for (ResponseAttributeDto credentialAttribute : credentialDto.getAttributes()) {
+                List<DataAttribute> credentialAttributes = new ArrayList<>();
+                CredentialAttributeContentData credentialDto = credentialAttributeContent.getData();
+                for (DataAttribute credentialAttribute : credentialDto.getAttributes()) {
                     List<BaseAttributeContent> credentialAttributeContents = new ArrayList<>();
                     if (credentialAttribute.getContentType().equals(AttributeContentType.SECRET)) {
                         for (BaseAttributeContent baseAttributeContent : credentialAttribute.getContent()) {

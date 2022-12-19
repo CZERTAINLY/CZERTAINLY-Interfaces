@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/auditLogs")
@@ -51,12 +52,12 @@ import java.util.List;
 				)
 		})
 public interface AuditLogController {
-	
+
 	@Operation(summary = "List Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit logs")})
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
     public AuditLogResponseDto listAuditLogs(@RequestParam(required = false) AuditLogFilter filter, @RequestParam(required = false) Pageable pageable);
-	
+
 	@Operation(summary = "Export Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Export of audit logs")})
 	@RequestMapping(path = "/export" ,method = RequestMethod.GET, produces = {"application/json"})
@@ -67,17 +68,17 @@ public interface AuditLogController {
 	@RequestMapping(path = "/purge" ,method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void purgeAuditLogs(@RequestParam(required = false) AuditLogFilter filter, @RequestParam(required = false) Pageable pageable);
-	
+
 	@Operation(summary = "List Audit Objects")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit Objects") })
 	@RequestMapping(path = "/objects" ,method = RequestMethod.GET, produces = {"application/json"})
     public List<String> listObjects();
-	
+
 	@Operation(summary = "List Audit Operations")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit operations")})
 	@RequestMapping(path = "/operations" ,method = RequestMethod.GET, produces = {"application/json"})
     public List<String> listOperations();
-	
+
 	@Operation(summary = "List Status")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit log status")})
 	@RequestMapping(path = "/statuses" ,method = RequestMethod.GET, produces = {"application/json"})

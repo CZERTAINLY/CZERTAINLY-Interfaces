@@ -13,6 +13,7 @@ import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstrai
 import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
@@ -62,7 +63,7 @@ public class V2AttributeMigrationUtils {
                 continue;
             }
             for (AttributeDefinition item : oldAttributeValue) {
-                attributeDefinitions.add(getNewAttributes(item));
+                attributeDefinitions.add(getNewAttributes(item, BaseAttribute.class));
             }
             String updateCommand;
             String serializedAttributes = com.czertainly.core.util.AttributeDefinitionUtils.serialize(attributeDefinitions);
@@ -76,7 +77,7 @@ public class V2AttributeMigrationUtils {
         return migrationCommands;
     }
 
-    public static BaseAttribute getNewAttributes(AttributeDefinition oldAttribute) {
+    public static <T extends BaseAttribute> T getNewAttributes(AttributeDefinition oldAttribute,Class<T> clazz) {
 
         //Old Attribute Value to new attribute properties
 
@@ -100,7 +101,7 @@ public class V2AttributeMigrationUtils {
         attribute.setProperties(properties);
         attribute.setAttributeCallback(getAttributeCallback(oldAttribute.getAttributeCallback()));
         attribute.setConstraints(getAttributeConstraint(oldAttribute.getValidationRegex()));
-        return attribute;
+        return (T) attribute;
     }
 
     private static List<BaseAttributeConstraint> getAttributeConstraint(String regex) {
@@ -174,15 +175,12 @@ public class V2AttributeMigrationUtils {
                     }
                     break;
                 case CREDENTIAL:
-                    CredentialDto credentialDto = new CredentialDto();
+                    CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
                     LinkedHashMap credentialData = (LinkedHashMap) ((JsonAttributeContent) oldContent).getData();
                     credentialDto.setName((String) credentialData.get("name"));
                     credentialDto.setUuid((String) credentialData.get("uuid"));
-                    credentialDto.setConnectorName((String) credentialData.get("connectorName"));
-                    credentialDto.setConnectorUuid((String) credentialData.get("connectorUuid"));
                     credentialDto.setKind((String) credentialData.get("kind"));
-                    credentialDto.setEnabled((Boolean) credentialData.get("enabled"));
-                    List<BaseAttribute> credentialAttributes = new ArrayList<>();
+                    List<DataAttribute> credentialAttributes = new ArrayList<>();
                     List<AttributeDefinition> oldCredentialAttributeValue = new ArrayList<>();
                     try {
                         oldCredentialAttributeValue = AttributeDefinitionUtils.deserialize(mapper.writeValueAsString(credentialData.get("attributes")));
@@ -193,9 +191,9 @@ public class V2AttributeMigrationUtils {
                         oldCredentialAttributeValue = new ArrayList<>();
                     }
                     for (AttributeDefinition item : oldCredentialAttributeValue) {
-                        credentialAttributes.add(getNewAttributes(item));
+                        credentialAttributes.add(getNewAttributes(item, DataAttribute.class));
                     }
-                    credentialDto.setAttributes(com.czertainly.core.util.AttributeDefinitionUtils.getResponseAttributes(credentialAttributes));
+                    credentialDto.setAttributes(credentialAttributes);
                     attributeContents.add(new CredentialAttributeContent(((JsonAttributeContent) oldContent).getValue(), credentialDto));
                     break;
                 case DATE:
