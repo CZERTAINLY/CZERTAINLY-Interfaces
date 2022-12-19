@@ -13,6 +13,10 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
+import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
+import com.czertainly.api.model.common.attribute.v2.constraint.data.DateTimeAttributeConstraintData;
+import com.czertainly.api.model.common.attribute.v2.constraint.data.RangeAttributeConstraintData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
@@ -21,28 +25,33 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class AttributeDefinitionUtils {
 
     private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    public static <T extends BaseAttribute> T getAttributeDefinition(String name, List<T> attributes) {
+    public static <T extends BaseAttribute<?>> T getAttributeDefinition(String name, List<T> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
     }
 
-    public static <T extends BaseAttribute> boolean containsAttributeDefinition(String name, List<T> attributes) {
+    public static <T extends BaseAttribute<?>> boolean containsAttributeDefinition(String name, List<T> attributes) {
         BaseAttribute definition = getAttributeDefinition(name, attributes);
         return definition != null;
     }
 
-        public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
+    public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
         if (attributes.size() == 0) {
             return null;
         }
@@ -150,7 +159,7 @@ public class AttributeDefinitionUtils {
         return null;
     }
 
-    public static <T extends BaseAttribute> String serialize(List<T> attributes) {
+    public static <T extends BaseAttribute<?>> String serialize(List<T> attributes) {
         if (attributes == null) {
             return null;
         }
@@ -162,7 +171,7 @@ public class AttributeDefinitionUtils {
     }
 
 
-    public static <T extends BaseAttribute> String serialize(T attribute) {
+    public static <T extends BaseAttribute<?>> String serialize(T attribute) {
         if (attribute == null) {
             return null;
         }
@@ -184,7 +193,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends BaseAttributeContent> String serializeAttributeContent(List<T> attributeContent) {
+    public static <T extends BaseAttributeContent<?>> String serializeAttributeContent(List<T> attributeContent) {
         if (attributeContent == null) {
             return null;
         }
@@ -195,7 +204,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends BaseAttribute> List<T> deserialize(String attributesJson, Class<T> clazz) {
+    public static <T extends BaseAttribute<?>> List<T> deserialize(String attributesJson, Class<T> clazz) {
         if (attributesJson == null) {
             return null;
         }
@@ -206,7 +215,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends BaseAttribute> T deserializeSingleAttribute(String attributeJson, Class<T> clazz) {
+    public static <T extends BaseAttribute<?>> T deserializeSingleAttribute(String attributeJson, Class<T> clazz) {
         if (attributeJson == null) {
             return null;
         }
@@ -229,7 +238,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends BaseAttributeContent> List<T> deserializeAttributeContent(String attributeContentJson, Class<T> clazz) {
+    public static <T extends BaseAttributeContent<?>> List<T> deserializeAttributeContent(String attributeContentJson, Class<T> clazz) {
         if (attributeContentJson == null) {
             return null;
         }
@@ -308,33 +317,128 @@ public class AttributeDefinitionUtils {
             }
 
             validateAttributeContent(definition, attribute, errors);
-
-//            if (AttributeContentType.STRING.equals(definition.getType())
-//                    && definition.getValidationRegex() != null) {
-//                Pattern pattern;
-//                try {
-//                    pattern = Pattern.compile(definition.getValidationRegex());
-//                    BaseAttributeContent<String> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(attributeContent, BaseAttributeContent.class);
-//                    Matcher matcher = pattern.matcher(content.getValue());
-//                    if (!matcher.matches()) {
-//                        errors.add(ValidationError.create(
-//                                "Value {} of attribute {} doesn't match regex {}",
-//                                attributeContent,
-//                                definition.getLabel(),
-//                                definition.getValidationRegex()));
-//                    }
-//                } catch (Exception e) {
-//                    errors.add(ValidationError.create(
-//                            "Could not validate value of field {} due to error {}",
-//                            definition.getLabel(),
-//                            ExceptionUtils.getRootCauseMessage(e)));
-//                }
-//            }
+            errors.addAll(validateConstraints(definition, attribute.getContent()));
         }
 
         if (!errors.isEmpty()) {
             throw new ValidationException("Attributes validation failed.", errors);
         }
+    }
+
+    private static List<ValidationError> validateConstraints(DataAttribute attribute, List<BaseAttributeContent> contents) {
+        if (attribute.getConstraints() == null) return new ArrayList<>();
+        List<ValidationError> errors = new ArrayList<>();
+        for (BaseAttributeConstraint constraint : attribute.getConstraints()) {
+            if (constraint.getType().equals(AttributeConstraintType.REGEXP)) {
+                if (!attribute.getContentType().equals(AttributeContentType.STRING)) {
+                    errors.add(ValidationError.create("Invalid Attribute Constraint Type and Attribute Content Type. Regexp can be associated for STRING type only"));
+                }
+                Pattern pattern;
+                try {
+                    pattern = Pattern.compile((String) constraint.getData());
+                    List<StringAttributeContent> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, StringAttributeContent.class));
+                    for (StringAttributeContent value : content) {
+                        Matcher matcher = pattern.matcher(value.getData());
+                        if (!matcher.matches()) {
+                            errors.add(ValidationError.create(
+                                    "Value {} of attribute {} doesn't match regex {}",
+                                    value.getData(),
+                                    attribute.getProperties().getLabel(),
+                                    constraint.getData()));
+                        }
+                    }
+                } catch (Exception e) {
+                    errors.add(ValidationError.create(
+                            "Could not validate value of field {} due to error {}",
+                            attribute.getProperties().getLabel(),
+                            ExceptionUtils.getRootCauseMessage(e)));
+                }
+            } else if (constraint.getType().equals(AttributeConstraintType.DATETIME)) {
+                Pattern pattern;
+                if (!attribute.getContentType().equals(AttributeContentType.DATETIME)) {
+                    errors.add(ValidationError.create("Invalid Attribute Constraint Type and Attribute Content Type. DateTime can be associated for DATETIME type only"));
+                }
+                try {
+                    List<DateTimeAttributeContent> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, DateTimeAttributeContent.class));
+                    DateTimeAttributeConstraintData constraintData = (DateTimeAttributeConstraintData) constraint.getData();
+                    for (DateTimeAttributeContent value : content) {
+                        if (constraintData.getFrom() != null) {
+                            if (value.getData().isBefore(ZonedDateTime.from(constraintData.getFrom().atZone(ZoneId.systemDefault())))) {
+                                errors.add(ValidationError.create(
+                                        "Value {} of attribute {} should be after {}",
+                                        value.getData(),
+                                        attribute.getProperties().getLabel(),
+                                        constraintData.getFrom()));
+                            }
+                        }
+                        if (constraintData.getTo() != null) {
+                            if (value.getData().isAfter(ZonedDateTime.from(constraintData.getTo().atZone(ZoneId.systemDefault())))) {
+                                errors.add(ValidationError.create(
+                                        "Value {} of attribute {} should be before {}",
+                                        value.getData(),
+                                        attribute.getProperties().getLabel(),
+                                        constraintData.getTo()));
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    errors.add(ValidationError.create(
+                            "Could not validate value of field {} due to error {}",
+                            attribute.getProperties().getLabel(),
+                            ExceptionUtils.getRootCauseMessage(e)));
+                }
+            } else if (constraint.getType().equals(AttributeConstraintType.RANGE)) {
+                RangeAttributeConstraintData constraintData = (RangeAttributeConstraintData) constraint.getData();
+                if (attribute.getContentType().equals(AttributeContentType.INTEGER)) {
+                    List<IntegerAttributeContent> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, IntegerAttributeContent.class));
+                    for (IntegerAttributeContent value : content) {
+                        if (constraintData.getFrom() != null) {
+                            if (value.getData() < constraintData.getFrom()) {
+                                errors.add(ValidationError.create(
+                                        "Value {} of attribute {} should be higher than {}",
+                                        value.getData(),
+                                        attribute.getProperties().getLabel(),
+                                        constraintData.getFrom()));
+                            }
+                        }
+                        if (constraintData.getTo() != null) {
+                            if (value.getData() > constraintData.getTo()) {
+                                errors.add(ValidationError.create(
+                                        "Value {} of attribute {} should be lower than {}",
+                                        value.getData(),
+                                        attribute.getProperties().getLabel(),
+                                        constraintData.getTo()));
+                            }
+                        }
+                    }
+                } else if (attribute.getContentType().equals(AttributeContentType.FLOAT)) {
+                    List<FloatAttributeContent> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, FloatAttributeContent.class));
+                    for (FloatAttributeContent value : content) {
+                        if (constraintData.getFrom() != null) {
+                            if (value.getData() < constraintData.getFrom()) {
+                                errors.add(ValidationError.create(
+                                        "Value {} of attribute {} should be higher than {}",
+                                        value.getData(),
+                                        attribute.getProperties().getLabel(),
+                                        constraintData.getFrom()));
+                            }
+                        }
+                        if (constraintData.getTo() != null) {
+                            if (value.getData() > constraintData.getTo()) {
+                                errors.add(ValidationError.create(
+                                        "Value {} of attribute {} should be lower than {}",
+                                        value.getData(),
+                                        attribute.getProperties().getLabel(),
+                                        constraintData.getTo()));
+                            }
+                        }
+                    }
+                } else {
+                    errors.add(ValidationError.create("Invalid Attribute Constraint Type and Attribute Content Type. Range can be validated only for INTEGER and FLOAT"));
+                }
+            }
+        }
+        return errors;
     }
 
     private static void validateAttributeContent(DataAttribute definition, RequestAttributeDto attribute, List<ValidationError> errors) {
