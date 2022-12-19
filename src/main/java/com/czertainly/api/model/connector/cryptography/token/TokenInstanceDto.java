@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.cryptography;
+package com.czertainly.api.model.connector.cryptography.token;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;

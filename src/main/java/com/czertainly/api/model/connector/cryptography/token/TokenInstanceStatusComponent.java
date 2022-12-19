@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.cryptography;
+package com.czertainly.api.model.connector.cryptography.token;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,14 +8,18 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class TokenInstanceStatusDto {
+public class TokenInstanceStatusComponent {
 
-    @Schema(description = "Token instance status",
-            required = true)
+    @Schema(
+            description = "Token instance component status",
+            required = true
+    )
     private TokenInstanceStatus status;
 
-    @Schema(description = "Components of the Token instance status")
-    private Map<String, TokenInstanceStatusComponent> components;
+    @Schema(
+            description = "Token instance component details"
+    )
+    private Map<String, Object> details;
 
     public TokenInstanceStatus getStatus() {
         return status;
@@ -25,19 +29,19 @@ public class TokenInstanceStatusDto {
         this.status = status;
     }
 
-    public Map<String, TokenInstanceStatusComponent> getComponents() {
-        return components;
+    public Map<String, Object> getDetails() {
+        return details;
     }
 
-    public void setComponents(Map<String, TokenInstanceStatusComponent> components) {
-        this.components = components;
+    public void setDetails(Map<String, Object> details) {
+        this.details = details;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("status", status)
-                .append("components", components)
+                .append("details", details)
                 .toString();
     }
 

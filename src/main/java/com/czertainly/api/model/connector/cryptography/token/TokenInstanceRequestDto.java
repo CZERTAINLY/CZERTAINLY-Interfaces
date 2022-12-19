@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.cryptography;
+package com.czertainly.api.model.connector.cryptography.token;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;

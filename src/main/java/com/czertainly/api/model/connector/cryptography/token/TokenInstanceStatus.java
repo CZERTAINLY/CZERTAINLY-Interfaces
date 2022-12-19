@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.cryptography;
+package com.czertainly.api.model.connector.cryptography.token;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
@@ -14,6 +14,7 @@ public enum TokenInstanceStatus {
     DISCONNECTED("Disconnected"),
     ACTIVATED("Activated"),
     DEACTIVATED("Deactivated"),
+    WARNING("Warning"),
     UNKNOWN("Unknown");
 
     @Schema(description = "Token instance status",
