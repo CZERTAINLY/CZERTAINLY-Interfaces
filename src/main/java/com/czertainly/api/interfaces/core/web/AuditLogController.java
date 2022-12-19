@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/auditLogs")
@@ -55,7 +56,7 @@ public interface AuditLogController {
 	@Operation(summary = "List Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit logs")})
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    public AuditLogResponseDto listAuditLogs(@RequestParam(required = false) AuditLogFilter filter, @RequestParam(required = false) Pageable pageable);
+    public AuditLogResponseDto listAuditLogs(Optional<AuditLogFilter> filter, Optional<Pageable> pageable);
 	
 	@Operation(summary = "Export Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Export of audit logs")})

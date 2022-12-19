@@ -13,6 +13,7 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarge
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.czertainly.core.util.AttributeDefinitionUtils;
@@ -98,10 +99,10 @@ public class AttributeDefinitionUtilsTest {
         String attribute1Name = "testAttribute1";
         List<RequestAttributeDto> credentialAttributes = createAttributes("credAttr", List.of(new IntegerAttributeContent(987)));
 
-        CredentialDto credentialDto = new CredentialDto();
+        CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
         credentialDto.setUuid(UUID.randomUUID().toString());
         credentialDto.setName("testName");
-        credentialDto.setAttributes(AttributeDefinitionUtils.getResponseAttributes(credentialAttributes));
+        credentialDto.setAttributes(AttributeDefinitionUtils.clientAttributeConverter(credentialAttributes));
 
         RequestAttributeDto attribute1 = new RequestAttributeDto();
         attribute1.setName(attribute1Name);
@@ -109,7 +110,7 @@ public class AttributeDefinitionUtilsTest {
 
         List<RequestAttributeDto> attributes = List.of(attribute1);
 
-        CredentialDto dto = getCredentialContent(attribute1Name, attributes);
+        CredentialAttributeContentData dto = getCredentialContent(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(credentialDto.getUuid(), dto.getUuid());
         Assertions.assertEquals(credentialDto.getName(), dto.getName());
@@ -290,7 +291,7 @@ public class AttributeDefinitionUtilsTest {
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);
 
-        CredentialDto credential = new CredentialDto();
+        CredentialAttributeContentData credential = new CredentialAttributeContentData();
         credential.setName("testName");
         credential.setUuid("testUuid");
 
@@ -310,7 +311,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.CREDENTIAL);
 
-        CredentialAttributeContent credentialContent = new CredentialAttributeContent(attributeName, new CredentialDto());
+        CredentialAttributeContent credentialContent = new CredentialAttributeContent(attributeName, new CredentialAttributeContentData());
 
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setName(attributeName);

@@ -14,6 +14,7 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMa
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -41,7 +42,7 @@ public class AttributeDefinitionUtils {
         return definition != null;
     }
 
-    public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
+        public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
         if (attributes.size() == 0) {
             return null;
         }
@@ -141,7 +142,7 @@ public class AttributeDefinitionUtils {
         return converted;
     }
 
-    public static CredentialDto getCredentialContent(String name, List<RequestAttributeDto> attributes) {
+    public static CredentialAttributeContentData getCredentialContent(String name, List<RequestAttributeDto> attributes) {
         List<CredentialAttributeContent> content = AttributeDefinitionUtils.getAttributeContent(name, attributes, CredentialAttributeContent.class);
         if (content != null && !content.isEmpty()) {
             return content.get(0).getData();
