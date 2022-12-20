@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.connector.cryptography;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.TokenInstanceException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -141,7 +142,6 @@ public interface TokenInstanceController {
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
 
-
     @Operation(
             summary = "Get Token instance status",
             description = "Returns the connection status of the Token instance including additional information that might be useful"
@@ -201,5 +201,87 @@ public interface TokenInstanceController {
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
     ) throws ValidationException, NotFoundException;
+
+    // activation of token
+
+    @Operation(
+            summary = "List Token activation Attributes"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Token activation Attributes retrieved"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/activate/attributes",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    List<BaseAttribute> listTokenActivationAttributes(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid
+    ) throws NotFoundException;
+
+    @Operation(
+            summary = "Validate Token activation Attributes"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Token activation Attributes validated"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/activate/attributes/validate",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    void validateTokenActivationAttributes(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @RequestBody List<RequestAttributeDto> attributes
+    ) throws ValidationException, NotFoundException;
+
+    @Operation(
+            summary = "Activate Token"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Token activated"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/activate",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    void activateToken(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @RequestBody List<RequestAttributeDto> attributes
+    ) throws ValidationException, NotFoundException, TokenInstanceException;
+
+    @Operation(
+            summary = "Deactivate Token"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Token deactivated"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/deactivate",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    void deactivateToken(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid
+    ) throws NotFoundException, TokenInstanceException;
 
 }
