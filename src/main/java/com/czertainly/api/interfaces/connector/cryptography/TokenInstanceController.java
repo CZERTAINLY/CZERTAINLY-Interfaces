@@ -239,7 +239,7 @@ public interface TokenInstanceController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
-    void validateTokenActivationAttributes(
+    void validateTokenInstanceActivationAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
     ) throws ValidationException, NotFoundException;
@@ -260,7 +260,7 @@ public interface TokenInstanceController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
-    void activateToken(
+    void activateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
     ) throws ValidationException, NotFoundException, TokenInstanceException;
@@ -280,7 +280,7 @@ public interface TokenInstanceController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    void deactivateToken(
+    void deactivateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException, TokenInstanceException;
 
