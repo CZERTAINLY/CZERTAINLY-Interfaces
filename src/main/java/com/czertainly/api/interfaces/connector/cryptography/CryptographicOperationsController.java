@@ -249,7 +249,7 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/decrypt",
+            path = "/verify",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
