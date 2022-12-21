@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.cryptography.token;
+package com.czertainly.api.model.connector.cryptography.enums;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;

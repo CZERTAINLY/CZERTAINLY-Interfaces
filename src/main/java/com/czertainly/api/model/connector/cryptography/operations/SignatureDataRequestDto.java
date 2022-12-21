@@ -1,7 +1,7 @@
-package com.czertainly.api.model.connector.cryptography.key;
+package com.czertainly.api.model.connector.cryptography.operations;
 
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -14,16 +14,18 @@ import java.util.List;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class KeyDataResponseDto {
+public class SignatureDataRequestDto {
 
     @Schema(
-            description = "Attributes for the Key"
+            description = "Attributes of the Key",
+            required = true
     )
     private List<MetadataAttribute> keyAttributes;
 
-    @Schema(description = "Cryptographic algorithm of the Key",
+    @Schema(
+            description = "List of cipher Attributes",
             required = true
     )
-    private CryptographicAlgorithm cryptographicAlgorithm;
+    private List<RequestAttributeDto> signatureAttributes;
 
 }

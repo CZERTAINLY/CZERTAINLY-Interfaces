@@ -44,7 +44,7 @@ import java.util.List;
         })
 @Tag(
         name = "Key Management",
-        description = "Key Management API for cryptographic key management operations. Each key is managed by a specific token that is connected through the Token instance. The cryptographic operations are implemented independently by the Token Profile."
+        description = "Key Management API for cryptographic key management operations. Each key is managed by a specific token that is connected through the Token instance."
 )
 public interface KeyManagementController {
 
@@ -84,7 +84,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/issue/attributes/validate",
+            path = "/create/attributes/validate",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
