@@ -202,7 +202,9 @@ public interface TokenInstanceController {
             @RequestBody List<RequestAttributeDto> attributes
     ) throws ValidationException, NotFoundException;
 
+    /////////////////////////////////////////////////////////////////////////////////
     // activation of token
+    /////////////////////////////////////////////////////////////////////////////////
 
     @Operation(
             summary = "List Token activation Attributes"
@@ -219,7 +221,7 @@ public interface TokenInstanceController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<BaseAttribute> listTokenActivationAttributes(
+    List<BaseAttribute> listTokenInstanceActivationAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
 

@@ -335,5 +335,5 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody RandomDataRequestDto request
     ) throws NotFoundException, CryptographicOperationException;
-    
+
 }
