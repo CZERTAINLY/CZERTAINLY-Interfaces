@@ -625,6 +625,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
+    @Disabled
     public void testValidateAttributes_unknownAttribute() {
         String attributeName = "testAttribute1";
 
