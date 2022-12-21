@@ -278,11 +278,17 @@ public class AttributeDefinitionUtils {
     public static void validateAttributes(List<BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         List<ValidationError> errors = new ArrayList<>();
         List<DataAttribute> dataDefinitions = (List<DataAttribute>) (Object) definitions.stream().filter(e -> e.getType().equals(AttributeType.DATA)).collect(Collectors.toList());
-        // If attribute identified by id not in definitions - throw error
+
+        // When the Group Attribute contains a group of other attributes, we currently do not have the definition of them
+        // without executing the same sequence of callbacks or storing the definition in the database. Therefore,
+        // we will need to skip the validation of Attributes that are unknown and rely on proper validation by the
+        // connector.
+        // TODO: Validation of Attributes that has unknown definition
         for (RequestAttributeDto attribute : attributes) {
             if (!containsAttributeDefinition(attribute.getName(), definitions)) {
-                logger.warn("Cannot Validate Attribute {}. Not part of the static definition", attribute.getName());
-//                errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
+                // do not throw error in case the definition is not found, warn only
+                logger.warn("Cannot validate Attribute '{}' as it has unknown definition", attribute.getName());
+                // errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
             }
         }
 
