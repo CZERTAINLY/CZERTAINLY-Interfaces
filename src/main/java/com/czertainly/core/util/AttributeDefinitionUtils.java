@@ -26,6 +26,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.time.ZoneId;
@@ -41,6 +43,8 @@ import java.util.stream.Collectors;
 public class AttributeDefinitionUtils {
 
     private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    private static final Logger logger = LoggerFactory.getLogger(AttributeDefinitionUtils.class);
 
     public static <T extends BaseAttribute<?>> T getAttributeDefinition(String name, List<T> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
@@ -277,7 +281,8 @@ public class AttributeDefinitionUtils {
         // If attribute identified by id not in definitions - throw error
         for (RequestAttributeDto attribute : attributes) {
             if (!containsAttributeDefinition(attribute.getName(), definitions)) {
-                errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
+                logger.warn("Cannot Validate Attribute {}. Not part of the static definition", attribute.getName());
+//                errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
             }
         }
 
