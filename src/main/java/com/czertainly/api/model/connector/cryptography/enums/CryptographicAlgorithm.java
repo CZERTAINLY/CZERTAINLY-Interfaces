@@ -1,7 +1,9 @@
 package com.czertainly.api.model.connector.cryptography.enums;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
+@Schema(enumAsRef = true)
 public enum CryptographicAlgorithm {
     RSA(1, "RSA", "Rivest–Shamir–Adleman"),
     ECDSA(2, "ECDSA", "Elliptic Curve Digital Signature Algorithm"),

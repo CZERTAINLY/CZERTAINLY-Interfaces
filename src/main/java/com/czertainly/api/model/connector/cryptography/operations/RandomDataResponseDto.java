@@ -18,6 +18,6 @@ public class RandomDataResponseDto {
             description = "Random generated data",
             required = true
     )
-    private byte[] data;;
+    private byte[] data;
 
 }
