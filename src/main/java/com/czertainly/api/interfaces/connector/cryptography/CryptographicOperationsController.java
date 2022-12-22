@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -92,6 +93,9 @@ public interface CryptographicOperationsController {
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
+    )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
     )
     void validateCipherAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
@@ -199,6 +203,9 @@ public interface CryptographicOperationsController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
+    )
     void validateSignatureAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm,
@@ -303,6 +310,9 @@ public interface CryptographicOperationsController {
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
+    )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
     )
     void validateRandomAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,

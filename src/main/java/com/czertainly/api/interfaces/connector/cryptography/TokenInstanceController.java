@@ -137,7 +137,9 @@ public interface TokenInstanceController {
             path = "/{uuid}",
             method = RequestMethod.DELETE
     )
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(
+            HttpStatus.NO_CONTENT
+    )
     void removeTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
@@ -197,6 +199,9 @@ public interface TokenInstanceController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
+    )
     void validateTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
@@ -241,6 +246,9 @@ public interface TokenInstanceController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
+    )
     void validateTokenInstanceActivationAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
@@ -258,9 +266,12 @@ public interface TokenInstanceController {
             })
     @RequestMapping(
             path = "/{uuid}/activate",
-            method = RequestMethod.POST,
+            method = RequestMethod.PATCH,
             consumes = {"application/json"},
             produces = {"application/json"}
+    )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
     )
     void activateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
@@ -279,7 +290,7 @@ public interface TokenInstanceController {
             })
     @RequestMapping(
             path = "/{uuid}/deactivate",
-            method = RequestMethod.GET,
+            method = RequestMethod.PATCH,
             produces = {"application/json"}
     )
     void deactivateTokenInstance(

@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -89,6 +90,9 @@ public interface KeyManagementController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
+    )
     void validateCreateKeyAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
@@ -142,6 +146,9 @@ public interface KeyManagementController {
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
+    )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
     )
     void destroyKey(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
