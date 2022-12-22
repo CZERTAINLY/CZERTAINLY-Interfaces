@@ -32,11 +32,11 @@ public class KeyManagementApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<BaseAttribute> listCreateKeyAttributes(ConnectorDto connector, String tokenInstanceUuid) throws ConnectorException {
+    public List<BaseAttribute> listCreateKeyAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + KEY_CREATE_ATTRIBUTES_CONTEXT, tokenInstanceUuid)
+                .uri(connector.getUrl() + KEY_CREATE_ATTRIBUTES_CONTEXT, uuid)
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
                 .block().getBody(),
@@ -44,11 +44,11 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateCreateKeyAttributes(ConnectorDto connector, String tokenInstanceUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateCreateKeyAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
-                .uri(connector.getUrl() + KEY_CREATE_ATTRIBUTES_VALIDATE_CONTEXT, tokenInstanceUuid)
+                .uri(connector.getUrl() + KEY_CREATE_ATTRIBUTES_VALIDATE_CONTEXT, uuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
@@ -57,11 +57,11 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public KeyDataResponseDto createKey(ConnectorDto connector, String tokenInstanceUuid, CreateKeyRequestDto requestDto) throws ConnectorException {
+    public KeyDataResponseDto createKey(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + KEY_CREATE_CONTEXT, tokenInstanceUuid)
+                .uri(connector.getUrl() + KEY_CREATE_CONTEXT, uuid)
                 .body(Mono.just(requestDto), CreateKeyRequestDto.class)
                 .retrieve()
                 .toEntity(KeyDataResponseDto.class)
@@ -70,11 +70,11 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void destroyKey(ConnectorDto connector, String tokenInstanceUuid, DestroyKeyRequestDto requestDto) throws ConnectorException {
+    public void destroyKey(ConnectorDto connector, String uuid, DestroyKeyRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
-                .uri(connector.getUrl() + KEY_DESTROY_CONTEXT, tokenInstanceUuid)
+                .uri(connector.getUrl() + KEY_DESTROY_CONTEXT, uuid)
                 .body(Mono.just(requestDto), DestroyKeyRequestDto.class)
                 .retrieve()
                 .toEntity(Void.class)
