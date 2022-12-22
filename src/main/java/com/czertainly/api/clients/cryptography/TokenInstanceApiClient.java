@@ -161,7 +161,7 @@ public class TokenInstanceApiClient extends BaseApiClient {
     }
 
     public void activateTokenInstance(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PATCH, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + TOKEN_INSTANCE_ACTIVATE_CONTEXT, uuid)
@@ -174,7 +174,7 @@ public class TokenInstanceApiClient extends BaseApiClient {
     }
 
     public void deactivateTokenInstance(ConnectorDto connector, String uuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PATCH, connector, true);
 
         processRequest(r -> r
                 .uri(connector.getUrl() + TOKEN_INSTANCE_DEACTIVATE_CONTEXT, uuid)
