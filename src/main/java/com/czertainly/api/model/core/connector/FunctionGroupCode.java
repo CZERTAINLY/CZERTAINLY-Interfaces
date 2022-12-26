@@ -16,7 +16,8 @@ public enum FunctionGroupCode {
     AUTHORITY_PROVIDER("authorityProvider"),
     DISCOVERY_PROVIDER("discoveryProvider"),
     ENTITY_PROVIDER("entityProvider"),
-    COMPLIANCE_PROVIDER("complianceProvider");
+    COMPLIANCE_PROVIDER("complianceProvider"),
+    CRYPTOGRAPHY_PROVIDER("cryptographyProvider");
 
     @Schema(description = "Function Group code of the Connector",
             example = "credentialProvider", required = true)
