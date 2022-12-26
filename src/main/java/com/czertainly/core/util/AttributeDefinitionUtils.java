@@ -309,7 +309,15 @@ public class AttributeDefinitionUtils {
                 continue; // skip other validations
             }
 
-            Object attributeContent = attribute.getContent();
+            Object attributeContent = null;
+            try {
+                attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, AttributeContentType.getClass(definition.getContentType())));
+            } catch (IllegalArgumentException e) {
+                errors.add(ValidationError.create(
+                        "Wrong type of value for attribute {}.",
+                        properties.getLabel()));
+                continue;
+            }
 
             if (isRequired && attributeContent == null) {
                 errors.add(ValidationError.create("Value of required attribute {} not set.", properties.getLabel()));
