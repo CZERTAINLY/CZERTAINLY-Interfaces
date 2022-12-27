@@ -24,6 +24,12 @@ public class KeyRequestDto {
     private String name;
 
     @Schema(
+            description = "Description of the Cryptographic Key",
+            required = true
+    )
+    private String description;
+
+    @Schema(
             description = "List of Token Profile Attributes",
             required = true
     )

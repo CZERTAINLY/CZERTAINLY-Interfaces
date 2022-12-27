@@ -38,6 +38,11 @@ public enum Resource {
     ENTITY("entities"),
     LOCATION("locations"),
 
+    //CRYPTOGRAPHY
+    TOKEN_PROFILE("tokenProfiles"),
+    TOKEN_INSTANCE("tokenInstances"),
+    CRYPTOGRAPHIC_KEY("cryptographicKeys"),
+
     ATTRIBUTE("attributes");
 
     @Schema(description = "Resource Name",

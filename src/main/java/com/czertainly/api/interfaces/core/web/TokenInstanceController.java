@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
@@ -91,7 +92,7 @@ public interface TokenInstanceController {
     )
     TokenInstanceDetailDto getTokenInstance(
             @Parameter(description = "UUID of the Token Instance") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws ConnectorException;
 
     @Operation(
             summary = "Create a new Token Instance"
@@ -111,7 +112,7 @@ public interface TokenInstanceController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    TokenInstanceDetailDto createTokenInstance(@RequestBody TokenInstanceRequestDto request) throws AlreadyExistException, ValidationException;
+    TokenInstanceDetailDto createTokenInstance(@RequestBody TokenInstanceRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException;
 
     @Operation(
             summary = "Update Token Instance"
@@ -134,7 +135,7 @@ public interface TokenInstanceController {
     TokenInstanceDetailDto updateTokenInstance(
             @Parameter(description = "Token Instance UUID") @PathVariable String uuid,
             @RequestBody TokenInstanceRequestDto request)
-            throws NotFoundException, ValidationException;
+            throws ConnectorException, ValidationException;
 
     @Operation(
             description = "Delete Token Instance"
@@ -171,7 +172,7 @@ public interface TokenInstanceController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void activateTokenInstance(@Parameter(description = "Token Instance UUID") @PathVariable String uuid,
                                @RequestBody List<RequestAttributeDto> attributes)
-            throws NotFoundException;
+            throws ConnectorException;
 
     @Operation(
             summary = "Deactivate Token Instance"
@@ -188,7 +189,7 @@ public interface TokenInstanceController {
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deactivateTokenInstance(@Parameter(description = "Token Instance UUID") @PathVariable String uuid)
-            throws NotFoundException;
+            throws ConnectorException;
 
     @Operation(
             description = "Delete multiple Token Instance"
@@ -209,8 +210,7 @@ public interface TokenInstanceController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Token Instance UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-            @RequestBody List<String> uuids)
-            throws NotFoundException;
+            @RequestBody List<String> uuids);
 
     @Operation(
             summary = "Reload Token Instance status"
@@ -226,7 +226,7 @@ public interface TokenInstanceController {
     )
     TokenInstanceDetailDto reloadStatus(
             @Parameter(description = "UUID of the Token Instance") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws ConnectorException;
 
 
     // Token Instance related Attribute APIs
@@ -248,7 +248,7 @@ public interface TokenInstanceController {
     )
     List<BaseAttribute> listTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws ConnectorException;
 
     @Operation(
             summary = "List Token activation Attributes"
@@ -267,5 +267,5 @@ public interface TokenInstanceController {
     )
     List<BaseAttribute> listTokenInstanceActivationAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws ConnectorException;
 }

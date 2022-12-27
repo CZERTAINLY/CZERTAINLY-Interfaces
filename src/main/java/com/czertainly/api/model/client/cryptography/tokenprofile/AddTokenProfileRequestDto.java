@@ -48,5 +48,5 @@ public class AddTokenProfileRequestDto {
             description = "Enabled flag - true = enabled; false = disabled",
             defaultValue = "false"
     )
-    private Boolean enabled;
+    private boolean enabled;
 }

@@ -18,6 +18,11 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class KeyDto extends NameAndUuidDto {
 
+    @Schema(description = "Description of the Key",
+            required = true
+    )
+    private String description;
+
     @Schema(description = "Cryptographic algorithm of the Key",
             required = true
     )

@@ -44,4 +44,10 @@ public class TokenInstanceRequestDto {
             required = true
     )
     private List<RequestAttributeDto> customAttributes;
+
+    @Schema(
+            description = "Attributes for Token Instance",
+            required = true
+    )
+    private List<RequestAttributeDto> attributes;
 }

@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.cryptography.key.KeyRequestDto;
@@ -110,7 +111,7 @@ public interface CryptographicKeyController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     KeyDetailDto createKey(@Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
-                           @RequestBody KeyRequestDto request) throws AlreadyExistException, ValidationException;
+                           @RequestBody KeyRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException;
 
     @Operation(
             description = "Destroy Cryptographic Key"
@@ -129,7 +130,7 @@ public interface CryptographicKeyController {
     void destroyKey(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid)
-            throws NotFoundException;
+            throws ConnectorException;
 
 
     // Attribute related API
@@ -151,5 +152,5 @@ public interface CryptographicKeyController {
     )
     List<BaseAttribute> listCreateKeyAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid
-    ) throws NotFoundException;
+    ) throws ConnectorException;
 }

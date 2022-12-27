@@ -178,7 +178,7 @@ public interface TokenProfileController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTokenProfile(
-            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid)
+            @Parameter(description = "Token Profile UUID") @PathVariable String uuid)
             throws NotFoundException;
 
     @Operation(

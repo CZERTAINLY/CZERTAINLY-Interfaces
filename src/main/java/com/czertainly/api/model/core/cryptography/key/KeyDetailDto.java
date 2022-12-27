@@ -20,17 +20,12 @@ import java.util.List;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class KeyDetailDto extends NameAndUuidDto {
+public class KeyDetailDto extends KeyDto {
 
     @Schema(
             description = "Attributes for the Key"
     )
-    private List<ResponseAttributeDto> keyAttributes;
-
-    @Schema(description = "Cryptographic algorithm of the Key",
-            required = true
-    )
-    private CryptographicAlgorithm cryptographicAlgorithm;
+    private List<MetadataAttribute> keyAttributes;
 
     @Schema(
             description = "Custom Attributes for the Token Instance"
