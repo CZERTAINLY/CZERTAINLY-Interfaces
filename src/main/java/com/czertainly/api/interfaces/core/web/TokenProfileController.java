@@ -234,7 +234,7 @@ public interface TokenProfileController {
     void bulkDeleteTokenProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Token Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                                @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+                                @RequestBody List<String> uuids);
 
     @Operation(
             summary = "Disable multiple Token Profiles"
@@ -252,7 +252,7 @@ public interface TokenProfileController {
     void bulkDisableRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Token Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                              @RequestBody List<String> uuids) throws NotFoundException;
+                              @RequestBody List<String> uuids);
 
     @Operation(
             summary = "Enable multiple Token Profiles"
@@ -269,5 +269,5 @@ public interface TokenProfileController {
     void bulkEnableRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Token Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                             @RequestBody List<String> uuids) throws NotFoundException;
+                             @RequestBody List<String> uuids);
 }
