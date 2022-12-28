@@ -1,12 +1,21 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.CryptographicOperationException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.client.cryptography.operations.CipherDataRequestDto;
+import com.czertainly.api.model.client.cryptography.operations.RandomDataRequestDto;
+import com.czertainly.api.model.client.cryptography.operations.SignDataRequestDto;
+import com.czertainly.api.model.client.cryptography.operations.VerifyDataRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
-import com.czertainly.api.model.connector.cryptography.operations.*;
+import com.czertainly.api.model.connector.cryptography.operations.DecryptDataResponseDto;
+import com.czertainly.api.model.connector.cryptography.operations.EncryptDataResponseDto;
+import com.czertainly.api.model.connector.cryptography.operations.RandomDataResponseDto;
+import com.czertainly.api.model.connector.cryptography.operations.SignDataResponseDto;
+import com.czertainly.api.model.connector.cryptography.operations.VerifyDataResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -26,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/cryptography/tokenInstances/{uuid}/keys")
+@RequestMapping("/v1/cryptography/keys/{uuid}/operations")
 @Tag(name = "Cryptographic Operations Controller", description = "Cryptographic Operations Controller API")
 @ApiResponses(
         value = {
@@ -78,9 +87,9 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listCipherAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
-    ) throws NotFoundException;
+    ) throws ConnectorException;
 
     @Operation(
             summary = "Encrypt data using a Key"
@@ -105,9 +114,9 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     EncryptDataResponseDto encryptData(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody CipherDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws CryptographicOperationException, ConnectorException;
 
     @Operation(
             summary = "Decrypt data using a Key"
@@ -132,9 +141,9 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     DecryptDataResponseDto decryptData(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody CipherDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws ConnectorException, CryptographicOperationException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // signature operations
@@ -156,9 +165,9 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listSignatureAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key instance UUID") @PathVariable String uuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
-    ) throws NotFoundException;
+    ) throws ConnectorException;
 
 
     @Operation(
@@ -184,9 +193,9 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     SignDataResponseDto signData(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody SignDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws ConnectorException, CryptographicOperationException;
 
     @Operation(
             summary = "Verify data using a Key"
@@ -211,9 +220,9 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     VerifyDataResponseDto verifyData(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody VerifyDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws ConnectorException, CryptographicOperationException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // generate random operations
@@ -235,8 +244,8 @@ public interface CryptographicOperationsController {
             produces = {"application/json"}
     )
     List<BaseAttribute> listRandomAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid
-    ) throws NotFoundException;
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid
+    ) throws ConnectorException;
 
 
     @Operation(
@@ -262,7 +271,7 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     RandomDataResponseDto randomData(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody RandomDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws ConnectorException, CryptographicOperationException;
 }

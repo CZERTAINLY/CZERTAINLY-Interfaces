@@ -18,5 +18,9 @@ public enum OperationType {
     CALLBACK,
     CONNECT,
     FORCE_DELETE,
+    ENCRYPT,
+    DECRYPT,
+    SIGN,
+    VERIFY,
     APPROVE;
 }
