@@ -81,7 +81,7 @@ public interface TokenInstanceController {
     )
     TokenInstanceDto getTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws NotFoundException, TokenInstanceException;
 
     @Operation(
             summary = "Create Token instance"
@@ -100,7 +100,7 @@ public interface TokenInstanceController {
     )
     TokenInstanceDto createTokenInstance(
             @RequestBody TokenInstanceRequestDto request
-    ) throws AlreadyExistException;
+    ) throws AlreadyExistException, TokenInstanceException;
 
     @Operation(
             summary = "Update Token instance"
@@ -121,7 +121,7 @@ public interface TokenInstanceController {
     TokenInstanceDto updateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody TokenInstanceRequestDto request
-    ) throws NotFoundException;
+    ) throws NotFoundException, TokenInstanceException;
 
     @Operation(
             summary = "Remove Token instance"
@@ -142,7 +142,7 @@ public interface TokenInstanceController {
     )
     void removeTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws NotFoundException, TokenInstanceException;
 
     @Operation(
             summary = "Get Token instance status",
@@ -162,7 +162,7 @@ public interface TokenInstanceController {
     )
     TokenInstanceStatusDto getTokenInstanceStatus(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws NotFoundException, TokenInstanceException;
 
     @Operation(
             summary = "List Token Profile Attributes"
@@ -181,7 +181,7 @@ public interface TokenInstanceController {
     )
     List<BaseAttribute> listTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException;
+    ) throws NotFoundException, TokenInstanceException;
 
     @Operation(
             summary = "Validate Token Profile Attributes"
