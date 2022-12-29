@@ -30,12 +30,6 @@ public class KeyRequestDto {
     private String description;
 
     @Schema(
-            description = "List of Token Profile Attributes",
-            required = true
-    )
-    private List<RequestAttributeDto> tokenProfileAttributes;
-
-    @Schema(
             description = "List of Attributes to create a Key",
             required = true
     )
