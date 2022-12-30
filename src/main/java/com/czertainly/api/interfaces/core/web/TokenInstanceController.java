@@ -148,7 +148,6 @@ public interface TokenInstanceController {
     @RequestMapping(
             path = "/{uuid}",
             method = RequestMethod.DELETE,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -184,7 +183,6 @@ public interface TokenInstanceController {
     @RequestMapping(
             path = "/{uuid}/deactivate",
             method = RequestMethod.PATCH,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
