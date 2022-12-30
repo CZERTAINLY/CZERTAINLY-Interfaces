@@ -1,6 +1,5 @@
 package com.czertainly.api.model.client.cryptography.operations;
 
-import com.czertainly.api.model.connector.cryptography.operations.SignDataRequestDto;
 import com.czertainly.api.model.connector.cryptography.operations.data.SignatureRequestData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

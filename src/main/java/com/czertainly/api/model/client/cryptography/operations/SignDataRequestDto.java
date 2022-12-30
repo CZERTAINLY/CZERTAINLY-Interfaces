@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class SignDataRequestDto extends SignatureDataRequestDto {
+public class SignDataRequestDto {
 
     @Schema(
             description = "List of cipher Attributes",
