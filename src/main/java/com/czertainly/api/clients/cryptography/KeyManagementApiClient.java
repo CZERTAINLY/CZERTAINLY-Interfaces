@@ -23,6 +23,7 @@ public class KeyManagementApiClient extends BaseApiClient {
     private static final String KEY_CREATE_ATTRIBUTES_CONTEXT = KEY_CREATE_CONTEXT + "/attributes";
     private static final String KEY_CREATE_ATTRIBUTES_VALIDATE_CONTEXT = KEY_CREATE_ATTRIBUTES_CONTEXT + "/validate";
     private static final String KEY_DESTROY_CONTEXT = KEY_BASE_CONTEXT + "/destroy";
+    private static final String KEY_LIST_CONTEXT = KEY_BASE_CONTEXT + "/list";
 
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
@@ -78,6 +79,18 @@ public class KeyManagementApiClient extends BaseApiClient {
                 .body(Mono.just(requestDto), DestroyKeyRequestDto.class)
                 .retrieve()
                 .toEntity(Void.class)
+                .block().getBody(),
+                request,
+                connector);
+    }
+
+    public List<KeyDataResponseDto> listKeys(ConnectorDto connector, String uuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
+
+        return processRequest(r -> r
+                .uri(connector.getUrl() + KEY_LIST_CONTEXT, uuid)
+                .retrieve()
+                .toEntityList(KeyDataResponseDto.class)
                 .block().getBody(),
                 request,
                 connector);
