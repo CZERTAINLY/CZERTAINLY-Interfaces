@@ -72,7 +72,7 @@ public interface CryptographicKeyController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<KeyDto> listKeys(@RequestParam(required = false) Optional<String> tokenInstanceUuid);
+    List<KeyDto> listKeys(@RequestParam(required = false) Optional<String> tokenProfileUuid);
 
     @Operation(
             summary = "Get Cryptographic Key Detail"
@@ -82,12 +82,12 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/keys/{uuid}",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     KeyDetailDto getKey(
-            @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenProfileUuid,
             @Parameter(description = "UUID of the Key") @PathVariable String uuid
     ) throws NotFoundException;
 
@@ -106,11 +106,11 @@ public interface CryptographicKeyController {
                     )
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/keys",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    KeyDetailDto createKey(@Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
+    KeyDetailDto createKey(@Parameter(description = "UUID of the Token Instance") @PathVariable String tokenProfileUuid,
                            @RequestBody KeyRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException;
 
     @Operation(
@@ -122,13 +122,13 @@ public interface CryptographicKeyController {
             }
     )
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/keys/{uuid}",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void destroyKey(
-            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid)
             throws ConnectorException;
 
@@ -146,11 +146,11 @@ public interface CryptographicKeyController {
                     )
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/keys/attributes",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listCreateKeyAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid
+            @Parameter(description = "Token instance UUID") @PathVariable String tokenProfileUuid
     ) throws ConnectorException;
 }

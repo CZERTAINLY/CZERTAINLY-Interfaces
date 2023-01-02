@@ -33,7 +33,7 @@ public class KeyRequestDto {
             description = "List of Attributes to create a Key",
             required = true
     )
-    private List<RequestAttributeDto> createKeyAttributes;
+    private List<RequestAttributeDto> attributes;
 
     @Schema(
             description = "Custom Attributes for the key"

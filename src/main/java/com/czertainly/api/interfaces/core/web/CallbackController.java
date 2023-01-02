@@ -61,7 +61,13 @@ public interface CallbackController {
 						   @Parameter(description = "Kind") @PathVariable String kind,
 						   @RequestBody RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "RA Profile Callback API", description = "API to trigger the Callback for RA Profile.")
+	@Operation(summary = "Cryptographic Key Callback API", description = "API to trigger the Callback for Cryptographic Keys.")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
+	@RequestMapping(path = "/cryptography/tokenInstances/{tokenInstanceUuid}/callback", method = RequestMethod.POST, consumes = {
+			"application/json" }, produces = { "application/json" })
+    Object keyCallback(@Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid, @RequestBody  RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
+
+    @Operation(summary = "RA Profile Callback API", description = "API to trigger the Callback for RA Profile.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
 	@RequestMapping(path = "/{authorityUuid}/callback", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })

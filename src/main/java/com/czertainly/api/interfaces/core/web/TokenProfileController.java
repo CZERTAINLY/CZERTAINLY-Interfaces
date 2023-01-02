@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/cryptography")
 @Tag(name = "Token Profile Management", description = "Token Profile Management API")
 @ApiResponses(
         value = {
