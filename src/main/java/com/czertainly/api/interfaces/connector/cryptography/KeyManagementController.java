@@ -155,4 +155,28 @@ public interface KeyManagementController {
             @RequestBody DestroyKeyRequestDto request
     ) throws NotFoundException, KeyManagementException;
 
+    @Operation(
+            summary = "List Keys for the Token instance"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Keys listed"
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                            ))
+            })
+    @RequestMapping(
+            path = "/list",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    List<KeyDataResponseDto> listKeys(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid
+    ) throws Exception;
 }
