@@ -3,7 +3,6 @@ package com.czertainly.api.model.core.cryptography.token;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +33,7 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
             description = "Status Of the Token Instance",
             required = true
     )
-    private TokenInstanceStatus status;
+    private TokenInstanceStatusDetailDto status;
 
     @Schema(
             description = "Number of Token Profiles associated",
