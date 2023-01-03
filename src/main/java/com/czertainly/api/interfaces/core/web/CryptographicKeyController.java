@@ -5,6 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.cryptography.key.KeyRequestDto;
+import com.czertainly.api.model.client.cryptography.key.KeyRequestType;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
@@ -106,12 +107,14 @@ public interface CryptographicKeyController {
                     )
             })
     @RequestMapping(
-            path = "/tokenProfiles/{tokenProfileUuid}/keys",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{type}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     KeyDetailDto createKey(@Parameter(description = "UUID of the Token Instance") @PathVariable String tokenProfileUuid,
-                           @RequestBody KeyRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException;
+                           @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type,
+                           @RequestBody KeyRequestDto request
+    ) throws AlreadyExistException, ValidationException, ConnectorException;
 
     @Operation(
             description = "Destroy Cryptographic Key"
@@ -129,7 +132,8 @@ public interface CryptographicKeyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void destroyKey(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenProfileUuid,
-            @Parameter(description = "Key UUID") @PathVariable String uuid)
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "List of UUIDs of keys available in the key pair") @RequestBody List<String> keyUuids)
             throws ConnectorException;
 
 
@@ -146,11 +150,12 @@ public interface CryptographicKeyController {
                     )
             })
     @RequestMapping(
-            path = "/tokenProfiles/{tokenProfileUuid}/keys/attributes",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{type}/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listCreateKeyAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenProfileUuid
+            @Parameter(description = "Token instance UUID") @PathVariable String tokenProfileUuid,
+            @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type
     ) throws ConnectorException;
 }
