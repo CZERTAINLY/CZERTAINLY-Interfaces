@@ -63,13 +63,16 @@ public interface CryptographicOperationsController {
                     )
             })
     @RequestMapping(
-            path = "/cipher/{algorithm}/attributes",
+            path = "/{keyUuid}/cipher/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
     List<BaseAttribute> listCipherAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid
     ) throws NotFoundException;
 
     @Operation(
@@ -89,7 +92,7 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/cipher/{algorithm}/attributes/validate",
+            path = "/{keyUuid}/cipher/attributes/validate",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -97,9 +100,13 @@ public interface CryptographicOperationsController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     * @throws ValidationException Invalid Attributes
+     */
     void validateCipherAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
             @RequestBody List<RequestAttributeDto> attributes
     ) throws NotFoundException, ValidationException;
 
@@ -120,15 +127,19 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/encrypt",
+            path = "/{keyUuid}/encrypt",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
     EncryptDataResponseDto encryptData(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
             @RequestBody CipherDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws NotFoundException;
 
     @Operation(
             summary = "Decrypt data using a Key"
@@ -147,15 +158,19 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/decrypt",
+            path = "/{keyUuid}/decrypt",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
     DecryptDataResponseDto decryptData(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
             @RequestBody CipherDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws NotFoundException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // signature operations
@@ -172,13 +187,16 @@ public interface CryptographicOperationsController {
                     )
             })
     @RequestMapping(
-            path = "/signature/{algorithm}/attributes",
+            path = "/{keyUuid}/signature/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
     List<BaseAttribute> listSignatureAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid
     ) throws NotFoundException;
 
     @Operation(
@@ -198,7 +216,7 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/signature/{algorithm}/attributes/validate",
+            path = "/{keyUuid}/signature/attributes/validate",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -206,9 +224,13 @@ public interface CryptographicOperationsController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     * @throws ValidationException Invalid Attributes
+     */
     void validateSignatureAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
             @RequestBody List<RequestAttributeDto> attributes
     ) throws NotFoundException, ValidationException;
 
@@ -229,18 +251,22 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/sign",
+            path = "/{keyUuid}/sign",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
     SignDataResponseDto signData(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
             @RequestBody SignDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws NotFoundException;
 
     @Operation(
-            summary = "Decrypt data using a Key"
+            summary = "Verify data using a Key"
     )
     @ApiResponses(
             value = {
@@ -256,15 +282,19 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/verify",
+            path = "/{keyUuid}/verify",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
     VerifyDataResponseDto verifyData(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
             @RequestBody VerifyDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws NotFoundException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // generate random operations
@@ -285,6 +315,9 @@ public interface CryptographicOperationsController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     List<BaseAttribute> listRandomAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
@@ -314,6 +347,10 @@ public interface CryptographicOperationsController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     * @throws ValidationException Invalid Attributes
+     */
     void validateRandomAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
@@ -341,9 +378,12 @@ public interface CryptographicOperationsController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     RandomDataResponseDto randomData(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody RandomDataRequestDto request
-    ) throws NotFoundException, CryptographicOperationException;
+    ) throws NotFoundException;
 
 }

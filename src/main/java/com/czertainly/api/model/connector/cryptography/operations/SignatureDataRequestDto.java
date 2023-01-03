@@ -17,10 +17,10 @@ import java.util.List;
 public class SignatureDataRequestDto {
 
     @Schema(
-            description = "Attributes of the Key",
+            description = "Metadata of the Key",
             required = true
     )
-    private List<MetadataAttribute> keyAttributes;
+    private List<MetadataAttribute> keyMetadata;
 
     @Schema(
             description = "List of cipher Attributes",

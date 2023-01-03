@@ -2,7 +2,6 @@ package com.czertainly.api.interfaces.connector.cryptography;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.TokenInstanceException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -79,9 +78,12 @@ public interface TokenInstanceController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     TokenInstanceDto getTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException, TokenInstanceException;
+    ) throws NotFoundException;
 
     @Operation(
             summary = "Create Token instance"
@@ -98,9 +100,12 @@ public interface TokenInstanceController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    /**
+     * @throws AlreadyExistException Token instance already exists
+     */
     TokenInstanceDto createTokenInstance(
             @RequestBody TokenInstanceRequestDto request
-    ) throws AlreadyExistException, TokenInstanceException;
+    ) throws AlreadyExistException;
 
     @Operation(
             summary = "Update Token instance"
@@ -118,10 +123,13 @@ public interface TokenInstanceController {
             consumes = {"application/json"},
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     TokenInstanceDto updateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody TokenInstanceRequestDto request
-    ) throws NotFoundException, TokenInstanceException;
+    ) throws NotFoundException;
 
     @Operation(
             summary = "Remove Token instance"
@@ -140,9 +148,12 @@ public interface TokenInstanceController {
     @ResponseStatus(
             HttpStatus.NO_CONTENT
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     void removeTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException, TokenInstanceException;
+    ) throws NotFoundException;
 
     @Operation(
             summary = "Get Token instance status",
@@ -160,9 +171,12 @@ public interface TokenInstanceController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     TokenInstanceStatusDto getTokenInstanceStatus(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException, TokenInstanceException;
+    ) throws NotFoundException;
 
     @Operation(
             summary = "List Token Profile Attributes"
@@ -179,9 +193,12 @@ public interface TokenInstanceController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     List<BaseAttribute> listTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException, TokenInstanceException;
+    ) throws NotFoundException;
 
     @Operation(
             summary = "Validate Token Profile Attributes"
@@ -202,6 +219,10 @@ public interface TokenInstanceController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     * @throws ValidationException Invalid Attributes
+     */
     void validateTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
@@ -226,6 +247,9 @@ public interface TokenInstanceController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     List<BaseAttribute> listTokenInstanceActivationAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
@@ -249,6 +273,10 @@ public interface TokenInstanceController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     * @throws ValidationException Invalid Attributes
+     */
     void validateTokenInstanceActivationAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
@@ -273,10 +301,13 @@ public interface TokenInstanceController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     void activateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
-    ) throws ValidationException, NotFoundException, TokenInstanceException;
+    ) throws NotFoundException;
 
     @Operation(
             summary = "Deactivate Token"
@@ -293,8 +324,11 @@ public interface TokenInstanceController {
             method = RequestMethod.PATCH,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     void deactivateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws NotFoundException, TokenInstanceException;
+    ) throws NotFoundException;
 
 }
