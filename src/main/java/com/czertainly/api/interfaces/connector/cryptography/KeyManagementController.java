@@ -292,7 +292,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/{keyUuid}/destroy",
+            path = "/{keyUuid}",
             method = RequestMethod.DELETE
     )
     @ResponseStatus(

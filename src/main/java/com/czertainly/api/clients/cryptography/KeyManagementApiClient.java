@@ -25,8 +25,6 @@ public class KeyManagementApiClient extends BaseApiClient {
     private static final String KEY_CREATE_KEY_PAIR_ATTRIBUTES_VALIDATE_CONTEXT = KEY_CREATE_KEY_PAIR_ATTRIBUTES_CONTEXT + "/validate";
     private static final String KEY_LIST_CONTEXT = KEY_BASE_CONTEXT + "/list";
     private static final String KEY_DETAILS_CONTEXT = KEY_BASE_CONTEXT + "/{keyUuid}";
-    private static final String KEY_DESTROY_CONTEXT = KEY_BASE_CONTEXT + "/{keyUuid}/destroy";
-
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -139,7 +137,7 @@ public class KeyManagementApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
 
         processRequest(r -> r
-                        .uri(connector.getUrl() + KEY_DESTROY_CONTEXT, uuid, keyUuid)
+                        .uri(connector.getUrl() + KEY_DETAILS_CONTEXT, uuid, keyUuid)
                         .retrieve()
                         .toEntity(Void.class)
                         .block().getBody(),
