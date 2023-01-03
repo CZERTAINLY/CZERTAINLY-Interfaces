@@ -57,7 +57,7 @@ public interface KeyManagementController {
                     )
             })
     @RequestMapping(
-            path = "/createSecretKey/attributes",
+            path = "/secret/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
@@ -85,7 +85,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/createSecretKey/attributes/validate",
+            path = "/secret/attributes/validate",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -119,7 +119,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/createSecretKey",
+            path = "/secret",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -143,7 +143,7 @@ public interface KeyManagementController {
                     )
             })
     @RequestMapping(
-            path = "/createKeyPair/attributes",
+            path = "/pair/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
@@ -171,7 +171,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/createKeyPair/attributes/validate",
+            path = "/pair/attributes/validate",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -205,7 +205,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/createKeyPair",
+            path = "/pair",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
