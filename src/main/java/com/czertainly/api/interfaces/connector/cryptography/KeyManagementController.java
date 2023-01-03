@@ -1,14 +1,11 @@
 package com.czertainly.api.interfaces.connector.cryptography;
 
-import com.czertainly.api.exception.KeyManagementException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.connector.cryptography.key.CreateKeyRequestDto;
-import com.czertainly.api.model.connector.cryptography.key.DestroyKeyRequestDto;
-import com.czertainly.api.model.connector.cryptography.key.KeyDataResponseDto;
+import com.czertainly.api.model.connector.cryptography.key.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -50,7 +47,7 @@ import java.util.List;
 public interface KeyManagementController {
 
     @Operation(
-            summary = "List of Attributes to create a Key"
+            summary = "List of Attributes to create a Secret Key"
     )
     @ApiResponses(
             value = {
@@ -60,16 +57,19 @@ public interface KeyManagementController {
                     )
             })
     @RequestMapping(
-            path = "/create/attributes",
+            path = "/secret/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<BaseAttribute> listCreateKeyAttributes(
+    /**
+     * @throws NotFoundException Token instance not found
+     */
+    List<BaseAttribute> listCreateSecretKeyAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
 
     @Operation(
-            summary = "Validate list of Attributes to create a Key"
+            summary = "Validate list of Attributes to create a Secret Key"
     )
     @ApiResponses(
             value = {
@@ -85,7 +85,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/create/attributes/validate",
+            path = "/secret/attributes/validate",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -93,13 +93,17 @@ public interface KeyManagementController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
-    void validateCreateKeyAttributes(
+    /**
+     * @throws NotFoundException Token instance not found
+     * @throws ValidationException Invalid Attributes
+     */
+    void validateCreateSecretKeyAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes
     ) throws NotFoundException, ValidationException;
 
     @Operation(
-            summary = "Create a Key"
+            summary = "Create a Secret Key"
     )
     @ApiResponses(
             value = {
@@ -115,24 +119,49 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/create",
+            path = "/secret",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
-    KeyDataResponseDto createKey(
+    /**
+     * @throws NotFoundException Token instance not found
+     */
+    SecretKeyDataResponseDto createSecretKey(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody CreateKeyRequestDto request
-    ) throws NotFoundException, KeyManagementException;
+    ) throws NotFoundException;
 
     @Operation(
-            summary = "Destroy a Key"
+            summary = "List of Attributes to create a Key Pair"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "List of Attributes retrieved"
+                    )
+            })
+    @RequestMapping(
+            path = "/pair/attributes",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
+    List<BaseAttribute> listCreateKeyPairAttributes(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid
+    ) throws NotFoundException;
+
+    @Operation(
+            summary = "Validate list of Attributes to create a Key Pair"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "204",
-                            description = "Key destroyed"
+                            description = "Attributes validated"
                     ),
                     @ApiResponse(
                             responseCode = "422",
@@ -142,7 +171,7 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/destroy",
+            path = "/pair/attributes/validate",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
@@ -150,10 +179,44 @@ public interface KeyManagementController {
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT
     )
-    void destroyKey(
+    /**
+     * @throws NotFoundException Token instance not found
+     * @throws ValidationException Invalid Attributes
+     */
+    void validateCreateKeyPairAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @RequestBody DestroyKeyRequestDto request
-    ) throws NotFoundException, KeyManagementException;
+            @RequestBody List<RequestAttributeDto> attributes
+    ) throws NotFoundException, ValidationException;
+
+    @Operation(
+            summary = "Create a Key Pair, Public and Private Key"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Key Pair created"
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                            ))
+            })
+    @RequestMapping(
+            path = "/pair",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
+    KeyPairDataResponseDto createKeyPair(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @RequestBody CreateKeyRequestDto request
+    ) throws NotFoundException;
 
     @Operation(
             summary = "List Keys for the Token instance"
@@ -176,7 +239,71 @@ public interface KeyManagementController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
+    /**
+     * @throws NotFoundException Token instance not found
+     */
     List<KeyDataResponseDto> listKeys(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws Exception;
+    ) throws NotFoundException;
+
+    @Operation(
+            summary = "Get details about the Key"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Key data retrieved"
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                            ))
+            })
+    @RequestMapping(
+            path = "/{keyUuid}",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
+    KeyDataResponseDto getKey(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid
+    ) throws NotFoundException;
+
+    @Operation(
+            summary = "Destroy a Key"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Key destroyed"
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Unprocessable Entity",
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                            ))
+            })
+    @RequestMapping(
+            path = "/{keyUuid}",
+            method = RequestMethod.DELETE
+    )
+    @ResponseStatus(
+            value = HttpStatus.NO_CONTENT
+    )
+    /**
+     * @throws NotFoundException Token instance or Key not found
+     */
+    void destroyKey(
+            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Key UUID") @PathVariable String keyUuid
+    ) throws NotFoundException;
+
 }

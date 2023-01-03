@@ -5,9 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.connector.cryptography.key.CreateKeyRequestDto;
-import com.czertainly.api.model.connector.cryptography.key.DestroyKeyRequestDto;
-import com.czertainly.api.model.connector.cryptography.key.KeyDataResponseDto;
+import com.czertainly.api.model.connector.cryptography.key.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -19,12 +17,14 @@ import java.util.List;
 public class KeyManagementApiClient extends BaseApiClient {
 
     private static final String KEY_BASE_CONTEXT = "/v1/cryptographyProvider/tokens/{uuid}/keys";
-    private static final String KEY_CREATE_CONTEXT = KEY_BASE_CONTEXT + "/create";
-    private static final String KEY_CREATE_ATTRIBUTES_CONTEXT = KEY_CREATE_CONTEXT + "/attributes";
-    private static final String KEY_CREATE_ATTRIBUTES_VALIDATE_CONTEXT = KEY_CREATE_ATTRIBUTES_CONTEXT + "/validate";
-    private static final String KEY_DESTROY_CONTEXT = KEY_BASE_CONTEXT + "/destroy";
+    private static final String KEY_CREATE_SECRET_KEY_CONTEXT = KEY_BASE_CONTEXT + "/secret";
+    private static final String KEY_CREATE_SECRET_KEY_ATTRIBUTES_CONTEXT = KEY_CREATE_SECRET_KEY_CONTEXT + "/attributes";
+    private static final String KEY_CREATE_SECRET_KEY_ATTRIBUTES_VALIDATE_CONTEXT = KEY_CREATE_SECRET_KEY_ATTRIBUTES_CONTEXT + "/validate";
+    private static final String KEY_CREATE_KEY_PAIR_CONTEXT = KEY_BASE_CONTEXT + "/pair";
+    private static final String KEY_CREATE_KEY_PAIR_ATTRIBUTES_CONTEXT = KEY_CREATE_KEY_PAIR_CONTEXT + "/attributes";
+    private static final String KEY_CREATE_KEY_PAIR_ATTRIBUTES_VALIDATE_CONTEXT = KEY_CREATE_KEY_PAIR_ATTRIBUTES_CONTEXT + "/validate";
     private static final String KEY_LIST_CONTEXT = KEY_BASE_CONTEXT + "/list";
-
+    private static final String KEY_DETAILS_CONTEXT = KEY_BASE_CONTEXT + "/{keyUuid}";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -33,11 +33,11 @@ public class KeyManagementApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<BaseAttribute> listCreateKeyAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listCreateSecretKeyAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + KEY_CREATE_ATTRIBUTES_CONTEXT, uuid)
+                .uri(connector.getUrl() + KEY_CREATE_SECRET_KEY_ATTRIBUTES_CONTEXT, uuid)
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
                 .block().getBody(),
@@ -45,11 +45,11 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateCreateKeyAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateCreateSecretKeyAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
-                .uri(connector.getUrl() + KEY_CREATE_ATTRIBUTES_VALIDATE_CONTEXT, uuid)
+                .uri(connector.getUrl() + KEY_CREATE_SECRET_KEY_ATTRIBUTES_VALIDATE_CONTEXT, uuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
@@ -58,27 +58,52 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public KeyDataResponseDto createKey(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
+    public SecretKeyDataResponseDto createSecretKey(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + KEY_CREATE_CONTEXT, uuid)
+                .uri(connector.getUrl() + KEY_CREATE_SECRET_KEY_CONTEXT, uuid)
                 .body(Mono.just(requestDto), CreateKeyRequestDto.class)
                 .retrieve()
-                .toEntity(KeyDataResponseDto.class)
+                .toEntity(SecretKeyDataResponseDto.class)
                 .block().getBody(),
                 request,
                 connector);
     }
 
-    public void destroyKey(ConnectorDto connector, String uuid, DestroyKeyRequestDto requestDto) throws ConnectorException {
+    public List<BaseAttribute> listCreateKeyPairAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
+
+        return processRequest(r -> r
+                        .uri(connector.getUrl() + KEY_CREATE_KEY_PAIR_ATTRIBUTES_CONTEXT, uuid)
+                        .retrieve()
+                        .toEntityList(BaseAttribute.class)
+                        .block().getBody(),
+                request,
+                connector);
+    }
+
+    public void validateCreateKeyPairAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
-                .uri(connector.getUrl() + KEY_DESTROY_CONTEXT, uuid)
-                .body(Mono.just(requestDto), DestroyKeyRequestDto.class)
+                        .uri(connector.getUrl() + KEY_CREATE_KEY_PAIR_ATTRIBUTES_VALIDATE_CONTEXT, uuid)
+                        .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
+                        .retrieve()
+                        .toEntity(Void.class)
+                        .block().getBody(),
+                request,
+                connector);
+    }
+
+    public KeyPairDataResponseDto createKeyPair(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+
+        return processRequest(r -> r
+                .uri(connector.getUrl() + KEY_CREATE_KEY_PAIR_CONTEXT, uuid)
+                .body(Mono.just(requestDto), CreateKeyRequestDto.class)
                 .retrieve()
-                .toEntity(Void.class)
+                .toEntity(KeyPairDataResponseDto.class)
                 .block().getBody(),
                 request,
                 connector);
@@ -92,6 +117,30 @@ public class KeyManagementApiClient extends BaseApiClient {
                 .retrieve()
                 .toEntityList(KeyDataResponseDto.class)
                 .block().getBody(),
+                request,
+                connector);
+    }
+
+    public KeyDataResponseDto getKey(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
+
+        return processRequest(r -> r
+                .uri(connector.getUrl() + KEY_DETAILS_CONTEXT, uuid, keyUuid)
+                .retrieve()
+                .toEntity(KeyDataResponseDto.class)
+                .block().getBody(),
+                request,
+                connector);
+    }
+
+    public void destroyKey(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
+
+        processRequest(r -> r
+                        .uri(connector.getUrl() + KEY_DETAILS_CONTEXT, uuid, keyUuid)
+                        .retrieve()
+                        .toEntity(Void.class)
+                        .block().getBody(),
                 request,
                 connector);
     }
