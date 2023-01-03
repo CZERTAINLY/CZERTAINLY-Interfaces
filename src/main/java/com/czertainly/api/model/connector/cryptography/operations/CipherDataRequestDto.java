@@ -16,10 +16,9 @@ import java.util.List;
 public class CipherDataRequestDto {
 
     @Schema(
-            description = "Attributes of the Key",
-            required = true
+            description = "Metadata of the Key"
     )
-    private List<MetadataAttribute> keyAttributes;
+    private List<MetadataAttribute> keyMetadata;
 
     @Schema(
             description = "List of cipher Attributes",

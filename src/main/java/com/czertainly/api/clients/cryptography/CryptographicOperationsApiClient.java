@@ -5,7 +5,6 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.operations.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,13 +17,13 @@ import java.util.List;
 public class CryptographicOperationsApiClient extends BaseApiClient {
 
     private static final String CRYPTOP_BASE_CONTEXT = "/v1/cryptographyProvider/tokens/{uuid}/keys";
-    private static final String CRYPTOP_ENCRYPT_CONTEXT = CRYPTOP_BASE_CONTEXT + "/encrypt";
-    private static final String CRYPTOP_DECRYPT_CONTEXT = CRYPTOP_BASE_CONTEXT + "/decrypt";
-    private static final String CRYPTOP_CIPHER_ATTRS_CONTEXT = CRYPTOP_BASE_CONTEXT + "/cipher/{algorithm}/attributes";
+    private static final String CRYPTOP_ENCRYPT_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/encrypt";
+    private static final String CRYPTOP_DECRYPT_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/decrypt";
+    private static final String CRYPTOP_CIPHER_ATTRS_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/cipher/attributes";
     private static final String CRYPTOP_CIPHER_ATTRS_VALIDATE_CONTEXT = CRYPTOP_CIPHER_ATTRS_CONTEXT + "/validate";
-    private static final String CRYPTOP_SIGN_CONTEXT = CRYPTOP_BASE_CONTEXT + "/sign";
-    private static final String CRYPTOP_VERIFY_CONTEXT = CRYPTOP_BASE_CONTEXT + "/verify";
-    private static final String CRYPTOP_SIGNATURE_ATTRS_CONTEXT = CRYPTOP_BASE_CONTEXT + "/signature/{algorithm}/attributes";
+    private static final String CRYPTOP_SIGN_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/sign";
+    private static final String CRYPTOP_VERIFY_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/verify";
+    private static final String CRYPTOP_SIGNATURE_ATTRS_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/signature/attributes";
     private static final String CRYPTOP_SIGNATURE_ATTRS_VALIDATE_CONTEXT = CRYPTOP_SIGNATURE_ATTRS_CONTEXT + "/validate";
     private static final String CRYPTOP_RANDOM_CONTEXT = CRYPTOP_BASE_CONTEXT + "/random";
     private static final String CRYPTOP_RANDOM_ATTRS_CONTEXT = CRYPTOP_RANDOM_CONTEXT + "/attributes";
@@ -37,11 +36,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
         this.webClient = webClient;
     }
 
-    public List<BaseAttribute> listCipherAttributes(ConnectorDto connector, String uuid, CryptographicAlgorithm algorithm) throws ConnectorException {
+    public List<BaseAttribute> listCipherAttributes(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_CIPHER_ATTRS_CONTEXT, uuid, algorithm)
+                .uri(connector.getUrl() + CRYPTOP_CIPHER_ATTRS_CONTEXT, uuid, keyUuid)
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
                 .block().getBody(),
@@ -49,11 +48,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateCipherAttributes(ConnectorDto connector, String uuid, CryptographicAlgorithm algorithm, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateCipherAttributes(ConnectorDto connector, String uuid, String keyUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_CIPHER_ATTRS_VALIDATE_CONTEXT, uuid, algorithm)
+                .uri(connector.getUrl() + CRYPTOP_CIPHER_ATTRS_VALIDATE_CONTEXT, uuid, keyUuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
@@ -62,11 +61,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public EncryptDataResponseDto encryptData(ConnectorDto connector, String uuid, CipherDataRequestDto requestDto) throws ConnectorException {
+    public EncryptDataResponseDto encryptData(ConnectorDto connector, String uuid, String keyUuid, CipherDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_ENCRYPT_CONTEXT, uuid)
+                .uri(connector.getUrl() + CRYPTOP_ENCRYPT_CONTEXT, uuid, keyUuid)
                 .body(Mono.just(requestDto), CipherDataRequestDto.class)
                 .retrieve()
                 .toEntity(EncryptDataResponseDto.class)
@@ -75,11 +74,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public DecryptDataResponseDto decryptData(ConnectorDto connector, String uuid, CipherDataRequestDto requestDto) throws ConnectorException {
+    public DecryptDataResponseDto decryptData(ConnectorDto connector, String uuid, String keyUuid, CipherDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_DECRYPT_CONTEXT, uuid)
+                .uri(connector.getUrl() + CRYPTOP_DECRYPT_CONTEXT, uuid, keyUuid)
                 .body(Mono.just(requestDto), CipherDataRequestDto.class)
                 .retrieve()
                 .toEntity(DecryptDataResponseDto.class)
@@ -88,11 +87,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttribute> listSignatureAttributes(ConnectorDto connector, String uuid, CryptographicAlgorithm algorithm) throws ConnectorException {
+    public List<BaseAttribute> listSignatureAttributes(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_SIGNATURE_ATTRS_CONTEXT, uuid, algorithm)
+                .uri(connector.getUrl() + CRYPTOP_SIGNATURE_ATTRS_CONTEXT, uuid, keyUuid)
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
                 .block().getBody(),
@@ -100,11 +99,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateSignatureAttributes(ConnectorDto connector, String uuid, CryptographicAlgorithm algorithm, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateSignatureAttributes(ConnectorDto connector, String uuid, String keyUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_SIGNATURE_ATTRS_VALIDATE_CONTEXT, uuid, algorithm)
+                .uri(connector.getUrl() + CRYPTOP_SIGNATURE_ATTRS_VALIDATE_CONTEXT, uuid, keyUuid)
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
@@ -113,11 +112,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public SignDataResponseDto signData(ConnectorDto connector, String uuid, SignDataRequestDto requestDto) throws ConnectorException {
+    public SignDataResponseDto signData(ConnectorDto connector, String uuid, String keyUuid, SignDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_SIGN_CONTEXT, uuid)
+                .uri(connector.getUrl() + CRYPTOP_SIGN_CONTEXT, uuid, keyUuid)
                 .body(Mono.just(requestDto), SignDataRequestDto.class)
                 .retrieve()
                 .toEntity(SignDataResponseDto.class)
@@ -126,11 +125,11 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public VerifyDataResponseDto verifyData(ConnectorDto connector, String uuid, VerifyDataRequestDto requestDto) throws ConnectorException {
+    public VerifyDataResponseDto verifyData(ConnectorDto connector, String uuid, String keyUuid, VerifyDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_VERIFY_CONTEXT, uuid)
+                .uri(connector.getUrl() + CRYPTOP_VERIFY_CONTEXT, uuid, keyUuid)
                 .body(Mono.just(requestDto), VerifyDataRequestDto.class)
                 .retrieve()
                 .toEntity(VerifyDataResponseDto.class)
