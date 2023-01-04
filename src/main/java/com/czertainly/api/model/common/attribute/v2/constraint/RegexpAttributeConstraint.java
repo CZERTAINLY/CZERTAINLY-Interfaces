@@ -15,6 +15,7 @@ public class RegexpAttributeConstraint extends BaseAttributeConstraint<String> {
     }
 
     public RegexpAttributeConstraint() {
+        super(AttributeConstraintType.REGEXP);
     }
 
     @Override

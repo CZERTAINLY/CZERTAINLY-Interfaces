@@ -16,6 +16,7 @@ public class RangeAttributeConstraint extends BaseAttributeConstraint<RangeAttri
     }
 
     public RangeAttributeConstraint() {
+        super(AttributeConstraintType.RANGE);
     }
 
     @Override

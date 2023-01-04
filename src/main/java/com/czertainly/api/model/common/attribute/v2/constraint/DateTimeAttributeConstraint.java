@@ -16,6 +16,7 @@ public class DateTimeAttributeConstraint extends BaseAttributeConstraint<DateTim
     }
 
     public DateTimeAttributeConstraint() {
+        super(AttributeConstraintType.DATETIME);
     }
 
     @Override
