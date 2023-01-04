@@ -9,8 +9,8 @@ public class RegexpAttributeConstraint extends BaseAttributeConstraint<String> {
     @Schema(description = "Regular Expression Attribute Constraint Data")
     private String data;
 
-    public RegexpAttributeConstraint(String description, String errorMessage, AttributeConstraintType type, String data) {
-        super(description, errorMessage, type);
+    public RegexpAttributeConstraint(String description, String errorMessage, String data) {
+        super(description, errorMessage, AttributeConstraintType.REGEXP);
         this.data = data;
     }
 

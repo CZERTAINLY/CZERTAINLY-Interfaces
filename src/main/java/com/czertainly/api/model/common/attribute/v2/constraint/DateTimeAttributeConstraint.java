@@ -10,8 +10,8 @@ public class DateTimeAttributeConstraint extends BaseAttributeConstraint<DateTim
     @Schema(description = "DateTime Range Attribute Constraint Data")
     private DateTimeAttributeConstraintData data;
 
-    public DateTimeAttributeConstraint(String description, String errorMessage, AttributeConstraintType type, DateTimeAttributeConstraintData data) {
-        super(description, errorMessage, type);
+    public DateTimeAttributeConstraint(String description, String errorMessage, DateTimeAttributeConstraintData data) {
+        super(description, errorMessage, AttributeConstraintType.DATETIME);
         this.data = data;
     }
 
