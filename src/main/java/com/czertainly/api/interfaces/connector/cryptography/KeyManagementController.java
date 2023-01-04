@@ -127,7 +127,7 @@ public interface KeyManagementController {
     /**
      * @throws NotFoundException Token instance not found
      */
-    SecretKeyDataResponseDto createSecretKey(
+    KeyDataResponseDto createSecretKey(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
             @RequestBody CreateKeyRequestDto request
     ) throws NotFoundException;
