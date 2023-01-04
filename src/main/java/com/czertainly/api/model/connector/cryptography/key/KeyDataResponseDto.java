@@ -1,6 +1,29 @@
 package com.czertainly.api.model.connector.cryptography.key;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
-public abstract class KeyDataResponseDto extends NameAndUuidDto {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class KeyDataResponseDto extends NameAndUuidDto {
+
+    @Schema(
+            description = "Identification of association with related key data. " +
+                    "This may be used for example to associate public and private key, " +
+                    "or associated multiple key data of split key parts, etc."
+    )
+    private String association;
+
+    @Schema(
+            description = "Data of the Key",
+            required = true
+    )
+    private KeyData keyData;
+
 }
