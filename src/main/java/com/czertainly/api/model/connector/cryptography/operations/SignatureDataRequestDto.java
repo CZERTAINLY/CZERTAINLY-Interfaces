@@ -17,12 +17,6 @@ import java.util.List;
 public class SignatureDataRequestDto {
 
     @Schema(
-            description = "Metadata of the Key",
-            required = true
-    )
-    private List<MetadataAttribute> keyMetadata;
-
-    @Schema(
             description = "List of cipher Attributes",
             required = true
     )

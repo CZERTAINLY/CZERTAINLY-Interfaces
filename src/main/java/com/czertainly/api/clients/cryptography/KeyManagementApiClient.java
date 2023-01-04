@@ -58,14 +58,14 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public SecretKeyDataResponseDto createSecretKey(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
+    public KeyDataResponseDto createSecretKey(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + KEY_CREATE_SECRET_KEY_CONTEXT, uuid)
                 .body(Mono.just(requestDto), CreateKeyRequestDto.class)
                 .retrieve()
-                .toEntity(SecretKeyDataResponseDto.class)
+                .toEntity(KeyDataResponseDto.class)
                 .block().getBody(),
                 request,
                 connector);
