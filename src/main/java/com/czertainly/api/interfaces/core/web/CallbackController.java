@@ -5,6 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,24 +55,21 @@ public interface CallbackController {
 
 	@Operation(summary = "Connector Callback API", description = "API to trigger the Callback for Connector.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
-	@RequestMapping(path = "/connectors/{uuid}/{functionGroup}/{kind}/callback", method = RequestMethod.POST, consumes = {
+	@RequestMapping(path = "/{resourceName}/{uuid}/{functionGroup}/{kind}/callback", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
 	public Object callback(@Parameter(description = "Connector UUID") @PathVariable String uuid,
 						   @Parameter(description = "Function Group") @PathVariable String functionGroup,
 						   @Parameter(description = "Kind") @PathVariable String kind,
 						   @RequestBody RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "Cryptographic Key Callback API", description = "API to trigger the Callback for Cryptographic Keys.")
+    @Operation(summary = "Resource Callback API", description = "API to trigger the Callback for resource.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
-	@RequestMapping(path = "/cryptography/tokenInstances/{tokenInstanceUuid}/callback", method = RequestMethod.POST, consumes = {
+	@RequestMapping(path = "/{resource}/{resourceUuid}/callback", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
-    Object keyCallback(@Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid, @RequestBody  RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
-
-    @Operation(summary = "RA Profile Callback API", description = "API to trigger the Callback for RA Profile.")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
-	@RequestMapping(path = "/{authorityUuid}/callback", method = RequestMethod.POST, consumes = {
-			"application/json" }, produces = { "application/json" })
-	public Object raProfileCallback(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
-						   @RequestBody RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
+	public Object resourceCallback(
+			@Parameter(description = "Name of the resource") @PathVariable Resource resource,
+			@Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
+			@RequestBody RequestAttributeCallback callback)
+			throws NotFoundException, ConnectorException, ValidationException;
 
 	}

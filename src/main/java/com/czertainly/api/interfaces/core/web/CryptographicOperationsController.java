@@ -1,8 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.CryptographicOperationException;
-import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.cryptography.operations.CipherDataRequestDto;
 import com.czertainly.api.model.client.cryptography.operations.RandomDataRequestDto;
 import com.czertainly.api.model.client.cryptography.operations.SignDataRequestDto;
@@ -35,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/cryptography/keys/{uuid}/operations")
+@RequestMapping("/v1/operations/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{uuid}")
 @Tag(name = "Cryptographic Operations Controller", description = "Cryptographic Operations Controller API")
 @ApiResponses(
         value = {
@@ -87,6 +85,8 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listCipherAttributes(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
     ) throws ConnectorException;
@@ -114,9 +114,11 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     EncryptDataResponseDto encryptData(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody CipherDataRequestDto request
-    ) throws CryptographicOperationException, ConnectorException;
+    ) throws ConnectorException;
 
     @Operation(
             summary = "Decrypt data using a Key"
@@ -141,9 +143,11 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     DecryptDataResponseDto decryptData(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody CipherDataRequestDto request
-    ) throws ConnectorException, CryptographicOperationException;
+    ) throws ConnectorException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // signature operations
@@ -165,6 +169,8 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listSignatureAttributes(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key instance UUID") @PathVariable String uuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
     ) throws ConnectorException;
@@ -193,9 +199,11 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     SignDataResponseDto signData(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody SignDataRequestDto request
-    ) throws ConnectorException, CryptographicOperationException;
+    ) throws ConnectorException;
 
     @Operation(
             summary = "Verify data using a Key"
@@ -220,9 +228,11 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     VerifyDataResponseDto verifyData(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody VerifyDataRequestDto request
-    ) throws ConnectorException, CryptographicOperationException;
+    ) throws ConnectorException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // generate random operations
@@ -244,6 +254,8 @@ public interface CryptographicOperationsController {
             produces = {"application/json"}
     )
     List<BaseAttribute> listRandomAttributes(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws ConnectorException;
 
@@ -271,7 +283,9 @@ public interface CryptographicOperationsController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     RandomDataResponseDto randomData(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody RandomDataRequestDto request
-    ) throws ConnectorException, CryptographicOperationException;
+    ) throws ConnectorException;
 }

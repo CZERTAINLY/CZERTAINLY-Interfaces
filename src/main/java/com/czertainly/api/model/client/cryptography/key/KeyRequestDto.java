@@ -18,6 +18,12 @@ import java.util.List;
 public class KeyRequestDto {
 
     @Schema(
+            description = "UUID of the token profile",
+            required = true
+    )
+    private String tokenProfileUuid;
+
+    @Schema(
             description = "Name of the Cryptographic Key",
             required = true
     )

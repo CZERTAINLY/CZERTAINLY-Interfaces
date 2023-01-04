@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/cryptography")
+@RequestMapping("/v1")
 @Tag(name = "Token Profile Management", description = "Token Profile Management API")
 @ApiResponses(
         value = {
@@ -97,7 +97,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "200", description = "Token Profile details retrieved")
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/tokenProfiles/{uuid}",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -116,7 +116,7 @@ public interface TokenProfileController {
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/tokenProfiles",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -135,7 +135,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/tokenProfiles/{uuid}",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -154,7 +154,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "204", description = "Token Profile deleted")
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/tokenProfiles/{uuid}",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -189,7 +189,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "204", description = "Token Profile disabled")
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/tokenProfiles/{uuid}/disable",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}/disable",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -207,7 +207,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "204", description = "Token Profile enabled")
             })
     @RequestMapping(
-            path = "/tokenInstances/{tokenInstanceUuid}/tokenProfiles/{uuid}/enable",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}/enable",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -244,7 +244,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "204", description = "Token Profiles disabled")
             })
     @RequestMapping(
-            path = "/tokenProfiles/disable",
+            path = "/tokens/disable",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

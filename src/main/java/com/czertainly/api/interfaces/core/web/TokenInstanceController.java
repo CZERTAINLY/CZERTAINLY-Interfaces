@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/cryptography/tokenInstances")
+@RequestMapping("/v1/tokens")
 @Tag(name = "Token Instance Controller", description = "Token Instance Controller API")
 @ApiResponses(
         value = {
