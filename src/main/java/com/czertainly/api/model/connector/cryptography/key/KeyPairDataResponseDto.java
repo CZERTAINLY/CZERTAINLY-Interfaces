@@ -16,12 +16,12 @@ public class KeyPairDataResponseDto {
             description = "Data of the Public Key",
             required = true
     )
-    private KeyData publicKeyData;
+    private KeyDataResponseDto publicKeyData;
 
     @Schema(
             description = "Data of the Private Key",
             required = true
     )
-    private KeyData privateKeyData;
+    private KeyDataResponseDto privateKeyData;
 
 }
