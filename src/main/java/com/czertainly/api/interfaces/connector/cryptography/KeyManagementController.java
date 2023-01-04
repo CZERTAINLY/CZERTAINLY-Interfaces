@@ -235,7 +235,6 @@ public interface KeyManagementController {
                             ))
             })
     @RequestMapping(
-            path = "/list",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )

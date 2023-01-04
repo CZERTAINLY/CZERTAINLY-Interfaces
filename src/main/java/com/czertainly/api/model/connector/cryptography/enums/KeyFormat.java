@@ -6,10 +6,10 @@ import org.springframework.lang.Nullable;
 @Schema(enumAsRef = true)
 public enum KeyFormat {
     RAW(1, "Raw", "Encoded key in raw format"),
-    SPKI(7, "SubjectPublicKeyInfo", "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"),
-    PRKI(5, "PrivateKeyInfo", "DER-encoded ASN.1 PrivateKeyInfo of the private key"),
-    EPRKI(5, "EncryptedPrivateKeyInfo", "DER-encoded ASN.1 EncryptedPrivateKeyInfo of the private key"),
-    SPECIFIC(6, "Specific", "Specific encoded format of the key");
+    SPKI(2, "SubjectPublicKeyInfo", "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"),
+    PRKI(3, "PrivateKeyInfo", "DER-encoded ASN.1 PrivateKeyInfo of the private key"),
+    EPRKI(4, "EncryptedPrivateKeyInfo", "DER-encoded ASN.1 EncryptedPrivateKeyInfo of the private key"),
+    CUSTOM(99, "Custom", "Custom, external, specific data");
 
     private static final KeyFormat[] VALUES;
 

@@ -4,9 +4,9 @@ import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
 import com.czertainly.api.model.connector.cryptography.enums.KeyType;
-import com.czertainly.api.model.connector.cryptography.key.value.KeyValue;
-import com.czertainly.api.model.connector.cryptography.key.value.RawKeyValue;
+import com.czertainly.api.model.connector.cryptography.key.value.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -41,7 +41,21 @@ public class KeyData {
     @Schema(
             description = "Value of the Key",
             required = true,
-            anyOf = { RawKeyValue.class }
+            discriminatorProperty = "format",
+            discriminatorMapping = {
+                    @DiscriminatorMapping(value = "RAW", schema = RawKeyValue.class),
+                    @DiscriminatorMapping(value = "SPKI", schema = SpkiKeyValue.class),
+                    @DiscriminatorMapping(value = "PRKI", schema = SpkiKeyValue.class),
+                    @DiscriminatorMapping(value = "EPRKI", schema = SpkiKeyValue.class),
+                    @DiscriminatorMapping(value = "CUSTOM", schema = SpkiKeyValue.class)
+            },
+            oneOf = {
+                    RawKeyValue.class,
+                    SpkiKeyValue.class,
+                    PrkiKeyValue.class,
+                    EprkiKeyValue.class,
+                    CustomKeyValue.class
+            }
     )
     private KeyValue value;
 
