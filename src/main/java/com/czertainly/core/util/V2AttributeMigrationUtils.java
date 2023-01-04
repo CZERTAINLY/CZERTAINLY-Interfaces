@@ -108,7 +108,7 @@ public class V2AttributeMigrationUtils {
         if (regex == null) {
             return null;
         }
-        return List.of(new RegexpAttributeConstraint("", "", AttributeConstraintType.REGEXP, regex));
+        return List.of(new RegexpAttributeConstraint("", "", regex));
     }
 
     private static AttributeCallback getAttributeCallback(com.czertainly.api.model.common.attribute.v1.AttributeCallback oldCallback) {

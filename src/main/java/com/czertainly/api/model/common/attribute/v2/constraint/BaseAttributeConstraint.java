@@ -23,6 +23,11 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint {
         this.type = type;
     }
 
+    public BaseAttributeConstraint(AttributeConstraintType type) {
+        this.type = type;
+    }
+
+    //Empty constructor needed for serialization/deserialization purpose
     public BaseAttributeConstraint() {
     }
 
@@ -44,10 +49,6 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint {
 
     public AttributeConstraintType getType() {
         return type;
-    }
-
-    public void setType(AttributeConstraintType type) {
-        this.type = type;
     }
 
     @Override
