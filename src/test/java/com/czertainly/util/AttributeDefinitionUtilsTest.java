@@ -186,8 +186,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-            // tested method
-            validateAttributes(List.of(definition), List.of())
+                validateAttributes(List.of(definition), List.of())
         );
 
         Assertions.assertEquals(1, exception.getErrors().size());
@@ -258,7 +257,6 @@ public class AttributeDefinitionUtilsTest {
         String validationRegex = "^\\d{4}$";
 
         RegexpAttributeConstraint constraint = new RegexpAttributeConstraint();
-        constraint.setType(AttributeConstraintType.REGEXP);
         constraint.setData(validationRegex);
 
         Assertions.assertFalse(attributeContent.getData().matches(validationRegex));
@@ -295,7 +293,6 @@ public class AttributeDefinitionUtilsTest {
         String validationRegex = "^\\d{4}$";
 
         RegexpAttributeConstraint constraint = new RegexpAttributeConstraint();
-        constraint.setType(AttributeConstraintType.REGEXP);
         constraint.setData(validationRegex);
 
         Assertions.assertTrue(attributeContent.getData().matches(validationRegex));
@@ -325,7 +322,6 @@ public class AttributeDefinitionUtilsTest {
         IntegerAttributeContent attributeContent = new IntegerAttributeContent(1234);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
-        constraint.setType(AttributeConstraintType.RANGE);
 
         RangeAttributeConstraintData data = new RangeAttributeConstraintData();
         data.setFrom(100);
@@ -357,7 +353,6 @@ public class AttributeDefinitionUtilsTest {
         IntegerAttributeContent attributeContent = new IntegerAttributeContent(2001);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
-        constraint.setType(AttributeConstraintType.RANGE);
 
         RangeAttributeConstraintData data = new RangeAttributeConstraintData();
         data.setFrom(100);
@@ -394,7 +389,6 @@ public class AttributeDefinitionUtilsTest {
         StringAttributeContent attributeContent = new StringAttributeContent("2001");
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
-        constraint.setType(AttributeConstraintType.RANGE);
 
         RangeAttributeConstraintData data = new RangeAttributeConstraintData();
         data.setFrom(100);
@@ -431,7 +425,6 @@ public class AttributeDefinitionUtilsTest {
         FloatAttributeContent attributeContent = new FloatAttributeContent(121.34f);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
-        constraint.setType(AttributeConstraintType.RANGE);
 
         RangeAttributeConstraintData data = new RangeAttributeConstraintData();
         data.setFrom(100);
@@ -463,7 +456,6 @@ public class AttributeDefinitionUtilsTest {
         FloatAttributeContent attributeContent = new FloatAttributeContent(20.01f);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
-        constraint.setType(AttributeConstraintType.RANGE);
 
         RangeAttributeConstraintData data = new RangeAttributeConstraintData();
         data.setFrom(100);
@@ -500,7 +492,6 @@ public class AttributeDefinitionUtilsTest {
         DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
 
         DateTimeAttributeConstraint constraint = new DateTimeAttributeConstraint();
-        constraint.setType(AttributeConstraintType.DATETIME);
 
         DateTimeAttributeConstraintData data = new DateTimeAttributeConstraintData();
         data.setFrom(LocalDateTime.now().minusMinutes(10));
@@ -532,7 +523,6 @@ public class AttributeDefinitionUtilsTest {
         DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
 
         DateTimeAttributeConstraint constraint = new DateTimeAttributeConstraint();
-        constraint.setType(AttributeConstraintType.DATETIME);
 
         DateTimeAttributeConstraintData data = new DateTimeAttributeConstraintData();
         data.setFrom(LocalDateTime.now().plusMinutes(5));

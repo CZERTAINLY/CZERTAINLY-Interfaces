@@ -10,12 +10,13 @@ public class RangeAttributeConstraint extends BaseAttributeConstraint<RangeAttri
     @Schema(description = "Integer Range Attribute Constraint Data")
     private RangeAttributeConstraintData data;
 
-    public RangeAttributeConstraint(String description, String errorMessage, AttributeConstraintType type, RangeAttributeConstraintData data) {
-        super(description, errorMessage, type);
+    public RangeAttributeConstraint(String description, String errorMessage, RangeAttributeConstraintData data) {
+        super(description, errorMessage, AttributeConstraintType.RANGE);
         this.data = data;
     }
 
     public RangeAttributeConstraint() {
+        super(AttributeConstraintType.RANGE);
     }
 
     @Override
