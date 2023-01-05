@@ -16,13 +16,8 @@ import java.util.List;
 public class SignDataRequestDto extends SignatureDataRequestDto {
 
     @Schema(
-            description = "Raw data to be hashed and signed"
+            description = "Data to be signed"
     )
     private List<SignatureRequestData> data;
-
-    @Schema(
-            description = "Digested data to be signed"
-    )
-    private List<SignatureRequestData> digestedData;
 
 }
