@@ -23,12 +23,13 @@ import java.util.List;
 public class KeyDetailDto extends KeyDto {
 
     @Schema(
-            description = "Attributes for the Key"
-    )
-    private List<MetadataAttribute> keyAttributes;
-
-    @Schema(
             description = "Custom Attributes for the Token Instance"
     )
     private List<ResponseAttributeDto> customAttributes;
+
+    @Schema(
+            description = "Key Objects",
+            required = true
+    )
+    private List<KeyItemDto> items;
 }

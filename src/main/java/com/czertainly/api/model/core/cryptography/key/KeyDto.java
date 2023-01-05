@@ -28,4 +28,26 @@ public class KeyDto extends NameAndUuidDto {
     )
     private CryptographicAlgorithm cryptographicAlgorithm;
 
+    @Schema(
+            description = "UUID of the Token Profile"
+    )
+    private String tokenProfileUuid;
+
+    @Schema(
+            description = "Name of the Token Profile"
+    )
+    private String tokenProfileName;
+
+    @Schema(
+            description = "Token Instance UUID",
+            required = true
+    )
+    private String tokenInstanceUuid;
+
+    @Schema(
+            description = "Token Instance Name",
+            required = true
+    )
+    private String tokenInstanceName;
+
 }
