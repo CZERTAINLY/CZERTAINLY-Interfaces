@@ -18,6 +18,12 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class KeyDto extends NameAndUuidDto {
 
+    @Schema(
+            description = "Boolean representing if Key is enabled or not",
+            required = true
+    )
+    private boolean enabled;
+
     @Schema(description = "Description of the Key",
             required = true
     )

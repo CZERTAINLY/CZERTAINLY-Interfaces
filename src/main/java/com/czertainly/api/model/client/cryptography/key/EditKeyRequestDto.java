@@ -1,6 +1,5 @@
 package com.czertainly.api.model.client.cryptography.key;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,14 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class KeyRequestDto {
+public class EditKeyRequestDto {
 
     @Schema(
             description = "UUID of the token profile",
@@ -44,16 +41,5 @@ public class KeyRequestDto {
             description = "UUID of the group"
     )
     private String groupUuid;
-
-    @Schema(
-            description = "List of Attributes to create a Key",
-            required = true
-    )
-    private List<RequestAttributeDto> attributes;
-
-    @Schema(
-            description = "Custom Attributes for the key"
-    )
-    private List<RequestAttributeDto> customAttributes;
 
 }

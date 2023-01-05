@@ -244,7 +244,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "204", description = "Token Profiles disabled")
             })
     @RequestMapping(
-            path = "/tokens/disable",
+            path = "/tokenProfiles/disable",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

@@ -4,6 +4,7 @@ import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
+import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,16 @@ public class KeyDetailDto extends KeyDto {
             description = "Custom Attributes for the Token Instance"
     )
     private List<ResponseAttributeDto> customAttributes;
+
+    @Schema(
+            description = "Owner of the Key"
+    )
+    private String owner;
+
+    @Schema(
+            description = "Key Group"
+    )
+    private GroupDto group;
 
     @Schema(
             description = "Key Objects",

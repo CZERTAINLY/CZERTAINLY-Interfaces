@@ -54,4 +54,16 @@ public class KeyItemDto extends NameAndUuidDto {
             description = "Metadata for the key"
     )
     private List<MetadataResponseDto> metadata;
+
+    @Schema(
+            description = "Key Usages",
+            required = true
+    )
+    private List<String> usage;
+
+    @Schema(
+            description = "Key State",
+            required = true
+    )
+    private KeyState state;
 }
