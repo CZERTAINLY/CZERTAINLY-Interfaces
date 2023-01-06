@@ -62,6 +62,12 @@ public class KeyItemDto extends NameAndUuidDto {
     private List<String> usage;
 
     @Schema(
+            description = "Boolean describing if the key is enabled or not",
+            required = true
+    )
+    private boolean enabled;
+
+    @Schema(
             description = "Key State",
             required = true
     )

@@ -4,15 +4,16 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.cryptography.key.BulkKeyUsageRequestDto;
 import com.czertainly.api.model.client.cryptography.key.EditKeyRequestDto;
 import com.czertainly.api.model.client.cryptography.key.KeyRequestDto;
 import com.czertainly.api.model.client.cryptography.key.KeyRequestType;
+import com.czertainly.api.model.client.cryptography.key.UpdateKeyUsageRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.cryptography.key.KeyDetailDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
-import com.czertainly.api.model.core.cryptography.tokenprofile.TokenProfileDetailDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -63,6 +64,11 @@ import java.util.Optional;
 public interface CryptographicKeyController {
 
     // Token Instance Operation APIs
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // List and Detail Operation
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     @Operation(
             summary = "List Cryptographic Keys"
     )
@@ -76,6 +82,8 @@ public interface CryptographicKeyController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<KeyDto> listKeys(@RequestParam(required = false) Optional<String> tokenProfileUuid);
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
             summary = "Get Cryptographic Key Detail"
@@ -94,6 +102,11 @@ public interface CryptographicKeyController {
             @Parameter(description = "UUID of the Key") @PathVariable String uuid
     ) throws NotFoundException;
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Create and Update Operation
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     @Operation(
             summary = "Create a new Cryptographic Key"
     )
@@ -118,6 +131,8 @@ public interface CryptographicKeyController {
                            @RequestBody KeyRequestDto request
     ) throws AlreadyExistException, ValidationException, ConnectorException;
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     @Operation(
             summary = "Edit Key"
     )
@@ -138,30 +153,73 @@ public interface CryptographicKeyController {
             @RequestBody EditKeyRequestDto request)
             throws ConnectorException;
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Compromise
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @Operation(
-            description = "Mark Key as Compromised"
+            summary = "Mark Key and its Items as Compromised",
+            description = "If the request body is provided with the UUID of the items of Key, then only those items" +
+                    "will be compromised. Else all the sub items of the key will be compromised"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key status updated")
+                    @ApiResponse(responseCode = "204", description = "Key marked as compromised")
             }
     )
     @RequestMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/compromise",
             method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void compromiseKey(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
-            @Parameter(description = "List of UUIDs of key to be marked as compromised. " +
-                    "If Empty list is provided, all the key items will be marked as compromised")
-            @RequestBody List<String> keyUuids)
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody(required = false) List<String> uuids)
             throws NotFoundException;
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     @Operation(
-            description = "Destroy Cryptographic Key"
+            summary = "Mark Multiple Key and its Items as Compromised",
+            description = "This API can be used to mark multiple keys and its sub items to be marked as compromised." +
+                    "Specific part of the key cannot be mentioned in this API"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key marked as compromised")
+            }
+    )
+    @RequestMapping(
+            path = "/keys/compromise",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void compromiseKeys(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody List<String> uuids);
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Destroy
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Destroy Cryptographic Key",
+            description = "If the request body provided, only those key items will be destroyed. If the request body is " +
+                    "not provided or given empty, then the entire key will be destroyed"
     )
     @ApiResponses(
             value = {
@@ -169,21 +227,56 @@ public interface CryptographicKeyController {
             }
     )
     @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
-            method = RequestMethod.DELETE,
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/destroy",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void destroyKey(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
-            @Parameter(description = "List of UUIDs of keys available in the key pair." +
-                    "If empty list is provided, all the key items will be destroyed")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody(required = false) List<String> keyUuids)
+            throws ConnectorException;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Destroy Multiple Cryptographic Key and its items"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Keys destroyed")
+            }
+    )
+    @RequestMapping(
+            path = "/keys/destroy",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void destroyKey(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody List<String> keyUuids)
             throws ConnectorException;
 
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Delete
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @Operation(
-            description = "Delete Cryptographic Key"
+            summary = "Delete Cryptographic Key",
+            description = "If the request body provided, only those key items will be deleted. If the request body is " +
+                    "not provided or given empty, then the entire key will be destroyed"
     )
     @ApiResponses(
             value = {
@@ -193,19 +286,103 @@ public interface CryptographicKeyController {
     @RequestMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
             method = RequestMethod.DELETE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteKey(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
-            @Parameter(description = "List of UUIDs of keys available in the key pair." +
-                    "If empty list is provided, all the key items will be deleted")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody(required = false) List<String> keyUuids)
+            throws ConnectorException;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Delete Multiple Cryptographic Key"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Keys deleted")
+            }
+    )
+    @RequestMapping(
+            path = "/keys",
+            method = RequestMethod.DELETE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteKeys(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody List<String> keyUuids)
             throws ConnectorException;
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Enable
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @Operation(
-            summary = "Disable Key"
+            summary = "Enable Key",
+            description = "If the request body provided, only those key items will be enabled. If the request body is " +
+                    "not provided or given empty, then the entire key will be enabled"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key enabled")
+            })
+    @RequestMapping(
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/enable",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void enableKey(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody(required = false) List<String> keyUuids)
+            throws NotFoundException;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Enable multiple Keys"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Keys enabled")
+            })
+    @RequestMapping(path = "/keys/enable",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void bulkEnableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+                             @RequestBody List<String> uuids);
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Disable
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Disable Key",
+            description = "If the request body provided, only those key items will be disabled. If the request body is " +
+                    "not provided or given empty, then the entire key will be disabled"
     )
     @ApiResponses(
             value = {
@@ -219,28 +396,14 @@ public interface CryptographicKeyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableKey(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
-            @Parameter(description = "Key UUID") @PathVariable String uuid)
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody(required = false) List<String> keyUuids)
             throws NotFoundException;
 
-    @Operation(
-            summary = "Enable Key"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "204", description = "Key enabled")
-            })
-    @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/enable",
-            method = RequestMethod.PATCH,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void enableTokenProfile(
-            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
-            @Parameter(description = "Key UUID") @PathVariable String uuid)
-            throws NotFoundException;
-
+    // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
             summary = "Disable multiple Keys"
@@ -255,29 +418,63 @@ public interface CryptographicKeyController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDisableRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void bulkDisableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                               @RequestBody List<String> uuids);
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Usages
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
     @Operation(
-            summary = "Enable multiple Keys"
+            summary = "Update Key Usage",
+            description = "If the request body provided, only those key items will be updated. If the request body is " +
+                    "not provided or given empty, then the entire key will be updated"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Keys enabled")
-            })
-    @RequestMapping(path = "/keys/enable",
+                    @ApiResponse(responseCode = "204", description = "Keys destroyed")
+            }
+    )
+    @RequestMapping(
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/usages",
             method = RequestMethod.PATCH,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkEnableRaProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-            examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                             @RequestBody List<String> uuids);
+    void updateKeyUsages(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @RequestBody UpdateKeyUsageRequestDto request)
+            throws NotFoundException, ValidationException;
 
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Update Key Usages for Multiple Keys",
+            description = "Update the key usages for multiple keys and all the items inside it"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Keys destroyed")
+            }
+    )
+    @RequestMapping(
+            path = "/keys/usages",
+            method = RequestMethod.PATCH,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateKeysUsages(@RequestBody BulkKeyUsageRequestDto request);
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // Attribute related API
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
             summary = "List of Attributes to create a Key"
