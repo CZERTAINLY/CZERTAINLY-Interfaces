@@ -18,7 +18,7 @@ public class DiscoveryCertificatesDto {
     @Schema(description = "UUID of the Certificate", required = true)
     private String uuid;
 
-    @Schema(description = "UUID of the Certificate in Certificate Page")
+    @Schema(description = "UUID of the Certificate in Certificate inventory")
     private String inventoryUuid;
 
     @Schema(description = "Certificate common name", required = true)
