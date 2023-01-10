@@ -67,7 +67,7 @@ public interface AuditLogController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Audit logs purged")})
 	@RequestMapping(path = "/purge" ,method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void purgeAuditLogs(@RequestParam(required = false) AuditLogFilter filter, @RequestParam(required = false) Pageable pageable);
+	public void purgeAuditLogs(AuditLogFilter filter, Pageable pageable);
 
 	@Operation(summary = "List Audit Objects")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit Objects") })
