@@ -122,11 +122,12 @@ public interface CryptographicKeyController {
                     )
             })
     @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{type}",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     KeyDetailDto createKey(@Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
+                           @Parameter(description = "UUID of the Token Profile") @PathVariable String tokenProfileUuid,
                            @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type,
                            @RequestBody KeyRequestDto request
     ) throws AlreadyExistException, ValidationException, ConnectorException;
@@ -371,7 +372,7 @@ public interface CryptographicKeyController {
     void bulkEnableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                             @RequestBody List<String> uuids);
+                        @RequestBody List<String> uuids);
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -389,7 +390,7 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key disabled")
             })
     @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/key/{uuid}/disable",
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/disable",
             method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -421,7 +422,7 @@ public interface CryptographicKeyController {
     void bulkDisableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                              @RequestBody List<String> uuids);
+                         @RequestBody List<String> uuids);
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -441,7 +442,7 @@ public interface CryptographicKeyController {
     )
     @RequestMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/usages",
-            method = RequestMethod.PATCH,
+            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -464,7 +465,7 @@ public interface CryptographicKeyController {
     )
     @RequestMapping(
             path = "/keys/usages",
-            method = RequestMethod.PATCH,
+            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -487,12 +488,13 @@ public interface CryptographicKeyController {
                     )
             })
     @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{type}/attributes",
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}/attributes",
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listCreateKeyAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type
     ) throws ConnectorException;
 }

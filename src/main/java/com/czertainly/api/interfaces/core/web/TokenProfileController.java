@@ -5,7 +5,9 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.cryptography.tokenprofile.AddTokenProfileRequestDto;
+import com.czertainly.api.model.client.cryptography.tokenprofile.BulkTokenProfileKeyUsageRequestDto;
 import com.czertainly.api.model.client.cryptography.tokenprofile.EditTokenProfileRequestDto;
+import com.czertainly.api.model.client.cryptography.tokenprofile.TokenProfileKeyUsageRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.cryptography.tokenprofile.TokenProfileDetailDto;
@@ -270,4 +272,48 @@ public interface TokenProfileController {
             description = "Token Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                              @RequestBody List<String> uuids);
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Usages
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Update Key Usage"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Usage Updated")
+            }
+    )
+    @RequestMapping(
+            path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/usages",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateKeyUsages(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
+            @RequestBody TokenProfileKeyUsageRequestDto request)
+            throws NotFoundException, ValidationException;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Update Key Usages for Multiple Token Profiles"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Usages Updated")
+            }
+    )
+    @RequestMapping(
+            path = "/tokens/usages",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateKeysUsages(@RequestBody BulkTokenProfileKeyUsageRequestDto request);
 }

@@ -3,6 +3,7 @@ package com.czertainly.api.model.core.cryptography.tokenprofile;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
+import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,7 +54,15 @@ public class TokenProfileDetailDto extends NameAndUuidDto {
     )
     private TokenInstanceStatus tokenInstanceStatus;
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+    @Schema(
+            description = "Enabled flag - true = enabled; false = disabled",
+            required = true
+    )
     private Boolean enabled;
+
+    @Schema(
+            description = "Usages for the Keys assoiated to the profile",
+            required = true
+    )
+    private List<KeyUsage> usages;
 }
