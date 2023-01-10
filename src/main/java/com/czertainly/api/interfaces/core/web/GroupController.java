@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/certificateGroups")
-@Tag(name = "Certificate Group", description = "Certificate Group API")
+@RequestMapping("/v1/groups")
+@Tag(name = "Certificate & Key Group", description = "Group API")
 @ApiResponses(
 		value = {
 				@ApiResponse(

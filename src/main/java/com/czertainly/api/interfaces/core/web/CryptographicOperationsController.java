@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/operations/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{uuid}")
+@RequestMapping("/v1/operations/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/item/{keyItemUuid}")
 @Tag(name = "Cryptographic Operations Controller", description = "Cryptographic Operations Controller API")
 @ApiResponses(
         value = {
@@ -88,6 +88,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
     ) throws ConnectorException;
 
@@ -117,6 +118,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody CipherDataRequestDto request
     ) throws ConnectorException;
 
@@ -146,6 +148,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody CipherDataRequestDto request
     ) throws ConnectorException;
 
@@ -172,6 +175,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key instance UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
     ) throws ConnectorException;
 
@@ -202,6 +206,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody SignDataRequestDto request
     ) throws ConnectorException;
 
@@ -231,6 +236,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody VerifyDataRequestDto request
     ) throws ConnectorException;
 
@@ -256,7 +262,8 @@ public interface CryptographicOperationsController {
     List<BaseAttribute> listRandomAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
-            @Parameter(description = "Token instance UUID") @PathVariable String uuid
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid
     ) throws ConnectorException;
 
 
@@ -286,6 +293,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody RandomDataRequestDto request
     ) throws ConnectorException;
 }
