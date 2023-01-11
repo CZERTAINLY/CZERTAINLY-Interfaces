@@ -1,9 +1,11 @@
 package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
+import com.czertainly.api.model.common.attribute.v2.CustomAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.GroupAttribute;
 import com.czertainly.api.model.common.attribute.v2.InfoAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,13 +19,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
                 @DiscriminatorMapping(value = "data", schema = DataAttribute.class),
                 @DiscriminatorMapping(value = "info", schema = InfoAttribute.class),
                 @DiscriminatorMapping(value = "group", schema = GroupAttribute.class),
-                @DiscriminatorMapping(value = "meta", schema = InfoAttribute.class),
-                @DiscriminatorMapping(value = "custom", schema = DataAttribute.class)
+                @DiscriminatorMapping(value = "meta", schema = MetadataAttribute.class),
+                @DiscriminatorMapping(value = "custom", schema = CustomAttribute.class)
         },
         oneOf = {
                 DataAttribute.class,
                 InfoAttribute.class,
-                GroupAttribute.class
+                GroupAttribute.class,
+                MetadataAttribute.class,
+                CustomAttribute.class
         }
 )
 public class BaseAttributeDto {
