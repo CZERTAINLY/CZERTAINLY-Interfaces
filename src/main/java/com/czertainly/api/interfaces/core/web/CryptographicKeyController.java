@@ -514,7 +514,7 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "200", description = "Certificate event history retrieved")
             })
     @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItem}/history",
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}/history",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
