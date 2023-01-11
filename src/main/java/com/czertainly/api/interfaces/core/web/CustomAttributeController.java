@@ -10,6 +10,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.CustomAttribute;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -142,7 +143,7 @@ public interface CustomAttributeController {
     @RequestBody List<Resource> resources) throws NotFoundException;
 
     @Operation(summary = "Get Custom Attributes for a resource")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CustomAttribute.class))))})
     @RequestMapping(path = "/resources/{resource}", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> getResourceCustomAttributes(@Parameter(description = "Resource Name") @PathVariable Resource resource);
 
