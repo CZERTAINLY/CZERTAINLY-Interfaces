@@ -7,6 +7,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ResourceDto extends NameAndUuidDto {
 
+    @Schema(description = "Resource Name",
+            example = "Name",
+            required = true,
+            implementation = Resource.class)
+    protected String name;
+
     @Schema(description = "Resource label", required = true)
     private String displayName;
 
