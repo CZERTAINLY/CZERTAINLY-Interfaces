@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,6 +24,11 @@ public class KeyDto extends NameAndUuidDto {
             required = true
     )
     private String description;
+
+    @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
+            required = true
+    )
+    private LocalDateTime creationTime;
 
     @Schema(description = "Cryptographic algorithm of the Key",
             required = true

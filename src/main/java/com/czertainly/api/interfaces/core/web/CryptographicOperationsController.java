@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/operations/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/item/{keyItemUuid}")
+@RequestMapping("/v1/operations/tokens/{tokenInstanceUuid}")
 @Tag(name = "Cryptographic Operations Controller", description = "Cryptographic Operations Controller API")
 @ApiResponses(
         value = {
@@ -80,7 +80,7 @@ public interface CryptographicOperationsController {
                     )
             })
     @RequestMapping(
-            path = "/cipher/{algorithm}/attributes",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/cipher/{algorithm}/attributes",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -109,7 +109,7 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/encrypt",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/encrypt",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -139,7 +139,7 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/decrypt",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/decrypt",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -167,7 +167,7 @@ public interface CryptographicOperationsController {
                     )
             })
     @RequestMapping(
-            path = "/signature/{algorithm}/attributes",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/signature/{algorithm}/attributes",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -197,7 +197,7 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/sign",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/sign",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -227,7 +227,7 @@ public interface CryptographicOperationsController {
                             ))
             })
     @RequestMapping(
-            path = "/verify",
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/verify",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -260,10 +260,7 @@ public interface CryptographicOperationsController {
             produces = {"application/json"}
     )
     List<BaseAttribute> listRandomAttributes(
-            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
-            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
-            @Parameter(description = "Key UUID") @PathVariable String uuid,
-            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid
     ) throws ConnectorException;
 
 
@@ -291,9 +288,6 @@ public interface CryptographicOperationsController {
     )
     RandomDataResponseDto randomData(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
-            @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
-            @Parameter(description = "Key UUID") @PathVariable String uuid,
-            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody RandomDataRequestDto request
     ) throws ConnectorException;
 }

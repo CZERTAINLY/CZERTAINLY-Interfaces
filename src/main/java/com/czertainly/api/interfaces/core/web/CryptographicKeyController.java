@@ -12,8 +12,10 @@ import com.czertainly.api.model.client.cryptography.key.UpdateKeyUsageRequestDto
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDetailDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
+import com.czertainly.api.model.core.cryptography.key.KeyEventHistoryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -497,4 +499,28 @@ public interface CryptographicKeyController {
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type
     ) throws ConnectorException;
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // History API
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Get Key Item event history"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Certificate event history retrieved")
+            })
+    @RequestMapping(
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItem}/history",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public List<KeyEventHistoryDto> getEventHistory(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid
+            ) throws NotFoundException;
 }
