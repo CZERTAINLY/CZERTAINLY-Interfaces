@@ -8,6 +8,7 @@ import com.czertainly.api.model.common.attribute.v2.content.CredentialAttributeC
 import com.czertainly.api.model.common.attribute.v2.content.SecretAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -41,7 +42,8 @@ public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttribut
             gen.writeEndArray();
             return;
         }
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         if (responseAttributeDto.getContentType().equals(AttributeContentType.SECRET)) {
             gen.writeStartArray();
             for (BaseAttributeContent content : responseAttributeDto.getContent()) {
