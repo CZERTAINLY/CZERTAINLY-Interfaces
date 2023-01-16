@@ -23,7 +23,7 @@ import java.util.UUID;
 public class KeyItemDto extends NameAndUuidDto {
 
     @Schema(
-            description = "UUID of the key in the Connector",
+            description = "UUID of the key item in the Connector",
             required = true
     )
     private String keyReferenceUuid;
