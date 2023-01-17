@@ -55,7 +55,7 @@ public interface CallbackController {
 
 	@Operation(summary = "Connector Callback API", description = "API to trigger the Callback for Connector.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
-	@RequestMapping(path = "/{resourceName}/{uuid}/{functionGroup}/{kind}/callback", method = RequestMethod.POST, consumes = {
+	@RequestMapping(path = "/connectors/{uuid}/{functionGroup}/{kind}/callback", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
 	public Object callback(@Parameter(description = "Connector UUID") @PathVariable String uuid,
 						   @Parameter(description = "Function Group") @PathVariable String functionGroup,
@@ -64,11 +64,11 @@ public interface CallbackController {
 
     @Operation(summary = "Resource Callback API", description = "API to trigger the Callback for resource.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
-	@RequestMapping(path = "/{resource}/{resourceUuid}/callback", method = RequestMethod.POST, consumes = {
+	@RequestMapping(path = "/{resource}/{parentObjectUuid}/callback", method = RequestMethod.POST, consumes = {
 			"application/json" }, produces = { "application/json" })
 	public Object resourceCallback(
 			@Parameter(description = "Name of the resource") @PathVariable Resource resource,
-			@Parameter(description = "Resource UUID") @PathVariable String resourceUuid,
+			@Parameter(description = "Parent Object UUID") @PathVariable String parentObjectUuid,
 			@RequestBody RequestAttributeCallback callback)
 			throws NotFoundException, ConnectorException, ValidationException;
 
