@@ -13,7 +13,7 @@ public class NotFoundException extends ConnectorException {
     }
 
     public NotFoundException(String objectType, Object identifier) {
-        super("Object of type '" + objectType + "' identified by " + identifier + " was not found or is not enabled.");
+        super("Object of type '" + objectType + "' identified by " + identifier + " is not found.");
     }
 
     public NotFoundException(Class<?> objectClass, Object identifier) {

@@ -30,13 +30,18 @@ public enum Resource {
     AUTHORITY("authorities"),
     RA_PROFILE("raProfiles"),
     CERTIFICATE("certificates"),
-    CERTIFICATE_GROUP("certificateGroups"),
+    GROUP("groups"),
     COMPLIANCE_PROFILE("complianceProfiles"),
     DISCOVERY("discoveries"),
 
     // ENTITIES
     ENTITY("entities"),
     LOCATION("locations"),
+
+    //CRYPTOGRAPHY
+    TOKEN_PROFILE("tokenProfiles"),
+    TOKEN("tokens"),
+    CRYPTOGRAPHIC_KEY("keys"),
 
     ATTRIBUTE("attributes");
 
