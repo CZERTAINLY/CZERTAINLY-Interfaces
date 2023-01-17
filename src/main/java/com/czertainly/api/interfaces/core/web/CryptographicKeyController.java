@@ -12,7 +12,6 @@ import com.czertainly.api.model.client.cryptography.key.UpdateKeyUsageRequestDto
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDetailDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.cryptography.key.KeyEventHistoryDto;
@@ -236,7 +235,7 @@ public interface CryptographicKeyController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void destroyKey(
+    void destroyKeys(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -262,7 +261,7 @@ public interface CryptographicKeyController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void destroyKey(
+    void destroyKeys(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
@@ -371,7 +370,7 @@ public interface CryptographicKeyController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkEnableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void enableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                         @RequestBody List<String> uuids);
@@ -421,7 +420,7 @@ public interface CryptographicKeyController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDisableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void disableKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                          @RequestBody List<String> uuids);
