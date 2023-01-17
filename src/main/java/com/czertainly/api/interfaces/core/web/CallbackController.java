@@ -68,7 +68,7 @@ public interface CallbackController {
 			"application/json" }, produces = { "application/json" })
 	public Object resourceCallback(
 			@Parameter(description = "Name of the resource") @PathVariable Resource resource,
-			@Parameter(description = "Resource UUID") @PathVariable String parentObjectUuid,
+			@Parameter(description = "Parent Object UUID") @PathVariable String parentObjectUuid,
 			@RequestBody RequestAttributeCallback callback)
 			throws NotFoundException, ConnectorException, ValidationException;
 
