@@ -196,7 +196,7 @@ public interface TokenProfileController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void disableTokenProfiles(
+    void disableTokenProfile(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String uuid)
             throws NotFoundException;
@@ -251,7 +251,7 @@ public interface TokenProfileController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void disableTokenProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void disableTokenProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Token Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                               @RequestBody List<String> uuids);
@@ -284,7 +284,7 @@ public interface TokenProfileController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key Usage Updated")
+                    @ApiResponse(responseCode = "204", description = "Key Usages Updated")
             }
     )
     @RequestMapping(
