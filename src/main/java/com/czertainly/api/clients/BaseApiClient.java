@@ -182,11 +182,11 @@ public abstract class BaseApiClient {
         }
         if (clientResponse.statusCode().is4xxClientError()) {
             return clientResponse.bodyToMono(String.class)
-                    .flatMap(body -> Mono.error(new ConnectorClientException(body, clientResponse.statusCode())));
+                    .flatMap(body -> Mono.error(new ConnectorClientException(body, HttpStatus.valueOf(clientResponse.statusCode().value()))));
         }
         if (clientResponse.statusCode().is5xxServerError()) {
             return clientResponse.bodyToMono(String.class)
-                    .flatMap(body -> Mono.error(new ConnectorServerException(body, clientResponse.statusCode())));
+                    .flatMap(body -> Mono.error(new ConnectorServerException(body, HttpStatus.valueOf(clientResponse.statusCode().value()))));
         }
         return Mono.just(clientResponse);
     }
