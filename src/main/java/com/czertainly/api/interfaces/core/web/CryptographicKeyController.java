@@ -241,7 +241,7 @@ public interface CryptographicKeyController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-            @RequestBody(required = false) List<String> keyUuids)
+            @RequestBody(required = false) List<String> keyItemUuids)
             throws ConnectorException;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -298,7 +298,7 @@ public interface CryptographicKeyController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-            @RequestBody(required = false) List<String> keyUuids)
+            @RequestBody(required = false) List<String> keyItemUuids)
             throws ConnectorException;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -353,7 +353,7 @@ public interface CryptographicKeyController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-            @RequestBody(required = false) List<String> keyUuids)
+            @RequestBody(required = false) List<String> keyItemUuids)
             throws NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -402,7 +402,7 @@ public interface CryptographicKeyController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-            @RequestBody(required = false) List<String> keyUuids)
+            @RequestBody(required = false) List<String> keyItemUuids)
             throws NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
