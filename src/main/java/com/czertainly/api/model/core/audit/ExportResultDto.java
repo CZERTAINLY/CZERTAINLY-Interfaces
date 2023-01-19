@@ -8,13 +8,13 @@ public class ExportResultDto {
 	
 	@Schema(
             description = "Name of the file",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String fileName;
 	
 	@Schema(
             description = "File content in byte array",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private byte[] fileContent;
 

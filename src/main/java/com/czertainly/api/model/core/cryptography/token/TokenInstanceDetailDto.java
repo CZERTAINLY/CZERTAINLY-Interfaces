@@ -31,19 +31,19 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
 
     @Schema(
             description = "Status Of the Token Instance",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private TokenInstanceStatusDetailDto status;
 
     @Schema(
             description = "Number of Token Profiles associated",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Integer tokenProfiles;
 
     @Schema(
             description = "List of Token instance Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<ResponseAttributeDto> attributes;
 

@@ -8,10 +8,10 @@ public class FunctionGroupDto extends BaseFunctionGroupDto {
 
     @Schema(description = "UUID of the Function Group",
             example = "204a57f6-2ed3-45b6-bf09-af8b8c900e33",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
     @Schema(description = "Function Group Name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     public String getUuid() {

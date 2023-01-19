@@ -12,7 +12,7 @@ public class EprkiKeyValue extends KeyValue {
 
     @Schema(
             description = "Base64 ASN.1 encoded EncryptedPrivateKeyInfo",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String value;
 

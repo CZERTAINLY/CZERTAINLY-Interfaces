@@ -13,11 +13,11 @@ import java.util.List;
 public class ClientCertificateSignRequestDto {
 
     @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String pkcs10;
 
     @Schema(description = "List of Attributes to issue Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")

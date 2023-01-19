@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ClientCertificateSignResponseDto {
 
     @Schema(description = "Date of signed certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateData;
 
     public String getCertificateData() {

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
     @Schema(description = "ACME Profile description", example = "Sample description")
     private String description;

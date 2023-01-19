@@ -18,7 +18,7 @@ public class AttributeDefinition {
     @Schema(
             description = "UUID of the Attribute for unique identification",
             example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String uuid;
 
@@ -28,7 +28,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Name of the Attribute that is used for identification",
             example = "Attribute",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
 
@@ -46,7 +46,7 @@ public class AttributeDefinition {
    @Schema(
            description = "Friendly name of the the Attribute",
            example = "Attribute Name",
-           required = true
+           requiredMode = Schema.RequiredMode.REQUIRED
    )
    private String label;
 
@@ -55,7 +55,7 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Type of the Attribute",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeType type;
 
@@ -65,7 +65,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean required = false;
 
@@ -75,7 +75,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean readOnly = false;
 
@@ -85,7 +85,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
             defaultValue = "true",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean visible = true;
 
@@ -95,7 +95,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Boolean determining if the Attribute contains list of values in the content",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean list = false;
 
@@ -129,7 +129,7 @@ public class AttributeDefinition {
     @Schema(
             description = "Boolean determining if the Attribute can have multiple values",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean multiSelect = false;
 

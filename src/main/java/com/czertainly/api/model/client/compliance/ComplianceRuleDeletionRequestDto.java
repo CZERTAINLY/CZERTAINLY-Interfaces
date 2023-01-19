@@ -6,13 +6,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ComplianceRuleDeletionRequestDto {
 
-    @Schema(description = "UUID of the Compliance Provider", required = true, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
+    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
     private String connectorUuid;
 
-    @Schema(description = "Kind of the Compliance Provider", required = true, example = "default")
+    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "default")
     private String kind;
 
-    @Schema(description = "UUID of the rule", required = true, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
     private String ruleUuid;
 
     public String getConnectorUuid() {

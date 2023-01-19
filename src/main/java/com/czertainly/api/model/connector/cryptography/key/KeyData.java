@@ -22,25 +22,25 @@ public class KeyData {
 
     @Schema(
             description = "Type of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyType type;
 
     @Schema(
             description = "Cryptographic algorithm of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CryptographicAlgorithm algorithm;
 
     @Schema(
             description = "Format of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyFormat format;
 
     @Schema(
             description = "Value of the Key",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             discriminatorProperty = "format",
             discriminatorMapping = {
                     @DiscriminatorMapping(value = "RAW", schema = RawKeyValue.class),
@@ -61,7 +61,7 @@ public class KeyData {
 
     @Schema(
             description = "Bit length of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int length;
 

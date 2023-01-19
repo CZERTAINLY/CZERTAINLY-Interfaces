@@ -10,25 +10,25 @@ public class CertificateInLocationDto {
 
     @Schema(
             description = "UUID of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String certificateUuid;
 
     @Schema(
             description = "Common Name of the Subject DN field of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String commonName;
 
     @Schema(
             description = "Serial number in HEX of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String serialNumber;
 
     @Schema(
             description = "Metadata of the Certificate in Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<MetadataResponseDto> metadata;
 
@@ -45,7 +45,7 @@ public class CertificateInLocationDto {
     @Schema(
             description = "If the Certificate in Location has associated private key",
             defaultValue = "false",
-            required = false
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private boolean withKey;
 

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class FloatAttributeContent extends BaseAttributeContent<Float> {
 
-    @Schema(description = "Float attribute value", required = true)
+    @Schema(description = "Float attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
     private Float data;
 
     public FloatAttributeContent() {

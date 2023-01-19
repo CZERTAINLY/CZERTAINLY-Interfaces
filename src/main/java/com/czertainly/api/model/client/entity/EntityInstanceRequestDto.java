@@ -10,23 +10,23 @@ import java.util.List;
 public class EntityInstanceRequestDto {
 
     @Schema(description = "Entity instance name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "List of Entity instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
     @Schema(description = "UUID of Entity Provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Entity instance Kind",
             example = "Keystore, etc.",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     public String getName() {

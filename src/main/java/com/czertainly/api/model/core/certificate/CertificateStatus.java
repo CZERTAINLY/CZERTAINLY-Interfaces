@@ -21,7 +21,7 @@ public enum CertificateStatus {
     ;
 
 	@Schema(description = "Certificate Status",
-			example = "valid", required = true)
+			example = "valid", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String code;
 
 	CertificateStatus(String code) {

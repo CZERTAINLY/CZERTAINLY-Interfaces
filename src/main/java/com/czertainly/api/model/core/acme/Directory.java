@@ -13,7 +13,7 @@ public class Directory {
      * new Nonce values.
      */
     @Schema(description = "URL to get new Nonce",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://some-server.com/acme/new-nonce")
     private String newNonce;
 
@@ -22,7 +22,7 @@ public class Directory {
      * new Account registration.
      */
     @Schema(description = "URL for the new Account",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://some-server.com/acme/new-account")
     private String newAccount;
 
@@ -31,7 +31,7 @@ public class Directory {
      * new Order
      */
     @Schema(description = "URL for the new Order",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://some-server.com/acme/new-order")
     private String newOrder;
 
@@ -40,7 +40,7 @@ public class Directory {
      * new Authz request
      */
     @Schema(description = "URL for the new Authorization",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://some-server.com/acme/new-authz")
     private String newAuthz;
 
@@ -49,7 +49,7 @@ public class Directory {
      * new Certificate revocation
      */
     @Schema(description = "URL for revoking a certificate",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://some-server.com/acme/revoke-cert")
     private String revokeCert;
 
@@ -58,7 +58,7 @@ public class Directory {
      * a new key change for an Account
      */
     @Schema(description = " URL for changing the key of an Account",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://some-server.com/acme/key-change")
     private String keyChange;
 
@@ -66,7 +66,7 @@ public class Directory {
      * Metadata for the Directory object. This will contain the metadata like termsOfService etc..
      */
     @Schema(description = "Metadata for the Directory object",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private DirectoryMeta meta;
 
     public String getNewNonce() {

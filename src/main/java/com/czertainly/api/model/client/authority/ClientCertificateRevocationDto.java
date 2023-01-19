@@ -11,15 +11,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ClientCertificateRevocationDto {
 
     @Schema(description = "Certificate serial number",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateSN;
 
     @Schema(description = "Issuer domain name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String issuerDN;
 
     @Schema(description = "Revocation reason",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private RevocationReason reason;
 
     public String getCertificateSN() {

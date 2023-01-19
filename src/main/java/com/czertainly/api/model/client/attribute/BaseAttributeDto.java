@@ -37,7 +37,7 @@ public class BaseAttributeDto {
         @Schema(
                 description = "UUID of the Attribute for unique identification",
                 example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
-                required = true
+                requiredMode = Schema.RequiredMode.REQUIRED
         )
         private String uuid;
 
@@ -47,7 +47,7 @@ public class BaseAttributeDto {
         @Schema(
                 description = "Name of the Attribute that is used for identification",
                 example = "Attribute",
-                required = true
+                requiredMode = Schema.RequiredMode.REQUIRED
         )
         private String name;
 
@@ -64,7 +64,7 @@ public class BaseAttributeDto {
          */
         @Schema(
                 description = "Type of the Attribute",
-                required = true,
+                requiredMode = Schema.RequiredMode.REQUIRED,
                 defaultValue = "data"
         )
         private AttributeType type = AttributeType.DATA;

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class AddEndEntityRequestDto extends BaseEndEntityRequestDto {
 
     @Schema(description = "End Entity name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     public String getUsername() {

@@ -21,7 +21,7 @@ public class RandomDataRequestDto {
 
     @Schema(
             description = "Number of random bytes to generate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int length;
 

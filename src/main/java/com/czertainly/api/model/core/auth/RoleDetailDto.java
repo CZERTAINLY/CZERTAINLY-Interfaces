@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RoleDetailDto extends RoleDto {
 
-    @Schema(description = "List of Users with the role", required = true)
+    @Schema(description = "List of Users with the role", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<UserDto> users;
 
     @Schema(description = "List of Custom Attributes")

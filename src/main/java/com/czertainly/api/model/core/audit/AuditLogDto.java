@@ -15,55 +15,55 @@ public class AuditLogDto implements Identified {
 	
 	@Schema(
             description = "Audit log Id",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Long id;
 	
 	@Schema(
             description = "Audit log UUID",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String uuid;
 	
 	@Schema(
             description = "Requestor of the change",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String author;
 	
 	@Schema(
             description = "Time when the audit log is registered",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private LocalDateTime created;
 	
 	@Schema(
             description = "Status of the operation. Either success or failed",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private OperationStatusEnum operationStatus;
 	
 	@Schema(
             description = "Module triggered the action",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private ObjectType origination;
 	
 	@Schema(
             description = "Module affected by the operation",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private ObjectType affected;
 	
 	@Schema(
             description = "Object identifier",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String objectIdentifier;
 	
 	@Schema(
             description = "Type of operation performed",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private OperationType operation;
     @JsonRawValue

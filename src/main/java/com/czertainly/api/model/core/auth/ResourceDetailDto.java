@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ResourceDetailDto extends ResourceDto {
 
-    @Schema(description = "List of Actions for the Resource", required = true)
+    @Schema(description = "List of Actions for the Resource", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ActionDto> actions;
 
     public List<ActionDto> getActions() {

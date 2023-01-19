@@ -10,7 +10,7 @@ import java.util.List;
 public class EntityInstanceUpdateRequestDto {
 
     @Schema(description = "List of Entity instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")

@@ -14,7 +14,7 @@ public class SignatureRequestData {
 
     @Schema(
             description = "Data to be signed or verified",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private byte[] data;
 

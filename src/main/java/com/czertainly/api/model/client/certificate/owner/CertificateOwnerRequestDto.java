@@ -6,7 +6,7 @@ public class CertificateOwnerRequestDto {
 	
 	@Schema(
             description = "Owner of the certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
 	private String owner;
 

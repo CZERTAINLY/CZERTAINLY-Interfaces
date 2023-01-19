@@ -14,10 +14,10 @@ public class ComplianceProfileDto extends NameAndUuidDto {
     @Schema(description = "Description of the Compliance Profile")
     private String description;
 
-    @Schema(description = "List of rules", required = true)
+    @Schema(description = "List of rules", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceConnectorAndRulesDto> rules;
 
-    @Schema(description = "List of groups", required = true)
+    @Schema(description = "List of groups", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceConnectorAndGroupsDto> groups;
 
     @Schema(description = "List of associated RA Profiles")

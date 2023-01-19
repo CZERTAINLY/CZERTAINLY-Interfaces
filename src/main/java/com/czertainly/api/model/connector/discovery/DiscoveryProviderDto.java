@@ -12,7 +12,7 @@ import java.util.List;
 public class DiscoveryProviderDto extends NameAndUuidDto {
 
 	@Schema(description = "Status of Discovery",
-			required = true)
+			requiredMode = Schema.RequiredMode.REQUIRED)
 	private DiscoveryStatus status;
 	
 	@Schema(description = "Number of Certificates discovered",
@@ -20,11 +20,11 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 	private Integer totalCertificatesDiscovered;
 
 	@Schema(description = "Certificate data",
-			required = true)
+			requiredMode = Schema.RequiredMode.REQUIRED)
 	private List<DiscoveryProviderCertificateDataDto> certificateData;
 	
 	@Schema(description = "Certificate Metadata",
-			required = true)
+			requiredMode = Schema.RequiredMode.REQUIRED)
 	private List<MetadataAttribute> meta;
 
 	public String getUuid() {

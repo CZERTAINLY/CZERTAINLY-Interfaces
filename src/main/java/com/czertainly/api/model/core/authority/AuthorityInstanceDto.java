@@ -12,27 +12,27 @@ import java.util.List;
 public class AuthorityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Status of Authority instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String status;
 
     @Schema(description = "UUID of Authority provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Name of Authority provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
     @Schema(description = "Authority Instance Kind",
             example = "LegacyEjbca, ADCS, etc.",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     public List<ResponseAttributeDto> getAttributes() {

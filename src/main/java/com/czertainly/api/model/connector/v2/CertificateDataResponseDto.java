@@ -14,22 +14,22 @@ import java.util.List;
 public class CertificateDataResponseDto {
 
     @Schema(description = "Base64 encoded Certificate content",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateData;
 
     @Schema(description = "UUID of Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
     @Schema(
             description = "Metadata for the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<MetadataAttribute> meta;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
     public String getCertificateData() {

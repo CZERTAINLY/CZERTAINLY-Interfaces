@@ -18,7 +18,7 @@ public class SignatureDataRequestDto {
 
     @Schema(
             description = "List of cipher Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> signatureAttributes;
 

@@ -6,10 +6,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ConnectorMetadataPromotionRequestDto {
 
-    @Schema(description = "Metadata UUID", required = true)
+    @Schema(description = "Metadata UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "Connector UUID", required = true)
+    @Schema(description = "Connector UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     public String getUuid() {

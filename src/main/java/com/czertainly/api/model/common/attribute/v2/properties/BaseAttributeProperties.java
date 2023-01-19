@@ -12,7 +12,7 @@ public class BaseAttributeProperties {
     @Schema(
             description = "Friendly name of the the Attribute",
             example = "Attribute Name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
 
@@ -22,7 +22,7 @@ public class BaseAttributeProperties {
     @Schema(
             description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
             defaultValue = "true",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean visible = true;
 

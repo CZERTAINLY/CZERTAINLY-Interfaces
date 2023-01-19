@@ -23,7 +23,7 @@ public enum CertificateEvent {
     ;
 
     @Schema(description = "Certificate Event",
-            example = "Issue Certificate", required = true)
+            example = "Issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     CertificateEvent(String code) {

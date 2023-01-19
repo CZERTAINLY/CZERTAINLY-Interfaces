@@ -10,11 +10,11 @@ import java.util.List;
 public class DiscoveryRequestDto {
 
     @Schema(description = "Name of the Discovery",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Discovery Kind",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "Discovery Provider Attributes. Mandatory for creating new Discovery"

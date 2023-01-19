@@ -13,13 +13,13 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
     @Schema(
             description = "Discovery Kind",
             example = "IP-HostName",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String kind;
 
     @Schema(
             description = "Status of Discovery",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private DiscoveryStatus status;
 
@@ -44,13 +44,13 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
 
     @Schema(
             description = "UUID of the Discovery Provider",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String connectorUuid;
 
     @Schema(
             description = "Name of the Discovery Provider",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String connectorName;
 

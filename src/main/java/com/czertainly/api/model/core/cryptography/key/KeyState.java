@@ -18,7 +18,7 @@ public enum KeyState {
     COMPROMISED_DESTROYED("compromisedDestroyed");
 
     @Schema(description = "Type of the key to be generated",
-            example = "secret", required = true)
+            example = "secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
 
     KeyState(String code) {

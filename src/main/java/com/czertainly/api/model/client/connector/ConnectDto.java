@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class ConnectDto {
 
     @Schema(description = "Function Group information of a connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private FunctionGroupDto functionGroup;
 
     public FunctionGroupDto getFunctionGroup() {

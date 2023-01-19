@@ -11,7 +11,7 @@ import java.util.List;
 public class CredentialUpdateRequestDto implements Serializable {
 
     @Schema(description = "List of Credential Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")

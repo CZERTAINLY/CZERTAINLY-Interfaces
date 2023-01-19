@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ComplianceProviderSummaryDto {
-    @Schema(description = "Name of the Compliance Provider", required = true)
+    @Schema(description = "Name of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
     @Schema(description = "Number of rules for the Provider")

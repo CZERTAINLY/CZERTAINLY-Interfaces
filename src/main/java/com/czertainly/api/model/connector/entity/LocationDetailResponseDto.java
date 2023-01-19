@@ -11,27 +11,27 @@ public class LocationDetailResponseDto {
 
     @Schema(
             description = "List of Certificates in the Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<CertificateLocationDto> certificates;
 
     @Schema(
             description = "Location metadata",
-            required = false
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<MetadataAttribute> metadata;
 
     @Schema(
             description = "Support for multiple Certificates in the Location",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean multipleEntries;
 
     @Schema(
             description = "Support for key pair management in the Location",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean supportKeyManagement;
 

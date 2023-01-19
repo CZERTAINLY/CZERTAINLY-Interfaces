@@ -15,7 +15,7 @@ import java.util.List;
 public class DestroyKeyRequestDto {
 
     @Schema(description = "List of Token Profile Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> tokenProfileAttributes;
 
     @Schema(

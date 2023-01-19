@@ -11,7 +11,7 @@ import java.util.List;
 public class AuthorityProviderInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<BaseAttribute> attributes;
 
 

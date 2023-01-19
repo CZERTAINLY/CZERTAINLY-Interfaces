@@ -18,18 +18,18 @@ public class UpdateUserRequestDto {
     @Schema(description = "Last name of the user")
     private String lastName;
 
-    @Schema(description = "Email of the user", required = true)
+    @Schema(description = "Email of the user", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
     @Schema(
             description = "Base64 Content of the admin certificate",
-            required = false
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String certificateData;
 
     @Schema(
             description = "UUID of the existing certificate in the Inventory. Mandatory if certificate is not provided",
-            required = false
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String certificateUuid;
 

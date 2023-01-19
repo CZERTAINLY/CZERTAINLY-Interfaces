@@ -15,7 +15,7 @@ public class CustomKeyValue extends KeyValue {
     @Schema(
             description = "Custom values associated with the Key. It can be anything specific to the implementation," +
                     "for example external ID, custom handlers, etc. Represented as a map of key-value pairs.",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private HashMap<String, String> values;
 

@@ -14,19 +14,19 @@ public class IssueToLocationRequestDto {
 
     @Schema(
             description = "RA Profile UUID",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String raProfileUuid;
 
     @Schema(
             description = "List of CSR Attributes for Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> csrAttributes;
 
     @Schema(
             description = "List of certificate issue Attributes for RA Profile",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> issueAttributes;
 

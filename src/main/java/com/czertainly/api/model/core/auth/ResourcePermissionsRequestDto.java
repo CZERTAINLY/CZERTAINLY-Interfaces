@@ -8,10 +8,10 @@ import java.util.List;
 
 public class ResourcePermissionsRequestDto {
 
-    @Schema(description = "Name of the Resource", required = true)
+    @Schema(description = "Name of the Resource", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Allow all actions. True = Yes, False = No", required = true)
+    @Schema(description = "Allow all actions. True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean allowAllActions;
 
     @Schema(description = "List of actions permitted")

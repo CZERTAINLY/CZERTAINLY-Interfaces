@@ -10,19 +10,19 @@ public class GlobalMetadataCreateRequestDto {
     /**
      * Name of the Attribute
      */
-    @Schema(description = "Name of the Attribute", required = true)
+    @Schema(description = "Name of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**
      * Content Type of the Attribute
      */
-    @Schema(description = "Attribute Content Type", required = true)
+    @Schema(description = "Attribute Content Type", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeContentType contentType;
 
     /**
      * Description of the Attribute
      */
-    @Schema(description = "Attribute description", required = true)
+    @Schema(description = "Attribute description", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
     /**
@@ -31,7 +31,7 @@ public class GlobalMetadataCreateRequestDto {
     @Schema(
             description = "Friendly name of the the Attribute",
             example = "Attribute Name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
 

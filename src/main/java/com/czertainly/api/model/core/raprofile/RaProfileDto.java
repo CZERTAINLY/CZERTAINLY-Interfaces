@@ -18,26 +18,26 @@ public class RaProfileDto extends NameAndUuidDto {
     private String description;
 
     @Schema(description = "UUID of Authority provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String authorityInstanceUuid;
 
     @Schema(description = "Name of Authority instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String authorityInstanceName;
 
     @Schema(description = "List of RA Profiles attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "List of protocols enabled",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<String> enabledProtocols;
 
     @Override

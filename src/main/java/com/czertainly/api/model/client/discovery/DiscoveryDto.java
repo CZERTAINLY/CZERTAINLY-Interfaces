@@ -8,15 +8,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.List;
 
 public class DiscoveryDto {
-    @Schema(description = "Discovery name", required = true)
+    @Schema(description = "Discovery name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
-    @Schema(description = "List of Attributes for Discovery", required = true)
+    @Schema(description = "List of Attributes for Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
-    @Schema(description = "Discovery Provider UUID", required = true)
+    @Schema(description = "Discovery Provider UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
-    @Schema(description = "Discovery Kind", required = true)
+    @Schema(description = "Discovery Kind", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     public String getConnectorUuid() {

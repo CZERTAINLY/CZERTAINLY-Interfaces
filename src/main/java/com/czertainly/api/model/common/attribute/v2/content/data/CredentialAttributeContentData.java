@@ -12,11 +12,11 @@ public class CredentialAttributeContentData extends NameAndUuidDto {
 
     @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<DataAttribute> attributes;
 
     public String getKind() {

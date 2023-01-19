@@ -29,7 +29,7 @@ public class ResponseAttributeDto {
     @Schema(
             description = "Name of the Attribute",
             example = "Attribute",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
 
@@ -39,7 +39,7 @@ public class ResponseAttributeDto {
    @Schema(
            description = "Label of the the Attribute",
            example = "Attribute Name",
-           required = true
+           requiredMode = Schema.RequiredMode.REQUIRED
    )
    private String label;
 
@@ -48,7 +48,7 @@ public class ResponseAttributeDto {
      **/
     @Schema(
             description = "Type of the Attribute",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeType type;
 

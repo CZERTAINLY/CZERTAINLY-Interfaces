@@ -15,7 +15,7 @@ public class VerifyDataResponseDto {
 
     @Schema(
             description = "Signatures",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<VerificationResponseData> verifications;
 

@@ -15,28 +15,28 @@ public class ComplianceProfileRuleDto extends NameAndUuidDto {
     @Schema(description = "Description of the rule", example = "Sample rule description")
     private String description;
 
-    @Schema(description = "Connector Name", required = true)
+    @Schema(description = "Connector Name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    @Schema(description = "Connector UUID", required = true)
+    @Schema(description = "Connector UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Connector Kind", required = true)
+    @Schema(description = "Connector Kind", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "Group UUID")
     private String groupUuid;
 
-    @Schema(description = "Certificate type for the rule", required = true, example = "X509")
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "X509")
     private CertificateType certificateType;
 
-    @Schema(description = "List of attributes for the rule", required = true)
+    @Schema(description = "List of attributes for the rule", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
-    @Schema(description = "UUID of the Compliance Profile", required = true)
+    @Schema(description = "UUID of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String complianceProfileUuid;
 
-    @Schema(description = "Name of the Compliance Profile", required = true)
+    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String complianceProfileName;
 
     public String getDescription() {

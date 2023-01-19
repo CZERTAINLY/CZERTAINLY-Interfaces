@@ -50,7 +50,7 @@ public class AttributeCallbackMapping {
     @Schema(
             description = "Name of the path variable or request param or body field" +
                     " which is to be used to assign value of attribute",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String to;
 
@@ -59,7 +59,7 @@ public class AttributeCallbackMapping {
      **/
     @Schema(
             description = "Set of targets for propagating value.",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Set<AttributeValueTarget> targets;
 

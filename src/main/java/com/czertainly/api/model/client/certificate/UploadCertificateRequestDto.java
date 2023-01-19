@@ -11,7 +11,7 @@ public class UploadCertificateRequestDto {
 	
 	@Schema(
             description = "Base64 Content of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
 	private String certificate;
 

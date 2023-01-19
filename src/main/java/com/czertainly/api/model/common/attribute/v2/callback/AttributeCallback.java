@@ -10,19 +10,19 @@ public class AttributeCallback {
 
     @Schema(
             description = "Context part of callback URL",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String callbackContext;
 
     @Schema(
             description = "HTTP method of the callback",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String callbackMethod;
 
     @Schema(
             description = "Mappings for the callback method",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Set<AttributeCallbackMapping> mappings;
 

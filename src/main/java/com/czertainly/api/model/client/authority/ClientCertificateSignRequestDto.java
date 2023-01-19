@@ -10,15 +10,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ClientCertificateSignRequestDto {
 
     @Schema(description = "End Entity password",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
     @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String pkcs10;
 
     @Schema(description = "End Entity username",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     public String getPassword() {

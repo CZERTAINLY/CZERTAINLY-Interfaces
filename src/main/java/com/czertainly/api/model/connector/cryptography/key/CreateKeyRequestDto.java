@@ -14,11 +14,11 @@ import java.util.List;
 public class CreateKeyRequestDto {
 
     @Schema(description = "List of Token Profile Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> tokenProfileAttributes;
 
     @Schema(description = "List of Attributes to create a Key",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> createKeyAttributes;
 
 }

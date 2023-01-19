@@ -17,7 +17,7 @@ public enum DiscoveryStatus {
     WARNING("warning")
     ;
     @Schema(description = "Discovery Status",
-            example = "completed", required = true)
+            example = "completed", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     DiscoveryStatus(String code) {

@@ -14,7 +14,7 @@ public class VerificationResponseData {
 
     @Schema(
             description = "Data to be signed or verified",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean result;
 

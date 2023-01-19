@@ -11,7 +11,7 @@ import java.util.List;
 public class EntityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Entity instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<BaseAttribute> attributes;
 
     public List<BaseAttribute> getAttributes() {

@@ -14,7 +14,7 @@ public enum AttributeValueTarget {
     REQUEST_PARAMETER("requestParameter"),
     BODY("body");
     @Schema(description = "Attribute value Target",
-            example = "pathVariable", required = true)
+            example = "pathVariable", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     AttributeValueTarget(String code) {

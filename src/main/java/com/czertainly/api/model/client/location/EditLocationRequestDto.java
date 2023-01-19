@@ -19,7 +19,7 @@ public class EditLocationRequestDto {
 
     @Schema(
             description = "List of Attributes for Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> attributes;
 

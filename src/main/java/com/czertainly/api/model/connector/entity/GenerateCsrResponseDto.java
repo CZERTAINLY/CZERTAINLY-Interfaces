@@ -12,19 +12,19 @@ import java.util.List;
 public class GenerateCsrResponseDto {
 
     @Schema(description = "Base64-encoded certificate signing request",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String csr;
 
     @Schema(description = "CSR Metadata")
     private List<MetadataAttribute> metadata;
 
     @Schema(description = "Type of the certificate expected to be issued",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
     @Schema(
             description = "List of Attributes to push Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> pushAttributes;
 

@@ -14,7 +14,7 @@ public class CipherResponseData {
 
     @Schema(
             description = "Encrypted/decrypted data. In case operation failed, it should be null with provided details",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private byte[] data;
 

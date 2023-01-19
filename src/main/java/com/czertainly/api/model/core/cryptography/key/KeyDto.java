@@ -21,17 +21,17 @@ import java.time.LocalDateTime;
 public class KeyDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String description;
 
     @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private LocalDateTime creationTime;
 
     @Schema(description = "Cryptographic algorithm of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CryptographicAlgorithm cryptographicAlgorithm;
 
@@ -47,13 +47,13 @@ public class KeyDto extends NameAndUuidDto {
 
     @Schema(
             description = "Token Instance UUID",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenInstanceUuid;
 
     @Schema(
             description = "Token Instance Name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenInstanceName;
 

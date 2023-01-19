@@ -14,20 +14,20 @@ import java.util.List;
 public class CertificateRenewRequestDto {
 
     @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String pkcs10;
 
     @Schema(description = "List of RA Profiles attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> raProfileAttributes;
 
     @Schema(description = "Base64 Certificate content. (Certificate to be renewed)",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     @Schema(
             description = "Metadata for the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<MetadataAttribute> meta;
 

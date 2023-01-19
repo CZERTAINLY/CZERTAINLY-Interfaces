@@ -18,13 +18,13 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
     @Schema(
             description = "Discovery Kind",
             example = "IP-HostName",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String kind;
 
     @Schema(
             description = "Status of Discovery",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private DiscoveryStatus status;
 
@@ -51,23 +51,23 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
     private Integer totalCertificatesDiscovered;
     @Schema(
             description = "UUID of the Discovery Provider",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String connectorUuid;
 
     @Schema(
             description = "Name of the Discovery Provider",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String connectorName;
     @Schema(
             description = "List of Discovered Certificates",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<DiscoveryCertificatesDto> certificate;
     @Schema(
             description = "List of Discovery Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 

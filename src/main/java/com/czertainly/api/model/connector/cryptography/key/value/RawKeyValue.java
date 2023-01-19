@@ -12,7 +12,7 @@ public class RawKeyValue extends KeyValue {
 
     @Schema(
             description = "Base64 raw value of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String value;
 

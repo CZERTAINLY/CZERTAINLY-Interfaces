@@ -15,7 +15,7 @@ public class RequestAttributeCallback {
     private String uuid;
 
     @Schema(description = "Name of the Attribute",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(

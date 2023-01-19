@@ -26,7 +26,7 @@ public class EditTokenProfileRequestDto {
 
     @Schema(
             description = "List of Attributes for Token Profile",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> attributes;
 

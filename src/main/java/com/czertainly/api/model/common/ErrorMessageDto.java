@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ErrorMessageDto {
 
     @Schema(description = "Error message detail",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "Error message")
     private String message;
 

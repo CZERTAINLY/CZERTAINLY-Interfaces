@@ -19,7 +19,7 @@ public class MetadataAttribute extends BaseAttribute<List<BaseAttributeContent>>
     @Schema(
             description = "Content of the Attribute",
             type = "object",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             discriminatorProperty = "contentType",
             oneOf = {
                     BooleanAttributeContent.class,
@@ -43,7 +43,7 @@ public class MetadataAttribute extends BaseAttribute<List<BaseAttributeContent>>
      */
     @Schema(
             description = "Type of the Content",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeContentType contentType;
 
@@ -52,7 +52,7 @@ public class MetadataAttribute extends BaseAttribute<List<BaseAttributeContent>>
      */
     @Schema(
             description = "Properties of the Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private MetadataAttributeProperties properties;
 

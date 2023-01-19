@@ -19,7 +19,7 @@ public class BulkTokenProfileKeyUsageRequestDto extends TokenProfileKeyUsageRequ
 
     @Schema(
             description = "Token Profile UUIDs",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<UUID> uuids;
 }

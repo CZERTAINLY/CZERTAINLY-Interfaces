@@ -16,7 +16,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
      * Type of the Attribute. For the custom attribute, the type will always be "custom"
      */
     @Schema(description = "Type of the Attribute",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "custom",
             defaultValue = "custom")
     private AttributeType type;
@@ -27,7 +27,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(
             description = "Friendly name of the the Attribute",
             example = "Attribute Name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
 
@@ -36,7 +36,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
      **/
     @Schema(
             description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean required;
 

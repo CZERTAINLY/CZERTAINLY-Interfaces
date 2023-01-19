@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class StringAttributeContent extends BaseAttributeContent<String> {
 
-    @Schema(description = "String attribute value", required = true)
+    @Schema(description = "String attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
     private String data;
 
     public StringAttributeContent() {

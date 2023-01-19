@@ -20,7 +20,7 @@ public enum FunctionGroupCode {
     CRYPTOGRAPHY_PROVIDER("cryptographyProvider");
 
     @Schema(description = "Function Group code of the Connector",
-            example = "credentialProvider", required = true)
+            example = "credentialProvider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     FunctionGroupCode(String code) {

@@ -19,7 +19,7 @@ public class VerifyDataRequestDto extends SignDataRequestDto {
 
     @Schema(
             description = "Signatures to verify",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<SignatureRequestData> signatures;
 

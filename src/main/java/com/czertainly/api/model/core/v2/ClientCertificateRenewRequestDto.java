@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ClientCertificateRenewRequestDto {
 
     @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String pkcs10;
 
     @Schema(

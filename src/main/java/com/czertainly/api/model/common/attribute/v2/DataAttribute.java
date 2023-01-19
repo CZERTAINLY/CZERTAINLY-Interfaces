@@ -52,7 +52,7 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      */
     @Schema(
             description = "Type of the Content",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeContentType contentType;
 
@@ -62,7 +62,7 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      */
     @Schema(
             description = "Properties of the Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private DataAttributeProperties properties;
 

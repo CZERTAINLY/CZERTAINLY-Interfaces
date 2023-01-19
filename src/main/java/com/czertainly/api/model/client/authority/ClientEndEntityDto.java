@@ -15,7 +15,7 @@ import java.util.List;
 public class ClientEndEntityDto {
 
     @Schema(description = "End Entity subject domain name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String subjectDN;
 
     @Schema(description = "End Entity email")
@@ -28,11 +28,11 @@ public class ClientEndEntityDto {
     private String subjectAltName;
 
     @Schema(description = "End Entity Subject domain name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private EndEntityStatus status;
 
     @Schema(description = "End Entity name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     public String getSubjectDN() {

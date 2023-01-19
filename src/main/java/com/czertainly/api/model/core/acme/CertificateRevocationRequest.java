@@ -16,7 +16,7 @@ public class CertificateRevocationRequest {
      * uses base64url, and does not include headers, it is different from PEM.).
      */
     @Schema(description = "Certificate in base64url-encoded version of DER format",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "<base64url-encoded version of the DER format>")
     private String certificate;
 
@@ -26,7 +26,7 @@ public class CertificateRevocationRequest {
      * meaning the server can set the code for revocation is UNSPECIFIED.
      */
     @Schema(description = "Reason for revocation",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "1")
     private RevocationReason reason;
 

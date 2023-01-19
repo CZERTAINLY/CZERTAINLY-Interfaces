@@ -12,7 +12,7 @@ public class UserUpdateRequestDto {
     @Schema(description = "Last name of the user")
     private String lastName;
 
-    @Schema(description = "Email of the user", required = true)
+    @Schema(description = "Email of the user", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
     @Schema(description = "Description of the user")

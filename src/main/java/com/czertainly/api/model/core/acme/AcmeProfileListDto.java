@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class AcmeProfileListDto extends NameAndUuidDto {
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "false")
     private boolean enabled;
     @Schema(description = "ACME Profile description", example = "Some description")

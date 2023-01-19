@@ -15,7 +15,7 @@ any incoming compliance check request
  */
 public class ComplianceRequestDto {
 
-    @Schema(description = "Base64 encoded Certificate content", required = true)
+    @Schema(description = "Base64 encoded Certificate content", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     @Schema(description = "List of UUIDs of Compliance rules")

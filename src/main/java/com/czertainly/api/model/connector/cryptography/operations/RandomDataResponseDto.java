@@ -16,7 +16,7 @@ public class RandomDataResponseDto {
 
     @Schema(
             description = "Random generated data",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private byte[] data;
 

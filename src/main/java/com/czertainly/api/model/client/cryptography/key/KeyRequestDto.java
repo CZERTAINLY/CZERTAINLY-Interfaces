@@ -19,13 +19,13 @@ public class KeyRequestDto {
 
     @Schema(
             description = "Name of the Cryptographic Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
 
     @Schema(
             description = "Description of the Cryptographic Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String description;
 
@@ -41,7 +41,7 @@ public class KeyRequestDto {
 
     @Schema(
             description = "List of Attributes to create a Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> attributes;
 

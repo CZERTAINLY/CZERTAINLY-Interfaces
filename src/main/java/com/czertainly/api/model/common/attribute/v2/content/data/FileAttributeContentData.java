@@ -9,13 +9,13 @@ import java.util.Objects;
 
 public class FileAttributeContentData {
 
-    @Schema(description = "File content", required = true)
+    @Schema(description = "File content", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
-    @Schema(description = "Name of the file", required = true)
+    @Schema(description = "Name of the file", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fileName;
 
-    @Schema(description = "Type of the file uploaded", required = true)
+    @Schema(description = "Type of the file uploaded", requiredMode = Schema.RequiredMode.REQUIRED)
     private MimeType mimeType;
 
     public FileAttributeContentData() {

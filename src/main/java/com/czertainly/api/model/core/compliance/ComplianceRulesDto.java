@@ -13,7 +13,7 @@ public class ComplianceRulesDto extends NameAndUuidDto {
     @Schema(description = "Description of the rule", example = "Sample rule description")
     private String description;
 
-    @Schema(description = "Certificate type for the rule", required = true, example = "X509")
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "X509")
     private CertificateType certificateType;
 
     @Schema(description = "Attributes of the rule")

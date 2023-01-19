@@ -14,19 +14,19 @@ import java.util.List;
 public class CertRevocationDto {
 
     @Schema(description = "Revocation reason",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private RevocationReason reason;
 
     @Schema(description = "List of RA Profiles attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> raProfileAttributes;
 
     @Schema(description = "List of Attributes to revoke Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "Base64 Certificate content. (Certificate to be revoked)",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     public RevocationReason getReason() {

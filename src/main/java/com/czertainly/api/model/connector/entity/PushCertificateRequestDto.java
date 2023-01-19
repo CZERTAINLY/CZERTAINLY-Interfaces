@@ -12,25 +12,25 @@ public class PushCertificateRequestDto {
 
     @Schema(
             description = "Base64-encoded Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String certificate;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
-            required = false
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private CertificateType certificateType;
 
     @Schema(
             description = "List of Location Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> locationAttributes;
 
     @Schema(
             description = "List of Attributes to push Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> pushAttributes;
 

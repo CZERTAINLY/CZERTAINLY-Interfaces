@@ -15,7 +15,7 @@ public class DecryptDataResponseDto {
 
     @Schema(
             description = "Decrypted data",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<CipherResponseData> decryptedData;
 

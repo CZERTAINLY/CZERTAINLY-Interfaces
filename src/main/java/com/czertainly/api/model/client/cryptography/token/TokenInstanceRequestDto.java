@@ -18,7 +18,7 @@ import java.util.List;
 public class TokenInstanceRequestDto {
     @Schema(
             description = "Name of the Token Instance",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
 
@@ -29,25 +29,25 @@ public class TokenInstanceRequestDto {
 
     @Schema(
             description = "UUID of the Connector",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String connectorUuid;
 
     @Schema(
             description = "Connector Kind",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String kind;
 
     @Schema(
             description = "Custom Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> customAttributes;
 
     @Schema(
             description = "Attributes for Token Instance",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> attributes;
 }
