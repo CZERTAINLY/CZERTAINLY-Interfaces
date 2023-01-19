@@ -1,7 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.core.credential.CredentialDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CredentialAttributeContent extends BaseAttributeContent<CredentialAttributeContentData> {

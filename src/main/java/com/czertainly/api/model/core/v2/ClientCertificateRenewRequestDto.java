@@ -1,45 +1,51 @@
 package com.czertainly.api.model.core.v2;
 
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Class representing a request to renew certificate
  */
+@Data
 public class ClientCertificateRenewRequestDto {
-
-    @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            requiredMode = Schema.RequiredMode.REQUIRED)
-    private String pkcs10;
 
     @Schema(
             description = "True to replace renewed certificate in the associated locations",
             defaultValue = "false"
     )
     public boolean replaceInLocations;
-
-    public String getPkcs10() {
-        return pkcs10;
-    }
-
-    public void setPkcs10(String pkcs10) {
-        this.pkcs10 = pkcs10;
-    }
-
-    public boolean isReplaceInLocations() {
-        return replaceInLocations;
-    }
-
-    public void setReplaceInLocations(boolean replaceInLocations) {
-        this.replaceInLocations = replaceInLocations;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("pkcs10", pkcs10)
-                .append("replaceInLocations", replaceInLocations)
-                .toString();
-    }
+    @Schema(
+            description = "Certificate sign request (PKCS#10) encoded as Base64 string. If not provided, CSR attributes will be used"
+    )
+    private String pkcs10;
+    @Schema(
+            description = "Use existing CSR",
+            defaultValue = "false"
+    )
+    private boolean useExistingCsr;
+    @Schema(
+            description = "Create a new CSR",
+            defaultValue = "false"
+    )
+    private boolean createCsr;
+    @Schema(
+            description = "Key UUID. Required to create new CSR. If not provided, Key from existing certificate will be used"
+    )
+    private UUID keyUuid;
+    @Schema(
+            description = "Token Profile UUID. Required if new CSR is to be generated"
+    )
+    private UUID tokenProfileUuid;
+    @Schema(
+            description = "CSR Attributes. If not provided, existing attributes will be used to generate the new CSR"
+    )
+    private List<RequestAttributeDto> csrAttributes;
+    @Schema(
+            description = "Signature Attributes. If not provided, existing attributes will be used to generate the new CSR"
+    )
+    private List<RequestAttributeDto> signatureAttributes;
 }
