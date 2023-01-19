@@ -7,10 +7,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 
 public class SearchFilterRequestDto {
-    @Schema(description = "Field to search", required = true)
+    @Schema(description = "Field to search", requiredMode = Schema.RequiredMode.REQUIRED)
     private SearchableFields field;
 
-    @Schema(description = "Condition for the search", required = true)
+    @Schema(description = "Condition for the search", requiredMode = Schema.RequiredMode.REQUIRED)
     private SearchCondition condition;
 
     @Schema(description = "Value to match")

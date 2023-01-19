@@ -8,10 +8,10 @@ import java.util.List;
 
 public class ObjectPermissionsRequestDto {
 
-    @Schema(description = "UUID of the Object", required = true)
+    @Schema(description = "UUID of the Object", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "Name of the Object", required = true)
+    @Schema(description = "Name of the Object", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Allowed Action list")

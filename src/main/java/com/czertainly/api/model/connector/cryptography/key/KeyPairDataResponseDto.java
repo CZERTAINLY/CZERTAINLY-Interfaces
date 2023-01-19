@@ -14,13 +14,13 @@ public class KeyPairDataResponseDto {
 
     @Schema(
             description = "Data of the Public Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyDataResponseDto publicKeyData;
 
     @Schema(
             description = "Data of the Private Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyDataResponseDto privateKeyData;
 

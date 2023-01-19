@@ -21,7 +21,7 @@ public enum ComplianceRuleStatus {
     NA("na"),
     ;
     @Schema(description = "Compliance Rule Status",
-            example = "ok", required = true)
+            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     ComplianceRuleStatus(String code) {

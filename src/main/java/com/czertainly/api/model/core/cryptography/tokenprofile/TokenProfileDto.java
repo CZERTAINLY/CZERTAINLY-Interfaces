@@ -22,25 +22,25 @@ public class TokenProfileDto extends NameAndUuidDto {
 
     @Schema(
             description = "UUID of Token Instance",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenInstanceUuid;
 
     @Schema(
             description = "Name of Token instance",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenInstanceName;
 
     @Schema(
             description = "Token Instance Status",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private TokenInstanceStatus tokenInstanceStatus;
 
     @Schema(
             description = "Enabled flag - true = enabled; false = disabled",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Boolean enabled;
 }

@@ -14,7 +14,7 @@ public class AddLocationRequestDto {
 
     @Schema
             (description = "Location name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
             )
     private String name;
 
@@ -25,7 +25,7 @@ public class AddLocationRequestDto {
 
     @Schema(
             description = "List of Attributes to register Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> attributes;
 

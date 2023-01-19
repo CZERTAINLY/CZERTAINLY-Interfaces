@@ -15,7 +15,7 @@ public class SignDataResponseDto {
 
     @Schema(
             description = "Signatures",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<SignatureResponseData> signatures;
 

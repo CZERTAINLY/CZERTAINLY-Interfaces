@@ -16,7 +16,7 @@ import java.util.Map;
 public class TokenInstanceStatusDto {
 
     @Schema(description = "Token instance status",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private TokenInstanceStatus status;
 
     @Schema(description = "Components of the Token instance status")

@@ -9,7 +9,7 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SecretAttributeContent extends BaseAttributeContent<SecretAttributeContentData> {
 
-    @Schema(description = "Secret attribute content data", required = true)
+    @Schema(description = "Secret attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)
     private SecretAttributeContentData data;
 
     public SecretAttributeContent(String reference, SecretAttributeContentData data) {

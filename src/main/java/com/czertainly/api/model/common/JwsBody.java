@@ -6,17 +6,17 @@ public class JwsBody {
 
     @Schema(
             description = "Protected field of JWS",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String protectedField;
     @Schema(
             description = "JWS payload",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String payload;
     @Schema(
             description = "JWS signature",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String signature;
 

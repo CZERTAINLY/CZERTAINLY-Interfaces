@@ -12,7 +12,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     @Schema(
             description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean required = false;
 
@@ -22,7 +22,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     @Schema(
             description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean readOnly = false;
 
@@ -33,7 +33,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     @Schema(
             description = "Boolean determining if the Attribute contains list of values in the content",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean list = false;
 
@@ -43,7 +43,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     @Schema(
             description = "Boolean determining if the Attribute can have multiple values",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean multiSelect = false;
 

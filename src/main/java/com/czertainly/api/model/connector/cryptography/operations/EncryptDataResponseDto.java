@@ -15,7 +15,7 @@ public class EncryptDataResponseDto {
 
     @Schema(
             description = "Encrypted data",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<CipherResponseData> encryptedData;
 

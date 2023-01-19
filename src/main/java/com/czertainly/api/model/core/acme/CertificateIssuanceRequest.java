@@ -14,7 +14,7 @@ public class CertificateIssuanceRequest {
      * List of the Identifiers that the client wishes to submit an Order for.
      */
     @Schema(description = "List of Identifiers for the Order",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<Identifier> identifiers;
 
     /**

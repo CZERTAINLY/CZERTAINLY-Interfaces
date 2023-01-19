@@ -18,57 +18,57 @@ import java.util.Set;
 public class CertificateDto {
 
     @Schema(description = "UUID of the Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
     @Schema(description = "Certificate common name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String commonName;
     @Schema(description = "Certificate serial number",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String serialNumber;
     @Schema(description = "Certificate issuer common name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String issuerCommonName;
     @Schema(description = "Base64 encoded Certificate content",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateContent;
     @Schema(description = "Issuer DN of the Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String issuerDn;
     @Schema(description = "Subject DN of the Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String subjectDn;
     @Schema(description = "Certificate validity start date",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Date notBefore;
     @Schema(description = "Certificate expiration date",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Date notAfter;
     @Schema(description = "Public key algorithm",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String publicKeyAlgorithm;
     @Schema(description = "Certificate signature algorithm",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String signatureAlgorithm;
     @Schema(description = "Certificate key size",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer keySize;
     @Schema(description = "Extended key usages")
     private List<String> extendedKeyUsage;
     @Schema(description = "Key usages",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> keyUsage;
     @Schema(description = "Basic Constraints",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String basicConstraints;
     @Schema(description = "Certificate metadata")
     private List<MetadataResponseDto> metadata;
     @Schema(description = "Status of the Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateStatus status;
     @Schema(description = "RA Profile associated to the Certificate")
     private SimplifiedRaProfileDto raProfile;
-    @Schema(description = "SHA256 fingerprint of the Certificate", required = true)
+    @Schema(description = "SHA256 fingerprint of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fingerprint;
     @Schema(description = "Subject alternative names")
     private Map<String, Object> subjectAlternativeNames;

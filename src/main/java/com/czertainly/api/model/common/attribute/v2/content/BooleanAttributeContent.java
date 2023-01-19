@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class BooleanAttributeContent extends BaseAttributeContent<Boolean> {
 
-    @Schema(description = "Boolean attribute value", required = true)
+    @Schema(description = "Boolean attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean data;
 
     public BooleanAttributeContent() {

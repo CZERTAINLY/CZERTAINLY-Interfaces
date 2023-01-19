@@ -22,7 +22,7 @@ public class KeyDataResponseDto extends NameAndUuidDto {
 
     @Schema(
             description = "Data of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyData keyData;
 

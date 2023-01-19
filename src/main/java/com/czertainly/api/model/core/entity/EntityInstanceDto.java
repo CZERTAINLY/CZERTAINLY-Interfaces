@@ -12,27 +12,27 @@ import java.util.List;
 public class EntityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Entity instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Status of Entity instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String status;
 
     @Schema(description = "UUID of Entity Provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Name of Entity Provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
     @Schema(description = "Entity instance Kind",
             example = "Keystore, etc.",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     public List<ResponseAttributeDto> getAttributes() {

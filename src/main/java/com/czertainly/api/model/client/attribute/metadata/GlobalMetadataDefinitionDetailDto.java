@@ -12,7 +12,7 @@ public class GlobalMetadataDefinitionDetailDto extends AttributeDefinitionDto {
      * Type of the Attribute. For the custom attribute, the type will always be "custom"
      */
     @Schema(description = "Type of the Attribute",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "custom",
             defaultValue = "custom")
     private AttributeType type;
@@ -23,7 +23,7 @@ public class GlobalMetadataDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(
             description = "Friendly name of the the Attribute",
             example = "Attribute Name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
 

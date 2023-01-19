@@ -12,7 +12,7 @@ import java.util.List;
 public class CertificateLocationDto {
 
     @Schema(description = "Base64-encoded Certificate content",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateData;
 
     @Schema(
@@ -22,11 +22,11 @@ public class CertificateLocationDto {
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
     @Schema(description = "If the Certificate in Location has associated private key",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean withKey;
 
     @Schema(

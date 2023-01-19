@@ -10,25 +10,25 @@ public class AttributeDefinitionDto {
     /**
      * Name of the Attribute
      */
-    @Schema(description = "UUID of the Attribute", required = true)
+    @Schema(description = "UUID of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
     /**
      * Name of the Attribute
      */
-    @Schema(description = "Name of the Attribute", required = true)
+    @Schema(description = "Name of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**
      * Content Type of the Attribute
      */
-    @Schema(description = "Attribute Content Type", required = true)
+    @Schema(description = "Attribute Content Type", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeContentType contentType;
 
     /**
      * Description of the Attribute
      */
-    @Schema(description = "Attribute description", required = true)
+    @Schema(description = "Attribute description", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
     /**

@@ -17,7 +17,7 @@ public class TokenInstanceStatusComponent {
 
     @Schema(
             description = "Token instance component status",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private TokenInstanceStatus status;
 

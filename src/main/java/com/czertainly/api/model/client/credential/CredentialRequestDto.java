@@ -11,23 +11,23 @@ import java.util.List;
 public class CredentialRequestDto implements Serializable {
 
     @Schema(description = "Credential name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
     @Schema(description = "UUID of Credential provider Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
 

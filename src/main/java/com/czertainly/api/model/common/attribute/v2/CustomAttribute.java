@@ -47,7 +47,7 @@ public class CustomAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      */
     @Schema(
             description = "Type of the Content",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeContentType contentType;
 
@@ -57,7 +57,7 @@ public class CustomAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      */
     @Schema(
             description = "Properties of the Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CustomAttributeProperties properties;
 

@@ -14,7 +14,7 @@ public class PushToLocationRequestDto {
 
     @Schema(
             description = "List of push Attributes for Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> attributes;
 

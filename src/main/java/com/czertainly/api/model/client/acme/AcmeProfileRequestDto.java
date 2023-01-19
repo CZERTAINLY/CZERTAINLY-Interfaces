@@ -11,7 +11,7 @@ public class AcmeProfileRequestDto {
 
     @Schema(
             description = "Name of the ACME Profile",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "Profile Name 1"
     )
     private String name;
@@ -62,12 +62,12 @@ public class AcmeProfileRequestDto {
     private Integer validity;
     @Schema(
             description = "List of Attributes to issue Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> issueCertificateAttributes;
     @Schema(
             description = "List of Attributes to revoke Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> revokeCertificateAttributes;
     @Schema(

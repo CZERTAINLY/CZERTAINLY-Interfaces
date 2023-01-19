@@ -13,14 +13,14 @@ import java.util.List;
 public class AddRaProfileRequestDto {
 
     @Schema(description = "RA Profile name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "RA Profile description")
     private String description;
 
     @Schema(description = "List of Attributes to create RA Profile",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")

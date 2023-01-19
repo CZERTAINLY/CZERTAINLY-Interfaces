@@ -18,7 +18,7 @@ public class Account {
      **/
     @Schema(
             description = "Status of the ACME Account",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "valid"
     )
     private AccountStatus status;
@@ -52,7 +52,7 @@ public class Account {
      */
     @Schema(
             description = "URL to get the list of Orders for the Account",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://some-server.com/acme/orders/JHJGfgf34s"
 
     )

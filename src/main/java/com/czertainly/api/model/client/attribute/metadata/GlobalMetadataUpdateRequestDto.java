@@ -9,7 +9,7 @@ public class GlobalMetadataUpdateRequestDto {
     /**
      * Description of the Attribute
      */
-    @Schema(description = "Attribute description", required = true)
+    @Schema(description = "Attribute description", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
     /**
@@ -18,7 +18,7 @@ public class GlobalMetadataUpdateRequestDto {
     @Schema(
             description = "Friendly name of the the Attribute",
             example = "Attribute Name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
 

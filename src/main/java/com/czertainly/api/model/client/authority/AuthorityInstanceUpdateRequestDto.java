@@ -10,7 +10,7 @@ import java.util.List;
 public class AuthorityInstanceUpdateRequestDto {
 
     @Schema(description = "List of Authority instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")

@@ -17,7 +17,7 @@ public class Order {
      * This is a mandatory field
      */
     @Schema(description = "Status of the Order",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "pending")
     private OrderStatus status;
 

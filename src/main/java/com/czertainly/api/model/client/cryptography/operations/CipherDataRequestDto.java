@@ -21,13 +21,13 @@ public class CipherDataRequestDto {
 
     @Schema(
             description = "List of cipher Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> cipherAttributes;
 
     @Schema(
             description = "Encrypted/decrypted data",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<CipherRequestData> cipherData;
 

@@ -15,25 +15,25 @@ import java.util.HashMap;
 @Setter
 @ToString
 public class KeyEventHistoryDto {
-    @Schema(description = "UUID of the event", required = true)
+    @Schema(description = "UUID of the event", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "UUID of the Key", required = true)
+    @Schema(description = "UUID of the Key", requiredMode = Schema.RequiredMode.REQUIRED)
     private String keyUuid;
 
-    @Schema(description = "Event creation time", required = true)
+    @Schema(description = "Event creation time", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDateTime created;
 
-    @Schema(description = "Created By", required = true)
+    @Schema(description = "Created By", requiredMode = Schema.RequiredMode.REQUIRED)
     private String createdBy;
 
-    @Schema(description = "Event type", required = true)
+    @Schema(description = "Event type", requiredMode = Schema.RequiredMode.REQUIRED)
     private KeyEvent event;
 
-    @Schema(description = "Event result", required = true)
+    @Schema(description = "Event result", requiredMode = Schema.RequiredMode.REQUIRED)
     private KeyEventStatus status;
 
-    @Schema(description = "Event message", required = true)
+    @Schema(description = "Event message", requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
     @Schema(description = "Additional information for the event")

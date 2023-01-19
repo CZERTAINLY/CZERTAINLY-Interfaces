@@ -16,7 +16,7 @@ public class CipherRequestData {
 
     @Schema(
             description = "Encrypted/decrypted data",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private byte[] data;
 

@@ -19,7 +19,7 @@ import java.util.Map;
 public class TokenInstanceStatusDetailDto {
     @Schema(
             description = "Token instance status",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private TokenInstanceStatus status;
 

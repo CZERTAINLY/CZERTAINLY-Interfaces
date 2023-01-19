@@ -8,16 +8,16 @@ import java.util.List;
 
 public class ResourcePermissionsDto {
 
-    @Schema(description = "Name of the Resource", required = true)
+    @Schema(description = "Name of the Resource", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Allow all actions. True = Yes, False = No", required = true)
+    @Schema(description = "Allow all actions. True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean allowAllActions;
 
-    @Schema(description = "List of actions permitted", required = true)
+    @Schema(description = "List of actions permitted", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> actions;
 
-    @Schema(description = "Object permissions", required = true)
+    @Schema(description = "Object permissions", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ObjectPermissionsDto> objects;
 
     public String getName() {

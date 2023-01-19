@@ -11,19 +11,19 @@ public class DiscoveryProviderCertificateDataDto {
 	
 	@Schema(
 			description = "Certificate UUID",
-			required = true
+			requiredMode = Schema.RequiredMode.REQUIRED
 	)
 	private String uuid;
 	
 	@Schema(
 			description = "Base64 encoded Certificate content",
-			required = true
+			requiredMode = Schema.RequiredMode.REQUIRED
 	)
 	private String base64Content;
 	
 	@Schema(
 			description = "Metadata for the Certificate",
-			required = true
+			requiredMode = Schema.RequiredMode.REQUIRED
 	)
 	private List<MetadataAttribute> meta;
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class GroupRequestDto {
 
     @Schema(description = "Name of the Certificate Group",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Description of the Certificate Group")

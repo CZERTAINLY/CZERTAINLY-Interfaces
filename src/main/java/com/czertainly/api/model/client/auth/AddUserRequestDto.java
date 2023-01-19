@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AddUserRequestDto {
 
-    @Schema(description = "Username of the user", required = true, example = "user1")
+    @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, example = "user1")
     private String username;
 
     @Schema(description = "Description of the user")

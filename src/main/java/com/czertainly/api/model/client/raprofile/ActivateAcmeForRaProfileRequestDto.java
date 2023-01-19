@@ -9,11 +9,11 @@ import java.util.List;
 
 public class ActivateAcmeForRaProfileRequestDto {
     @Schema(description = "List of Attributes to issue Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> issueCertificateAttributes;
 
     @Schema(description = "List of Attributes to revoke Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> revokeCertificateAttributes;
 
     public List<RequestAttributeDto> getIssueCertificateAttributes() {

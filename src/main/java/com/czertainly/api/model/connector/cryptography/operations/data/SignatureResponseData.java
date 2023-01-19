@@ -14,7 +14,7 @@ public class SignatureResponseData {
 
     @Schema(
             description = "Signature data",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private byte[] data;
 

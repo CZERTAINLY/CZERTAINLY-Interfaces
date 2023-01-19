@@ -15,7 +15,7 @@ public class DateAttributeContent extends BaseAttributeContent<LocalDate> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @Schema(description = "Date attribute value in format yyyy-MM-dd", required = true)
+    @Schema(description = "Date attribute value in format yyyy-MM-dd", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDate data;
 
     public DateAttributeContent() {

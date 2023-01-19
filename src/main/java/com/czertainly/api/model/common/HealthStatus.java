@@ -15,7 +15,7 @@ public enum HealthStatus {
     UNKNOWN("unknown");
 
     @Schema(description = "Health Status",
-            example = "ok", required = true)
+            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     HealthStatus(String code) {

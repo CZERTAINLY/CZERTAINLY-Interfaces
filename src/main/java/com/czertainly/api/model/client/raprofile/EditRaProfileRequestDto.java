@@ -13,7 +13,7 @@ public class EditRaProfileRequestDto {
     private String description;
 
     @Schema(description = "List of Attributes for RA Profile",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")

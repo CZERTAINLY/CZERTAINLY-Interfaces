@@ -11,17 +11,17 @@ public class GenerateCsrRequestDto {
 
     @Schema(
             description = "List of Location Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> locationAttributes;
 
     @Schema(
             description = "List of Attributes to generate CSR",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> csrAttributes;
 
-    @Schema(description = "Is the request for renewal of Certificate", required = true)
+    @Schema(description = "Is the request for renewal of Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean renewal;
 
     public List<RequestAttributeDto> getLocationAttributes() {

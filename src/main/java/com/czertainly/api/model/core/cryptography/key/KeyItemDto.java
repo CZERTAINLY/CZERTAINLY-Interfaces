@@ -24,19 +24,19 @@ public class KeyItemDto extends NameAndUuidDto {
 
     @Schema(
             description = "UUID of the key item in the Connector",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String keyReferenceUuid;
 
     @Schema(
             description = "Type of the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyType type;
 
     @Schema(
             description = "Key Algorithm",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CryptographicAlgorithm cryptographicAlgorithm;
 
@@ -57,19 +57,19 @@ public class KeyItemDto extends NameAndUuidDto {
 
     @Schema(
             description = "Key Usages",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<String> usage;
 
     @Schema(
             description = "Boolean describing if the key is enabled or not",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean enabled;
 
     @Schema(
             description = "Key State",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyState state;
 }

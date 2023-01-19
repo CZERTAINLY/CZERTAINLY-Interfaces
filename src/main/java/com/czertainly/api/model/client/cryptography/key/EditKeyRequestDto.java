@@ -16,19 +16,19 @@ public class EditKeyRequestDto {
 
     @Schema(
             description = "UUID of the token profile",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenProfileUuid;
 
     @Schema(
             description = "Name of the Cryptographic Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
 
     @Schema(
             description = "Description of the Cryptographic Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String description;
 

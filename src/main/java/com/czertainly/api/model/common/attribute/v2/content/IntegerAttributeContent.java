@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class IntegerAttributeContent extends BaseAttributeContent<Integer> {
 
-    @Schema(description = "Integer attribute value", required = true)
+    @Schema(description = "Integer attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer data;
 
     public IntegerAttributeContent() {

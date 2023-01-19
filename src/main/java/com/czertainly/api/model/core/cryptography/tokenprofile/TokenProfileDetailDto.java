@@ -27,19 +27,19 @@ public class TokenProfileDetailDto extends NameAndUuidDto {
 
     @Schema(
             description = "UUID of Token Instance",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenInstanceUuid;
 
     @Schema(
             description = "Name of Token instance",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenInstanceName;
 
     @Schema(
             description = "List of Token Profile attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
@@ -50,19 +50,19 @@ public class TokenProfileDetailDto extends NameAndUuidDto {
 
     @Schema(
             description = "Token Instance Status",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private TokenInstanceStatus tokenInstanceStatus;
 
     @Schema(
             description = "Enabled flag - true = enabled; false = disabled",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Boolean enabled;
 
     @Schema(
             description = "Usages for the Keys assoiated to the profile",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<KeyUsage> usages;
 }

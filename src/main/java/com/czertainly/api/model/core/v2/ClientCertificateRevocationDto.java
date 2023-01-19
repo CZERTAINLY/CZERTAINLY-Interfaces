@@ -14,11 +14,11 @@ import java.util.List;
 public class ClientCertificateRevocationDto {
 
     @Schema(description = "Reason for revocation",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private RevocationReason reason;
 
     @Schema(description = "List of Attributes to revoke Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     public RevocationReason getReason() {

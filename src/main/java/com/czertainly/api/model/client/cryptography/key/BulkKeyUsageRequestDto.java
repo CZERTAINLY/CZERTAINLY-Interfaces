@@ -20,13 +20,13 @@ public class BulkKeyUsageRequestDto {
 
     @Schema(
             description = "Usages for the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<KeyUsage> usage;
 
     @Schema(
             description = "Key UUIDs",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<UUID> uuids;
 }

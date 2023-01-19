@@ -10,15 +10,15 @@ import java.util.List;
 public class AuthorityProviderInstanceRequestDto {
 
     @Schema(description = "Authority instance name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Kind of Authority instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Authority instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     public String getName() {

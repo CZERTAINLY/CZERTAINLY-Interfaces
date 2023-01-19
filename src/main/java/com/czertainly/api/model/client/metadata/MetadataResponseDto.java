@@ -8,13 +8,13 @@ import java.util.List;
 
 @Schema(description = "Metadata response attributes with their source connector")
 public class MetadataResponseDto {
-    @Schema(description = "UUID of the Connector", required = true)
+    @Schema(description = "UUID of the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Name of the Connector", required = true)
+    @Schema(description = "Name of the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    @Schema(description = "List of Metadata", required = true)
+    @Schema(description = "List of Metadata", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseMetadataDto> items;
 
     public String getConnectorUuid() {

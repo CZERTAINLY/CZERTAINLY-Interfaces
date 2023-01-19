@@ -13,7 +13,7 @@ public enum KeyRequestType {
     KEY_PAIR("keyPair");
 
     @Schema(description = "Type of the key to be generated",
-            example = "secret", required = true)
+            example = "secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
 
     KeyRequestType(String code) {

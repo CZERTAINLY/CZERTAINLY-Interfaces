@@ -9,7 +9,7 @@ public class RemoveCertificateResponseDto {
 
     @Schema(
             description = "Metadata of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<MetadataAttribute> certificateMetadata;
 

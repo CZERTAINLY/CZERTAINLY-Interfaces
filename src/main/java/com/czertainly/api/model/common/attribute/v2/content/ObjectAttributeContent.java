@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class ObjectAttributeContent extends BaseAttributeContent<Object> {
 
-    @Schema(description = "Object attribute content data", required = true)
+    @Schema(description = "Object attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)
     private Object data;
 
     public ObjectAttributeContent() {

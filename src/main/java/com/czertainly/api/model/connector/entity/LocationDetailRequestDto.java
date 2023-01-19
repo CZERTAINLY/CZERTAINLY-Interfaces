@@ -11,7 +11,7 @@ public class LocationDetailRequestDto {
 
     @Schema(
             description = "List of Location Attributes",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> locationAttributes;
 

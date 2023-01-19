@@ -12,22 +12,22 @@ import java.util.List;
 public class ConnectorDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "List of Function Groups implemented by the Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<FunctionGroupDto> functionGroups;
     @Schema(description = "URL of the Connector",
             example = "http://network-discovery-provider:8080",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
     @Schema(description = "Type of authentication for the Connector",
             example = "none",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
     @Schema(description = "List of Attributes for the authentication type",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttributeDto> authAttributes;
     @Schema(description = "Status of the Connector",
             example = "CONNECTED",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;

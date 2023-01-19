@@ -19,38 +19,38 @@ public class LocationDto extends NameAndUuidDto {
     private String description;
 
     @Schema(description = "UUID of Entity instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String entityInstanceUuid;
 
     @Schema(description = "Name of Entity instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String entityInstanceName;
 
     @Schema(description = "List of Location attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
     @Schema(description = "If the location supports multiple Certificates",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean supportMultipleEntries;
 
     @Schema(description = "If the location supports key management operations",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean supportKeyManagement;
 
     @Schema(description = "List of Certificates in Location",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<CertificateInLocationDto> certificates;
 
     @Schema(description = "Location metadata")

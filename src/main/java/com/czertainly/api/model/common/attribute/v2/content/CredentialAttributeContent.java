@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class CredentialAttributeContent extends BaseAttributeContent<CredentialAttributeContentData> {
 
-    @Schema(description = "Credential attribute content data", required = true)
+    @Schema(description = "Credential attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)
     private CredentialAttributeContentData data;
 
     public CredentialAttributeContent() {

@@ -24,7 +24,7 @@ public class AddTokenProfileRequestDto {
 
     @Schema(
             description = "Token Profile name",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
 
@@ -35,7 +35,7 @@ public class AddTokenProfileRequestDto {
 
     @Schema(
             description = "List of Attributes to create Token Profile",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> attributes;
 

@@ -10,11 +10,11 @@ public class NameAndUuidDto implements Serializable {
 
     @Schema(description = "Object identifier",
             example = "7b55ge1c-844f-11dc-a8a3-0242ac120002",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected String uuid;
     @Schema(description = "Object Name",
             example = "Name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected String name;
 
     public NameAndUuidDto() {

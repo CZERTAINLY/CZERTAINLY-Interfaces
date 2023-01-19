@@ -12,7 +12,7 @@ public class UserDetailDto extends UserDto {
     @Schema(description = "User Certificate details")
     private UserCertificateDto certificate;
 
-    @Schema(description = "Roles for the user", required = true)
+    @Schema(description = "Roles for the user", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RoleDto> roles;
 
     @Schema(description = "List of Custom Attributes")

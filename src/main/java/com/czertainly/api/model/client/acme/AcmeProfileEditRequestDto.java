@@ -67,12 +67,12 @@ public class AcmeProfileEditRequestDto {
     private Integer validity;
     @Schema(
             description = "List of Attributes to issue Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> issueCertificateAttributes;
     @Schema(
             description = "List of Attributes to revoke Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> revokeCertificateAttributes;
     @Schema(

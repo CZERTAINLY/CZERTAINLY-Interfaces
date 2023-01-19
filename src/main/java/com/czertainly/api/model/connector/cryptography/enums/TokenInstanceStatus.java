@@ -18,7 +18,7 @@ public enum TokenInstanceStatus {
     UNKNOWN("Unknown");
 
     @Schema(description = "Token instance status",
-            example = "ok", required = true)
+            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     TokenInstanceStatus(String code) {

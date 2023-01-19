@@ -40,7 +40,7 @@ public class KeyDetailDto extends KeyDto {
 
     @Schema(
             description = "Key Objects",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<KeyItemDto> items;
 }

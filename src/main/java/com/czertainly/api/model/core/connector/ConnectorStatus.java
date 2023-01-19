@@ -18,7 +18,7 @@ public enum ConnectorStatus {
     ;
 
     @Schema(description = "Connector status",
-            example = "connected", required = true)
+            example = "connected", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     ConnectorStatus(String code) {

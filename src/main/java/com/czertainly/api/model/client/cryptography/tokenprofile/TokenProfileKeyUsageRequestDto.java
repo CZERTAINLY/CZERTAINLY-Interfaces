@@ -20,7 +20,7 @@ public class TokenProfileKeyUsageRequestDto {
 
     @Schema(
             description = "Usages for the Key",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<KeyUsage> usage;
 }

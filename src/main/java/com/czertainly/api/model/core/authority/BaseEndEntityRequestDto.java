@@ -11,7 +11,7 @@ import java.util.List;
 public class BaseEndEntityRequestDto {
 
     @Schema(description = "RA profile related to End Entity",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected RaProfileDto raProfile;
 
     @Schema(description = "End Entity email")
@@ -21,14 +21,14 @@ public class BaseEndEntityRequestDto {
     protected List<EndEntityExtendedInfoDto> extensionData;
 
     @Schema(description = "End Entity password",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected String password;
 
     @Schema(description = "End Entity Subject alternative name")
     protected String subjectAltName;
 
     @Schema(description = "End Entity subject domain name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected String subjectDN;
 
     public RaProfileDto getRaProfile() {

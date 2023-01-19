@@ -9,16 +9,16 @@ import java.util.List;
 public class RaProfileAcmeDetailResponseDto extends NameAndUuidDto {
 
     @Schema(description = "ACME availability flag - true = yes; false = no",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean isAcmeAvailable;
     @Schema(description = "ACME Directory URL",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String directoryUrl;
     @Schema(description = "List of Attributes to issue Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> issueCertificateAttributes;
     @Schema(description = "List of Attributes to revoke Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> revokeCertificateAttributes;
 
     public Boolean getAcmeAvailable() {

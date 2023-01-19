@@ -6,19 +6,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ConnectorMetadataResponseDto {
-    @Schema(description = "Metadata Name", required = true)
+    @Schema(description = "Metadata Name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Metadata UUID", required = true)
+    @Schema(description = "Metadata UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "Content Type of the Metadata", required = true)
+    @Schema(description = "Content Type of the Metadata", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeContentType contentType;
 
-    @Schema(description = "Metadata Label", required = true)
+    @Schema(description = "Metadata Label", requiredMode = Schema.RequiredMode.REQUIRED)
     private String label;
 
-    @Schema(description = "Connector UUID", required = true)
+    @Schema(description = "Connector UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     public String getName() {

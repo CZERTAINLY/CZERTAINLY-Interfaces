@@ -15,7 +15,7 @@ public class TimeAttributeContent extends BaseAttributeContent<LocalTime> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     @JsonSerialize(using = LocalTimeSerializer.class)
-    @Schema(description = "Time attribute value in format HH:mm:ss", required = true, implementation = String.class)
+    @Schema(description = "Time attribute value in format HH:mm:ss", requiredMode = Schema.RequiredMode.REQUIRED, implementation = String.class)
     private LocalTime data;
 
     public TimeAttributeContent() {

@@ -8,13 +8,13 @@ public class IdAndCertificateIdDto {
 	
 	@Schema(
             description = "UUID of the Object",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
 	private String uuid;
 	
 	@Schema(
             description = "List of UUIDs of the Certificates in Inventory",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
 	private List<String> certificateUuids;
 

@@ -14,26 +14,26 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes = new ArrayList<>();
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "UUID of Credential provider Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Name of Credential provider Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
     public String getKind() {

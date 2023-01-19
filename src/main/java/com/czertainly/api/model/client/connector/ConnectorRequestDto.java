@@ -12,18 +12,18 @@ public class ConnectorRequestDto {
 
     @Schema(description = "Name of the Connector",
             example = "Connector1",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
     @Schema(description = "URL of the Connector to connect",
             example = "http://network-discovery-provicer:8080",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
     @Schema(description = "Type of authentication for the Connector",
             example = "none",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttributeDto> authAttributes;
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;

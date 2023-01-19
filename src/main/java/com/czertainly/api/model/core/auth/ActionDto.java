@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ActionDto extends NameAndUuidDto {
 
-    @Schema(description = "Resource label", required = true)
+    @Schema(description = "Resource label", requiredMode = Schema.RequiredMode.REQUIRED)
     private String displayName;
 
     public String getDisplayName() {

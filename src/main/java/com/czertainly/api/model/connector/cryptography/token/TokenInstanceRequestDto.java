@@ -14,15 +14,15 @@ import java.util.List;
 public class TokenInstanceRequestDto {
 
     @Schema(description = "Token instance name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Kind of Token instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Token instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
 }

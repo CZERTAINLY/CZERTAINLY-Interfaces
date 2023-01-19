@@ -12,7 +12,7 @@ public class ComplianceProfilesListDto extends NameAndUuidDto {
     @Schema(description = "Compliance Profile description")
     private String description;
 
-    @Schema(description = "Rules summary", required = true)
+    @Schema(description = "Rules summary", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceProviderSummaryDto> rules;
 
     //Default getters and setters

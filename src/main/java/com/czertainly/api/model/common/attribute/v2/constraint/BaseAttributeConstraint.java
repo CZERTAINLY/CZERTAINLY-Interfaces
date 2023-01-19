@@ -11,10 +11,10 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint {
     @Schema(description = "Error message to be displayed for wrong data")
     private String errorMessage;
 
-    @Schema(description = "Attribute Constraint Type", required = true)
+    @Schema(description = "Attribute Constraint Type", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeConstraintType type;
 
-    @Schema(description = "Attribute Constraint Data", required = true)
+    @Schema(description = "Attribute Constraint Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;
 
     public BaseAttributeConstraint(String description, String errorMessage, AttributeConstraintType type) {

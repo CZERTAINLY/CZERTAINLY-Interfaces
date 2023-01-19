@@ -8,7 +8,7 @@ public class BaseAttributeContent<T> extends AttributeContent {
     @Schema(description = "Content Reference")
     private String reference;
 
-    @Schema(description = "Content Data", required = true)
+    @Schema(description = "Content Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;
 
     public BaseAttributeContent() {

@@ -10,23 +10,23 @@ import java.util.List;
 public class AuthorityInstanceRequestDto {
 
     @Schema(description = "Authority instance name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "List of Authority instance Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
     @Schema(description = "UUID of Authority provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Authority instance Kind",
             example = "LegacyEjbca, ADCS, etc",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     public String getName() {

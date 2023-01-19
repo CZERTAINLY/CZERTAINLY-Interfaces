@@ -9,13 +9,13 @@ List of groups information from the Compliance Provider. These groups will
 have name, uuid and the attributes.
  */
 public class ComplianceGroupsResponseDto {
-    @Schema(description = "UUID of the group", required = true, example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
+    @Schema(description = "UUID of the group", requiredMode = Schema.RequiredMode.REQUIRED, example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
     private String uuid;
 
-    @Schema(description = "Name of the group", required = true, example = "RFC")
+    @Schema(description = "Name of the group", requiredMode = Schema.RequiredMode.REQUIRED, example = "RFC")
     private String name;
 
-    @Schema(description = "Description of the group", required = false, example = "Sample description of the group")
+    @Schema(description = "Description of the group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "Sample description of the group")
     private String description;
 
     //Default getters and setters
