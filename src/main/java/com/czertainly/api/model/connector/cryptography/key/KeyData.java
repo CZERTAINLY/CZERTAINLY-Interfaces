@@ -6,6 +6,8 @@ import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
 import com.czertainly.api.model.connector.cryptography.enums.KeyType;
 import com.czertainly.api.model.connector.cryptography.key.value.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -45,9 +47,9 @@ public class KeyData {
             discriminatorMapping = {
                     @DiscriminatorMapping(value = "RAW", schema = RawKeyValue.class),
                     @DiscriminatorMapping(value = "SPKI", schema = SpkiKeyValue.class),
-                    @DiscriminatorMapping(value = "PRKI", schema = SpkiKeyValue.class),
-                    @DiscriminatorMapping(value = "EPRKI", schema = SpkiKeyValue.class),
-                    @DiscriminatorMapping(value = "CUSTOM", schema = SpkiKeyValue.class)
+                    @DiscriminatorMapping(value = "PRKI", schema = PrkiKeyValue.class),
+                    @DiscriminatorMapping(value = "EPRKI", schema = EprkiKeyValue.class),
+                    @DiscriminatorMapping(value = "CUSTOM", schema = CustomKeyValue.class)
             },
             oneOf = {
                     RawKeyValue.class,
@@ -57,6 +59,14 @@ public class KeyData {
                     CustomKeyValue.class
             }
     )
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "format")
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = RawKeyValue.class, name = "RAW"),
+            @JsonSubTypes.Type(value = SpkiKeyValue.class, name = "SPKI"),
+            @JsonSubTypes.Type(value = PrkiKeyValue.class, name = "PRKI"),
+            @JsonSubTypes.Type(value = EprkiKeyValue.class, name = "EPRKI"),
+            @JsonSubTypes.Type(value = CustomKeyValue.class, name = "CUSTOM")
+    })
     private KeyValue value;
 
     @Schema(

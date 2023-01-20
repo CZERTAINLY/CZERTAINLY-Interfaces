@@ -2,57 +2,63 @@ package com.czertainly.api.model.core.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Class representing a request to sign CSR
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class ClientCertificateSignRequestDto {
 
-    @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(
+            description = "List of attributes to create CSR. Required if CSR is not provided"
+    )
+    List<RequestAttributeDto> csrAttributes;
+    @Schema(
+            description = "List of attributes to sign the CSR"
+    )
+    List<RequestAttributeDto> signatureAttributes;
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Key Related Parameters
+    //------------------------------------------------------------------------------------------------------------------
+    @Schema(
+            description = "Certificate sign request (PKCS#10) encoded as Base64 string",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private String pkcs10;
 
-    @Schema(description = "List of Attributes to issue Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    //------------------------------------------------------------------------------------------------------------------
+    // Key Related Parameters
+    //------------------------------------------------------------------------------------------------------------------
+    @Schema(
+            description = "Token Profile UUID. Required if CSR is not uploaded"
+    )
+    private UUID tokenProfileUuid;
+    @Schema(
+            description = "Key UUID. Required if CSR is not uploaded"
+    )
+    private UUID keyUuid;
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Attributes
+    //------------------------------------------------------------------------------------------------------------------
+    @Schema(
+            description = "List of RA Profile related Attributes to issue Certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private List<RequestAttributeDto> attributes;
 
-    @Schema(description = "List of Custom Attributes")
+    @Schema(
+            description = "List of Custom Attributes"
+    )
     private List<RequestAttributeDto> customAttributes;
 
-    public String getPkcs10() {
-        return pkcs10;
-    }
-
-    public void setPkcs10(String pkcs10) {
-        this.pkcs10 = pkcs10;
-    }
-
-    public List<RequestAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<RequestAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<RequestAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("pkcs10", pkcs10)
-                .append("attributes", attributes)
-                .append("customAttributes", customAttributes)
-                .toString();
-    }
 }
