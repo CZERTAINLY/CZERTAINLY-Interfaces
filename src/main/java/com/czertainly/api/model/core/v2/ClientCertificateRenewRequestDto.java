@@ -28,16 +28,11 @@ public class ClientCertificateRenewRequestDto {
     )
     private boolean useExistingCsr;
     @Schema(
-            description = "Create a new CSR",
-            defaultValue = "false"
-    )
-    private boolean createCsr;
-    @Schema(
             description = "Key UUID. Required to create new CSR. If not provided, Key from existing certificate will be used"
     )
     private UUID keyUuid;
     @Schema(
-            description = "Token Profile UUID. Required if new CSR is to be generated"
+            description = "Token Profile UUID. Required if new CSR is to be generated and key is changed"
     )
     private UUID tokenProfileUuid;
     @Schema(

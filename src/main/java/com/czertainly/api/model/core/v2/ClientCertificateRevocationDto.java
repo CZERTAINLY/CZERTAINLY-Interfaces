@@ -14,7 +14,7 @@ import java.util.List;
 public class ClientCertificateRevocationDto {
 
     @Schema(description = "Reason for revocation",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            defaultValue = "UNSPECIFIED")
     private RevocationReason reason;
 
     @Schema(description = "List of Attributes to revoke Certificate",
