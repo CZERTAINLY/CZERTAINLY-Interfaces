@@ -30,12 +30,6 @@ public class ClientCertificateSignRequestDto {
     // Key Related Parameters
     //------------------------------------------------------------------------------------------------------------------
     @Schema(
-            description = "Boolean representing if the CSR is Uploaded",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            defaultValue = "false"
-    )
-    private boolean uploadCsr;
-    @Schema(
             description = "Certificate sign request (PKCS#10) encoded as Base64 string",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
