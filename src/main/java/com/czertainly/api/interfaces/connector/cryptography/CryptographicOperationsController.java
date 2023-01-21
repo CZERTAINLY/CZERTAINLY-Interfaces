@@ -50,63 +50,9 @@ public interface CryptographicOperationsController {
     // cipher operations
     /////////////////////////////////////////////////////////////////////////////////
 
-    @Operation(
-            summary = "List of cipher Attributes"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "List of Attributes retrieved"
-                    )
-            })
-    @RequestMapping(
-            path = "/{keyUuid}/cipher/attributes",
-            method = RequestMethod.GET,
-            produces = {"application/json"}
-    )
-    /**
-     * @throws NotFoundException Token instance or Key not found
-     */
-    List<BaseAttribute> listCipherAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Key UUID") @PathVariable String keyUuid
-    ) throws NotFoundException;
-
-    @Operation(
-            summary = "Validate cipher Attributes"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "Attributes validated"
-                    ),
-                    @ApiResponse(
-                            responseCode = "422",
-                            description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
-                            ))
-            })
-    @RequestMapping(
-            path = "/{keyUuid}/cipher/attributes/validate",
-            method = RequestMethod.POST,
-            consumes = {"application/json"},
-            produces = {"application/json"}
-    )
-    @ResponseStatus(
-            value = HttpStatus.NO_CONTENT
-    )
-    /**
-     * @throws NotFoundException Token instance or Key not found
-     * @throws ValidationException Invalid Attributes
-     */
-    void validateCipherAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
-            @RequestBody List<RequestAttributeDto> attributes
-    ) throws NotFoundException, ValidationException;
+    // ------------------------------------------------------------------------------
+    // Attributes for Cipher and Signature is controlled by core
+    // ------------------------------------------------------------------------------
 
     @Operation(
             summary = "Encrypt data using a Key"
@@ -121,7 +67,7 @@ public interface CryptographicOperationsController {
                             responseCode = "422",
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(
@@ -152,7 +98,7 @@ public interface CryptographicOperationsController {
                             responseCode = "422",
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(
@@ -175,64 +121,6 @@ public interface CryptographicOperationsController {
     /////////////////////////////////////////////////////////////////////////////////
 
     @Operation(
-            summary = "List of signature Attributes"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "List of Attributes retrieved"
-                    )
-            })
-    @RequestMapping(
-            path = "/{keyUuid}/signature/attributes",
-            method = RequestMethod.GET,
-            produces = {"application/json"}
-    )
-    /**
-     * @throws NotFoundException Token instance or Key not found
-     */
-    List<BaseAttribute> listSignatureAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Key UUID") @PathVariable String keyUuid
-    ) throws NotFoundException;
-
-    @Operation(
-            summary = "Validate signature Attributes"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "Attributes validated"
-                    ),
-                    @ApiResponse(
-                            responseCode = "422",
-                            description = "Unprocessable Entity",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
-                            ))
-            })
-    @RequestMapping(
-            path = "/{keyUuid}/signature/attributes/validate",
-            method = RequestMethod.POST,
-            consumes = {"application/json"},
-            produces = {"application/json"}
-    )
-    @ResponseStatus(
-            value = HttpStatus.NO_CONTENT
-    )
-    /**
-     * @throws NotFoundException Token instance or Key not found
-     * @throws ValidationException Invalid Attributes
-     */
-    void validateSignatureAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @Parameter(description = "Key UUID") @PathVariable String keyUuid,
-            @RequestBody List<RequestAttributeDto> attributes
-    ) throws NotFoundException, ValidationException;
-
-    @Operation(
             summary = "Sign data using a Key"
     )
     @ApiResponses(
@@ -245,7 +133,7 @@ public interface CryptographicOperationsController {
                             responseCode = "422",
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(
@@ -276,7 +164,7 @@ public interface CryptographicOperationsController {
                             responseCode = "422",
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(
@@ -333,7 +221,7 @@ public interface CryptographicOperationsController {
                             responseCode = "422",
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(
@@ -367,7 +255,7 @@ public interface CryptographicOperationsController {
                             responseCode = "422",
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
+                                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
     @RequestMapping(
