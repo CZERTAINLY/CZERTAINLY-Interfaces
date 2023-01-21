@@ -19,12 +19,8 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
     private static final String CRYPTOP_BASE_CONTEXT = "/v1/cryptographyProvider/tokens/{uuid}/keys";
     private static final String CRYPTOP_ENCRYPT_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/encrypt";
     private static final String CRYPTOP_DECRYPT_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/decrypt";
-    private static final String CRYPTOP_CIPHER_ATTRS_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/cipher/attributes";
-    private static final String CRYPTOP_CIPHER_ATTRS_VALIDATE_CONTEXT = CRYPTOP_CIPHER_ATTRS_CONTEXT + "/validate";
     private static final String CRYPTOP_SIGN_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/sign";
     private static final String CRYPTOP_VERIFY_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/verify";
-    private static final String CRYPTOP_SIGNATURE_ATTRS_CONTEXT = CRYPTOP_BASE_CONTEXT + "/{keyUuid}/signature/attributes";
-    private static final String CRYPTOP_SIGNATURE_ATTRS_VALIDATE_CONTEXT = CRYPTOP_SIGNATURE_ATTRS_CONTEXT + "/validate";
     private static final String CRYPTOP_RANDOM_CONTEXT = CRYPTOP_BASE_CONTEXT + "/random";
     private static final String CRYPTOP_RANDOM_ATTRS_CONTEXT = CRYPTOP_RANDOM_CONTEXT + "/attributes";
     private static final String CRYPTOP_RANDOM_ATTRS_VALIDATE_CONTEXT = CRYPTOP_RANDOM_ATTRS_CONTEXT + "/validate";
@@ -34,31 +30,6 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
 
     public CryptographicOperationsApiClient(WebClient webClient) {
         this.webClient = webClient;
-    }
-
-    public List<BaseAttribute> listCipherAttributes(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
-
-        return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_CIPHER_ATTRS_CONTEXT, uuid, keyUuid)
-                .retrieve()
-                .toEntityList(BaseAttribute.class)
-                .block().getBody(),
-                request,
-                connector);
-    }
-
-    public void validateCipherAttributes(ConnectorDto connector, String uuid, String keyUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
-
-        processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_CIPHER_ATTRS_VALIDATE_CONTEXT, uuid, keyUuid)
-                .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
-                .retrieve()
-                .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
     }
 
     public EncryptDataResponseDto encryptData(ConnectorDto connector, String uuid, String keyUuid, CipherDataRequestDto requestDto) throws ConnectorException {
@@ -87,30 +58,6 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttribute> listSignatureAttributes(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
-
-        return processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_SIGNATURE_ATTRS_CONTEXT, uuid, keyUuid)
-                .retrieve()
-                .toEntityList(BaseAttribute.class)
-                .block().getBody(),
-                request,
-                connector);
-    }
-
-    public void validateSignatureAttributes(ConnectorDto connector, String uuid, String keyUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
-
-        processRequest(r -> r
-                .uri(connector.getUrl() + CRYPTOP_SIGNATURE_ATTRS_VALIDATE_CONTEXT, uuid, keyUuid)
-                .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
-                .retrieve()
-                .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
-    }
 
     public SignDataResponseDto signData(ConnectorDto connector, String uuid, String keyUuid, SignDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
