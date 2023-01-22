@@ -3,6 +3,8 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.attribute.AttributeDefinitionDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeCreateRequestDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitionDetailDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateRequestDto;
@@ -11,6 +13,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.CustomAttribute;
+import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -146,4 +150,31 @@ public interface CustomAttributeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})
     @RequestMapping(path = "/resources", method = RequestMethod.GET, produces = {"application/json"})
     List<Resource> getResources();
+
+    @Operation(summary = "Update Value of a Custom Attribute for a Resource")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute value updated")})
+    @RequestMapping(
+            path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
+            method = RequestMethod.PATCH,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    List<ResponseAttributeDto> updateAttributeContentForResource(
+            @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
+            @Parameter(description = "Object UUID") @PathVariable String objectUuid,
+            @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
+            @RequestBody List<BaseAttributeContent> request
+            ) throws NotFoundException;
+
+    @Operation(summary = "Delete Value of a Custom Attribute for a Resource")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute value deleted")})
+    @RequestMapping(
+            path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
+            method = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    List<ResponseAttributeDto> deleteAttributeContentForResource(
+            @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
+            @Parameter(description = "Object UUID") @PathVariable String objectUuid,
+            @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid
+    ) throws NotFoundException;
 }
