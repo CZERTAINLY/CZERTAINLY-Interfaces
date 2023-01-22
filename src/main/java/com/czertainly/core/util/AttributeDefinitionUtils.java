@@ -797,7 +797,7 @@ public class AttributeDefinitionUtils {
                 atr.setContentType(clt.getContentType());
                 convertedDefinition.add(atr);
             }
-        } if (attributes.get(0) instanceof CustomAttribute) {
+        } else if (attributes.get(0) instanceof CustomAttribute) {
             List<CustomAttribute> itrAttributes = (List<CustomAttribute>) attributes;
             for (CustomAttribute clt : itrAttributes) {
                 if (clt.getProperties() == null) {
