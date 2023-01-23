@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DiscoveryProviderCertificateDataDto {
 	
@@ -58,5 +59,18 @@ public class DiscoveryProviderCertificateDataDto {
 				.append("base64Content", base64Content)
 				.append("meta", meta)
 				.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DiscoveryProviderCertificateDataDto)) return false;
+		DiscoveryProviderCertificateDataDto that = (DiscoveryProviderCertificateDataDto) o;
+		return Objects.equals(base64Content, that.base64Content);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(base64Content);
 	}
 }
