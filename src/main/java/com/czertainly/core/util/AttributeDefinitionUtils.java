@@ -8,6 +8,7 @@ import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.CustomAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
@@ -19,6 +20,7 @@ import com.czertainly.api.model.common.attribute.v2.constraint.data.DateTimeAttr
 import com.czertainly.api.model.common.attribute.v2.constraint.data.RangeAttributeConstraintData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
+import com.czertainly.api.model.common.attribute.v2.properties.CustomAttributeProperties;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -785,6 +787,21 @@ public class AttributeDefinitionUtils {
             for (DataAttribute clt : itrAttributes) {
                 if (clt.getProperties() == null) {
                     clt.setProperties(new DataAttributeProperties());
+                }
+                ResponseAttributeDto atr = new ResponseAttributeDto();
+                atr.setContent(clt.getContent());
+                atr.setName(clt.getName());
+                atr.setUuid(clt.getUuid());
+                atr.setLabel(clt.getProperties().getLabel());
+                atr.setType(clt.getType());
+                atr.setContentType(clt.getContentType());
+                convertedDefinition.add(atr);
+            }
+        } else if (attributes.get(0) instanceof CustomAttribute) {
+            List<CustomAttribute> itrAttributes = (List<CustomAttribute>) attributes;
+            for (CustomAttribute clt : itrAttributes) {
+                if (clt.getProperties() == null) {
+                    clt.setProperties(new CustomAttributeProperties());
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
                 atr.setContent(clt.getContent());
