@@ -1,9 +1,11 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
+import com.czertainly.api.model.client.attribute.BaseAttributeContentDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
+@Schema(implementation = BaseAttributeContentDto.class)
 public class BaseAttributeContent<T> extends AttributeContent {
     @Schema(description = "Content Reference")
     private String reference;

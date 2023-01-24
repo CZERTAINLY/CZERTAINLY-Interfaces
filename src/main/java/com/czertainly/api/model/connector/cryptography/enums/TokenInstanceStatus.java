@@ -19,15 +19,10 @@ public enum TokenInstanceStatus {
 
     @Schema(description = "Token instance status",
             example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String code;
+    private final String code;
 
     TokenInstanceStatus(String code) {
         this.code = code;
-    }
-
-    @JsonValue
-    public String getCode() {
-        return this.code;
     }
 
     @JsonCreator
@@ -37,5 +32,10 @@ public enum TokenInstanceStatus {
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown status {}", code)));
+    }
+
+    @JsonValue
+    public String getCode() {
+        return this.code;
     }
 }

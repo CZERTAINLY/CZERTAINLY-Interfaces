@@ -1,9 +1,14 @@
 package com.czertainly.api.model.core.cryptography.key;
 
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.connector.cryptography.enums.KeyType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
+
+import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyUsage {
@@ -57,7 +62,6 @@ public enum KeyUsage {
      * @return the enum constant with the specified id
      * @throws IllegalArgumentException if this enum has no constant for the specified id
      */
-    @JsonCreator
     public static KeyUsage valueOf(int id) {
         KeyUsage format = resolve(id);
         if (format == null) {
@@ -80,6 +84,15 @@ public enum KeyUsage {
             }
         }
         return null;
+    }
+
+    @JsonCreator
+    public static KeyUsage findByCode(String code) {
+        return Arrays.stream(KeyUsage.values())
+                .filter(k -> k.name.equals(code))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ValidationException(ValidationError.create("Unknown KeyUsage {}", code)));
     }
 
 }

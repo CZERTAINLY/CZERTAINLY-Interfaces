@@ -45,11 +45,11 @@ public class KeyData {
             requiredMode = Schema.RequiredMode.REQUIRED,
             discriminatorProperty = "format",
             discriminatorMapping = {
-                    @DiscriminatorMapping(value = "RAW", schema = RawKeyValue.class),
-                    @DiscriminatorMapping(value = "SPKI", schema = SpkiKeyValue.class),
-                    @DiscriminatorMapping(value = "PRKI", schema = PrkiKeyValue.class),
-                    @DiscriminatorMapping(value = "EPRKI", schema = EprkiKeyValue.class),
-                    @DiscriminatorMapping(value = "CUSTOM", schema = CustomKeyValue.class)
+                    @DiscriminatorMapping(value = "Raw", schema = RawKeyValue.class),
+                    @DiscriminatorMapping(value = "SubjectPublicKeyInfo", schema = SpkiKeyValue.class),
+                    @DiscriminatorMapping(value = "PrivateKeyInfo", schema = PrkiKeyValue.class),
+                    @DiscriminatorMapping(value = "EncryptedPrivateKeyInfo", schema = EprkiKeyValue.class),
+                    @DiscriminatorMapping(value = "Custom", schema = CustomKeyValue.class)
             },
             oneOf = {
                     RawKeyValue.class,
@@ -61,11 +61,11 @@ public class KeyData {
     )
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "format")
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = RawKeyValue.class, name = "RAW"),
-            @JsonSubTypes.Type(value = SpkiKeyValue.class, name = "SPKI"),
-            @JsonSubTypes.Type(value = PrkiKeyValue.class, name = "PRKI"),
-            @JsonSubTypes.Type(value = EprkiKeyValue.class, name = "EPRKI"),
-            @JsonSubTypes.Type(value = CustomKeyValue.class, name = "CUSTOM")
+            @JsonSubTypes.Type(value = RawKeyValue.class, name = "Raw"),
+            @JsonSubTypes.Type(value = SpkiKeyValue.class, name = "SubjectPublicKeyInfo"),
+            @JsonSubTypes.Type(value = PrkiKeyValue.class, name = "PrivateKeyInfo"),
+            @JsonSubTypes.Type(value = EprkiKeyValue.class, name = "EncryptedPrivateKeyInfo"),
+            @JsonSubTypes.Type(value = CustomKeyValue.class, name = "Custom")
     })
     private KeyValue value;
 
