@@ -1,9 +1,15 @@
 package com.czertainly.api.model.common.collection;
 
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.StringAttributeContent;
+import com.czertainly.api.model.core.cryptography.key.KeyUsage;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.lang.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +43,7 @@ public enum DigestAlgorithm {
         return id;
     }
 
+    @JsonValue
     public String getName() {
         return name;
     }
@@ -71,6 +78,15 @@ public enum DigestAlgorithm {
             }
         }
         return null;
+    }
+
+    @JsonCreator
+    public static DigestAlgorithm findByCode(String code) {
+        return Arrays.stream(DigestAlgorithm.values())
+                .filter(k -> k.name.equals(code))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ValidationException(ValidationError.create("Unknown code {}", code)));
     }
 
     public static List<BaseAttributeContent> asStringAttributeContentList() {

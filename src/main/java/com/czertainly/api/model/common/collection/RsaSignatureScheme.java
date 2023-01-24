@@ -1,9 +1,13 @@
 package com.czertainly.api.model.common.collection;
 
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.StringAttributeContent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.springframework.lang.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,23 +31,6 @@ public enum RsaSignatureScheme {
         this.description = description;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public String toString() {
-        return this.id + " " + name();
-    }
-
     public static RsaSignatureScheme valueOf(int id) {
         RsaSignatureScheme item = resolve(id);
         if (item == null) {
@@ -63,6 +50,15 @@ public enum RsaSignatureScheme {
         return null;
     }
 
+    @JsonCreator
+    public static RsaSignatureScheme findByCode(String code) {
+        return Arrays.stream(RsaSignatureScheme.values())
+                .filter(k -> k.name.equals(code))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ValidationException(ValidationError.create("Unknown code {}", code)));
+    }
+
     public static List<BaseAttributeContent> asStringAttributeContentList() {
         return List.of(values()).stream()
                 .map(item -> new StringAttributeContent(item.name(), item.getName()))
@@ -73,5 +69,22 @@ public enum RsaSignatureScheme {
         return List.of(values()).stream()
                 .map(item -> new StringAttributeContent(Integer.toString(item.getId()), item.getName()))
                 .collect(Collectors.toList());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
+        return this.id + " " + name();
     }
 }
