@@ -92,6 +92,6 @@ public enum CryptographicAlgorithm {
      */
     @Override
     public String toString() {
-        return this.id + " " + name();
+        return name();
     }
 }

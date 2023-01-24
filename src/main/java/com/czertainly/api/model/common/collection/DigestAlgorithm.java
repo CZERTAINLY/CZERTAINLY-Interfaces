@@ -58,7 +58,7 @@ public enum DigestAlgorithm {
 
     @Override
     public String toString() {
-        return this.id + " " + name();
+        return name();
     }
 
     public static DigestAlgorithm valueOf(int id) {

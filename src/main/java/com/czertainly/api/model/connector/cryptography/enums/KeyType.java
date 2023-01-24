@@ -91,7 +91,7 @@ public enum KeyType {
      */
     @Override
     public String toString() {
-        return this.id + " " + name();
+        return name();
     }
 
 }
