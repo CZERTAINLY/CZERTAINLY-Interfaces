@@ -19,12 +19,10 @@ public enum CertificateType {
         this.code = string;
     }
 
-    @JsonValue
     public String getCode() {
         return code;
     }
 
-    @JsonCreator
     public static CertificateType fromCode(String code) {
         return Arrays.stream(values())
                 .filter(e -> e.code.equals(code))
