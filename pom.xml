@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.czertainly</groupId>
+        <artifactId>CZERTAINLY-Dependencies</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
     <groupId>com.czertainly</groupId>
     <artifactId>interfaces</artifactId>
     <version>1.5.1-SNAPSHOT</version>
@@ -12,6 +18,10 @@
 
     <description>CZERTAINLY - interfaces definitions and common objects for the platform</description>
     <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces</url>
+
+    <properties>
+        <sonar.projectKey>3KeyCompany_CZERTAINLY-Interfaces</sonar.projectKey>
+    </properties>
 
     <licenses>
         <license>
@@ -34,13 +44,6 @@
         <developerConnection>scm:git:ssh://github.com:3KeyCompany/CZERTAINLY-Interfaces.git</developerConnection>
         <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces</url>
     </scm>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <sonar.projectKey>3KeyCompany_CZERTAINLY-Interfaces</sonar.projectKey>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -71,9 +74,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.14.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -189,22 +194,10 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
 		</plugins>
 	</build>
