@@ -88,13 +88,13 @@ public interface AcmeProfileController {
 
 	@Operation(summary = "Enable ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile enabled") })
-	@RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH, consumes = { "application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void enableAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Disable ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile disabled") })
-	@RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH, consumes = { "application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void disableAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -132,7 +132,7 @@ public interface AcmeProfileController {
 
 	@Operation(summary = "Update RA Profile for ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "RA Profile updated") })
-	@RequestMapping(path = "/{uuid}/raprofile/{raProfileUuid}", method = RequestMethod.PATCH, consumes = { "application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/raprofile/{raProfileUuid}", method = RequestMethod.PATCH, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updateRaProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 }
