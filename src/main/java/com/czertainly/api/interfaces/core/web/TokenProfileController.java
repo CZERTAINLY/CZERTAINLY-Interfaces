@@ -188,7 +188,6 @@ public interface TokenProfileController {
     @RequestMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}/disable",
             method = RequestMethod.PATCH,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableTokenProfile(
@@ -206,7 +205,6 @@ public interface TokenProfileController {
     @RequestMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}/enable",
             method = RequestMethod.PATCH,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
