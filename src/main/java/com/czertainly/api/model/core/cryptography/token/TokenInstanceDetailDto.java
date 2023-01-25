@@ -26,6 +26,11 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
     private String connectorUuid;
 
     @Schema(
+            description = "Connector Kind"
+    )
+    private String kind;
+
+    @Schema(
             description = "Status Of the Token Instance",
             requiredMode = Schema.RequiredMode.REQUIRED
     )

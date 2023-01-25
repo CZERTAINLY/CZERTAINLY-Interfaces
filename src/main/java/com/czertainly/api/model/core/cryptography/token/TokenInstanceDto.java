@@ -34,5 +34,10 @@ public class TokenInstanceDto extends NameAndUuidDto {
     )
     private String connectorUuid;
 
+    @Schema(
+            description = "Connector Kind"
+    )
+    private String kind;
+
 }
 
