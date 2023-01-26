@@ -106,13 +106,13 @@ public interface CredentialController {
 
     @Operation(summary = "Enable Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential enabled")})
-    @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enableCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disable Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential disabled")})
-    @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disableCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid) throws NotFoundException;
 

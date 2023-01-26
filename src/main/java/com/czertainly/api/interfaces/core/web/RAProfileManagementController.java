@@ -118,13 +118,13 @@ public interface RAProfileManagementController {
 
     @Operation(summary = "Disable RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile disabled")})
-    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/disable", method = RequestMethod.PATCH, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Enable RA Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile enabled")})
-    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/enable", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/enable", method = RequestMethod.PATCH, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
@@ -178,7 +178,7 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "ACME deactivated"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/deactivate", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/acme/deactivate", method = RequestMethod.PATCH, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deactivateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws NotFoundException;

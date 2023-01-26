@@ -123,8 +123,7 @@ public interface ConnectorController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Reconnect to a Connector"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/{uuid}/reconnect", method = RequestMethod.PUT, consumes = {
-			"application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/reconnect", method = RequestMethod.PUT, produces = { "application/json" })
 	public List<ConnectDto> reconnect(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
 
 	@Operation(summary = "Approve multiple Connector")
@@ -149,7 +148,7 @@ public interface ConnectorController {
 	@Operation(summary = "Approve a Connector")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connector Approved") })
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(path = "/{uuid}/approve", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
+	@RequestMapping(path = "/{uuid}/approve", method = RequestMethod.PUT, produces = { "application/json" })
 	public void approve(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
 	@Operation(summary = "Check Health of a Connector")
