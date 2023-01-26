@@ -120,7 +120,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "Reset password for End Entity")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End Entity password reset")})
-    @RequestMapping(path = "/{raProfileName}/endentity/{username}/resetPassword", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{raProfileName}/endentity/{username}/resetPassword", method = RequestMethod.PUT, produces = {"application/json"})
     void resetPassword(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @Parameter(description = "Username") @PathVariable String username)

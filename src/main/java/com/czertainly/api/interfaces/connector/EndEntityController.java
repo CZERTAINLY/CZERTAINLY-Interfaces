@@ -131,7 +131,7 @@ public interface EndEntityController {
                             description = "End Entity password reset"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT, produces = {"application/json"})
     void resetPassword(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,
