@@ -17,9 +17,14 @@ import java.util.List;
 public class KeyDetailDto extends KeyDto {
 
     @Schema(
-            description = "Custom Attributes for the Token Instance"
+            description = "Custom Attributes for the Cryptographic Key"
     )
     private List<ResponseAttributeDto> customAttributes;
+
+    @Schema(
+            description = "Attributes for the Cryptographic Key"
+    )
+    private List<ResponseAttributeDto> attributes;
 
     @Schema(
             description = "Owner of the Key"
