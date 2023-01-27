@@ -22,7 +22,8 @@ public class KeyDetailDto extends KeyDto {
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(
-            description = "Attributes for the Cryptographic Key"
+            description = "Attributes for the Cryptographic Key",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<ResponseAttributeDto> attributes;
 

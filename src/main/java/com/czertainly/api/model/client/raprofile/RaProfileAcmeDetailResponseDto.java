@@ -14,7 +14,7 @@ public class RaProfileAcmeDetailResponseDto extends NameAndUuidDto {
             description = "ACME availability flag - true = yes; false = no",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private Boolean isAcmeAvailable;
+    private boolean acmeAvailable;
 
     @Schema(
             description = "ACME Directory URL"
