@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Class representing a request to renew certificate
+ * Class representing a request to regenerate certificate
  */
 @Data
-public class ClientCertificateRenewRequestDto {
+public class ClientCertificateRegenerationRequestDto {
 
     @Schema(
             description = "True to replace renewed certificate in the associated locations",
@@ -23,12 +23,21 @@ public class ClientCertificateRenewRequestDto {
     )
     private String pkcs10;
     @Schema(
-            description = "Use existing CSR",
-            defaultValue = "false"
+            description = "Key UUID",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private boolean useExistingCsr;
+    private UUID keyUuid;
+    @Schema(
+            description = "Token Profile UUID",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private UUID tokenProfileUuid;
     @Schema(
             description = "CSR Attributes. If not provided, existing attributes will be used to generate the new CSR"
     )
     private List<RequestAttributeDto> csrAttributes;
+    @Schema(
+            description = "Signature Attributes. If not provided, existing attributes will be used to generate the new CSR"
+    )
+    private List<RequestAttributeDto> signatureAttributes;
 }
