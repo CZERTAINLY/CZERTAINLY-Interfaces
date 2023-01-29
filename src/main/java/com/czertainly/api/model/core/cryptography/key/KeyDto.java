@@ -26,11 +26,6 @@ public class KeyDto extends NameAndUuidDto {
     )
     private LocalDateTime creationTime;
 
-    @Schema(description = "Cryptographic algorithm of the Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private CryptographicAlgorithm cryptographicAlgorithm;
-
     @Schema(
             description = "UUID of the Token Profile"
     )

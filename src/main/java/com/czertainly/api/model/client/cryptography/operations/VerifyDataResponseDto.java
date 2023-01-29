@@ -9,13 +9,13 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
-public class VerifyDataRequestDto extends SignDataRequestDto {
+@ToString
+public class VerifyDataResponseDto {
 
     @Schema(
-            description = "Signatures to verify",
+            description = "Signatures",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<SignatureRequestData> signatures;
+    private List<VerificationResponseData> verifications;
 
 }
