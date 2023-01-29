@@ -8,9 +8,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum KeyState {
-    PRE_ACTIVE("secret"),
-    ACTIVE("keyPair"),
+    PRE_ACTIVE("pre-active"),
+    ACTIVE("active"),
     DEACTIVATED("deactivated"),
     COMPROMISED("compromised"),
     DESTROYED("destroyed"),

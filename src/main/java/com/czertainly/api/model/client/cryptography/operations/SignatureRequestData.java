@@ -1,29 +1,27 @@
 package com.czertainly.api.model.client.cryptography.operations;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class SignDataRequestDto {
+public class SignatureRequestData {
 
     @Schema(
-            description = "List of cipher Attributes",
+            description = "Base64 encoded data to be signed or verified",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> signatureAttributes;
+    private String data;
 
     @Schema(
-            description = "Data to be signed"
+            description = "Custom identifier of the data, that should be the same as in the request, if available",
+            example = "customId"
     )
-    private List<SignatureRequestData> data;
+    private String identifier;
 
 }

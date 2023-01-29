@@ -1,7 +1,6 @@
 package com.czertainly.api.model.client.cryptography.operations;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.connector.cryptography.operations.data.CipherRequestData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
