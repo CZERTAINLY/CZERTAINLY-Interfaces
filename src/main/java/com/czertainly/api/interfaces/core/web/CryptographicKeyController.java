@@ -11,6 +11,7 @@ import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.cryptography.key.KeyDetailDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.cryptography.key.KeyEventHistoryDto;
+import com.czertainly.api.model.core.cryptography.key.KeyItemDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -99,6 +100,25 @@ public interface CryptographicKeyController {
             @Parameter(description = "UUID of the Key") @PathVariable String uuid
     ) throws NotFoundException;
 
+
+    @Operation(
+            summary = "Get Cryptographic Key Detail"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
+            })
+    @RequestMapping(
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/item/{keyItemUuid}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    KeyItemDto getKeyItem(
+            @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "UUID of the Key") @PathVariable String uuid,
+            @Parameter(description = "UUID of the Key Item") @PathVariable String keyItemUuid
+    ) throws NotFoundException;
+
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Create and Update Operation
@@ -177,16 +197,13 @@ public interface CryptographicKeyController {
     void compromiseKey(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-            @RequestBody(required = false) List<String> uuids)
+            @RequestBody CompromiseKeyRequestDto request)
             throws NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
-            summary = "Mark Multiple Key and its Items as Compromised",
+            summary = "Mark Multiple Key and all its Items as Compromised",
             description = "This API can be used to mark multiple keys and its sub items to be marked as compromised." +
                     "Specific part of the key cannot be mentioned in this API"
     )
@@ -202,11 +219,28 @@ public interface CryptographicKeyController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void compromiseKeys(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-            @RequestBody List<String> uuids);
+    void compromiseKeys(@RequestBody BulkCompromiseKeyRequestDto request);
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Mark Multiple Key Items as Compromised",
+            description = "This API can be used to mark multiple keys items to be marked as compromised."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Items marked as compromised")
+            }
+    )
+    @RequestMapping(
+            path = "/keys/items/compromise",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void compromiseKeyItems(@RequestBody BulkCompromiseKeyItemRequestDto request);
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -262,6 +296,30 @@ public interface CryptographicKeyController {
                     description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody List<String> keyUuids)
+            throws ConnectorException;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Destroy Multiple Cryptographic Key items"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Keys Items destroyed")
+            }
+    )
+    @RequestMapping(
+            path = "/keys/items/destroy",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void destroyKeyItems(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody List<String> keyItemUuids)
             throws ConnectorException;
 
 
@@ -321,6 +379,31 @@ public interface CryptographicKeyController {
             @RequestBody List<String> keyUuids)
             throws ConnectorException;
 
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Delete Multiple Cryptographic Key Items"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Items deleted")
+            }
+    )
+    @RequestMapping(
+            path = "/keys/items",
+            method = RequestMethod.DELETE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteKeyItems(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key Items UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody List<String> keyItemUuids)
+            throws ConnectorException;
+
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Enable
@@ -370,6 +453,26 @@ public interface CryptographicKeyController {
             description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                         @RequestBody List<String> uuids);
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Enable multiple Key Items"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Items enabled")
+            })
+    @RequestMapping(path = "/keys/items/enable",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void enableKeyItems(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+                    @RequestBody List<String> uuids);
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -422,6 +525,26 @@ public interface CryptographicKeyController {
                          @RequestBody List<String> uuids);
 
     // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Disable multiple Key Items"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Items disabled")
+            })
+    @RequestMapping(
+            path = "/keys/items/disable",
+            method = RequestMethod.PATCH,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void disableKeyItems(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+                     @RequestBody List<String> uuids);
+
+    // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Usages
     // -----------------------------------------------------------------------------------------------------------------
@@ -467,6 +590,26 @@ public interface CryptographicKeyController {
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateKeysUsages(@RequestBody BulkKeyUsageRequestDto request);
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Update Key Usages for Multiple Key Items",
+            description = "Update the key usages for multiple keys Items"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Items Usages Updated")
+            }
+    )
+    @RequestMapping(
+            path = "/keys/items/usages",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateKeyItemUsages(@RequestBody BulkKeyItemUsageRequestDto request);
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
