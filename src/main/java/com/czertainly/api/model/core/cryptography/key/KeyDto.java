@@ -1,7 +1,6 @@
 package com.czertainly.api.model.core.cryptography.key;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -64,7 +63,7 @@ public class KeyDto extends NameAndUuidDto {
             description = "Key Items",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<KeyItemSummaryDto> items;
+    private List<KeyItemDto> items;
 
     @Schema(
             description = "Number of associated objects"

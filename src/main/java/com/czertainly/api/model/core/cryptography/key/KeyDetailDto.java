@@ -75,7 +75,7 @@ public class KeyDetailDto extends NameAndUuidDto {
             description = "Key Objects",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<KeyItemDto> items;
+    private List<KeyItemDetailDto> items;
 
     @Schema(
             description = "List of associated items"

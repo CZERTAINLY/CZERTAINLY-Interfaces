@@ -1,7 +1,5 @@
 package com.czertainly.api.model.core.cryptography.key;
 
-import com.czertainly.api.model.client.cryptography.key.KeyCompromiseReason;
-import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
@@ -45,12 +43,6 @@ public class KeyItemDto extends NameAndUuidDto {
             description = "Key Length"
     )
     private int length;
-
-    @Schema(
-            description = "Metadata for the key"
-    )
-    private List<MetadataResponseDto> metadata;
-
     @Schema(
             description = "Key Usages",
             requiredMode = Schema.RequiredMode.REQUIRED
@@ -68,9 +60,4 @@ public class KeyItemDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyState state;
-
-    @Schema(
-            description = "Reason for Compromise"
-    )
-    private KeyCompromiseReason reason;
 }

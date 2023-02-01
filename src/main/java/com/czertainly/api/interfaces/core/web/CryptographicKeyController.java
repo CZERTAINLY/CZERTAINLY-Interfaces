@@ -11,7 +11,7 @@ import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.cryptography.key.KeyDetailDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.cryptography.key.KeyEventHistoryDto;
-import com.czertainly.api.model.core.cryptography.key.KeyItemDto;
+import com.czertainly.api.model.core.cryptography.key.KeyItemDetailDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -113,7 +113,7 @@ public interface CryptographicKeyController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    KeyItemDto getKeyItem(
+    KeyItemDetailDto getKeyItem(
             @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "UUID of the Key") @PathVariable String uuid,
             @Parameter(description = "UUID of the Key Item") @PathVariable String keyItemUuid

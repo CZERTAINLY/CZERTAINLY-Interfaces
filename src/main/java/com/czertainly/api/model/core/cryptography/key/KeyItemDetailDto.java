@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.cryptography.key;
 
+import com.czertainly.api.model.client.cryptography.key.KeyCompromiseReason;
+import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
@@ -14,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class KeyItemSummaryDto extends NameAndUuidDto {
+public class KeyItemDetailDto extends NameAndUuidDto {
 
     @Schema(
             description = "UUID of the key item in the Connector",
@@ -43,6 +45,12 @@ public class KeyItemSummaryDto extends NameAndUuidDto {
             description = "Key Length"
     )
     private int length;
+
+    @Schema(
+            description = "Metadata for the key"
+    )
+    private List<MetadataResponseDto> metadata;
+
     @Schema(
             description = "Key Usages",
             requiredMode = Schema.RequiredMode.REQUIRED
@@ -60,4 +68,9 @@ public class KeyItemSummaryDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyState state;
+
+    @Schema(
+            description = "Reason for Compromise"
+    )
+    private KeyCompromiseReason reason;
 }
