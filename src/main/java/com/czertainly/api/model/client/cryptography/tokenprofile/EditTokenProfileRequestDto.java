@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.cryptography.tokenprofile;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -33,4 +34,9 @@ public class EditTokenProfileRequestDto {
             description = "Enabled flag - true = enabled; false = disabled"
     )
     private Boolean enabled;
+
+    @Schema(
+            description = "Usages for the Key"
+    )
+    private List<KeyUsage> usage;
 }

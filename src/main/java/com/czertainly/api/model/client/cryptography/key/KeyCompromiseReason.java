@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.cryptography.key;
+package com.czertainly.api.model.client.cryptography.key;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
@@ -9,25 +9,24 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyState {
-    PRE_ACTIVE("pre-active"),
-    ACTIVE("active"),
-    DEACTIVATED("deactivated"),
-    COMPROMISED("compromised"),
-    DESTROYED("destroyed"),
-    COMPROMISED_DESTROYED("compromisedDestroyed");
+public enum KeyCompromiseReason {
+    UNAUTHORIZED_DISCLOSURE("Unauthorized Disclosure"),
+    UNAUTHORIZED_MODIFICATION("Unauthorized Modification"),
 
-    @Schema(description = "Type of the key to be generated",
-            example = "secret", requiredMode = Schema.RequiredMode.REQUIRED)
+    UNAUTHORIZED_SUBSTITUTION("Unauthorized Substitution"),
+
+    UNAUTHORIZED_USE_OF_SENSITIVE_DATA("Unauthorized use of sensitive data");
+    @Schema(description = "Reason for compromise",
+            example = "Unauthorized Disclosure", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
 
-    KeyState(String code) {
+    KeyCompromiseReason(String code) {
         this.code = code;
     }
 
     @JsonCreator
-    public static KeyState findByCode(String code) {
-        return Arrays.stream(KeyState.values())
+    public static KeyCompromiseReason findByCode(String code) {
+        return Arrays.stream(KeyCompromiseReason.values())
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

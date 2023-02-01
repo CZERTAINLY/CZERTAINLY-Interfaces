@@ -1,12 +1,13 @@
 package com.czertainly.api.model.core.cryptography.key;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
+import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,11 +26,6 @@ public class KeyDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private LocalDateTime creationTime;
-
-    @Schema(description = "Cryptographic algorithm of the Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private CryptographicAlgorithm cryptographicAlgorithm;
 
     @Schema(
             description = "UUID of the Token Profile"
@@ -52,5 +48,26 @@ public class KeyDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String tokenInstanceName;
+
+    @Schema(
+            description = "Owner of the Key"
+    )
+    private String owner;
+
+    @Schema(
+            description = "Key Group"
+    )
+    private GroupDto group;
+
+    @Schema(
+            description = "Key Items",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private List<KeyItemDto> items;
+
+    @Schema(
+            description = "Number of associated objects"
+    )
+    private int associations;
 
 }
