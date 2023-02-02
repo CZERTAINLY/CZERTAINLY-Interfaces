@@ -12,32 +12,41 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeContentType {
 
-    STRING(Constants.STRING),
-    INTEGER(Constants.INTEGER),
-    SECRET(Constants.SECRET),
-    FILE(Constants.FILE),
-    BOOLEAN(Constants.BOOLEAN),
-    CREDENTIAL(Constants.CREDENTIAL),
-    DATE(Constants.DATE),
-    FLOAT(Constants.FLOAT),
-    OBJECT(Constants.OBJECT),
-    TEXT(Constants.TEXT),
-    TIME(Constants.TIME),
-    DATETIME(Constants.DATETIME),
+    STRING(Constants.STRING, StringAttributeContent.class),
+    INTEGER(Constants.INTEGER, IntegerAttributeContent.class),
+    SECRET(Constants.SECRET, SecretAttributeContent.class),
+    FILE(Constants.FILE, FileAttributeContent.class),
+    BOOLEAN(Constants.BOOLEAN, BooleanAttributeContent.class),
+    CREDENTIAL(Constants.CREDENTIAL, CredentialAttributeContent.class),
+    DATE(Constants.DATE, DateAttributeContent.class),
+    FLOAT(Constants.FLOAT, FloatAttributeContent.class),
+    OBJECT(Constants.OBJECT, ObjectAttributeContent.class),
+    TEXT(Constants.TEXT, TextAttributeContent.class),
+    TIME(Constants.TIME, TimeAttributeContent.class),
+    DATETIME(Constants.DATETIME, DateTimeAttributeContent.class),
     ;
 
     private final String code;
 
-    AttributeContentType(String string) {
-        this.code = string;
-    }
+    private final Class clazz;
 
+    AttributeContentType(String string, Class clazz) {
+        this.code = string;
+        this.clazz = clazz;
+    }
     @JsonCreator
     public static AttributeContentType fromCode(String code) {
         return Arrays.stream(values())
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
+    }
+
+    public static AttributeContentType fromClass(Class clazz) {
+        return Arrays.stream(values())
+                .filter(e -> e.clazz.equals(clazz))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type for class %s.", clazz)));
     }
 
     public static Class getClass(AttributeContentType code) {
