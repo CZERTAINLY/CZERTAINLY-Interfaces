@@ -105,16 +105,16 @@ public interface ClientOperationController {
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
 			@RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, CertificateOperationException;
 
-	@Operation(summary = "Regenerate / Rekey Certificate")
+	@Operation(summary = "Rekey Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate regenerated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/certificates/{certificateUuid}/regenerate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	ClientCertificateDataResponseDto regenerateCertificate(
+	@RequestMapping(path = "/certificates/{certificateUuid}/rekey", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+	ClientCertificateDataResponseDto rekeyCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-			@RequestBody ClientCertificateRegenerationRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, CertificateOperationException;
+			@RequestBody ClientCertificateRekeyRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, CertificateOperationException;
 
 	@Operation(summary = "Get revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes obtained") })

@@ -11,7 +11,7 @@ import java.util.UUID;
  * Class representing a request to regenerate certificate
  */
 @Data
-public class ClientCertificateRegenerationRequestDto {
+public class ClientCertificateRekeyRequestDto {
 
     @Schema(
             description = "True to replace renewed certificate in the associated locations",
