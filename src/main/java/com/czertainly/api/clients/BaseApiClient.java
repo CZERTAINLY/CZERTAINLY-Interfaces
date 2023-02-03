@@ -6,19 +6,16 @@ import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent
 import com.czertainly.api.model.common.attribute.v2.content.FileAttributeContent;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
-import com.czertainly.config.TrustedCertificatesConfig;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.czertainly.core.util.KeyStoreUtils;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.*;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -34,12 +31,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Component
 public abstract class BaseApiClient {
     private static final Logger logger = LoggerFactory.getLogger(BaseApiClient.class);
-
-    @Autowired
-    private TrustedCertificatesConfig trustedCertificatesConfig;
 
     // Basic auth attribute names
     public static final String ATTRIBUTE_USERNAME = "username";
@@ -145,12 +138,9 @@ public abstract class BaseApiClient {
 
                 tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getData(), trustStoreType.getData()));
                 tm = tmf.getTrustManagers()[0];
-            } else {
-                // load default TrustManager
-                tm = trustedCertificatesConfig.getDefaultTrustManagers()[0];
-            }
 
-            sslContextBuilder.trustManager(tm);
+                sslContextBuilder.trustManager(tm);
+            }
 
             return sslContextBuilder.protocols("TLSv1.2").build();
         } catch (Exception e) {
