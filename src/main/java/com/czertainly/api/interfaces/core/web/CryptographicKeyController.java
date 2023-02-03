@@ -81,6 +81,24 @@ public interface CryptographicKeyController {
     )
     List<KeyDto> listKeys(@RequestParam(required = false) Optional<String> tokenProfileUuid);
 
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "List Cryptographic Keys with full Key Pairs",
+            description = "This API contains the logic to get the keys that contains the full key pair (private and public Key)"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Keys retrieved")
+            })
+    @RequestMapping(
+            path = "/keys/pairs",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    List<KeyDto> listKeyPairs(@RequestParam(required = false) Optional<String> tokenProfileUuid);
+
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
