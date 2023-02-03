@@ -315,11 +315,8 @@ public class AttributeDefinitionUtils {
                     label = customAttribute.getProperties().getLabel();
                 }
             } else {
-                throw new ValidationException(
-                        ValidationError.create(
-                                "Cannot validate " + definition.getType() + " attributes"
-                        )
-                );
+                logger.warn("Cannot validate " + definition.getType() + " attributes");
+                continue;
             }
 
             if (attribute == null) {
