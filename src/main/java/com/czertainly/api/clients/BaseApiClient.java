@@ -52,6 +52,8 @@ public abstract class BaseApiClient {
 
     protected WebClient webClient;
 
+    protected TrustManager[] defaultTrustManagers;
+
     public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, Boolean validateConnectorStatus) {
         if(validateConnectorStatus){
             validateConnectorStatus(connector.getStatus());
@@ -138,9 +140,12 @@ public abstract class BaseApiClient {
 
                 tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getData(), trustStoreType.getData()));
                 tm = tmf.getTrustManagers()[0];
-
-                sslContextBuilder.trustManager(tm);
+            } else {
+                // set default trustManager
+                tm = defaultTrustManagers[0];
             }
+
+            sslContextBuilder.trustManager(tm);
 
             return sslContextBuilder.protocols("TLSv1.2").build();
         } catch (Exception e) {

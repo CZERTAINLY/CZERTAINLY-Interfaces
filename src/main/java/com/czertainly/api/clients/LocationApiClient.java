@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.TrustManager;
 import java.util.List;
 
 public class LocationApiClient extends BaseApiClient {
@@ -26,8 +27,9 @@ public class LocationApiClient extends BaseApiClient {
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
-    public LocationApiClient(WebClient webClient) {
+    public LocationApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public LocationDetailResponseDto getLocationDetail(ConnectorDto connector, String entityUuid, LocationDetailRequestDto requestDto) throws ConnectorException {

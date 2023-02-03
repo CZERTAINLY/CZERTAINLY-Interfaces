@@ -9,13 +9,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.TrustManager;
+
 public class DiscoveryApiClient extends BaseApiClient {
 
     private static final String DISCOVERY_BASE_CONTEXT = "/v1/discoveryProvider/discover";
     private static final String DISCOVERY_GET_CONTEXT = DISCOVERY_BASE_CONTEXT + "/{uuid}";
 
-    public DiscoveryApiClient(WebClient webClient) {
+    public DiscoveryApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
 

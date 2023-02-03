@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.TrustManager;
 import java.util.List;
 
 public class TokenInstanceApiClient extends BaseApiClient {
@@ -31,8 +32,9 @@ public class TokenInstanceApiClient extends BaseApiClient {
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
-    public TokenInstanceApiClient(WebClient webClient) {
+    public TokenInstanceApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public List<TokenInstanceDto> listTokenInstances(ConnectorDto connector) throws ConnectorException {

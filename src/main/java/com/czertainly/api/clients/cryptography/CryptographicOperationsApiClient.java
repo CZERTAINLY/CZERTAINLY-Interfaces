@@ -12,6 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.TrustManager;
 import java.util.List;
 
 public class CryptographicOperationsApiClient extends BaseApiClient {
@@ -28,8 +29,9 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
-    public CryptographicOperationsApiClient(WebClient webClient) {
+    public CryptographicOperationsApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public EncryptDataResponseDto encryptData(ConnectorDto connector, String uuid, String keyUuid, CipherDataRequestDto requestDto) throws ConnectorException {

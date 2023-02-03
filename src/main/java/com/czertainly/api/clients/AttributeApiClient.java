@@ -16,6 +16,7 @@ import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.TrustManager;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
@@ -30,8 +31,9 @@ public class AttributeApiClient extends BaseApiClient {
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
-    public AttributeApiClient(WebClient webClient) {
+    public AttributeApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public List<BaseAttribute> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {

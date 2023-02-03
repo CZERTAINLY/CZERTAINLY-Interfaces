@@ -27,7 +27,7 @@ public class ApiClientTest {
 
     @BeforeEach
     public void setUp() {
-        attributeApiClient = new AttributeApiClient(BaseApiClient.prepareWebClient());
+        attributeApiClient = new AttributeApiClient(BaseApiClient.prepareWebClient(), null);
 
         mockServer = new WireMockServer(3665);
         mockServer.start();
