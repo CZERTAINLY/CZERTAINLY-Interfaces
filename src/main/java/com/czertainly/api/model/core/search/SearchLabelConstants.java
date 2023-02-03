@@ -32,6 +32,14 @@ public final class SearchLabelConstants {
     private static final String SIGNATURE_VALIDATION_LABEL = "Signature Validation";
     private static final String COMPLIANCE_STATUS = "Compliance Status";
 
+    private static final String NAME_LABEL = "Name";
+    private static final String KEY_TYPE_LABEL = "Key type";
+    private static final String KEY_FORMAT_LABEL = "Key format";
+    private static final String KEY_STATE_LABEL = "State";
+    private static final String KEY_CRYPTOGRAPHIC_ALGORITHM_LABEL = "Cryptographic algorithm";
+    private static final String KEY_TOKEN_PROFILE_LABEL = "Token profile";
+    private static final String KEY_TOKEN_INSTANCE_LABEL = "Token instance";
+
     public static final SearchFieldDataDto COMMON_NAME_FILTER = getSearchField(SearchableFields.COMMON_NAME,
             COMMON_NAME_LABEL,
             false,
@@ -272,6 +280,7 @@ public final class SearchLabelConstants {
             SearchableFieldType.LIST,
             List.of(SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
     );
+
     public static final SearchFieldDataDto OCSP_VALIDATION_FILTER = getSearchField(SearchableFields.OCSP_VALIDATION,
             OCSP_VALIDATION_LABEL,
             false,
@@ -306,4 +315,97 @@ public final class SearchLabelConstants {
         dto.setConditions(conditions);
         return dto;
     }
+
+//    --------- CRYPTOGRAPHIC KEY SEARCH ---------
+
+    public static final SearchFieldDataDto CK_NAME_FILTER = getSearchField(SearchableFields.CK_NAME,
+            NAME_LABEL,
+            false,
+            null,
+            SearchableFieldType.STRING,
+            List.of(SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
+    );
+
+    public static final SearchFieldDataDto CK_GROUP_FILTER = getSearchField(SearchableFields.CK_GROUP,
+            GROUP_NAME_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST, // OBJECT GROUP
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+    );
+
+    public static final SearchFieldDataDto CK_OWNER_FILTER = getSearchField(SearchableFields.CK_OWNER,
+            OWNER_LABEL,
+            false,
+            null,
+            SearchableFieldType.STRING,
+            List.of(SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
+    );
+
+    public static final SearchFieldDataDto CK_KEY_USAGE_FILTER = getSearchField(SearchableFields.CKI_USAGE,
+            KEY_USAGE_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST,
+            List.of(SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
+    );
+
+    public static final SearchFieldDataDto CK_KEY_LENGTH = getSearchField(SearchableFields.CKI_LENGTH,
+            KEY_SIZE_LABEL,
+            false,
+            null,
+            SearchableFieldType.NUMBER,
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.GREATER, SearchCondition.LESSER)
+    );
+
+    public static final SearchFieldDataDto CK_TYPE_FILTER = getSearchField(SearchableFields.CKI_TYPE,
+            KEY_TYPE_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST, // OBJECT GROUP
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+    );
+
+    public static final SearchFieldDataDto CK_FORMAT_FILTER = getSearchField(SearchableFields.CKI_FORMAT,
+            KEY_FORMAT_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST, // OBJECT GROUP
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+    );
+
+    public static final SearchFieldDataDto CK_STATE_FILTER = getSearchField(SearchableFields.CKI_STATE,
+            KEY_STATE_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST, // OBJECT GROUP
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+    );
+
+    public static final SearchFieldDataDto CK_ALGORITHM_FILTER = getSearchField(SearchableFields.CKI_CRYPTOGRAPHIC_ALGORITHM,
+            KEY_CRYPTOGRAPHIC_ALGORITHM_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST, // OBJECT GROUP
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+    );
+
+    public static final SearchFieldDataDto CK_TOKEN_PROFILE_FILTER = getSearchField(SearchableFields.CK_TOKEN_PROFILE,
+            KEY_TOKEN_PROFILE_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST, // OBJECT GROUP
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+    );
+
+    public static final SearchFieldDataDto CK_TOKEN_INSTANCE_FILTER = getSearchField(SearchableFields.CK_TOKEN_INSTANCE,
+            KEY_TOKEN_INSTANCE_LABEL,
+            true,
+            null,
+            SearchableFieldType.LIST, // OBJECT GROUP
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+    );
+
+
+
 }
