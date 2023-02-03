@@ -355,7 +355,7 @@ public class AttributeDefinitionUtils {
                 }
             }
 
-            validateAttributeContent(definition, attribute, errors);
+            validateAttributeContent(definition, attribute.getContent(), errors);
             errors.addAll(validateConstraints(definition, attribute.getContent()));
         }
 
@@ -492,13 +492,11 @@ public class AttributeDefinitionUtils {
         return errors;
     }
 
-    private static void validateAttributeContent(BaseAttribute definition, RequestAttributeDto attribute, List<ValidationError> errors) {
+    public static void validateAttributeContent(BaseAttribute definition, Object attributeContent, List<ValidationError> errors) {
 
         if (definition.getType() == null) {
             errors.add(ValidationError.create("Type of attribute definition not set."));
         }
-
-        Object attributeContent = attribute.getContent();
 
         // TODO: checking all items in the list for the type
 
