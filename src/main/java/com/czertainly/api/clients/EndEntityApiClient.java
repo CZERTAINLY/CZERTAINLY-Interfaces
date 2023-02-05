@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.TrustManager;
 import java.util.List;
 
 public class EndEntityApiClient extends BaseApiClient {
@@ -17,8 +18,9 @@ public class EndEntityApiClient extends BaseApiClient {
     private static final String END_ENTITY_IDENTIFIED_CONTEXT = END_ENTITY_BASE_CONTEXT + "/{endEntityName}";
     private static final String END_ENTITY_RESET_PASSWORD_CONTEXT = END_ENTITY_IDENTIFIED_CONTEXT + "/resetPassword";
 
-    public EndEntityApiClient(WebClient webClient) {
+    public EndEntityApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public List<EndEntityDto> listEntities(ConnectorDto connector, String authorityUuid, String endEntityProfileName) throws ConnectorException {

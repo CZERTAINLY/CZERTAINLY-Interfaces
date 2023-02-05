@@ -6,6 +6,7 @@ import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.net.ssl.TrustManager;
 import java.util.List;
 
 public class EndEntityProfileApiClient extends BaseApiClient {
@@ -15,8 +16,9 @@ public class EndEntityProfileApiClient extends BaseApiClient {
     private static final String END_ENTITY_PROFILE_CERT_PROFILE_CONTEXT = END_ENTITY_PROFILE_IDENTIFIED_CONTEXT + "/certificateprofiles";
     private static final String END_ENTITY_PROFILE_CAS_IN_PROFILE_CONTEXT = END_ENTITY_PROFILE_IDENTIFIED_CONTEXT + "/cas";
 
-    public EndEntityProfileApiClient(WebClient webClient) {
+    public EndEntityProfileApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public List<NameAndIdDto> listEndEntityProfiles(ConnectorDto connector, String authorityUuid) throws ConnectorException {

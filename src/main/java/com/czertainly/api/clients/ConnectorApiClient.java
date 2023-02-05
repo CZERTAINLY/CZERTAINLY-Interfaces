@@ -7,6 +7,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.net.ssl.TrustManager;
 import java.util.List;
 
 public class ConnectorApiClient extends BaseApiClient {
@@ -16,8 +17,9 @@ public class ConnectorApiClient extends BaseApiClient {
     private static final ParameterizedTypeReference<List<InfoResponse>> MAP_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
-    public ConnectorApiClient(WebClient webClient) {
+    public ConnectorApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public List<InfoResponse> listSupportedFunctions(ConnectorDto connector) throws ConnectorException {
