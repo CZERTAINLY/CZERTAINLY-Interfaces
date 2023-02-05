@@ -615,6 +615,13 @@ public class AttributeDefinitionUtils {
                             break;
                         }
                         break;
+                    case CODEBLOCK:
+                        final CodeBlockAttributeContent codeBlockAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, CodeBlockAttributeContent.class);
+                        if (codeBlockAttributeContent.getData() == null) {
+                            errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
+                            wrongValue = true;
+                            break;
+                        }
                     default:
                         errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", label, definition.getType()));
                         break;

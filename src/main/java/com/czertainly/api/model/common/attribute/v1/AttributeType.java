@@ -18,7 +18,8 @@ public enum AttributeType {
     JSON(Constants.JSON),
     TEXT(Constants.TEXT),
     TIME(Constants.TIME),
-    DATETIME(Constants.DATETIME),;
+    DATETIME(Constants.DATETIME),
+    CODEBLOCK(Constants.CODEBLOCK);
 
     private final String code;
 
@@ -90,5 +91,8 @@ public enum AttributeType {
 
         /** Attribute type representing date and time **/
         private static final String DATETIME = "datetime";
+
+        /** Attribute type representing code block **/
+        private static final String CODEBLOCK = "codeblock";
     }
 }

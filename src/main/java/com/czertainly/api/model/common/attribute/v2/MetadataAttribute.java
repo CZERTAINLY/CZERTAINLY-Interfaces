@@ -23,6 +23,7 @@ public class MetadataAttribute extends BaseAttribute<List<BaseAttributeContent>>
             discriminatorProperty = "contentType",
             oneOf = {
                     BooleanAttributeContent.class,
+                    CodeBlockAttributeContent.class,
                     CredentialAttributeContent.class,
                     DateAttributeContent.class,
                     DateTimeAttributeContent.class,

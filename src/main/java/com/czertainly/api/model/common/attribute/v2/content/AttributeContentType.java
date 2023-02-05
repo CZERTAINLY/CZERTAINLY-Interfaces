@@ -24,6 +24,7 @@ public enum AttributeContentType {
     TEXT(Constants.TEXT, TextAttributeContent.class),
     TIME(Constants.TIME, TimeAttributeContent.class),
     DATETIME(Constants.DATETIME, DateTimeAttributeContent.class),
+    CODEBLOCK(Constants.CODEBLOCK, CodeBlockAttributeContent.class)
     ;
 
     private final String code;
@@ -74,6 +75,8 @@ public enum AttributeContentType {
                 return ObjectAttributeContent.class;
             case TIME:
                 return TimeAttributeContent.class;
+            case CODEBLOCK:
+                return CodeBlockAttributeContent.class;
             default:
                 return null;
         }
@@ -144,5 +147,10 @@ public enum AttributeContentType {
          * Attribute type representing date and time
          **/
         private static final String DATETIME = "datetime";
+
+        /**
+         * Attribute type representing code block
+         **/
+        private static final String CODEBLOCK = "codeblock";
     }
 }

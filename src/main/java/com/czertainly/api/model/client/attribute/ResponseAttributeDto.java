@@ -77,6 +77,7 @@ public class ResponseAttributeDto {
             type = "object",
             oneOf = {
                     BooleanAttributeContent.class,
+                    CodeBlockAttributeContent.class,
                     CredentialAttributeContent.class,
                     DateAttributeContent.class,
                     DateTimeAttributeContent.class,
