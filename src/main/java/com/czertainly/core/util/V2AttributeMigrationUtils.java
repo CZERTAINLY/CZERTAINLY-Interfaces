@@ -12,6 +12,7 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarge
 import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v2.content.data.CodeBlockAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
@@ -226,6 +227,10 @@ public class V2AttributeMigrationUtils {
                             //Do nothing
                         }
                     attributeContents.add(new FileAttributeContent(oldContentFileData.getFileName(), data));
+                    break;
+                case CODEBLOCK:
+                    CodeBlockAttributeContentData codeBlockAttributeContentData = (CodeBlockAttributeContentData) oldContent.getValue();
+                    attributeContents.add(new CodeBlockAttributeContent("", new CodeBlockAttributeContentData(codeBlockAttributeContentData.getLanguage(), codeBlockAttributeContentData.getCode())));
                     break;
             }
         }

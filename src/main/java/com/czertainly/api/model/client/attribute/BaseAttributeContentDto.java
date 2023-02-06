@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
         type = "object",
         oneOf = {
                 BooleanAttributeContent.class,
+                CodeBlockAttributeContent.class,
                 CredentialAttributeContent.class,
                 DateAttributeContent.class,
                 DateTimeAttributeContent.class,

@@ -27,23 +27,24 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      * Content of the Attribute
      **/
     @Schema(
-        description = "Content of the Attribute",
-        type = "object",
-        discriminatorProperty = "contentType",
-        oneOf = {
-            BooleanAttributeContent.class,
-            CredentialAttributeContent.class,
-            DateAttributeContent.class,
-            DateTimeAttributeContent.class,
-            FileAttributeContent.class,
-            FloatAttributeContent.class,
-            IntegerAttributeContent.class,
-            ObjectAttributeContent.class,
-            SecretAttributeContent.class,
-            StringAttributeContent.class,
-            TextAttributeContent.class,
-            TimeAttributeContent.class
-        }
+            description = "Content of the Attribute",
+            type = "object",
+            discriminatorProperty = "contentType",
+            oneOf = {
+                    BooleanAttributeContent.class,
+                    CodeBlockAttributeContent.class,
+                    CredentialAttributeContent.class,
+                    DateAttributeContent.class,
+                    DateTimeAttributeContent.class,
+                    FileAttributeContent.class,
+                    FloatAttributeContent.class,
+                    IntegerAttributeContent.class,
+                    ObjectAttributeContent.class,
+                    SecretAttributeContent.class,
+                    StringAttributeContent.class,
+                    TextAttributeContent.class,
+                    TimeAttributeContent.class
+            }
     )
     private List<BaseAttributeContent> content;
 
@@ -70,13 +71,13 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      * List of constraints for the Attributes
      **/
     @Schema(
-        description = "Optional regular expressions and constraints used for validating the Attribute content",
-        type = "object",
-        oneOf = {
-            RegexpAttributeConstraint.class,
-            RangeAttributeConstraint.class,
-            DateTimeAttributeConstraint.class
-        }
+            description = "Optional regular expressions and constraints used for validating the Attribute content",
+            type = "object",
+            oneOf = {
+                    RegexpAttributeConstraint.class,
+                    RangeAttributeConstraint.class,
+                    DateTimeAttributeConstraint.class
+            }
     )
     private List<BaseAttributeConstraint> constraints;
 
