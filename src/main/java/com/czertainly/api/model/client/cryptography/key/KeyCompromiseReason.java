@@ -10,10 +10,10 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyCompromiseReason {
-    UNAUTHORIZED_DISCLOSURE("Unauthorized Disclosure"),
-    UNAUTHORIZED_MODIFICATION("Unauthorized Modification"),
+    UNAUTHORIZED_DISCLOSURE("Unauthorized disclosure"),
+    UNAUTHORIZED_MODIFICATION("Unauthorized modification"),
 
-    UNAUTHORIZED_SUBSTITUTION("Unauthorized Substitution"),
+    UNAUTHORIZED_SUBSTITUTION("Unauthorized substitution"),
 
     UNAUTHORIZED_USE_OF_SENSITIVE_DATA("Unauthorized use of sensitive data");
     @Schema(description = "Reason for compromise",

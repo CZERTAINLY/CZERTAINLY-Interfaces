@@ -4,9 +4,11 @@ import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
 import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.core.certificate.group.GroupDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -15,6 +17,58 @@ import java.util.List;
 @Setter
 @ToString(callSuper = true)
 public class KeyItemDto extends NameAndUuidDto {
+
+    @Schema(description = "Description of the Key",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String description;
+
+    @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private LocalDateTime creationTime;
+
+    @Schema(description = "UUID of the wrapper object",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String keyWrapperUuid;
+
+    @Schema(
+            description = "UUID of the Token Profile"
+    )
+    private String tokenProfileUuid;
+
+    @Schema(
+            description = "Name of the Token Profile"
+    )
+    private String tokenProfileName;
+
+    @Schema(
+            description = "Token Instance UUID",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String tokenInstanceUuid;
+
+    @Schema(
+            description = "Token Instance Name",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String tokenInstanceName;
+
+    @Schema(
+            description = "Owner of the Key"
+    )
+    private String owner;
+
+    @Schema(
+            description = "Key Group"
+    )
+    private GroupDto group;
+
+    @Schema(
+            description = "Number of associated objects"
+    )
+    private int associations;
 
     @Schema(
             description = "UUID of the key item in the Connector",

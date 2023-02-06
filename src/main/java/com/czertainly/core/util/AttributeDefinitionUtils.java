@@ -865,7 +865,12 @@ public class AttributeDefinitionUtils {
         if (content == null || content.isEmpty() || content.get(0).getData() instanceof LinkedHashMap) {
             return AttributeContentType.OBJECT;
         }
-        return AttributeContentType.fromClass(content.get(0).getClass());
+        try {
+            return AttributeContentType.fromClass(content.get(0).getClass());
+        } catch (IllegalArgumentException e) {
+            logger.warn("Unable to calculate the content type for the content");
+            return AttributeContentType.OBJECT;
+        }
     }
 
     public static <T> List<T> getAttributeContentValue(String attributeName, List<?> attributes, Class<T> clazz) {

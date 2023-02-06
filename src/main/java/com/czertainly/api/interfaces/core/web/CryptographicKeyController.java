@@ -83,7 +83,6 @@ public interface CryptographicKeyController {
     CryptographicKeyResponseDto listCryptographicKeys(@RequestBody SearchRequestDto request) throws ValidationException;
 
 
-
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
@@ -189,6 +188,30 @@ public interface CryptographicKeyController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody EditKeyRequestDto request)
+            throws ConnectorException;
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Sync Keys
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Sync Keys from connector"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key sync completed")
+            }
+    )
+    @RequestMapping(
+            path = "/tokens/{tokenInstanceUuid}/sync",
+            method = RequestMethod.PATCH
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void syncKeys(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid
+    )
             throws ConnectorException;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -676,7 +699,7 @@ public interface CryptographicKeyController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<KeyEventHistoryDto> getEventHistory(
+    List<KeyEventHistoryDto> getEventHistory(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid

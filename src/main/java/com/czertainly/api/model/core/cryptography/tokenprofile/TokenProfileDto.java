@@ -2,8 +2,11 @@ package com.czertainly.api.model.core.cryptography.tokenprofile;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
+import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,4 +42,10 @@ public class TokenProfileDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Boolean enabled;
+
+    @Schema(
+            description = "Usages for the Keys assoiated to the profile",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private List<KeyUsage> usages;
 }

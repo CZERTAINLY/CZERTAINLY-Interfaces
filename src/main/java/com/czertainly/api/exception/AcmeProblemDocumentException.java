@@ -48,4 +48,9 @@ public class AcmeProblemDocumentException extends Exception {
         this(httpStatus, new ProblemDocument(problem.getType(), problem.getTitle(), detail));
 
     }
+
+    @Override
+    public String toString() {
+        return getLocalizedMessage();
+    }
 }
