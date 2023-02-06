@@ -7,22 +7,22 @@ public class CodeBlockAttributeContentData {
     @Schema(description = "Definition of programming languages used for code",
             example = "JAVA, PHP, C, etc",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private PLanguagesEnum language;
+    private ProgrammingLanguageEnum language;
 
-    @Schema(description = "Block of the code in Base64. Formatting of the code is specify by variable language",
+    @Schema(description = "Block of the code in Base64. Formatting of the code is specified by variable language",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
-    public CodeBlockAttributeContentData(final PLanguagesEnum pLanguagesEnum, final String code) {
-        this.language = pLanguagesEnum;
+    public CodeBlockAttributeContentData(final ProgrammingLanguageEnum language, final String code) {
+        this.language = language;
         this.code = code;
     }
 
-    public PLanguagesEnum getLanguage() {
+    public ProgrammingLanguageEnum getLanguage() {
         return language;
     }
 
-    public void setLanguage(PLanguagesEnum language) {
+    public void setLanguage(ProgrammingLanguageEnum language) {
         this.language = language;
     }
 

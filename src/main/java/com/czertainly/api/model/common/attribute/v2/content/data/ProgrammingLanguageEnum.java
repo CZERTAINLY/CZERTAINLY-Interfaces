@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum PLanguagesEnum {
+public enum ProgrammingLanguageEnum {
 
     CSS ("css","language-css"),
     C_LIKE ("clike","language-clike"),
@@ -168,7 +168,7 @@ public enum PLanguagesEnum {
 
     private String markupClass;
 
-    PLanguagesEnum(final String code, final String markupClass) {
+    ProgrammingLanguageEnum(final String code, final String markupClass) {
         this.code = code;
         this.markupClass = markupClass;
     }
@@ -179,8 +179,8 @@ public enum PLanguagesEnum {
     }
 
     @JsonCreator
-    public static PLanguagesEnum findByCode(String code) {
-        return Arrays.stream(PLanguagesEnum.values())
+    public static ProgrammingLanguageEnum findByCode(String code) {
+        return Arrays.stream(ProgrammingLanguageEnum.values())
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
