@@ -1,5 +1,14 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Arrays;
+
+@Schema(enumAsRef = true)
 public enum PLanguagesEnum {
 
     CSS ("css","language-css"),
@@ -154,12 +163,27 @@ public enum PLanguagesEnum {
     XQUERY ("xquery","language-xquery"),
     YAML ("yaml","language-yaml");
 
-    private String markupKey;
+
+    private String code;
 
     private String markupClass;
 
-    PLanguagesEnum(final String markupKey, final String markupClass) {
-        this.markupKey = markupKey;
+    PLanguagesEnum(final String code, final String markupClass) {
+        this.code = code;
         this.markupClass = markupClass;
+    }
+
+    @JsonValue
+    public String getCode() {
+        return code;
+    }
+
+    @JsonCreator
+    public static PLanguagesEnum findByCode(String code) {
+        return Arrays.stream(PLanguagesEnum.values())
+                .filter(k -> k.code.equals(code))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ValidationException(ValidationError.create("Unknown programming language {}", code)));
     }
 }
