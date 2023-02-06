@@ -1,22 +1,21 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CodeBlockAttributeContentData extends NameAndUuidDto {
+public class CodeBlockAttributeContentData {
 
     @Schema(description = "Definition of programming languages used for code",
             example = "JAVA, PHP, C, etc",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private PLanguagesEnum language;
 
-    @Schema(description = "Block of the code. Formatting of the code is specify by variable language",
+    @Schema(description = "Block of the code in Base64. Formatting of the code is specify by variable language",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private String codeInBase64;
+    private String code;
 
-    public CodeBlockAttributeContentData(final PLanguagesEnum pLanguagesEnum, final String codeInBase64) {
+    public CodeBlockAttributeContentData(final PLanguagesEnum pLanguagesEnum, final String code) {
         this.language = pLanguagesEnum;
-        this.codeInBase64 = codeInBase64;
+        this.code = code;
     }
 
     public PLanguagesEnum getLanguage() {
@@ -27,11 +26,11 @@ public class CodeBlockAttributeContentData extends NameAndUuidDto {
         this.language = language;
     }
 
-    public String getCodeInBase64() {
-        return codeInBase64;
+    public String getCode() {
+        return code;
     }
 
-    public void setCodeInBase64(String codeInBase64) {
-        this.codeInBase64 = codeInBase64;
+    public void setCode(String code) {
+        this.code = code;
     }
 }

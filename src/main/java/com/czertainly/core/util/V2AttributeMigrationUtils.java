@@ -230,7 +230,7 @@ public class V2AttributeMigrationUtils {
                     break;
                 case CODEBLOCK:
                     CodeBlockAttributeContentData codeBlockAttributeContentData = (CodeBlockAttributeContentData) oldContent.getValue();
-                    attributeContents.add(new CodeBlockAttributeContent("", new CodeBlockAttributeContentData(codeBlockAttributeContentData.getLanguage(), codeBlockAttributeContentData.getCodeInBase64())));
+                    attributeContents.add(new CodeBlockAttributeContent("", new CodeBlockAttributeContentData(codeBlockAttributeContentData.getLanguage(), codeBlockAttributeContentData.getCode())));
                     break;
             }
         }
