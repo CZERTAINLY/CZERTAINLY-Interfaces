@@ -15,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class KeyDetailDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Key",

@@ -42,6 +42,11 @@ public class KeyItemDetailDto extends NameAndUuidDto {
     private KeyFormat format;
 
     @Schema(
+            description = "Key Data"
+    )
+    private String keyData;
+
+    @Schema(
             description = "Key Length"
     )
     private int length;

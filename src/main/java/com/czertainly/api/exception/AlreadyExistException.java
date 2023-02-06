@@ -17,4 +17,9 @@ public class AlreadyExistException extends Exception {
     public AlreadyExistException(Class<?> objectClass, Object identifier) {
         this(objectClass.getSimpleName(), identifier);
     }
+
+    @Override
+    public String toString() {
+        return getLocalizedMessage();
+    }
 }

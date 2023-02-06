@@ -1,14 +1,16 @@
 package com.czertainly.api.model.client.cryptography;
 
-import com.czertainly.api.model.core.cryptography.key.KeyDto;
+import com.czertainly.api.model.core.cryptography.key.KeyItemDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class CryptographicKeyResponseDto {
 
-    @Schema(description = "CryptographicKeys", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<KeyDto> cryptographicKeys;
+    @Schema(description = "Cryptographic Keys", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<KeyItemDto> cryptographicKeys;
 
     @Schema(description = "Number of entries per page", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer itemsPerPage;
@@ -22,43 +24,4 @@ public class CryptographicKeyResponseDto {
     @Schema(description = "Number of items available", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long totalItems;
 
-    public List<KeyDto> getCryptographicKeys() {
-        return cryptographicKeys;
-    }
-
-    public void setCryptographicKeys(List<KeyDto> cryptographicKeys) {
-        this.cryptographicKeys = cryptographicKeys;
-    }
-
-    public Integer getItemsPerPage() {
-        return itemsPerPage;
-    }
-
-    public void setItemsPerPage(Integer itemsPerPage) {
-        this.itemsPerPage = itemsPerPage;
-    }
-
-    public Integer getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(Integer pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    public Integer getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public Long getTotalItems() {
-        return totalItems;
-    }
-
-    public void setTotalItems(Long totalItems) {
-        this.totalItems = totalItems;
-    }
 }
