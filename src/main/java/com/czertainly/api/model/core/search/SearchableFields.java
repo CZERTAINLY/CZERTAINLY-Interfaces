@@ -42,8 +42,8 @@ public enum SearchableFields {
     CRL_VALIDATION("crlValidation", null),
     SIGNATURE_VALIDATION("signatureValidation", null),
 
-    CK_NAME("cryptographicKey.name", null),
-    CK_GROUP("cryptographicKey.group", null),
+    CK_NAME("name", null),
+    CK_GROUP("cryptographicKey.group.name", null),
     CK_OWNER("cryptographicKey.owner", null),
     CK_TOKEN_PROFILE("cryptographicKey.tokenProfile.name", null),
     CK_TOKEN_INSTANCE("cryptographicKey.tokenInstanceReference.name", null),
