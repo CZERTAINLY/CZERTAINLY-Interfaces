@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.search;
 
+import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
 import com.czertainly.api.model.connector.cryptography.enums.KeyType;
@@ -57,7 +58,7 @@ public enum SearchableFields {
 
     private final String field;
 
-    private final Class enumClass;
+    private final Class<? extends IAbstractSearchableEnum> enumClass;
 
 
     private final Map<String, String> nativeCodeMap = Stream.of(new String[][]{
@@ -89,7 +90,7 @@ public enum SearchableFields {
 
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-    SearchableFields(String string, Class enumClass) {
+    SearchableFields(String string, Class<? extends IAbstractSearchableEnum> enumClass) {
         this.field = string;
         this.enumClass = enumClass;
     }
@@ -103,7 +104,7 @@ public enum SearchableFields {
         return nativeCodeMap.get(field);
     }
 
-    public Class getEnumClass() {
+    public Class<? extends IAbstractSearchableEnum> getEnumClass() {
         return enumClass;
     }
 

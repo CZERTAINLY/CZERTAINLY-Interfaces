@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.cryptography.key;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyState {
+public enum KeyState implements IAbstractSearchableEnum {
     PRE_ACTIVE("pre-active"),
     ACTIVE("active"),
     DEACTIVATED("deactivated"),
@@ -37,5 +38,10 @@ public enum KeyState {
     @JsonValue
     public String getCode() {
         return this.code;
+    }
+
+    @Override
+    public String getEnumLabel() {
+        return code;
     }
 }
