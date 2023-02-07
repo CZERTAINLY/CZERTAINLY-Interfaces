@@ -18,6 +18,9 @@ public class CodeBlockAttributeContentData {
         this.code = code;
     }
 
+    public CodeBlockAttributeContentData() {
+    }
+
     public ProgrammingLanguageEnum getLanguage() {
         return language;
     }
