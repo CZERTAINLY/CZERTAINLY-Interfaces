@@ -10,7 +10,7 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyFormat {
+public enum KeyFormat implements IAbstractSearchableEnum{
     RAW(1, "Raw", "Encoded key in raw format"),
     SPKI(2, "SubjectPublicKeyInfo", "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"),
     PRKI(3, "PrivateKeyInfo", "DER-encoded ASN.1 PrivateKeyInfo of the private key"),
@@ -85,6 +85,11 @@ public enum KeyFormat {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public String getEnumLabel() {
+        return name;
     }
 
     /**

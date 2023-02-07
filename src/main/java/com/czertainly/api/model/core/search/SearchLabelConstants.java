@@ -323,7 +323,7 @@ public final class SearchLabelConstants {
             false,
             null,
             SearchableFieldType.STRING,
-            List.of(SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
     );
 
     public static final SearchFieldDataDto CK_GROUP_FILTER = getSearchField(SearchableFields.CK_GROUP,
@@ -339,7 +339,7 @@ public final class SearchLabelConstants {
             false,
             null,
             SearchableFieldType.STRING,
-            List.of(SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
     );
 
     public static final SearchFieldDataDto CK_KEY_USAGE_FILTER = getSearchField(SearchableFields.CKI_USAGE,
@@ -347,7 +347,7 @@ public final class SearchLabelConstants {
             true,
             null,
             SearchableFieldType.LIST,
-            List.of(SearchCondition.CONTAINS, SearchCondition.NOT_CONTAINS)
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
 
     public static final SearchFieldDataDto CK_KEY_LENGTH = getSearchField(SearchableFields.CKI_LENGTH,
@@ -379,7 +379,7 @@ public final class SearchLabelConstants {
             true,
             null,
             SearchableFieldType.LIST, // OBJECT GROUP
-            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
 
     public static final SearchFieldDataDto CK_ALGORITHM_FILTER = getSearchField(SearchableFields.CKI_CRYPTOGRAPHIC_ALGORITHM,
@@ -403,9 +403,8 @@ public final class SearchLabelConstants {
             true,
             null,
             SearchableFieldType.LIST, // OBJECT GROUP
-            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS, SearchCondition.EMPTY, SearchCondition.NOT_EMPTY)
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
-
 
 
 }

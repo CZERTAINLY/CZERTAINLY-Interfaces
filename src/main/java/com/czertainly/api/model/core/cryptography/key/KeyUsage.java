@@ -2,7 +2,7 @@ package com.czertainly.api.model.core.cryptography.key;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyUsage {
+public enum KeyUsage implements IAbstractSearchableEnum {
     SIGN(1, "sign", "Allow for signing. Applies to Sign operation. Valid for PGP Key, Private Key"),
     VERIFY(2, "verify", "Allow for signature verification. Applies to Signature Verify and Validate operations. Valid for PGP Key, Certificate and Public Key."),
     ENCRYPT(4, "encrypt", "Allow for encryption. Applies to Encrypt operation. Valid for PGP Key, Private Key, Public Key and Symmetric Key. Encryption for the purpose of wrapping is separate Wrap Key value."),
@@ -95,4 +95,8 @@ public enum KeyUsage {
                         new ValidationException(ValidationError.create("Unknown KeyUsage {}", code)));
     }
 
+    @Override
+    public String getEnumLabel() {
+        return name;
+    }
 }

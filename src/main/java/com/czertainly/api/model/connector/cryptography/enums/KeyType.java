@@ -10,7 +10,7 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyType {
+public enum KeyType implements IAbstractSearchableEnum {
     SECRET_KEY(1, "Secret key", "Symmetric secret key"),
     PUBLIC_KEY(2, "Public key", "Asymmetric public key"),
     PRIVATE_KEY(3, "Private key", "Asymmetric private key"),
@@ -84,6 +84,11 @@ public enum KeyType {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public String getEnumLabel() {
+        return name;
     }
 
     /**

@@ -10,7 +10,7 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum CryptographicAlgorithm {
+public enum CryptographicAlgorithm implements IAbstractSearchableEnum {
     RSA(1, "RSA", "Rivest–Shamir–Adleman"),
     ECDSA(2, "ECDSA", "Elliptic Curve Digital Signature Algorithm"),
     FALCON(3, "FALCON", "Fast Fourier lattice-based compact signatures over NTRU"),
@@ -93,5 +93,10 @@ public enum CryptographicAlgorithm {
     @Override
     public String toString() {
         return name();
+    }
+
+    @Override
+    public String getEnumLabel() {
+        return name;
     }
 }
