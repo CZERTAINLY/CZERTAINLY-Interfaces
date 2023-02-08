@@ -8,7 +8,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.certificate.CertificateDto;
+import com.czertainly.api.model.core.certificate.CertificateDetailDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
 import com.czertainly.api.model.core.certificate.CertificateValidationDto;
 import com.czertainly.api.model.core.location.LocationDto;
@@ -71,7 +71,7 @@ public interface CertificateController {
 	@Operation(summary = "Get Certificate Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
-	public CertificateDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
+	public CertificateDetailDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
 			throws NotFoundException, CertificateException, IOException;
 	
 	@Operation(summary = "Delete a certificate")
