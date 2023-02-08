@@ -687,7 +687,7 @@ public class AttributeDefinitionUtilsTest {
 
         Assertions.assertNotNull(exception.getErrors());
         Assertions.assertFalse(exception.getErrors().isEmpty());
-        Assertions.assertEquals(1, exception.getErrors().size());
+        Assertions.assertEquals(2, exception.getErrors().size());
     }
 
     @Test
