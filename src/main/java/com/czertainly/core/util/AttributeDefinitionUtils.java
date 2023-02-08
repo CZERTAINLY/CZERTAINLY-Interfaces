@@ -144,11 +144,19 @@ public class AttributeDefinitionUtils {
     }
 
     public static NameAndIdDto getNameAndIdData(String name, List<RequestAttributeDto> attributes) {
+        if (attributes.size() == 0) {
+            return null;
+        }
+
         NameAndIdDto converted = getObjectAttributeContentData(name, attributes, NameAndIdDto.class).get(0);
         return converted;
     }
 
     public static NameAndUuidDto getNameAndUuidData(String name, List<RequestAttributeDto> attributes) {
+        if (attributes.size() == 0) {
+            return null;
+        }
+
         NameAndUuidDto converted = getObjectAttributeContentData(name, attributes, NameAndUuidDto.class).get(0);
         return converted;
     }
@@ -622,6 +630,7 @@ public class AttributeDefinitionUtils {
                             wrongValue = true;
                             break;
                         }
+                        break;
                     default:
                         errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", label, definition.getType()));
                         break;
@@ -684,7 +693,7 @@ public class AttributeDefinitionUtils {
                                             "Callback path variable {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
                                 }
-                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeType())) {
+                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
                                     errors.add(ValidationError.create(
                                             "Callback mapping {} invalid. Type {} not allowed for path variable", mapping, mapping.getAttributeType()));
                                     break;
@@ -702,7 +711,7 @@ public class AttributeDefinitionUtils {
                                             "Callback query parameters {} not set, but mapping require it {}", mapping.getTo(), mapping));
                                     break;
                                 }
-                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeType())) {
+                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
                                     errors.add(ValidationError.create(
                                             "Callback mapping {} invalid. Type {} not allowed for query parameter", mapping, mapping.getAttributeType()));
                                     break;
@@ -947,7 +956,12 @@ public class AttributeDefinitionUtils {
     public static boolean checkAttributeEquality(List<RequestAttributeDto> requestAttributes, List<DataAttribute> attributes) {
         for (RequestAttributeDto requestAttribute : requestAttributes) {
             DataAttribute attribute = getAttributeDefinition(requestAttribute.getName(), attributes);
-            if (attribute == null || !getAttributeContent(requestAttribute.getName(), requestAttributes, AttributeContentType.getClass(attribute.getContentType())).equals(getAttributeContent(requestAttribute.getName(), attributes, AttributeContentType.getClass(attribute.getContentType())))) {
+            if (attribute == null) return false;
+
+            var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, AttributeContentType.getClass(attribute.getContentType()));
+            if (attributeContent == null) return false;
+
+            if (!attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, AttributeContentType.getClass(attribute.getContentType())))) {
                 return false;
             }
         }
