@@ -91,28 +91,6 @@ public class CertificateDto {
     private Integer keySize;
 
     @Schema(
-            description = "Extended key usages"
-    )
-    private List<String> extendedKeyUsage;
-
-    @Schema(
-            description = "Key usages",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private List<String> keyUsage;
-
-    @Schema(
-            description = "Basic Constraints",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String basicConstraints;
-
-    @Schema(
-            description = "Certificate metadata"
-    )
-    private List<MetadataResponseDto> metadata;
-
-    @Schema(
             description = "Status of the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -128,16 +106,6 @@ public class CertificateDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String fingerprint;
-
-    @Schema(
-            description = "Subject alternative names"
-    )
-    private Map<String, Object> subjectAlternativeNames;
-
-    @Schema(
-            description = "Locations associated to the Certificate"
-    )
-    private Set<LocationDto> locations;
 
     @Schema(
             description = "Group associated to the Certificate"
@@ -160,43 +128,13 @@ public class CertificateDto {
     private String issuerSerialNumber;
 
     @Schema(
-            description = "Certificate compliance check result"
-    )
-    private List<CertificateComplianceResultDto> nonCompliantRules;
-
-    @Schema(
             description = "Certificate compliance status"
     )
     private ComplianceStatus complianceStatus;
-
-    @Schema(
-            description = "List of Custom Attributes"
-    )
-    private List<ResponseAttributeDto> customAttributes;
-
-    @Schema(
-            description = "CSR for the certificate"
-    )
-    private String csr;
 
     @Schema(
             description = "Private Key Availability",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean privateKeyAvailability;
-
-    @Schema(
-            description = "CSR Attributes"
-    )
-    private List<ResponseAttributeDto> csrAttributes;
-
-    @Schema(
-            description = "Signature Attributes"
-    )
-    private List<ResponseAttributeDto> signatureAttributes;
-
-    @Schema(
-            description = "Key Pair of the certificate"
-    )
-    private KeyDto key;
 }
