@@ -1,19 +1,12 @@
 package com.czertainly.api.model.core.certificate;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
-import com.czertainly.api.model.core.cryptography.key.KeyDto;
-import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Data
 public class CertificateDto {
@@ -41,12 +34,6 @@ public class CertificateDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String issuerCommonName;
-
-    @Schema(
-            description = "Base64 encoded Certificate content",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String certificateContent;
 
     @Schema(
             description = "Issuer DN of the Certificate",
