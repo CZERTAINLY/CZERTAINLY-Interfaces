@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.raprofile;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,11 +9,11 @@ import java.util.List;
 
 public class ActivateAcmeForRaProfileRequestDto {
     @Schema(description = "List of Attributes to issue Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> issueCertificateAttributes;
 
     @Schema(description = "List of Attributes to revoke Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> revokeCertificateAttributes;
 
     public List<RequestAttributeDto> getIssueCertificateAttributes() {

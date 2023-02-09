@@ -1,7 +1,6 @@
 package com.czertainly.api.model.core.certificate;
 
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.connector.compliance.ComplianceResponseRulesDto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,16 +15,16 @@ by the Core from the Connector once the compliance check is completed.
  */
 public class CertificateComplianceResultDto {
 
-    @Schema(description = "Name of the Compliance Provider", required = true, example = "Provider1")
+    @Schema(description = "Name of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "Provider1")
     private String connectorName;
 
-    @Schema(description = "Name of the rule",required = true, example = "RuleName")
+    @Schema(description = "Name of the rule",requiredMode = Schema.RequiredMode.REQUIRED, example = "RuleName")
     private String ruleName;
 
-    @Schema(description = "Description of the rule",required = true, example = "Description sample")
+    @Schema(description = "Description of the rule",requiredMode = Schema.RequiredMode.REQUIRED, example = "Description sample")
     private String ruleDescription;
 
-    @Schema(description = "Status of the rule",required = true, example = "nok")
+    @Schema(description = "Status of the rule",requiredMode = Schema.RequiredMode.REQUIRED, example = "nok")
     private ComplianceRuleStatus status;
 
     @Schema(description = "Attributes of the rule")

@@ -3,12 +3,8 @@ package com.czertainly.api.interfaces.core.client;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.client.authority.ClientAddEndEntityRequestDto;
-import com.czertainly.api.model.client.authority.ClientCertificateRevocationDto;
-import com.czertainly.api.model.client.authority.ClientCertificateSignRequestDto;
-import com.czertainly.api.model.client.authority.ClientCertificateSignResponseDto;
-import com.czertainly.api.model.client.authority.ClientEditEndEntityRequestDto;
-import com.czertainly.api.model.client.authority.ClientEndEntityDto;
+import com.czertainly.api.model.client.authority.*;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,11 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -35,6 +27,16 @@ import java.util.List;
                         responseCode = "400",
                         description = "Bad Request",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema())
+                ),
+                @ApiResponse(
+                        responseCode = "403",
+                        description = "Forbidden",
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
@@ -57,7 +59,7 @@ import java.util.List;
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                 ),
         })
-@Tag(name = "Legacy Client Operations API", description = "Client API for managing End Entities and Certificates")
+@Tag(name = "Legacy Client Operations", description = "Client API for managing End Entities and Certificates")
 public interface ClientOperationController {
 
     @Operation(summary = "Issue Certificate")
@@ -118,7 +120,7 @@ public interface ClientOperationController {
 
     @Operation(summary = "Reset password for End Entity")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End Entity password reset")})
-    @RequestMapping(path = "/{raProfileName}/endentity/{username}/resetPassword", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{raProfileName}/endentity/{username}/resetPassword", method = RequestMethod.PUT, produces = {"application/json"})
     void resetPassword(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @Parameter(description = "Username") @PathVariable String username)

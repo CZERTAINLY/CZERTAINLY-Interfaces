@@ -1,18 +1,18 @@
 package com.czertainly.api.model.connector.discovery;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
-import java.util.Map;
 
 public class DiscoveryProviderDto extends NameAndUuidDto {
 
 	@Schema(description = "Status of Discovery",
-			required = true)
+			requiredMode = Schema.RequiredMode.REQUIRED)
 	private DiscoveryStatus status;
 	
 	@Schema(description = "Number of Certificates discovered",
@@ -20,12 +20,12 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 	private Integer totalCertificatesDiscovered;
 
 	@Schema(description = "Certificate data",
-			required = true)
+			requiredMode = Schema.RequiredMode.REQUIRED)
 	private List<DiscoveryProviderCertificateDataDto> certificateData;
 	
 	@Schema(description = "Certificate Metadata",
-			required = true)
-	private Map<String, Object> meta;
+			requiredMode = Schema.RequiredMode.REQUIRED)
+	private List<MetadataAttribute> meta;
 
 	public String getUuid() {
 		return uuid;
@@ -59,11 +59,11 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 		this.totalCertificatesDiscovered = totalCertificatesDiscovered;
 	}
 
-	public Map<String, Object> getMeta() {
+	public List<MetadataAttribute> getMeta() {
 		return meta;
 	}
 
-	public void setMeta(Map<String, Object> meta) {
+	public void setMeta(List<MetadataAttribute> meta) {
 		this.meta = meta;
 	}
 

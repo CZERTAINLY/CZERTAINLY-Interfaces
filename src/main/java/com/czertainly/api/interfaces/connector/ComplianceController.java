@@ -13,18 +13,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 @RequestMapping("/v1/complianceProvider/{kind}")
 @Tag(
-        name = "Compliance API",
+        name = "Compliance",
         description = "Compliance Provider API. " +
                 "Used to check the compliance of a certificate. The provider contains the " +
                 "list of rules for checking the compliance. The user can choose the list of compliance checks " +

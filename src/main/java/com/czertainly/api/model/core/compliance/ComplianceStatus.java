@@ -13,13 +13,14 @@ List if possible status for the Compliance checks. This Object will be used only
 define the status of overall compliance. This object should not be used to define
 the compliance status of the individual rules
  */
+@Schema(enumAsRef = true)
 public enum ComplianceStatus {
     OK("ok"),
     NOK("nok"),
     NA("na")
     ;
     @Schema(description = "Compliance Status",
-            example = "ok", required = true)
+            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     ComplianceStatus(String code) {

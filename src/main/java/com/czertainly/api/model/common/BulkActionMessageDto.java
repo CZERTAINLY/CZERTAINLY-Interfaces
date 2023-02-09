@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class BulkActionMessageDto extends NameAndUuidDto {
 
-    @Schema(description = "Message describing the associations of the Objects which is preventing the delete operation",
+    @Schema(description = "Message describing the associations of the Objects which is preventing the bulk operation",
             example = "Object is associated with other items",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
     public String getMessage() {

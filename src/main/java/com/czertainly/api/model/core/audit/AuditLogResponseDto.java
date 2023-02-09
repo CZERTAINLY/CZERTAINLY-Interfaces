@@ -10,25 +10,25 @@ public class AuditLogResponseDto {
 	
 	@Schema(
             description = "Page number",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int page;
 	
 	@Schema(
             description = "Size of the data per page",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int size;
 	
 	@Schema(
             description = "Number of pages",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int totalPages;
 	
 	@Schema(
             description = "Audit log items",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<AuditLogDto> items;
 

@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.audit.AuditLogFilter;
 import com.czertainly.api.model.core.audit.AuditLogResponseDto;
@@ -22,13 +23,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/auditLogs")
-@Tag(name = "Audit Log API", description = "Audit Log API")
+@Tag(name = "Audit Log", description = "Audit Log API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
 						responseCode = "400",
 						description = "Bad Request",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "401",
+						description = "Unauthorized",
+						content = @Content(schema = @Schema())
+				),
+				@ApiResponse(
+						responseCode = "403",
+						description = "Forbidden",
+						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
@@ -42,12 +53,12 @@ import java.util.List;
 				)
 		})
 public interface AuditLogController {
-	
+
 	@Operation(summary = "List Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit logs")})
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
     public AuditLogResponseDto listAuditLogs(AuditLogFilter filter, Pageable pageable);
-	
+
 	@Operation(summary = "Export Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Export of audit logs")})
 	@RequestMapping(path = "/export" ,method = RequestMethod.GET, produces = {"application/json"})
@@ -58,17 +69,17 @@ public interface AuditLogController {
 	@RequestMapping(path = "/purge" ,method = RequestMethod.GET, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void purgeAuditLogs(AuditLogFilter filter, Pageable pageable);
-	
+
 	@Operation(summary = "List Audit Objects")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit Objects") })
 	@RequestMapping(path = "/objects" ,method = RequestMethod.GET, produces = {"application/json"})
     public List<String> listObjects();
-	
+
 	@Operation(summary = "List Audit Operations")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit operations")})
 	@RequestMapping(path = "/operations" ,method = RequestMethod.GET, produces = {"application/json"})
     public List<String> listOperations();
-	
+
 	@Operation(summary = "List Status")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of audit log status")})
 	@RequestMapping(path = "/statuses" ,method = RequestMethod.GET, produces = {"application/json"})

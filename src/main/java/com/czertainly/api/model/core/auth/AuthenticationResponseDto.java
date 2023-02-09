@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class AuthenticationResponseDto {
 
-    @Schema(description = "Is User Authenticated", required = true)
+    @Schema(description = "Is User Authenticated", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean authenticated;
 
     @Schema(description = "User profile data")

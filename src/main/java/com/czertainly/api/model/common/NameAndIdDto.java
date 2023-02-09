@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class NameAndIdDto implements Serializable {
 
     @Schema(description = "Object identifier",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private int id;
 
     @Schema(description = "Object name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     public NameAndIdDto() {

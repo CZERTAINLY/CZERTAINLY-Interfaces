@@ -12,50 +12,50 @@ public class AcmeAccountListResponseDto {
 
     @Schema(
             description = "ID of the Account",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "HJAT6gc7i6"
     )
     private String accountId;
     @Schema(
             description = "UUID of the Account",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
     )
     private String uuid;
     @Schema(
             description = "Enabled flag. true = enabled, false=disabled",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "false"
     )
     private Boolean enabled;
     @Schema(
             description = "Total number of Orders",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "4"
     )
     private Integer totalOrders;
     @Schema(
             description = "Status of the Account",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "VALID"
     )
     private AccountStatus status;
     @Schema(
             description = "Name of the RA Profile",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "RAProfile1"
     )
     private String raProfileName;
     @Schema(
             description = "Name of the ACME Profile",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "ACMEProfile1"
     )
     private String acmeProfileName;
 
     @Schema(
             description = "UUID of the ACME Profile",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
     )
     private String acmeProfileUuid;

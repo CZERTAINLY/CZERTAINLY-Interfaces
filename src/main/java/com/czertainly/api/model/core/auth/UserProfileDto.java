@@ -8,13 +8,13 @@ import java.util.List;
 
 public class UserProfileDto {
 
-    @Schema(description = "User details", required = true)
+    @Schema(description = "User details", requiredMode = Schema.RequiredMode.REQUIRED)
     private UserDto user;
 
-    @Schema(description = "User Roles", required = true)
+    @Schema(description = "User Roles", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> roles;
 
-    @Schema(description = "User Permissions", required = true)
+    @Schema(description = "User Permissions", requiredMode = Schema.RequiredMode.REQUIRED)
     private SubjectPermissionsDto permissions;
 
     public UserDto getUser() {

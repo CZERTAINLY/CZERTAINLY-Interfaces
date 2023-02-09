@@ -1,51 +1,51 @@
 package com.czertainly.api.model.core.location;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
-import java.util.Map;
 
 public class CertificateInLocationDto {
 
     @Schema(
             description = "UUID of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String certificateUuid;
 
     @Schema(
             description = "Common Name of the Subject DN field of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String commonName;
 
     @Schema(
             description = "Serial number in HEX of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String serialNumber;
 
     @Schema(
             description = "Metadata of the Certificate in Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private Map<String, Object> metadata;
+    private List<MetadataResponseDto> metadata;
 
     @Schema(
             description = "Applied push attributes"
     )
-    private List<RequestAttributeDto> pushAttributes;
+    private List<ResponseAttributeDto> pushAttributes;
 
     @Schema(
             description = "Applied issue attributes"
     )
-    private List<RequestAttributeDto> csrAttributes;
+    private List<ResponseAttributeDto> csrAttributes;
 
     @Schema(
             description = "If the Certificate in Location has associated private key",
             defaultValue = "false",
-            required = false
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private boolean withKey;
 
@@ -73,27 +73,27 @@ public class CertificateInLocationDto {
         this.serialNumber = serialNumber;
     }
 
-    public Map<String, Object> getMetadata() {
+    public List<MetadataResponseDto> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Map<String, Object> metadata) {
+    public void setMetadata(List<MetadataResponseDto> metadata) {
         this.metadata = metadata;
     }
 
-    public List<RequestAttributeDto> getPushAttributes() {
+    public List<ResponseAttributeDto> getPushAttributes() {
         return pushAttributes;
     }
 
-    public void setPushAttributes(List<RequestAttributeDto> pushAttributes) {
+    public void setPushAttributes(List<ResponseAttributeDto> pushAttributes) {
         this.pushAttributes = pushAttributes;
     }
 
-    public List<RequestAttributeDto> getCsrAttributes() {
+    public List<ResponseAttributeDto> getCsrAttributes() {
         return csrAttributes;
     }
 
-    public void setCsrAttributes(List<RequestAttributeDto> csrAttributes) {
+    public void setCsrAttributes(List<ResponseAttributeDto> csrAttributes) {
         this.csrAttributes = csrAttributes;
     }
 

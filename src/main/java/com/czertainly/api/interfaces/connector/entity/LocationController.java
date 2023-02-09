@@ -3,17 +3,10 @@ package com.czertainly.api.interfaces.connector.entity;
 import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
-import com.czertainly.api.model.connector.entity.GenerateCsrRequestDto;
-import com.czertainly.api.model.connector.entity.GenerateCsrResponseDto;
-import com.czertainly.api.model.connector.entity.LocationDetailRequestDto;
-import com.czertainly.api.model.connector.entity.LocationDetailResponseDto;
-import com.czertainly.api.model.connector.entity.PushCertificateRequestDto;
-import com.czertainly.api.model.connector.entity.PushCertificateResponseDto;
-import com.czertainly.api.model.connector.entity.RemoveCertificateRequestDto;
-import com.czertainly.api.model.connector.entity.RemoveCertificateResponseDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.connector.entity.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -24,19 +17,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/entityProvider/entities/{entityUuid}/locations")
 @Tag(
-        name = "Location Operations API",
+        name = "Location Operations",
         description = "Interfaces to control certificates and key stores on Entities. " +
                 "Locations provides capabilities of getting the certificates already on the Entity, " +
                 "pushing new certificates, generation of new key pair and certificate signing requests, " +
@@ -121,7 +109,7 @@ public interface LocationController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listPushCertificateAttributes(
+    List<BaseAttribute> listPushCertificateAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
     ) throws NotFoundException;
 
@@ -205,7 +193,7 @@ public interface LocationController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes retrieved"
+                            description = "CSR Attributes retrieved"
                     )
             })
     @RequestMapping(
@@ -213,7 +201,7 @@ public interface LocationController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listGenerateCsrAttributes(
+    List<BaseAttribute> listGenerateCsrAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
     ) throws NotFoundException;
 

@@ -6,19 +6,19 @@ import java.util.List;
 
 public class SearchFieldDataDto {
     @Schema(description = "Field to search",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private SearchableFields field;
 
     @Schema(description = "Label for the field",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String label;
 
     @Schema(description = "Type of the field",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private SearchableFieldType type;
 
     @Schema(description = "List of available conditions for the field",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<SearchCondition> conditions;
 
     @Schema(description = "Available values for the field")

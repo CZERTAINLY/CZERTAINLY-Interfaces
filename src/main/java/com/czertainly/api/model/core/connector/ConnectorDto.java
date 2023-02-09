@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.connector;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -12,23 +12,25 @@ import java.util.List;
 public class ConnectorDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "List of Function Groups implemented by the Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<FunctionGroupDto> functionGroups;
     @Schema(description = "URL of the Connector",
             example = "http://network-discovery-provider:8080",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
     @Schema(description = "Type of authentication for the Connector",
             example = "none",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
     @Schema(description = "List of Attributes for the authentication type",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttributeDto> authAttributes;
     @Schema(description = "Status of the Connector",
             example = "CONNECTED",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     public List<FunctionGroupDto> getFunctionGroups() {
         return functionGroups;
@@ -70,6 +72,14 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
         this.status = status;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -80,6 +90,7 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
                 .append("status", status)
                 .append("name", name)
                 .append("uuid", uuid)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

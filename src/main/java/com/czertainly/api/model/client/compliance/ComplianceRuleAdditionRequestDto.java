@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.compliance;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,13 +9,13 @@ import java.util.List;
 
 public class ComplianceRuleAdditionRequestDto {
 
-    @Schema(description = "UUID of the Compliance Provider", required = true, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
+    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
     private String connectorUuid;
 
-    @Schema(description = "Kind of the Compliance Provider", required = true, example = "default")
+    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "default")
     private String kind;
 
-    @Schema(description = "UUID of the rule", required = true, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
     private String ruleUuid;
 
     @Schema(description = "Attributes for the rule")

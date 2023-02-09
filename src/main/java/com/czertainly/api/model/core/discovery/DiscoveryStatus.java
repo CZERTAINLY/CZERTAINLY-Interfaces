@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum DiscoveryStatus {
 
     IN_PROGRESS("inProgress"),
@@ -16,7 +17,7 @@ public enum DiscoveryStatus {
     WARNING("warning")
     ;
     @Schema(description = "Discovery Status",
-            example = "completed", required = true)
+            example = "completed", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     DiscoveryStatus(String code) {

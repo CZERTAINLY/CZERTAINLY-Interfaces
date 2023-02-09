@@ -1,13 +1,14 @@
 package com.czertainly.api.model.core.location;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class representing Location
@@ -18,39 +19,42 @@ public class LocationDto extends NameAndUuidDto {
     private String description;
 
     @Schema(description = "UUID of Entity instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String entityInstanceUuid;
 
     @Schema(description = "Name of Entity instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String entityInstanceName;
 
     @Schema(description = "List of Location attributes",
-            required = true)
-    private List<ResponseAttributeDto> attributes;
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
     @Schema(description = "If the location supports multiple Certificates",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean supportMultipleEntries;
 
     @Schema(description = "If the location supports key management operations",
             defaultValue = "false",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean supportKeyManagement;
 
     @Schema(description = "List of Certificates in Location",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<CertificateInLocationDto> certificates;
 
     @Schema(description = "Location metadata")
-    private Map<String, Object> metadata;
+    private List<MetadataResponseDto> metadata;
 
     public String getDescription() {
         return description;
@@ -108,11 +112,11 @@ public class LocationDto extends NameAndUuidDto {
         this.supportKeyManagement = supportKeyManagement;
     }
 
-    public Map<String, Object> getMetadata() {
+    public List<MetadataResponseDto> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Map<String, Object> metadata) {
+    public void setMetadata(List<MetadataResponseDto> metadata) {
         this.metadata = metadata;
     }
 
@@ -124,6 +128,14 @@ public class LocationDto extends NameAndUuidDto {
         this.certificates = certificates;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -132,6 +144,7 @@ public class LocationDto extends NameAndUuidDto {
                 .append("description", description)
                 .append("entityInstanceUuid", entityInstanceUuid)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("enabled", enabled)
                 .append("entityInstanceName", entityInstanceName)
                 .append("supportMultipleEntries", supportMultipleEntries)

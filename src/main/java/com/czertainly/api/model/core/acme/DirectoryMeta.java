@@ -32,7 +32,7 @@ public class DirectoryMeta {
      * CAA record validation list of hostnames
      */
     @Schema(description = "Array of CAA record validation servers",
-            required = false,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             example = "[\"example1.com\", \"example2.com\"]")
     private String[] caaIdentities;
 

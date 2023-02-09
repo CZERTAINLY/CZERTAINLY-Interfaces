@@ -13,13 +13,15 @@ List if possible status for the individual rules on Compliance checks. This Obje
 used only to define the status of individual rules. This object should not be used to define
 the overall compliance status
  */
+
+@Schema(enumAsRef = true)
 public enum ComplianceRuleStatus {
     OK("ok"),
     NOK("nok"),
     NA("na"),
     ;
     @Schema(description = "Compliance Rule Status",
-            example = "ok", required = true)
+            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     ComplianceRuleStatus(String code) {

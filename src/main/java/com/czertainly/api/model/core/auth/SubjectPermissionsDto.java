@@ -8,10 +8,10 @@ import java.util.List;
 
 public class SubjectPermissionsDto {
 
-    @Schema(description = "Allow all resources, True = Yes, False = No", required = true)
+    @Schema(description = "Allow all resources, True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean allowAllResources;
 
-    @Schema(description = "Resources", required = true)
+    @Schema(description = "Resources", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResourcePermissionsDto> resources;
 
     public Boolean getAllowAllResources() {

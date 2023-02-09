@@ -7,13 +7,19 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ResourceDto extends NameAndUuidDto {
 
-    @Schema(description = "Resource label", required = true)
+    @Schema(description = "Resource Name",
+            example = "Name",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            implementation = Resource.class)
+    protected String name;
+
+    @Schema(description = "Resource label", requiredMode = Schema.RequiredMode.REQUIRED)
     private String displayName;
 
     @Schema(description = "Listing Endpoint")
     private String listObjectsEndpoint;
 
-    @Schema(description = "If resource has Object access permissions. True = Yes, False = No", required = true)
+    @Schema(description = "If resource has Object access permissions. True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean objectAccess;
 
     public String getListObjectsEndpoint() {

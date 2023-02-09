@@ -1,35 +1,39 @@
 package com.czertainly.api.model.core.credential;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes",
-            required = true)
-    private List<ResponseAttributeDto> attributes;
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes = new ArrayList<>();
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "UUID of Credential provider Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Name of Credential provider Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
     public String getKind() {
@@ -68,6 +72,14 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     public String getConnectorName() { return connectorName; }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -78,6 +90,7 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
                 .append("enabled", enabled)
                 .append("connectorUuid", connectorUuid)
                 .append("connectorName", connectorName)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

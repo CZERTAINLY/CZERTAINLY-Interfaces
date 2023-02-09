@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 @Tag(
-        name = "Info API",
+        name = "Connector Info",
         description = "Connector Information API. " +
                 "Each connector may have multiple functions represented by FunctionGroupCode. " +
                 "For each FunctionGroupCode there is a list of implemented end points. " +

@@ -3,9 +3,9 @@ package com.czertainly.api.model.core.acme;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class KeyRollover {
-    @Schema(description = "Account URL", example = "https://example.com/acme/acct/evOfKhNU60wg", required = true)
+    @Schema(description = "Account URL", example = "https://example.com/acme/acct/evOfKhNU60wg", requiredMode = Schema.RequiredMode.REQUIRED)
     private String account;
-    @Schema(description = "Old key of the Account", example = "<Account old key content>", required = true)
+    @Schema(description = "Old key of the Account", example = "<Account old key content>", requiredMode = Schema.RequiredMode.REQUIRED)
     private String oldKey;
 
     public String getAccount() {

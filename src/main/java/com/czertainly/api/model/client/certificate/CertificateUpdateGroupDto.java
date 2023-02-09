@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class CertificateUpdateGroupDto {
 
     @Schema(description = "Group UUID",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String groupUuid;
 
     public String getGroupUuid() {

@@ -1,30 +1,30 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
-import java.util.Map;
 
 public class GenerateCsrResponseDto {
 
     @Schema(description = "Base64-encoded certificate signing request",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String csr;
 
     @Schema(description = "CSR Metadata")
-    private Map<String, Object> metadata;
+    private List<MetadataAttribute> metadata;
 
     @Schema(description = "Type of the certificate expected to be issued",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
     @Schema(
             description = "List of Attributes to push Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> pushAttributes;
 
@@ -52,11 +52,11 @@ public class GenerateCsrResponseDto {
         this.pushAttributes = pushAttributes;
     }
 
-    public Map<String, Object> getMetadata() {
+    public List<MetadataAttribute> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Map<String, Object> metadata) {
+    public void setMetadata(List<MetadataAttribute> metadata) {
         this.metadata = metadata;
     }
 

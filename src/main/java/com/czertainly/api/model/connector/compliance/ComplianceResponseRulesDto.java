@@ -11,13 +11,13 @@ the ComplianceResponseDto and describes in detail the list of rules applied and 
 individual status.
  */
 public class ComplianceResponseRulesDto {
-    @Schema(description = "UUID of the rule", required = true, example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
     private String uuid;
 
-    @Schema(description = "Name of the rule", required = true, example = "Rule1")
+    @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "Rule1")
     private String name;
 
-    @Schema(description = "Rule status", required = true, example = "ok")
+    @Schema(description = "Rule status", requiredMode = Schema.RequiredMode.REQUIRED, example = "ok")
     private ComplianceRuleStatus status;
 
     //Default getters and setters

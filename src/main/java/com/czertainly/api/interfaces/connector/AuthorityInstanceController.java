@@ -3,9 +3,9 @@ package com.czertainly.api.interfaces.connector;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,12 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,7 +40,7 @@ import java.util.List;
                         content = @Content
                 )
         })
-@Tag(name = "Authority Management API", description = "Authority Management API")
+@Tag(name = "Authority Management", description = "Authority Management API")
 public interface AuthorityInstanceController {
 
     @Operation(
@@ -55,7 +50,7 @@ public interface AuthorityInstanceController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Authority instances retrieved"
+                            description = "Authority instance list retrieved"
                     )
             })
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
@@ -135,11 +130,11 @@ public interface AuthorityInstanceController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Authority instance updated"
+                            description = "RA Profile Attributes retrieved"
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, produces = {"application/json"})
-    List<AttributeDefinition> listRAProfileAttributes(
+    List<BaseAttribute> listRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
@@ -149,7 +144,7 @@ public interface AuthorityInstanceController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Authority instance updated"
+                            description = "RA Profile Attributes information validated"
                     )
             })
     @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})

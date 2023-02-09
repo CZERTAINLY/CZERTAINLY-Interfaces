@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.raprofile;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,8 +13,11 @@ public class EditRaProfileRequestDto {
     private String description;
 
     @Schema(description = "List of Attributes for RA Profile",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled")
     private Boolean enabled;
@@ -47,11 +50,20 @@ public class EditRaProfileRequestDto {
         return enabled;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("description", description)
                 .append("attributes", attributes)
+                .append("customAttributes", attributes)
                 .toString();
     }
 }

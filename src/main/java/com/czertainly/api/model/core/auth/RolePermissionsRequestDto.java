@@ -8,7 +8,7 @@ import java.util.List;
 
 public class RolePermissionsRequestDto {
 
-    @Schema(description = "Allow all resources, True = Yes, False = No", required = true)
+    @Schema(description = "Allow all resources, True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean allowAllResources;
 
     @Schema(description = "Resources")

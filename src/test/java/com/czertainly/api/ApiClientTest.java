@@ -2,11 +2,7 @@ package com.czertainly.api;
 
 import com.czertainly.api.clients.AttributeApiClient;
 import com.czertainly.api.clients.BaseApiClient;
-import com.czertainly.api.exception.ConnectorClientException;
-import com.czertainly.api.exception.ConnectorCommunicationException;
-import com.czertainly.api.exception.ConnectorServerException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
@@ -31,7 +27,7 @@ public class ApiClientTest {
 
     @BeforeEach
     public void setUp() {
-        attributeApiClient = new AttributeApiClient(BaseApiClient.prepareWebClient());
+        attributeApiClient = new AttributeApiClient(BaseApiClient.prepareWebClient(), null);
 
         mockServer = new WireMockServer(3665);
         mockServer.start();

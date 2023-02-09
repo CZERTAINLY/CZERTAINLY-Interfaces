@@ -3,9 +3,9 @@ package com.czertainly.api.interfaces.connector.v2;
 import com.czertainly.api.exception.CertificateOperationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.v2.CertRevocationDto;
 import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
 import com.czertainly.api.model.connector.v2.CertificateRenewRequestDto;
@@ -19,17 +19,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/v2/authorityProvider/authorities/{uuid}/certificates")
-@Tag(name = "Certificate Management API", description = "Certificate Management API")
+@Tag(name = "Certificate Management", description = "Certificate Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -58,11 +54,11 @@ public interface CertificateController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attribute list retrieved"
+                            description = "Issue certificate attribute list retrieved"
                     )
     })
     @RequestMapping(path = "/issue/attributes", method = RequestMethod.GET, produces = {"application/json"})
-    List<AttributeDefinition> listIssueCertificateAttributes(
+    List<BaseAttribute> listIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
@@ -135,7 +131,7 @@ public interface CertificateController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attribute list retrieved"
+                            description = "Revoke certificate attribute list retrieved"
                     ),
                     @ApiResponse(
                             responseCode = "422",
@@ -145,7 +141,7 @@ public interface CertificateController {
                             ))
             })
     @RequestMapping(path = "/revoke/attributes", method = RequestMethod.GET, produces = {"application/json"})
-    List<AttributeDefinition> listRevokeCertificateAttributes(
+    List<BaseAttribute> listRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(

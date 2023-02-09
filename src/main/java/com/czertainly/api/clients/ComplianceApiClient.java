@@ -12,6 +12,7 @@ import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.TrustManager;
 import java.net.URI;
 import java.util.List;
 
@@ -25,8 +26,9 @@ public class ComplianceApiClient extends BaseApiClient {
 
     private static final String CERTIFICATE_TYPE_QUERY_HEADER = "certificateType";
 
-    public ComplianceApiClient(WebClient webClient) {
+    public ComplianceApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
 

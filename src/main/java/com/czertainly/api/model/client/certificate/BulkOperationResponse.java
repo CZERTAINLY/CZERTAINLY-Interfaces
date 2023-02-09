@@ -4,13 +4,13 @@ import com.czertainly.api.model.core.certificate.BulkOperationStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class BulkOperationResponse {
-    @Schema(description = "Status of the operation", required = true)
+    @Schema(description = "Status of the operation", requiredMode = Schema.RequiredMode.REQUIRED)
     private BulkOperationStatus status;
 
-    @Schema(description = "Number of items failed", required = true)
+    @Schema(description = "Number of items failed", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long failedItem;
 
-    @Schema(description = "Message for the action", required = true)
+    @Schema(description = "Message for the action", requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
 

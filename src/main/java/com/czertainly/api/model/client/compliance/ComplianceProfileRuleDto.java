@@ -1,12 +1,13 @@
 package com.czertainly.api.model.client.compliance;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComplianceProfileRuleDto extends NameAndUuidDto {
@@ -14,28 +15,28 @@ public class ComplianceProfileRuleDto extends NameAndUuidDto {
     @Schema(description = "Description of the rule", example = "Sample rule description")
     private String description;
 
-    @Schema(description = "Connector Name", required = true)
+    @Schema(description = "Connector Name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    @Schema(description = "Connector UUID", required = true)
+    @Schema(description = "Connector UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Connector Kind", required = true)
+    @Schema(description = "Connector Kind", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "Group UUID")
     private String groupUuid;
 
-    @Schema(description = "Certificate type for the rule", required = true, example = "X509")
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "X509")
     private CertificateType certificateType;
 
-    @Schema(description = "List of attributes for the rule", required = true)
-    private List<ResponseAttributeDto> attributes;
+    @Schema(description = "List of attributes for the rule", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
-    @Schema(description = "UUID of the Compliance Profile", required = true)
+    @Schema(description = "UUID of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String complianceProfileUuid;
 
-    @Schema(description = "Name of the Compliance Profile", required = true)
+    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String complianceProfileName;
 
     public String getDescription() {

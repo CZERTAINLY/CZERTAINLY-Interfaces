@@ -1,8 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.connector.AuthType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -21,13 +22,23 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/v1/connectors/auth")
-@Tag(name = "Connector Authentication API", description = "Connector Authentication API")
+@Tag(name = "Connector Authentication", description = "Connector Authentication API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
 						responseCode = "400",
 						description = "Bad Request",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+				),
+				@ApiResponse(
+						responseCode = "401",
+						description = "Unauthorized",
+						content = @Content(schema = @Schema())
+				),
+				@ApiResponse(
+						responseCode = "403",
+						description = "Forbidden",
+						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
 				),
 				@ApiResponse(
 						responseCode = "404",
@@ -49,9 +60,9 @@ public interface ConnectorAuthController {
 	public Set<AuthType> getAuthenticationTypes();
 
 	@Operation(summary = "Get basic auth Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/basic", method = RequestMethod.GET, produces = {"application/json"})
-	public List<AttributeDefinition> getBasicAuthAttributes();
+	public List<BaseAttribute> getBasicAuthAttributes();
 
 	@Operation(summary = "Validate basic auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated") })
@@ -62,7 +73,7 @@ public interface ConnectorAuthController {
 	@Operation(summary = "Get Attributes for certificate auth")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/certificate", method = RequestMethod.GET, produces = {"application/json"})
-	public List<AttributeDefinition> getCertificateAttributes();
+	public List<BaseAttribute> getCertificateAttributes();
 
 	@Operation(summary = "Validate certificate auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
@@ -73,7 +84,7 @@ public interface ConnectorAuthController {
 	@Operation(summary = "Get API Key auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/apiKey", method = RequestMethod.GET, produces = {"application/json"})
-	public List<AttributeDefinition> getApiKeyAuthAttributes();
+	public List<BaseAttribute> getApiKeyAuthAttributes();
 
 	@Operation(summary = "Validate API Key Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
@@ -84,7 +95,7 @@ public interface ConnectorAuthController {
 	@Operation(summary = "Get JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@RequestMapping(path = "/attributes/jwt", method = RequestMethod.GET, produces = {"application/json"})
-	public List<AttributeDefinition> getJWTAuthAttributes();
+	public List<BaseAttribute> getJWTAuthAttributes();
 
 	@Operation(summary = "Validate JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})

@@ -1,12 +1,12 @@
 package com.czertainly.api.model.core.raprofile;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.core.compliance.ComplianceProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,23 +18,26 @@ public class RaProfileDto extends NameAndUuidDto {
     private String description;
 
     @Schema(description = "UUID of Authority provider",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String authorityInstanceUuid;
 
     @Schema(description = "Name of Authority instance",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String authorityInstanceName;
 
     @Schema(description = "List of RA Profiles attributes",
-            required = true)
-    private List<ResponseAttributeDto> attributes;
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "List of protocols enabled",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<String> enabledProtocols;
 
     @Override
@@ -102,6 +105,13 @@ public class RaProfileDto extends NameAndUuidDto {
         this.enabledProtocols = enabledProtocols;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
 
     @Override
     public String toString() {
@@ -111,6 +121,7 @@ public class RaProfileDto extends NameAndUuidDto {
                 .append("description", description)
                 .append("authorityInstanceUuid", authorityInstanceUuid)
                 .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
                 .append("enabled", enabled)
                 .append("authorityInstanceName", authorityInstanceName)
                 .toString();

@@ -40,4 +40,9 @@ public class ValidationException extends RuntimeException {
                 .map(ValidationError::getErrorDescription)
                 .collect(Collectors.joining(" \n"));
     }
+
+    @Override
+    public String toString() {
+        return getLocalizedMessage();
+    }
 }

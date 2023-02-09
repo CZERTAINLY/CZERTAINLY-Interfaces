@@ -6,10 +6,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class UserCertificateDto {
 
-    @Schema(description = "UUID of the certificate", required = true)
+    @Schema(description = "UUID of the certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "Fingerprint of the certificate", required = true)
+    @Schema(description = "Fingerprint of the certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fingerprint;
 
     public String getUuid() {

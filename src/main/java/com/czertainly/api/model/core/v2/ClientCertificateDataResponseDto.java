@@ -10,11 +10,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ClientCertificateDataResponseDto {
 
     @Schema(description = "Base64 encoded Certificate content",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateData;
 
     @Schema(description = "UUID of Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
     public String getCertificateData() {

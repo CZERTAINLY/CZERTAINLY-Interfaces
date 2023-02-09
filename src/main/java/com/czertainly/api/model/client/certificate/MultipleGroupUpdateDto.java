@@ -8,7 +8,7 @@ public class MultipleGroupUpdateDto {
 	
 	@Schema(
             description = "UUID of the Group",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
 	private String uuid;
 	

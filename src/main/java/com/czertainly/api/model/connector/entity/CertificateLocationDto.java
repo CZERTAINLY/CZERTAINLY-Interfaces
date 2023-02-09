@@ -1,43 +1,43 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
-import java.util.Map;
 
 public class CertificateLocationDto {
 
     @Schema(description = "Base64-encoded Certificate content",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateData;
 
     @Schema(
             description = "Metadata of the Certificate related to the Location"
     )
-    private Map<String, Object> metadata;
+    private List<MetadataAttribute> metadata;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
-            required = false)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
     @Schema(description = "If the Certificate in Location has associated private key",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean withKey;
 
     @Schema(
             description = "List of Attributes to replace Certificate"
     )
-    private List<AttributeDefinition> pushAttributes;
+    private List<DataAttribute> pushAttributes;
 
     @Schema(
             description = "List of Attributes to renew Certificate"
     )
-    private List<AttributeDefinition> csrAttributes;
+    private List<DataAttribute> csrAttributes;
 
     public String getCertificateData() {
         return certificateData;
@@ -47,11 +47,11 @@ public class CertificateLocationDto {
         this.certificateData = certificateData;
     }
 
-    public Map<String, Object> getMetadata() {
+    public List<MetadataAttribute> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(Map<String, Object> metadata) {
+    public void setMetadata(List<MetadataAttribute> metadata) {
         this.metadata = metadata;
     }
 
@@ -71,19 +71,19 @@ public class CertificateLocationDto {
         this.withKey = withKey;
     }
 
-    public List<AttributeDefinition> getPushAttributes() {
+    public List<DataAttribute> getPushAttributes() {
         return pushAttributes;
     }
 
-    public void setPushAttributes(List<AttributeDefinition> pushAttributes) {
+    public void setPushAttributes(List<DataAttribute> pushAttributes) {
         this.pushAttributes = pushAttributes;
     }
 
-    public List<AttributeDefinition> getCsrAttributes() {
+    public List<DataAttribute> getCsrAttributes() {
         return csrAttributes;
     }
 
-    public void setCsrAttributes(List<AttributeDefinition> csrAttributes) {
+    public void setCsrAttributes(List<DataAttribute> csrAttributes) {
         this.csrAttributes = csrAttributes;
     }
 

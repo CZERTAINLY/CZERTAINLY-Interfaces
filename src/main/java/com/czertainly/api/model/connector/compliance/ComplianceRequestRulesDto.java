@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.compliance;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,7 +14,7 @@ individual status.
  */
 public class ComplianceRequestRulesDto {
     @Schema(description = "UUID of the rule",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
     private String uuid;
 

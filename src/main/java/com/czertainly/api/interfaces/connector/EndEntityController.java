@@ -13,11 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,7 +37,7 @@ import java.util.List;
                         content = @Content
                 )
         })
-@Tag(name = "End Entity Management API", description = "End Entity Management API")
+@Tag(name = "End Entity Management", description = "End Entity Management API")
 public interface EndEntityController {
 
     @Operation(
@@ -135,7 +131,7 @@ public interface EndEntityController {
                             description = "End Entity password reset"
                     )
             })
-    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
+    @RequestMapping(path = "/{endEntityName}/resetPassword", method = RequestMethod.PUT, produces = {"application/json"})
     void resetPassword(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @Parameter(description = "End Entity Profile Name") @PathVariable String endEntityProfileName,

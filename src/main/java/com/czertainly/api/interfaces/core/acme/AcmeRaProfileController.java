@@ -18,12 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
@@ -37,7 +32,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/acme/raProfile/{raProfileName}")
-@Tag(name = "ACME RA Profile API", description = "Interfaces used by ACME clients to request ACME related operations " +
+@Tag(name = "ACME RA Profile", description = "Interfaces used by ACME clients to request ACME related operations " +
         "on top of RA Profile. ACME Profile defines the behaviour for the specific ACME configuration. ACME Profile is " +
         "bound with specific RA Profile and it can be used by the ACME clients to request operations on their specific " +
         "URL. These operations are always specific only for the RA Profile.")

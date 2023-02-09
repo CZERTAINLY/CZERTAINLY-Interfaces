@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
     @Schema(description = "ACME Profile description", example = "Sample description")
     private String description;
@@ -43,6 +43,11 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private List<ResponseAttributeDto> issueCertificateAttributes;
     @Schema(description = "List of Attributes to revoke a Certificate")
     private List<ResponseAttributeDto> revokeCertificateAttributes;
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
+
+    public AcmeProfileDto() {
+    }
 
     public boolean isEnabled() {
         return enabled;
@@ -160,6 +165,10 @@ public class AcmeProfileDto extends NameAndUuidDto {
         return websiteUrl;
     }
 
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
+    }
+
     public String getTermsOfServiceChangeUrl() {
         return termsOfServiceChangeUrl;
     }
@@ -168,11 +177,12 @@ public class AcmeProfileDto extends NameAndUuidDto {
         this.termsOfServiceChangeUrl = termsOfServiceChangeUrl;
     }
 
-    public void setWebsiteUrl(String websiteUrl) {
-        this.websiteUrl = websiteUrl;
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
     }
 
-    public AcmeProfileDto() {
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
     }
 
     @Override
@@ -194,6 +204,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
                 .append("requireTermsOfService", requireTermsOfService)
                 .append("issueCertificateAttributes", issueCertificateAttributes)
                 .append("revokeCertificateAttributes", revokeCertificateAttributes)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

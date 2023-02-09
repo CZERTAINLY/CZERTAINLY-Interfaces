@@ -5,11 +5,11 @@ import org.springframework.http.HttpStatus;
 
 public class AuthenticationServiceExceptionDto {
 
-    @Schema(description = "Status code of the HTTP Request", required = true)
+    @Schema(description = "Status code of the HTTP Request", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer statusCode;
-    @Schema(description = "Code of the result", required = true)
+    @Schema(description = "Code of the result", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
-    @Schema(description = "Exception message", required = true)
+    @Schema(description = "Exception message", requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
     public AuthenticationServiceExceptionDto(Integer statusCode, String code, String message) {

@@ -9,7 +9,7 @@ public class CertificateOwnerBulkUpdateDto {
 	
 	@Schema(
             description = "Owner of the Certificates",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
 	private String owner;
 	

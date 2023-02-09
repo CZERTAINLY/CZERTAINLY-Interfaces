@@ -1,22 +1,23 @@
 package com.czertainly.api.model.connector.entity;
 
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Map;
+import java.util.List;
 
 public class RemoveCertificateResponseDto {
 
     @Schema(
             description = "Metadata of the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private Map<String, Object> certificateMetadata;
+    private List<MetadataAttribute> certificateMetadata;
 
-    public Map<String, Object> getCertificateMetadata() {
+    public List<MetadataAttribute> getCertificateMetadata() {
         return certificateMetadata;
     }
 
-    public void setCertificateMetadata(Map<String, Object> certificateMetadata) {
+    public void setCertificateMetadata(List<MetadataAttribute> certificateMetadata) {
         this.certificateMetadata = certificateMetadata;
     }
 }

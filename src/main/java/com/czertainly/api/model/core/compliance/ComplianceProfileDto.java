@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.compliance;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,14 +14,17 @@ public class ComplianceProfileDto extends NameAndUuidDto {
     @Schema(description = "Description of the Compliance Profile")
     private String description;
 
-    @Schema(description = "List of rules", required = true)
+    @Schema(description = "List of rules", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceConnectorAndRulesDto> rules;
 
-    @Schema(description = "List of groups", required = true)
+    @Schema(description = "List of groups", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceConnectorAndGroupsDto> groups;
 
     @Schema(description = "List of associated RA Profiles")
     private List<SimplifiedRaProfileDto> raProfiles;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 
     //Default getters and setters
 
@@ -56,6 +60,14 @@ public class ComplianceProfileDto extends NameAndUuidDto {
         this.description = description;
     }
 
+    public List<ResponseAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -65,6 +77,7 @@ public class ComplianceProfileDto extends NameAndUuidDto {
                 .append("raProfiles", raProfiles)
                 .append("groups", groups)
                 .append("description", description)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

@@ -7,19 +7,19 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class DiscoveryDataRequestDto {
 
     @Schema(description = "Name of the Discovery",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Discovery Kind",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "Starting index of the Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer startIndex;
 
     @Schema(description = "Last index of the Certificate",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer endIndex;
 
     public String getName() {

@@ -1,0 +1,128 @@
+package com.czertainly.api.model.common.attribute.v2;
+
+import com.czertainly.api.model.client.attribute.BaseAttributeDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = DataAttribute.class, visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DataAttribute.class, name = "data"),
+        @JsonSubTypes.Type(value = GroupAttribute.class, name = "group"),
+        @JsonSubTypes.Type(value = InfoAttribute.class, name = "info"),
+        @JsonSubTypes.Type(value = MetadataAttribute.class, name = "meta"),
+        @JsonSubTypes.Type(value = CustomAttribute.class, name = "custom")
+})
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@Schema(implementation = BaseAttributeDto.class)
+public class BaseAttribute<T> extends AbstractBaseAttribute {
+
+    /**
+     * UUID of the Attribute
+     **/
+    @Schema(
+            description = "UUID of the Attribute for unique identification",
+            example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String uuid;
+
+    /**
+     * Name of the Attribute for processing
+     **/
+    @Schema(
+            description = "Name of the Attribute that is used for identification",
+            example = "Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String name;
+
+    /**
+     * Optional description of the Attribute, should contain helper text on what is expected
+     **/
+    @Schema(
+            description = "Optional description of the Attribute, should contain helper text on what is expected"
+    )
+    private String description;
+
+    @Schema(
+        description = "Content of the Attribute"
+    )
+    private T content;
+
+    /**
+     * Type of the Attribute
+     */
+    @Schema(
+            description = "Type of the Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            defaultValue = "data"
+    )
+    private AttributeType type = AttributeType.DATA;
+
+    public BaseAttribute() {
+    }
+
+    public BaseAttribute(AttributeType type) {
+        this.type = type;
+    }
+
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public T getContent() {
+        return content;
+    }
+
+    public void setContent(T content) {
+        this.content = content;
+    }
+
+    @Override
+    public AttributeType getType() {
+        return type;
+    }
+
+    public void setType(AttributeType type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("uuid", uuid)
+                .append("name", name)
+                .append("description", description)
+                .append("content", content)
+                .append("type", type)
+                .toString();
+    }
+}

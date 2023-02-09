@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.credential;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -11,20 +11,23 @@ import java.util.List;
 public class CredentialRequestDto implements Serializable {
 
     @Schema(description = "Credential name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "Credential Kind",
             example = "SoftKeyStore, Basic, ApiKey, etc",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
+
     @Schema(description = "UUID of Credential provider Connector",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
 
@@ -52,12 +55,20 @@ public class CredentialRequestDto implements Serializable {
         this.attributes = attributes;
     }
 
-    public String  getConnectorUuid() {
+    public String getConnectorUuid() {
         return connectorUuid;
     }
 
     public void setConnectorUuid(String connectorUuid) {
         this.connectorUuid = connectorUuid;
+    }
+
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
     }
 
     @Override
@@ -67,6 +78,7 @@ public class CredentialRequestDto implements Serializable {
                 .append("kind", kind)
                 .append("attributes", attributes)
                 .append("connectorUuid", connectorUuid)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

@@ -11,13 +11,13 @@ public class RevokeAndDeleteRequestDto {
 	
 	@Schema(
             description = "Reason for the revocation",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Integer reason;
 	
 	@Schema(
             description = "Name of the user",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String username;
 

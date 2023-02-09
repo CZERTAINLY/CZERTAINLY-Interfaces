@@ -6,10 +6,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class UserDto {
 
-    @Schema(description = "UUID of the User", required = true, example = "5b5f0784-2519-11ed-861d-0242ac120002")
+    @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED, example = "5b5f0784-2519-11ed-861d-0242ac120002")
     private String uuid;
 
-    @Schema(description = "Username of the user", required = true, example = "user1")
+    @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, example = "user1")
     private String username;
 
     @Schema(description = "First name of the user")
@@ -24,10 +24,10 @@ public class UserDto {
     @Schema(description = "Description of the user")
     private String description;
 
-    @Schema(description = "Status of the user. True = Enabled, False = Disabled", required = true)
+    @Schema(description = "Status of the user. True = Enabled, False = Disabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
-    @Schema(description = "Is System user. True = Yes, False = No", required = true)
+    @Schema(description = "Is System user. True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean systemUser;
 
     public String getUuid() {

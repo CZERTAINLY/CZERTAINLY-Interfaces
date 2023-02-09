@@ -6,25 +6,25 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class CertificateEventHistoryDto {
-    @Schema(description = "UUID of the event", required = true)
+    @Schema(description = "UUID of the event", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "UUID of the Certificate", required = true)
+    @Schema(description = "UUID of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateUuid;
 
-    @Schema(description = "Event creation time", required = true)
+    @Schema(description = "Event creation time", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDateTime created;
 
-    @Schema(description = "Created By", required = true)
+    @Schema(description = "Created By", requiredMode = Schema.RequiredMode.REQUIRED)
     private String createdBy;
 
-    @Schema(description = "Event type", required = true)
+    @Schema(description = "Event type", requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateEvent event;
 
-    @Schema(description = "Event result", required = true)
+    @Schema(description = "Event result", requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateEventStatus status;
 
-    @Schema(description = "Event message", required = true)
+    @Schema(description = "Event message", requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
     @Schema(description = "Additional information for the event")

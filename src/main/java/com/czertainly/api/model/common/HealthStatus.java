@@ -8,13 +8,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum HealthStatus {
     OK("ok"),
     NOK("nok"),
     UNKNOWN("unknown");
 
     @Schema(description = "Health Status",
-            example = "ok", required = true)
+            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     HealthStatus(String code) {

@@ -1,6 +1,7 @@
 package com.czertainly.api.model.connector.v2;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,22 +14,22 @@ import java.util.List;
 public class CertificateRenewRequestDto {
 
     @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String pkcs10;
 
     @Schema(description = "List of RA Profiles attributes",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> raProfileAttributes;
 
     @Schema(description = "Base64 Certificate content. (Certificate to be renewed)",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     @Schema(
             description = "Metadata for the Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String meta;
+    private List<MetadataAttribute> meta;
 
     public String getPkcs10() {
         return pkcs10;
@@ -54,11 +55,11 @@ public class CertificateRenewRequestDto {
         this.certificate = certificate;
     }
 
-    public String getMeta() {
+    public List<MetadataAttribute> getMeta() {
         return meta;
     }
 
-    public void setMeta(String meta) {
+    public void setMeta(List<MetadataAttribute> meta) {
         this.meta = meta;
     }
 

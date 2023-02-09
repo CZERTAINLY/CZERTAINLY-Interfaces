@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class EditEndEntityRequestDto extends BaseEndEntityRequestDto {
 
     @Schema(description = "End Entity Subject domain name",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected EndEntityStatus status;
 
     public EndEntityStatus getStatus() {

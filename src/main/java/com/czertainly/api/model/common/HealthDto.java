@@ -9,7 +9,7 @@ import java.util.Map;
 public class HealthDto {
 
     @Schema(description = "Current connector operational status",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private HealthStatus status;
 
     @Schema(description = "Detailed status description")

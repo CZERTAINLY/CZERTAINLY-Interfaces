@@ -6,12 +6,15 @@ import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.net.ssl.TrustManager;
+
 public class HealthApiClient extends BaseApiClient {
 
     private static final String HEALTH_BASE_CONTEXT = "/v1/health";
 
-    public HealthApiClient(WebClient webClient) {
+    public HealthApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
     }
 
     public HealthDto checkHealth(ConnectorDto connector) throws ConnectorException {

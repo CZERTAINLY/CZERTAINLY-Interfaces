@@ -1,7 +1,9 @@
 package com.czertainly.api.model.client.acme;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -9,7 +11,7 @@ public class AcmeProfileRequestDto {
 
     @Schema(
             description = "Name of the ACME Profile",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "Profile Name 1"
     )
     private String name;
@@ -60,12 +62,12 @@ public class AcmeProfileRequestDto {
     private Integer validity;
     @Schema(
             description = "List of Attributes to issue Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> issueCertificateAttributes;
     @Schema(
             description = "List of Attributes to revoke Certificate",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> revokeCertificateAttributes;
     @Schema(
@@ -80,6 +82,8 @@ public class AcmeProfileRequestDto {
             example = "false"
     )
     private Boolean requireTermsOfService;
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
 
     public String getTermsOfServiceUrl() {
         return termsOfServiceUrl;
@@ -185,6 +189,34 @@ public class AcmeProfileRequestDto {
         this.name = name;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     public AcmeProfileRequestDto() {
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("name", name)
+                .append("description", description)
+                .append("termsOfServiceUrl", termsOfServiceUrl)
+                .append("websiteUrl", websiteUrl)
+                .append("dnsResolverIp", dnsResolverIp)
+                .append("dnsResolverPort", dnsResolverPort)
+                .append("raProfileUuid", raProfileUuid)
+                .append("retryInterval", retryInterval)
+                .append("validity", validity)
+                .append("issueCertificateAttributes", issueCertificateAttributes)
+                .append("revokeCertificateAttributes", revokeCertificateAttributes)
+                .append("requireContact", requireContact)
+                .append("requireTermsOfService", requireTermsOfService)
+                .append("customAttributes", customAttributes)
+                .toString();
     }
 }

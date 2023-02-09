@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.compliance;
 
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -14,20 +14,20 @@ have name, uuid and the attributes. The attributes of the rules is used
 to request for additional information for the rule.
  */
 public class ComplianceRulesResponseDto {
-    @Schema(description = "UUID of the rule", required = true, example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
     private String uuid;
 
     @Schema(description = "UUID of the group to which the rule belongs to", example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
     private String groupUuid;
 
-    @Schema(description = "Name of the rule", required = true, example = "Rule1")
+    @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "Rule1")
     private String name;
 
-    @Schema(description = "Type of the certificate to which this rule can be applied", required = true, example = "X509")
+    @Schema(description = "Type of the certificate to which this rule can be applied", requiredMode = Schema.RequiredMode.REQUIRED, example = "X509")
     private CertificateType certificateType;
 
     @Schema(description = "Rule attributes")
-    private List<AttributeDefinition> attributes;
+    private List<BaseAttribute> attributes;
 
     @Schema(description = "Description of the rule", example = "Sample rule description")
     private String description;
@@ -50,11 +50,11 @@ public class ComplianceRulesResponseDto {
         this.name = name;
     }
 
-    public List<AttributeDefinition> getAttributes() {
+    public List<BaseAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeDefinition> attributes) {
+    public void setAttributes(List<BaseAttribute> attributes) {
         this.attributes = attributes;
     }
 

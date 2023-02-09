@@ -8,9 +8,10 @@ import com.czertainly.api.model.client.location.AddLocationRequestDto;
 import com.czertainly.api.model.client.location.EditLocationRequestDto;
 import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
 import com.czertainly.api.model.client.location.PushToLocationRequestDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,26 +24,30 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
-@Tag(name = "Location Management API", description = "Location Management API")
+@Tag(name = "Location Management", description = "Location Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema())
+                ),
+                @ApiResponse(
+                        responseCode = "403",
+                        description = "Forbidden",
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
@@ -230,7 +235,7 @@ public interface LocationManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes list obtained"
+                            description = "Push attributes list obtained"
                     )
             })
     @RequestMapping(
@@ -238,7 +243,7 @@ public interface LocationManagementController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listPushAttributes(
+    List<BaseAttribute> listPushAttributes(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;
@@ -250,7 +255,7 @@ public interface LocationManagementController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Attributes list obtained"
+                            description = "CSR Attributes list obtained"
                     )
             })
     @RequestMapping(
@@ -258,7 +263,7 @@ public interface LocationManagementController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listCsrAttributes(
+    List<BaseAttribute> listCsrAttributes(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;
@@ -308,7 +313,8 @@ public interface LocationManagementController {
     ) throws NotFoundException, LocationException;
 
     @Operation(
-            summary = "Issue Certificate to Location"
+            summary = "Issue Certificate to Location",
+            operationId = "issueCertificateToLocation"
     )
     @ApiResponses(
             value = {

@@ -16,7 +16,7 @@ public class Authorization {
      */
     @Schema(
             description = "ACME Identifier",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Identifier identifier;
 
@@ -26,7 +26,7 @@ public class Authorization {
      */
     @Schema(
             description = "ACME Authorization status",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "pending"
     )
     private AuthorizationStatus status;

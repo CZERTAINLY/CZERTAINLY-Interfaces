@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.location;
 
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -14,21 +14,24 @@ public class IssueToLocationRequestDto {
 
     @Schema(
             description = "RA Profile UUID",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String raProfileUuid;
 
     @Schema(
             description = "List of CSR Attributes for Location",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> csrAttributes;
 
     @Schema(
             description = "List of certificate issue Attributes for RA Profile",
-            required = true
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> issueAttributes;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
 
     public String getRaProfileUuid() {
         return raProfileUuid;
@@ -54,12 +57,21 @@ public class IssueToLocationRequestDto {
         this.issueAttributes = issueAttributes;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("raProfileUuid", raProfileUuid)
                 .append("csrAttributes", csrAttributes)
                 .append("issueAttributes", issueAttributes)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

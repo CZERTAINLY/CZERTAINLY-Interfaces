@@ -2,12 +2,12 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.entity.EntityInstanceRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.entity.EntityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -20,18 +20,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/entities")
-@Tag(name = "Entity Management API", description = "Entity Management API")
+@Tag(name = "Entity Management", description = "Entity Management API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
@@ -175,7 +170,7 @@ public interface EntityInstanceController {
 			value = {
 					@ApiResponse(
 							responseCode = "200",
-							description = "Attributes retrieved"
+							description = "Location attributes retrieved"
 					)
 			})
 	@RequestMapping(
@@ -183,7 +178,7 @@ public interface EntityInstanceController {
 			method = RequestMethod.GET,
 			produces = {"application/json"}
 	)
-	List<AttributeDefinition> listLocationAttributes(
+	List<BaseAttribute> listLocationAttributes(
 			@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
 	) throws ConnectorException;
 

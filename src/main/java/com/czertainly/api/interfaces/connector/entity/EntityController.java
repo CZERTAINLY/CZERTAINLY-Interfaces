@@ -3,9 +3,9 @@ package com.czertainly.api.interfaces.connector.entity;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.AttributeDefinition;
-import com.czertainly.api.model.common.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,19 +18,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/entityProvider/entities")
 @Tag(
-        name = "Entity Management API",
+        name = "Entity Management",
         description = "Management interfaces to control Entities in the platform. " +
                 "Entities can be created, edited, removed. Support for the bulk operation and listing of available " +
                 "Entities for the automation. Location attributes and validation."
@@ -163,7 +158,7 @@ public interface EntityController {
             method = RequestMethod.GET,
             produces = {"application/json"}
     )
-    List<AttributeDefinition> listLocationAttributes(
+    List<BaseAttribute> listLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
     @Operation(

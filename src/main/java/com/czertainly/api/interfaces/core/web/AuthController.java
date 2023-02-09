@@ -2,33 +2,44 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.UpdateUserRequestDto;
+import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.auth.ResourceDetailDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.cert.CertificateException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/auth")
-@Tag(name = "Authentication Management API", description = "Authentication Management API")
+@Tag(name = "Authentication Management", description = "Authentication Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
                         responseCode = "400",
                         description = "Bad Request",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "Unauthorized",
+                        content = @Content(schema = @Schema())
+                ),
+                @ApiResponse(
+                        responseCode = "403",
+                        description = "Forbidden",
+                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
                 ),
                 @ApiResponse(
                         responseCode = "404",
@@ -57,4 +68,9 @@ public interface AuthController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Resources retrieved successfully")})
     @RequestMapping(path = "/resources", method = RequestMethod.GET, produces = {"application/json"})
     List<ResourceDetailDto> getAllResources() throws NotFoundException;
+
+    @Operation(summary = "Get List of objects for Object Access")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Objects retrieved")})
+    @RequestMapping(path = "/resources/{resourceName}/objects", method = RequestMethod.GET, produces = {"application/json"})
+    List<NameAndUuidDto> getObjectsForResource(@Parameter(description = "Resource Name") @PathVariable Resource resourceName) throws NotFoundException;
 }

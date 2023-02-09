@@ -3,11 +3,11 @@ package com.czertainly.api.model.core.search;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class DynamicSearchInternalResponse {
-    @Schema(description = "Number of items matching the filter", required = true)
+    @Schema(description = "Number of items matching the filter", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long totalItems;
-    @Schema(description = "Number of pages", required = true)
+    @Schema(description = "Number of pages", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer totalPages;
-    @Schema(description = "Search result", required = true)
+    @Schema(description = "Search result", requiredMode = Schema.RequiredMode.REQUIRED)
     private Object result;
 
     public Long getTotalItems() {

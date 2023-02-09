@@ -12,7 +12,7 @@ public class Challenge {
      * Type of the Challenge encoded in the object.
      */
     @Schema(description = "Type of Challenge",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "dns-01")
     private ChallengeType type;
 
@@ -20,7 +20,7 @@ public class Challenge {
      * URL to which the response can be posted after the client completes the Challenge
      */
     @Schema(description = "URL to which the response can be posted after the client completes the Challenge",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "https://some-server.com/api/acme/chall/JHjhrt&6hf")
     private String url;
 
@@ -29,7 +29,7 @@ public class Challenge {
      * This is a mandatory field.
      */
     @Schema(description = "Challenge status",
-            required = true)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ChallengeStatus status;
 
     /**
@@ -52,7 +52,7 @@ public class Challenge {
      * Random string generated using the SecureRandom class of JAVA to provide a cryptography random key
      */
     @Schema(description = "Token for the Challenge",
-            required = true,
+            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "JGuyIUgkRGFYTER658ykjfYFur76fkFitur7FGHRiytrkfIruFF")
     private String token;
 

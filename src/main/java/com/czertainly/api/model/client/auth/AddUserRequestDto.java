@@ -1,12 +1,15 @@
 package com.czertainly.api.model.client.auth;
 
+import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
+
 public class AddUserRequestDto {
 
-    @Schema(description = "Username of the user", required = true, example = "user1")
+    @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, example = "user1")
     private String username;
 
     @Schema(description = "Description of the user")
@@ -33,6 +36,9 @@ public class AddUserRequestDto {
             description = "UUID of the existing certificate in the Inventory"
     )
     private String certificateUuid;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<RequestAttributeDto> customAttributes;
 
     public String getUsername() {
         return username;
@@ -98,6 +104,14 @@ public class AddUserRequestDto {
         this.description = description;
     }
 
+    public List<RequestAttributeDto> getCustomAttributes() {
+        return customAttributes;
+    }
+
+    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
+        this.customAttributes = customAttributes;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -109,6 +123,7 @@ public class AddUserRequestDto {
                 .append("certificateUuid", certificateUuid)
                 .append("enabled", enabled)
                 .append("certificateData", certificateData)
+                .append("customAttributes", customAttributes)
                 .toString();
     }
 }

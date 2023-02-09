@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum CertificateStatus {
 
 	VALID("valid"),
@@ -20,7 +21,7 @@ public enum CertificateStatus {
     ;
 
 	@Schema(description = "Certificate Status",
-			example = "valid", required = true)
+			example = "valid", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String code;
 
 	CertificateStatus(String code) {

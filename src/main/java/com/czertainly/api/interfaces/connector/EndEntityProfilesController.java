@@ -38,7 +38,7 @@ import java.util.List;
                         content = @Content
                 )
         })
-@Tag(name = "End Entity Profiles API", description = "End Entity Profiles API")
+@Tag(name = "End Entity Profiles", description = "End Entity Profiles API")
 public interface EndEntityProfilesController {
 
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
