@@ -41,6 +41,12 @@ public class CertificateDetailDto extends CertificateDto {
     private List<MetadataResponseDto> metadata;
 
     @Schema(
+            description = "Base64 encoded Certificate content",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String certificateContent;
+
+    @Schema(
             description = "Subject alternative names"
     )
     private Map<String, Object> subjectAlternativeNames;
