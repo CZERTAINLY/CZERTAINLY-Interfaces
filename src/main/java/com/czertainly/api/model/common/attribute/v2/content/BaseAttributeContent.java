@@ -45,7 +45,7 @@ public class BaseAttributeContent<T> extends AttributeContent {
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
-
+        if (this.getClass() != o.getClass()) return false;
         if (this == o) return true;
         BaseAttributeContent<?> that = (BaseAttributeContent<?>) o;
 
