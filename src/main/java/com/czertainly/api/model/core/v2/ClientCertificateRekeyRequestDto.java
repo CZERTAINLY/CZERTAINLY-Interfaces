@@ -33,10 +33,6 @@ public class ClientCertificateRekeyRequestDto {
     )
     private UUID tokenProfileUuid;
     @Schema(
-            description = "CSR Attributes. If not provided, existing attributes will be used to generate the new CSR"
-    )
-    private List<RequestAttributeDto> csrAttributes;
-    @Schema(
             description = "Signature Attributes. If not provided, existing attributes will be used to generate the new CSR"
     )
     private List<RequestAttributeDto> signatureAttributes;
