@@ -117,13 +117,7 @@ public final class SearchLabelConstants {
     public static final SearchFieldDataDto STATUS_FILTER = getSearchField(SearchableFields.STATUS,
             STATUS_LABEL,
             true,
-            List.of(CertificateStatus.REVOKED.toString(),
-                    CertificateStatus.EXPIRED.toString(),
-                    CertificateStatus.EXPIRING.toString(),
-                    CertificateStatus.VALID.toString(),
-                    CertificateStatus.INVALID.toString(),
-                    CertificateStatus.NEW.toString(),
-                    CertificateStatus.UNKNOWN.toString()),
+            null,
             SearchableFieldType.LIST,
             List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
@@ -131,7 +125,7 @@ public final class SearchLabelConstants {
     public static final SearchFieldDataDto COMPLIANCE_STATUS_FILTER = getSearchField(SearchableFields.COMPLIANCE_STATUS,
             COMPLIANCE_STATUS,
             true,
-            List.of(ComplianceStatus.OK.toString(), ComplianceStatus.NOK.toString(), ComplianceStatus.NA.toString()),
+            null,
             SearchableFieldType.LIST,
             List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
@@ -230,17 +224,6 @@ public final class SearchLabelConstants {
                     SearchCondition.ENDS_WITH
             )
     );
-    public static final SearchFieldDataDto META_FILTER = getSearchField(SearchableFields.META,
-            META_DATA_LABEL,
-            false,
-            null,
-            SearchableFieldType.STRING,
-            List.of(SearchCondition.CONTAINS,
-                    SearchCondition.NOT_CONTAINS,
-                    SearchCondition.EMPTY,
-                    SearchCondition.NOT_EMPTY
-            )
-    );
     public static final SearchFieldDataDto SUBJECT_ALTERNATIVE_NAMES_FILTER = getSearchField(SearchableFields.SUBJECT_ALTERNATIVE_NAMES,
             SUBJECT_ALTERNATIVE_NAME_LABEL,
             false,
@@ -283,26 +266,26 @@ public final class SearchLabelConstants {
 
     public static final SearchFieldDataDto OCSP_VALIDATION_FILTER = getSearchField(SearchableFields.OCSP_VALIDATION,
             OCSP_VALIDATION_LABEL,
-            false,
+            true,
             null,
-            SearchableFieldType.STRING,
-            List.of(SearchCondition.SUCCESS, SearchCondition.FAILED, SearchCondition.UNKNOWN, SearchCondition.EMPTY)
+            SearchableFieldType.LIST,
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
 
     public static final SearchFieldDataDto CRL_VALIDATION_FILTER = getSearchField(SearchableFields.CRL_VALIDATION,
             CRL_VALIDATION_LABEL,
-            false,
+            true,
             null,
-            SearchableFieldType.STRING,
-            List.of(SearchCondition.SUCCESS, SearchCondition.FAILED, SearchCondition.UNKNOWN, SearchCondition.EMPTY)
+            SearchableFieldType.LIST,
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
 
     public static final SearchFieldDataDto SIGNATURE_VALIDATION_FILTER = getSearchField(SearchableFields.SIGNATURE_VALIDATION,
             SIGNATURE_VALIDATION_LABEL,
-            false,
+            true,
             null,
-            SearchableFieldType.STRING,
-            List.of(SearchCondition.SUCCESS, SearchCondition.FAILED, SearchCondition.UNKNOWN)
+            SearchableFieldType.LIST,
+            List.of(SearchCondition.EQUALS, SearchCondition.NOT_EQUALS)
     );
 
     private static SearchFieldDataDto getSearchField(SearchableFields field, String label, Boolean multiValue, List<Object> values, SearchableFieldType fieldType, List<SearchCondition> conditions) {

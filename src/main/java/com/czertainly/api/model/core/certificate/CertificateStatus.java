@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum CertificateStatus {
+public enum CertificateStatus implements IAbstractSearchableEnum {
 
 	VALID("valid"),
 	REVOKED("revoked"),
@@ -40,5 +41,10 @@ public enum CertificateStatus {
 				.findFirst()
 				.orElseThrow(() ->
 						new ValidationException(ValidationError.create("Unknown status {}", code)));
+	}
+
+	@Override
+	public String getEnumLabel() {
+		return code;
 	}
 }

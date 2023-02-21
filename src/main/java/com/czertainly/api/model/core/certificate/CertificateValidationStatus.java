@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum CertificateValidationStatus {
     SUCCESS("success"),
     FAILED("failed"),

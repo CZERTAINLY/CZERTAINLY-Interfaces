@@ -4,6 +4,8 @@ import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchable
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
 import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.core.certificate.CertificateStatus;
+import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -19,11 +21,11 @@ import java.util.stream.Stream;
 public enum SearchableFields {
     COMMON_NAME("commonName", null),
     SERIAL_NUMBER("serialNumber", null),
-    RA_PROFILE_NAME("raProfile", null),
+    RA_PROFILE_NAME("raProfile.name", null),
     ENTITY_NAME("entity", null),
-    STATUS("status", null),
-    COMPLIANCE_STATUS("complianceStatus", null),
-    GROUP_NAME("group", null),
+    STATUS("status", CertificateStatus.class),
+    COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class),
+    GROUP_NAME("group.name", null),
     OWNER("owner", null),
     ISSUER_COMMON_NAME("issuerCommonName", null),
     SIGNATURE_ALGORITHM("signatureAlgorithm", null),
