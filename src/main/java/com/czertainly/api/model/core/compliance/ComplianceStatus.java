@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.compliance;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +15,7 @@ define the status of overall compliance. This object should not be used to defin
 the compliance status of the individual rules
  */
 @Schema(enumAsRef = true)
-public enum ComplianceStatus {
+public enum ComplianceStatus implements IAbstractSearchableEnum {
     OK("ok"),
     NOK("nok"),
     NA("na")
@@ -39,5 +40,10 @@ public enum ComplianceStatus {
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown status {}", code)));
+    }
+
+    @Override
+    public String getEnumLabel() {
+        return code;
     }
 }
