@@ -10,10 +10,10 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum Section {
-    UTIL_SERVICE("UTIL_SERVICE", "Util Service", "Util Service connection details");
+    GENERAL("general", "General", "General settings");
     @Schema(
             description = "Setting section",
-            example = "UTIL_SERVICE",
+            example = "general",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private final String code;

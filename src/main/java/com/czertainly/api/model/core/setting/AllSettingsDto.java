@@ -4,11 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class UtilServiceSettingDto extends SettingDto {
-
+public class AllSettingsDto {
     @Schema(
-            description = "URL of the Util Service",
+            description = "General setting",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String url;
+    private GeneralSettingsDto general;
 }
