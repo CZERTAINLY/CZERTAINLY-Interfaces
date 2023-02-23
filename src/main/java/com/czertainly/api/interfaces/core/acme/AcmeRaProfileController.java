@@ -31,7 +31,7 @@ import java.util.Map;
  * in CZERTAINLY
  */
 @RestController
-@RequestMapping("/acme/raProfile/{raProfileName}")
+@RequestMapping("/v1/protocols/acme/raProfile/{raProfileName}")
 @Tag(name = "ACME RA Profile", description = "Interfaces used by ACME clients to request ACME related operations " +
         "on top of RA Profile. ACME Profile defines the behaviour for the specific ACME configuration. ACME Profile is " +
         "bound with specific RA Profile and it can be used by the ACME clients to request operations on their specific " +

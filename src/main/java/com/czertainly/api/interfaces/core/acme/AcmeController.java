@@ -30,7 +30,7 @@ import java.util.Map;
  * List of end points supported for the ACME implementation in CZERTAINLY
  */
 @RestController
-@RequestMapping("/acme/{acmeProfileName}")
+@RequestMapping("/v1/protocols/acme/{acmeProfileName}")
 @Tag(name = "ACME operations", description = "Interfaces used by ACME clients to request ACME related operations. " +
         "ACME Profile defines the behaviour for the specific ACME configuration. When the ACME Profile contains " +
         "default RA Profile, it can be used by the ACME clients to request operations on their specific URL.")
