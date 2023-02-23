@@ -31,7 +31,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private Boolean termsOfServiceChangeDisable;
     @Schema(description = "Order validity", example = "36000")
     private Integer validity;
-    @Schema(description = "ACME Directory URL", example = "https://some-server.com/api/acme/profile1/directory")
+    @Schema(description = "ACME Directory URL", example = "https://some-server.com/api/v1/protocols/acme/profile1/directory")
     private String directoryUrl;
     @Schema(description = "Changes of Terms of Service URL", example = "https://some-company.com/termsOfService/change")
     private String termsOfServiceChangeUrl;
