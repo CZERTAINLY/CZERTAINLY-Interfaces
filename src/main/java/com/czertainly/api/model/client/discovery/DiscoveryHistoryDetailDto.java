@@ -3,12 +3,9 @@ package com.czertainly.api.model.client.discovery;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.core.discovery.DiscoveryCertificatesDto;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.Date;

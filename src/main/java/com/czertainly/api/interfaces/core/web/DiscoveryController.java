@@ -10,7 +10,6 @@ import com.czertainly.api.model.client.discovery.DiscoveryHistoryDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.core.discovery.DiscoveryCertificatesDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -86,7 +85,7 @@ public interface DiscoveryController {
 	@RequestMapping(path = "/{uuid}/certificates", method = RequestMethod.GET, produces = {"application/json"})
 	public DiscoveryCertificateResponseDto getDiscoveryCertificates(
 			@Parameter(description = "Discovery UUID") @PathVariable String uuid,
-			@RequestParam(required = false) Boolean isNew,
+			@RequestParam(required = false) Boolean newlyDiscovered,
 			@RequestParam(required = false, defaultValue = "10") int itemsPerPage,
 			@RequestParam(required = false, defaultValue = "0") int pageNumber
 	) throws NotFoundException;

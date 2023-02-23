@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.discovery;
 
-import com.czertainly.api.model.core.discovery.DiscoveryCertificatesDto;
+import com.czertainly.api.model.core.discovery.DiscoveryCertificateDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class DiscoveryCertificateResponseDto {
     @Schema(description = "Certificates", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<DiscoveryCertificatesDto> certificates;
+    private List<DiscoveryCertificateDto> certificates;
 
     @Schema(description = "Number of entries per page", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer itemsPerPage;
