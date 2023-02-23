@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class DiscoveryCertificatesDto {
+public class DiscoveryCertificateDto {
     @Schema(description = "UUID of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
@@ -37,5 +37,10 @@ public class DiscoveryCertificatesDto {
 
     @Schema(description = "Base64 encoded Certificate content", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateContent;
+
+    @Schema(description = "Boolean representing if the certificate is newly discovered. True - Certificate is newly discovered" +
+            "false - Certificate was already available in the inventory",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private boolean newlyDiscovered;
 
 }
