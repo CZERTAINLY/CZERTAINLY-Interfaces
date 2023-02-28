@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.setting;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -21,7 +22,11 @@ public class SectionSettingsDto extends NameAndUuidDto {
     )
     private String description;
 
-    @Schema(description = "List of RA Profiles attributes",
+    @Schema(description = "List of setting section attributes definitions",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<BaseAttribute> attributeDefinitions = new ArrayList<>();
+
+    @Schema(description = "List of setting section attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 

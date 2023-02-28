@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -67,7 +68,7 @@ public interface SettingController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<SectionDto> getSettingsSections();
+    List<SectionDto> getSections();
 
     @Operation(
             summary = "Get all settings extracted from attributes in dedicated DTO"
@@ -97,38 +98,6 @@ public interface SettingController {
     List<SectionSettingsDto> getSettings();
 
     @Operation(
-            summary = "Get section settings definitions"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Section settings definitions retrieved")
-            })
-    @RequestMapping(
-            path = "/sections/{section}/attributes",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    List<BaseAttribute> getSectionSettingsAttributes(
-            @Parameter(description = "Section type") @PathVariable Section section
-    ) throws NotFoundException;
-
-    @Operation(
-            summary = "Get section settings details"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Setting details retrieved")
-            })
-    @RequestMapping(
-            path = "/sections/{section}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    SectionSettingsDto getSectionSettings(
-            @Parameter(description = "Section type") @PathVariable Section section
-    ) throws NotFoundException;
-
-    @Operation(
             summary = "Update setting"
     )
     @ApiResponses(
@@ -136,13 +105,11 @@ public interface SettingController {
                     @ApiResponse(responseCode = "200", description = "Setting updated")
             })
     @RequestMapping(
-            path = "/sections/{section}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    SectionSettingsDto updateSectionSettings(
-            @Parameter(description = "Section type") @PathVariable Section section,
-            @RequestBody List<RequestAttributeDto> attributes
+    List<SectionSettingsDto> updateSettings(
+            @RequestBody Map<Section, List<RequestAttributeDto>> attributes
     );
 }
