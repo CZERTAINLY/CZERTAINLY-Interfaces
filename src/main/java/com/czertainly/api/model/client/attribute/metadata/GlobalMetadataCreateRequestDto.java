@@ -22,7 +22,7 @@ public class GlobalMetadataCreateRequestDto {
     /**
      * Description of the Attribute
      */
-    @Schema(description = "Attribute description", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Attribute description")
     private String description;
 
     /**
