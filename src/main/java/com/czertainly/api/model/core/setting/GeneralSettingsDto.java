@@ -8,7 +8,6 @@ public class GeneralSettingsDto {
 
     @Schema(
             description = "URL of the Util Service",
-            requiredMode = Schema.RequiredMode.REQUIRED,
             example = "http://util-service:8080"
     )
     private String utilsServiceUrl;
