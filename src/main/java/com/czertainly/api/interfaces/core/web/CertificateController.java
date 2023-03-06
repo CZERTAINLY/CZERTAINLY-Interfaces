@@ -14,6 +14,7 @@ import com.czertainly.api.model.core.certificate.CertificateDetailDto;
 import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
 import com.czertainly.api.model.core.certificate.CertificateValidationDto;
 import com.czertainly.api.model.core.location.LocationDto;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -132,10 +133,16 @@ public interface CertificateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
 	void validateAllCertificate();
 
+    @Deprecated
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
 	List<SearchFieldDataDto> getSearchableFieldInformation();
+
+    @Operation(summary = "Get Certificate searchable fields information")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
+    @RequestMapping(path = "/searchByGroup", method = RequestMethod.GET, produces = {"application/json"})
+    List<SearchFieldDataByGroupDto> getSearchableFieldInformationByGroup();
 
     @Operation(summary = "Get Certificate event history")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
