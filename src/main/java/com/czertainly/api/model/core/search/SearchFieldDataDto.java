@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
 public class SearchFieldDataDto {
-    @Schema(description = "Field to search",
+    @Schema(description = "Identifier of field to search",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private SearchableFields field;
+    private String fieldIdentifier;
 
     @Schema(description = "Label for the field",
             requiredMode = Schema.RequiredMode.REQUIRED)
@@ -27,12 +27,12 @@ public class SearchFieldDataDto {
     @Schema(description = "Multivalue flag. true = yes, false = no")
     private Boolean multiValue;
 
-    public SearchableFields getField() {
-        return field;
+    public String getFieldIdentifier() {
+        return fieldIdentifier;
     }
 
-    public void setField(SearchableFields field) {
-        this.field = field;
+    public void setFieldIdentifier(String fieldIdentifier) {
+        this.fieldIdentifier = fieldIdentifier;
     }
 
     public String getLabel() {

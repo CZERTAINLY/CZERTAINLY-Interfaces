@@ -137,12 +137,7 @@ public interface CertificateController {
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
-	List<SearchFieldDataDto> getSearchableFieldInformation();
-
-    @Operation(summary = "Get Certificate searchable fields information")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
-    @RequestMapping(path = "/searchByGroup", method = RequestMethod.GET, produces = {"application/json"})
-    List<SearchFieldDataByGroupDto> getSearchableFieldInformationByGroup();
+	List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(summary = "Get Certificate event history")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
