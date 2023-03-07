@@ -7,8 +7,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 
 public class SearchFilterRequestDto {
+
+    @Schema(description = "Group to search", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String group;
+
     @Schema(description = "Field to search", requiredMode = Schema.RequiredMode.REQUIRED)
-    private SearchableFields field;
+    private String fieldIdentifier;
 
     @Schema(description = "Condition for the search", requiredMode = Schema.RequiredMode.REQUIRED)
     private SearchCondition condition;
@@ -17,14 +21,22 @@ public class SearchFilterRequestDto {
     private Serializable value;
 
 
+    public String getFieldIdentifier() {
+        return fieldIdentifier;
+    }
+
+    @Deprecated
     public SearchableFields getField() {
-        return field;
+        return null;
     }
 
     public SearchCondition getCondition() {
         return condition;
     }
 
+    public String getGroup() {
+        return group;
+    }
     public Serializable getValue() {
         return value;
     }
