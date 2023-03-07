@@ -14,7 +14,7 @@ import com.czertainly.api.model.core.cryptography.key.KeyDetailDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.cryptography.key.KeyEventHistoryDto;
 import com.czertainly.api.model.core.cryptography.key.KeyItemDetailDto;
-import com.czertainly.api.model.core.search.SearchFieldDataDto;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -74,7 +74,7 @@ public interface CryptographicKeyController {
     @Operation(summary = "Get CryptographicKey searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CryptographicKey searchable field information retrieved")})
     @RequestMapping(path = "/keys/search", method = RequestMethod.GET, produces = {"application/json"})
-    List<SearchFieldDataDto> getSearchableFieldInformation();
+    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
 
     @Operation(summary = "List cryptographic keys")

@@ -133,7 +133,6 @@ public interface CertificateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
 	void validateAllCertificate();
 
-    @Deprecated
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
