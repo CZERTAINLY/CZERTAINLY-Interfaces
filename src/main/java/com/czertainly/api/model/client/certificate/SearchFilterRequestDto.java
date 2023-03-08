@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class SearchFilterRequestDto {
 
     @Schema(description = "Group to search", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String group;
+    private String groupName;
 
     @Schema(description = "Field to search", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fieldIdentifier;
@@ -34,10 +34,11 @@ public class SearchFilterRequestDto {
         return condition;
     }
 
-    public String getGroup() {
-        return group;
-    }
     public Serializable getValue() {
         return value;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 }
