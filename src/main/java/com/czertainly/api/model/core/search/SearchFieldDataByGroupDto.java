@@ -6,11 +6,11 @@ public class SearchFieldDataByGroupDto {
 
     private List<SearchFieldDataDto> searchFieldData;
 
-    private String label;
+    private String groupName;
 
-    public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, String label) {
+    public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, String groupName) {
         this.searchFieldData = searchFieldData;
-        this.label = label;
+        this.groupName = groupName;
     }
 
     public List<SearchFieldDataDto> getSearchFieldData() {
@@ -21,11 +21,11 @@ public class SearchFieldDataByGroupDto {
         this.searchFieldData = searchFieldData;
     }
 
-    public String getLabel() {
-        return label;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

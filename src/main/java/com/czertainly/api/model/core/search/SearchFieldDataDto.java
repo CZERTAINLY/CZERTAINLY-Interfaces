@@ -11,7 +11,7 @@ public class SearchFieldDataDto {
 
     @Schema(description = "Label for the field",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private String label;
+    private String fieldLabel;
 
     @Schema(description = "Type of the field",
             requiredMode = Schema.RequiredMode.REQUIRED)
@@ -40,12 +40,12 @@ public class SearchFieldDataDto {
         this.fieldIdentifier = fieldIdentifier;
     }
 
-    public String getLabel() {
-        return label;
+    public String getFieldLabel() {
+        return fieldLabel;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setFieldLabel(String fieldLabel) {
+        this.fieldLabel = fieldLabel;
     }
 
     public SearchableFieldType getType() {
