@@ -1,16 +1,10 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.setting.Section;
-import com.czertainly.api.model.core.setting.SectionDto;
-import com.czertainly.api.model.core.setting.SectionSettingsDto;
-import com.czertainly.api.model.core.setting.AllSettingsDto;
+import com.czertainly.api.model.core.settings.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,48 +51,21 @@ import java.util.Map;
 public interface SettingController {
 
     @Operation(
-            summary = "Get settings sections"
+            summary = "Get platform settings"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Settings sections retrieved")
-            })
-    @RequestMapping(
-            path = "/sections",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    List<SectionDto> getSections();
-
-    @Operation(
-            summary = "Get all settings extracted from attributes in dedicated DTO"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Settings details retrieved")
-            })
-    @RequestMapping(
-            path = "/all",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    AllSettingsDto getAllSettings();
-
-    @Operation(
-            summary = "Get sections settings"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Sections settings details retrieved")
+                    @ApiResponse(responseCode = "200", description = "Platform settings retrieved")
             })
     @RequestMapping(
             method = RequestMethod.GET,
+            path = "/platform",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<SectionSettingsDto> getSettings();
+    PlatformSettingsDto getPlatformSettings();
 
     @Operation(
-            summary = "Update setting"
+            summary = "Update platform setting"
     )
     @ApiResponses(
             value = {
@@ -106,10 +73,11 @@ public interface SettingController {
             })
     @RequestMapping(
             method = RequestMethod.PUT,
+            path = "/platform",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<SectionSettingsDto> updateSettings(
-            @RequestBody Map<Section, List<RequestAttributeDto>> attributes
+    void updatePlatformSettings(
+            @RequestBody PlatformSettingsDto platformSettingsDto
     );
 }
