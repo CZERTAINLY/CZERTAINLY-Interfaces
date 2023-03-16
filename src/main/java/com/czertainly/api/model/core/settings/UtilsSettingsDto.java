@@ -1,10 +1,10 @@
-package com.czertainly.api.model.core.setting;
+package com.czertainly.api.model.core.settings;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class GeneralSettingsDto {
+public class UtilsSettingsDto {
 
     @Schema(
             description = "URL of the Util Service",

@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.setting;
+package com.czertainly.api.model.core.settings;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
@@ -10,23 +10,23 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum Section {
-    GENERAL("general", "General", "General settings");
+    PLATFORM("platform", "Platform", "CZERTAINLY platform settings");
     @Schema(
             description = "Setting section",
-            example = "general",
+            example = "platform",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private final String code;
 
     @Schema(
             description = "Name",
-            example = "Util Service"
+            example = "Platform"
     )
     private final String name;
 
     @Schema(
             description = "Description",
-            example = "Util Service connection details"
+            example = "CZERTAINLY platform settings"
     )
     private final String description;
 
