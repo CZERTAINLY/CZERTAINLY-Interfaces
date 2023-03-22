@@ -24,20 +24,17 @@ public class CertificateDto {
     private String commonName;
 
     @Schema(
-            description = "Certificate serial number",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Certificate serial number"
     )
     private String serialNumber;
 
     @Schema(
-            description = "Certificate issuer common name",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Certificate issuer common name"
     )
     private String issuerCommonName;
 
     @Schema(
-            description = "Issuer DN of the Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Issuer DN of the Certificate"
     )
     private String issuerDn;
 
@@ -48,14 +45,12 @@ public class CertificateDto {
     private String subjectDn;
 
     @Schema(
-            description = "Certificate validity start date",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Certificate validity start date"
     )
     private Date notBefore;
 
     @Schema(
-            description = "Certificate expiration date",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Certificate expiration date"
     )
     private Date notAfter;
 
@@ -89,8 +84,7 @@ public class CertificateDto {
     private SimplifiedRaProfileDto raProfile;
 
     @Schema(
-            description = "SHA256 fingerprint of the Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "SHA256 fingerprint of the Certificate"
     )
     private String fingerprint;
 
