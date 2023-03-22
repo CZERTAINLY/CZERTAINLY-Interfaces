@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 public enum CertificateEvent {
     ISSUE("Issue Certificate"),
+    CREATE_CSR("Create CSR"),
     RENEW("Renew Certificate"),
     REVOKE("Revoke Certificate"),
     DELETE("Delete Certificate"),
