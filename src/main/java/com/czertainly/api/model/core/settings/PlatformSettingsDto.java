@@ -7,7 +7,8 @@ import lombok.Data;
 public class PlatformSettingsDto {
 
     @Schema(
-            description = "Utils settings of the platform"
+            description = "Utils settings of the platform",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private UtilsSettingsDto utils;
 }
