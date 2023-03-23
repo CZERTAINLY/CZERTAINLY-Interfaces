@@ -5,10 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto;
-import com.czertainly.api.model.client.raprofile.ActivateAcmeForRaProfileRequestDto;
-import com.czertainly.api.model.client.raprofile.AddRaProfileRequestDto;
-import com.czertainly.api.model.client.raprofile.EditRaProfileRequestDto;
-import com.czertainly.api.model.client.raprofile.RaProfileAcmeDetailResponseDto;
+import com.czertainly.api.model.client.raprofile.*;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
@@ -183,17 +180,41 @@ public interface RAProfileManagementController {
     void deactivateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws NotFoundException;
 
+
+    @Operation(summary = "Activate SCEP for RA Profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "SCEP activated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/scep/activate/{scepProfileUuid}", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    RaProfileScepDetailResponseDto activateScepForRaProfile(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
+            @Parameter(description = "SCEP Profile UUID") @PathVariable String scepProfileUuid,
+            @RequestBody ActivateScepForRaProfileRequestDto request)
+            throws ConnectorException;
+
+    @Operation(summary = "Deactivate SCEP for RA Profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "SCEP deactivated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/scep/deactivate", method = RequestMethod.PATCH, produces = {"application/json"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deactivateScepForRaProfile(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid
+    ) throws NotFoundException;
+
     @Operation(summary = "Get revocation Attributes", operationId = "listRaProfileRevokeCertificateAttributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Revocation attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> listRevokeCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
-                                                              @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
+                                                        @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
     @Operation(summary = "Get issue Certificate Attributes", operationId = "listRaProfileIssueCertificateAttributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Issue certificate attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/issue", method = RequestMethod.GET, produces = {"application/json"})
     List<BaseAttribute> listIssueCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
-                                                             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
+                                                       @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
     @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkRaProfileCompliance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
@@ -208,7 +229,7 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance Profiles retrieved")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/complianceProfiles", method = RequestMethod.GET, produces = {"application/json"})
     List<SimplifiedComplianceProfileDto> getAssociatedComplianceProfiles(@Parameter(description = "Authority UUID")
-                                                         @PathVariable String authorityUuid,
+                                                                         @PathVariable String authorityUuid,
                                                                          @Parameter(description = "RA Profile UUID")
-                                                         @PathVariable String raProfileUuid) throws NotFoundException;
+                                                                         @PathVariable String raProfileUuid) throws NotFoundException;
 }
