@@ -12,28 +12,31 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeContentType {
 
-    STRING(Constants.STRING, StringAttributeContent.class),
-    INTEGER(Constants.INTEGER, IntegerAttributeContent.class),
-    SECRET(Constants.SECRET, SecretAttributeContent.class),
-    FILE(Constants.FILE, FileAttributeContent.class),
-    BOOLEAN(Constants.BOOLEAN, BooleanAttributeContent.class),
-    CREDENTIAL(Constants.CREDENTIAL, CredentialAttributeContent.class),
-    DATE(Constants.DATE, DateAttributeContent.class),
-    FLOAT(Constants.FLOAT, FloatAttributeContent.class),
-    OBJECT(Constants.OBJECT, ObjectAttributeContent.class),
-    TEXT(Constants.TEXT, TextAttributeContent.class),
-    TIME(Constants.TIME, TimeAttributeContent.class),
-    DATETIME(Constants.DATETIME, DateTimeAttributeContent.class),
-    CODEBLOCK(Constants.CODEBLOCK, CodeBlockAttributeContent.class)
+    STRING(Constants.STRING, StringAttributeContent.class, true),
+    INTEGER(Constants.INTEGER, IntegerAttributeContent.class, true),
+    SECRET(Constants.SECRET, SecretAttributeContent.class, false),
+    FILE(Constants.FILE, FileAttributeContent.class, false),
+    BOOLEAN(Constants.BOOLEAN, BooleanAttributeContent.class, true),
+    CREDENTIAL(Constants.CREDENTIAL, CredentialAttributeContent.class, false),
+    DATE(Constants.DATE, DateAttributeContent.class, true),
+    FLOAT(Constants.FLOAT, FloatAttributeContent.class, true),
+    OBJECT(Constants.OBJECT, ObjectAttributeContent.class, false),
+    TEXT(Constants.TEXT, TextAttributeContent.class, true),
+    TIME(Constants.TIME, TimeAttributeContent.class, true),
+    DATETIME(Constants.DATETIME, DateTimeAttributeContent.class, true),
+    CODEBLOCK(Constants.CODEBLOCK, CodeBlockAttributeContent.class, false)
     ;
 
     private final String code;
 
     private final Class clazz;
 
-    AttributeContentType(String string, Class clazz) {
+    private boolean filterByData;
+
+    AttributeContentType(String string, Class clazz, boolean filterByData) {
         this.code = string;
         this.clazz = clazz;
+        this.filterByData = filterByData;
     }
     @JsonCreator
     public static AttributeContentType fromCode(String code) {
@@ -80,6 +83,10 @@ public enum AttributeContentType {
             default:
                 return null;
         }
+    }
+
+    public boolean isFilterByData() {
+        return filterByData;
     }
 
     @JsonValue
