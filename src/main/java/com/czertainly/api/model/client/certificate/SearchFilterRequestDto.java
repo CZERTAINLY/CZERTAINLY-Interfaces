@@ -25,11 +25,6 @@ public class SearchFilterRequestDto {
         return fieldIdentifier;
     }
 
-    @Deprecated
-    public SearchableFields getField() {
-        return null;
-    }
-
     public SearchCondition getCondition() {
         return condition;
     }
@@ -41,4 +36,5 @@ public class SearchFilterRequestDto {
     public String getGroupName() {
         return groupName;
     }
+
 }
