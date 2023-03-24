@@ -30,6 +30,11 @@ public class SearchFieldDataDto {
     public String getFieldIdentifier() {
         return fieldIdentifier;
     }
+    
+    @Deprecated
+    public SearchableFields getField() {
+        return null;
+    }
 
     public void setFieldIdentifier(String fieldIdentifier) {
         this.fieldIdentifier = fieldIdentifier;
