@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public enum SearchGroup implements IAbstractSearchableEnum {
 
     META(AttributeType.META, "Metadata"),
-    CUSTOM(AttributeType.CUSTOM, "Custom attributes"),
+    CUSTOM(AttributeType.CUSTOM, "Custom attribute"),
     PROPERTY(null, "Property");
 
 
