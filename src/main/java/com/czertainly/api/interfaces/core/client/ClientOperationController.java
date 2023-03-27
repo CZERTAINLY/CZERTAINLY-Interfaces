@@ -67,7 +67,7 @@ public interface ClientOperationController {
     @RequestMapping(path = "/{raProfileName}/certificate/issue", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
     ClientCertificateSignResponseDto issueCertificate(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
-            @RequestBody ClientCertificateSignRequestDto request)
+            @RequestBody LegacyClientCertificateSignRequestDto request)
             throws NotFoundException, CertificateException, AlreadyExistException, ConnectorException, NoSuchAlgorithmException;
 
     @Operation(summary = "Revoke Certificate")
@@ -75,7 +75,7 @@ public interface ClientOperationController {
     @RequestMapping(path = "/{raProfileName}/certificate/revoke", method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
     void revokeCertificate(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
-            @RequestBody ClientCertificateRevocationDto request)
+            @RequestBody LegacyClientCertificateRevocationDto request)
             throws NotFoundException, ConnectorException;
 
     @Operation(summary = "List all End Entities")

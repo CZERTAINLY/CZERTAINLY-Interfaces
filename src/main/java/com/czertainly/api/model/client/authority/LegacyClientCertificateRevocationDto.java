@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Class with parameter to revoke any certificate.
  */
-public class ClientCertificateRevocationDto {
+public class LegacyClientCertificateRevocationDto {
 
     @Schema(description = "Certificate serial number",
             requiredMode = Schema.RequiredMode.REQUIRED)
