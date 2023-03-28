@@ -9,12 +9,11 @@ import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.certificate.CertificateContentDto;
-import com.czertainly.api.model.core.certificate.CertificateDetailDto;
-import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
-import com.czertainly.api.model.core.certificate.CertificateValidationDto;
+import com.czertainly.api.model.core.certificate.*;
 import com.czertainly.api.model.core.location.LocationDto;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.search.SearchFieldDataDto;
+import com.czertainly.api.model.core.v2.ClientCertificateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -25,11 +24,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +137,7 @@ public interface CertificateController {
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
-	List<SearchFieldDataDto> getSearchableFieldInformation();
+	List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(summary = "Get Certificate event history")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
@@ -188,4 +190,20 @@ public interface CertificateController {
             description = "Certificate UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                                                       @RequestBody List<String> uuids);
+
+    @Operation(
+            summary = "Generate CSR Entity"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CSR Generated and ready to be issued")
+    })
+    @RequestMapping(
+            path = "/create",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    CertificateDetailDto createCsr(
+            @RequestBody ClientCertificateRequestDto request
+    ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
 }

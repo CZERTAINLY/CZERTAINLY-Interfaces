@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class ClientCertificateSignRequestDto {
+public class ClientCertificateRequestDto {
 
     @Schema(
             description = "List of attributes to create CSR. Required if CSR is not provided"
@@ -51,24 +51,8 @@ public class ClientCertificateSignRequestDto {
     // Attributes
     //------------------------------------------------------------------------------------------------------------------
     @Schema(
-            description = "List of RA Profile related Attributes to issue Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private List<RequestAttributeDto> attributes;
-
-    @Schema(
             description = "List of Custom Attributes"
     )
     private List<RequestAttributeDto> customAttributes;
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Existing Certificate Entity
-    // Set the UUID of the following property to the existing certificate that is in the New state and ready to be issued
-    //------------------------------------------------------------------------------------------------------------------
-
-    @Schema(
-            description = "UUID of CSR Entity to be signed"
-    )
-    private UUID uuid;
 
 }

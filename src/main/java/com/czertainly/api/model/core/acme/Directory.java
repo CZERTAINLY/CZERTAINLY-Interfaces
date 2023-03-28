@@ -14,7 +14,7 @@ public class Directory {
      */
     @Schema(description = "URL to get new Nonce",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "http://some-server.com/acme/new-nonce")
+            example = "http://some-server.com/v1/protocols/acme/new-nonce")
     private String newNonce;
 
     /**
@@ -23,7 +23,7 @@ public class Directory {
      */
     @Schema(description = "URL for the new Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "http://some-server.com/acme/new-account")
+            example = "http://some-server.com/v1/protocols/acme/new-account")
     private String newAccount;
 
     /**
@@ -32,7 +32,7 @@ public class Directory {
      */
     @Schema(description = "URL for the new Order",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "http://some-server.com/acme/new-order")
+            example = "http://some-server.com/v1/protocols/acme/new-order")
     private String newOrder;
 
     /**
@@ -41,7 +41,7 @@ public class Directory {
      */
     @Schema(description = "URL for the new Authorization",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "http://some-server.com/acme/new-authz")
+            example = "http://some-server.com/v1/protocols/acme/new-authz")
     private String newAuthz;
 
     /**
@@ -50,7 +50,7 @@ public class Directory {
      */
     @Schema(description = "URL for revoking a certificate",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "http://some-server.com/acme/revoke-cert")
+            example = "http://some-server.com/v1/protocols/acme/revoke-cert")
     private String revokeCert;
 
     /**
@@ -59,7 +59,7 @@ public class Directory {
      */
     @Schema(description = " URL for changing the key of an Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "http://some-server.com/acme/key-change")
+            example = "http://some-server.com/v1/protocols/acme/key-change")
     private String keyChange;
 
     /**

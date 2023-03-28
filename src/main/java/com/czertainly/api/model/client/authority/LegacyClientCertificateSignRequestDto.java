@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Class representing a request to sign CSR
  */
-public class ClientCertificateSignRequestDto {
+public class LegacyClientCertificateSignRequestDto {
 
     @Schema(description = "End Entity password",
             requiredMode = Schema.RequiredMode.REQUIRED)

@@ -3,6 +3,7 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.client.discovery.DiscoveryCertificateResponseDto;
 import com.czertainly.api.model.client.discovery.DiscoveryDto;
 import com.czertainly.api.model.client.discovery.DiscoveryHistoryDetailDto;
 import com.czertainly.api.model.client.discovery.DiscoveryHistoryDto;
@@ -78,6 +79,16 @@ public interface DiscoveryController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Discovery details retrieved")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
 	public DiscoveryHistoryDetailDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
+
+	@Operation(summary = "Discovery Details")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Discovery details retrieved")})
+	@RequestMapping(path = "/{uuid}/certificates", method = RequestMethod.GET, produces = {"application/json"})
+	public DiscoveryCertificateResponseDto getDiscoveryCertificates(
+			@Parameter(description = "Discovery UUID") @PathVariable String uuid,
+			@RequestParam(required = false) Boolean newlyDiscovered,
+			@RequestParam(required = false, defaultValue = "10") int itemsPerPage,
+			@RequestParam(required = false, defaultValue = "0") int pageNumber
+	) throws NotFoundException;
 	
 	@Operation(summary = "Create Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Created", content = @Content(schema = @Schema(implementation = UuidDto.class))),

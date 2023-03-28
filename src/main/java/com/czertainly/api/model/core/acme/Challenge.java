@@ -21,7 +21,7 @@ public class Challenge {
      */
     @Schema(description = "URL to which the response can be posted after the client completes the Challenge",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "https://some-server.com/api/acme/chall/JHjhrt&6hf")
+            example = "https://some-server.com/api/v1/protocols/acme/chall/JHjhrt&6hf")
     private String url;
 
     /**

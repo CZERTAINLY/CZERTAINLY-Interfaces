@@ -12,8 +12,8 @@ public enum SearchableFieldType {
     STRING(Constants.STRING),
     NUMBER(Constants.NUMBER),
     LIST(Constants.LIST),
-    DATE(Constants.DATE)
-    ;
+    DATE(Constants.DATE),
+    BOOLEAN(Constants.BOOLEAN);
 
     private final String code;
 
@@ -35,16 +35,29 @@ public enum SearchableFieldType {
     }
 
     private static class Constants {
-        /** Simple text attribute **/
+        /**
+         * Simple text attribute
+         **/
         private static final String STRING = "string";
 
-        /** Simple number attribute **/
+        /**
+         * Simple number attribute
+         **/
         private static final String NUMBER = "number";
 
-        /** Attribute with predefined value with list of elements **/
+        /**
+         * Attribute with predefined value with list of elements
+         **/
         private static final String LIST = "list";
 
-        /** Special attribute type representing credential **/
+        /**
+         * Special attribute type representing credential
+         **/
         private static final String DATE = "date";
+
+        /**
+         * Value to compare the boolean values
+         **/
+        private static final String BOOLEAN = "boolean";
     }
 }

@@ -3,6 +3,7 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.AddUserRequestDto;
 import com.czertainly.api.model.client.auth.UpdateUserRequestDto;
+import com.czertainly.api.model.client.auth.UserIdentificationRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.core.auth.RoleDto;
 import com.czertainly.api.model.core.auth.SubjectPermissionsDto;
@@ -120,5 +121,11 @@ public interface UserManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User permissions removed")})
     @RequestMapping(path = "/{userUuid}/permissions", method = RequestMethod.GET, produces = {"application/json"})
 	SubjectPermissionsDto getPermissions(@Parameter(description = "User UUID") @PathVariable String userUuid) throws NotFoundException;
+
+
+    @Operation(summary = "Identify User")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User identified")})
+    @RequestMapping(path = "/identify", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    UserDetailDto identifyUser(@RequestBody UserIdentificationRequestDto request) throws NotFoundException, CertificateException;
 
 }
