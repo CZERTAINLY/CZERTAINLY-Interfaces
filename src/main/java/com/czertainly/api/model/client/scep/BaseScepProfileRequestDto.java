@@ -28,12 +28,6 @@ public class BaseScepProfileRequestDto {
     private List<RequestAttributeDto> issueCertificateAttributes;
 
     @Schema(
-            description = "List of Attributes to revoke Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private List<RequestAttributeDto> revokeCertificateAttributes;
-
-    @Schema(
             description = "Require manual approval for SCEP requests",
             defaultValue = "false",
             example = "true"

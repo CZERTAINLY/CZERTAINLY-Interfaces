@@ -24,8 +24,6 @@ public class ScepProfileDetailDto extends NameAndUuidDto {
     private String scepUrl;
     @Schema(description = "List of Attributes to issue a Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;
-    @Schema(description = "List of Attributes to revoke a Certificate")
-    private List<ResponseAttributeDto> revokeCertificateAttributes;
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
 
