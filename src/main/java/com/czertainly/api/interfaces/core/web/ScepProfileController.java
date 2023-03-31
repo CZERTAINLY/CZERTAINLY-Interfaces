@@ -9,6 +9,7 @@ import com.czertainly.api.model.client.scep.ScepProfileRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.scep.ScepProfileDetailDto;
 import com.czertainly.api.model.core.scep.ScepProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -307,4 +308,17 @@ public interface ScepProfileController {
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid
 	) throws NotFoundException;
+
+	@Operation(
+			summary = "Get list of certificates eligible for CA certificate of SCEP requests"
+	)
+	@ApiResponses(
+			value = { @ApiResponse(responseCode = "200", description = "List of CA certificates retrieved") }
+	)
+	@RequestMapping(
+			path = "/caCertificates",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
+	public List<CertificateDto> listScepCaCertificates();
 }
