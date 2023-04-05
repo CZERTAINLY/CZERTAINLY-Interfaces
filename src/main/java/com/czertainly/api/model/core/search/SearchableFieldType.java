@@ -13,6 +13,7 @@ public enum SearchableFieldType {
     NUMBER(Constants.NUMBER),
     LIST(Constants.LIST),
     DATE(Constants.DATE),
+    DATETIME(Constants.DATETIME),
     BOOLEAN(Constants.BOOLEAN);
 
     private final String code;
@@ -54,6 +55,11 @@ public enum SearchableFieldType {
          * Special attribute type representing credential
          **/
         private static final String DATE = "date";
+
+        /**
+         * Special attribute type representing credential
+         **/
+        private static final String DATETIME = "datetime";
 
         /**
          * Value to compare the boolean values
