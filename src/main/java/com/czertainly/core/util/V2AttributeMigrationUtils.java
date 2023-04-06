@@ -222,7 +222,7 @@ public class V2AttributeMigrationUtils {
                     data.setFileName(oldContentFileData.getFileName());
                     if (oldContentFileData.getContentType() != null && !oldContentFileData.getContentType().isEmpty())
                         try {
-                            data.setMimeType(MimeType.valueOf(oldContentFileData.getContentType()));
+                            data.setMimeType(oldContentFileData.getContentType());
                         } catch (InvalidMimeTypeException e) {
                             //Do nothing
                         }

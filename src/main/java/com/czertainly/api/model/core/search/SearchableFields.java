@@ -62,6 +62,9 @@ public enum SearchableFields {
     CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", CryptographicAlgorithm.class),
     DISCOVERY_STATUS("status", DiscoveryStatus.class),
 
+    ENTITY_NAME("entityInstanceReference.name", null),
+    ENTITY_CONNECTOR_NAME("entityInstanceReference.connectorName", null),
+    ENTITY_KIND("entityInstanceReference.kind", null),
     ENTITY_INSTANCE_NAME("entityInstanceName", null),
     ENABLED("enabled", null),
     SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null),
