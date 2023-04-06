@@ -4,6 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.client.certificate.LocationsResponseDto;
+import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.location.AddLocationRequestDto;
 import com.czertainly.api.model.client.location.EditLocationRequestDto;
 import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
@@ -85,11 +87,11 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "/locations",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             produces = {"application/json"}
     )
-    List<LocationDto> listLocations(
-            @RequestParam Optional<Boolean> enabled
+    LocationsResponseDto listLocations(@RequestBody SearchRequestDto request,
+                                       @RequestParam Optional<Boolean> enabled
     );
 
     @Operation(
