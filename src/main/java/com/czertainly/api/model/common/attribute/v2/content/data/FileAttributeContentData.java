@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,7 +17,7 @@ public class FileAttributeContentData {
     private String fileName;
 
     @Schema(description = "Type of the file uploaded", requiredMode = Schema.RequiredMode.REQUIRED)
-    private MimeType mimeType;
+    private String mimeType;
 
     public FileAttributeContentData() {
     }
@@ -37,12 +38,17 @@ public class FileAttributeContentData {
         this.fileName = fileName;
     }
 
-    public MimeType getMimeType() {
-        return mimeType;
+    public String getMimeType() {
+        return this.mimeType;
     }
 
-    public void setMimeType(MimeType mimeType) {
-        this.mimeType = mimeType;
+    public void setMimeType(String contentType) {
+        this.mimeType = contentType;
+    }
+
+    @JsonIgnore
+    public MimeType getMimeTypeObject() {
+        return this.mimeType != null ? MimeType.valueOf(this.mimeType) : null;
     }
 
     @Override
