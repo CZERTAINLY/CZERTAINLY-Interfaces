@@ -27,9 +27,6 @@ public enum Resource {
     ACME_ACCOUNT("acmeAccounts"),
     ACME_PROFILE("acmeProfiles"),
 
-    //SCEP
-    SCEP_PROFILE("scepProfiles"),
-
     // CERTIFICATES
     AUTHORITY("authorities"),
     RA_PROFILE("raProfiles"),

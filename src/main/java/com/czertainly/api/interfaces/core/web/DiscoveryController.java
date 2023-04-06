@@ -3,15 +3,13 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.client.certificate.DiscoveryResponseDto;
-import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.discovery.DiscoveryCertificateResponseDto;
 import com.czertainly.api.model.client.discovery.DiscoveryDto;
 import com.czertainly.api.model.client.discovery.DiscoveryHistoryDetailDto;
+import com.czertainly.api.model.client.discovery.DiscoveryHistoryDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -74,18 +72,18 @@ public interface DiscoveryController {
 	
 	@Operation(summary = "List Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available Discoveries")})
-	@RequestMapping(path = "/list", method = RequestMethod.POST, produces = {"application/json"})
-	DiscoveryResponseDto listDiscoveries(@RequestBody SearchRequestDto request);
+	@RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+	public List<DiscoveryHistoryDto> listDiscoveries();
 	
 	@Operation(summary = "Discovery Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Discovery details retrieved")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
-	DiscoveryHistoryDetailDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
+	public DiscoveryHistoryDetailDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Discovery Details")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Discovery details retrieved")})
 	@RequestMapping(path = "/{uuid}/certificates", method = RequestMethod.GET, produces = {"application/json"})
-	DiscoveryCertificateResponseDto getDiscoveryCertificates(
+	public DiscoveryCertificateResponseDto getDiscoveryCertificates(
 			@Parameter(description = "Discovery UUID") @PathVariable String uuid,
 			@RequestParam(required = false) Boolean newlyDiscovered,
 			@RequestParam(required = false, defaultValue = "10") int itemsPerPage,
@@ -97,26 +95,21 @@ public interface DiscoveryController {
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request)
+	public ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request)
 			throws AlreadyExistException, NotFoundException, CertificateException, InterruptedException, ConnectorException;
 	
 	@Operation(summary = "Delete Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discovery deleted")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void deleteDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
+	public void deleteDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
 
 	@Operation(summary = "Delete Multiple Discoveries")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discoveries deleted")})
 	@RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void bulkDeleteDiscovery(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	public void bulkDeleteDiscovery(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "Discovery UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
 										@RequestBody List<String> discoveryUuids) throws NotFoundException;
-
-	@Operation(summary = "Get Discovery searchable fields information")
-	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Discovery searchable field information retrieved")})
-	@RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
-	List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 }

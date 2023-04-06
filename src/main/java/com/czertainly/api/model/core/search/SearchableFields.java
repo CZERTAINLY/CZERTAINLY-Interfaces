@@ -8,7 +8,6 @@ import com.czertainly.api.model.core.certificate.CertificateStatus;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
-import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -45,12 +44,8 @@ public enum SearchableFields {
     OCSP_VALIDATION("ocspValidation", null),
     CRL_VALIDATION("crlValidation", null),
     SIGNATURE_VALIDATION("signatureValidation", null),
-    START_TIME("startTime", null),
-    END_TIME("endTime", null),
-    TOTAL_CERT_DISCOVERED("totalCertificatesDiscovered", null),
-    CONNECTOR_NAME("connectorName", null),
-    KIND("kind", null),
-    NAME("name", null),
+
+    CK_NAME("name", null),
     CK_GROUP("cryptographicKey.group.name", null),
     CK_OWNER("cryptographicKey.owner", null),
     CK_TOKEN_PROFILE("cryptographicKey.tokenProfile.name", null),
@@ -60,8 +55,8 @@ public enum SearchableFields {
     CKI_STATE("state", KeyState.class),
     CKI_LENGTH("length", null),
     CKI_USAGE("usage", KeyUsage.class),
-    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", CryptographicAlgorithm.class),
-    DISCOVERY_STATUS("status", DiscoveryStatus.class);
+    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", CryptographicAlgorithm.class)
+    ;
 
     private final String field;
 
@@ -122,4 +117,4 @@ public enum SearchableFields {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", field)));
     }
-}
+    }

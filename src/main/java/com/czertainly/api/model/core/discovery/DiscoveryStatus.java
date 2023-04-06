@@ -2,7 +2,6 @@ package com.czertainly.api.model.core.discovery;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,7 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum DiscoveryStatus implements IAbstractSearchableEnum {
+public enum DiscoveryStatus {
 
     IN_PROGRESS("inProgress"),
     FAILED("failed"),
@@ -37,10 +36,5 @@ public enum DiscoveryStatus implements IAbstractSearchableEnum {
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown status {}", code)));
-    }
-
-    @Override
-    public String getEnumLabel() {
-        return this.code;
     }
 }
