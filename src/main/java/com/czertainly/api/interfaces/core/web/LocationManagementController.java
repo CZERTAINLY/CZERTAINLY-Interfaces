@@ -91,9 +91,7 @@ public interface LocationManagementController {
             method = RequestMethod.POST,
             produces = {"application/json"}
     )
-    LocationsResponseDto listLocations(@RequestBody SearchRequestDto request,
-                                       @RequestParam Optional<Boolean> enabled
-    );
+    LocationsResponseDto listLocations(@RequestBody SearchRequestDto request);
 
     @Operation(summary = "Get Locations searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Locations searchable field information retrieved")})
