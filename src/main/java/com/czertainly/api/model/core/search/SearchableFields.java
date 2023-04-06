@@ -23,7 +23,6 @@ public enum SearchableFields {
     COMMON_NAME("commonName", null),
     SERIAL_NUMBER("serialNumber", null),
     RA_PROFILE_NAME("raProfile.name", null),
-    ENTITY_NAME("entity", null),
     STATUS("status", CertificateStatus.class),
     COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class),
     GROUP_NAME("group.name", null),
@@ -61,7 +60,15 @@ public enum SearchableFields {
     CKI_LENGTH("length", null),
     CKI_USAGE("usage", KeyUsage.class),
     CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", CryptographicAlgorithm.class),
-    DISCOVERY_STATUS("status", DiscoveryStatus.class);
+    DISCOVERY_STATUS("status", DiscoveryStatus.class),
+
+    ENTITY_NAME("entityInstanceReference.name", null),
+    ENTITY_CONNECTOR_NAME("entityInstanceReference.connectorName", null),
+    ENTITY_KIND("entityInstanceReference.kind", null),
+    ENTITY_INSTANCE_NAME("entityInstanceName", null),
+    ENABLED("enabled", null),
+    SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null),
+    SUPPORT_KEY_MANAGEMENT("supportKeyManagement", null);
 
     private final String field;
 
