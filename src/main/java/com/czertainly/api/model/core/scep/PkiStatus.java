@@ -1,37 +1,80 @@
 package com.czertainly.api.model.core.scep;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.lang.Nullable;
 
+/**
+ * According to the RFC 8894
+ * <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-pkistatus">pkiStatus</a>
+ * It may contain custom PkiStatus codes if required (but out of scope of the standard)
+ */
 public enum PkiStatus {
-    SUCCESS(0),
+    SUCCESS(0, "SUCCESS", "Request granted."),
+    FAILURE(2, "FAILURE", "Request rejected."),
+    PENDING(3, "PENDING", "Request pending for manual approval.");
 
-    FAILURE(2),
+    private static final PkiStatus[] VALUES;
 
-    PENDING(3);
-
-    private final int value;
-
-    PkiStatus(int value) {
-        this.value = value;
+    static {
+        VALUES = values();
     }
 
-    public static PkiStatus fromValue(String text) {
-        for (PkiStatus b : PkiStatus.values()) {
-            if (String.valueOf(b.value).equals(text)) {
-                return b;
+    private final int value;
+    private final String name;
+    private final String description;
+
+    PkiStatus(int value, String name, String description) {
+        this.value = value;
+        this.name = name;
+        this.description = description;
+    }
+
+    /**
+     * Return the {@code PkiStatus} enum constant with the specified value.
+     *
+     * @param value the value of the enum to be returned
+     * @return the enum constant with the specified value
+     * @throws IllegalArgumentException if this enum has no constant for the specified value
+     */
+    public static PkiStatus valueOf(int value) {
+        PkiStatus pkiStatus = resolve(value);
+        if (pkiStatus == null) {
+            throw new IllegalArgumentException("No matching constant for [" + value + "]");
+        }
+        return pkiStatus;
+    }
+
+    /**
+     * Resolve the given value to an {@code PkiStatus}, if possible.
+     *
+     * @param value the value of the algorithm
+     * @return the corresponding {@code PkiStatus}, or {@code null} if not found
+     */
+    @Nullable
+    public static PkiStatus resolve(int value) {
+        // Use cached VALUES instead of values() to prevent array allocation.
+        for (PkiStatus pkiStatus : VALUES) {
+            if (pkiStatus.value == value) {
+                return pkiStatus;
             }
         }
         return null;
     }
 
-    @JsonValue
-    public String getValue() {
-        return String.valueOf(value);
+    public int getValue() {
+        return value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override
-    @JsonValue
     public String toString() {
-        return String.valueOf(value);
+        return name + " ("+String.valueOf(value)+")";
     }
 }
