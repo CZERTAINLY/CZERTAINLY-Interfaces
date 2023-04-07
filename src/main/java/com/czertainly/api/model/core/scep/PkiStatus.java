@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.scep;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
 /**
@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
  * <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-pkistatus">pkiStatus</a>
  * It may contain custom PkiStatus codes if required (but out of scope of the standard)
  */
+@Schema(enumAsRef = true)
 public enum PkiStatus {
     SUCCESS(0, "SUCCESS", "Request granted."),
     FAILURE(2, "FAILURE", "Request rejected."),

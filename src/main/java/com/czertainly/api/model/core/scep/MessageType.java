@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.scep;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
 /**
@@ -7,6 +8,7 @@ import org.springframework.lang.Nullable;
  * <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-messagetype">messageType</a>
  * It may contain custom MessageType codes if required (but out of scope of the standard)
  */
+@Schema(enumAsRef = true)
 public enum MessageType {
     RESERVED(0, "Reserved", ""),
     CERT_REP(3, "CertRep", "Response to certificate or CRL request."),
