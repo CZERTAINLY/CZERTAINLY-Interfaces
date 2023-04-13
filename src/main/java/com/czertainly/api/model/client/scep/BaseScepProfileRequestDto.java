@@ -46,7 +46,8 @@ public class BaseScepProfileRequestDto {
     private List<RequestAttributeDto> customAttributes;
 
     @Schema(
-            description = "Minimum expiry days to allow renewal of certificate",
+            description = "Minimum expiry days to allow renewal of certificate. Empty or the value '0' will be " +
+                    "considered as null and half life of the certificate validity will be considered for the protocol",
             defaultValue = "Half of certificate validity"
     )
     private Integer renewalThreshold;
