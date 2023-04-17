@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.compliance;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -15,22 +16,39 @@ define the status of overall compliance. This object should not be used to defin
 the compliance status of the individual rules
  */
 @Schema(enumAsRef = true)
-public enum ComplianceStatus implements IAbstractSearchableEnum {
-    OK("ok"),
-    NOK("nok"),
-    NA("na")
+public enum ComplianceStatus implements IPlatformEnum, IAbstractSearchableEnum {
+    OK("ok", "Compliant"),
+    NOK("nok", "Not Compliant"),
+    NA("na", "Not Applicable"),
     ;
-    @Schema(description = "Compliance Status",
-            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String code;
 
-    ComplianceStatus(String code) {
-        this.code = code;
+    private final String code;
+    private final String label;
+    private final String description;
+
+    ComplianceStatus(String code, String label) {
+        this(code, label,null);
     }
 
-    @JsonValue
+    ComplianceStatus(String code, String label, String description) {
+        this.code = code;
+        this.label = label;
+        this.description = description;
+    }
+
+    @Override
     public String getCode() {
         return this.code;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 
     @JsonCreator
@@ -39,7 +57,7 @@ public enum ComplianceStatus implements IAbstractSearchableEnum {
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown status {}", code)));
+                        new ValidationException(ValidationError.create("Unknown Compliance status {}", code)));
     }
 
     @Override

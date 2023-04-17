@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2.callback;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,24 +10,41 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum AttributeValueTarget {
+public enum AttributeValueTarget implements IPlatformEnum {
 
-    PATH_VARIABLE("pathVariable"),
-    REQUEST_PARAMETER("requestParameter"),
-    BODY("body");
+    PATH_VARIABLE("pathVariable", "Path variable"),
+    REQUEST_PARAMETER("requestParameter", "Request parameter"),
+    BODY("body", "Body property");
 
+    private final String code;
 
-    @Schema(description = "Attribute value Target",
-            example = "pathVariable", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String code;
+    private final String label;
 
-    AttributeValueTarget(String code) {
-        this.code = code;
+    private final String description;
+
+    AttributeValueTarget(String code, String label) {
+        this(code, label,null);
     }
 
-    @JsonValue
+    AttributeValueTarget(String code, String label, String description) {
+        this.code = code;
+        this.label = label;
+        this.description = description;
+    }
+
+    @Override
     public String getCode() {
         return this.code;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 
     @JsonCreator
