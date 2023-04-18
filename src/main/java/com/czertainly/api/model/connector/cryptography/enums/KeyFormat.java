@@ -2,6 +2,7 @@ package com.czertainly.api.model.connector.cryptography.enums;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,12 +11,12 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyFormat implements IAbstractSearchableEnum{
-    RAW(1, "Raw", "Encoded key in raw format"),
-    SPKI(2, "SubjectPublicKeyInfo", "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"),
-    PRKI(3, "PrivateKeyInfo", "DER-encoded ASN.1 PrivateKeyInfo of the private key"),
-    EPRKI(4, "EncryptedPrivateKeyInfo", "DER-encoded ASN.1 EncryptedPrivateKeyInfo of the private key"),
-    CUSTOM(99, "Custom", "Custom, external, specific data");
+public enum KeyFormat implements IPlatformEnum, IAbstractSearchableEnum{
+    RAW("Raw", "Raw", "Encoded key in raw format"),
+    SPKI("SubjectPublicKeyInfo", "SubjectPublicKeyInfo", "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"),
+    PRKI("PrivateKeyInfo", "PrivateKeyInfo", "DER-encoded ASN.1 PrivateKeyInfo of the private key"),
+    EPRKI("EncryptedPrivateKeyInfo", "EncryptedPrivateKeyInfo", "DER-encoded ASN.1 EncryptedPrivateKeyInfo of the private key"),
+    CUSTOM("Custom", "Custom", "Custom, external, specific data");
 
     private static final KeyFormat[] VALUES;
 
@@ -23,73 +24,47 @@ public enum KeyFormat implements IAbstractSearchableEnum{
         VALUES = values();
     }
 
-    private final int id;
-    private final String name;
+    private final String code;
+    private final String label;
     private final String description;
 
-    KeyFormat(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
+    KeyFormat(String code, String label) {
+        this(code, label,null);
+    }
+
+    KeyFormat(String code, String label, String description) {
+        this.code = code;
+        this.label = label;
         this.description = description;
-    }
-
-    /**
-     * Return the {@code KeyType} enum constant with the specified id.
-     *
-     * @param id the id of the enum to be returned
-     * @return the enum constant with the specified id
-     * @throws IllegalArgumentException if this enum has no constant for the specified id
-     */
-    public static KeyFormat valueOf(int id) {
-        KeyFormat format = resolve(id);
-        if (format == null) {
-            throw new IllegalArgumentException("No matching constant for [" + id + "]");
-        }
-        return format;
-    }
-
-    /**
-     * Resolve the given id to an {@code KeyType}, if possible.
-     *
-     * @param id the id of the key type
-     * @return the corresponding {@code KeyType}, or {@code null} if not found
-     */
-    @Nullable
-    public static KeyFormat resolve(int id) {
-        // Use cached VALUES instead of values() to prevent array allocation.
-        for (KeyFormat format : VALUES) {
-            if (format.id == id) {
-                return format;
-            }
-        }
-        return null;
     }
 
     @JsonCreator
     public static KeyFormat findByCode(String code) {
-        return Arrays.stream(KeyFormat.values())
-                .filter(k -> k.name.equals(code))
+        return Arrays.stream(VALUES)
+                .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown Key Format {}", code)));
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public String getCode() {
+        return this.code;
     }
 
-    @JsonValue
-    public String getName() {
-        return name;
+    @Override
+    public String getLabel() {
+        return this.label;
     }
 
+    @Override
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     @Override
     public String getEnumLabel() {
-        return name;
+        return code;
     }
 
     /**

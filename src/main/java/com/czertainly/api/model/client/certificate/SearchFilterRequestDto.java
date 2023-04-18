@@ -1,7 +1,6 @@
 package com.czertainly.api.model.client.certificate;
 
 import com.czertainly.api.model.core.search.SearchCondition;
-import com.czertainly.api.model.core.search.SearchableFields;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;

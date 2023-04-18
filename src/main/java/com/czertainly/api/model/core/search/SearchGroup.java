@@ -1,34 +1,50 @@
 package com.czertainly.api.model.core.search;
 
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
-public enum SearchGroup implements IAbstractSearchableEnum {
+public enum SearchGroup implements IPlatformEnum, IAbstractSearchableEnum {
 
-    META(AttributeType.META, "Metadata"),
-    CUSTOM(AttributeType.CUSTOM, "Custom attribute"),
-    PROPERTY(null, "Property");
+    META("meta", "Metadata", AttributeType.META),
+    CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM),
+    PROPERTY("property", "Property", null);
 
-
+    private final String code;
+    private final String label;
+    private final String description;
     private AttributeType attributeType;
 
-    private String label;
+    SearchGroup(String code, String label, AttributeType attributeType) {
+        this(code, label ,null, attributeType);
+    }
 
-    SearchGroup(AttributeType attributeType, String label) {
-        this.attributeType = attributeType;
+    SearchGroup(String code, String label, String description, AttributeType attributeType) {
+        this.code = code;
         this.label = label;
+        this.description = description;
+        this.attributeType = attributeType;
+    }
+
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 
     public AttributeType getAttributeType() {
         return attributeType;
-    }
-
-    @JsonValue
-    public String getLabel() {
-        return label;
     }
 
     @Override

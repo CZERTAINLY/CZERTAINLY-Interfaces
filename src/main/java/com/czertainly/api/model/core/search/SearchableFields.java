@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Schema(enumAsRef = true)
 public enum SearchableFields {
     COMMON_NAME("commonName", null),
     SERIAL_NUMBER("serialNumber", null),
