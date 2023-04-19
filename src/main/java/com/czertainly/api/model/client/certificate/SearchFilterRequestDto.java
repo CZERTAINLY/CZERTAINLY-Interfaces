@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.certificate;
 
 import com.czertainly.api.model.core.search.SearchCondition;
+import com.czertainly.api.model.core.search.SearchGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.io.Serializable;
 public class SearchFilterRequestDto {
 
     @Schema(description = "Group to search", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String groupName;
+    private SearchGroup searchGroup;
 
     @Schema(description = "Field to search", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fieldIdentifier;
@@ -32,8 +33,8 @@ public class SearchFilterRequestDto {
         return value;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public SearchGroup getSearchGroup() {
+        return searchGroup;
     }
 
 }

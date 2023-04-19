@@ -16,6 +16,13 @@ public enum KeyCompromiseReason implements IPlatformEnum {
     UNAUTHORIZED_SUBSTITUTION("substitution", "Unauthorized substitution"),
 
     UNAUTHORIZED_USE_OF_SENSITIVE_DATA("use_of_sensitive_data", "Unauthorized use of sensitive data");
+
+    private static final KeyCompromiseReason[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     @Schema(description = "Reason for compromise",
             example = "Unauthorized Disclosure", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
@@ -34,7 +41,7 @@ public enum KeyCompromiseReason implements IPlatformEnum {
 
     @JsonCreator
     public static KeyCompromiseReason findByCode(String code) {
-        return Arrays.stream(KeyCompromiseReason.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

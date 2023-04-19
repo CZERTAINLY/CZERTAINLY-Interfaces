@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -19,6 +18,12 @@ public enum CertificateValidationStatus implements IPlatformEnum {
     INVALID("invalid", "Invalid"),
     EXPIRING("expiring", "Expiring"),
     EXPIRED("expired", "Expired");
+
+    private static final CertificateValidationStatus[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
     private final String label;
@@ -52,11 +57,11 @@ public enum CertificateValidationStatus implements IPlatformEnum {
 
     @JsonCreator
     public static CertificateValidationStatus findByCode(String code) {
-        return Arrays.stream(CertificateValidationStatus.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown status {}", code)));
+                        new ValidationException(ValidationError.create("Unknown certificate validation status {}", code)));
     }
 
 

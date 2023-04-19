@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -15,6 +14,12 @@ public enum AttributeValueTarget implements IPlatformEnum {
     PATH_VARIABLE("pathVariable", "Path variable"),
     REQUEST_PARAMETER("requestParameter", "Request parameter"),
     BODY("body", "Body property");
+
+    private static final AttributeValueTarget[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
 
@@ -49,10 +54,10 @@ public enum AttributeValueTarget implements IPlatformEnum {
 
     @JsonCreator
     public static AttributeValueTarget findByCode(String code) {
-        return Arrays.stream(AttributeValueTarget.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Target {}", code)));
+                        new ValidationException(ValidationError.create("Unknown Attribute Callback Value Target {}", code)));
     }
 }

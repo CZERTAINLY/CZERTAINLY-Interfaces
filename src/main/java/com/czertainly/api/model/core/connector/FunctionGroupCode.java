@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -19,6 +18,12 @@ public enum FunctionGroupCode implements IPlatformEnum {
     ENTITY_PROVIDER("entityProvider", "Entity Provider"),
     COMPLIANCE_PROVIDER("complianceProvider", "Compliance Provider"),
     CRYPTOGRAPHY_PROVIDER("cryptographyProvider", "Cryptography Provider");
+
+    private static final FunctionGroupCode[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     @Schema(description = "Function Group code of the Connector",
             example = "credentialProvider", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -53,7 +58,7 @@ public enum FunctionGroupCode implements IPlatformEnum {
 
     @JsonCreator
     public static FunctionGroupCode findByCode(String code) {
-        return Arrays.stream(FunctionGroupCode.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

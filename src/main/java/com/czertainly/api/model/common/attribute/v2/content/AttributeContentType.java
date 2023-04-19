@@ -2,7 +2,6 @@ package com.czertainly.api.model.common.attribute.v2.content;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -28,6 +27,12 @@ public enum AttributeContentType implements IPlatformEnum {
     OBJECT(Constants.OBJECT, "Object", ObjectAttributeContent.class, false),
     ;
 
+    private static final AttributeContentType[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     private final String code;
     private final String label;
     private final String description;
@@ -50,14 +55,14 @@ public enum AttributeContentType implements IPlatformEnum {
 
     @JsonCreator
     public static AttributeContentType fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type %s.", code)));
     }
 
     public static AttributeContentType fromClass(Class clazz) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.clazz.equals(clazz))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));

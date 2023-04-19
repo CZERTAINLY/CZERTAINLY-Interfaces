@@ -10,6 +10,13 @@ import java.util.Arrays;
 
 public enum SettingsSection implements IPlatformEnum {
     PLATFORM("platform", "Platform", "CZERTAINLY platform settings");
+
+    private static final SettingsSection[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     @Schema(
             description = "Setting section",
             example = "platform",
@@ -56,7 +63,7 @@ public enum SettingsSection implements IPlatformEnum {
 
     @JsonCreator
     public static SettingsSection findByCode(String code) {
-        return Arrays.stream(SettingsSection.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

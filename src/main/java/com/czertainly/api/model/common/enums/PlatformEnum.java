@@ -55,6 +55,7 @@ public enum PlatformEnum implements IPlatformEnum {
     CERTIFICATE_TYPE(CertificateType.class, "Certificate type"),
     CERTIFICATE_STATUS(CertificateStatus.class, "Certificate status"),
     CERTIFICATE_VALIDATION_STATUS(CertificateValidationStatus.class, "Certificate validation status"),
+    DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
 
     // keys & tokens
     CRYPTOGRAPHIC_ALGORITHM(CryptographicAlgorithm.class, "Cryptographic algorithm"),
@@ -70,8 +71,6 @@ public enum PlatformEnum implements IPlatformEnum {
     COMPLIANCE_STATUS(ComplianceStatus.class, "Compliance status"),
     COMPLIANCE_RULE_STATUS(ComplianceRuleStatus.class, "Compliance rule status"),
 
-    DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
-
     // ACME
     ACME_ACCOUNT_STATUS(AccountStatus.class, "ACME Account status"), // TODO: rename to AcmeAccountStatus
 
@@ -82,6 +81,12 @@ public enum PlatformEnum implements IPlatformEnum {
     ATTRIBUTE_CALLBACK_VALUE_TARGET(AttributeValueTarget.class, "Attribute callback mapping value target"), // TODO: rename to AttributeCallbackValueTarget
     PROGRAMMING_LANGUAGE(ProgrammingLanguageEnum.class, "Programming language for code block attribute"),
     ;
+
+    private static final PlatformEnum[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
     private final String label;
@@ -121,10 +126,17 @@ public enum PlatformEnum implements IPlatformEnum {
 
     @JsonCreator
     public static PlatformEnum findByCode(String code) {
-        return Arrays.stream(PlatformEnum.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown platform enum {}", code)));
+    }
+
+    public static PlatformEnum findByClass(Class clazz) {
+        return Arrays.stream(VALUES)
+                .filter(e -> e.enumClass.equals(clazz))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unknown platform enum for class %s.", clazz)));
     }
 }

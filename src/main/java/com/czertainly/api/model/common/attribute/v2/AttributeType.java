@@ -18,6 +18,12 @@ public enum AttributeType implements IPlatformEnum {
     META(Constants.META, "Metadata"),
     CUSTOM(Constants.CUSTOM, "Custom");
 
+    private static final AttributeType[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     private final String code;
 
     private final String label;
@@ -51,7 +57,7 @@ public enum AttributeType implements IPlatformEnum {
 
     @JsonCreator
     public static AttributeType fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute type %s.", code)));

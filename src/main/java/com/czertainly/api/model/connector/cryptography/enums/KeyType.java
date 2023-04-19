@@ -4,14 +4,12 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyType implements IPlatformEnum, IAbstractSearchableEnum {
+public enum KeyType implements IPlatformEnum {
     SECRET_KEY("secret", "Secret key", "Symmetric secret key"),
     PUBLIC_KEY("public", "Public key", "Asymmetric public key"),
     PRIVATE_KEY("private", "Private key", "Asymmetric private key"),
@@ -43,7 +41,7 @@ public enum KeyType implements IPlatformEnum, IAbstractSearchableEnum {
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown KeyType {}", code)));
+                        new ValidationException(ValidationError.create("Unknown key type {}", code)));
     }
 
     @Override
@@ -60,10 +58,4 @@ public enum KeyType implements IPlatformEnum, IAbstractSearchableEnum {
     public String getDescription() {
         return this.description;
     }
-
-    @Override
-    public String getEnumLabel() {
-        return code;
-    }
-
 }

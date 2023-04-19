@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -21,6 +20,12 @@ public enum ComplianceRuleStatus implements IPlatformEnum {
     NOK("nok", "Not Compliant"),
     NA("na", "Not Applicable"),
     ;
+
+    private static final ComplianceRuleStatus[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
     private final String label;
@@ -53,7 +58,7 @@ public enum ComplianceRuleStatus implements IPlatformEnum {
 
     @JsonCreator
     public static ComplianceRuleStatus findByCode(String code) {
-        return Arrays.stream(ComplianceRuleStatus.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

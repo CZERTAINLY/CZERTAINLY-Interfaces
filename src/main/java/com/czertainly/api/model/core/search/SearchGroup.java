@@ -2,15 +2,23 @@ package com.czertainly.api.model.core.search;
 
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Arrays;
+
 @Schema(enumAsRef = true)
-public enum SearchGroup implements IPlatformEnum, IAbstractSearchableEnum {
+public enum SearchGroup implements IPlatformEnum {
 
     META("meta", "Metadata", AttributeType.META),
     CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM),
     PROPERTY("property", "Property", null);
+
+    private static final SearchGroup[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
     private final String label;
@@ -47,8 +55,11 @@ public enum SearchGroup implements IPlatformEnum, IAbstractSearchableEnum {
         return attributeType;
     }
 
-    @Override
-    public String getEnumLabel() {
-        return getLabel();
+    @JsonCreator
+    public static SearchGroup fromCode(String code) {
+        return Arrays.stream(VALUES)
+                .filter(e -> e.code.equals(code))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported search group %s.", code)));
     }
 }

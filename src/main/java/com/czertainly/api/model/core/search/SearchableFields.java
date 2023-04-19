@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.search;
 
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
 import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
 import com.czertainly.api.model.connector.cryptography.enums.KeyType;
@@ -11,7 +11,6 @@ import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -71,7 +70,7 @@ public enum SearchableFields {
 
     private final String field;
 
-    private final Class<? extends IAbstractSearchableEnum> enumClass;
+    private final Class<? extends IPlatformEnum> enumClass;
 
 
     private final Map<String, String> nativeCodeMap = Stream.of(new String[][]{
@@ -103,7 +102,7 @@ public enum SearchableFields {
 
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-    SearchableFields(String string, Class<? extends IAbstractSearchableEnum> enumClass) {
+    SearchableFields(String string, Class<? extends IPlatformEnum> enumClass) {
         this.field = string;
         this.enumClass = enumClass;
     }
@@ -117,7 +116,7 @@ public enum SearchableFields {
         return nativeCodeMap.get(field);
     }
 
-    public Class<? extends IAbstractSearchableEnum> getEnumClass() {
+    public Class<? extends IPlatformEnum> getEnumClass() {
         return enumClass;
     }
 

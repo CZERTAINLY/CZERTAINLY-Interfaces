@@ -2,7 +2,6 @@ package com.czertainly.api.model.core.connector;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -14,6 +13,12 @@ public enum AuthType implements IPlatformEnum {
     CERTIFICATE("certificate", "Certificate"),
     API_KEY("apiKey", "API Key"),
     JWT("jwt", "JWT token");
+
+    private static final AuthType[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
     private final String label;
@@ -46,9 +51,9 @@ public enum AuthType implements IPlatformEnum {
 
     @JsonCreator
     public static AuthType findByCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(a -> a.getCode().equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown Auth Type " + code));
+                .orElseThrow(() -> new IllegalArgumentException("Unknown Connector Auth Type " + code));
     }
 }

@@ -2,6 +2,7 @@ package com.czertainly.api.model.connector.cryptography.enums;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +17,12 @@ public enum TokenInstanceStatus implements IPlatformEnum {
     DEACTIVATED("Deactivated", "Deactivated"),
     WARNING("Warning", "Warning"),
     UNKNOWN("Unknown", "Unknown");
+
+    private static final TokenInstanceStatus[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     @Schema(description = "Token instance status",
             example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -35,11 +42,11 @@ public enum TokenInstanceStatus implements IPlatformEnum {
 
     @JsonCreator
     public static TokenInstanceStatus findByCode(String code) {
-        return Arrays.stream(TokenInstanceStatus.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown status {}", code)));
+                        new ValidationException(ValidationError.create("Unknown token instance status {}", code)));
     }
 
     @Override

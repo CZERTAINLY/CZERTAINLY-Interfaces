@@ -2,6 +2,7 @@ package com.czertainly.api.model.connector.cryptography.enums;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -11,13 +12,19 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum CryptographicAlgorithm implements IPlatformEnum, IAbstractSearchableEnum {
+public enum CryptographicAlgorithm implements IPlatformEnum {
 
     RSA("RSA", "RSA", "Rivest–Shamir–Adleman"),
     ECDSA("ECDSA", "ECDSA", "Elliptic Curve Digital Signature Algorithm"),
     FALCON("FALCON", "FALCON", "Fast Fourier lattice-based compact signatures over NTRU"),
     DILITHIUM("CRYSTALS-Dilithium", "CRYSTALS-Dilithium", "Post-quantum lattice-based signature scheme"),
     SPHINCSPLUS("SPHINCS+", "SPHINCS+", "Post-quantum stateless hash-based signature scheme");
+
+    private static final CryptographicAlgorithm[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
     private final String label;
@@ -37,7 +44,7 @@ public enum CryptographicAlgorithm implements IPlatformEnum, IAbstractSearchable
 
     @JsonCreator
     public static CryptographicAlgorithm findByCode(String code) {
-        return Arrays.stream(CryptographicAlgorithm.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
@@ -57,18 +64,5 @@ public enum CryptographicAlgorithm implements IPlatformEnum, IAbstractSearchable
     @Override
     public String getDescription() {
         return this.description;
-    }
-
-    /**
-     * Return a string representation of this status code.
-     */
-    @Override
-    public String toString() {
-        return name();
-    }
-
-    @Override
-    public String getEnumLabel() {
-        return code;
     }
 }

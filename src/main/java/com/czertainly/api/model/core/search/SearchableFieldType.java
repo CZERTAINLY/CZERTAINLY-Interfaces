@@ -16,6 +16,12 @@ public enum SearchableFieldType implements IPlatformEnum {
     DATETIME(Constants.DATETIME, "DateTime"),
     BOOLEAN(Constants.BOOLEAN, "Boolean");
 
+    private static final SearchableFieldType[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     private final String code;
     private final String label;
     private final String description;
@@ -47,10 +53,10 @@ public enum SearchableFieldType implements IPlatformEnum {
 
     @JsonCreator
     public static SearchableFieldType fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported search field type %s.", code)));
     }
 
     private static class Constants {

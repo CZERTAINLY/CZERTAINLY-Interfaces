@@ -12,6 +12,12 @@ public enum AttributeConstraintType implements IPlatformEnum {
     RANGE("range", "Integer Range"),
     DATETIME("dateTime", "DateTime Range");
 
+    private static final AttributeConstraintType[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     private final String code;
     private final String label;
     private final String description;
@@ -43,7 +49,7 @@ public enum AttributeConstraintType implements IPlatformEnum {
 
     @JsonCreator
     public static AttributeConstraintType fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute constraint type %s.", code)));

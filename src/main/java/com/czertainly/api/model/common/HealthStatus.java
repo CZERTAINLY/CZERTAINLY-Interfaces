@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -14,6 +13,12 @@ public enum HealthStatus implements IPlatformEnum {
     OK("ok", "ON"),
     NOK("nok", "OFF"),
     UNKNOWN("unknown", "Unknown");
+
+    private static final HealthStatus[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     @Schema(description = "Health Status",
             example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -48,7 +53,7 @@ public enum HealthStatus implements IPlatformEnum {
 
     @JsonCreator
     public static HealthStatus findByCode(String code) {
-        return Arrays.stream(HealthStatus.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

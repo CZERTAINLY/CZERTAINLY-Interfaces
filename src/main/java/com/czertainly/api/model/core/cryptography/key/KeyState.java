@@ -3,21 +3,25 @@ package com.czertainly.api.model.core.cryptography.key;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyState  implements IPlatformEnum, IAbstractSearchableEnum {
+public enum KeyState implements IPlatformEnum {
     PRE_ACTIVE("pre-active", "Pre-active"),
     ACTIVE("active", "Active"),
     DEACTIVATED("deactivated", "Deactivated"),
     COMPROMISED("compromised", "Compromised"),
     DESTROYED("destroyed", "Destroyed"),
     COMPROMISED_DESTROYED("compromisedDestroyed", "Compromised Destroyed");
+
+    private static final KeyState[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     @Schema(description = "State of the key",
             example = "active", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -37,11 +41,11 @@ public enum KeyState  implements IPlatformEnum, IAbstractSearchableEnum {
 
     @JsonCreator
     public static KeyState findByCode(String code) {
-        return Arrays.stream(KeyState.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown code {}", code)));
+                        new ValidationException(ValidationError.create("Unknown key state {}", code)));
     }
 
     @Override
@@ -57,10 +61,5 @@ public enum KeyState  implements IPlatformEnum, IAbstractSearchableEnum {
     @Override
     public String getDescription() {
         return this.description;
-    }
-
-    @Override
-    public String getEnumLabel() {
-        return code;
     }
 }

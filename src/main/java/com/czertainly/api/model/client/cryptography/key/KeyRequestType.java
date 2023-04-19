@@ -13,6 +13,12 @@ public enum KeyRequestType implements IPlatformEnum {
     SECRET("secret", "Secret key"),
     KEY_PAIR("keyPair", "Key pair");
 
+    private static final KeyRequestType[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     @Schema(description = "Type of the key to be generated",
             example = "secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
@@ -31,7 +37,7 @@ public enum KeyRequestType implements IPlatformEnum {
 
     @JsonCreator
     public static KeyRequestType findByCode(String code) {
-        return Arrays.stream(KeyRequestType.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

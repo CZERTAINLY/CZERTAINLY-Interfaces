@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -18,6 +17,12 @@ public enum AccountStatus implements IPlatformEnum {
     VALID("valid", "Valid"),
     DEACTIVATED("deactivated", "Deactivated"),
     REVOKED("revoked", "Revoked");
+
+    private static final AccountStatus[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     /**
      * Status code for any given status
@@ -53,7 +58,7 @@ public enum AccountStatus implements IPlatformEnum {
 
     @JsonCreator
     public static AccountStatus findByCode(String code) {
-        return Arrays.stream(AccountStatus.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

@@ -27,6 +27,12 @@ public enum SearchCondition implements IPlatformEnum {
     NOT_CHECKED("NOT_CHECKED", "not checked", "notchecked")
     ;
 
+    private static final SearchCondition[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     private final String code;
     private final String label;
     private final String description;
@@ -64,9 +70,9 @@ public enum SearchCondition implements IPlatformEnum {
 
     @JsonCreator
     public static SearchCondition fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported search condition %s.", code)));
     }
 }

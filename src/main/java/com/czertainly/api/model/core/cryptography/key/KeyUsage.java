@@ -3,7 +3,6 @@ package com.czertainly.api.model.core.cryptography.key;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
@@ -11,7 +10,7 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyUsage implements IPlatformEnum, IAbstractSearchableEnum {
+public enum KeyUsage implements IPlatformEnum {
     // TODO: use bit masking to store value and change 10 and 20 to 16 and 32 to be powers of 2
     SIGN("sign", "Sign", "Allow for signing. Applies to Sign operation. Valid for PGP Key, Private Key", 1),
     VERIFY("verify", "Verify", "Allow for signature verification. Applies to Signature Verify and Validate operations. Valid for PGP Key, Certificate and Public Key.", 2),
@@ -97,11 +96,6 @@ public enum KeyUsage implements IPlatformEnum, IAbstractSearchableEnum {
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown KeyUsage {}", code)));
-    }
-
-    @Override
-    public String getEnumLabel() {
-        return code;
+                        new ValidationException(ValidationError.create("Unknown key usage {}", code)));
     }
 }

@@ -4,14 +4,12 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyFormat implements IPlatformEnum, IAbstractSearchableEnum{
+public enum KeyFormat implements IPlatformEnum {
     RAW("Raw", "Raw", "Encoded key in raw format"),
     SPKI("SubjectPublicKeyInfo", "SubjectPublicKeyInfo", "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"),
     PRKI("PrivateKeyInfo", "PrivateKeyInfo", "DER-encoded ASN.1 PrivateKeyInfo of the private key"),
@@ -60,19 +58,6 @@ public enum KeyFormat implements IPlatformEnum, IAbstractSearchableEnum{
     @Override
     public String getDescription() {
         return this.description;
-    }
-
-    @Override
-    public String getEnumLabel() {
-        return code;
-    }
-
-    /**
-     * Return a string representation of this status code.
-     */
-    @Override
-    public String toString() {
-        return name();
     }
 
 }
