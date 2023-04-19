@@ -2,15 +2,21 @@ package com.czertainly.api.model.core.settings;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
-@Schema(enumAsRef = true)
-public enum Section {
+public enum SettingsSection implements IPlatformEnum {
     PLATFORM("platform", "Platform", "CZERTAINLY platform settings");
+
+    private static final SettingsSection[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     @Schema(
             description = "Setting section",
             example = "platform",
@@ -22,7 +28,7 @@ public enum Section {
             description = "Name",
             example = "Platform"
     )
-    private final String name;
+    private final String label;
 
     @Schema(
             description = "Description",
@@ -30,29 +36,37 @@ public enum Section {
     )
     private final String description;
 
-    Section(String code, String name, String description) {
+    SettingsSection(String code, String label) {
+        this(code, label,null);
+    }
+
+    SettingsSection(String code, String label, String description) {
         this.code = code;
-        this.name = name;
+        this.label = label;
         this.description = description;
     }
 
-    @JsonValue
+    @Override
     public String getCode() {
         return this.code;
     }
 
-    public String getName() {
-        return this.name;
+    @Override
+    public String getLabel() {
+        return this.label;
     }
 
-    public String getDescription() { return this.description; }
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
 
     @JsonCreator
-    public static Section findByCode(String code) {
-        return Arrays.stream(Section.values())
+    public static SettingsSection findByCode(String code) {
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown code {}", code)));
+                        new ValidationException(ValidationError.create("Unknown settings section {}", code)));
     }
 }

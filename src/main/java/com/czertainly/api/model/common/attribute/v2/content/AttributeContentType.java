@@ -1,7 +1,7 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -10,47 +10,62 @@ import java.util.Arrays;
  * This class defines Attribute Content types.
  */
 @Schema(enumAsRef = true)
-public enum AttributeContentType {
+public enum AttributeContentType implements IPlatformEnum {
 
-    STRING(Constants.STRING, StringAttributeContent.class, true),
-    INTEGER(Constants.INTEGER, IntegerAttributeContent.class, true),
-    SECRET(Constants.SECRET, SecretAttributeContent.class, false),
-    FILE(Constants.FILE, FileAttributeContent.class, false),
-    BOOLEAN(Constants.BOOLEAN, BooleanAttributeContent.class, true),
-    CREDENTIAL(Constants.CREDENTIAL, CredentialAttributeContent.class, false),
-    DATE(Constants.DATE, DateAttributeContent.class, true),
-    FLOAT(Constants.FLOAT, FloatAttributeContent.class, true),
-    OBJECT(Constants.OBJECT, ObjectAttributeContent.class, false),
-    TEXT(Constants.TEXT, TextAttributeContent.class, true),
-    TIME(Constants.TIME, TimeAttributeContent.class, true),
-    DATETIME(Constants.DATETIME, DateTimeAttributeContent.class, true),
-    CODEBLOCK(Constants.CODEBLOCK, CodeBlockAttributeContent.class, false)
+    STRING(Constants.STRING, "String", StringAttributeContent.class, true),
+    TEXT(Constants.TEXT, "Text", TextAttributeContent.class, true),
+    INTEGER(Constants.INTEGER, "Integer number", IntegerAttributeContent.class, true),
+    BOOLEAN(Constants.BOOLEAN, "Boolean", BooleanAttributeContent.class, true),
+    FLOAT(Constants.FLOAT, "Decimal number", FloatAttributeContent.class, true),
+    DATE(Constants.DATE, "Date", DateAttributeContent.class, true),
+    TIME(Constants.TIME, "Time", TimeAttributeContent.class, true),
+    DATETIME(Constants.DATETIME, "DateTime", DateTimeAttributeContent.class, true),
+    SECRET(Constants.SECRET, "Secret", SecretAttributeContent.class, false),
+    FILE(Constants.FILE, "File", FileAttributeContent.class, false),
+    CREDENTIAL(Constants.CREDENTIAL, "Credential", CredentialAttributeContent.class, false),
+    CODEBLOCK(Constants.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, false),
+    OBJECT(Constants.OBJECT, "Object", ObjectAttributeContent.class, false),
     ;
 
+    private static final AttributeContentType[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
     private final String code;
+    private final String label;
+    private final String description;
 
     private final Class clazz;
 
     private boolean filterByData;
 
-    AttributeContentType(String string, Class clazz, boolean filterByData) {
-        this.code = string;
+    AttributeContentType(String code, String label, Class clazz, boolean filterByData) {
+        this(code, label, null, clazz, filterByData);
+    }
+
+    AttributeContentType(String code, String label, String description, Class clazz, boolean filterByData) {
+        this.code = code;
+        this.label = label;
+        this.description = description;
         this.clazz = clazz;
         this.filterByData = filterByData;
     }
+
     @JsonCreator
     public static AttributeContentType fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type %s.", code)));
     }
 
     public static AttributeContentType fromClass(Class clazz) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.clazz.equals(clazz))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type for class %s.", clazz)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
     }
 
     public static Class getClass(AttributeContentType code) {
@@ -89,9 +104,19 @@ public enum AttributeContentType {
         return filterByData;
     }
 
-    @JsonValue
+    @Override
     public String getCode() {
-        return code;
+        return this.code;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 
     private static class Constants {
