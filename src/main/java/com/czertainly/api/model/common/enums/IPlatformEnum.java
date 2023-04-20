@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public interface IPlatformEnum {
 
-    @JsonValue
     String getCode();
 
     String getLabel();

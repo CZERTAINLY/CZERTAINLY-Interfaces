@@ -1,12 +1,16 @@
 package com.czertainly.api.model.core.search;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 public class SearchFieldDataByGroupDto {
 
-    private List<SearchFieldDataDto> searchFieldData;
-
+    @Schema(description = "Search group", requiredMode = Schema.RequiredMode.REQUIRED)
     private SearchGroup searchGroup;
+
+    @Schema(description = "List of search fields for specified search group", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<SearchFieldDataDto> searchFieldData;
 
     public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, SearchGroup searchGroup) {
         this.searchFieldData = searchFieldData;
