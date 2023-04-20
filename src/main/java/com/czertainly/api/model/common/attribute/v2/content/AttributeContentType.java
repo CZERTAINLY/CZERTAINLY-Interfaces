@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2.content;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -105,6 +106,7 @@ public enum AttributeContentType implements IPlatformEnum {
     }
 
     @Override
+    @JsonValue
     public String getCode() {
         return this.code;
     }

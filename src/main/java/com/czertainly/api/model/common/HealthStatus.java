@@ -4,6 +4,7 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -37,6 +38,7 @@ public enum HealthStatus implements IPlatformEnum {
     }
 
     @Override
+    @JsonValue
     public String getCode() {
         return this.code;
     }

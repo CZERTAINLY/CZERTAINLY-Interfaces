@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2.constraint;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public enum AttributeConstraintType implements IPlatformEnum {
     }
 
     @Override
+    @JsonValue
     public String getCode() {
         return this.code;
     }
