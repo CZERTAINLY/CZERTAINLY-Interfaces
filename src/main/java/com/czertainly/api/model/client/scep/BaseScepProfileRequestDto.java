@@ -69,4 +69,13 @@ public class BaseScepProfileRequestDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String challengePassword;
+
+    @Schema(description = "Intune Tenant")
+    private String intuneTenant;
+
+    @Schema(description = "Intune Application ID")
+    private String intuneApplicationId;
+
+    @Schema(description = "Intune Application Key")
+    private String intuneApplicationKey;
 }

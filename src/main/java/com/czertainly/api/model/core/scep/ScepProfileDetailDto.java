@@ -21,4 +21,8 @@ public class ScepProfileDetailDto extends ScepProfileDto {
     private List<ResponseAttributeDto> customAttributes;
     @Schema(description = "CA Certificate for the SCEP Profile")
     private CertificateDto caCertificate;
+    @Schema(description = "Intune tenant")
+    private String intuneTenant;
+    @Schema(description = "Intune application ID")
+    private String intuneApplicationId;
 }
