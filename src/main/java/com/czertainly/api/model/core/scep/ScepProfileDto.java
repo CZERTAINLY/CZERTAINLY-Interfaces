@@ -23,4 +23,7 @@ public class ScepProfileDto extends NameAndUuidDto {
     private boolean includeCaCertificateChain;
     @Schema(description = "Renewal time threshold in days", example = "30")
     private Integer renewThreshold;
+
+    @Schema(description = "Status of Intune")
+    private boolean enableIntune;
 }

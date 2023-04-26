@@ -70,6 +70,9 @@ public class BaseScepProfileRequestDto {
     )
     private String challengePassword;
 
+    @Schema(description = "Status of Intune")
+    private Boolean enableIntune;
+
     @Schema(description = "Intune Tenant")
     private String intuneTenant;
 
