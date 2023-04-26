@@ -1,5 +1,7 @@
 package com.czertainly.api.model.core.search;
 
+import com.czertainly.api.model.common.enums.PlatformEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -21,6 +23,10 @@ public class SearchFieldDataDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<SearchCondition> conditions;
 
+    @Schema(description = "Platform enum of the field values",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private PlatformEnum platformEnum;
+
     @Schema(description = "Available values for the field")
     private Object value;
 
@@ -32,6 +38,7 @@ public class SearchFieldDataDto {
     }
     
     @Deprecated
+    @JsonIgnore
     public SearchableFields getField() {
         return null;
     }
@@ -62,6 +69,14 @@ public class SearchFieldDataDto {
 
     public void setConditions(List<SearchCondition> conditions) {
         this.conditions = conditions;
+    }
+
+    public PlatformEnum getPlatformEnum() {
+        return platformEnum;
+    }
+
+    public void setPlatformEnum(PlatformEnum platformEnum) {
+        this.platformEnum = platformEnum;
     }
 
     public Object getValue() {

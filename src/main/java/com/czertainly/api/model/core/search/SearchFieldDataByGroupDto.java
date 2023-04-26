@@ -1,16 +1,20 @@
 package com.czertainly.api.model.core.search;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 public class SearchFieldDataByGroupDto {
 
+    @Schema(description = "Search group", requiredMode = Schema.RequiredMode.REQUIRED)
+    private SearchGroup searchGroup;
+
+    @Schema(description = "List of search fields for specified search group", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<SearchFieldDataDto> searchFieldData;
 
-    private String groupName;
-
-    public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, String groupName) {
+    public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, SearchGroup searchGroup) {
         this.searchFieldData = searchFieldData;
-        this.groupName = groupName;
+        this.searchGroup = searchGroup;
     }
 
     public List<SearchFieldDataDto> getSearchFieldData() {
@@ -21,11 +25,11 @@ public class SearchFieldDataByGroupDto {
         this.searchFieldData = searchFieldData;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public SearchGroup getSearchGroup() {
+        return searchGroup;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setSearchGroup(SearchGroup searchGroup) {
+        this.searchGroup = searchGroup;
     }
 }

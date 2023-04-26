@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.search;
 
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,32 +8,57 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum SearchableFieldType {
+public enum SearchableFieldType implements IPlatformEnum {
 
-    STRING(Constants.STRING),
-    NUMBER(Constants.NUMBER),
-    LIST(Constants.LIST),
-    DATE(Constants.DATE),
-    DATETIME(Constants.DATETIME),
-    BOOLEAN(Constants.BOOLEAN);
+    STRING(Constants.STRING, "String"),
+    NUMBER(Constants.NUMBER, "Number"),
+    LIST(Constants.LIST, "List"),
+    DATE(Constants.DATE, "Date"),
+    DATETIME(Constants.DATETIME, "DateTime"),
+    BOOLEAN(Constants.BOOLEAN, "Boolean");
 
-    private final String code;
+    private static final SearchableFieldType[] VALUES;
 
-    SearchableFieldType(String string) {
-        this.code = string;
+    static {
+        VALUES = values();
     }
 
+    private final String code;
+    private final String label;
+    private final String description;
+
+    SearchableFieldType(String code, String label) {
+        this(code, label,null);
+    }
+
+    SearchableFieldType(String code, String label, String description) {
+        this.code = code;
+        this.label = label;
+        this.description = description;
+    }
+
+    @Override
     @JsonValue
     public String getCode() {
-        return code;
+        return this.code;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 
     @JsonCreator
     public static SearchableFieldType fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported search field type %s.", code)));
     }
 
     private static class Constants {
