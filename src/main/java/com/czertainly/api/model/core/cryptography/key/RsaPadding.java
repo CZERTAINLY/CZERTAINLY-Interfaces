@@ -4,7 +4,7 @@ import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.StringAttributeContent;
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Schema(enumAsRef = true)
-public enum RsaPadding implements IAbstractSearchableEnum {
+public enum RsaPadding implements IPlatformEnum {
     PKCS1_v1_5("PKCS1-v1_5"),
     OAEP("OAEP");
 
@@ -41,8 +41,13 @@ public enum RsaPadding implements IAbstractSearchableEnum {
     }
 
     @Override
-    public String getEnumLabel() {
+    public String getLabel() {
         return code;
+    }
+
+    @Override
+    public String getDescription() {
+        return null;
     }
 
     public static List<BaseAttributeContent> asStringAttributeContentList() {
