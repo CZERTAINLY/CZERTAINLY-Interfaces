@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.scep;
 
+import com.czertainly.api.exception.ScepException;
 import com.czertainly.api.model.core.acme.ProblemDocument;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,12 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.Serializable;
 
 /**
  * List of end points supported for the SCEP implementation in CZERTAINLY
@@ -55,10 +51,18 @@ public interface ScepController {
     @Operation(summary = "SCEP Get Operations")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed")})
     @RequestMapping(method = RequestMethod.GET)
-    ResponseEntity<Object> doGet(@PathVariable String scepProfileName, @RequestParam String operation, @RequestParam(required = false) String message);
+    ResponseEntity<Object> doGet(
+            @PathVariable String scepProfileName,
+            @RequestParam String operation,
+            @RequestParam(required = false) String message
+    ) throws ScepException;
 
     @Operation(summary = "SCEP Post Operations")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed")})
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
-    ResponseEntity<Object> doPost(@PathVariable String scepProfileName, @RequestParam String operation, @RequestBody byte[] request);
+    ResponseEntity<Object> doPost(
+            @PathVariable String scepProfileName,
+            @RequestParam String operation,
+            @RequestBody byte[] request
+    ) throws ScepException;
 }

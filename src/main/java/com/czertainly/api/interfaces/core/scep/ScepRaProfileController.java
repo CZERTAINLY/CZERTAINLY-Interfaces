@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.scep;
 
+import com.czertainly.api.exception.ScepException;
 import com.czertainly.api.model.core.acme.ProblemDocument;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -51,10 +52,18 @@ public interface ScepRaProfileController {
     @Operation(summary = "SCEP Get Operations")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed")})
     @RequestMapping(method = RequestMethod.GET)
-    ResponseEntity<Object> doGet(@PathVariable String raProfileName, @RequestParam String operation, @RequestParam(required = false) String message);
+    ResponseEntity<Object> doGet(
+            @PathVariable String raProfileName,
+            @RequestParam String operation,
+            @RequestParam(required = false) String message
+    ) throws ScepException;
 
     @Operation(summary = "SCEP Post Operations")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed")})
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
-    ResponseEntity<Object> doPost(@PathVariable String raProfileName, @RequestParam String operation, @RequestBody byte[] request);
+    ResponseEntity<Object> doPost(
+            @PathVariable String raProfileName,
+            @RequestParam String operation,
+            @RequestBody byte[] request
+    ) throws ScepException;
 }

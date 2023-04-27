@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum DigestAlgorithm {
+    SHA_1(1,"SHA-1", "Secure hash algorithm 1", "SHA1"),
+    SHA_224(2,"SHA-224", "Secure hash algorithm 2 with digest length of 224 bits", "SHA224"),
     SHA_256(1, "SHA-256", "Secure hash algorithm 2 with digest length of 256 bits", "SHA256"),
     SHA_384(2, "SHA-384", "Secure hash algorithm 2 with digest length of 384 bits", "SHA384"),
     SHA_512(3, "SHA-512", "Secure hash algorithm 2 with digest length of 512 bits", "SHA512"),
