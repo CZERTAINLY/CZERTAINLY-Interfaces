@@ -14,14 +14,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum DigestAlgorithm {
-    SHA_1(1,"SHA-1", "Secure hash algorithm 1", "SHA1"),
-    SHA_224(2,"SHA-224", "Secure hash algorithm 2 with digest length of 224 bits", "SHA224"),
-    SHA_256(1, "SHA-256", "Secure hash algorithm 2 with digest length of 256 bits", "SHA256"),
-    SHA_384(2, "SHA-384", "Secure hash algorithm 2 with digest length of 384 bits", "SHA384"),
-    SHA_512(3, "SHA-512", "Secure hash algorithm 2 with digest length of 512 bits", "SHA512"),
-    SHA3_256(4, "SHA3-256", "Secure hash algorithm 3 with digest length of 256 bits", "SHA3-256"),
-    SHA3_384(5, "SHA3-384", "Secure hash algorithm 3 with digest length of 384 bits", "SHA3-384"),
-    SHA3_512(6, "SHA3-512", "Secure hash algorithm 3 with digest length of 512 bits", "SHA3-512");
+    MD5(1,"MD5", "Message Digest algorithm", "MD5"),
+    SHA_1(2,"SHA-1", "Secure hash algorithm 1", "SHA1"),
+    SHA_224(3,"SHA-224", "Secure hash algorithm 2 with digest length of 224 bits", "SHA224"),
+    SHA_256(4, "SHA-256", "Secure hash algorithm 2 with digest length of 256 bits", "SHA256"),
+    SHA_384(5, "SHA-384", "Secure hash algorithm 2 with digest length of 384 bits", "SHA384"),
+    SHA_512(6, "SHA-512", "Secure hash algorithm 2 with digest length of 512 bits", "SHA512"),
+    SHA3_256(7, "SHA3-256", "Secure hash algorithm 3 with digest length of 256 bits", "SHA3-256"),
+    SHA3_384(8, "SHA3-384", "Secure hash algorithm 3 with digest length of 384 bits", "SHA3-384"),
+    SHA3_512(9, "SHA3-512", "Secure hash algorithm 3 with digest length of 512 bits", "SHA3-512");
 
     private static final DigestAlgorithm[] VALUES;
 
