@@ -2,11 +2,10 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.client.attribute.AttributeDefinitionDto;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeCreateRequestDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitionDetailDto;
+import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitionDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -67,7 +66,7 @@ public interface CustomAttributeController {
     @Operation(summary = "List Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "list of available Custom Attributes")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    List<AttributeDefinitionDto> listCustomAttributes();
+    List<CustomAttributeDefinitionDto> listCustomAttributes();
 
     @Operation(summary = "Custom Attribute details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute details retrieved")})
