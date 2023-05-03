@@ -320,5 +320,5 @@ public interface ScepProfileController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public List<CertificateDto> listScepCaCertificates();
+	public List<CertificateDto> listScepCaCertificates(@Parameter(description = "flag to return certificates that are eligible for Intune integration") @RequestParam boolean intuneEnabled);
 }
