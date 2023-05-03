@@ -1,6 +1,6 @@
 package com.czertainly.api.model.scheduler;
 
-public enum SchedulerExecutionStatus {
+public enum SchedulerJobExecutionStatus {
 
     SUCCESS, FAILED, UNKNOWN;
 

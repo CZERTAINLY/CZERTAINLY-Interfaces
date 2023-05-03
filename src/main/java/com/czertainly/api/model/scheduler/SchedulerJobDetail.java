@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SchedulerDetail {
+public class SchedulerJobDetail {
 
     private String jobName;
 
@@ -15,7 +15,7 @@ public class SchedulerDetail {
 
     private String classNameToBeExecuted;
 
-    public SchedulerDetail(String jobName, String cronExpression, String classNameToBeExecuted) {
+    public SchedulerJobDetail(String jobName, String cronExpression, String classNameToBeExecuted) {
         this.jobName = jobName;
         this.cronExpression = cronExpression;
         this.classNameToBeExecuted = classNameToBeExecuted;

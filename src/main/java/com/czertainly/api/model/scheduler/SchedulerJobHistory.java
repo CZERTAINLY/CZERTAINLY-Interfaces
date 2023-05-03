@@ -7,13 +7,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SchedulerHistory {
+public class SchedulerJobHistory {
 
     private Long jobID;
 
-    private SchedulerExecutionStatus status;
+    private SchedulerJobExecutionStatus status;
 
-    public SchedulerHistory(Long jobID, SchedulerExecutionStatus status) {
+    public SchedulerJobHistory(Long jobID, SchedulerJobExecutionStatus status) {
         this.jobID = jobID;
         this.status = status;
     }

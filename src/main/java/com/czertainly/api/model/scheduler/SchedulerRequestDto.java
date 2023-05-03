@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SchedulerRequestDto {
 
-    private SchedulerDetail schedulerDetail;
+    private SchedulerJobDetail schedulerDetail;
 
-    public SchedulerRequestDto(SchedulerDetail schedulerDetail) {
+    public SchedulerRequestDto(SchedulerJobDetail schedulerDetail) {
         this.schedulerDetail = schedulerDetail;
     }
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SchedulerExecutionMessage {
+public class SchedulerJobExecutionMessage {
 
     @JsonProperty
     private Long jobID;
@@ -19,7 +19,7 @@ public class SchedulerExecutionMessage {
     @JsonProperty
     private String classToBeExecuted;
 
-    public SchedulerExecutionMessage(final Long jobID, final String jobName, final String classToBeExecuted) {
+    public SchedulerJobExecutionMessage(final Long jobID, final String jobName, final String classToBeExecuted) {
         this.jobID = jobID;
         this.jobName = jobName;
         this.classToBeExecuted = classToBeExecuted;

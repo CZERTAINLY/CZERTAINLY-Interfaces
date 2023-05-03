@@ -1,7 +1,7 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.model.scheduler.SchedulerHistory;
+import com.czertainly.api.model.scheduler.SchedulerJobHistory;
 import com.czertainly.api.model.scheduler.SchedulerRequestDto;
 import com.czertainly.api.model.scheduler.SchedulerResponseDto;
 import lombok.NoArgsConstructor;
@@ -30,11 +30,11 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient{
                 request);
     }
 
-    public void informJobHistory(final SchedulerHistory schedulerHistory) throws ConnectorException {
+    public void informJobHistory(final SchedulerJobHistory schedulerHistory) throws ConnectorException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST);
         processRequest(r -> r
                         .uri(schedulerBaseUrl + SCHEDULER_HISTORY)
-                        .body(Mono.just(schedulerHistory), SchedulerHistory.class)
+                        .body(Mono.just(schedulerHistory), SchedulerJobHistory.class)
                         .retrieve()
                         .toEntity(Void.class)
                         .block().getBody(),
