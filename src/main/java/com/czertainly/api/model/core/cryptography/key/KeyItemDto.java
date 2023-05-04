@@ -86,7 +86,7 @@ public class KeyItemDto extends NameAndUuidDto {
             description = "Key Algorithm",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private KeyAlgorithm cryptographicAlgorithm;
+    private KeyAlgorithm keyAlgorithm;
 
     @Schema(
             description = "Key Format"

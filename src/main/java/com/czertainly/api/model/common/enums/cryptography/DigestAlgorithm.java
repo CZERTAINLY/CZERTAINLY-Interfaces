@@ -11,15 +11,15 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum DigestAlgorithm implements IPlatformEnum {
-    MD5("MD5","MD5", "Message Digest algorithm"),
-    SHA_1("SHA-1","SHA-1", "Secure hash algorithm 1"),
-    SHA_224("SHA-224","SHA-224", "Secure hash algorithm 2 with digest length of 224 bits"),
-    SHA_256("SHA-256", "SHA-256", "Secure hash algorithm 2 with digest length of 256 bits"),
-    SHA_384("SHA-384", "SHA-384", "Secure hash algorithm 2 with digest length of 384 bits"),
-    SHA_512("SHA-512", "SHA-512", "Secure hash algorithm 2 with digest length of 512 bits"),
-    SHA3_256("SHA3-256", "SHA3-256", "Secure hash algorithm 3 with digest length of 256 bits"),
-    SHA3_384("SHA3-384", "SHA3-384", "Secure hash algorithm 3 with digest length of 384 bits"),
-    SHA3_512("SHA3-512", "SHA3-512", "Secure hash algorithm 3 with digest length of 512 bits");
+    MD5("MD5","MD5", "Message Digest algorithm", "MD5"),
+    SHA_1("SHA-1","SHA-1", "Secure hash algorithm 1", "SHA1"),
+    SHA_224("SHA-224","SHA-224", "Secure hash algorithm 2 with digest length of 224 bits", "SHA224"),
+    SHA_256("SHA-256", "SHA-256", "Secure hash algorithm 2 with digest length of 256 bits", "SHA256"),
+    SHA_384("SHA-384", "SHA-384", "Secure hash algorithm 2 with digest length of 384 bits", "SHA384"),
+    SHA_512("SHA-512", "SHA-512", "Secure hash algorithm 2 with digest length of 512 bits", "SHA512"),
+    SHA3_256("SHA3-256", "SHA3-256", "Secure hash algorithm 3 with digest length of 256 bits", "SHA3-256"),
+    SHA3_384("SHA3-384", "SHA3-384", "Secure hash algorithm 3 with digest length of 384 bits", "SHA3-384"),
+    SHA3_512("SHA3-512", "SHA3-512", "Secure hash algorithm 3 with digest length of 512 bits", "SHA3-512");
 
     private static final DigestAlgorithm[] VALUES;
 
@@ -32,11 +32,13 @@ public enum DigestAlgorithm implements IPlatformEnum {
     private final String code;
     private final String label;
     private final String description;
+    private final String providerName;
 
-    DigestAlgorithm(String code, String label, String description) {
+    DigestAlgorithm(String code, String label, String description, String providerName) {
         this.code = code;
         this.label = label;
         this.description = description;
+        this.providerName = providerName;
     }
 
     @Override
@@ -53,6 +55,10 @@ public enum DigestAlgorithm implements IPlatformEnum {
     @Override
     public String getDescription() {
         return this.description;
+    }
+
+    public String getProviderName() {
+        return this.providerName;
     }
 
     @JsonCreator
