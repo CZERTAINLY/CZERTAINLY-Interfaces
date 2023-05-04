@@ -10,9 +10,7 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarge
 import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.data.ProgrammingLanguageEnum;
-import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
-import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
-import com.czertainly.api.model.common.enums.cryptography.KeyType;
+import com.czertainly.api.model.common.enums.cryptography.*;
 import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import com.czertainly.api.model.core.auth.Resource;
@@ -59,7 +57,7 @@ public enum PlatformEnum implements IPlatformEnum {
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
 
     // keys & tokens
-    CRYPTOGRAPHIC_ALGORITHM(KeyAlgorithm.class, "Cryptographic algorithm"),
+    KEY_ALGORITHM(KeyAlgorithm.class, "Cryptographic key algorithm"),
     KEY_FORMAT(KeyFormat.class, "Key format type"),
     KEY_STATE(KeyState.class, "Key state"),
     KEY_TYPE(KeyType.class, "Key type"),
@@ -67,6 +65,9 @@ public enum PlatformEnum implements IPlatformEnum {
     KEY_REQUEST_TYPE(KeyRequestType.class, "Key request type"),
     KEY_COMPROMISE_REASON(KeyCompromiseReason.class, "Key compromise reason"),
     TOKEN_STATUS(TokenInstanceStatus.class, "Token instance status"),
+    DIGEST_ALGORITHM(DigestAlgorithm.class, "Digest algorithm"),
+    RSA_SIGNATURE_SCHEME(RsaSignatureScheme.class, "RSA signature scheme"),
+    RSA_ENCRYPTION_SCHEME(RsaEncryptionScheme.class, "RSA encryption scheme"),
 
     // compliance
     COMPLIANCE_STATUS(ComplianceStatus.class, "Compliance status"),
