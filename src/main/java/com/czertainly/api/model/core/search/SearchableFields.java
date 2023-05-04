@@ -1,9 +1,9 @@
 package com.czertainly.api.model.core.search;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
-import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
-import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
+import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
+import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.core.certificate.CertificateStatus;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.cryptography.key.KeyState;
@@ -57,7 +57,7 @@ public enum SearchableFields {
     CKI_STATE("state", KeyState.class),
     CKI_LENGTH("length", null),
     CKI_USAGE("usage", KeyUsage.class),
-    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", CryptographicAlgorithm.class),
+    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", KeyAlgorithm.class),
     DISCOVERY_STATUS("status", DiscoveryStatus.class),
 
     ENTITY_NAME("entityInstanceReference.name", null),

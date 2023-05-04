@@ -3,9 +3,9 @@ package com.czertainly.api.model.core.cryptography.key;
 import com.czertainly.api.model.client.cryptography.key.KeyCompromiseReason;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
-import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
-import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
+import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
+import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -34,7 +34,7 @@ public class KeyItemDetailDto extends NameAndUuidDto {
             description = "Key Algorithm",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private CryptographicAlgorithm cryptographicAlgorithm;
+    private KeyAlgorithm cryptographicAlgorithm;
 
     @Schema(
             description = "Key Format"

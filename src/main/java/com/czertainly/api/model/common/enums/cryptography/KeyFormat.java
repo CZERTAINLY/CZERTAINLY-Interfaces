@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.cryptography.enums;
+package com.czertainly.api.model.common.enums.cryptography;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
@@ -23,27 +23,16 @@ public enum KeyFormat implements IPlatformEnum {
         VALUES = values();
     }
 
+    @Schema(description = "Key format code",
+            example = "Raw", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
-
-    KeyFormat(String code, String label) {
-        this(code, label,null);
-    }
 
     KeyFormat(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
-    }
-
-    @JsonCreator
-    public static KeyFormat findByCode(String code) {
-        return Arrays.stream(VALUES)
-                .filter(k -> k.code.equals(code))
-                .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Key Format {}", code)));
     }
 
     @Override
@@ -62,4 +51,12 @@ public enum KeyFormat implements IPlatformEnum {
         return this.description;
     }
 
+    @JsonCreator
+    public static KeyFormat findByCode(String code) {
+        return Arrays.stream(VALUES)
+                .filter(k -> k.code.equals(code))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ValidationException(ValidationError.create("Unknown key format code {}", code)));
+    }
 }

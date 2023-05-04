@@ -10,9 +10,9 @@ import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarge
 import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.data.ProgrammingLanguageEnum;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
-import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
-import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
+import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
+import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import com.czertainly.api.model.core.auth.Resource;
@@ -59,7 +59,7 @@ public enum PlatformEnum implements IPlatformEnum {
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
 
     // keys & tokens
-    CRYPTOGRAPHIC_ALGORITHM(CryptographicAlgorithm.class, "Cryptographic algorithm"),
+    CRYPTOGRAPHIC_ALGORITHM(KeyAlgorithm.class, "Cryptographic algorithm"),
     KEY_FORMAT(KeyFormat.class, "Key format type"),
     KEY_STATE(KeyState.class, "Key state"),
     KEY_TYPE(KeyType.class, "Key type"),

@@ -1,4 +1,4 @@
-package com.czertainly.api.model.common.collection;
+package com.czertainly.api.model.common.enums.cryptography;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum DigestAlgorithm implements IPlatformEnum {
     MD5("MD5","MD5", "Message Digest algorithm"),
     SHA_1("SHA-1","SHA-1", "Secure hash algorithm 1"),

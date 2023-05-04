@@ -1,15 +1,17 @@
-package com.czertainly.api.model.common.collection;
+package com.czertainly.api.model.common.enums.cryptography;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
+@Schema(enumAsRef = true)
 public enum RsaSignatureScheme implements IPlatformEnum {
-    PKCS1_V15("PKCS1_V15", "PKCS#1 v1.5", "Deterministic RSA signature scheme"),
+    PKCS1_v1_5("PKCS1-v1_5", "PKCS#1 v1.5", "Deterministic RSA signature scheme"),
     PSS("PSS", "PSS", "Probabilistic RSA signature scheme");
 
     private static final RsaSignatureScheme[] VALUES;

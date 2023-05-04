@@ -5,7 +5,7 @@ import com.czertainly.api.model.client.cryptography.operations.*;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -77,7 +77,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
-            @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
+            @Parameter(description = "Cryptographic algorithm") @PathVariable KeyAlgorithm algorithm
     ) throws ConnectorException;
 
     @Operation(
@@ -164,7 +164,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key instance UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
-            @Parameter(description = "Cryptographic algorithm") @PathVariable CryptographicAlgorithm algorithm
+            @Parameter(description = "Cryptographic algorithm") @PathVariable KeyAlgorithm algorithm
     ) throws ConnectorException;
 
 
