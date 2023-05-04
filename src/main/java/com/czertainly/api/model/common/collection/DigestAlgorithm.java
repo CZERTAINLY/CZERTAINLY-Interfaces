@@ -2,27 +2,23 @@ package com.czertainly.api.model.common.collection;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
-import com.czertainly.api.model.common.attribute.v2.content.StringAttributeContent;
-import com.czertainly.api.model.core.cryptography.key.KeyUsage;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.springframework.lang.Nullable;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public enum DigestAlgorithm {
-    MD5(1,"MD5", "Message Digest algorithm", "MD5"),
-    SHA_1(2,"SHA-1", "Secure hash algorithm 1", "SHA1"),
-    SHA_224(3,"SHA-224", "Secure hash algorithm 2 with digest length of 224 bits", "SHA224"),
-    SHA_256(4, "SHA-256", "Secure hash algorithm 2 with digest length of 256 bits", "SHA256"),
-    SHA_384(5, "SHA-384", "Secure hash algorithm 2 with digest length of 384 bits", "SHA384"),
-    SHA_512(6, "SHA-512", "Secure hash algorithm 2 with digest length of 512 bits", "SHA512"),
-    SHA3_256(7, "SHA3-256", "Secure hash algorithm 3 with digest length of 256 bits", "SHA3-256"),
-    SHA3_384(8, "SHA3-384", "Secure hash algorithm 3 with digest length of 384 bits", "SHA3-384"),
-    SHA3_512(9, "SHA3-512", "Secure hash algorithm 3 with digest length of 512 bits", "SHA3-512");
+public enum DigestAlgorithm implements IPlatformEnum {
+    MD5("MD5","MD5", "Message Digest algorithm"),
+    SHA_1("SHA-1","SHA-1", "Secure hash algorithm 1"),
+    SHA_224("SHA-224","SHA-224", "Secure hash algorithm 2 with digest length of 224 bits"),
+    SHA_256("SHA-256", "SHA-256", "Secure hash algorithm 2 with digest length of 256 bits"),
+    SHA_384("SHA-384", "SHA-384", "Secure hash algorithm 2 with digest length of 384 bits"),
+    SHA_512("SHA-512", "SHA-512", "Secure hash algorithm 2 with digest length of 512 bits"),
+    SHA3_256("SHA3-256", "SHA3-256", "Secure hash algorithm 3 with digest length of 256 bits"),
+    SHA3_384("SHA3-384", "SHA3-384", "Secure hash algorithm 3 with digest length of 384 bits"),
+    SHA3_512("SHA3-512", "SHA3-512", "Secure hash algorithm 3 with digest length of 512 bits");
 
     private static final DigestAlgorithm[] VALUES;
 
@@ -30,77 +26,40 @@ public enum DigestAlgorithm {
         VALUES = values();
     }
 
-    private final int id;
-    private final String name;
+    @Schema(description = "Digest algorithm code",
+            example = "SHA-1", requiredMode = Schema.RequiredMode.REQUIRED)
+    private final String code;
+    private final String label;
     private final String description;
-    private final String providerName;
 
-    DigestAlgorithm(int id, String name, String description, String providerName) {
-        this.id = id;
-        this.name = name;
+    DigestAlgorithm(String code, String label, String description) {
+        this.code = code;
+        this.label = label;
         this.description = description;
-        this.providerName = providerName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    @JsonValue
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getProviderName() {
-        return providerName;
     }
 
     @Override
-    public String toString() {
-        return name();
+    @JsonValue
+    public String getCode() {
+        return this.code;
     }
 
-    public static DigestAlgorithm valueOf(int id) {
-        DigestAlgorithm item = resolve(id);
-        if (item == null) {
-            throw new IllegalArgumentException("No matching constant for [" + id + "]");
-        }
-        return item;
+    @Override
+    public String getLabel() {
+        return this.label;
     }
 
-    @Nullable
-    public static DigestAlgorithm resolve(int id) {
-        // Use cached VALUES instead of values() to prevent array allocation.
-        for (DigestAlgorithm item : VALUES) {
-            if (item.id == id) {
-                return item;
-            }
-        }
-        return null;
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 
     @JsonCreator
     public static DigestAlgorithm findByCode(String code) {
-        return Arrays.stream(DigestAlgorithm.values())
-                .filter(k -> k.name.equals(code))
+        return Arrays.stream(VALUES)
+                .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown code {}", code)));
-    }
-
-    public static List<BaseAttributeContent> asStringAttributeContentList() {
-        return List.of(values()).stream()
-                .map(item -> new StringAttributeContent(item.name(), item.getName()))
-                .collect(Collectors.toList());
-    }
-
-    public static List<BaseAttributeContent> asStringAttributeContentWithIdReferenceList() {
-        return List.of(values()).stream()
-                .map(item -> new StringAttributeContent(Integer.toString(item.getId()), item.getName()))
-                .collect(Collectors.toList());
+                        new ValidationException(ValidationError.create("Unknown digest algorithm code {}", code)));
     }
 }
