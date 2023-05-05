@@ -23,6 +23,8 @@ public class ScepProfileDto extends NameAndUuidDto {
     private boolean includeCaCertificateChain;
     @Schema(description = "Renewal time threshold in days", example = "30")
     private Integer renewThreshold;
+    @Schema(description = "SCEP URL", example = "https://some-server.com/api/v1/protocols/scep/profile/pkiclient.exe")
+    private String scepUrl;
 
     @Schema(description = "Status of Intune")
     private boolean enableIntune;
