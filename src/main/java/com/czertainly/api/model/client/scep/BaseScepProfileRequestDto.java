@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 public class BaseScepProfileRequestDto {
@@ -64,10 +63,7 @@ public class BaseScepProfileRequestDto {
     )
     private boolean includeCaCertificateChain;
 
-    @Schema(
-            description = "Challenge Password for the SCEP Request",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Challenge Password for the SCEP Request")
     private String challengePassword;
 
     @Schema(description = "Status of Intune")
