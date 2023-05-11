@@ -88,7 +88,7 @@ public interface ClientOperationController {
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate issued"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path = "/certificates/{certificateUuid}/issue", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+	@RequestMapping(path = "/certificates/{certificateUuid}/issue", method = RequestMethod.POST, produces = {"application/json"})
 	ClientCertificateDataResponseDto issueCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
