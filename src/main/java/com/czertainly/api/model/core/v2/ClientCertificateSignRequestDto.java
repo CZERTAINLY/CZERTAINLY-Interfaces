@@ -61,14 +61,4 @@ public class ClientCertificateSignRequestDto {
     )
     private List<RequestAttributeDto> customAttributes;
 
-    //------------------------------------------------------------------------------------------------------------------
-    // Existing Certificate Entity
-    // Set the UUID of the following property to the existing certificate that is in the New state and ready to be issued
-    //------------------------------------------------------------------------------------------------------------------
-
-    @Schema(
-            description = "UUID of CSR Entity to be signed"
-    )
-    private UUID uuid;
-
 }
