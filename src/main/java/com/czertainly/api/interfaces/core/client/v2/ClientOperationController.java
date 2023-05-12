@@ -84,12 +84,12 @@ public interface ClientOperationController {
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "Issue Certificate")
+	@Operation(summary = "Issue existing certificate with status New")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate issued"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/certificates/{certificateUuid}/issue", method = RequestMethod.POST, produces = {"application/json"})
-	ClientCertificateDataResponseDto issueCertificate(
+	ClientCertificateDataResponseDto issueNewCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, NoSuchAlgorithmException;
