@@ -28,7 +28,6 @@ public class CertificateInLocationDto {
 
     @Schema(
             description = "Metadata of the Certificate in Location",
-            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<MetadataResponseDto> metadata;
 
