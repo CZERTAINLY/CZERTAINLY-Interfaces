@@ -27,13 +27,6 @@ public class BaseScepProfileRequestDto {
     private List<RequestAttributeDto> issueCertificateAttributes;
 
     @Schema(
-            description = "Require manual approval for SCEP requests",
-            defaultValue = "false",
-            example = "true"
-    )
-    private Boolean requireManualApproval;
-
-    @Schema(
             description = "UUID of the Certificate to be used as CA Certificate for SCEP Requests",
             requiredMode = Schema.RequiredMode.REQUIRED
     )

@@ -11,8 +11,6 @@ public class ScepProfileDto extends NameAndUuidDto {
     private boolean enabled;
     @Schema(description = "SCEP Profile description", example = "Sample description")
     private String description;
-    @Schema(description = "Enforce manual approval for all requests", requiredMode = Schema.RequiredMode.REQUIRED)
-    private boolean requireManualApproval;
     @Schema(description = "Name of the RA Profile", example = "RA Profile 1")
     private String raProfileName;
     @Schema(description = "UUID of RA Profile", example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
