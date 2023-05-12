@@ -27,7 +27,7 @@ public class CertificateInLocationDto {
     private String serialNumber;
 
     @Schema(
-            description = "Metadata of the Certificate in Location",
+            description = "Metadata of the Certificate in Location"
     )
     private List<MetadataResponseDto> metadata;
 
