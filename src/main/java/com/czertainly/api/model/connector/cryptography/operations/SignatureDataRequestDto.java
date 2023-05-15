@@ -16,7 +16,7 @@ import java.util.List;
 public class SignatureDataRequestDto {
 
     @Schema(
-            description = "List of cipher Attributes",
+            description = "List of signature Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> signatureAttributes;

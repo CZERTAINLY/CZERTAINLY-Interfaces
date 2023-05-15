@@ -16,13 +16,14 @@ import java.util.List;
 public class SignDataRequestDto {
 
     @Schema(
-            description = "List of cipher Attributes",
+            description = "List of signature Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RequestAttributeDto> signatureAttributes;
 
     @Schema(
-            description = "Data to be signed"
+            description = "Data to be signed",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<SignatureRequestData> data;
 

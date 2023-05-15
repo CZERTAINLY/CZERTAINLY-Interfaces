@@ -16,7 +16,8 @@ import java.util.List;
 public class SignDataRequestDto extends SignatureDataRequestDto {
 
     @Schema(
-            description = "Data to be signed"
+            description = "Data to be signed",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<SignatureRequestData> data;
 
