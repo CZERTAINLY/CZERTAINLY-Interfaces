@@ -75,20 +75,30 @@ public interface ClientOperationController {
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate issue Certificate Attributes")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated"),
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes validated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/attributes/issue/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	void validateIssueCertificateAttributes(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
 
-	@Operation(summary = "Issue Certificate")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate issued"),
+	@Operation(summary = "Issue existing certificate with status New")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate issued"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-	@RequestMapping(path= "/certificates", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+	@RequestMapping(path = "/certificates/{certificateUuid}/issue", method = RequestMethod.POST, produces = {"application/json"})
+	ClientCertificateDataResponseDto issueNewCertificate(
+			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
+			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, NoSuchAlgorithmException;
+
+	@Operation(summary = "Issue Certificate")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate issued"),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+	@RequestMapping(path = "/certificates", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	ClientCertificateDataResponseDto issueCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,

@@ -1,9 +1,9 @@
 package com.czertainly.api.model.connector.cryptography.key;
 
 import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
-import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
-import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
+import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
+import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.connector.cryptography.key.value.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -32,7 +32,7 @@ public class KeyData {
             description = "Cryptographic algorithm of the Key",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private CryptographicAlgorithm algorithm;
+    private KeyAlgorithm algorithm;
 
     @Schema(
             description = "Format of the Key",

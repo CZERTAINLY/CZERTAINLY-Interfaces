@@ -2,7 +2,7 @@ package com.czertainly.core.util;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
+import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
 import com.czertainly.api.model.connector.cryptography.key.value.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
