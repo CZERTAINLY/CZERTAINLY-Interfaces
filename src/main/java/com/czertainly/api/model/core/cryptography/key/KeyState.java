@@ -16,7 +16,7 @@ public enum KeyState implements IPlatformEnum {
     DEACTIVATED("deactivated", "Deactivated"),
     COMPROMISED("compromised", "Compromised"),
     DESTROYED("destroyed", "Destroyed"),
-    COMPROMISED_DESTROYED("compromisedDestroyed", "Compromised Destroyed");
+    DESTROYED_COMPROMISED("destroyedCompromised", "Destroyed Compromised");
 
     private static final KeyState[] VALUES;
 
