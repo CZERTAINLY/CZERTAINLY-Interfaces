@@ -4,10 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class SchedulerJobDetail {
+public class SchedulerJobDto {
+
+    private UUID uuidJob;
 
     private String jobName;
 
@@ -15,7 +19,7 @@ public class SchedulerJobDetail {
 
     private String classNameToBeExecuted;
 
-    public SchedulerJobDetail(String jobName, String cronExpression, String classNameToBeExecuted) {
+    public SchedulerJobDto(String jobName, String cronExpression, String classNameToBeExecuted) {
         this.jobName = jobName;
         this.cronExpression = cronExpression;
         this.classNameToBeExecuted = classNameToBeExecuted;

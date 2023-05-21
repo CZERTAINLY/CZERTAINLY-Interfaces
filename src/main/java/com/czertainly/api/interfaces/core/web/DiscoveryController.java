@@ -12,6 +12,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
+import com.czertainly.api.model.scheduler.SchedulerJobInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -119,4 +120,13 @@ public interface DiscoveryController {
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Discovery searchable field information retrieved")})
 	@RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
 	List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
+
+	@Operation(summary = "Schedule Discovery")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Discovery Scheduled", content = @Content(schema = @Schema(implementation = UuidDto.class))),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
+	@RequestMapping(path = "/schedule", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+	void scheduleDiscovery(@RequestBody SchedulerJobInfoDto schedulerJobInfoDto, @RequestBody DiscoveryDto request)
+			throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException;
+
 }

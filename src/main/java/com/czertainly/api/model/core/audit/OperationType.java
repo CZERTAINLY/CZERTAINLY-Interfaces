@@ -22,5 +22,6 @@ public enum OperationType {
     DECRYPT,
     SIGN,
     VERIFY,
-    APPROVE;
+    APPROVE,
+    UPDATE;
 }
