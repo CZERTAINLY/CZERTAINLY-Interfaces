@@ -1,5 +1,6 @@
-package com.czertainly.api.model.scheduler;
+package com.czertainly.api.model.core.scheduler;
 
+import com.czertainly.api.model.scheduler.SchedulerJobExecutionStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SchedulerJobHistoryDto {
+public class ScheduledJobHistoryDto {
 
     private UUID jobUuid;
 

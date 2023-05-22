@@ -1,5 +1,6 @@
-package com.czertainly.api.model.scheduler;
+package com.czertainly.api.model.core.scheduler;
 
+import com.czertainly.api.model.scheduler.SchedulerJobDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

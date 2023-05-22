@@ -1,4 +1,4 @@
-package com.czertainly.api.model.scheduler;
+package com.czertainly.api.model.core.scheduler;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SchedulerJobDetailDto {
+public class ScheduledJobDetailDto {
 
     private UUID jobUuid;
 

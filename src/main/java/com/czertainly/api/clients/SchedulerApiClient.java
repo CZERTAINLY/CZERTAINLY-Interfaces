@@ -1,8 +1,8 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.model.scheduler.SchedulerRequestDto;
-import com.czertainly.api.model.scheduler.SchedulerResponseDto;
+import com.czertainly.api.model.core.scheduler.SchedulerRequestDto;
+import com.czertainly.api.model.core.scheduler.SchedulerResponseDto;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;

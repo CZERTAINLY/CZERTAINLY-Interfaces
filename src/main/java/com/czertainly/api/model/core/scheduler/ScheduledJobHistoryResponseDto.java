@@ -1,4 +1,4 @@
-package com.czertainly.api.model.scheduler;
+package com.czertainly.api.model.core.scheduler;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -9,6 +9,6 @@ import java.util.List;
 public class ScheduledJobHistoryResponseDto extends PaginationResponseDto {
 
     @Schema(description = "Scheduled job history", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<SchedulerJobHistoryDto> schedulerJobHistoryDtoList;
+    private List<ScheduledJobHistoryDto> scheduledJobHistory;
 
 }

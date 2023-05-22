@@ -12,7 +12,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
-import com.czertainly.api.model.scheduler.SchedulerJobInfoDto;
+import com.czertainly.api.model.core.scheduler.SchedulerJobInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

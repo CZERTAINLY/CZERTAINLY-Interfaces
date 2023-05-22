@@ -1,4 +1,4 @@
-package com.czertainly.api.model.scheduler;
+package com.czertainly.api.model.core.scheduler;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
