@@ -15,7 +15,7 @@ public class SchedulerResponseDto {
 
     private String schedulerName;
 
-    private List<SchedulerJobDetail> schedulerDetailList;
+    private List<SchedulerJobDto> schedulerJobList;
 
     public SchedulerResponseDto(SchedulerStatus schedulerStatus) {
         this.schedulerStatus = schedulerStatus;
