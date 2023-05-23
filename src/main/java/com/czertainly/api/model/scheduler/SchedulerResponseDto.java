@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.scheduler;
+package com.czertainly.api.model.scheduler;
 
 import com.czertainly.api.model.scheduler.SchedulerJobDto;
 import com.czertainly.api.model.scheduler.SchedulerStatus;

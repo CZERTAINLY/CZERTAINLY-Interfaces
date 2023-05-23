@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/scheduler/jobs")
-@Tag(name = "Scheduler Management", description = "Scheduler Management API")
+@Tag(name = "Scheduled Jobs Management", description = "Scheduled Jobs Management API")
 public interface SchedulerController {
 
     @Operation(summary = "List of scheduled jobs")

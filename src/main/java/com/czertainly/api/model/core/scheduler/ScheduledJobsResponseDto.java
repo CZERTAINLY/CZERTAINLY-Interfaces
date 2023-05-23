@@ -10,6 +10,6 @@ import java.util.List;
 public class ScheduledJobsResponseDto extends PaginationResponseDto {
 
     @Schema(description = "Scheduled jobs", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<SchedulerJobDto> scheduledJobs;
+    private List<ScheduledJobDto> scheduledJobs;
 
 }
