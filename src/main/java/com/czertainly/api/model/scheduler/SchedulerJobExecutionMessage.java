@@ -11,16 +11,12 @@ import lombok.Setter;
 public class SchedulerJobExecutionMessage {
 
     @JsonProperty
-    private Long jobID;
-
-    @JsonProperty
     private String jobName;
 
     @JsonProperty
     private String classToBeExecuted;
 
-    public SchedulerJobExecutionMessage(final Long jobID, final String jobName, final String classToBeExecuted) {
-        this.jobID = jobID;
+    public SchedulerJobExecutionMessage(final String jobName, final String classToBeExecuted) {
         this.jobName = jobName;
         this.classToBeExecuted = classToBeExecuted;
     }
@@ -28,8 +24,7 @@ public class SchedulerJobExecutionMessage {
     @Override
     public String toString() {
         return super.getClass().getName()
-                + "(jobID=" + jobID
-                + ", jobName=" + jobName
+                + "(jobName=" + jobName
                 + ", classToBeExecuted=" + classToBeExecuted
                 + ")";
     }
