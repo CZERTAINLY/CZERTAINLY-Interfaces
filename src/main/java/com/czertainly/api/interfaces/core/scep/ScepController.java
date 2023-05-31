@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.scep;
 
 import com.czertainly.api.exception.ScepException;
 import com.czertainly.api.model.core.acme.ProblemDocument;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -48,21 +49,21 @@ import org.springframework.web.bind.annotation.*;
         })
 public interface ScepController {
 
-    @Operation(summary = "SCEP Get Operations")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed")})
+    @Operation(summary = "SCEP Get Operations", externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1", url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed", content = @Content(schema = @Schema(description = "Response structure defined in RFC 8894, section 4", type = "string", format = "binary")))})
     @RequestMapping(method = RequestMethod.GET)
     ResponseEntity<Object> doGet(
             @PathVariable String scepProfileName,
             @RequestParam String operation,
-            @RequestParam(required = false) String message
+            @RequestParam(required = false) @Schema(description = "Base64 encoded CMS data") String message
     ) throws ScepException;
 
-    @Operation(summary = "SCEP Post Operations")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed")})
+    @Operation(summary = "SCEP Post Operations", externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1", url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed", content = @Content(schema = @Schema(description = "Response structure defined in RFC 8894, section 4", type = "string", format = "binary")))})
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
     ResponseEntity<Object> doPost(
             @PathVariable String scepProfileName,
             @RequestParam String operation,
-            @RequestBody byte[] request
+            @RequestBody @Schema(description = "Binary CMS data", type = "string", format = "binary") byte[] request
     ) throws ScepException;
 }
