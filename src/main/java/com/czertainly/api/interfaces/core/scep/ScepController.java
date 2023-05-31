@@ -1,7 +1,6 @@
 package com.czertainly.api.interfaces.core.scep;
 
 import com.czertainly.api.exception.ScepException;
-import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.acme.ProblemDocument;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
