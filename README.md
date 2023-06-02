@@ -41,5 +41,9 @@ You can find the detailed description of the interfaces in the following section
 `Protocol` interfaces can be used to create a custom implementation and behaviour for standard certificate management protocols.
 
 The following interfaces are available:
+
 - [ACME interface](src/main/java/com/czertainly/api/interfaces/core/acme/AcmeController.java)
 - [RA Profile ACME interface](src/main/java/com/czertainly/api/interfaces/core/acme/AcmeRaProfileController.java)
+
+- [SCEP interface](src/main/java/com/czertainly/api/interfaces/core/scep/ScepController.java)
+- [RA Profile SCEP interface](src/main/java/com/czertainly/api/interfaces/core/scep/ScepRaProfileController.java)
