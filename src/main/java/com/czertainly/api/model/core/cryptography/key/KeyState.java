@@ -2,7 +2,7 @@ package com.czertainly.api.model.core.cryptography.key;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,38 +10,58 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum KeyState implements IAbstractSearchableEnum {
-    PRE_ACTIVE("pre-active"),
-    ACTIVE("active"),
-    DEACTIVATED("deactivated"),
-    COMPROMISED("compromised"),
-    DESTROYED("destroyed"),
-    COMPROMISED_DESTROYED("compromisedDestroyed");
+public enum KeyState implements IPlatformEnum {
+    PRE_ACTIVE("pre-active", "Pre-active"),
+    ACTIVE("active", "Active"),
+    DEACTIVATED("deactivated", "Deactivated"),
+    COMPROMISED("compromised", "Compromised"),
+    DESTROYED("destroyed", "Destroyed"),
+    DESTROYED_COMPROMISED("destroyedCompromised", "Destroyed Compromised");
 
-    @Schema(description = "Type of the key to be generated",
-            example = "secret", requiredMode = Schema.RequiredMode.REQUIRED)
+    private static final KeyState[] VALUES;
+
+    static {
+        VALUES = values();
+    }
+
+    @Schema(description = "State of the key",
+            example = "active", requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
+    private final String label;
+    private final String description;
 
-    KeyState(String code) {
+    KeyState(String code, String label) {
+        this(code, label,null);
+    }
+
+    KeyState(String code, String label, String description) {
         this.code = code;
+        this.label = label;
+        this.description = description;
     }
 
     @JsonCreator
     public static KeyState findByCode(String code) {
-        return Arrays.stream(KeyState.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown code {}", code)));
+                        new ValidationException(ValidationError.create("Unknown key state {}", code)));
     }
 
+    @Override
     @JsonValue
     public String getCode() {
         return this.code;
     }
 
     @Override
-    public String getEnumLabel() {
-        return code;
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
     }
 }

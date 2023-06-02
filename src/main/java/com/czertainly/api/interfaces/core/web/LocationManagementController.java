@@ -4,6 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.model.client.certificate.LocationsResponseDto;
+import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.location.AddLocationRequestDto;
 import com.czertainly.api.model.client.location.EditLocationRequestDto;
 import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
@@ -13,6 +15,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.location.LocationDto;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -85,12 +88,15 @@ public interface LocationManagementController {
             })
     @RequestMapping(
             path = "/locations",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
             produces = {"application/json"}
     )
-    List<LocationDto> listLocations(
-            @RequestParam Optional<Boolean> enabled
-    );
+    LocationsResponseDto listLocations(@RequestBody SearchRequestDto request);
+
+    @Operation(summary = "Get Locations searchable fields information")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Locations searchable field information retrieved")})
+    @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
+    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(
             summary = "Add Location"

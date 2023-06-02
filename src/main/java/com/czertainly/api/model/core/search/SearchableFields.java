@@ -1,28 +1,26 @@
 package com.czertainly.api.model.core.search;
 
-import com.czertainly.api.model.connector.cryptography.enums.IAbstractSearchableEnum;
-import com.czertainly.api.model.connector.cryptography.enums.CryptographicAlgorithm;
-import com.czertainly.api.model.connector.cryptography.enums.KeyFormat;
-import com.czertainly.api.model.connector.cryptography.enums.KeyType;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
+import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
+import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.core.certificate.CertificateStatus;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
+import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Schema(enumAsRef = true)
 public enum SearchableFields {
     COMMON_NAME("commonName", null),
     SERIAL_NUMBER("serialNumber", null),
     RA_PROFILE_NAME("raProfile.name", null),
-    ENTITY_NAME("entity", null),
     STATUS("status", CertificateStatus.class),
     COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class),
     GROUP_NAME("group.name", null),
@@ -44,8 +42,12 @@ public enum SearchableFields {
     OCSP_VALIDATION("ocspValidation", null),
     CRL_VALIDATION("crlValidation", null),
     SIGNATURE_VALIDATION("signatureValidation", null),
-
-    CK_NAME("name", null),
+    START_TIME("startTime", null),
+    END_TIME("endTime", null),
+    TOTAL_CERT_DISCOVERED("totalCertificatesDiscovered", null),
+    CONNECTOR_NAME("connectorName", null),
+    KIND("kind", null),
+    NAME("name", null),
     CK_GROUP("cryptographicKey.group.name", null),
     CK_OWNER("cryptographicKey.owner", null),
     CK_TOKEN_PROFILE("cryptographicKey.tokenProfile.name", null),
@@ -55,12 +57,20 @@ public enum SearchableFields {
     CKI_STATE("state", KeyState.class),
     CKI_LENGTH("length", null),
     CKI_USAGE("usage", KeyUsage.class),
-    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", CryptographicAlgorithm.class)
-    ;
+    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", KeyAlgorithm.class),
+    DISCOVERY_STATUS("status", DiscoveryStatus.class),
+
+    ENTITY_NAME("entityInstanceReference.name", null),
+    ENTITY_CONNECTOR_NAME("entityInstanceReference.connectorName", null),
+    ENTITY_KIND("entityInstanceReference.kind", null),
+    ENTITY_INSTANCE_NAME("entityInstanceName", null),
+    ENABLED("enabled", null),
+    SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null),
+    SUPPORT_KEY_MANAGEMENT("supportKeyManagement", null);
 
     private final String field;
 
-    private final Class<? extends IAbstractSearchableEnum> enumClass;
+    private final Class<? extends IPlatformEnum> enumClass;
 
 
     private final Map<String, String> nativeCodeMap = Stream.of(new String[][]{
@@ -92,7 +102,7 @@ public enum SearchableFields {
 
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-    SearchableFields(String string, Class<? extends IAbstractSearchableEnum> enumClass) {
+    SearchableFields(String string, Class<? extends IPlatformEnum> enumClass) {
         this.field = string;
         this.enumClass = enumClass;
     }
@@ -106,7 +116,7 @@ public enum SearchableFields {
         return nativeCodeMap.get(field);
     }
 
-    public Class<? extends IAbstractSearchableEnum> getEnumClass() {
+    public Class<? extends IPlatformEnum> getEnumClass() {
         return enumClass;
     }
 
@@ -117,4 +127,4 @@ public enum SearchableFields {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", field)));
     }
-    }
+}

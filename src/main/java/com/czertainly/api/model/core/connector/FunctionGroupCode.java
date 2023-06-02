@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.connector;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,32 +10,57 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum FunctionGroupCode {
+public enum FunctionGroupCode implements IPlatformEnum {
 
-    CREDENTIAL_PROVIDER("credentialProvider"),
-    LEGACY_AUTHORITY_PROVIDER("legacyAuthorityProvider"),
-    AUTHORITY_PROVIDER("authorityProvider"),
-    DISCOVERY_PROVIDER("discoveryProvider"),
-    ENTITY_PROVIDER("entityProvider"),
-    COMPLIANCE_PROVIDER("complianceProvider"),
-    CRYPTOGRAPHY_PROVIDER("cryptographyProvider");
+    CREDENTIAL_PROVIDER("credentialProvider", "Credential Provider"),
+    LEGACY_AUTHORITY_PROVIDER("legacyAuthorityProvider", "Legacy Authority Provider"),
+    AUTHORITY_PROVIDER("authorityProvider", "Authority Provider"),
+    DISCOVERY_PROVIDER("discoveryProvider", "Discovery Provider"),
+    ENTITY_PROVIDER("entityProvider", "Entity Provider"),
+    COMPLIANCE_PROVIDER("complianceProvider", "Compliance Provider"),
+    CRYPTOGRAPHY_PROVIDER("cryptographyProvider", "Cryptography Provider");
+
+    private static final FunctionGroupCode[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     @Schema(description = "Function Group code of the Connector",
             example = "credentialProvider", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String code;
+    private final String code;
+    private final String label;
+    private final String description;
 
-    FunctionGroupCode(String code) {
-        this.code = code;
+    FunctionGroupCode(String code, String label) {
+        this(code, label,null);
     }
 
+    FunctionGroupCode(String code, String label, String description) {
+        this.code = code;
+        this.label = label;
+        this.description = description;
+    }
+
+    @Override
     @JsonValue
     public String getCode() {
         return this.code;
     }
 
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
+
     @JsonCreator
     public static FunctionGroupCode findByCode(String code) {
-        return Arrays.stream(FunctionGroupCode.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
