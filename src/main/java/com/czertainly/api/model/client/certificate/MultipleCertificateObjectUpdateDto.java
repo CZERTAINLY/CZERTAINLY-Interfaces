@@ -19,9 +19,9 @@ public class MultipleCertificateObjectUpdateDto {
     private String groupUuid;
 
     @Schema(
-            description = "Certificate Owner"
+            description = "Certificate Owner UUID"
     )
-    private String owner;
+    private String ownerUuid;
 
     @Schema(
             description = "List of Certificate UUIDs"
@@ -65,12 +65,12 @@ public class MultipleCertificateObjectUpdateDto {
         this.groupUuid = groupUuid;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getOwnerUuid() {
+        return ownerUuid;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerUuid(String ownerUuid) {
+        this.ownerUuid = ownerUuid;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class MultipleCertificateObjectUpdateDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("raProfileUuid", raProfileUuid)
                 .append("groupUuid", groupUuid)
-                .append("owner", owner)
+                .append("ownerUuid", ownerUuid)
                 .append("certificateUuids", certificateUuids)
                 .append("filters", filters)
                 .toString();
