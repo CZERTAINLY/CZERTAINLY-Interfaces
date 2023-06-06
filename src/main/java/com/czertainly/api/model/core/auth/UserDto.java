@@ -24,6 +24,12 @@ public class UserDto {
     @Schema(description = "Description of the user")
     private String description;
 
+    @Schema(description = "Group name of the user")
+    private String groupName;
+
+    @Schema(description = "Group UUID of the user")
+    private String groupUuid;
+
     @Schema(description = "Status of the user. True = Enabled, False = Disabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
@@ -70,9 +76,29 @@ public class UserDto {
         this.email = email;
     }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getGroupUuid() {
+        return groupUuid;
+    }
+
+    public void setGroupUuid(String groupUuid) {
+        this.groupUuid = groupUuid;
+    }
 
     public Boolean getEnabled() {
         return enabled;
@@ -99,6 +125,8 @@ public class UserDto {
                 .append("lastName", lastName)
                 .append("email", email)
                 .append("description", description)
+                .append("group", groupName)
+                .append("groupUuid", groupUuid)
                 .append("enabled", enabled)
                 .append("systemUser", systemUser)
                 .toString();
