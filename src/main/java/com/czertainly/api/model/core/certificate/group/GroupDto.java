@@ -10,8 +10,11 @@ import java.util.List;
 
 public class GroupDto extends NameAndUuidDto {
 
-    @Schema(description = "Description of the Certificate Group")
+    @Schema(description = "Description of the Group")
     private String description;
+
+    @Schema(description = "Group contact email")
+    private String email;
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
@@ -22,6 +25,14 @@ public class GroupDto extends NameAndUuidDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<ResponseAttributeDto> getCustomAttributes() {
@@ -38,6 +49,7 @@ public class GroupDto extends NameAndUuidDto {
                 .append("uuid", uuid)
                 .append("name", name)
                 .append("description", description)
+                .append("email", email)
                 .append("customAttributes", customAttributes)
                 .toString();
     }
