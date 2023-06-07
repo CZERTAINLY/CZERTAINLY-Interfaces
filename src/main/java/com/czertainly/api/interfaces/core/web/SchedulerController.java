@@ -41,13 +41,15 @@ public interface SchedulerController {
     ScheduledJobHistoryResponseDto getScheduledJobHistory(@RequestBody PaginationRequestDto pagination, @Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Enabling of Scheduled job")
-    @ApiResponses(value = { @ApiResponse(responseCode = "206", description = "Scheduled job enabled")})
+    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Scheduled job enabled")})
     @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH)
-    ResponseEntity<?> enableScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void enableScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Disabling of Scheduled job")
-    @ApiResponses(value = { @ApiResponse(responseCode = "206", description = "Scheduled job disabled")})
+    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Scheduled job disabled")})
     @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH)
-    ResponseEntity<?> disableScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void disableScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
 
 }

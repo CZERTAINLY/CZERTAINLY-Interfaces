@@ -208,7 +208,7 @@ public interface ScepProfileController {
 			summary = "Enable SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "200", description = "SCEP Profile enabled") }
+			value = { @ApiResponse(responseCode = "204", description = "SCEP Profile enabled") }
 	)
 	@RequestMapping(
 			path = "/{uuid}/enable",
@@ -225,7 +225,7 @@ public interface ScepProfileController {
 			summary = "Enable multiple SCEP Profiles"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "200", description = "SCEP Profiles enabled") }
+			value = { @ApiResponse(responseCode = "204", description = "SCEP Profiles enabled") }
 	)
 	@RequestMapping(
 			path = "/enable",
@@ -251,7 +251,7 @@ public interface ScepProfileController {
 			summary = "Disable SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "200", description = "SCEP Profile disabled") }
+			value = { @ApiResponse(responseCode = "204", description = "SCEP Profile disabled") }
 	)
 	@RequestMapping(
 			path = "/{uuid}/disable",
@@ -268,7 +268,7 @@ public interface ScepProfileController {
 			summary = "Disable multiple SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "200", description = "SCEP Profiles disabled") }
+			value = { @ApiResponse(responseCode = "204", description = "SCEP Profiles disabled") }
 	)
 	@RequestMapping(
 			path = "/disable",
