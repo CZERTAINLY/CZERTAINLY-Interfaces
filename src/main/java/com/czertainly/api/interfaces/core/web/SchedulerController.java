@@ -31,7 +31,7 @@ public interface SchedulerController {
 
     @Operation(summary = "Delete Scheduled job")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Scheduled job deleted")})
-    @RequestMapping(path = "/{uuid}/delete", method = RequestMethod.DELETE, produces = {"application/json"})
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
 
