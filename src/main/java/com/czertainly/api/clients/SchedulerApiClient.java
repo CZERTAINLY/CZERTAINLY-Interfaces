@@ -17,7 +17,7 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient {
 
     private static final String SCHEDULER_CREATE = "/v1/scheduler/create";
 
-    private static final String SCHEDULER_DELETE = "/v1/scheduler/{jobName}/delete";
+    private static final String SCHEDULER_DELETE = "/v1/scheduler/{jobName}";
 
     private static final String SCHEDULER_ENABLE = "/v1/scheduler/{jobName}/enable";
 
