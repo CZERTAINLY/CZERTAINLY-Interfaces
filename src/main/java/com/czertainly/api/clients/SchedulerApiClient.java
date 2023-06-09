@@ -1,6 +1,6 @@
 package com.czertainly.api.clients;
 
-import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.SchedulerException;
 import com.czertainly.api.model.scheduler.SchedulerRequestDto;
 import com.czertainly.api.model.scheduler.SchedulerResponseDto;
 import lombok.NoArgsConstructor;
@@ -17,15 +17,15 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient {
 
     private static final String SCHEDULER_CREATE = "/v1/scheduler/create";
 
-    private static final String SCHEDULER_DELETE = "/v1/scheduler/delete";
+    private static final String SCHEDULER_DELETE = "/v1/scheduler/{jobName}/delete";
 
-    private static final String SCHEDULER_ENABLE = "/v1/scheduler/enable";
+    private static final String SCHEDULER_ENABLE = "/v1/scheduler/{jobName}/enable";
 
-    private static final String SCHEDULER_DISABLE = "/v1/scheduler/disable";
+    private static final String SCHEDULER_DISABLE = "/v1/scheduler/{jobName}/disable";
 
-    public SchedulerResponseDto schedulerCreate(final SchedulerRequestDto schedulerDto) throws ConnectorException {
+    public void schedulerCreate(final SchedulerRequestDto schedulerDto) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST);
-        return processRequest(r -> r
+        processRequest(r -> r
                         .uri(schedulerBaseUrl + SCHEDULER_CREATE)
                         .body(Mono.just(schedulerDto), SchedulerRequestDto.class)
                         .retrieve()
@@ -34,7 +34,7 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient {
                 request);
     }
 
-    public void deleteScheduledJob(final String jobName) throws ConnectorException {
+    public void deleteScheduledJob(final String jobName) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE);
         processRequest(r -> r
                         .uri(schedulerBaseUrl + SCHEDULER_DELETE, jobName)
@@ -44,7 +44,7 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient {
                 request);
     }
 
-    public void enableScheduledJob(final String jobName) throws ConnectorException {
+    public void enableScheduledJob(final String jobName) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET);
         processRequest(r -> r
                         .uri(schedulerBaseUrl + SCHEDULER_ENABLE, jobName)
@@ -54,7 +54,7 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient {
                 request);
     }
 
-    public void disableScheduledJob(final String jobName) throws ConnectorException {
+    public void disableScheduledJob(final String jobName) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET);
         processRequest(r -> r
                         .uri(schedulerBaseUrl + SCHEDULER_DISABLE, jobName)
