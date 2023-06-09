@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.scheduler;
 
+import com.czertainly.api.model.client.discovery.DiscoveryDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,11 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SchedulerJobInfoDto {
+public class ScheduleDiscoveryDto {
 
     private String jobName;
 
     private String cronExpression;
 
+    private DiscoveryDto request;
 
 }
