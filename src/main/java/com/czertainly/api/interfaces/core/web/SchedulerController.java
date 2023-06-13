@@ -8,6 +8,7 @@ import com.czertainly.api.model.core.scheduler.ScheduledJobHistoryResponseDto;
 import com.czertainly.api.model.core.scheduler.ScheduledJobsResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +23,7 @@ public interface SchedulerController {
     @Operation(summary = "List of scheduled jobs")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of scheduled jobs fetched")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    ScheduledJobsResponseDto listScheduledJobs(@RequestBody PaginationRequestDto pagination);
+    ScheduledJobsResponseDto listScheduledJobs(@Parameter(in = ParameterIn.QUERY) PaginationRequestDto pagination);
 
     @Operation(summary = "Scheduled job detail")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Scheduled job detail retrieved")})
@@ -38,7 +39,7 @@ public interface SchedulerController {
     @Operation(summary = "Scheduled job history")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Scheduled job history retrieved")})
     @RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
-    ScheduledJobHistoryResponseDto getScheduledJobHistory(@RequestBody PaginationRequestDto pagination, @Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
+    ScheduledJobHistoryResponseDto getScheduledJobHistory(@Parameter(in = ParameterIn.QUERY) PaginationRequestDto pagination, @Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Enabling of Scheduled job")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Scheduled job enabled")})
