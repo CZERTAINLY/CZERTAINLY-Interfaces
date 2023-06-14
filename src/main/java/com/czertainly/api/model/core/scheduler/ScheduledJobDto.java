@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.scheduler;
 
+import com.czertainly.api.model.scheduler.SchedulerJobExecutionStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,5 +42,11 @@ public class ScheduledJobDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean oneShotOnly;
+
+    @Schema(
+            description = "Execution status of last job triggered task",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private SchedulerJobExecutionStatus lastExecutionStatus;
 
 }

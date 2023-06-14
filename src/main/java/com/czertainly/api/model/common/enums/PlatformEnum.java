@@ -29,6 +29,7 @@ import com.czertainly.api.model.core.search.SearchCondition;
 import com.czertainly.api.model.core.search.SearchGroup;
 import com.czertainly.api.model.core.search.SearchableFieldType;
 import com.czertainly.api.model.core.settings.SettingsSection;
+import com.czertainly.api.model.scheduler.SchedulerJobExecutionStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -82,6 +83,9 @@ public enum PlatformEnum implements IPlatformEnum {
     ATTRIBUTE_CONSTRAINT_TYPE(AttributeConstraintType.class, "Attribute constraint type"),
     ATTRIBUTE_CALLBACK_VALUE_TARGET(AttributeValueTarget.class, "Attribute callback mapping value target"), // TODO: rename to AttributeCallbackValueTarget
     PROGRAMMING_LANGUAGE(ProgrammingLanguageEnum.class, "Programming language for code block attribute"),
+
+    // Scheduler
+    SCHEDULER_JOB_EXECUTION_STATUS(SchedulerJobExecutionStatus.class, "Scheduled job execution status"),
     ;
 
     private static final PlatformEnum[] VALUES;
