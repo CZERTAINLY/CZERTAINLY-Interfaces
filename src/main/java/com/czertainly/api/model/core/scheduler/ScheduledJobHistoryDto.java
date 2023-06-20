@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.scheduler;
 
+import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.scheduler.SchedulerJobExecutionStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -37,8 +39,18 @@ public class ScheduledJobHistoryDto {
     private SchedulerJobExecutionStatus status;
 
     @Schema(
-            description = "Error message if triggered task failed"
+            description = "Message explaining result status"
     )
-    private String errorMessage;
+    private String resultMessage;
+
+    @Schema(
+            description = "Result object type"
+    )
+    private Resource resultObjectType;
+
+    @Schema(
+            description = "Result object identification (UUID)"
+    )
+    private List<String> resultObjectIdentification;
 
 }

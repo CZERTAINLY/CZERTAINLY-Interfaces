@@ -127,7 +127,7 @@ public interface DiscoveryController {
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/schedule", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	void scheduleDiscovery(@RequestBody ScheduleDiscoveryDto scheduleDiscoveryDto)
+	ResponseEntity<?> scheduleDiscovery(@RequestBody ScheduleDiscoveryDto scheduleDiscoveryDto)
             throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException, SchedulerException;
 
 }

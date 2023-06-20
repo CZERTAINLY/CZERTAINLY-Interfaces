@@ -14,6 +14,8 @@ public class ScheduleDiscoveryDto {
 
     private String cronExpression;
 
+    private boolean oneTime;
+
     private DiscoveryDto request;
 
 }
