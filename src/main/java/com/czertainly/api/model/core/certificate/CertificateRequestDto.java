@@ -35,10 +35,10 @@ public class CertificateRequestDto {
     private String signatureAlgorithm;
 
     @Schema(
-            description = "Base64 encoded Certificate content",
+            description = "Certificate request content",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String certificateContent;
+    private String content;
 
     @Schema(
             description = "Certificate common name",
