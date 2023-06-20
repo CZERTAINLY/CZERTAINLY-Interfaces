@@ -1,8 +1,49 @@
 package com.czertainly.api.model.core.enums;
 
-public enum CertificateRequestFormat {
+import com.czertainly.api.model.common.enums.IPlatformEnum;
 
-    PKCS10;
+import java.util.Arrays;
 
+public enum CertificateRequestFormat implements IPlatformEnum {
 
+    PKCS10("pkcs10", "PKCS#10");
+
+    private String code;
+
+    private String label;
+
+    private String description;
+
+    CertificateRequestFormat(String code, String label) {
+        this.code = code;
+        this.label = label;
+    }
+
+    CertificateRequestFormat(String code, String label, String description) {
+        this.code = code;
+        this.label = label;
+        this.description = description;
+    }
+
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    public static CertificateRequestFormat fromCode(final String code) {
+        return Arrays.stream(values())
+                .filter(e -> e.code.equals(code))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported certificate request format %s.", code)));
+    }
 }
