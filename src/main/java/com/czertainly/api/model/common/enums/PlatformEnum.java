@@ -25,6 +25,7 @@ import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
+import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import com.czertainly.api.model.core.search.SearchCondition;
 import com.czertainly.api.model.core.search.SearchGroup;
 import com.czertainly.api.model.core.search.SearchableFieldType;
@@ -55,6 +56,7 @@ public enum PlatformEnum implements IPlatformEnum {
     CERTIFICATE_TYPE(CertificateType.class, "Certificate type"),
     CERTIFICATE_STATUS(CertificateStatus.class, "Certificate status"),
     CERTIFICATE_VALIDATION_STATUS(CertificateValidationStatus.class, "Certificate validation status"),
+    CERTIFICATE_REQUEST_FORMAT(CertificateRequestFormat.class, "Certificate request format"),
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
 
     // keys & tokens

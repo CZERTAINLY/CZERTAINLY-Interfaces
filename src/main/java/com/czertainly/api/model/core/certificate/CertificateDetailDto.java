@@ -63,22 +63,12 @@ public class CertificateDetailDto extends CertificateDto {
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(
-            description = "CSR for the certificate"
-    )
-    private String csr;
-
-    @Schema(
-            description = "CSR Attributes"
-    )
-    private List<ResponseAttributeDto> csrAttributes;
-
-    @Schema(
-            description = "Signature Attributes"
-    )
-    private List<ResponseAttributeDto> signatureAttributes;
-
-    @Schema(
             description = "Key Pair of the certificate"
     )
     private KeyDto key;
+
+    @Schema(
+            description = "Certificate request data"
+    )
+    private CertificateRequestDto certificateRequest;
 }
