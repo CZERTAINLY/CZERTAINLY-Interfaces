@@ -18,60 +18,65 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SearchableFields {
-    COMMON_NAME("commonName", null),
-    SERIAL_NUMBER("serialNumber", null),
-    RA_PROFILE_NAME("raProfile.name", null),
-    STATUS("status", CertificateStatus.class),
-    COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class),
-    GROUP_NAME("group.name", null),
-    OWNER("owner", null),
-    ISSUER_COMMON_NAME("issuerCommonName", null),
-    SIGNATURE_ALGORITHM("signatureAlgorithm", null),
-    FINGERPRINT("fingerprint", null),
-    NOT_AFTER("notAfter", null),
-    NOT_BEFORE("notBefore", null),
-    PUBLIC_KEY_ALGORITHM("publicKeyAlgorithm", null),
-    KEY_SIZE("keySize", null),
-    KEY_USAGE("keyUsage", null),
-    BASIC_CONSTRAINTS("basicConstraints", null),
-    META("meta", null),
-    SUBJECT_ALTERNATIVE_NAMES("subjectAlternativeNames", null),
-    SUBJECTDN("subjectDn", null),
-    ISSUERDN("issuerDn", null),
-    ISSUER_SERIAL_NUMBER("issuerSerialNumber", null),
-    OCSP_VALIDATION("ocspValidation", null),
-    CRL_VALIDATION("crlValidation", null),
-    SIGNATURE_VALIDATION("signatureValidation", null),
-    START_TIME("startTime", null),
-    END_TIME("endTime", null),
-    TOTAL_CERT_DISCOVERED("totalCertificatesDiscovered", null),
-    CONNECTOR_NAME("connectorName", null),
-    KIND("kind", null),
-    NAME("name", null),
-    CK_GROUP("cryptographicKey.group.name", null),
-    CK_OWNER("cryptographicKey.owner", null),
-    CK_TOKEN_PROFILE("cryptographicKey.tokenProfile.name", null),
-    CK_TOKEN_INSTANCE("cryptographicKey.tokenInstanceReference.name", null),
-    CKI_TYPE("type", KeyType.class),
-    CKI_FORMAT("format", KeyFormat.class),
-    CKI_STATE("state", KeyState.class),
-    CKI_LENGTH("length", null),
-    CKI_USAGE("usage", KeyUsage.class),
-    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", KeyAlgorithm.class),
-    DISCOVERY_STATUS("status", DiscoveryStatus.class),
+    COMMON_NAME("commonName", null, null, null),
+    SERIAL_NUMBER("serialNumber", null, null, null),
+    RA_PROFILE_NAME("raProfile.name", null, null, null),
+    STATUS("status", CertificateStatus.class, null, null),
+    COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class, null, null),
+    GROUP_NAME("group.name", null, null, null),
+    OWNER("owner", null, null, null),
+    ISSUER_COMMON_NAME("issuerCommonName", null, null, null),
+    SIGNATURE_ALGORITHM("signatureAlgorithm", null, null, null),
+    FINGERPRINT("fingerprint", null, null, null),
+    NOT_AFTER("notAfter", null, null, null),
+    NOT_BEFORE("notBefore", null, null, null),
+    PUBLIC_KEY_ALGORITHM("publicKeyAlgorithm", null, null, null),
+    KEY_SIZE("keySize", null, null, null),
+    KEY_USAGE("keyUsage", null, null, null),
+    BASIC_CONSTRAINTS("basicConstraints", null, null, null),
+    META("meta", null, null, null),
+    SUBJECT_ALTERNATIVE_NAMES("subjectAlternativeNames", null, null, null),
+    SUBJECTDN("subjectDn", null, null, null),
+    ISSUERDN("issuerDn", null, null, null),
+    ISSUER_SERIAL_NUMBER("issuerSerialNumber", null, null, null),
+    OCSP_VALIDATION("ocspValidation", null, null, null),
+    CRL_VALIDATION("crlValidation", null, null, null),
+    SIGNATURE_VALIDATION("signatureValidation", null, null, null),
+    START_TIME("startTime", null, null, null),
+    END_TIME("endTime", null, null, null),
+    TOTAL_CERT_DISCOVERED("totalCertificatesDiscovered", null, null, null),
+    CONNECTOR_NAME("connectorName", null, null, null),
+    KIND("kind", null, null, null),
+    NAME("name", null, null, null),
+    CK_GROUP("cryptographicKey.group.name", null, null, null),
+    CK_OWNER("cryptographicKey.owner", null, null, null),
+    CK_TOKEN_PROFILE("cryptographicKey.tokenProfile.name", null, null, null),
+    CK_TOKEN_INSTANCE("cryptographicKey.tokenInstanceReference.name", null, null, null),
+    CKI_TYPE("type", KeyType.class, null, null),
+    CKI_FORMAT("format", KeyFormat.class, null, null),
+    CKI_STATE("state", KeyState.class, null, null),
+    CKI_LENGTH("length", null, null, null),
+    CKI_USAGE("usage", KeyUsage.class, null, null),
+    CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", KeyAlgorithm.class, null, null),
+    DISCOVERY_STATUS("status", DiscoveryStatus.class, null, null),
 
-    ENTITY_NAME("entityInstanceReference.name", null),
-    ENTITY_CONNECTOR_NAME("entityInstanceReference.connectorName", null),
-    ENTITY_KIND("entityInstanceReference.kind", null),
-    ENTITY_INSTANCE_NAME("entityInstanceName", null),
-    ENABLED("enabled", null),
-    SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null),
-    SUPPORT_KEY_MANAGEMENT("supportKeyManagement", null);
+    ENTITY_NAME("entityInstanceReference.name", null, null, null),
+    ENTITY_CONNECTOR_NAME("entityInstanceReference.connectorName", null, null, null),
+    ENTITY_KIND("entityInstanceReference.kind", null, null, null),
+    ENTITY_INSTANCE_NAME("entityInstanceName", null, null, null),
+    ENABLED("enabled", null, null, null),
+    SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null, null, null),
+    SUPPORT_KEY_MANAGEMENT("supportKeyManagement", null, null, null),
+
+    PRIVATE_KEY("type", null, "key.items", KeyType.PRIVATE_KEY);
 
     private final String field;
 
     private final Class<? extends IPlatformEnum> enumClass;
 
+    private final String pathToBeJoin;
+
+    private final Object expectedValue;
 
     private final Map<String, String> nativeCodeMap = Stream.of(new String[][]{
             {"commonName", "common_name"},
@@ -102,9 +107,11 @@ public enum SearchableFields {
 
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-    SearchableFields(String string, Class<? extends IPlatformEnum> enumClass) {
+    SearchableFields(final String string, final Class<? extends IPlatformEnum> enumClass, final String pathToBeJoin, final Object expectedValue) {
         this.field = string;
         this.enumClass = enumClass;
+        this.pathToBeJoin = pathToBeJoin;
+        this.expectedValue = expectedValue;
     }
 
     @JsonValue
@@ -118,6 +125,14 @@ public enum SearchableFields {
 
     public Class<? extends IPlatformEnum> getEnumClass() {
         return enumClass;
+    }
+
+    public String getPathToBeJoin() {
+        return pathToBeJoin;
+    }
+
+    public Object getExpectedValue() {
+        return expectedValue;
     }
 
     @JsonCreator
