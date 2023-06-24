@@ -10,6 +10,7 @@ import lombok.Data;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 public class CertificateDetailDto extends CertificateDto {
@@ -71,4 +72,9 @@ public class CertificateDetailDto extends CertificateDto {
             description = "Certificate request data"
     )
     private CertificateRequestDto certificateRequest;
+
+    @Schema(
+            description = "Source certificate UUID"
+    )
+    private UUID sourceCertificateUuid;
 }
