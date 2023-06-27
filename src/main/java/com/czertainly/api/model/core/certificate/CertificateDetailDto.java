@@ -84,4 +84,7 @@ public class CertificateDetailDto extends CertificateDto {
 
     @Schema(description = "List of revoke attributes")
     private List<ResponseAttributeDto> revokeAttributes = new ArrayList<>();
+
+    @Schema(description = "List of related certificates")
+    private List<CertificateDto> relatedCertificates = new ArrayList<>();
 }
