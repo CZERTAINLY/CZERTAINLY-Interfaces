@@ -7,6 +7,7 @@ import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,4 +78,10 @@ public class CertificateDetailDto extends CertificateDto {
             description = "Source certificate UUID"
     )
     private UUID sourceCertificateUuid;
+
+    @Schema(description = "List of issue attributes")
+    private List<ResponseAttributeDto> issueAttributes = new ArrayList<>();
+
+    @Schema(description = "List of revoke attributes")
+    private List<ResponseAttributeDto> revokeAttributes = new ArrayList<>();
 }
