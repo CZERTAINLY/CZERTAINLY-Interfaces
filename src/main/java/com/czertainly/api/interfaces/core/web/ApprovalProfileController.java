@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 
 @RestController
-@RequestMapping("/v1/approvalprofile")
+@RequestMapping("/v1/approvalProfiles")
 @Tag(name = "Approval profile Inventory", description = "Approval profile Inventory API")
 @ApiResponses(
         value = {
