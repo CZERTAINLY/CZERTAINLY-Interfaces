@@ -14,14 +14,6 @@ public class ScheduledJobDetailDto extends ScheduledJobDto {
 
     private UUID userUuid;
 
-    private String jobClassName;
-
-    @Schema(
-            description = "Is system scheduled job",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private boolean system;
-    
     private Object objectData;
 
 }

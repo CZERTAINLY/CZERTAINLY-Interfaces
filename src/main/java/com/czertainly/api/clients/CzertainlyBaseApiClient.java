@@ -1,8 +1,11 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectionServiceException;
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -11,7 +14,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public abstract class CzertainlyBaseApiClient {
 
@@ -60,8 +65,19 @@ public abstract class CzertainlyBaseApiClient {
         return CzertainlyBaseApiClient::handleHttpExceptions;
     }
 
-    static Mono<ClientResponse> handleHttpExceptions(final ClientResponse clientResponse) {
+    private static final ParameterizedTypeReference<List<String>> ERROR_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
+    };
 
+    static Mono<ClientResponse> handleHttpExceptions(final ClientResponse clientResponse) {
+        if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {
+            return clientResponse.bodyToMono(ERROR_LIST_TYPE_REF).flatMap(body ->
+                    Mono.error(new ValidationException(body.stream()
+                                    .map(ValidationError::create)
+                                    .collect(Collectors.toList())
+                            )
+                    )
+            );
+        }
         if (clientResponse.statusCode().isError()) {
             return clientResponse.bodyToMono(String.class)
                     .flatMap(body -> Mono.error(new ConnectionServiceException(body, HttpStatus.valueOf(clientResponse.statusCode().value()))));

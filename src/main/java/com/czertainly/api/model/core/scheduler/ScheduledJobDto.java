@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.scheduler;
 
+import com.czertainly.api.model.scheduler.SchedulerJobExecutionStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,12 @@ public class ScheduledJobDto {
     private String jobName;
 
     @Schema(
+            description = "Type of scheduled job (job processor name)",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String jobType;
+
+    @Schema(
             description = "CRON expression representing configuration of pattern how to run scheduled job",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -40,6 +47,18 @@ public class ScheduledJobDto {
             description = "Is scheduled job triggered only once",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private boolean oneShotOnly;
+    private boolean oneTime;
+
+    @Schema(
+            description = "Is system scheduled job",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private boolean system;
+
+    @Schema(
+            description = "Execution status of last job triggered task",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private SchedulerJobExecutionStatus lastExecutionStatus;
 
 }

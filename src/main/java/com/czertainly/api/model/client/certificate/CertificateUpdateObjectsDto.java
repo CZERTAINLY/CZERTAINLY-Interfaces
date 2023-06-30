@@ -10,8 +10,8 @@ public class CertificateUpdateObjectsDto {
     @Schema(description = "Group UUID")
     private String groupUuid;
 
-    @Schema(description = "Certificate Owner")
-    private String owner;
+    @Schema(description = "Certificate Owner UUID")
+    private String ownerUuid;
 
     public String getRaProfileUuid() {
         return raProfileUuid;
@@ -29,11 +29,11 @@ public class CertificateUpdateObjectsDto {
         this.groupUuid = groupUuid;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getOwnerUuid() {
+        return ownerUuid;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerUuid(String ownerUuid) {
+        this.ownerUuid = ownerUuid;
     }
 }

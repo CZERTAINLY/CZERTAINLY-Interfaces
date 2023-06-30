@@ -7,9 +7,11 @@ import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 public class CertificateDetailDto extends CertificateDto {
@@ -63,22 +65,26 @@ public class CertificateDetailDto extends CertificateDto {
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(
-            description = "CSR for the certificate"
-    )
-    private String csr;
-
-    @Schema(
-            description = "CSR Attributes"
-    )
-    private List<ResponseAttributeDto> csrAttributes;
-
-    @Schema(
-            description = "Signature Attributes"
-    )
-    private List<ResponseAttributeDto> signatureAttributes;
-
-    @Schema(
             description = "Key Pair of the certificate"
     )
     private KeyDto key;
+
+    @Schema(
+            description = "Certificate request data"
+    )
+    private CertificateRequestDto certificateRequest;
+
+    @Schema(
+            description = "Source certificate UUID"
+    )
+    private UUID sourceCertificateUuid;
+
+    @Schema(description = "List of issue attributes")
+    private List<ResponseAttributeDto> issueAttributes = new ArrayList<>();
+
+    @Schema(description = "List of revoke attributes")
+    private List<ResponseAttributeDto> revokeAttributes = new ArrayList<>();
+
+    @Schema(description = "List of related certificates")
+    private List<CertificateDto> relatedCertificates = new ArrayList<>();
 }

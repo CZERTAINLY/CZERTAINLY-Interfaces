@@ -3,6 +3,7 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.SchedulerException;
 import com.czertainly.api.model.client.certificate.DiscoveryResponseDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.discovery.DiscoveryCertificateResponseDto;
@@ -12,7 +13,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
-import com.czertainly.api.model.core.scheduler.SchedulerJobInfoDto;
+import com.czertainly.api.model.core.scheduler.ScheduleDiscoveryDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -126,7 +127,7 @@ public interface DiscoveryController {
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/schedule", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	void scheduleDiscovery(@RequestBody SchedulerJobInfoDto schedulerJobInfo, @RequestBody DiscoveryDto request)
-			throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException;
+	ResponseEntity<?> scheduleDiscovery(@RequestBody ScheduleDiscoveryDto scheduleDiscoveryDto)
+            throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException, SchedulerException;
 
 }

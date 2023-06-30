@@ -10,12 +10,15 @@ import java.util.List;
 
 public class GroupRequestDto {
 
-    @Schema(description = "Name of the Certificate Group",
+    @Schema(description = "Name of the Group",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Description of the Certificate Group")
+    @Schema(description = "Description of the Group")
     private String description;
+
+    @Schema(description = "Group contact email")
+    private String email;
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
@@ -36,6 +39,14 @@ public class GroupRequestDto {
         this.description = description;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public List<RequestAttributeDto> getCustomAttributes() {
         return customAttributes;
     }
@@ -49,6 +60,7 @@ public class GroupRequestDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
                 .append("description", description)
+                .append("email", email)
                 .append("customAttributes", customAttributes)
                 .toString();
     }

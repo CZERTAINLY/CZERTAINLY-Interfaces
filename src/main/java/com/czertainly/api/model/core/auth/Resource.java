@@ -19,6 +19,8 @@ public enum Resource implements IPlatformEnum {
     AUDIT_LOG("auditLogs", "Audit logs", false),
     CREDENTIAL("credentials", "Credentials", true),
     CONNECTOR("connectors", "Connectors", true),
+    ATTRIBUTE("attributes", "Attributes", false),
+    SCHEDULED_JOB("jobs", "Scheduled jobs", false),
 
     // AUTH
     USER("users", "Users", false),
@@ -47,8 +49,7 @@ public enum Resource implements IPlatformEnum {
     TOKEN_PROFILE("tokenProfiles", "Token Profiles", true),
     TOKEN("tokens", "Tokens", true),
     CRYPTOGRAPHIC_KEY("keys", "Keys", false),
-
-    ATTRIBUTE("attributes", "Attributes", false);
+    ;
 
     private static final Resource[] VALUES;
 

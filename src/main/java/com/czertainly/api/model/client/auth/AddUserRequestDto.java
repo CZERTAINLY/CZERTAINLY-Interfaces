@@ -24,6 +24,9 @@ public class AddUserRequestDto {
     @Schema(description = "Email of the user")
     private String email;
 
+    @Schema(description = "Group UUID of the user")
+    private String groupUuid;
+
     @Schema(description = "Status of the user. True = Enabled, False = Disabled")
     private Boolean enabled;
 
@@ -104,6 +107,14 @@ public class AddUserRequestDto {
         this.description = description;
     }
 
+    public String getGroupUuid() {
+        return groupUuid;
+    }
+
+    public void setGroupUuid(String groupUuid) {
+        this.groupUuid = groupUuid;
+    }
+
     public List<RequestAttributeDto> getCustomAttributes() {
         return customAttributes;
     }
@@ -117,6 +128,7 @@ public class AddUserRequestDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("username", username)
                 .append("description", description)
+                .append("groupUuid", groupUuid)
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)
