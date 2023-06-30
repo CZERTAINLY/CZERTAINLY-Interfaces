@@ -14,13 +14,13 @@ public class DiscoveryDataRequestDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "Starting index of the Certificate",
+    @Schema(description = "Page number for the retrieved certificates",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer startIndex;
+    private Integer pageNumber;
 
-    @Schema(description = "Last index of the Certificate",
+    @Schema(description = "Number of certificates per page",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer endIndex;
+    private Integer itemsPerPage;
 
     public String getName() {
         return name;
@@ -28,22 +28,6 @@ public class DiscoveryDataRequestDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getStartIndex() {
-        return startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
     }
 
     public String getKind() {
@@ -54,13 +38,29 @@ public class DiscoveryDataRequestDto {
         this.kind = kind;
     }
 
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public Integer getItemsPerPage() {
+        return itemsPerPage;
+    }
+
+    public void setItemsPerPage(Integer itemsPerPage) {
+        this.itemsPerPage = itemsPerPage;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
                 .append("kind", kind)
-                .append("startIndex", startIndex)
-                .append("endIndex", endIndex)
+                .append("pageNumber", pageNumber)
+                .append("itemsPerPage", itemsPerPage)
                 .toString();
     }
 }
