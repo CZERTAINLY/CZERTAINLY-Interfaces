@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 public class ApprovalProfileResponseDto extends PaginationResponseDto {
 
-    private List<ApprovalProfileDto> approvalProfileDtos;
+    private List<ApprovalProfileDto> approvalProfiles;
 
 }
