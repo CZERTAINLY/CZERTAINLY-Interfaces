@@ -66,7 +66,7 @@ public interface NotificationController {
     void deleteNotification(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws ValidationException, NotFoundException;
 
     @Operation(summary = "Mark notification as read for logged user")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification marked as read")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification marked as read")})
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.PATCH, produces = {"application/json"})
     NotificationDto markNotificationAsRead(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws ValidationException, NotFoundException;
 }
