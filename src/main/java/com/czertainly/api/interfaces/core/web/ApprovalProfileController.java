@@ -2,9 +2,11 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.SchedulerException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.approvalprofile.*;
+import com.czertainly.api.model.client.approvalprofile.ApprovalProfileDetailDto;
+import com.czertainly.api.model.client.approvalprofile.ApprovalProfileRequestDto;
+import com.czertainly.api.model.client.approvalprofile.ApprovalProfileResponseDto;
+import com.czertainly.api.model.client.approvalprofile.ApprovalProfileUpdateRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
@@ -21,9 +23,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.security.cert.CertificateException;
 
 @RestController
 @RequestMapping("/v1/approvalProfiles")
@@ -61,31 +60,31 @@ public interface ApprovalProfileController {
     @Operation(summary = "List Approval Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the approval profiles")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    ApprovalProfileResponseDto listApprovalProfiles(final PaginationRequestDto paginationRequestDto) throws ValidationException;
+    ApprovalProfileResponseDto listApprovalProfiles(final PaginationRequestDto paginationRequestDto);
 
     @Operation(summary = "Get Approval Profile Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile retrieved")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
 	ApprovalProfileDetailDto getApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid)
-            throws NotFoundException, CertificateException, IOException;
+            throws NotFoundException;
 
     @Operation(summary = "Delete an approval profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval profile deleted")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException;
+    void deleteApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Enabling of Approval profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval profile enabled")})
     @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void enableApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, SchedulerException;
+    void enableApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Disabling of Approval profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval profile disabled")})
     @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void disableApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, SchedulerException;
+    void disableApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Create a Approval profile")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Approval profile created", content = @Content(schema = @Schema(implementation = UuidDto.class))),

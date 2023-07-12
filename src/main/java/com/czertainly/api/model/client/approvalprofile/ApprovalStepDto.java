@@ -1,11 +1,15 @@
 package com.czertainly.api.model.client.approvalprofile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ApprovalStepDto {
 
     @Schema(description = "Reference to responsible user to Approved the action",
@@ -31,6 +35,5 @@ public class ApprovalStepDto {
     @Schema(description = "Count of the required approvals for the Approval step, by default there is 1 approval needed.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private int requiredApprovals;
-
 
 }
