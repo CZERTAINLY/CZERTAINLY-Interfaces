@@ -3,16 +3,19 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.approval.ApprovalResponseDto;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
-import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.certificate.*;
+import com.czertainly.api.model.core.certificate.CertificateContentDto;
+import com.czertainly.api.model.core.certificate.CertificateDetailDto;
+import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
+import com.czertainly.api.model.core.certificate.CertificateValidationDto;
 import com.czertainly.api.model.core.location.LocationDto;
+import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
-import com.czertainly.api.model.core.search.SearchFieldDataDto;
 import com.czertainly.api.model.core.v2.ClientCertificateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -72,32 +75,32 @@ public interface CertificateController {
     @Operation(summary = "List Certificates")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the certificates")})
     @RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
-	CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request) throws ValidationException;
+    CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request) throws ValidationException;
 
     @Operation(summary = "Get Certificate Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
-	CertificateDetailDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
+    CertificateDetailDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
             throws NotFoundException, CertificateException, IOException;
 
     @Operation(summary = "Delete a certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate deleted")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	void deleteCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    void deleteCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 
     //TODO - Merge the DTO and update implementation
     @Operation(summary = "Update Certificate Objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
+    void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
             throws NotFoundException;
 
     @Operation(summary = "Initiate Certificate validation")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate validation initiated")})
     @RequestMapping(method = RequestMethod.PUT, path = "/{uuid}/validate", produces = {"application/json"})
-	void check(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
+    void check(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
             throws CertificateException, IOException, NotFoundException;
 
     @Operation(summary = "Update RA Profile, Group, Owner for multiple Certificates", description = "In this operation, when the list of " +
@@ -109,13 +112,13 @@ public interface CertificateController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated")})
     @RequestMapping(method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	void bulkUpdateCertificateObjects(@RequestBody MultipleCertificateObjectUpdateDto request)
+    void bulkUpdateCertificateObjects(@RequestBody MultipleCertificateObjectUpdateDto request)
             throws NotFoundException;
 
     @Operation(summary = "Upload a new Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @RequestMapping(path = "/upload", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request)
+    ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request)
             throws AlreadyExistException, CertificateException, NoSuchAlgorithmException;
 
     @Operation(summary = "Delete multiple certificates", description = "In this operation, when the list of " +
@@ -126,23 +129,23 @@ public interface CertificateController {
             "provide an empty array \"[]\" for the value of \"filters\" in the request body")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificates deleted")})
     @RequestMapping(path = "/delete", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-	BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
+    BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
 
     @Operation(summary = "Validate Certificates of Status Unknown")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate Validation Initiated")})
     @RequestMapping(path = "/validate", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	void validateAllCertificate();
+    void validateAllCertificate();
 
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
-	List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
+    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(summary = "Get Certificate event history")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
     @RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
-	List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
             summary = "List of available Locations for the Certificate",
@@ -168,18 +171,18 @@ public interface CertificateController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @RequestMapping(path = "/compliance", method = RequestMethod.POST, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-	void checkCompliance(@RequestBody CertificateComplianceCheckDto request) throws NotFoundException;
+    void checkCompliance(@RequestBody CertificateComplianceCheckDto request) throws NotFoundException;
 
     @Operation(summary = "Get Certificate Validation Result")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate validation detail retrieved")})
     @RequestMapping(path = "/{uuid}/validate", method = RequestMethod.GET, produces = {"application/json"})
-	Map<String, CertificateValidationDto> getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
+    Map<String, CertificateValidationDto> getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
             throws NotFoundException, CertificateException, IOException;
 
     @Operation(summary = "Get CSR Generation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved")})
     @RequestMapping(path = "/csr/attributes", method = RequestMethod.GET, produces = {"application/json"})
-	List<BaseAttribute> getCsrGenerationAttributes();
+    List<BaseAttribute> getCsrGenerationAttributes();
 
     @Operation(summary = "Get Certificate Content")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate content retrieved"),
@@ -206,4 +209,12 @@ public interface CertificateController {
     CertificateDetailDto createCsr(
             @RequestBody ClientCertificateRequestDto request
     ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
+
+
+    @Operation(summary = "List Certificates Approvals")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
+    @RequestMapping(method = RequestMethod.GET, path = "/{uuid}/approvals", produces = {"application/json"})
+    ApprovalResponseDto listOfApprovals(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+                                        @RequestBody final PaginationRequestDto paginationRequestDto);
+
 }

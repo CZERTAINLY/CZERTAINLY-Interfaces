@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.approval;
 
 
+import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,13 +40,13 @@ public class ApprovalDto {
             description = "Status of the Approval",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String status;
+    private ApprovalStatusEnum status;
 
     @Schema(
             description = "Resource of the Approval",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String resource;
+    private Resource resource;
 
     @Schema(
             description = "Resource action of the Approval",

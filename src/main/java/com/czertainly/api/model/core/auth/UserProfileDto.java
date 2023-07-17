@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.auth;
 
+import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -12,7 +13,7 @@ public class UserProfileDto {
     private UserDto user;
 
     @Schema(description = "User Roles", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<String> roles;
+    private List<NameAndUuidDto> roles;
 
     @Schema(description = "User Permissions", requiredMode = Schema.RequiredMode.REQUIRED)
     private SubjectPermissionsDto permissions;
@@ -25,11 +26,11 @@ public class UserProfileDto {
         this.user = user;
     }
 
-    public List<String> getRoles() {
+    public List<NameAndUuidDto> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(List<NameAndUuidDto> roles) {
         this.roles = roles;
     }
 

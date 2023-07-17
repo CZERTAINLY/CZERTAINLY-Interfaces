@@ -36,7 +36,7 @@ public class ApprovalStepRecipientDto {
             description = "Status of the approval recipient",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String status;
+    private ApprovalStatusEnum status;
 
     @Schema(
             description = "Comment of the approval recipient",

@@ -32,7 +32,7 @@ public class ApprovalDetailDto extends ApprovalDto {
             description = "List of Approval steps related to this Approval",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ApprovalApprovalStepDto> approvalSteps;
+    private List<ApprovalDetailStepDto> approvalSteps;
 
     public ApprovalDetailDto(final ApprovalDto approvalDto) {
         super(approvalDto);

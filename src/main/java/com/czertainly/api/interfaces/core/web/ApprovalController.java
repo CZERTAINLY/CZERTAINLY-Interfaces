@@ -1,10 +1,10 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.SchedulerException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.approval.ApprovalDetailDto;
 import com.czertainly.api.model.client.approval.ApprovalResponseDto;
+import com.czertainly.api.model.client.approval.UserApprovalDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
@@ -17,9 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.security.cert.CertificateException;
 
 @RestController
 @RequestMapping("/v1/approvals")
@@ -63,19 +60,33 @@ public interface ApprovalController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval detail retrieved")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
     ApprovalDetailDto getApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid)
-            throws NotFoundException, CertificateException, IOException;
+            throws NotFoundException;
 
 
     @Operation(summary = "Approving of the Approval")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval approved")})
     @RequestMapping(path = "/{uuid}/approve", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void approveApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid) throws NotFoundException, SchedulerException;
+    void approveApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Rejecting of the Approval")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval rejected")})
     @RequestMapping(path = "/{uuid}/reject", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void rejectApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid) throws NotFoundException, SchedulerException;
+    void rejectApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid) throws NotFoundException;
+
+    @Operation(summary = "Approving of Recipient of the Approval")
+    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval Recipient approved")})
+    @RequestMapping(path = "/{uuid}/approveRecipient", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void approveApprovalRecipient(@Parameter(description = "Approval UUID") @PathVariable String uuid,
+            @RequestBody UserApprovalDto userApprovalDto) throws NotFoundException;
+
+    @Operation(summary = "Rejecting of Recipient of the Approval")
+    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval Recipient rejected")})
+    @RequestMapping(path = "/{uuid}/rejectRecipient", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void rejectApprovalRecipient(@Parameter(description = "Approval UUID") @PathVariable String uuid,
+                                 @RequestBody UserApprovalDto userApprovalDto) throws NotFoundException;
 
 }

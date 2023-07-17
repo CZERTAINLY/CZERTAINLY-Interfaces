@@ -3,16 +3,15 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.approvalprofile.ApprovalProfileDetailDto;
-import com.czertainly.api.model.client.approvalprofile.ApprovalProfileRequestDto;
-import com.czertainly.api.model.client.approvalprofile.ApprovalProfileResponseDto;
-import com.czertainly.api.model.client.approvalprofile.ApprovalProfileUpdateRequestDto;
+import com.czertainly.api.model.client.approvalprofile.*;
+import com.czertainly.api.model.client.notification.NotificationRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -65,7 +64,8 @@ public interface ApprovalProfileController {
     @Operation(summary = "Get Approval Profile Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile retrieved")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
-	ApprovalProfileDetailDto getApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid)
+    ApprovalProfileDetailDto getApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid,
+                                                @Parameter(in = ParameterIn.QUERY, description = "Select specific version of the approval profile") ApprovalProfileForVersionDto approvalProfileForVersionDto)
             throws NotFoundException;
 
     @Operation(summary = "Delete an approval profile")
@@ -75,31 +75,31 @@ public interface ApprovalProfileController {
     void deleteApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Enabling of Approval profile")
-    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval profile enabled")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval profile enabled")})
     @RequestMapping(path = "/{uuid}/enable", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Disabling of Approval profile")
-    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Approval profile disabled")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval profile disabled")})
     @RequestMapping(path = "/{uuid}/disable", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Create a Approval profile")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "New Approval profile created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Approval profile created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})),})
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
 
-    @RequestMapping(method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createApprovalProfile(@RequestBody ApprovalProfileRequestDto approvalProfileRequestDto) throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Edit an Approval profile")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Approval profile updated"),
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = { "application/json" }, produces = {
-            "application/json" })
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {
+            "application/json"})
     ResponseEntity<?> editApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid, @RequestBody ApprovalProfileUpdateRequestDto approvalProfileUpdateRequestDto) throws NotFoundException;
 
 }

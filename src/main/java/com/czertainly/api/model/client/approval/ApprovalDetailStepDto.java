@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ApprovalApprovalStepDto extends ApprovalStepDto {
+public class ApprovalDetailStepDto extends ApprovalStepDto {
 
     @Schema(
             description = "UUID of the Approval step",
@@ -21,7 +21,7 @@ public class ApprovalApprovalStepDto extends ApprovalStepDto {
     )
     private List<ApprovalStepRecipientDto> approvalStepRecipients;
 
-    public ApprovalApprovalStepDto(final ApprovalStepDto approvalStepDto) {
+    public ApprovalDetailStepDto(final ApprovalStepDto approvalStepDto) {
         super(approvalStepDto.getUserUuid(), approvalStepDto.getRoleUuid(), approvalStepDto.getGroupUuid(), approvalStepDto.getDescription(), approvalStepDto.getOrder(), approvalStepDto.getRequiredApprovals());
     }
 }
