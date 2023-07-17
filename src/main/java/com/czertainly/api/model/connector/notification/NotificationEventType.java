@@ -4,16 +4,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
-public enum NotificationRecipientType {
+public enum NotificationEventType {
 
-    USER("user"),
-    GROUP("group"),
-    ROLE("role");
-
+    STATUS_CHANGE("status_change");
     @JsonValue
     private String code;
 
-    NotificationRecipientType(String code) {
+    NotificationEventType(String code) {
         this.code = code;
     }
 

@@ -11,15 +11,15 @@ import java.util.List;
 @Data
 public class NotificationProviderInstanceRequestDto {
 
-    @Schema(description = "Authority instance name",
+    @Schema(description = "Notification instance name",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Kind of Authority instance",
+    @Schema(description = "Kind of Notification instance",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "List of Authority instance Attributes",
+    @Schema(description = "List of Notification instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttributeDto> attributes;
 

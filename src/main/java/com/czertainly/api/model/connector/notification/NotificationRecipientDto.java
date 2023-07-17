@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class NotificationRecipientDto {
     @Schema(description = "Recipient type", requiredMode = Schema.RequiredMode.REQUIRED)
-    private NotificationRecipientType type;
+    private NotificationEventType type;
 
     @Schema(description = "Recipient name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;

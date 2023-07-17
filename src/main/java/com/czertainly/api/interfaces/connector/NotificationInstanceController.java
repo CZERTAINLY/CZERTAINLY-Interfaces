@@ -2,13 +2,8 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
-import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderNotifyRequestDto;
@@ -58,7 +53,7 @@ public interface NotificationInstanceController {
                     )
             })
     @RequestMapping(path = "/notifications", method = RequestMethod.GET, produces = {"application/json"})
-    List<AuthorityProviderInstanceDto> listNotificationInstances();
+    List<NotificationProviderInstanceDto> listNotificationInstances();
 
     @Operation(
             summary = "Get Notification instance"
