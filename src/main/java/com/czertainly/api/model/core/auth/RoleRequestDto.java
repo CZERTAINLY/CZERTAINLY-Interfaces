@@ -12,6 +12,9 @@ public class RoleRequestDto {
     @Schema(description = "Description for the role")
     private String description;
 
+    @Schema(description = "Role contact email")
+    private String email;
+
     @Schema(description = "Is System User")
     private Boolean systemRole;
 
@@ -50,11 +53,20 @@ public class RoleRequestDto {
         this.description = description;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("name", name)
                 .append("description", description)
+                .append("email", email)
                 .append("permissions", permissions)
                 .append("systemRole", systemRole)
                 .toString();
