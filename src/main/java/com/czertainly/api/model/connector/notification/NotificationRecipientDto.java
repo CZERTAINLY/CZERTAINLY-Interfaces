@@ -10,13 +10,10 @@ import java.util.List;
 
 @Data
 public class NotificationRecipientDto {
-    @Schema(description = "Recipient type", requiredMode = Schema.RequiredMode.REQUIRED)
-    private NotificationEventType type;
-
     @Schema(description = "Recipient name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Recipient email", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Recipient email", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String email;
 
     @Schema(description = "Mapping attributes value for recipient", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
