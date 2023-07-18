@@ -1,17 +1,19 @@
 package com.czertainly.api.model.connector.notification;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
 public enum NotificationType {
 
-    STATUS_CHANGE("status_change");
-    @JsonValue
-    private String code;
+    TEXT("text", NotificationDataText.class),
+    STATUS_CHANGE("status_change", NotificationDataStatusChange.class),
+    SCHEDULED_JOB_COMPLETED("scheduled_job_completed", NotificationDataScheduledJobCompleted.class);
 
-    NotificationType(String code) {
+    NotificationType(String code, Class<?> notificationData) {
         this.code = code;
+        this.notificationData = notificationData;
     }
 
+    private final String code;
+    private final Class<?> notificationData;
 }
