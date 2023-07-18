@@ -12,7 +12,7 @@ public class NotificationProviderNotifyRequestDto {
     private List<NotificationRecipientDto> recipients;
 
     @Schema(description = "Event type that happened to trigger the notification", requiredMode = Schema.RequiredMode.REQUIRED)
-    private NotificationEventType eventType;
+    private NotificationType eventType;
 
     @Schema(description = "Resource which is represented by data", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "certificate")
     private Resource resource;
