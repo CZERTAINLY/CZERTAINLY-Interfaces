@@ -1,0 +1,15 @@
+package com.czertainly.api.model.connector.notification;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class NotificationDataScheduledJobCompleted {
+    private String jobName;
+    private String status;
+}
