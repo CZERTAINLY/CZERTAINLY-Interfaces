@@ -248,7 +248,7 @@ public interface RAProfileManagementController {
     @Operation(summary = "List of Approval profiles associated with the RAProfile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profiles retrieved")})
     @RequestMapping(path = "/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles", method = RequestMethod.GET, produces = {"application/json"})
-    ApprovalProfileResponseDto listOfApprovalProfilesByAuthority(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
+    ApprovalProfileResponseDto getAssociatedApprovalProfile(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
                                                                  @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid,
                                                                  @RequestBody PaginationRequestDto paginationRequestDto);
 
