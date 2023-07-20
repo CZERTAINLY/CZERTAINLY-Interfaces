@@ -91,7 +91,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
     }
 
     public List<DataAttribute> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r.uri(connector.getUrl() + NOTIFICATION_INSTANCE_MAPPING_ATTRIBUTES_CONTEXT, kind)
                 .retrieve()
