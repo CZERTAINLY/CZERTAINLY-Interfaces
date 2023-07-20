@@ -30,15 +30,15 @@ public class NotificationInstanceDto extends NameAndUuidDto {
     @Schema(description = "List of Notification instance Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
-    @Schema(description = "List of mapped attributes constructed from mapping attributes and (recipient) custom attributes")
-    private List<ResponseAttributeDto> mappedAttributes;
+    @Schema(description = "List of attribute mappings between mapping attributes and (recipient) custom attributes")
+    private List<AttributeMappingDto> attributeMappings;
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("uuid", uuid)
                 .append("name", name)
                 .append("attributes", attributes)
-                .append("mappedAttributes", mappedAttributes)
+                .append("attributeMappings", attributeMappings)
                 .append("connectorUuid", connectorUuid)
                 .append("connectorName", connectorName)
                 .append("kind", kind)

@@ -59,7 +59,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
 
 
     public NotificationProviderInstanceDto updateNotificationInstance(ConnectorDto connector, String uuid, NotificationProviderInstanceRequestDto requestDto) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector, true);
 
         return processRequest(r -> r.uri(connector.getUrl() + NOTIFICATION_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .body(Mono.just(requestDto), NotificationProviderInstanceRequestDto.class)
