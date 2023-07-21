@@ -18,7 +18,8 @@ public enum FunctionGroupCode implements IPlatformEnum {
     DISCOVERY_PROVIDER("discoveryProvider", "Discovery Provider"),
     ENTITY_PROVIDER("entityProvider", "Entity Provider"),
     COMPLIANCE_PROVIDER("complianceProvider", "Compliance Provider"),
-    CRYPTOGRAPHY_PROVIDER("cryptographyProvider", "Cryptography Provider");
+    CRYPTOGRAPHY_PROVIDER("cryptographyProvider", "Cryptography Provider"),
+    NOTIFICATION_PROVIDER("notificationProvider", "Notification Provider");
 
     private static final FunctionGroupCode[] VALUES;
 
