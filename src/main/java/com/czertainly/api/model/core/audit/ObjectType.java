@@ -14,6 +14,7 @@ public enum ObjectType {
     AUDIT_LOG,
     ATTRIBUTES,
     CA_INSTANCE,
+    NOTIFICATION_INSTANCE,
     CREDENTIAL,
     CONNECTOR,
     DISCOVERY,

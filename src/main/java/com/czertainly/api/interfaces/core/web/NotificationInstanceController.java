@@ -68,6 +68,8 @@ public interface NotificationInstanceController {
 
     @Operation(summary = "List of mapping attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of mapping attributes")})
-    @RequestMapping(path = "/{kind}/attributes/mapping", method = RequestMethod.GET, produces = {"application/json"})
-    List<DataAttribute> listMappingAttributes(@Parameter(description = "Kind") @PathVariable String kind);
+    @RequestMapping(path = "/attributes/mapping/{connectorUuid}/{kind}", method = RequestMethod.GET, produces = {"application/json"})
+    List<DataAttribute> listMappingAttributes(
+            @Parameter(description = "Connector UUID") @PathVariable String connectorUuid,
+            @Parameter(description = "Kind") @PathVariable String kind) throws ConnectorException;
 }
