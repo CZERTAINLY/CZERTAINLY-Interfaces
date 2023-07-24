@@ -35,6 +35,7 @@ public enum Resource implements IPlatformEnum {
 
     // CERTIFICATES
     AUTHORITY("authorities", "Authorities", true),
+    NOTIFICATION("notifications", "Notifications", false),
     RA_PROFILE("raProfiles", "RA Profiles", true),
     CERTIFICATE("certificates", "Certificates", false),
     GROUP("groups", "Groups", true),
