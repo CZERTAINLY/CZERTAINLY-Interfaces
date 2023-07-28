@@ -21,6 +21,7 @@ public enum Resource implements IPlatformEnum {
     CONNECTOR("connectors", "Connector", true),
     ATTRIBUTE("attributes", "Attribute", false),
     SCHEDULED_JOB("jobs", "Scheduled job", false),
+    NOTIFICATION_INSTANCE("notificationInstances", "Notification instance", false),
 
     // AUTH
     USER("users", "User", false),
