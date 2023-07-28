@@ -10,7 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 public enum SettingsSection implements IPlatformEnum {
-    PLATFORM("platform", "Platform", "CZERTAINLY platform settings");
+    PLATFORM("platform", "Platform", "CZERTAINLY platform settings"),
+    NOTIFICATIONS("notifications", "Notifications", "CZERTAINLY notifications settings");
 
     private static final SettingsSection[] VALUES;
 
