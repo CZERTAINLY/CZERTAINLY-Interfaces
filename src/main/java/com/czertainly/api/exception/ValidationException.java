@@ -10,7 +10,7 @@ public class ValidationException extends RuntimeException {
     private ArrayList<ValidationError> errors = new ArrayList<>();
 
     public ValidationException(String message) {
-        super(message);
+        this(Collections.singletonList(ValidationError.create(message)));
     }
 
     public ValidationException(List<ValidationError> errors) {

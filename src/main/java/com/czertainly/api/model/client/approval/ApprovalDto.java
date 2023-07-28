@@ -31,6 +31,12 @@ public class ApprovalDto {
     private Date createdAt;
 
     @Schema(
+            description = "Expiry date of the Approval",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private Date expiryAt;
+
+    @Schema(
             description = "Date of resolution of the Approval",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
@@ -78,6 +84,7 @@ public class ApprovalDto {
         this.approvalUuid = approvalDto.getApprovalUuid();
         this.closedAt = approvalDto.getClosedAt();
         this.createdAt = approvalDto.getCreatedAt();
+        this.expiryAt = approvalDto.getExpiryAt();
         this.objectUuid = approvalDto.getObjectUuid();
         this.status = approvalDto.getStatus();
         this.version = approvalDto.getVersion();
