@@ -17,39 +17,43 @@ public enum Resource implements IPlatformEnum {
     DASHBOARD("dashboard", "Dashboard", false),
     SETTINGS("settings", "Settings", false),
     AUDIT_LOG("auditLogs", "Audit logs", false),
-    CREDENTIAL("credentials", "Credentials", true),
-    CONNECTOR("connectors", "Connectors", true),
-    ATTRIBUTE("attributes", "Attributes", false),
-    SCHEDULED_JOB("jobs", "Scheduled jobs", false),
+    CREDENTIAL("credentials", "Credential", true),
+    CONNECTOR("connectors", "Connector", true),
+    ATTRIBUTE("attributes", "Attribute", false),
+    SCHEDULED_JOB("jobs", "Scheduled job", false),
+    NOTIFICATION_INSTANCE("notificationInstances", "Notification instance", false),
 
     // AUTH
-    USER("users", "Users", false),
-    ROLE("roles", "Roles", false),
+    USER("users", "User", false),
+    ROLE("roles", "Role", false),
 
     // ACME
-    ACME_ACCOUNT("acmeAccounts", "ACME Accounts", false),
-    ACME_PROFILE("acmeProfiles", "ACME Profiles", true),
+    ACME_ACCOUNT("acmeAccounts", "ACME Account", false),
+    ACME_PROFILE("acmeProfiles", "ACME Profile", true),
 
     //SCEP
-    SCEP_PROFILE("scepProfiles", "SCEP Profiles", true),
+    SCEP_PROFILE("scepProfiles", "SCEP Profile", true),
 
     // CERTIFICATES
-    AUTHORITY("authorities", "Authorities", true),
-    NOTIFICATION("notifications", "Notifications", false),
-    RA_PROFILE("raProfiles", "RA Profiles", true),
-    CERTIFICATE("certificates", "Certificates", false),
-    GROUP("groups", "Groups", true),
-    COMPLIANCE_PROFILE("complianceProfiles", "Compliance Profiles", true),
-    DISCOVERY("discoveries", "Discoveries", false),
+    AUTHORITY("authorities", "Authority", true),
+    RA_PROFILE("raProfiles", "RA Profile", true),
+    CERTIFICATE("certificates", "Certificate", false),
+    GROUP("groups", "Group", true),
+    COMPLIANCE_PROFILE("complianceProfiles", "Compliance Profile", true),
+    DISCOVERY("discoveries", "Discovery", false),
 
     // ENTITIES
-    ENTITY("entities", "Entities", true),
-    LOCATION("locations", "Locations", true),
+    ENTITY("entities", "Entity", true),
+    LOCATION("locations", "Location", true),
 
     //CRYPTOGRAPHY
-    TOKEN_PROFILE("tokenProfiles", "Token Profiles", true),
-    TOKEN("tokens", "Tokens", true),
-    CRYPTOGRAPHIC_KEY("keys", "Keys", false),
+    TOKEN_PROFILE("tokenProfiles", "Token Profile", true),
+    TOKEN("tokens", "Token", true),
+    CRYPTOGRAPHIC_KEY("keys", "Key", false),
+
+    // APPROVALS
+    APPROVAL_PROFILE("approvalProfiles", "Approval profile", true),
+    APPROVAL("approvals", "Approval", false),
     ;
 
     private static final Resource[] VALUES;
