@@ -21,23 +21,27 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
     @Schema(description = "Issuer DN of the Certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String issuerDn;
 
-    @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorityInstanceUuid;
 
-    @Schema(description = "RA profile UUID", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "RA profile UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileUuid;
 
-    @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileName;
 
     public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName) {
+        this(oldStatus, newStatus, fingerprint, serialNumber, subjectDn, issuerDn);
+        this.authorityInstanceUuid = authorityInstanceUuid;
+        this.raProfileUuid = raProfileUuid;
+        this.raProfileName = raProfileName;
+    }
+
+    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String fingerprint, String serialNumber, String subjectDn, String issuerDn) {
         super(oldStatus, newStatus);
         this.fingerprint = fingerprint;
         this.serialNumber = serialNumber;
         this.subjectDn = subjectDn;
         this.issuerDn = issuerDn;
-        this.authorityInstanceUuid = authorityInstanceUuid;
-        this.raProfileUuid = raProfileUuid;
-        this.raProfileName = raProfileName;
     }
 }
