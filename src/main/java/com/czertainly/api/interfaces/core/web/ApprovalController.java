@@ -56,12 +56,12 @@ public interface ApprovalController {
     @Operation(summary = "List of Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    ApprovalResponseDto listApprovals(@RequestBody final PaginationRequestDto paginationRequestDto) throws ValidationException;
+    ApprovalResponseDto listApprovals(final PaginationRequestDto paginationRequestDto) throws ValidationException;
 
     @Operation(summary = "List of User's Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals")})
     @RequestMapping(method = RequestMethod.GET, path = "/user", produces = {"application/json"})
-    ApprovalResponseDto listUserApprovals(@RequestBody final PaginationRequestDto paginationRequestDto,
+    ApprovalResponseDto listUserApprovals(final PaginationRequestDto paginationRequestDto,
             @Parameter(in = ParameterIn.QUERY, description = "Select if you want to list all history of approvals by user") ApprovalUserDto approvalUserDto) throws ValidationException;
 
     @Operation(summary = "Get Approval Detail")
