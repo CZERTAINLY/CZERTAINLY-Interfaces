@@ -1,6 +1,9 @@
 package com.czertainly.api.interfaces.core.client.v2;
 
-import com.czertainly.api.exception.*;
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -18,6 +21,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
@@ -92,7 +97,7 @@ public interface ClientOperationController {
 	ClientCertificateDataResponseDto issueNewCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
-			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, NoSuchAlgorithmException;
+			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid) throws ConnectorException, CertificateException, NoSuchAlgorithmException, AlreadyExistException;
 
 	@Operation(summary = "Issue Certificate")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate issued"),
@@ -102,7 +107,7 @@ public interface ClientOperationController {
 	ClientCertificateDataResponseDto issueCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
-			@RequestBody ClientCertificateSignRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, NoSuchAlgorithmException;
+			@RequestBody ClientCertificateSignRequestDto request) throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException;
 
 	@Operation(summary = "Renew Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate renewed"),
@@ -113,7 +118,7 @@ public interface ClientOperationController {
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-			@RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, CertificateOperationException;
+			@RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException;
 
 	@Operation(summary = "Rekey Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate regenerated"),
@@ -124,14 +129,14 @@ public interface ClientOperationController {
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-			@RequestBody ClientCertificateRekeyRequestDto request) throws NotFoundException, ConnectorException, AlreadyExistException, CertificateException, CertificateOperationException;
+			@RequestBody ClientCertificateRekeyRequestDto request) throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException;
 
 	@Operation(summary = "Get revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes obtained") })
 	@RequestMapping(path = "/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
 	List<BaseAttribute> listRevokeCertificateAttributes(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
-			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException, ConnectorException;
+			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException;
 
 	@Operation(summary = "Validate revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
@@ -139,7 +144,7 @@ public interface ClientOperationController {
 	void validateRevokeCertificateAttributes(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
-			@RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
+			@RequestBody List<RequestAttributeDto> attributes) throws ConnectorException, ValidationException;
 
 	@Operation(summary = "Revoke Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate revoked")})
@@ -149,6 +154,6 @@ public interface ClientOperationController {
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-			@RequestBody ClientCertificateRevocationDto request) throws NotFoundException, ConnectorException;
+			@RequestBody ClientCertificateRevocationDto request) throws NotFoundException;
 
 }
