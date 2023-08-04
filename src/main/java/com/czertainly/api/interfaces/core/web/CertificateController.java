@@ -195,10 +195,10 @@ public interface CertificateController {
                                                       @RequestBody List<String> uuids);
 
     @Operation(
-            summary = "Generate CSR Entity"
+            summary = "Submit certificate request"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "CSR Generated and ready to be issued")
+            @ApiResponse(responseCode = "200", description = "Certificate request submit, certificate created and ready to be issued")
     })
     @RequestMapping(
             path = "/create",
@@ -206,7 +206,7 @@ public interface CertificateController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    CertificateDetailDto createCsr(
+    CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
     ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
 
