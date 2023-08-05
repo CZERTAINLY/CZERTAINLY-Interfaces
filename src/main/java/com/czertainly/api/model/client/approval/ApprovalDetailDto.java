@@ -9,13 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ApprovalDetailDto extends ApprovalDto {
-
-    @Schema(
-            description = "UUID of the creator",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String creatorUuid;
-
     @Schema(
             description = "Expiration in hours",
             requiredMode = Schema.RequiredMode.REQUIRED

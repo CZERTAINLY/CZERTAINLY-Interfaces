@@ -19,6 +19,12 @@ public class ApprovalDto {
     private String approvalUuid;
 
     @Schema(
+            description = "UUID of the creator",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String creatorUuid;
+
+    @Schema(
             description = "Version of the Approval profile",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -82,6 +88,7 @@ public class ApprovalDto {
         this.approvalProfileName = approvalDto.getApprovalProfileName();
         this.approvalProfileUuid = approvalDto.getApprovalProfileUuid();
         this.approvalUuid = approvalDto.getApprovalUuid();
+        this.creatorUuid = approvalDto.getCreatorUuid();
         this.closedAt = approvalDto.getClosedAt();
         this.createdAt = approvalDto.getCreatedAt();
         this.expiryAt = approvalDto.getExpiryAt();
