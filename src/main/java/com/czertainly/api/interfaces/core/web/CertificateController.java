@@ -214,7 +214,6 @@ public interface CertificateController {
     @Operation(summary = "List Certificates Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
     @RequestMapping(method = RequestMethod.GET, path = "/{uuid}/approvals", produces = {"application/json"})
-    ApprovalResponseDto listCertificateApprovals(@Parameter(description = "Certificate UUID") @PathVariable String uuid,
-                                        @RequestBody final PaginationRequestDto paginationRequestDto);
+    ApprovalResponseDto listCertificateApprovals(@Parameter(description = "Certificate UUID") @PathVariable String uuid, final PaginationRequestDto paginationRequestDto);
 
 }

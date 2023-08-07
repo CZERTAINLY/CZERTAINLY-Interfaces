@@ -1,14 +1,19 @@
 package com.czertainly.api.model.connector.notification.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class NotificationDataCertificateStatusChanged extends NotificationDataStatusChanged {
+public class NotificationDataCertificateActionPerformed {
+
+    @Schema(description = "Certificate action", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String action;
 
     @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateUuid;
@@ -34,19 +39,6 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
     @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileName;
 
-    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName) {
-        this(oldStatus, newStatus, certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn);
-        this.authorityInstanceUuid = authorityInstanceUuid;
-        this.raProfileUuid = raProfileUuid;
-        this.raProfileName = raProfileName;
-    }
-
-    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn) {
-        super(oldStatus, newStatus);
-        this.certificateUuid = certificateUuid;
-        this.fingerprint = fingerprint;
-        this.serialNumber = serialNumber;
-        this.subjectDn = subjectDn;
-        this.issuerDn = issuerDn;
-    }
+    @Schema(description = "Error message. Filled when action failed", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String errorMessage;
 }
