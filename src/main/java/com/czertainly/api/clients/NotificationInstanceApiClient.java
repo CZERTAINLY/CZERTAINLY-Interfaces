@@ -84,6 +84,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r.uri(connector.getUrl() + NOTIFICATION_INSTANCE_IDENTIFIED_SEND_CONTEXT, uuid)
+                .body(Mono.just(requestDto), NotificationProviderNotifyRequestDto.class)
                 .retrieve()
                 .toEntity(Void.class)
                 .block()
