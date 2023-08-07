@@ -42,4 +42,10 @@ public class ApprovalProfileDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private int numberOfSteps;
 
+    @Schema(
+            description = "Number of associated objects",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private int associations;
+
 }
