@@ -131,12 +131,6 @@ public interface CertificateController {
     @RequestMapping(path = "/delete", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
 
-    @Operation(summary = "Validate Certificates of Status Unknown")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate Validation Initiated")})
-    @RequestMapping(path = "/validate", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void validateAllCertificate();
-
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
