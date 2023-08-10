@@ -35,7 +35,7 @@ public class ApprovalProfileDto {
     @Schema(description = "Expiration of the Approval profile in hours",
             example = "30",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private int expiry;
+    private Integer expiry;
 
     @Schema(description = "Number of the Approval profile steps",
             example = "2",
