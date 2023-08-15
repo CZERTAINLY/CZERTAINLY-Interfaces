@@ -12,6 +12,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.CustomAttribute;
+import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/attributes/custom")
@@ -66,7 +68,7 @@ public interface CustomAttributeController {
     @Operation(summary = "List Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "list of available Custom Attributes")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    List<CustomAttributeDefinitionDto> listCustomAttributes();
+    List<CustomAttributeDefinitionDto> listCustomAttributes(@RequestParam(required = false) AttributeContentType attributeContentType);
 
     @Operation(summary = "Custom Attribute details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute details retrieved")})
