@@ -15,4 +15,7 @@ public class AttributeMappingDto {
     @Schema(description = "Custom Attribute Uuid", requiredMode = Schema.RequiredMode.REQUIRED)
     private String customAttributeUuid;
 
+    @Schema(description = "Custom Attribute Label", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String customAttributeLabel;
+
 }
