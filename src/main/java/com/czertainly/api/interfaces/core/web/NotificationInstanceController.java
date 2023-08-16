@@ -31,7 +31,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/notificationInstances")
-@Tag(name = "Notification Management", description = "Notification Management API")
+@Tag(name = "External Notification Management",
+        description = "External Notification Management API for managing notification instances that can be used " +
+                "to notify recipient(s) about events that were triggered in the platform. Note that this API does " +
+                "not handle internal notifications. For internal notifications, please refer to the Internal " +
+                "Notification API"
+)
 @ApiResponses(value = {@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())), @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))), @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content), @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface NotificationInstanceController {
 
