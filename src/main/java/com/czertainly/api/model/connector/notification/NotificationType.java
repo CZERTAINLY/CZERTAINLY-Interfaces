@@ -15,15 +15,18 @@ import java.util.Arrays;
 public enum NotificationType implements IPlatformEnum {
 
     // certificates
-    CERTIFICATE_STATUS_CHANGED("certificate_status_changed", "Certificate status change", "Notification sent when certificate status change", NotificationDataCertificateStatusChanged.class),
-    CERTIFICATE_ACTION_PERFORMED("certificate_action_performed", "Certificate action performed", "Notification sent after certificate action (e.g.: issue, revoke, etc.) was completed with detail of its execution", NotificationDataCertificateActionPerformed.class),
+    CERTIFICATE_STATUS_CHANGED("certificate_status_changed", "Certificate status changed", "Notification when the certificate changes state with detail about the certificate", NotificationDataCertificateStatusChanged.class),
+    CERTIFICATE_ACTION_PERFORMED("certificate_action_performed", "Certificate action performed", "Notification after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", NotificationDataCertificateActionPerformed.class),
 
     // approvals
-    APPROVAL_REQUESTED("approval_requested", "Approval requested", "Notification sent when approval for some action was requested", NotificationDataApproval.class),
-    APPROVAL_CLOSED("approval_closed", "Approval closed", "Notification sent after approval was closed informing about result status of approval", NotificationDataApproval.class),
+    APPROVAL_REQUESTED("approval_requested", "Approval requested", "Notification about requesting approval on specific operation included", NotificationDataApproval.class),
+    APPROVAL_CLOSED("approval_closed", "Approval closed", "Notification after approval was closed informing about the result of approval process", NotificationDataApproval.class),
 
-    SCHEDULED_JOB_COMPLETED("scheduled_job_completed", "Scheduled job Completed", "Notification about scheduled job execution finished with result and detail of its execution", NotificationDataScheduledJobCompleted.class),
-    OTHER("other", "Other", "Uncategorized simple text notification sent to inform user about changes and actions done in platform", NotificationDataText.class);
+    // scheduler
+    SCHEDULED_JOB_COMPLETED("scheduled_job_completed", "Scheduled job completed", "Notification about scheduled job execution finished with result and detail of its execution", NotificationDataScheduledJobCompleted.class),
+
+    // other
+    OTHER("other", "Other", "Uncategorized text notification about operations done in the platform", NotificationDataText.class);
 
     private static final NotificationType[] VALUES;
 
