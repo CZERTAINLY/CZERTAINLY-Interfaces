@@ -24,7 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/notifications")
-@Tag(name = "Notifications", description = "Notifications API")
+@Tag(name = "Internal Notification",
+        description = "Internal Notifications API that manages notifications for logged user in the platform. Note " +
+                "that this API does not manage nor trigger external notifications. For external notifications, please " +
+                "refer to the External Notification Management API."
+)
 @ApiResponses(
         value = {
                 @ApiResponse(
