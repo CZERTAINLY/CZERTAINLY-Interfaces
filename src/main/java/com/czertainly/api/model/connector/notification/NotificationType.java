@@ -3,7 +3,6 @@ package com.czertainly.api.model.connector.notification;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
-import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.connector.notification.data.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -15,16 +14,16 @@ import java.util.Arrays;
 @Getter
 public enum NotificationType implements IPlatformEnum {
 
-    TEXT("text", "Text message", NotificationDataText.class),
-    SCHEDULED_JOB_COMPLETED("scheduled_job_completed", "Scheduled job Completed", NotificationDataScheduledJobCompleted.class),
-
     // certificates
-    CERTIFICATE_STATUS_CHANGED("certificate_status_changed", "Certificate status change", NotificationDataCertificateStatusChanged.class),
-    CERTIFICATE_ACTION_PERFORMED("certificate_action_performed", "Certificate action performed", NotificationDataCertificateActionPerformed.class),
+    CERTIFICATE_STATUS_CHANGED("certificate_status_changed", "Certificate status change", "Notification sent when certificate status change", NotificationDataCertificateStatusChanged.class),
+    CERTIFICATE_ACTION_PERFORMED("certificate_action_performed", "Certificate action performed", "Notification sent after certificate action (e.g.: issue, revoke, etc.) was completed with detail of its execution", NotificationDataCertificateActionPerformed.class),
 
     // approvals
-    APPROVAL_REQUESTED("approval_requested", "Approval requested", NotificationDataApproval.class),
-    APPROVAL_CLOSED("approval_closed", "Approval closed", NotificationDataApproval.class);
+    APPROVAL_REQUESTED("approval_requested", "Approval requested", "Notification sent when approval for some action was requested", NotificationDataApproval.class),
+    APPROVAL_CLOSED("approval_closed", "Approval closed", "Notification sent after approval was closed informing about result status of approval", NotificationDataApproval.class),
+
+    SCHEDULED_JOB_COMPLETED("scheduled_job_completed", "Scheduled job Completed", "Notification about scheduled job execution finished with result and detail of its execution", NotificationDataScheduledJobCompleted.class),
+    OTHER("other", "Other", "Uncategorized simple text notification sent to inform user about changes and actions done in platform", NotificationDataText.class);
 
     private static final NotificationType[] VALUES;
 
@@ -39,10 +38,10 @@ public enum NotificationType implements IPlatformEnum {
     private final String description;
     private final Class<?> notificationData;
 
-    NotificationType(String code, String label, Class<?> notificationData) {
+    NotificationType(String code, String label, String description, Class<?> notificationData) {
         this.code = code;
         this.label = label;
-        this.description = null;
+        this.description = description;
         this.notificationData = notificationData;
     }
 
