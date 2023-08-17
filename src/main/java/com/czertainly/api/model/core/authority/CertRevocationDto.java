@@ -19,7 +19,7 @@ public class CertRevocationDto {
 
     @Schema(description = "Revocation reason",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private RevocationReason reason;
+    private CertificateRevocationReason reason;
 
     public String getCertificateSN() {
         return certificateSN;
@@ -37,11 +37,11 @@ public class CertRevocationDto {
         this.issuerDN = issuerDN;
     }
 
-    public RevocationReason getReason() {
+    public CertificateRevocationReason getReason() {
         return reason;
     }
 
-    public void setReason(RevocationReason reason) {
+    public void setReason(CertificateRevocationReason reason) {
         this.reason = reason;
     }
 
