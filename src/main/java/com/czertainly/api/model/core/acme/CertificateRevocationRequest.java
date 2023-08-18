@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
 
-import com.czertainly.api.model.core.authority.RevocationReason;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -21,14 +21,16 @@ public class CertificateRevocationRequest {
     private String certificate;
 
     /**
-     * Reason for the Certificate revocation. The reason is as specified by the RFC5280
+     * Reason for the Certificate revocation. The reason is as specified by the <a href="https://www.rfc-editor.org/rfc/rfc5280.html#section-5.3.1">RFC5280 section 5.3.1</a>
      * The value is optional. If none of the reason is given, then the server can leave the reason blank for OCSP
      * meaning the server can set the code for revocation is UNSPECIFIED.
+     *
      */
-    @Schema(description = "Reason for revocation",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+    @Schema(description = "Revocation reason code",
+            externalDocs = @ExternalDocumentation(description = "RFC 5280, section 5.3.1", url = "https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1"),
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             example = "1")
-    private RevocationReason reason;
+    private Integer reason;
 
     public String getCertificate() {
         return certificate;
@@ -38,11 +40,11 @@ public class CertificateRevocationRequest {
         this.certificate = certificate;
     }
 
-    public RevocationReason getReason() {
+    public Integer getReason() {
         return reason;
     }
 
-    public void setReason(RevocationReason reason) {
+    public void setReason(Integer reason) {
         this.reason = reason;
     }
 

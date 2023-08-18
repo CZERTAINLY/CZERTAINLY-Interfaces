@@ -1,6 +1,7 @@
 package com.czertainly.api.model.scheduler;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -51,6 +52,7 @@ public enum SchedulerJobExecutionStatus implements IPlatformEnum {
         return this.description;
     }
 
+    @JsonCreator
     public static SchedulerJobExecutionStatus fromCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
