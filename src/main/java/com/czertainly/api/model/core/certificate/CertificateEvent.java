@@ -15,7 +15,8 @@ public enum CertificateEvent {
     REKEY("Rekey Certificate"),
     REVOKE("Revoke Certificate"),
     DELETE("Delete Certificate"),
-    APPROVE("Approve Certificate");
+    APPROVAL_REQUEST("Approve action requested"),
+    APPROVAL_CLOSE("Approve action closed"),
     UPDATE_STATUS("Update Status"),
     UPDATE_RA_PROFILE("Update RA Profile"),
     UPDATE_ENTITY("Update Entity"),
