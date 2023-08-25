@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.location;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
+import com.czertainly.api.model.core.certificate.CertificateStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -13,6 +14,12 @@ public class CertificateInLocationDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String certificateUuid;
+
+    @Schema(
+            description = "Status of the Certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private CertificateStatus status;
 
     @Schema(
             description = "Common Name of the Subject DN field of the Certificate",
@@ -102,5 +109,13 @@ public class CertificateInLocationDto {
 
     public void setWithKey(boolean withKey) {
         this.withKey = withKey;
+    }
+
+    public CertificateStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CertificateStatus status) {
+        this.status = status;
     }
 }
