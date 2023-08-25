@@ -4,7 +4,6 @@ import com.czertainly.api.model.connector.notification.NotificationType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Data

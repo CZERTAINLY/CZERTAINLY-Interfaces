@@ -3,6 +3,8 @@ package com.czertainly.api.model.core.raprofile;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,9 +14,12 @@ import java.util.List;
 /**
  * Class representing RA profile
  */
+@Getter
+@Setter
 public class RaProfileDto extends NameAndUuidDto {
 
-    @Schema(description = "Description of RA Profile")
+    @Schema(description = "Description of RA Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
     @Schema(description = "UUID of Authority provider",
@@ -25,93 +30,26 @@ public class RaProfileDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String authorityInstanceName;
 
-    @Schema(description = "List of RA Profiles attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
-
-    @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
+    @Schema(description = "Has Authority of legacy authority provider",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean legacyAuthority;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
+    @Schema(description = "List of RA Profiles attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+
+    @Schema(description = "List of Custom Attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<ResponseAttributeDto> customAttributes;
+
     @Schema(description = "List of protocols enabled",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<String> enabledProtocols;
 
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<ResponseAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<ResponseAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getAuthorityInstanceUuid() {
-        return authorityInstanceUuid;
-    }
-
-    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
-        this.authorityInstanceUuid = authorityInstanceUuid;
-    }
-
-    public String getAuthorityInstanceName() {
-        return authorityInstanceName;
-    }
-
-    public void setAuthorityInstanceName(String authorityInstanceName) {
-        this.authorityInstanceName = authorityInstanceName;
-    }
-
-    public List<String> getEnabledProtocols() {
-        return enabledProtocols;
-    }
-
-    public void setEnabledProtocols(List<String> enabledProtocols) {
-        this.enabledProtocols = enabledProtocols;
-    }
-
-    public List<ResponseAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
 
     @Override
     public String toString() {
@@ -124,6 +62,7 @@ public class RaProfileDto extends NameAndUuidDto {
                 .append("customAttributes", customAttributes)
                 .append("enabled", enabled)
                 .append("authorityInstanceName", authorityInstanceName)
+                .append("legacyAuthority", legacyAuthority)
                 .toString();
     }
 }
