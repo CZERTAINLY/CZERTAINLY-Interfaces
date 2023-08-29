@@ -22,7 +22,7 @@ public class ApprovalStepRecipientDto {
 
     @Schema(
             description = "Username of the recipient",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String username;
 

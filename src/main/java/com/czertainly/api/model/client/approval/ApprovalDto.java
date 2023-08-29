@@ -26,7 +26,7 @@ public class ApprovalDto {
 
     @Schema(
             description = "Username of the user that requested approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String creatorUsername;
 
