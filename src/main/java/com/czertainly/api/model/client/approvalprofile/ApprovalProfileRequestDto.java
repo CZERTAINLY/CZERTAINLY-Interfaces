@@ -31,5 +31,5 @@ public class ApprovalProfileRequestDto {
 
     @Schema(description = "List of Approval steps for the Approval profile",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ApprovalStepDto> approvalSteps = new ArrayList<>();
+    private List<ApprovalStepRequestDto> approvalSteps = new ArrayList<>();
 }

@@ -15,10 +15,16 @@ public class ApprovalStepRecipientDto {
     private String approvalRecipientUuid;
 
     @Schema(
-            description = "UUID of the user",
+            description = "UUID of the recipient user",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String userUuid;
+
+    @Schema(
+            description = "Username of the recipient",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String username;
 
     @Schema(
             description = "Creating date of the approval recipient",

@@ -10,18 +10,12 @@ import java.util.List;
 public class ApprovalDetailStepDto extends ApprovalStepDto {
 
     @Schema(
-            description = "UUID of the Approval step",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String approvalStepUuid;
-
-    @Schema(
             description = "List of the approval recipient related for this step",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<ApprovalStepRecipientDto> approvalStepRecipients;
 
     public ApprovalDetailStepDto(final ApprovalStepDto approvalStepDto) {
-        super(approvalStepDto.getUserUuid(), approvalStepDto.getRoleUuid(), approvalStepDto.getGroupUuid(), approvalStepDto.getDescription(), approvalStepDto.getOrder(), approvalStepDto.getRequiredApprovals());
+        super(approvalStepDto.getUserUuid(), approvalStepDto.getRoleUuid(), approvalStepDto.getGroupUuid(), approvalStepDto.getDescription(), approvalStepDto.getOrder(), approvalStepDto.getRequiredApprovals(), approvalStepDto.getUuid(), approvalStepDto.getUsername(), approvalStepDto.getRoleName(), approvalStepDto.getGroupName());
     }
 }
