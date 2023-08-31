@@ -94,9 +94,16 @@ public class CertificateDto {
     private GroupDto group;
 
     @Schema(
-            description = "Certificate Owner"
+            description = "Certificate Owner",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String owner;
+
+    @Schema(
+            description = "Certificate Owner UUID",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private String ownerUuid;
 
     @Schema(
             description = "Certificate type"
