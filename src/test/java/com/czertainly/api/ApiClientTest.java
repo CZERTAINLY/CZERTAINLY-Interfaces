@@ -43,7 +43,7 @@ public class ApiClientTest {
     @Test
     public void testGetAttributes_unknownHost() {
         ConnectorDto connector = new ConnectorDto();
-        connector.setUrl("wrong-host:1234");
+        connector.setUrl("http://wrong-host:1234");
         connector.setStatus(ConnectorStatus.CONNECTED);
 
         Throwable cause = Assertions.assertThrows(ConnectorCommunicationException.class, () ->
@@ -62,7 +62,7 @@ public class ApiClientTest {
     @Test
     public void testGetAttributes_connectionRefused() {
         ConnectorDto connector = new ConnectorDto();
-        connector.setUrl("localhost:1234");
+        connector.setUrl("http://localhost:1234");
         connector.setStatus(ConnectorStatus.CONNECTED);
 
         Throwable cause = Assertions.assertThrows(ConnectorCommunicationException.class, () ->
@@ -89,7 +89,7 @@ public class ApiClientTest {
                         .withBody(bodyString)));
 
         ConnectorDto connector = new ConnectorDto();
-        connector.setUrl("localhost:3665");
+        connector.setUrl("http://localhost:3665");
         connector.setStatus(ConnectorStatus.CONNECTED);
 
         NotFoundException cause = Assertions.assertThrows(NotFoundException.class, () ->
@@ -115,7 +115,7 @@ public class ApiClientTest {
                         .withBody(bodyString)));
 
         ConnectorDto connector = new ConnectorDto();
-        connector.setUrl("localhost:3665");
+        connector.setUrl("http://localhost:3665");
         connector.setStatus(ConnectorStatus.CONNECTED);
 
         ConnectorClientException cause = Assertions.assertThrows(ConnectorClientException.class, () ->
@@ -142,7 +142,7 @@ public class ApiClientTest {
                         .withBody(bodyString)));
 
         ConnectorDto connector = new ConnectorDto();
-        connector.setUrl("localhost:3665");
+        connector.setUrl("http://localhost:3665");
         connector.setStatus(ConnectorStatus.CONNECTED);
 
         ConnectorServerException cause = Assertions.assertThrows(ConnectorServerException.class, () ->
@@ -163,7 +163,7 @@ public class ApiClientTest {
     public void testGetAttributes_waitingForApproval() {
 
         ConnectorDto connector = new ConnectorDto();
-        connector.setUrl("localhost:3665");
+        connector.setUrl("http://localhost:3665");
         connector.setStatus(ConnectorStatus.WAITING_FOR_APPROVAL);
 
         Assertions.assertThrows(ValidationException.class, () -> attributeApiClient.validateAttributes(

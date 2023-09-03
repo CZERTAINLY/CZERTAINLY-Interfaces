@@ -14,6 +14,7 @@ public enum CertificateStatus implements IPlatformEnum {
 
 	UNKNOWN("unknown", "Unknown"),
 	NEW("new", "New"),
+	REJECTED("rejected", "Rejected"),
 	VALID("valid", "Valid"),
 	INVALID("invalid", "Invalid"),
 	REVOKED("revoked", "Revoked"),

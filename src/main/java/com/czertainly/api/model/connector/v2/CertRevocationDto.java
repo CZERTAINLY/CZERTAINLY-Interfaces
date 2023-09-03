@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.core.authority.RevocationReason;
+import com.czertainly.api.model.core.authority.CertificateRevocationReason;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -15,7 +15,7 @@ public class CertRevocationDto {
 
     @Schema(description = "Revocation reason",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private RevocationReason reason;
+    private CertificateRevocationReason reason;
 
     @Schema(description = "List of RA Profiles attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
@@ -29,11 +29,11 @@ public class CertRevocationDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
-    public RevocationReason getReason() {
+    public CertificateRevocationReason getReason() {
         return reason;
     }
 
-    public void setReason(RevocationReason reason) {
+    public void setReason(CertificateRevocationReason reason) {
         this.reason = reason;
     }
 

@@ -23,5 +23,6 @@ public enum OperationType {
     SIGN,
     VERIFY,
     APPROVE,
+    REJECT,
     UPDATE;
 }

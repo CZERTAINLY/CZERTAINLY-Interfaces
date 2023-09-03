@@ -21,6 +21,9 @@ public class UpdateUserRequestDto {
     @Schema(description = "Email of the user", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
+    @Schema(description = "Group UUID of the user")
+    private String groupUuid;
+
     @Schema(
             description = "Base64 Content of the admin certificate",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
@@ -84,6 +87,14 @@ public class UpdateUserRequestDto {
         this.description = description;
     }
 
+    public String getGroupUuid() {
+        return groupUuid;
+    }
+
+    public void setGroupUuid(String groupUuid) {
+        this.groupUuid = groupUuid;
+    }
+
     public List<RequestAttributeDto> getCustomAttributes() {
         return customAttributes;
     }
@@ -98,6 +109,7 @@ public class UpdateUserRequestDto {
                 .append("firstName", firstName)
                 .append("description", description)
                 .append("lastName", lastName)
+                .append("groupUuid", groupUuid)
                 .append("email", email)
                 .append("certificateUuid", certificateUuid)
                 .append("certificateData", certificateData)

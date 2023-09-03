@@ -18,6 +18,15 @@ import java.util.UUID;
 public class ClientCertificateRequestDto {
 
     @Schema(
+            description = "RA Profile UUID. Required if CSR is not uploaded",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private UUID raProfileUuid;
+    @Schema(
+            description = "Source certificate UUID to specify in case of renew/rekey operation"
+    )
+    private UUID sourceCertificateUuid;
+    @Schema(
             description = "List of attributes to create CSR. Required if CSR is not provided"
     )
     List<RequestAttributeDto> csrAttributes;
@@ -30,8 +39,7 @@ public class ClientCertificateRequestDto {
     // Key Related Parameters
     //------------------------------------------------------------------------------------------------------------------
     @Schema(
-            description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Certificate sign request (PKCS#10) encoded as Base64 string"
     )
     private String pkcs10;
 
@@ -50,6 +58,11 @@ public class ClientCertificateRequestDto {
     //------------------------------------------------------------------------------------------------------------------
     // Attributes
     //------------------------------------------------------------------------------------------------------------------
+    @Schema(
+            description = "List of RA Profile related Attributes to issue Certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private List<RequestAttributeDto> issueAttributes;
     @Schema(
             description = "List of Custom Attributes"
     )

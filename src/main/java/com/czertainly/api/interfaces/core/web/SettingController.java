@@ -80,4 +80,35 @@ public interface SettingController {
     void updatePlatformSettings(
             @RequestBody PlatformSettingsDto platformSettingsDto
     );
+
+    @Operation(
+            summary = "Get notification settings"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Notiifcation settings retrieved")
+            })
+    @RequestMapping(
+            method = RequestMethod.GET,
+            path = "/notifications",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    NotificationSettingsDto getNotificationsSettings();
+
+    @Operation(
+            summary = "Update notifications setting"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Setting updated")
+            })
+    @RequestMapping(
+            method = RequestMethod.PUT,
+            path = "/notifications",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    void updateNotificationsSettings(
+            @RequestBody NotificationSettingsDto notificationSettingsDto
+    );
 }

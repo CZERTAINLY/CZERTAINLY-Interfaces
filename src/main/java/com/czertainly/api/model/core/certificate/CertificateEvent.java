@@ -12,16 +12,19 @@ public enum CertificateEvent {
     ISSUE("Issue Certificate"),
     CREATE_CSR("Create CSR"),
     RENEW("Renew Certificate"),
+    REKEY("Rekey Certificate"),
     REVOKE("Revoke Certificate"),
     DELETE("Delete Certificate"),
+    APPROVAL_REQUEST("Approve action requested"),
+    APPROVAL_CLOSE("Approve action closed"),
+    UPDATE_STATUS("Update Status"),
     UPDATE_RA_PROFILE("Update RA Profile"),
     UPDATE_ENTITY("Update Entity"),
     UPDATE_GROUP("Update Group"),
     UPDATE_OWNER("Update Owner"),
     UPLOAD("Upload Certificate"),
     DISCOVERY("Certificate Discovered"),
-    UPDATE_LOCATION("Update Location")
-    ;
+    UPDATE_LOCATION("Update Location");
 
     @Schema(description = "Certificate Event",
             example = "Issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
