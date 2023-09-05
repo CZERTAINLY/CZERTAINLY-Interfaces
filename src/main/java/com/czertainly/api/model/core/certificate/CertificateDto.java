@@ -121,6 +121,11 @@ public class CertificateDto {
     private ComplianceStatus complianceStatus;
 
     @Schema(
+            description = "UUID of the issuer certificate"
+    )
+    private String issuerCertificateUuid;
+
+    @Schema(
             description = "Private Key Availability",
             requiredMode = Schema.RequiredMode.REQUIRED
     )

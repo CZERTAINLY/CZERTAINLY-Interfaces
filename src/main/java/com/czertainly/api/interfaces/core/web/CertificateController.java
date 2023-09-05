@@ -9,10 +9,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.certificate.CertificateContentDto;
-import com.czertainly.api.model.core.certificate.CertificateDetailDto;
-import com.czertainly.api.model.core.certificate.CertificateEventHistoryDto;
-import com.czertainly.api.model.core.certificate.CertificateValidationDto;
+import com.czertainly.api.model.core.certificate.*;
 import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
@@ -203,6 +200,14 @@ public interface CertificateController {
     CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
     ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
+
+    @RequestMapping(
+            path = {"/{uuid}/chain"},
+            method = {RequestMethod.GET},
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    List<CertificateDto> getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid);
 
 
     @Operation(summary = "List Certificates Approvals")
