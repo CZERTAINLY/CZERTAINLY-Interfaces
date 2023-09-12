@@ -204,10 +204,9 @@ public interface CertificateController {
     @RequestMapping(
             path = {"/{uuid}/chain"},
             method = {RequestMethod.GET},
-            consumes = {"application/json"},
             produces = {"application/json"}
     )
-    List<CertificateDto> getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid);
+    List<CertificateDto> getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 
 
     @Operation(summary = "List Certificates Approvals")
