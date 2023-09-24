@@ -206,7 +206,7 @@ public interface CertificateController {
             description = "Get certificate chain for the certificate with the given UUID. " +
                     "The certificate chain is returned in the order of the chain, with the first certificate " +
                     "being the certificate with the given UUID, up to the last identified certificate in the chain. " +
-                    "If the certificate with the given UUID has status NEW or REJECTED, an empty list is returned."
+                    "If the certificate with the given UUID has status `NEW` or `REJECTED`, an empty list is returned."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate chain retrieved")
