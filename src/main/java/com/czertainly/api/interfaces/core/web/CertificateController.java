@@ -216,7 +216,9 @@ public interface CertificateController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<CertificateDto> getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    List<CertificateDto> getCertificateChain(
+            @Parameter(description = "Certificate UUID") @PathVariable String uuid
+    ) throws NotFoundException, CertificateException;
 
 
     @Operation(summary = "List Certificates Approvals")
