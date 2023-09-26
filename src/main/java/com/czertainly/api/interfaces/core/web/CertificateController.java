@@ -218,7 +218,7 @@ public interface CertificateController {
     )
     List<CertificateDto> getCertificateChain(
             @Parameter(description = "Certificate UUID") @PathVariable String uuid
-    ) throws NotFoundException, CertificateException;
+    ) throws NotFoundException;
 
 
     @Operation(summary = "List Certificates Approvals")
