@@ -200,13 +200,25 @@ public interface CertificateController {
     CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
     ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
-
-    @RequestMapping(
-            path = {"/{uuid}/chain"},
-            method = {RequestMethod.GET},
-            produces = {"application/json"}
+    
+    @Operation(
+            summary = "Get certificate chain",
+            description = "Get certificate chain for the certificate with the given UUID. " +
+                    "The certificate chain is returned in the order of the chain, with the first certificate " +
+                    "being the certificate with the given UUID, up to the last identified certificate in the chain. " +
+                    "If the certificate with the given UUID has status `NEW` or `REJECTED`, an empty list is returned."
     )
-    List<CertificateDto> getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Certificate chain retrieved")
+    })
+    @RequestMapping(
+            path = "/{uuid}/chain",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    List<CertificateDto> getCertificateChain(
+            @Parameter(description = "Certificate UUID") @PathVariable String uuid
+    ) throws NotFoundException;
 
 
     @Operation(summary = "List Certificates Approvals")
