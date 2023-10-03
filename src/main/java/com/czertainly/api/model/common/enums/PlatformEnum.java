@@ -16,6 +16,7 @@ import com.czertainly.api.model.connector.notification.NotificationType;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.authority.CertificateRevocationReason;
+import com.czertainly.api.model.core.certificate.CertificateFormat;
 import com.czertainly.api.model.core.certificate.CertificateStatus;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import com.czertainly.api.model.core.certificate.CertificateValidationStatus;
@@ -58,6 +59,7 @@ public enum PlatformEnum implements IPlatformEnum {
     // certificates
     CERTIFICATE_TYPE(CertificateType.class, "Certificate type"),
     CERTIFICATE_STATUS(CertificateStatus.class, "Certificate status"),
+    CERTIFICATE_FORMAT(CertificateFormat.class, "Certificate format"),
     CERTIFICATE_VALIDATION_STATUS(CertificateValidationStatus.class, "Certificate validation status"),
     CERTIFICATE_REVOCATION_REASON(CertificateRevocationReason.class, "Certificate revocation reason"),
     CERTIFICATE_REQUEST_FORMAT(CertificateRequestFormat.class, "Certificate request format"),
