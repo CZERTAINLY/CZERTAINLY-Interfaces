@@ -8,8 +8,8 @@ import java.util.Arrays;
 
 public enum CertificateFormat implements IPlatformEnum {
 
-    PKCS7("pkcs7","PKCS#7", "PKCS#7 certificate format"),
-    PEM("pem", "PEM","PEM certificate format");
+    PKCS7("pkcs7", "PKCS#7", "PKCS#7 certificate format"),
+    PEM("pem", "PEM", "PEM certificate format");
 
     private final String code;
     private final String label;

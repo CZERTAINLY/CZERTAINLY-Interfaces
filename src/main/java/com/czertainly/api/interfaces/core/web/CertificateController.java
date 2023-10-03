@@ -220,7 +220,7 @@ public interface CertificateController {
 
 
     @Operation(summary = "Download Certificate Chain in chosen format")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Chain certificates downloaded"), @ApiResponse(responseCode = "422", description = "Chain incomplete")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Chain certificates downloaded")})
     @RequestMapping(
             path = {"/{uuid}/chain/{certificateFormat}"},
             method = {RequestMethod.GET},
