@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
 
@@ -37,6 +38,7 @@ public enum CertificateFormat implements IPlatformEnum {
 
 
     @Override
+    @JsonValue
     public String getCode() {
         return this.code;
     }
