@@ -200,13 +200,33 @@ public interface CertificateController {
     CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
     ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
-
+    
+    @Operation(
+            summary = "Get certificate chain",
+            description = "Get certificate chain for the certificate with the given UUID. " +
+                    "The certificate chain is returned in the order of the chain, with the first certificate " +
+                    "being the certificate with the given UUID, up to the last identified certificate in the chain. " +
+                    "If the certificate with the given UUID has status `NEW` or `REJECTED`, an empty list is returned."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Certificate chain retrieved")
+    })
     @RequestMapping(
-            path = {"/{uuid}/chain"},
+            path = "/{uuid}/chain",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    CertificateChainResponseDto getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException;
+
+
+    @Operation(summary = "Download Certificate Chain in chosen format")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Chain certificates downloaded")})
+    @RequestMapping(
+            path = {"/{uuid}/chain/{certificateFormat}"},
             method = {RequestMethod.GET},
             produces = {"application/json"}
     )
-    List<CertificateDto> getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateException, IOException;
 
 
     @Operation(summary = "List Certificates Approvals")
