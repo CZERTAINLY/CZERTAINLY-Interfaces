@@ -216,9 +216,17 @@ public interface CertificateController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<CertificateDto> getCertificateChain(
-            @Parameter(description = "Certificate UUID") @PathVariable String uuid
-    ) throws NotFoundException;
+    CertificateChainResponseDto getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException;
+
+
+    @Operation(summary = "Download Certificate Chain in chosen format")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Chain certificates downloaded"), @ApiResponse(responseCode = "422", description = "Chain incomplete")})
+    @RequestMapping(
+            path = {"/{uuid}/chain/{certificateFormat}"},
+            method = {RequestMethod.GET},
+            produces = {"application/json"}
+    )
+    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateException, IOException;
 
 
     @Operation(summary = "List Certificates Approvals")
