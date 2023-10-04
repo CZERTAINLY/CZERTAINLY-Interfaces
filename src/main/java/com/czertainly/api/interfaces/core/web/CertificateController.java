@@ -202,7 +202,7 @@ public interface CertificateController {
     CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
     ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
-    
+
     @Operation(
             summary = "Get certificate chain",
             description = "Get certificate chain for the certificate with the given UUID. " +
@@ -220,7 +220,6 @@ public interface CertificateController {
     )
     CertificateChainResponseDto getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException;
 
-
     @Operation(summary = "Download Certificate Chain in chosen format")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Chain certificates downloaded")})
     @RequestMapping(
@@ -228,10 +227,7 @@ public interface CertificateController {
             method = {RequestMethod.GET},
             produces = {"application/json"}
     )
-
-  CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateOperationException;
-
-
+    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateOperationException;
 
     @Operation(summary = "List Certificates Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
