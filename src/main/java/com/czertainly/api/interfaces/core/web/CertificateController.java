@@ -228,7 +228,9 @@ public interface CertificateController {
             method = {RequestMethod.GET},
             produces = {"application/json"}
     )
-    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateOperationException;
+
+  CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateOperationException;
+
 
 
     @Operation(summary = "List Certificates Approvals")
