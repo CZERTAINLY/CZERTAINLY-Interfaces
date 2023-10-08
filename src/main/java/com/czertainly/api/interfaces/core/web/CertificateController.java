@@ -96,12 +96,6 @@ public interface CertificateController {
     void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
             throws NotFoundException;
 
-    @Operation(summary = "Initiate Certificate validation")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate validation initiated")})
-    @RequestMapping(method = RequestMethod.PUT, path = "/{uuid}/validate", produces = {"application/json"})
-    void check(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
-            throws CertificateException, IOException, NotFoundException;
-
     @Operation(summary = "Update RA Profile, Group, Owner for multiple Certificates", description = "In this operation, when the list of " +
             "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
             "be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
@@ -169,8 +163,7 @@ public interface CertificateController {
     @Operation(summary = "Get Certificate Validation Result")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate validation detail retrieved")})
     @RequestMapping(path = "/{uuid}/validate", method = RequestMethod.GET, produces = {"application/json"})
-    Map<String, CertificateValidationDto> getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
-            throws NotFoundException, CertificateException, IOException;
+    Map<CertificateValidationCheck, CertificateValidationDto> getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException, CertificateException;
 
     @Operation(summary = "Get CSR Generation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved")})
@@ -227,7 +220,7 @@ public interface CertificateController {
             method = {RequestMethod.GET},
             produces = {"application/json"}
     )
-    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateOperationException;
+    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateException;
 
     @Operation(summary = "List Certificates Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})

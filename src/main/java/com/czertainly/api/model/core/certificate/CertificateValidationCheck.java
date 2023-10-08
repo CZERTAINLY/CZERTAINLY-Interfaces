@@ -10,14 +10,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum CertificateValidationStep implements IPlatformEnum {
+public enum CertificateValidationCheck implements IPlatformEnum {
     CERTIFICATE_CHAIN("certificate_chain", "Signature Verification"),
     SIGNATURE_VERIFICATION("signature", "Signature Verification"),
     CERTIFICATE_VALIDITY("certificate_validity", "Certificate Validity"),
     OCSP_VERIFICATION("ocsp_verification", "OCSP Verification"),
-    CRL_VERIFICATION("crl_verification", "CRL Verification");
+    CRL_VERIFICATION("crl_verification", "CRL Verification"),
+    BASIC_CONSTRAINTS("basic_constraints", "Basic Constraints"),
+    KEY_USAGE("key_usage", "Certificate Key Usage");
 
-    private static final CertificateValidationStep[] VALUES;
+    private static final CertificateValidationCheck[] VALUES;
 
     static {
         VALUES = values();
@@ -28,11 +30,11 @@ public enum CertificateValidationStep implements IPlatformEnum {
     private final String description;
 
 
-    CertificateValidationStep(String code, String label) {
+    CertificateValidationCheck(String code, String label) {
         this(code, label,null);
     }
 
-    CertificateValidationStep(String code, String label, String description) {
+    CertificateValidationCheck(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -55,7 +57,7 @@ public enum CertificateValidationStep implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static CertificateValidationStep findByCode(String code) {
+    public static CertificateValidationCheck findByCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
