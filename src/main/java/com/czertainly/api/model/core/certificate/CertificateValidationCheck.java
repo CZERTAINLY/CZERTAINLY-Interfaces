@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CertificateValidationCheck implements IPlatformEnum {
-    CERTIFICATE_CHAIN("certificate_chain", "Signature Verification"),
+    CERTIFICATE_CHAIN("certificate_chain", "Certificate chain"),
     SIGNATURE_VERIFICATION("signature", "Signature Verification"),
     CERTIFICATE_VALIDITY("certificate_validity", "Certificate Validity"),
     OCSP_VERIFICATION("ocsp_verification", "OCSP Verification"),

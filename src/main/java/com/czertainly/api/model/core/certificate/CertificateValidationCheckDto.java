@@ -7,16 +7,22 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CertificateValidationDto {
+public class CertificateValidationCheckDto {
 
     @Schema(
-            description = "Certificate validation step result status",
+            description = "Certificate validation check type",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private CertificateValidationCheck validationCheck;
+
+    @Schema(
+            description = "Certificate validation check result status",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CertificateValidationStatus status;
 
     @Schema(
-            description = "Certificate validation step result message",
+            description = "Certificate validation check result message",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String message;

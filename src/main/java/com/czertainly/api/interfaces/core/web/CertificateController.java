@@ -1,7 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.CertificateOperationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.approval.ApprovalResponseDto;
@@ -24,7 +23,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.bouncycastle.cms.CMSException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +34,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/certificates")
@@ -163,7 +160,7 @@ public interface CertificateController {
     @Operation(summary = "Get Certificate Validation Result")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate validation detail retrieved")})
     @RequestMapping(path = "/{uuid}/validate", method = RequestMethod.GET, produces = {"application/json"})
-    Map<CertificateValidationCheck, CertificateValidationDto> getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException, CertificateException;
+    CertificateValidationResultDto getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException, CertificateException;
 
     @Operation(summary = "Get CSR Generation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved")})
