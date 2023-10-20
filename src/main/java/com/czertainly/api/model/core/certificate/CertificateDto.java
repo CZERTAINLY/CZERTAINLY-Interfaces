@@ -73,10 +73,16 @@ public class CertificateDto {
     private Integer keySize;
 
     @Schema(
-            description = "Status of the Certificate",
+            description = "State of the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private CertificateStatus status;
+    private CertificateState state;
+
+    @Schema(
+            description = "Current validation status of the certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private CertificateValidationStatus validationStatus;
 
     @Schema(
             description = "RA Profile associated to the Certificate"

@@ -10,19 +10,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum CertificateStatus implements IPlatformEnum {
-
-	UNKNOWN("unknown", "Unknown"),
-	NEW("new", "New"),
+public enum CertificateState implements IPlatformEnum {
+	REQUESTED("requested", "Requested"),
 	REJECTED("rejected", "Rejected"),
-	VALID("valid", "Valid"),
-	INVALID("invalid", "Invalid"),
-	REVOKED("revoked", "Revoked"),
-	EXPIRING("expiring", "Expiring"),
-	EXPIRED("expired", "Expired"),
+	PENDING_APPROVAL("pending_approval", "Pending approval"),
+	PENDING_ACTION("pending_action", "Pending action", "issue/revoke action pending"),
+	FAILED("failed", "Failed", "Issue action failed"),
+	ISSUED("issued", "Issued"),
+	ARCHIVED("archived", "Archived"),
 	;
 
-	private static final CertificateStatus[] VALUES;
+	private static final CertificateState[] VALUES;
 
 	static {
 		VALUES = values();
@@ -32,11 +30,11 @@ public enum CertificateStatus implements IPlatformEnum {
 	private final String label;
 	private final String description;
 
-	CertificateStatus(String code, String label) {
+	CertificateState(String code, String label) {
 		this(code, label,null);
 	}
 
-	CertificateStatus(String code, String label, String description) {
+	CertificateState(String code, String label, String description) {
 		this.code = code;
 		this.label = label;
 		this.description = description;
@@ -59,11 +57,11 @@ public enum CertificateStatus implements IPlatformEnum {
 	}
 
 	@JsonCreator
-	public static CertificateStatus findByCode(String code) {
+	public static CertificateState findByCode(String code) {
 		return Arrays.stream(VALUES)
 				.filter(k -> k.code.equals(code))
 				.findFirst()
 				.orElseThrow(() ->
-						new ValidationException(ValidationError.create("Unknown certificate status {}", code)));
+						new ValidationException(ValidationError.create("Unknown certificate state {}", code)));
 	}
 }

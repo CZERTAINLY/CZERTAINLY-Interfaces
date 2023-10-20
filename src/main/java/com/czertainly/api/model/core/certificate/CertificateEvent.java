@@ -17,7 +17,8 @@ public enum CertificateEvent {
     DELETE("Delete Certificate"),
     APPROVAL_REQUEST("Approve action requested"),
     APPROVAL_CLOSE("Approve action closed"),
-    UPDATE_STATUS("Update Status"),
+    UPDATE_STATE("Update State"),
+    UPDATE_VALIDATION_STATUS("Update Validation Status"),
     UPDATE_RA_PROFILE("Update RA Profile"),
     UPDATE_ENTITY("Update Entity"),
     UPDATE_GROUP("Update Group"),
@@ -28,7 +29,7 @@ public enum CertificateEvent {
 
     @Schema(description = "Certificate Event",
             example = "Issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String code;
+    private final String code;
 
     CertificateEvent(String code) {
         this.code = code;

@@ -55,10 +55,11 @@ public enum PlatformEnum implements IPlatformEnum {
 
     // certificates
     CERTIFICATE_TYPE(CertificateType.class, "Certificate type"),
-    CERTIFICATE_STATUS(CertificateStatus.class, "Certificate status"),
+    CERTIFICATE_STATE(CertificateState.class, "Certificate state"),
+    CERTIFICATE_VALIDATION_STATUS(CertificateValidationStatus.class, "Certificate validation status"),
     CERTIFICATE_FORMAT(CertificateFormat.class, "Certificate format"),
     CERTIFICATE_VALIDATION_CHECK(CertificateValidationCheck.class, "Certificate validation check type"),
-    CERTIFICATE_VALIDATION_STATUS(CertificateValidationStatus.class, "Certificate validation status"),
+    CERTIFICATE_VALIDATION_CHECK_STATUS(CertificateValidationCheckStatus.class, "Certificate validation check result status"),
     CERTIFICATE_REVOCATION_REASON(CertificateRevocationReason.class, "Certificate revocation reason"),
     CERTIFICATE_REQUEST_FORMAT(CertificateRequestFormat.class, "Certificate request format"),
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
