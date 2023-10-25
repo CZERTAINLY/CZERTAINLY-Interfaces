@@ -18,7 +18,6 @@ public enum CertificateRevocationReason implements IPlatformEnum {
     SUPERSEDED("superseded", "Superseded", 4),
     CESSATION_OF_OPERATION("cessationOfOperation", "Cessation of operation", 5),
     CERTIFICATE_HOLD("certificateHold", "Certificate hold", 6),
-    REMOVE_FROM_CRL("removeFromCRL", "Remove from CRL", 8),
     PRIVILEGES_WITHDRAWN("privilegeWithdrawn", "Privilege withdrawn", 9),
     AA_COMPROMISE("aACompromise", "AA compromise", 10);
 

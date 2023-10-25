@@ -16,6 +16,7 @@ public enum CertificateValidationCheckStatus implements IPlatformEnum {
     FAILED("failed", "Failed"),
     WARNING("warning", "Warning"),
     REVOKED("revoked", "Revoked"),
+    INACTIVE("inactive", "Inactive"),
     INVALID("invalid", "Invalid"),
     EXPIRING("expiring", "Expiring"),
     EXPIRED("expired", "Expired");

@@ -16,7 +16,7 @@ import java.util.Arrays;
 public enum NotificationType implements IPlatformEnum {
 
     // certificates
-    CERTIFICATE_STATUS_CHANGED("certificate_status_changed", "Certificate status changed", "Notification when the certificate changes state with detail about the certificate", Resource.CERTIFICATE, NotificationDataCertificateStatusChanged.class),
+    CERTIFICATE_STATUS_CHANGED("certificate_status_changed", "Certificate validation status changed", "Notification when the certificate changes state with detail about the certificate", Resource.CERTIFICATE, NotificationDataCertificateStatusChanged.class),
     CERTIFICATE_ACTION_PERFORMED("certificate_action_performed", "Certificate action performed", "Notification after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE, NotificationDataCertificateActionPerformed.class),
 
     // approvals
