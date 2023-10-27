@@ -10,14 +10,15 @@ import java.util.Arrays;
 
 public enum CertificateEvent {
     ISSUE("Issue Certificate"),
-    CREATE_CSR("Create CSR"),
+    REQUEST("Request Certificate"),
     RENEW("Renew Certificate"),
     REKEY("Rekey Certificate"),
     REVOKE("Revoke Certificate"),
     DELETE("Delete Certificate"),
     APPROVAL_REQUEST("Approve action requested"),
     APPROVAL_CLOSE("Approve action closed"),
-    UPDATE_STATUS("Update Status"),
+    UPDATE_STATE("Update State"),
+    UPDATE_VALIDATION_STATUS("Update Validation Status"),
     UPDATE_RA_PROFILE("Update RA Profile"),
     UPDATE_ENTITY("Update Entity"),
     UPDATE_GROUP("Update Group"),
@@ -28,7 +29,7 @@ public enum CertificateEvent {
 
     @Schema(description = "Certificate Event",
             example = "Issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String code;
+    private final String code;
 
     CertificateEvent(String code) {
         this.code = code;

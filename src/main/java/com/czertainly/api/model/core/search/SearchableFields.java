@@ -4,7 +4,8 @@ import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
 import com.czertainly.api.model.common.enums.cryptography.KeyType;
-import com.czertainly.api.model.core.certificate.CertificateStatus;
+import com.czertainly.api.model.core.certificate.CertificateState;
+import com.czertainly.api.model.core.certificate.CertificateValidationStatus;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
@@ -21,7 +22,8 @@ public enum SearchableFields {
     COMMON_NAME("commonName", null, null, null),
     SERIAL_NUMBER("serialNumber", null, null, null),
     RA_PROFILE_NAME("raProfile.name", null, null, null),
-    STATUS("status", CertificateStatus.class, null, null),
+    CERTIFICATE_STATE("state", CertificateState.class, null, null),
+    CERTIFICATE_VALIDATION_STATUS("validationStatus", CertificateValidationStatus.class, null, null),
     COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class, null, null),
     GROUP_NAME("group.name", null, null, null),
     OWNER("owner", null, null, null),

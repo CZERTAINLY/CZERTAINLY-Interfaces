@@ -17,7 +17,7 @@ public class CertificateValidationResultDto {
             description = "Overall certificate validation result status",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private CertificateStatus resultStatus;
+    private CertificateValidationStatus resultStatus;
 
     @Schema(
             description = "Certificate validation check results",

@@ -16,6 +16,7 @@ the compliance status of the individual rules
  */
 @Schema(enumAsRef = true)
 public enum ComplianceStatus implements IPlatformEnum {
+    NOT_CHECKED("not_checked", "Not checked"),
     OK("ok", "Compliant"),
     NOK("nok", "Not Compliant"),
     NA("na", "Not Applicable"),
