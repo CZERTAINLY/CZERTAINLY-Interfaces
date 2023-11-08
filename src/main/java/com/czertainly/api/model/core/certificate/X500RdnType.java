@@ -13,7 +13,7 @@ public enum X500RdnType implements IPlatformEnum {
     ORGANIZATION_UNIT("OU", "OrganizationUnit", "2.5.4.11", new String[]{"OU"}),
     ORGANIZATION("O", "Organization", "2.5.4.10", new String[]{"O"}),
     LOCALITY("L", "Locality", "2.5.4.7", new String[]{"L"}),
-    STATE("ST", "State", "2.5.4.8", new String[]{"S,ST"}),
+    STATE("ST", "State", "2.5.4.8", new String[]{"S","ST"}),
     DOMAIN_COMPONENT("DC", "DomainComponent", "0.9.2342.19200300.100.1.25", new String[]{"DC"}),
     COUNTRY("C", "Country", "2.5.4.6", new String[]{"C"});
 
