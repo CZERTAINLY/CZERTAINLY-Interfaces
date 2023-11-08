@@ -8,14 +8,14 @@ import java.util.Arrays;
 
 public enum X500RdnType implements IPlatformEnum {
 
-    Email("EMAIL", "Email", "1.2.840.113549.1.9.1", new String[]{"E", "EMAILADDRESS"}),
-    CommonName("CN", "CommonName", "2.5.4.3", new String[]{}),
-    OrganizationUnit("OU", "OrganizationUnit", "2.5.4.11", new String[]{}),
-    Organization("O", "Organization", "2.5.4.10", new String[]{}),
-    Locality("L", "Locality", "2.5.4.7", new String[]{}),
-    State("ST", "State", "2.5.4.8", new String[]{}),
-    DomainComponent("DC", "DomainComponent", "0.9.2342.19200300.100.1.25", new String[]{}),
-    Country("C", "Country", "2.5.4.6", new String[]{});
+    EMAIL("EMAIL", "Email", "1.2.840.113549.1.9.1", new String[]{"EMAIL", "E", "EMAILADDRESS"}),
+    COMMON_NAME("CN", "CommonName", "2.5.4.3", new String[]{"CN"}),
+    ORGANIZATION_UNIT("OU", "OrganizationUnit", "2.5.4.11", new String[]{"OU"}),
+    ORGANIZATION("O", "Organization", "2.5.4.10", new String[]{"O"}),
+    LOCALITY("L", "Locality", "2.5.4.7", new String[]{"L"}),
+    STATE("ST", "State", "2.5.4.8", new String[]{"S,ST"}),
+    DOMAIN_COMPONENT("DC", "DomainComponent", "0.9.2342.19200300.100.1.25", new String[]{"DC"}),
+    COUNTRY("C", "Country", "2.5.4.6", new String[]{"C"});
 
     private final String code;
     private final String label;
@@ -67,7 +67,7 @@ public enum X500RdnType implements IPlatformEnum {
 
     @Override
     public String getDescription() {
-        return "";
+        return null;
     }
 
     public String getOID() {
