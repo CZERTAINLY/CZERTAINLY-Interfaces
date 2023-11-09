@@ -209,5 +209,5 @@ public interface CertificateController {
     @PostMapping(path = "/identify", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     CertificateIdentificationResponseDto identifyCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody CertificateIdentificationRequestDto request) throws NotFoundException, CertificateOperationException;
+            @RequestBody CertificateIdentificationRequestDto request) throws NotFoundException, ValidationException;
 }
