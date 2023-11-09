@@ -18,10 +18,15 @@ public class CertificateIdentificationRequestDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
+    @Schema(description = "List of RA Profiles attributes",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<RequestAttributeDto> raProfileAttributes;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("certificate", certificate)
+                .append("raProfileAttributes", raProfileAttributes)
                 .toString();
     }
 }
