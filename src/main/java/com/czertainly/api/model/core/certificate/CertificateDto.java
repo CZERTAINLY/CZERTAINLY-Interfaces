@@ -136,4 +136,10 @@ public class CertificateDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean privateKeyAvailability;
+
+    @Schema(
+            description = "Indicator whether CA is marked as trusted",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private boolean trustedCa;
 }
