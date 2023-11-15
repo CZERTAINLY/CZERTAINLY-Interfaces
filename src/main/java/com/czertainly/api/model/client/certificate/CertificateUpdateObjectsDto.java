@@ -1,11 +1,12 @@
 package com.czertainly.api.model.client.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Data
 public class CertificateUpdateObjectsDto {
-
-    @Schema(description = "RA Profile UUID")
-    private String raProfileUuid;
 
     @Schema(description = "Group UUID")
     private String groupUuid;
@@ -13,27 +14,15 @@ public class CertificateUpdateObjectsDto {
     @Schema(description = "Certificate Owner UUID")
     private String ownerUuid;
 
-    public String getRaProfileUuid() {
-        return raProfileUuid;
-    }
+    @Schema(description = "RA Profile UUID")
+    private String raProfileUuid;
 
-    public void setRaProfileUuid(String raProfileUuid) {
-        this.raProfileUuid = raProfileUuid;
-    }
-
-    public String getGroupUuid() {
-        return groupUuid;
-    }
-
-    public void setGroupUuid(String groupUuid) {
-        this.groupUuid = groupUuid;
-    }
-
-    public String getOwnerUuid() {
-        return ownerUuid;
-    }
-
-    public void setOwnerUuid(String ownerUuid) {
-        this.ownerUuid = ownerUuid;
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("groupUuid", groupUuid)
+                .append("ownerUuid", ownerUuid)
+                .append("raProfileUuid", raProfileUuid)
+                .toString();
     }
 }

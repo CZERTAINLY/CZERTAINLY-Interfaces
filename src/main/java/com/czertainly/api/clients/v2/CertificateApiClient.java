@@ -5,10 +5,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.connector.v2.CertRevocationDto;
-import com.czertainly.api.model.connector.v2.CertificateDataResponseDto;
-import com.czertainly.api.model.connector.v2.CertificateRenewRequestDto;
-import com.czertainly.api.model.connector.v2.CertificateSignRequestDto;
+import com.czertainly.api.model.connector.v2.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -32,6 +29,7 @@ public class CertificateApiClient extends BaseApiClient {
     private static final String CERTIFICATE_REVOKE_ATTRIBUTES_VALIDATE_CONTEXT = CERTIFICATE_REVOKE_ATTRIBUTES_CONTEXT + "/validate";
 
     private static final String CERTIFICATE_REVOKE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/revoke";
+    private static final String CERTIFICATE_IDENTIFY_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/identify";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -126,6 +124,19 @@ public class CertificateApiClient extends BaseApiClient {
                 .retrieve()
                 .toEntity(Void.class)
                 .block().getBody(),
+                request,
+                connector);
+    }
+
+    public CertificateIdentificationResponseDto identifyCertificate(ConnectorDto connector, String authorityUuid, CertificateIdentificationRequestDto requestDto) throws ValidationException, ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+
+        return processRequest(r -> r
+                        .uri(connector.getUrl() + CERTIFICATE_IDENTIFY_CONTEXT, authorityUuid)
+                        .body(Mono.just(requestDto), CertificateSignRequestDto.class)
+                        .retrieve()
+                        .toEntity(CertificateIdentificationResponseDto.class)
+                        .block().getBody(),
                 request,
                 connector);
     }

@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.CertificateOperationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.approval.ApprovalResponseDto;
@@ -70,44 +71,43 @@ public interface CertificateController {
 
     @Operation(summary = "List Certificates")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the certificates")})
-    @RequestMapping(method = RequestMethod.POST, produces = {"application/json"})
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request) throws ValidationException;
 
     @Operation(summary = "Get Certificate Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE})
     CertificateDetailDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
             throws NotFoundException, CertificateException, IOException;
 
     @Operation(summary = "Delete a certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate deleted")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @DeleteMapping(path = "/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 
-    //TODO - Merge the DTO and update implementation
     @Operation(summary = "Update Certificate Objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @PatchMapping(path = "/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
-            throws NotFoundException;
+            throws NotFoundException, CertificateOperationException;
 
-    @Operation(summary = "Update RA Profile, Group, Owner for multiple Certificates", description = "In this operation, when the list of " +
+    @Operation(summary = "Update Group and/or Owner for multiple Certificates", description = "In this operation, when the list of " +
             "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
             "be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, " +
             "the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
             "the filter criteria. To apply this change for all the Certificates in the inventory, " +
             "provide an empty array \"[]\" for the value of \"filters\" in the request body")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated")})
-    @RequestMapping(method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void bulkUpdateCertificateObjects(@RequestBody MultipleCertificateObjectUpdateDto request)
             throws NotFoundException;
 
     @Operation(summary = "Upload a new Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
-    @RequestMapping(path = "/upload", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(path = "/upload", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request)
             throws AlreadyExistException, CertificateException, NoSuchAlgorithmException;
 
@@ -118,17 +118,17 @@ public interface CertificateController {
             "the filter criteria. To apply this change for all the Certificates in the inventory, " +
             "provide an empty array \"[]\" for the value of \"filters\" in the request body")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificates deleted")})
-    @RequestMapping(path = "/delete", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(path = "/delete", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
 
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
-    @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(summary = "Get Certificate event history")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
-    @RequestMapping(path = "/{uuid}/history", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{uuid}/history", produces = {MediaType.APPLICATION_JSON_VALUE})
     List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
@@ -142,10 +142,9 @@ public interface CertificateController {
                             description = "Locations retrieved"
                     )
             })
-    @RequestMapping(
-            method = RequestMethod.GET,
+    @GetMapping(
             path = "/{certificateUuid}/locations",
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     List<LocationDto> listLocations(
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
@@ -153,25 +152,25 @@ public interface CertificateController {
 
     @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkCertificatesCompliance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
-    @RequestMapping(path = "/compliance", method = RequestMethod.POST, produces = {"application/json"})
+    @PostMapping(path = "/compliance", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void checkCompliance(@RequestBody CertificateComplianceCheckDto request) throws NotFoundException;
 
     @Operation(summary = "Get Certificate Validation Result")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate validation detail retrieved")})
-    @RequestMapping(path = "/{uuid}/validate", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{uuid}/validate", produces = {MediaType.APPLICATION_JSON_VALUE})
     CertificateValidationResultDto getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException, CertificateException;
 
     @Operation(summary = "Get CSR Generation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved")})
-    @RequestMapping(path = "/csr/attributes", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/csr/attributes", produces = {MediaType.APPLICATION_JSON_VALUE})
     List<BaseAttribute> getCsrGenerationAttributes();
 
     @Operation(summary = "Get Certificate Content")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate content retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/content", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(path = "/content", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     List<CertificateContentDto> getCertificateContent(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Certificate UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
@@ -183,9 +182,8 @@ public interface CertificateController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate request submit, certificate created and ready to be issued")
     })
-    @RequestMapping(
+    @PostMapping(
             path = "/create",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -203,25 +201,23 @@ public interface CertificateController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate chain retrieved")
     })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}/chain",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     CertificateChainResponseDto getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException;
 
     @Operation(summary = "Download Certificate Chain in chosen format")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Chain certificates downloaded")})
-    @RequestMapping(
+    @GetMapping(
             path = {"/{uuid}/chain/{certificateFormat}"},
-            method = {RequestMethod.GET},
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateException;
 
     @Operation(summary = "List Certificates Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
-    @RequestMapping(method = RequestMethod.GET, path = "/{uuid}/approvals", produces = {"application/json"})
+    @GetMapping(path = "/{uuid}/approvals", produces = {MediaType.APPLICATION_JSON_VALUE})
     ApprovalResponseDto listCertificateApprovals(@Parameter(description = "Certificate UUID") @PathVariable String uuid, final PaginationRequestDto paginationRequestDto);
 
 }
