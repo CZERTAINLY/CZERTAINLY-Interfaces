@@ -17,12 +17,16 @@ public class CertificateUpdateObjectsDto {
     @Schema(description = "RA Profile UUID")
     private String raProfileUuid;
 
+    @Schema(description = "Trusted CA Mark")
+    private Boolean trustedCa;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("groupUuid", groupUuid)
                 .append("ownerUuid", ownerUuid)
                 .append("raProfileUuid", raProfileUuid)
+                .append("trustedCa", trustedCa)
                 .toString();
     }
 }
