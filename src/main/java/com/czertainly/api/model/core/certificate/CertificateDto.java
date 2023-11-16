@@ -138,8 +138,8 @@ public class CertificateDto {
     private boolean privateKeyAvailability;
 
     @Schema(
-            description = "Indicator whether CA is marked as trusted",
+            description = "Indicator whether CA is marked as trusted, set to null if certificate is not CA",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private boolean trustedCa;
+    private Boolean trustedCa;
 }

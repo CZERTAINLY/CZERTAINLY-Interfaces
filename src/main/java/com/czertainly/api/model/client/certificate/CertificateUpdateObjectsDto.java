@@ -17,7 +17,7 @@ public class CertificateUpdateObjectsDto {
     @Schema(description = "RA Profile UUID")
     private String raProfileUuid;
 
-    @Schema(description = "Trusted CA Mark")
+    @Schema(description = "Mark CA certificate as trusted")
     private Boolean trustedCa;
 
     @Override
