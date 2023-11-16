@@ -109,7 +109,7 @@ public enum SearchableFields {
             {"ocspValidation", "ocspValidation"},
             {"crlValidation", "ocspValidation"},
             {"signatureValidation", "ocspValidation"},
-            {"name", "name"}
+            {"name", "name"},
 
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
