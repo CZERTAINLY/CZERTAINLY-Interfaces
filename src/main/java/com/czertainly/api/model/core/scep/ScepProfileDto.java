@@ -1,8 +1,11 @@
 package com.czertainly.api.model.core.scep;
 
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.util.logging.SimpleFormatter;
 
 @Data
 public class ScepProfileDto extends NameAndUuidDto {
@@ -11,10 +14,8 @@ public class ScepProfileDto extends NameAndUuidDto {
     private boolean enabled;
     @Schema(description = "SCEP Profile description", example = "Sample description")
     private String description;
-    @Schema(description = "Name of the RA Profile", example = "RA Profile 1")
-    private String raProfileName;
-    @Schema(description = "UUID of RA Profile", example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
-    private String raProfileUuid;
+    @Schema(description = "RA Profile")
+    private SimplifiedRaProfileDto raProfile;
     @Schema(description = "Include CA certificate in the SCEP response", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean includeCaCertificate;
     @Schema(description = "Include CA certificate chain in the SCEP response", requiredMode = Schema.RequiredMode.REQUIRED)
