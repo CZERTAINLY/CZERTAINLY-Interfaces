@@ -55,6 +55,11 @@ public class KeyDto extends NameAndUuidDto {
     private String owner;
 
     @Schema(
+            description = "UUID of the owner of the Key"
+    )
+    private String ownerUuid;
+
+    @Schema(
             description = "Key Group"
     )
     private GroupDto group;

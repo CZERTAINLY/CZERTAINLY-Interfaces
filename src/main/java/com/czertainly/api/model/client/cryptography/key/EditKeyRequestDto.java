@@ -32,9 +32,9 @@ public class EditKeyRequestDto {
     private String description;
 
     @Schema(
-            description = "Key Owner"
+            description = "Key Owner UUID"
     )
-    private String owner;
+    private String ownerUuid;
 
     @Schema(
             description = "UUID of the group"
