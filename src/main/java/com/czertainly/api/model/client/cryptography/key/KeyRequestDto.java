@@ -25,10 +25,6 @@ public class KeyRequestDto {
     )
     private String description;
 
-    @Schema(
-            description = "Key Owner"
-    )
-    private String owner;
 
     @Schema(
             description = "UUID of the group"

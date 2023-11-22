@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.acme;
 
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -41,11 +42,11 @@ public class AcmeAccountListResponseDto {
     )
     private AccountStatus status;
     @Schema(
-            description = "Name of the RA Profile",
+            description = "RA Profile",
             requiredMode = Schema.RequiredMode.REQUIRED,
             example = "RAProfile1"
     )
-    private String raProfileName;
+    private SimplifiedRaProfileDto raProfile;
     @Schema(
             description = "Name of the ACME Profile",
             requiredMode = Schema.RequiredMode.REQUIRED,
@@ -101,13 +102,11 @@ public class AcmeAccountListResponseDto {
     }
 
 
-    public String getRaProfileName() {
-        return raProfileName;
+    public SimplifiedRaProfileDto getRaProfile() {
+        return raProfile;
     }
 
-    public void setRaProfileName(String raProfileName) {
-        this.raProfileName = raProfileName;
-    }
+    public void setRaProfile(SimplifiedRaProfileDto raProfile) { this.raProfile = raProfile; }
 
     public String getAcmeProfileName() {
         return acmeProfileName;
@@ -133,7 +132,7 @@ public class AcmeAccountListResponseDto {
                 .append("enabled", enabled)
                 .append("totalOrders", totalOrders)
                 .append("status", status)
-                .append("raProfileName", raProfileName)
+                .append("raProfileName", raProfile.getName())
                 .append("acmeProfileName", acmeProfileName)
                 .append("acmeProfileUuid", acmeProfileUuid)
                 .toString();

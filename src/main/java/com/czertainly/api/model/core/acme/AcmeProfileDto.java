@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.acme;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +25,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "DNS Resolver port number", example = "53")
     private String dnsResolverPort;
     @Schema(description = "RA Profile")
-    private RaProfileDto raProfile;
+    private SimplifiedRaProfileDto raProfile;
     @Schema(description = "Retry interval for ACME client requests", example = "30")
     private Integer retryInterval;
     @Schema(description = "Disable new Orders (change in Terms of Service)", example = "false")
@@ -81,11 +82,11 @@ public class AcmeProfileDto extends NameAndUuidDto {
         this.dnsResolverPort = dnsResolverPort;
     }
 
-    public RaProfileDto getRaProfile() {
+    public SimplifiedRaProfileDto getRaProfile() {
         return raProfile;
     }
 
-    public void setRaProfile(RaProfileDto raProfile) {
+    public void setRaProfile(SimplifiedRaProfileDto raProfile) {
         this.raProfile = raProfile;
     }
 
