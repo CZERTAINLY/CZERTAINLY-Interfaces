@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.acme;
 
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -83,17 +84,11 @@ public class AcmeAccountResponseDto {
     )
     private Boolean termsOfServiceAgreed;
     @Schema(
-            description = "Name of the RA Profile",
+            description = "RA Profile",
             requiredMode = Schema.RequiredMode.REQUIRED,
             example = "RA Profile 1"
     )
-    private String raProfileName;
-    @Schema(
-            description = "UUID of the RA Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
-    )
-    private String raProfileUuid;
+    private SimplifiedRaProfileDto raProfile;
     @Schema(
             description = "Name of the ACME Profile",
             requiredMode = Schema.RequiredMode.REQUIRED,
@@ -163,20 +158,12 @@ public class AcmeAccountResponseDto {
         this.termsOfServiceAgreed = termsOfServiceAgreed;
     }
 
-    public String getRaProfileName() {
-        return raProfileName;
+    public SimplifiedRaProfileDto getRaProfile() {
+        return raProfile;
     }
 
-    public void setRaProfileName(String raProfileName) {
-        this.raProfileName = raProfileName;
-    }
-
-    public String getRaProfileUuid() {
-        return raProfileUuid;
-    }
-
-    public void setRaProfileUuid(String raProfileUuid) {
-        this.raProfileUuid = raProfileUuid;
+    public void setRaProfile(SimplifiedRaProfileDto raProfile) {
+        this.raProfile = raProfile;
     }
 
     public String getAcmeProfileName() {

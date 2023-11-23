@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.acme;
 
+import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,10 +14,9 @@ public class AcmeProfileListDto extends NameAndUuidDto {
     private boolean enabled;
     @Schema(description = "ACME Profile description", example = "Some description")
     private String description;
-    @Schema(description = "Name of the RA Profile", example = "RA Profile 1")
-    private String raProfileName;
-    @Schema(description = "UUID of RA Profile", example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
-    private String raProfileUuid;
+    @Schema(description = "RA Profile")
+    private SimplifiedRaProfileDto raProfile;
+
     @Schema(description = "URL of the ACME Directory", example = "https://some-server.com/api/v1/protocols/acme/profile1/directory")
     private String directoryUrl;
 
@@ -28,20 +28,10 @@ public class AcmeProfileListDto extends NameAndUuidDto {
         this.enabled = enabled;
     }
 
-    public String getRaProfileName() {
-        return raProfileName;
-    }
+    public SimplifiedRaProfileDto getRaProfile() { return raProfile; }
 
-    public void setRaProfileName(String raProfileName) {
-        this.raProfileName = raProfileName;
-    }
-
-    public String getRaProfileUuid() {
-        return raProfileUuid;
-    }
-
-    public void setRaProfileUuid(String raProfileUuid) {
-        this.raProfileUuid = raProfileUuid;
+    public void setRaProfile(SimplifiedRaProfileDto raProfile) {
+        this.raProfile = raProfile;
     }
 
     public String getDirectoryUrl() {
@@ -68,8 +58,8 @@ public class AcmeProfileListDto extends NameAndUuidDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("isEnabled", enabled)
                 .append("description", description)
-                .append("raProfileName", raProfileName)
-                .append("raProfileUuid", raProfileUuid)
+                .append("raProfileName", raProfile.getName())
+                .append("raProfileUuid", raProfile.getUuid())
                 .append("directoryUrl", directoryUrl)
                 .toString();
     }

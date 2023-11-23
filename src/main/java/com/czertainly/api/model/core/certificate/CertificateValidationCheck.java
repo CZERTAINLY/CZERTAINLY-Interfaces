@@ -10,17 +10,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum CertificateValidationStatus implements IPlatformEnum {
-    NOT_CHECKED("not_checked", "Not checked"),
-    FAILED("failed", "Failed"),
-    INACTIVE("inactive", "Inactive"),
-    INVALID("invalid", "Invalid"),
-    VALID("valid", "Valid"),
-    REVOKED("revoked", "Revoked"),
-    EXPIRING("expiring", "Expiring"),
-    EXPIRED("expired", "Expired");
+public enum CertificateValidationCheck implements IPlatformEnum {
+    CERTIFICATE_CHAIN("certificate_chain", "Certificate chain"),
+    SIGNATURE_VERIFICATION("signature", "Signature Verification"),
+    CERTIFICATE_VALIDITY("certificate_validity", "Certificate Validity"),
+    OCSP_VERIFICATION("ocsp_verification", "OCSP Verification"),
+    CRL_VERIFICATION("crl_verification", "CRL Verification"),
+    BASIC_CONSTRAINTS("basic_constraints", "Basic Constraints"),
+    KEY_USAGE("key_usage", "Certificate Key Usage");
 
-    private static final CertificateValidationStatus[] VALUES;
+    private static final CertificateValidationCheck[] VALUES;
 
     static {
         VALUES = values();
@@ -31,11 +30,11 @@ public enum CertificateValidationStatus implements IPlatformEnum {
     private final String description;
 
 
-    CertificateValidationStatus(String code, String label) {
+    CertificateValidationCheck(String code, String label) {
         this(code, label,null);
     }
 
-    CertificateValidationStatus(String code, String label, String description) {
+    CertificateValidationCheck(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -58,12 +57,12 @@ public enum CertificateValidationStatus implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static CertificateValidationStatus findByCode(String code) {
+    public static CertificateValidationCheck findByCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown certificate validation status {}", code)));
+                        new ValidationException(ValidationError.create("Unknown certificate validation step {}", code)));
     }
 
 
