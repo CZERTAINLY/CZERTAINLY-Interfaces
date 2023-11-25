@@ -6,14 +6,19 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.TrustManager;
+import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 public class AuthorityInstanceApiClient extends BaseApiClient {
 
@@ -21,6 +26,9 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     private static final String AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT = AUTHORITY_INSTANCE_BASE_CONTEXT + "/{uuid}";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/raProfile/attributes";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
+    private static final String AUTHORITY_INSTANCE_CRL_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/crl";
+
+    private static final String CRL_DELTA_QUERY_PARAM = "delta";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -115,6 +123,22 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 .retrieve()
                 .toEntity(Boolean.class)
                 .block().getBody(),
+                request,
+                connector);
+    }
+
+    public CertificateRevocationListDto getCrl(ConnectorDto connector, String uuid, boolean delta) throws ConnectorException {
+        URI uri;
+        UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
+        uriBuilder.path(AUTHORITY_INSTANCE_CRL_CONTEXT.replace("{uuid}", uuid)).queryParam(CRL_DELTA_QUERY_PARAM, delta);
+        uri = uriBuilder.build();
+
+        WebClient.RequestBodySpec request = prepareRequest(HttpMethod.GET, connector, true).uri(uri);
+
+        return processRequest(r -> Objects.requireNonNull(r
+                .retrieve()
+                .toEntity(CertificateRevocationListDto.class)
+                .block()).getBody(),
                 request,
                 connector);
     }

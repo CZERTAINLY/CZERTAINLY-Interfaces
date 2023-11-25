@@ -8,6 +8,7 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -151,4 +152,27 @@ public interface AuthorityInstanceController {
     void validateRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
+
+    @Operation(
+            summary = "Get the latest CRL for the Authority",
+            description = "Returns the latest CRL for the Authority Instance. " +
+            "If delta is true, the delta CRL is returned, otherwise the full CRL is returned. " +
+            "If the CRL is not available, a 404 is returned."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "CRL retrieved"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/crl",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    CertificateRevocationListDto getCrl(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(description = "If true, the delta CRL is returned, otherwise the full CRL is returned") @RequestParam(required = false) boolean delta
+    ) throws NotFoundException;
 }
