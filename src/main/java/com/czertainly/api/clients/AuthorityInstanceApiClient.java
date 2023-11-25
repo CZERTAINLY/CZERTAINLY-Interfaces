@@ -6,7 +6,8 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
-import com.czertainly.api.model.connector.authority.CertificateRevocationListDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListResponseDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -127,17 +128,18 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public CertificateRevocationListDto getCrl(ConnectorDto connector, String uuid, boolean delta) throws ConnectorException {
+    public CertificateRevocationListResponseDto getCrl(ConnectorDto connector, String uuid, boolean delta, CertificateRevocationListRequestDto requestDto) throws ConnectorException {
         URI uri;
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
         uriBuilder.path(AUTHORITY_INSTANCE_CRL_CONTEXT.replace("{uuid}", uuid)).queryParam(CRL_DELTA_QUERY_PARAM, delta);
         uri = uriBuilder.build();
 
-        WebClient.RequestBodySpec request = prepareRequest(HttpMethod.GET, connector, true).uri(uri);
+        WebClient.RequestBodySpec request = prepareRequest(HttpMethod.POST, connector, true).uri(uri);
 
         return processRequest(r -> Objects.requireNonNull(r
+                .body(Mono.just(requestDto), CertificateRevocationListRequestDto.class)
                 .retrieve()
-                .toEntity(CertificateRevocationListDto.class)
+                .toEntity(CertificateRevocationListResponseDto.class)
                 .block()).getBody(),
                 request,
                 connector);

@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class CertificateRevocationListDto {
+public class CertificateRevocationListResponseDto {
 
     @Schema(description = "Base64 encoded CRL data",
             requiredMode = Schema.RequiredMode.REQUIRED)

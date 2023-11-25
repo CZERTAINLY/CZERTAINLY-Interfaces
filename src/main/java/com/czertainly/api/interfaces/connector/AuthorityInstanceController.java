@@ -8,7 +8,8 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
-import com.czertainly.api.model.connector.authority.CertificateRevocationListDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListResponseDto;
+import com.czertainly.api.model.connector.v2.CertificateIdentificationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -168,11 +169,13 @@ public interface AuthorityInstanceController {
             })
     @RequestMapping(
             path = "/{uuid}/crl",
-            method = RequestMethod.GET,
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
             produces = {"application/json"}
     )
-    CertificateRevocationListDto getCrl(
+    CertificateRevocationListResponseDto getCrl(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @Parameter(description = "If true, the delta CRL is returned, otherwise the full CRL is returned") @RequestParam(required = false) boolean delta
+            @Parameter(description = "If true, the delta CRL is returned, otherwise the full CRL is returned") @RequestParam(required = false) boolean delta,
+            @RequestBody CertificateIdentificationRequestDto request
     ) throws NotFoundException;
 }
