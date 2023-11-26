@@ -8,6 +8,8 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.CaCertificatesRequestDto;
+import com.czertainly.api.model.connector.authority.CaCertificatesResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -151,4 +153,29 @@ public interface AuthorityInstanceController {
     void validateRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
+
+    @Operation(
+            summary = "Get the Authority Instance's certificate chain",
+            description = "Returns the Authority Instance's certificate chain. The chain is returned as a list of " +
+                    "Base64 encoded certificates, starting with the Authority Instance's certificate " +
+                    "and ending with the root certificate, if available."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Authority Instance's certificate chain retrieved"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/certificates",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    CaCertificatesResponseDto getCertificates(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @RequestBody CaCertificatesRequestDto raProfileAttributes
+    ) throws ValidationException, NotFoundException;
+
 }
