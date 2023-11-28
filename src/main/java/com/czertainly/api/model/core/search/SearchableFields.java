@@ -70,7 +70,11 @@ public enum SearchableFields {
     SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null, null, null),
     SUPPORT_KEY_MANAGEMENT("supportKeyManagement", null, null, null),
 
-    PRIVATE_KEY("type", null, "key.items", KeyType.PRIVATE_KEY);
+    PRIVATE_KEY("type", null, "key.items", KeyType.PRIVATE_KEY),
+
+    TRUSTED_CA("trustedCa",null, null,null);
+
+
 
     private final String field;
 
