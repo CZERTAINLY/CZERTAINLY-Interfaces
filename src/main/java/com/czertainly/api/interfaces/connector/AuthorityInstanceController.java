@@ -168,12 +168,12 @@ public interface AuthorityInstanceController {
                     )
             })
     @RequestMapping(
-            path = "/{uuid}/certificates",
+            path = "/{uuid}/caCertificates",
             method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
-    CaCertificatesResponseDto getCertificates(
+    CaCertificatesResponseDto getCaCertificates(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody CaCertificatesRequestDto raProfileAttributes
     ) throws ValidationException, NotFoundException;

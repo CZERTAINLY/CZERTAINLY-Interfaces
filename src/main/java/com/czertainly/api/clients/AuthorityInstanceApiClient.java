@@ -24,7 +24,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     private static final String AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT = AUTHORITY_INSTANCE_BASE_CONTEXT + "/{uuid}";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/raProfile/attributes";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
-    private static final String AUTHORITY_INSTANCE_CERT_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/certificates";
+    private static final String AUTHORITY_INSTANCE_CERT_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/caCertificates";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -123,7 +123,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public CaCertificatesResponseDto getCertificates(ConnectorDto connector, String uuid, CaCertificatesRequestDto requestDto) throws ValidationException, ConnectorException {
+    public CaCertificatesResponseDto getCaCertificates(ConnectorDto connector, String uuid, CaCertificatesRequestDto requestDto) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> Objects.requireNonNull(r

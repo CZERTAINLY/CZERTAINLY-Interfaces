@@ -13,8 +13,10 @@ import java.util.List;
 @ToString
 public class CaCertificatesRequestDto {
 
-    @Schema(description = "List of RA Profiles attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(
+        description = "List of RA Profiles attributes",
+        requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private List<RequestAttributeDto> raProfileAttributes;
 
 }
