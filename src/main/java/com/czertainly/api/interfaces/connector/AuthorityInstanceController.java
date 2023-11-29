@@ -8,8 +8,8 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListRequestDto;
 import com.czertainly.api.model.connector.authority.CertificateRevocationListResponseDto;
-import com.czertainly.api.model.connector.v2.CertificateIdentificationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -175,7 +175,6 @@ public interface AuthorityInstanceController {
     )
     CertificateRevocationListResponseDto getCrl(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @Parameter(description = "If true, the delta CRL is returned, otherwise the full CRL is returned") @RequestParam(required = false) boolean delta,
-            @RequestBody CertificateIdentificationRequestDto request
+            @RequestBody CertificateRevocationListRequestDto request
     ) throws NotFoundException;
 }

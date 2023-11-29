@@ -12,12 +12,9 @@ import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.TrustManager;
-import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,8 +25,6 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/raProfile/attributes";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
     private static final String AUTHORITY_INSTANCE_CRL_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/crl";
-
-    private static final String CRL_DELTA_QUERY_PARAM = "delta";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -128,15 +123,11 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public CertificateRevocationListResponseDto getCrl(ConnectorDto connector, String uuid, boolean delta, CertificateRevocationListRequestDto requestDto) throws ConnectorException {
-        URI uri;
-        UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
-        uriBuilder.path(AUTHORITY_INSTANCE_CRL_CONTEXT.replace("{uuid}", uuid)).queryParam(CRL_DELTA_QUERY_PARAM, delta);
-        uri = uriBuilder.build();
-
-        WebClient.RequestBodySpec request = prepareRequest(HttpMethod.POST, connector, true).uri(uri);
+    public CertificateRevocationListResponseDto getCrl(ConnectorDto connector, String uuid, CertificateRevocationListRequestDto requestDto) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> Objects.requireNonNull(r
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_CRL_CONTEXT, uuid)
                 .body(Mono.just(requestDto), CertificateRevocationListRequestDto.class)
                 .retrieve()
                 .toEntity(CertificateRevocationListResponseDto.class)

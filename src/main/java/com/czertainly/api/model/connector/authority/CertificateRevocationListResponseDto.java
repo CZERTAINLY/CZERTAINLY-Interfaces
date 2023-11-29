@@ -12,6 +12,6 @@ public class CertificateRevocationListResponseDto {
 
     @Schema(description = "Base64 encoded CRL data",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private String crlData;
+    private byte[] crlData;
 
 }
