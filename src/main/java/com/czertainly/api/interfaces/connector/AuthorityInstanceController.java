@@ -155,10 +155,10 @@ public interface AuthorityInstanceController {
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
 
     @Operation(
-            summary = "Get the latest CRL for the Authority",
+            summary = "Get the latest CRL for the Authority Instance",
             description = "Returns the latest CRL for the Authority Instance. " +
             "If delta is true, the delta CRL is returned, otherwise the full CRL is returned. " +
-            "If the CRL is not available, a 404 is returned."
+            "When the CRL is not available for Authority Instance, null data is returned."
     )
     @ApiResponses(
             value = {
