@@ -6,6 +6,8 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.CaCertificatesRequestDto;
+import com.czertainly.api.model.connector.authority.CaCertificatesResponseDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -14,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import javax.net.ssl.TrustManager;
 import java.util.List;
+import java.util.Objects;
 
 public class AuthorityInstanceApiClient extends BaseApiClient {
 
@@ -21,6 +24,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     private static final String AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT = AUTHORITY_INSTANCE_BASE_CONTEXT + "/{uuid}";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/raProfile/attributes";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
+    private static final String AUTHORITY_INSTANCE_CERT_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/caCertificates";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
@@ -118,4 +122,18 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 request,
                 connector);
     }
+
+    public CaCertificatesResponseDto getCaCertificates(ConnectorDto connector, String uuid, CaCertificatesRequestDto requestDto) throws ValidationException, ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+
+        return processRequest(r -> Objects.requireNonNull(r
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_CERT_CONTEXT, uuid)
+                .body(Mono.just(requestDto), CaCertificatesRequestDto.class)
+                .retrieve()
+                .toEntity(CaCertificatesResponseDto.class)
+                .block()).getBody(),
+                request,
+                connector);
+    }
+
 }
