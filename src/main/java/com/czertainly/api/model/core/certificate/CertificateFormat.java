@@ -9,11 +9,8 @@ import java.util.Arrays;
 
 public enum CertificateFormat implements IPlatformEnum {
 
-
     RAW("raw", "Raw", "Raw certificate format, extension based on encoding"),
-    PKCS7("pkcs7", "PKCS#7", "PKCS#7 certificate format"),
-    PKCS12("pkcs12", "PKCS#12", "PKCS#12 certificate format");
-
+    PKCS7("pkcs7", "PKCS#7", "PKCS#7 certificate format");
     private final String code;
     private final String label;
     private final String description;
