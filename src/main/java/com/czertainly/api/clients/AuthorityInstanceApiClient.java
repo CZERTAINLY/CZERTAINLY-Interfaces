@@ -6,6 +6,8 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListResponseDto;
 import com.czertainly.api.model.connector.authority.CaCertificatesRequestDto;
 import com.czertainly.api.model.connector.authority.CaCertificatesResponseDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
@@ -24,6 +26,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     private static final String AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT = AUTHORITY_INSTANCE_BASE_CONTEXT + "/{uuid}";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/raProfile/attributes";
     private static final String AUTHORITY_INSTANCE_RA_ATTRS_VALIDATE_CONTEXT = AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT + "/validate";
+    private static final String AUTHORITY_INSTANCE_CRL_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/crl";
     private static final String AUTHORITY_INSTANCE_CERT_CONTEXT = AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT + "/caCertificates";
 
     private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
@@ -123,6 +126,19 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
+    public CertificateRevocationListResponseDto getCrl(ConnectorDto connector, String uuid, CertificateRevocationListRequestDto requestDto) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+
+        return processRequest(r -> Objects.requireNonNull(r
+                .uri(connector.getUrl() + AUTHORITY_INSTANCE_CRL_CONTEXT, uuid)
+                .body(Mono.just(requestDto), CertificateRevocationListRequestDto.class)
+                .retrieve()
+                .toEntity(CertificateRevocationListResponseDto.class)
+                .block()).getBody(),
+                request,
+                connector);
+    }
+
     public CaCertificatesResponseDto getCaCertificates(ConnectorDto connector, String uuid, CaCertificatesRequestDto requestDto) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -135,5 +151,4 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 request,
                 connector);
     }
-
 }
