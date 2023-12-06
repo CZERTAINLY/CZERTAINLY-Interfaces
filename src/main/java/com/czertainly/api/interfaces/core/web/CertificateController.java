@@ -91,7 +91,7 @@ public interface CertificateController {
     @PatchMapping(path = "/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
-            throws NotFoundException, CertificateOperationException;
+            throws NotFoundException, CertificateOperationException, ValidationException;
 
     @Operation(summary = "Update Group and/or Owner for multiple Certificates", description = "In this operation, when the list of " +
             "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
