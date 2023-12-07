@@ -9,19 +9,19 @@ import java.util.List;
 public class CertificateDownloadResponseDto {
 
     @Schema(
-            description = "Format of the downloaded certificate",
+            description = "Format of the downloaded content",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CertificateFormat format;
 
     @Schema(
-            description = "Encoding of the downloaded certificate",
+            description = "Encoding of the downloaded content",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CertificateFormatEncoding encoding;
 
     @Schema(
-            description = "Base64 encoded certificate in the specified format",
+            description = "Base64 encoded content in the specified format and encoding",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String content;
