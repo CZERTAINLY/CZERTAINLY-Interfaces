@@ -80,6 +80,12 @@ public interface CertificateController {
     CertificateDetailDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
             throws NotFoundException, CertificateException, IOException;
 
+    @Operation(summary = "Download Certificate")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate downloaded")})
+    @GetMapping(path = "/{uuid}/{certificateFormat}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    CertificateDownloadResponseDto downloadCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam CertificateFormatEncoding encoding)
+            throws NotFoundException, CertificateException, IOException;
+
     @Operation(summary = "Delete a certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate deleted")})
     @DeleteMapping(path = "/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -213,7 +219,7 @@ public interface CertificateController {
             path = {"/{uuid}/chain/{certificateFormat}"},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException, CertificateException;
+    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate, @RequestParam CertificateFormatEncoding encoding) throws NotFoundException, CertificateException;
 
     @Operation(summary = "List Certificates Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
