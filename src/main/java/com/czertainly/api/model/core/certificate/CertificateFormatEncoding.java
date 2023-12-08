@@ -34,7 +34,7 @@ public enum CertificateFormatEncoding implements IPlatformEnum {
         return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported certificate format encoding %s.", code)));
     }
 
 
