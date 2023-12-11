@@ -11,6 +11,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.core.certificate.CertificateDetailDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -263,4 +264,11 @@ public interface RAProfileManagementController {
     void disassociateRAProfileFromApprovalProfile(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
                                                   @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid,
                                                   @Parameter(description = "Approval profile UUID") @PathVariable String approvalProfileUuid) throws NotFoundException;
+
+    @Operation(summary = "Retrieve certificates of authority belonging to RA profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile associated with the RA profile")})
+    @RequestMapping(path = "/{authorityUuid}/raProfiles/{raProfileUuid}/caCertificates", method = RequestMethod.GET, produces = {"application/json"})
+    List<CertificateDetailDto> retrieveAuthorityCertificateChain(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
+                                                                 @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid);
+
 }
