@@ -26,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
@@ -271,7 +270,7 @@ public interface RAProfileManagementController {
     @Operation(summary = "Retrieve certificates of authority belonging to RA profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile associated with the RA profile")})
     @RequestMapping(path = "/{authorityUuid}/raProfiles/{raProfileUuid}/caCertificates", method = RequestMethod.GET, produces = {"application/json"})
-    List<CertificateDetailDto> retrieveAuthorityCertificateChain(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
-                                                                 @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid) throws ConnectorException, CertificateException, NoSuchAlgorithmException;
+    List<CertificateDetailDto> getAuthorityCertificateChain(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
+                                                            @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid) throws ConnectorException, CertificateException, NoSuchAlgorithmException;
 
 }
