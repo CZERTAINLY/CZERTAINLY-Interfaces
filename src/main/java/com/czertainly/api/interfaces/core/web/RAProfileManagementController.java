@@ -11,6 +11,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.core.certificate.CertificateDetailDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +26,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Optional;
 
@@ -246,21 +249,28 @@ public interface RAProfileManagementController {
 
     @Operation(summary = "List of Approval profiles associated with the RAProfile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profiles retrieved")})
-    @RequestMapping(path = "/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles", method = RequestMethod.GET, produces = {"application/json"})
     List<ApprovalProfileDto> getAssociatedApprovalProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
                                                           @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Associated RA profile with the Approval profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile associated with the RA profile")})
-    @RequestMapping(path = "/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles/{approvalProfileUuid}", method = RequestMethod.PATCH, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles/{approvalProfileUuid}", method = RequestMethod.PATCH, produces = {"application/json"})
     void associateRAProfileWithApprovalProfile(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
                                                @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid,
                                                @Parameter(description = "Approval profile UUID") @PathVariable String approvalProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Disassociated RA profile with the Approval profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile disassociated from the RA profile")})
-    @RequestMapping(path = "/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles/{approvalProfileUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/approvalProfiles/{approvalProfileUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     void disassociateRAProfileFromApprovalProfile(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
                                                   @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid,
                                                   @Parameter(description = "Approval profile UUID") @PathVariable String approvalProfileUuid) throws NotFoundException;
+
+    @Operation(summary = "Retrieve certificates of authority belonging to RA profile")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile associated with the RA profile")})
+    @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/caCertificates", method = RequestMethod.GET, produces = {"application/json"})
+    List<CertificateDetailDto> getAuthorityCertificateChain(@Parameter(description = "Authority instance UUID") @PathVariable String authorityUuid,
+                                                            @Parameter(description = "RA profile UUID") @PathVariable String raProfileUuid) throws ConnectorException, CertificateException, NoSuchAlgorithmException;
+
 }
