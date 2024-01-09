@@ -8,13 +8,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class CertificateUpdateObjectsDto {
 
-    @Schema(description = "Group UUID")
+    @Schema(description = "Certificate Group UUID (set to empty string to remove certificate from group)")
     private String groupUuid;
 
-    @Schema(description = "Certificate Owner UUID")
+    @Schema(description = "Certificate owner user UUID (set to empty string to remove owner of certificate)")
     private String ownerUuid;
 
-    @Schema(description = "RA Profile UUID")
+    @Schema(description = "RA Profile UUID (set to empty string to remove certificate from RA profile)")
     private String raProfileUuid;
 
     @Schema(description = "Mark CA certificate as trusted")
@@ -22,11 +22,6 @@ public class CertificateUpdateObjectsDto {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("groupUuid", groupUuid)
-                .append("ownerUuid", ownerUuid)
-                .append("raProfileUuid", raProfileUuid)
-                .append("trustedCa", trustedCa)
-                .toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("groupUuid", groupUuid).append("ownerUuid", ownerUuid).append("raProfileUuid", raProfileUuid).append("trustedCa", trustedCa).toString();
     }
 }
