@@ -3,10 +3,11 @@ package com.czertainly.api.model.core.certificate;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
-
+@Schema(enumAsRef = true)
 public enum CertificateFormatEncoding implements IPlatformEnum {
 
     PEM("pem", "PEM", "PEM certificate format encoding"),
