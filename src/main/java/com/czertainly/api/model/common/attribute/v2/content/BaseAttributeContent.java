@@ -47,9 +47,9 @@ public class BaseAttributeContent<T> extends AttributeContent {
         if (o == null) return false;
         if (this == o) return true;
         BaseAttributeContent<?> that = (BaseAttributeContent<?>) o;
-        boolean referenceEquals = Objects.equals(this.reference, that.getReference());
 
-        return referenceEquals ? Objects.equals(this.data, that.getData()) : referenceEquals;
+        // content is considered equal when reference and data are equal
+        return Objects.equals(this.reference, that.getReference()) && Objects.equals(this.data, that.getData());
     }
 
     @Override
