@@ -42,7 +42,7 @@ public class KeyRequestDto {
     )
     private List<RequestAttributeDto> customAttributes;
 
-    @Schema(description = "Status of the user. True = Enabled, False = Disabled",
+    @Schema(description = "Enabled status of created key. True = Enabled, False = Disabled",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             defaultValue = "false")
     private Boolean enabled;
