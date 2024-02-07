@@ -1,6 +1,6 @@
 # CZERTAINLY Interfaces
 
-> This repository is part of the commercial open source project CZERTAINLY. You can find more information about the project at [CZERTAINLY](https://github.com/3KeyCompany/CZERTAINLY) repository, including the contribution guide.
+> This repository is part of the open source project CZERTAINLY. You can find more information about the project at [CZERTAINLY](https://github.com/3KeyCompany/CZERTAINLY) repository, including the contribution guide.
 
 CZERTAINLY Interfaces is a set of interfaces related to the platform APIs and communication between the platform and available `Connectors`. It contains description of the interfaces that can be treated as a reference for the developers and integrators.
 
