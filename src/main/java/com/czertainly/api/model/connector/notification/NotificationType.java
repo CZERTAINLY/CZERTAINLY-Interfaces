@@ -13,6 +13,7 @@ import lombok.Getter;
 import java.util.Arrays;
 
 @Getter
+@Schema(enumAsRef = true)
 public enum NotificationType implements IPlatformEnum {
 
     // certificates

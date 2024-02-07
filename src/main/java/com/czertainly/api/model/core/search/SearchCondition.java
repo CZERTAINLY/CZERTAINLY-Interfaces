@@ -25,7 +25,7 @@ public enum SearchCondition implements IPlatformEnum {
     SUCCESS("SUCCESS", "success", "success"),
     FAILED("FAILED", "failed", "failed"),
     UNKNOWN("UNKNOWN", "unknown", "unknown"),
-    NOT_CHECKED("NOT_CHECKED", "not checked", "notchecked")
+    NOT_CHECKED("NOT_CHECKED", "not checked", "notchecked"),
     ;
 
     private static final SearchCondition[] VALUES;

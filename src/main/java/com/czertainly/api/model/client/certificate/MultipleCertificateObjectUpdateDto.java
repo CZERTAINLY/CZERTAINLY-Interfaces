@@ -10,39 +10,23 @@ import java.util.List;
 @Data
 public class MultipleCertificateObjectUpdateDto {
 
-    @Schema(
-            description = "UUID of the Certificate Group"
-    )
+    @Schema(description = "Certificate Group UUID (set to empty string to remove certificate from group)")
     private String groupUuid;
 
-    @Schema(
-            description = "Certificate Owner UUID"
-    )
+    @Schema(description = "Certificate owner user UUID (set to empty string to remove owner of certificate)")
     private String ownerUuid;
 
-    @Schema(
-            description = "UUID of the RA Profile"
-    )
+    @Schema(description = "RA Profile UUID (set to empty string to remove certificate from RA profile)")
     private String raProfileUuid;
 
-    @Schema(
-            description = "List of Certificate UUIDs"
-    )
+    @Schema(description = "List of Certificate UUIDs")
     private List<String> certificateUuids;
 
-    @Schema(
-            description = "Certificate filter input"
-    )
+    @Schema(description = "Certificate filter input")
     private List<SearchFilterRequestDto> filters;
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("groupUuid", groupUuid)
-                .append("ownerUuid", ownerUuid)
-                .append("raProfileUuid", raProfileUuid)
-                .append("certificateUuids", certificateUuids)
-                .append("filters", filters)
-                .toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("groupUuid", groupUuid).append("ownerUuid", ownerUuid).append("raProfileUuid", raProfileUuid).append("certificateUuids", certificateUuids).append("filters", filters).toString();
     }
 }

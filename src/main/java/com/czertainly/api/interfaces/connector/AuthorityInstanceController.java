@@ -8,6 +8,10 @@ import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListRequestDto;
+import com.czertainly.api.model.connector.authority.CertificateRevocationListResponseDto;
+import com.czertainly.api.model.connector.authority.CaCertificatesRequestDto;
+import com.czertainly.api.model.connector.authority.CaCertificatesResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -151,4 +155,53 @@ public interface AuthorityInstanceController {
     void validateRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
+
+    @Operation(
+            summary = "Get the latest CRL for the Authority Instance",
+            description = "Returns the latest CRL for the Authority Instance. " +
+            "If delta is true, the delta CRL is returned, otherwise the full CRL is returned. " +
+            "When the CRL is not available for Authority Instance, null data is returned."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "CRL retrieved"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/crl",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    CertificateRevocationListResponseDto getCrl(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @RequestBody CertificateRevocationListRequestDto request
+    ) throws NotFoundException;
+    
+    @Operation(
+            summary = "Get the Authority Instance's certificate chain",
+            description = "Returns the Authority Instance's certificate chain. The chain is returned as a list of " +
+                    "Base64 encoded certificates, starting with the Authority Instance's certificate " +
+                    "and ending with the root certificate, if available."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Authority Instance's certificate chain retrieved"
+                    )
+            })
+    @RequestMapping(
+            path = "/{uuid}/caCertificates",
+            method = RequestMethod.POST,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    CaCertificatesResponseDto getCaCertificates(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
+            @RequestBody CaCertificatesRequestDto raProfileAttributes
+    ) throws ValidationException, NotFoundException;
+
 }

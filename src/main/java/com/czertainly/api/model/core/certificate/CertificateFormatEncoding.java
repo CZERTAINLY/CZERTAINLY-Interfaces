@@ -7,34 +7,35 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
-
 @Schema(enumAsRef = true)
-public enum CertificateFormat implements IPlatformEnum {
+public enum CertificateFormatEncoding implements IPlatformEnum {
 
-    RAW("raw", "Raw", "Raw certificate format, extension based on encoding"),
-    PKCS7("pkcs7", "PKCS#7", "PKCS#7 certificate format");
+    PEM("pem", "PEM", "PEM certificate format encoding"),
+    DER("der", "DER", "DER certificate format encoding");
+
+
     private final String code;
     private final String label;
     private final String description;
 
-    private static final CertificateFormat[] VALUES;
+    private static final CertificateFormatEncoding[] VALUES;
 
     static {
         VALUES = values();
     }
 
-    CertificateFormat(String code, String label, String description) {
+    CertificateFormatEncoding(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
     }
 
     @JsonCreator
-    public static CertificateFormat fromCode(String code) {
+    public static CertificateFormatEncoding fromCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported certificate format %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported certificate format encoding %s.", code)));
     }
 
 
