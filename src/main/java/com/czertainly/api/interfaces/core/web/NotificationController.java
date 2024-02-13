@@ -72,7 +72,7 @@ public interface NotificationController {
     @Operation(summary = "Mark notification as read for logged user")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification marked as read")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PATCH, produces = {"application/json"})
-    NotificationDto markNotificationAsRead(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws ValidationException, NotFoundException;
+    void markNotificationAsRead(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws ValidationException, NotFoundException;
 
     @Operation(summary = "Delete a list of notifications for logged user")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notifications deleted")})
@@ -85,7 +85,7 @@ public interface NotificationController {
     @Operation(summary = "Mark a list of notifications as read for logged user")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notifications marked as read")})
     @RequestMapping(method = RequestMethod.PATCH, produces = {"application/json"})
-    NotificationResponseDto bulkMarkNotificationAsRead(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void bulkMarkNotificationAsRead(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Notifications UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids);
 }
