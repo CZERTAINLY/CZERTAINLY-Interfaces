@@ -26,6 +26,8 @@ import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
+import com.czertainly.api.model.core.rules.RuleActionType;
+import com.czertainly.api.model.core.rules.RuleTriggerType;
 import com.czertainly.api.model.core.search.SearchCondition;
 import com.czertainly.api.model.core.search.SearchGroup;
 import com.czertainly.api.model.core.search.SearchableFieldType;
@@ -93,6 +95,11 @@ public enum PlatformEnum implements IPlatformEnum {
 
     // Scheduler
     SCHEDULER_JOB_EXECUTION_STATUS(SchedulerJobExecutionStatus.class, "Scheduled job execution status"),
+
+    // Rules
+    RULE_ACTION_TYPE(RuleActionType.class, "Rule Action Type"),
+    RULE_TRIGGER_TYPE(RuleTriggerType.class, "Rule Trigger Type"),
+
     ;
 
     private static final PlatformEnum[] VALUES;
