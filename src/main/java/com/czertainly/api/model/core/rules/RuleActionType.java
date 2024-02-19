@@ -1,7 +1,10 @@
 package com.czertainly.api.model.core.rules;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+
+@Schema(enumAsRef = true)
 public enum RuleActionType implements IPlatformEnum {
 
     SET_FIELD("setField", "Set a field of the resource", null)

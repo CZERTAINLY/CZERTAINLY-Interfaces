@@ -1,0 +1,59 @@
+package com.czertainly.api.model.core.rules;
+
+import com.czertainly.api.model.core.auth.Resource;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class RuleRequestDto {
+
+    @Schema(
+            description = "UUID of the Compliance Connector"
+    )
+    private String connector_uuid;
+
+    @Schema(
+            description = "Name of the Rule",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String name;
+
+    @Schema(
+            description = "Resource associated with the Rule",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private Resource resource;
+
+    @Schema(
+            description = "Type of the Resource associated with the Rule"
+    )
+    private String resourceType;
+
+    @Schema(
+            description = "Format of the Resource associated with the Rule"
+    )
+    private String resourceFormat;
+
+    @Schema(
+            description = "Attributes of the Rule"
+    )
+    private String attributes;
+
+    @Schema(
+            description = "List of conditions to add in the Rule"
+    )
+    private List<RuleConditionRequestDto> conditions;
+
+    @Schema(
+            description = "List of new condition groups to add in the Rule"
+    )
+    private List<RuleConditionGroupRequestDto> conditionGroups;
+
+    @Schema(
+            description = "List of UUIDs of existing condition groups to add in the Rule"
+    )
+    private List<String> conditionGroupsUuids;
+
+}

@@ -1,7 +1,9 @@
 package com.czertainly.api.model.core.rules;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(enumAsRef = true)
 public enum RuleTriggerType implements IPlatformEnum {
 
     EVENT("event", "Event", null),
