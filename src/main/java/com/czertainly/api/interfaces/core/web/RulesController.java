@@ -50,12 +50,17 @@ public interface RulesController {
     @Operation(summary = "Create Rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Rule created")})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RuleDto createRule(@RequestBody RuleRequestDto request);
+    RuleDetailDto createRule(@RequestBody RuleRequestDto request);
+
+    @Operation(summary = "Get Rule details")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Rule details retrieved")})
+    @RequestMapping(path = "/{ruleUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    RuleDetailDto getRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid);
 
     @Operation(summary = "Update Rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Rule details updated")})
     @RequestMapping(path = "/{ruleUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleDto updateRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid, @RequestBody RuleRequestDto request);
+    RuleDetailDto updateRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid, @RequestBody RuleRequestDto request);
 
     @Operation(summary = "Delete Rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Rule deleted")})
@@ -71,12 +76,17 @@ public interface RulesController {
     @Operation(summary = "Create Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Condition group created")})
     @RequestMapping(path = "/conditionGroups", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RuleConditionGroupDto createConditionGroup(@RequestBody RuleConditionGroupRequestDto request);
+    RuleConditionGroupDetailDto createConditionGroup(@RequestBody RuleConditionGroupRequestDto request);
+
+    @Operation(summary = "Get Condition Group details")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Condition group details retrieved")})
+    @RequestMapping(path = "/conditionGroups/{conditionGroupUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    RuleConditionGroupDetailDto getConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid);
 
     @Operation(summary = "Update Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Condition group updated")})
     @RequestMapping(path = "/conditionGroups/{conditionGroupUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleConditionGroupDto updateConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid, @RequestBody RuleConditionGroupRequestDto request);
+    RuleConditionGroupDetailDto updateConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid, @RequestBody RuleConditionGroupRequestDto request);
 
     @Operation(summary = "Delete Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Condition group deleted")})
@@ -92,12 +102,17 @@ public interface RulesController {
     @Operation(summary = "Create Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Action group created")})
     @RequestMapping(path = "/actionGroups", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RuleActionGroupDto createActionGroup(@RequestBody RuleActionGroupRequestDto request);
+    RuleActionGroupDetailDto createActionGroup(@RequestBody RuleActionGroupRequestDto request);
+
+    @Operation(summary = "Get Action Group Details")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Action group details retrieved")})
+    @RequestMapping(path = "/actionGroups/{actionGroupUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    RuleActionGroupDetailDto getActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid);
 
     @Operation(summary = "Update Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Action group updated")})
     @RequestMapping(path = "/actionGroups/{actionGroupUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleActionGroupDto updateActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid, @RequestBody RuleActionGroupRequestDto request);
+    RuleActionGroupDetailDto updateActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid, @RequestBody RuleActionGroupRequestDto request);
 
     @Operation(summary = "Delete Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Action group deleted")})
@@ -113,12 +128,17 @@ public interface RulesController {
     @Operation(summary = "Create Trigger")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Trigger created")})
     @RequestMapping(path = "/triggers", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RuleTriggerDto createTrigger(@RequestBody RuleTriggerRequestDto request);
+    RuleTriggerDetailDto createTrigger(@RequestBody RuleTriggerRequestDto request);
+
+    @Operation(summary = "Get Trigger details")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger details retrieved")})
+    @RequestMapping(path = "/triggers/{triggerUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    RuleTriggerDetailDto getTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid);
 
     @Operation(summary = "Update Trigger")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger updated")})
     @RequestMapping(path = "/triggers/{triggerUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleTriggerDto updateTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid, @RequestBody RuleTriggerRequestDto request);
+    RuleTriggerDetailDto updateTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid, @RequestBody RuleTriggerRequestDto request);
 
     @Operation(summary = "Delete Trigger")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Trigger deleted")})
