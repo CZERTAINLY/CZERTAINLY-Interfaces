@@ -5,10 +5,21 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 public class RuleTriggerRequestDto {
+
+    @Schema(
+            description = "Name of the Rule Trigger",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String name;
+
+    @Schema(
+            description = "Description of the Rule Trigger"
+    )
+    private String description;
+
 
     @Schema(
             description = "Type of the Rule Trigger",
@@ -17,21 +28,19 @@ public class RuleTriggerRequestDto {
     private RuleTriggerType triggerType;
 
     @Schema(
-            description = "Name of the event of the Rule Trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Name of the event of the Rule Trigger"
     )
     private String eventName;
 
     @Schema(
-            description = "Resource associated with the Rule Trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Resource associated with the Rule Trigger"
     )
     private Resource resource;
 
     @Schema(
             description = "UUID of the Resource associated with the Rule Trigger"
     )
-    private UUID resourceUuid;
+    private String resourceUuid;
 
 
     @Schema(
@@ -52,7 +61,7 @@ public class RuleTriggerRequestDto {
     @Schema(
             description = "List of UUIDs of existing Action Groups to add in the Rule Trigger"
     )
-    private List<RuleActionGroupRequestDto> actionGroupsUuids;
+    private List<String> actionGroupsUuids;
 
     @Schema(
             description = "List of new Rule Actions to add in the Rule Trigger"

@@ -10,15 +10,15 @@ import java.util.List;
 public class RuleRequestDto {
 
     @Schema(
-            description = "UUID of the Compliance Connector"
-    )
-    private String connector_uuid;
-
-    @Schema(
             description = "Name of the Rule",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
+
+    @Schema(
+            description = "Description of the Rule"
+    )
+    private String description;
 
     @Schema(
             description = "Resource associated with the Rule",
@@ -36,10 +36,6 @@ public class RuleRequestDto {
     )
     private String resourceFormat;
 
-    @Schema(
-            description = "Attributes of the Rule"
-    )
-    private String attributes;
 
     @Schema(
             description = "List of conditions to add in the Rule"

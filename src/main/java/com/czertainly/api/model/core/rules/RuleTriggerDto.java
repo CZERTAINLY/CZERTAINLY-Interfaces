@@ -1,20 +1,20 @@
 package com.czertainly.api.model.core.rules;
 
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.List;
-import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class RuleTriggerDto {
+public class RuleTriggerDto extends NameAndUuidDto {
 
     @Schema(
-            description = "UUID of the Rule Trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Description of the Rule Trigger"
     )
-    private String uuid;
+    private String description;
 
     @Schema(
             description = "Type of the Rule Trigger",
@@ -22,36 +22,20 @@ public class RuleTriggerDto {
     )
     private RuleTriggerType triggerType;
 
+
     @Schema(
-            description = "Name of the event of the Rule Trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Name of the event of the Rule Trigger"
     )
     private String eventName;
 
     @Schema(
-            description = "Resource associated with the Rule Trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Resource associated with the Rule Trigger"
     )
     private Resource resource;
 
     @Schema(
             description = "UUID of the Resource associated with the Rule Trigger"
     )
-    private UUID resourceUuid;
+    private String resourceUuid;
 
-
-    @Schema(
-            description = "List of Rules in the Rule Trigger"
-    )
-    private List<RuleDto> rules;
-
-    @Schema(
-            description = "List of Action Groups in the Rule Trigger"
-    )
-    private List<RuleActionGroupDto> actionGroups;
-
-    @Schema(
-            description = "List of Rule Actions in the Rule Trigger"
-    )
-    private List<RuleActionDto> actions;
 }

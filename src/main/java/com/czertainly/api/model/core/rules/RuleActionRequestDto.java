@@ -1,8 +1,10 @@
 package com.czertainly.api.model.core.rules;
 
-import com.czertainly.api.model.core.search.SearchGroup;
+import com.czertainly.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class RuleActionRequestDto {
@@ -14,9 +16,9 @@ public class RuleActionRequestDto {
     private RuleActionType actionType;
 
     @Schema(
-            description = "Group of the Rule Action"
+            description = "Source of the field in the Rule Action"
     )
-    private SearchGroup search_group;
+    private FilterFieldSource fieldSource;
 
     @Schema(
             description = "Field identifier of the Rule Action"
@@ -24,8 +26,8 @@ public class RuleActionRequestDto {
     private String fieldIdentifier;
 
     @Schema(
-            description = "Value of the Rule Action"
+            description = "Data for the Rule Action"
     )
-    private Object value;
+    private Serializable actionData;
 
 }

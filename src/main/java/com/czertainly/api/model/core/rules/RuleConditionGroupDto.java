@@ -1,25 +1,14 @@
 package com.czertainly.api.model.core.rules;
 
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class RuleConditionGroupDto {
-
-    @Schema(
-            description = "UUID of the Rule Condition Group",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String uuid;
-
-    @Schema(
-            description = "Name of the Rule Condition Group",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    private String name;
+public class RuleConditionGroupDto extends NameAndUuidDto {
 
     @Schema(
             description = "Description of the Rule Condition Group"
@@ -31,10 +20,5 @@ public class RuleConditionGroupDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Resource resource;
-
-    @Schema(
-            description = "List of the Rule Conditions in the Rule Condition Group"
-    )
-    private List<RuleConditionDto> conditions;
 
 }

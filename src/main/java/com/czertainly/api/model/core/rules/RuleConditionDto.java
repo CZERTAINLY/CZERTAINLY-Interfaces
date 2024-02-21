@@ -1,9 +1,11 @@
 package com.czertainly.api.model.core.rules;
 
-import com.czertainly.api.model.core.search.SearchCondition;
-import com.czertainly.api.model.core.search.SearchGroup;
+import com.czertainly.api.model.core.search.FilterConditionOperator;
+import com.czertainly.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class RuleConditionDto {
@@ -15,32 +17,25 @@ public class RuleConditionDto {
     private String uuid;
 
     @Schema(
-            description = "UUID of the Rule Condition Group containing the Rule Condition"
+            description = "Source of the field in the Condition",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String ruleConditionGroupUuid;
+    private FilterFieldSource fieldSource;
 
     @Schema(
-            description = "UUID of the Rule containing the Rule Condition"
-    )
-    private String ruleUuid;
-
-    @Schema(
-            description = "Group of the Condition"
-    )
-    private SearchGroup search_group;
-
-    @Schema(
-            description = "Field identifier of the Rule Condition"
+            description = "Field identifier of the Rule Condition",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String fieldIdentifier;
 
     @Schema(
-            description = "Operator of the Rule Condition"
+            description = "Operator of the Rule Condition",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private SearchCondition operator;
+    private FilterConditionOperator operator;
 
     @Schema(
             description = "Value of the Rule Condition"
     )
-    private Object value;
+    private Serializable value;
 }
