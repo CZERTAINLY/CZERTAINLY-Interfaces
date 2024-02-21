@@ -7,14 +7,14 @@ import java.util.List;
 public class SearchFieldDataByGroupDto {
 
     @Schema(description = "Search group", requiredMode = Schema.RequiredMode.REQUIRED)
-    private SearchGroup searchGroup;
+    private FilterFieldSource filterFieldSource;
 
     @Schema(description = "List of search fields for specified search group", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<SearchFieldDataDto> searchFieldData;
 
-    public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, SearchGroup searchGroup) {
+    public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, FilterFieldSource filterFieldSource) {
         this.searchFieldData = searchFieldData;
-        this.searchGroup = searchGroup;
+        this.filterFieldSource = filterFieldSource;
     }
 
     public List<SearchFieldDataDto> getSearchFieldData() {
@@ -25,11 +25,11 @@ public class SearchFieldDataByGroupDto {
         this.searchFieldData = searchFieldData;
     }
 
-    public SearchGroup getSearchGroup() {
-        return searchGroup;
+    public FilterFieldSource getSearchGroup() {
+        return filterFieldSource;
     }
 
-    public void setSearchGroup(SearchGroup searchGroup) {
-        this.searchGroup = searchGroup;
+    public void setSearchGroup(FilterFieldSource filterFieldSource) {
+        this.filterFieldSource = filterFieldSource;
     }
 }

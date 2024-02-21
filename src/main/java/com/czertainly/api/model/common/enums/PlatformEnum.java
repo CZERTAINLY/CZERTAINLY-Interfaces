@@ -28,9 +28,9 @@ import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import com.czertainly.api.model.core.rules.RuleActionType;
 import com.czertainly.api.model.core.rules.RuleTriggerType;
-import com.czertainly.api.model.core.search.SearchCondition;
-import com.czertainly.api.model.core.search.SearchGroup;
-import com.czertainly.api.model.core.search.SearchableFieldType;
+import com.czertainly.api.model.core.search.FilterFieldSource;
+import com.czertainly.api.model.core.search.FilterConditionOperator;
+import com.czertainly.api.model.core.search.FilterFieldType;
 import com.czertainly.api.model.core.settings.SettingsSection;
 import com.czertainly.api.model.scheduler.SchedulerJobExecutionStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -43,9 +43,9 @@ import java.util.Arrays;
 public enum PlatformEnum implements IPlatformEnum {
     // general
     RESOURCE(Resource.class, "Platform resource"),
-    SEARCH_CONDITION(SearchCondition.class, "Search condition"),
-    SEARCH_FIELD_TYPE(SearchableFieldType.class, "Search field type"),
-    SEARCH_GROUP(SearchGroup.class, "Search group"),
+    FILTER_CONDITION_OPERATOR(FilterConditionOperator.class, "Filter condition operator"),
+    FILTER_FIELD_TYPE(FilterFieldType.class, "Filter field type"),
+    FILTER_FIELD_SOURCE(FilterFieldSource.class, "Filter field source"),
     SETTINGS_SECTION(SettingsSection.class, "Settings section"),
     NOTIFICATION_TYPE(NotificationType.class, "Notification type"),
 
