@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class SearchFilterRequestDto {
 
     @Schema(description = "Field group of search filter", requiredMode = Schema.RequiredMode.REQUIRED)
-    private FilterFieldSource filterFieldSource;
+    private FilterFieldSource fieldSource;
 
     @Schema(description = "Field identifier of search filter. List of available fields with their identifiers can be retrieved from corresponding endpoint " +
             "`GET /v1/{resource}/search`, e.g.: [**GET /v1/certificates/search**](../core-certificate/#tag/Certificate-Inventory/operation/getSearchableFieldInformation)",
@@ -35,8 +35,12 @@ public class SearchFilterRequestDto {
         return value;
     }
 
-    public FilterFieldSource getSearchGroup() {
-        return filterFieldSource;
+    public FilterFieldSource getFieldSource() {
+        return fieldSource;
+    }
+
+    public void setFieldSource(FilterFieldSource fieldSource) {
+        this.fieldSource = fieldSource;
     }
 
 }
