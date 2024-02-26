@@ -12,11 +12,6 @@ import java.util.List;
 public class RuleDetailDto extends RuleDto {
 
     @Schema(
-            description = "Attributes of the Rule"
-    )
-    private List<ResponseAttributeDto> attributes;
-
-    @Schema(
             description = "List of conditions in the Rule"
     )
     private List<RuleConditionDto> conditions;

@@ -1,9 +1,14 @@
 package com.czertainly.api.model.core.search;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+
+@Data
 public class SearchFieldDataByGroupDto {
 
     @Schema(description = "Search group", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -14,22 +19,6 @@ public class SearchFieldDataByGroupDto {
 
     public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, FilterFieldSource filterFieldSource) {
         this.searchFieldData = searchFieldData;
-        this.filterFieldSource = filterFieldSource;
-    }
-
-    public List<SearchFieldDataDto> getSearchFieldData() {
-        return searchFieldData;
-    }
-
-    public void setSearchFieldData(List<SearchFieldDataDto> searchFieldData) {
-        this.searchFieldData = searchFieldData;
-    }
-
-    public FilterFieldSource getSearchGroup() {
-        return filterFieldSource;
-    }
-
-    public void setSearchGroup(FilterFieldSource filterFieldSource) {
         this.filterFieldSource = filterFieldSource;
     }
 }

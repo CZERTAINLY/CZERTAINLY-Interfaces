@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.core.rules.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/rules")
+@RequestMapping("/v1/rules")
 @Tag(name = "Rules Management", description = "Rules Management API")
 @ApiResponses(
         value = {
@@ -40,7 +41,7 @@ import java.util.List;
                         content = @Content
                 )
         })
-public interface RulesController {
+public interface RuleController {
 
     @Operation(summary = "List Rules")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of rules fetched")})
@@ -55,18 +56,18 @@ public interface RulesController {
     @Operation(summary = "Get Rule details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Rule details retrieved")})
     @RequestMapping(path = "/{ruleUuid}", method = RequestMethod.GET, produces = {"application/json"})
-    RuleDetailDto getRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid);
+    RuleDetailDto getRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid) throws NotFoundException;
 
     @Operation(summary = "Update Rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Rule details updated")})
     @RequestMapping(path = "/{ruleUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleDetailDto updateRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid, @RequestBody RuleRequestDto request);
+    RuleDetailDto updateRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid, @RequestBody RuleRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Rule deleted")})
     @RequestMapping(path = "/{ruleUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid);
+    void deleteRule(@Parameter(description = "Rule UUID") @PathVariable String ruleUuid) throws NotFoundException;
 
     @Operation(summary = "List Condition Groups")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of condition groups fetched")})
@@ -81,18 +82,18 @@ public interface RulesController {
     @Operation(summary = "Get Condition Group details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Condition group details retrieved")})
     @RequestMapping(path = "/conditionGroups/{conditionGroupUuid}", method = RequestMethod.GET, produces = {"application/json"})
-    RuleConditionGroupDetailDto getConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid);
+    RuleConditionGroupDetailDto getConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid) throws NotFoundException;
 
     @Operation(summary = "Update Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Condition group updated")})
     @RequestMapping(path = "/conditionGroups/{conditionGroupUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleConditionGroupDetailDto updateConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid, @RequestBody RuleConditionGroupRequestDto request);
+    RuleConditionGroupDetailDto updateConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid, @RequestBody RuleConditionGroupRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Condition group deleted")})
     @RequestMapping(path = "/conditionGroups/{conditionGroupUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid);
+    void deleteConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid) throws NotFoundException;
 
     @Operation(summary = "List Action Groups")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of action groups fetched")})
@@ -107,18 +108,18 @@ public interface RulesController {
     @Operation(summary = "Get Action Group Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Action group details retrieved")})
     @RequestMapping(path = "/actionGroups/{actionGroupUuid}", method = RequestMethod.GET, produces = {"application/json"})
-    RuleActionGroupDetailDto getActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid);
+    RuleActionGroupDetailDto getActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid) throws NotFoundException;
 
     @Operation(summary = "Update Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Action group updated")})
     @RequestMapping(path = "/actionGroups/{actionGroupUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleActionGroupDetailDto updateActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid, @RequestBody RuleActionGroupRequestDto request);
+    RuleActionGroupDetailDto updateActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid, @RequestBody RuleActionGroupRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Action group deleted")})
     @RequestMapping(path = "/actionGroups/{actionGroupUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid);
+    void deleteActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid) throws NotFoundException;
 
     @Operation(summary = "List Triggers")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of triggers")})
@@ -133,17 +134,17 @@ public interface RulesController {
     @Operation(summary = "Get Trigger details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger details retrieved")})
     @RequestMapping(path = "/triggers/{triggerUuid}", method = RequestMethod.GET, produces = {"application/json"})
-    RuleTriggerDetailDto getTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid);
+    RuleTriggerDetailDto getTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid) throws NotFoundException;
 
     @Operation(summary = "Update Trigger")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger updated")})
     @RequestMapping(path = "/triggers/{triggerUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleTriggerDetailDto updateTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid, @RequestBody RuleTriggerRequestDto request);
+    RuleTriggerDetailDto updateTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid, @RequestBody RuleTriggerRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Trigger")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Trigger deleted")})
     @RequestMapping(path = "/triggers/{triggerUuid}", method = RequestMethod.DELETE, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid);
+    void deleteTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid) throws NotFoundException;
 
 }
