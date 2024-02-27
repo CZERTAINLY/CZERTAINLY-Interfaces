@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
+import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.rules.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,7 +47,7 @@ public interface RuleController {
     @Operation(summary = "List Rules")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of rules fetched")})
     @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    List<RuleDto> listRules();
+    List<RuleDto> listRules(@RequestParam(required = false) Resource resource);
 
     @Operation(summary = "Create Rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Rule created")})
@@ -72,7 +73,7 @@ public interface RuleController {
     @Operation(summary = "List Condition Groups")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of condition groups fetched")})
     @RequestMapping(path = "/conditionGroups", method = RequestMethod.GET, produces = {"application/json"})
-    List<RuleConditionGroupDto> listConditionGroups();
+    List<RuleConditionGroupDto> listConditionGroups(@RequestParam(required = false) Resource resource);
 
     @Operation(summary = "Create Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Condition group created")})
@@ -98,7 +99,7 @@ public interface RuleController {
     @Operation(summary = "List Action Groups")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of action groups fetched")})
     @RequestMapping(path = "/actionGroups", method = RequestMethod.GET, produces = {"application/json"})
-    List<RuleActionGroupDto> listActionGroups();
+    List<RuleActionGroupDto> listActionGroups(@RequestParam(required = false) Resource resource);
 
     @Operation(summary = "Create Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Action group created")})
@@ -124,7 +125,7 @@ public interface RuleController {
     @Operation(summary = "List Triggers")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of triggers")})
     @RequestMapping(path = "/triggers", method = RequestMethod.GET, produces = {"application/json"})
-    List<RuleTriggerDto> listTriggers();
+    List<RuleTriggerDto> listTriggers(@RequestParam(required = false) Resource resource, @RequestParam(required = false) Resource triggerResource);
 
     @Operation(summary = "Create Trigger")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Trigger created")})

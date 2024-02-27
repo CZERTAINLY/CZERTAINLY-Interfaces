@@ -37,5 +37,5 @@ public class RuleConditionDto {
     @Schema(
             description = "Value of the Rule Condition"
     )
-    private Serializable value;
+    private Object value;
 }
