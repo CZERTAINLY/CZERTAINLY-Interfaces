@@ -11,7 +11,8 @@ import java.util.List;
 public class RuleActionGroupDetailDto extends RuleActionGroupDto {
 
     @Schema(
-            description = "List of Rule Actions in the Rule Actions Group"
+            description = "List of Rule Actions in the Rule Actions Group",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleActionDto> actions;
 

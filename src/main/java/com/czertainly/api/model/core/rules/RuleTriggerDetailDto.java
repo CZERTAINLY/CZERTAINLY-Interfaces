@@ -12,17 +12,20 @@ import java.util.List;
 public class RuleTriggerDetailDto extends RuleTriggerDto {
 
     @Schema(
-            description = "List of Rules in the Rule Trigger"
+            description = "List of Rules in the Rule Trigger",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleDto> rules;
 
     @Schema(
-            description = "List of Action Groups in the Rule Trigger"
+            description = "List of Action Groups in the Rule Trigger",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleActionGroupDto> actionGroups;
 
     @Schema(
-            description = "List of Rule Actions in the Rule Trigger"
+            description = "List of Rule Actions in the Rule Trigger",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleActionDto> actions;
 }

@@ -27,7 +27,8 @@ public class RuleActionGroupRequestDto {
     private Resource resource;
 
     @Schema(
-            description = "List of new Rule Actions to add in the Rule Actions Group"
+            description = "List of new Rule Actions to add in the Rule Actions Group",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleActionRequestDto> actions;
 

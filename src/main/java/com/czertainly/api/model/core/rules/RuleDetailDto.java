@@ -12,12 +12,14 @@ import java.util.List;
 public class RuleDetailDto extends RuleDto {
 
     @Schema(
-            description = "List of conditions in the Rule"
+            description = "List of conditions in the Rule",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleConditionDto> conditions;
 
     @Schema(
-            description = "List of condition groups in the Rule"
+            description = "List of condition groups in the Rule",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleConditionGroupDto> conditionGroups;
 

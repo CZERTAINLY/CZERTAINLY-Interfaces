@@ -11,7 +11,8 @@ import java.util.List;
 public class RuleConditionGroupDetailDto extends RuleConditionGroupDto {
 
     @Schema(
-            description = "List of the Rule Conditions in the Rule Condition Group"
+            description = "List of the Rule Conditions in the Rule Condition Group",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<RuleConditionDto> conditions;
 

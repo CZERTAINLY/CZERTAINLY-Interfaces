@@ -29,7 +29,8 @@ public class RuleTriggerDto extends NameAndUuidDto {
     private String eventName;
 
     @Schema(
-            description = "Resource associated with the Rule Trigger"
+            description = "Resource associated with the Rule Trigger",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Resource resource;
 

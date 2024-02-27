@@ -44,7 +44,8 @@ public class RuleDto extends NameAndUuidDto {
     private String resourceFormat;
 
     @Schema(
-            description = "Attributes of the Rule"
+            description = "Attributes of the Rule",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<ResponseAttributeDto> attributes;
 
