@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.LocationException;
-import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.certificate.LocationsResponseDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.location.AddLocationRequestDto;
@@ -124,7 +121,7 @@ public interface LocationManagementController {
     ResponseEntity<?> addLocation(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @RequestBody AddLocationRequestDto request
-    ) throws NotFoundException, AlreadyExistException, LocationException;
+    ) throws ConnectorException, AlreadyExistException, LocationException, AttributeException;
 
     @Operation(
             summary = "Get Location Details"
@@ -172,7 +169,7 @@ public interface LocationManagementController {
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody EditLocationRequestDto request
-    ) throws NotFoundException, LocationException;
+    ) throws ConnectorException, LocationException, AttributeException;
 
     @Operation(
             summary = "Delete Location"
@@ -295,7 +292,7 @@ public interface LocationManagementController {
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody PushToLocationRequestDto request
-    ) throws NotFoundException, LocationException;
+    ) throws NotFoundException, LocationException, AttributeException;
 
     @Operation(
             summary = "Remove Certificate from Location"

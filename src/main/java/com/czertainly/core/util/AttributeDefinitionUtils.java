@@ -830,7 +830,9 @@ public class AttributeDefinitionUtils {
             List<DataAttribute> itrAttributes = (List<DataAttribute>) attributes;
             for (DataAttribute clt : itrAttributes) {
                 if (clt.getProperties() == null) {
-                    clt.setProperties(new DataAttributeProperties());
+                    DataAttributeProperties props = new DataAttributeProperties();
+                    props.setLabel(clt.getName());
+                    clt.setProperties(props);
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
                 atr.setContent(clt.getContent());
@@ -845,7 +847,9 @@ public class AttributeDefinitionUtils {
             List<CustomAttribute> itrAttributes = (List<CustomAttribute>) attributes;
             for (CustomAttribute clt : itrAttributes) {
                 if (clt.getProperties() == null) {
-                    clt.setProperties(new CustomAttributeProperties());
+                    CustomAttributeProperties props = new CustomAttributeProperties();
+                    props.setLabel(clt.getName());
+                    clt.setProperties(props);
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
                 atr.setContent(clt.getContent());

@@ -151,6 +151,6 @@ public interface ClientOperationController {
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-			@RequestBody ClientCertificateRevocationDto request) throws NotFoundException;
+			@RequestBody ClientCertificateRevocationDto request) throws ConnectorException, AttributeException;
 
 }

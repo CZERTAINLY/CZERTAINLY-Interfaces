@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.approvalprofile.ApprovalProfileDto;
 import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto;
 import com.czertainly.api.model.client.raprofile.*;
@@ -85,7 +82,7 @@ public interface RAProfileManagementController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @RequestBody AddRaProfileRequestDto request)
-            throws AlreadyExistException, ValidationException, ConnectorException;
+            throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
 
     @Operation(summary = "Details of RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "RA Profile details retrieved")})
@@ -103,7 +100,7 @@ public interface RAProfileManagementController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     RaProfileDto editRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody EditRaProfileRequestDto request)
-            throws ConnectorException;
+            throws ConnectorException, AttributeException;
 
     @Operation(summary = "Delete RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile deleted")})
@@ -173,7 +170,7 @@ public interface RAProfileManagementController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/acme/activate/{acmeProfileUuid}", method = RequestMethod.PATCH, consumes = {"application/json"}, produces = {"application/json"})
     RaProfileAcmeDetailResponseDto activateAcmeForRaProfile(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @Parameter(description = "ACME Profile UUID") @PathVariable String acmeProfileUuid, @RequestBody ActivateAcmeForRaProfileRequestDto request)
-            throws ConnectorException;
+            throws ConnectorException, AttributeException;
 
 
     @Operation(summary = "Deactivate ACME for RA Profile")
@@ -205,7 +202,7 @@ public interface RAProfileManagementController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @Parameter(description = "SCEP Profile UUID") @PathVariable String scepProfileUuid,
             @RequestBody ActivateScepForRaProfileRequestDto request)
-            throws ConnectorException;
+            throws ConnectorException, AttributeException;
 
     @Operation(summary = "Deactivate SCEP for RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "SCEP deactivated"),

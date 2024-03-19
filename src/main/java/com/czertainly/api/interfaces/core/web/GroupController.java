@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -69,13 +70,13 @@ public interface GroupController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Group created", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	public ResponseEntity<?> createGroup(@RequestBody GroupRequestDto request)
-			throws AlreadyExistException, NotFoundException;
+            throws AlreadyExistException, NotFoundException, AttributeException;
 	
 	@Operation(summary = "Edit Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Group updated")})
 	@RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
 	public GroupDto editGroup(@Parameter(description = "Group UUID") @PathVariable String uuid, @RequestBody GroupRequestDto request)
-			throws NotFoundException;
+			throws NotFoundException, AttributeException;
 	
 	@Operation(summary = "Delete Group")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Group deleted") })

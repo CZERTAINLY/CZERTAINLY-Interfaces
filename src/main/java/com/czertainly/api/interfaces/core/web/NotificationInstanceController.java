@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -55,14 +56,14 @@ public interface NotificationInstanceController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Notification instance added", content = @Content(schema = @Schema(implementation = UuidDto.class))), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createNotificationInstance(
-            @RequestBody NotificationInstanceRequestDto request) throws AlreadyExistException, ConnectorException;
+            @RequestBody NotificationInstanceRequestDto request) throws AlreadyExistException, ConnectorException, AttributeException;
 
     @Operation(summary = "Edit Notification instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification instance details updated"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     NotificationInstanceDto editNotificationInstance(
             @Parameter(description = "Notification instance UUID") @PathVariable String uuid,
-            @RequestBody NotificationInstanceUpdateRequestDto request) throws ConnectorException;
+            @RequestBody NotificationInstanceUpdateRequestDto request) throws ConnectorException, AttributeException;
 
     @Operation(summary = "Delete Notification instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification instance deleted")})

@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.cryptography.CryptographicKeyResponseDto;
 import com.czertainly.api.model.client.cryptography.key.*;
@@ -166,7 +163,7 @@ public interface CryptographicKeyController {
                            @Parameter(description = "UUID of the Token Profile") @PathVariable String tokenProfileUuid,
                            @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type,
                            @RequestBody KeyRequestDto request
-    ) throws AlreadyExistException, ValidationException, ConnectorException;
+    ) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -188,7 +185,7 @@ public interface CryptographicKeyController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody EditKeyRequestDto request)
-            throws ConnectorException;
+            throws ConnectorException, AttributeException;
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -212,7 +209,7 @@ public interface CryptographicKeyController {
     void syncKeys(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid
     )
-            throws ConnectorException;
+            throws ConnectorException, AttributeException;
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
