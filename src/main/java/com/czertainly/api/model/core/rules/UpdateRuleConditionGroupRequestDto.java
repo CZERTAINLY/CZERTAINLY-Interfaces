@@ -1,13 +1,12 @@
 package com.czertainly.api.model.core.rules;
 
-import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class UpdateConditionGroupRequestDto {
+public class UpdateRuleConditionGroupRequestDto {
 
     @Schema(
             description = "Description of the Rule Condition Group"
