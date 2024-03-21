@@ -17,11 +17,11 @@ public class SearchFieldDataDto {
 
     @Schema(description = "Type of the field",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private SearchableFieldType type;
+    private FilterFieldType type;
 
     @Schema(description = "List of available conditions for the field",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<SearchCondition> conditions;
+    private List<FilterConditionOperator> conditions;
 
     @Schema(description = "Platform enum of the field values",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -55,19 +55,19 @@ public class SearchFieldDataDto {
         this.fieldLabel = fieldLabel;
     }
 
-    public SearchableFieldType getType() {
+    public FilterFieldType getType() {
         return type;
     }
 
-    public void setType(SearchableFieldType type) {
+    public void setType(FilterFieldType type) {
         this.type = type;
     }
 
-    public List<SearchCondition> getConditions() {
+    public List<FilterConditionOperator> getConditions() {
         return conditions;
     }
 
-    public void setConditions(List<SearchCondition> conditions) {
+    public void setConditions(List<FilterConditionOperator> conditions) {
         this.conditions = conditions;
     }
 

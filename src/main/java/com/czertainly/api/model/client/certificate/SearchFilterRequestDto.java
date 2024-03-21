@@ -1,15 +1,17 @@
 package com.czertainly.api.model.client.certificate;
 
-import com.czertainly.api.model.core.search.SearchCondition;
-import com.czertainly.api.model.core.search.SearchGroup;
+import com.czertainly.api.model.core.search.FilterFieldSource;
+import com.czertainly.api.model.core.search.FilterConditionOperator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.io.Serializable;
 
+@Data
 public class SearchFilterRequestDto {
 
     @Schema(description = "Field group of search filter", requiredMode = Schema.RequiredMode.REQUIRED)
-    private SearchGroup searchGroup;
+    private FilterFieldSource fieldSource;
 
     @Schema(description = "Field identifier of search filter. List of available fields with their identifiers can be retrieved from corresponding endpoint " +
             "`GET /v1/{resource}/search`, e.g.: [**GET /v1/certificates/search**](../core-certificate/#tag/Certificate-Inventory/operation/getSearchableFieldInformation)",
@@ -17,7 +19,7 @@ public class SearchFilterRequestDto {
     private String fieldIdentifier;
 
     @Schema(description = "Condition for the search filter", requiredMode = Schema.RequiredMode.REQUIRED)
-    private SearchCondition condition;
+    private FilterConditionOperator condition;
 
     @Schema(description = "Value to match")
     private Serializable value;
@@ -27,7 +29,7 @@ public class SearchFilterRequestDto {
         return fieldIdentifier;
     }
 
-    public SearchCondition getCondition() {
+    public FilterConditionOperator getCondition() {
         return condition;
     }
 
@@ -35,8 +37,12 @@ public class SearchFilterRequestDto {
         return value;
     }
 
-    public SearchGroup getSearchGroup() {
-        return searchGroup;
+    public FilterFieldSource getFieldSource() {
+        return fieldSource;
+    }
+
+    public void setFieldSource(FilterFieldSource fieldSource) {
+        this.fieldSource = fieldSource;
     }
 
 }
