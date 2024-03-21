@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum SearchCondition implements IPlatformEnum {
+public enum FilterConditionOperator implements IPlatformEnum {
     EQUALS("EQUALS", "equals", "eq"),
     NOT_EQUALS("NOT_EQUALS", "not equals", "ne"),
     GREATER("GREATER", "greater than", "gt"),
@@ -28,7 +28,7 @@ public enum SearchCondition implements IPlatformEnum {
     NOT_CHECKED("NOT_CHECKED", "not checked", "notchecked"),
     ;
 
-    private static final SearchCondition[] VALUES;
+    private static final FilterConditionOperator[] VALUES;
 
     static {
         VALUES = values();
@@ -39,11 +39,11 @@ public enum SearchCondition implements IPlatformEnum {
     private final String description;
     private final String queryCode;
 
-    SearchCondition(String code, String label, String queryCode) {
+    FilterConditionOperator(String code, String label, String queryCode) {
         this(code, label,null, queryCode);
     }
 
-    SearchCondition(String code, String label, String description, String queryCode) {
+    FilterConditionOperator(String code, String label, String description, String queryCode) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -71,7 +71,7 @@ public enum SearchCondition implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static SearchCondition fromCode(String code) {
+    public static FilterConditionOperator fromCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()

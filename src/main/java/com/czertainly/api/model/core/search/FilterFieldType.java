@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum SearchableFieldType implements IPlatformEnum {
+public enum FilterFieldType implements IPlatformEnum {
 
     STRING(Constants.STRING, "String"),
     NUMBER(Constants.NUMBER, "Number"),
@@ -17,7 +17,7 @@ public enum SearchableFieldType implements IPlatformEnum {
     DATETIME(Constants.DATETIME, "DateTime"),
     BOOLEAN(Constants.BOOLEAN, "Boolean");
 
-    private static final SearchableFieldType[] VALUES;
+    private static final FilterFieldType[] VALUES;
 
     static {
         VALUES = values();
@@ -27,11 +27,11 @@ public enum SearchableFieldType implements IPlatformEnum {
     private final String label;
     private final String description;
 
-    SearchableFieldType(String code, String label) {
+    FilterFieldType(String code, String label) {
         this(code, label,null);
     }
 
-    SearchableFieldType(String code, String label, String description) {
+    FilterFieldType(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -54,7 +54,7 @@ public enum SearchableFieldType implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static SearchableFieldType fromCode(String code) {
+    public static FilterFieldType fromCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
