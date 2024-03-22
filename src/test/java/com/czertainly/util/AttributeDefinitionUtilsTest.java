@@ -86,14 +86,9 @@ public class AttributeDefinitionUtilsTest {
         attribute2Value.put("uuid", UUID.randomUUID().toString());
         attribute2Value.put("name", "testName");
 
-
-        RequestAttributeDto attribute1 = new RequestAttributeDto();
-        attribute1.setName(attribute1Name);
-        attribute1.setContent(List.of(new ObjectAttributeContent(attribute1Name, attribute2Value)));
-
-        List<RequestAttributeDto> attributes = List.of(attribute1);
-
+        List<RequestAttributeDto> attributes = AttributeDefinitionUtils.createAttributes(attribute1Name, List.of(new ObjectAttributeContent(attribute1Name, attribute2Value)));
         NameAndUuidDto dto = getNameAndUuidData(attribute1Name, attributes);
+
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(attribute2Value.get("uuid"), dto.getUuid());
         Assertions.assertEquals(attribute2Value.get("name"), dto.getName());
@@ -109,11 +104,7 @@ public class AttributeDefinitionUtilsTest {
         credentialDto.setName("testName");
         credentialDto.setAttributes(AttributeDefinitionUtils.clientAttributeConverter(credentialAttributes));
 
-        RequestAttributeDto attribute1 = new RequestAttributeDto();
-        attribute1.setName(attribute1Name);
-        attribute1.setContent(List.of(new CredentialAttributeContent("testName", credentialDto)));
-
-        List<RequestAttributeDto> attributes = List.of(attribute1);
+        List<RequestAttributeDto> attributes = AttributeDefinitionUtils.createAttributes(attribute1Name, List.of(new CredentialAttributeContent("testName", credentialDto)));
 
         CredentialAttributeContentData dto = getCredentialContent(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
