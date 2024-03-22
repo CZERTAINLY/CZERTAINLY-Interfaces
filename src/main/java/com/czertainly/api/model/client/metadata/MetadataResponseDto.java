@@ -11,10 +11,10 @@ import java.util.List;
 @Data
 @Schema(description = "Metadata response attributes with their source connector")
 public class MetadataResponseDto {
-    @Schema(description = "UUID of the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Name of the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorName;
 
     @Schema(description = "Source Object Type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
