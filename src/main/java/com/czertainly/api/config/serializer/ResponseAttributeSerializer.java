@@ -57,20 +57,25 @@ public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttribut
                 CredentialAttributeContent credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContent.class);
                 List<DataAttribute> credentialAttributes = new ArrayList<>();
                 CredentialAttributeContentData credentialDto = credentialAttributeContent.getData();
-                for (DataAttribute credentialAttribute : credentialDto.getAttributes()) {
-                    List<BaseAttributeContent> credentialAttributeContents = new ArrayList<>();
-                    if (credentialAttribute.getContentType().equals(AttributeContentType.SECRET)) {
-                        for (BaseAttributeContent baseAttributeContent : credentialAttribute.getContent()) {
-                            SecretAttributeContent secretAttributeContent = objectMapper.convertValue(baseAttributeContent, SecretAttributeContent.class);
-                            secretAttributeContent.setData(null);
-                            credentialAttributeContents.add(secretAttributeContent);
+
+                // attributes can be null when serializing credential content not loaded with full credentials but as NameAndUuidDto
+                if (credentialDto.getAttributes() != null) {
+                    for (DataAttribute credentialAttribute : credentialDto.getAttributes()) {
+                        List<BaseAttributeContent> credentialAttributeContents = new ArrayList<>();
+                        if (credentialAttribute.getContentType().equals(AttributeContentType.SECRET)) {
+                            for (BaseAttributeContent baseAttributeContent : credentialAttribute.getContent()) {
+                                SecretAttributeContent secretAttributeContent = objectMapper.convertValue(baseAttributeContent, SecretAttributeContent.class);
+                                secretAttributeContent.setData(null);
+                                credentialAttributeContents.add(secretAttributeContent);
+                            }
+                        } else {
+                            credentialAttributeContents.addAll(credentialAttribute.getContent());
                         }
-                    } else {
-                        credentialAttributeContents.addAll(credentialAttribute.getContent());
+                        credentialAttribute.setContent(credentialAttributeContents);
+                        credentialAttributes.add(credentialAttribute);
                     }
-                    credentialAttribute.setContent(credentialAttributeContents);
-                    credentialAttributes.add(credentialAttribute);
                 }
+
                 credentialDto.setAttributes(credentialAttributes);
                 credential.setData(credentialDto);
                 gen.writeObject(credential);

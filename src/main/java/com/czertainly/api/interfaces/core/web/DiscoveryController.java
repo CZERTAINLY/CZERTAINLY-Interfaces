@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.SchedulerException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.certificate.DiscoveryResponseDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.discovery.DiscoveryCertificateResponseDto;
@@ -100,7 +97,7 @@ public interface DiscoveryController {
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request)
-			throws AlreadyExistException, NotFoundException, CertificateException, InterruptedException, ConnectorException;
+            throws AlreadyExistException, NotFoundException, CertificateException, InterruptedException, ConnectorException, AttributeException;
 	
 	@Operation(summary = "Delete Discovery")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Discovery deleted")})
@@ -128,6 +125,6 @@ public interface DiscoveryController {
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@RequestMapping(path = "/schedule", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
 	ResponseEntity<?> scheduleDiscovery(@RequestBody ScheduleDiscoveryDto scheduleDiscoveryDto)
-            throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException, SchedulerException;
+			throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException, SchedulerException, AttributeException;
 
 }

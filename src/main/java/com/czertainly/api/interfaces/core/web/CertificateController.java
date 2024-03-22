@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.CertificateOperationException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.approval.ApprovalResponseDto;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
@@ -97,7 +94,7 @@ public interface CertificateController {
     @PatchMapping(path = "/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
-            throws NotFoundException, CertificateOperationException, ValidationException;
+            throws NotFoundException, CertificateOperationException, ValidationException, AttributeException;
 
     @Operation(summary = "Update Group and/or Owner for multiple Certificates", description = "In this operation, when the list of " +
             "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
@@ -115,7 +112,7 @@ public interface CertificateController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @PostMapping(path = "/upload", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request)
-            throws AlreadyExistException, CertificateException, NoSuchAlgorithmException;
+            throws AlreadyExistException, CertificateException, NoSuchAlgorithmException, NotFoundException, AttributeException;
 
     @Operation(summary = "Delete multiple certificates", description = "In this operation, when the list of " +
             "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will " +
@@ -195,7 +192,7 @@ public interface CertificateController {
     )
     CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
-    ) throws ValidationException, NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
+    ) throws ValidationException, ConnectorException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, AttributeException;
 
     @Operation(
             summary = "Get certificate chain",

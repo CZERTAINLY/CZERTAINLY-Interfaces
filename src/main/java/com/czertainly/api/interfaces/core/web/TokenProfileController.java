@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.cryptography.tokenprofile.AddTokenProfileRequestDto;
 import com.czertainly.api.model.client.cryptography.tokenprofile.BulkTokenProfileKeyUsageRequestDto;
 import com.czertainly.api.model.client.cryptography.tokenprofile.EditTokenProfileRequestDto;
@@ -121,7 +118,7 @@ public interface TokenProfileController {
     ResponseEntity<TokenProfileDetailDto> createTokenProfile(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @RequestBody AddTokenProfileRequestDto request)
-            throws AlreadyExistException, ValidationException, ConnectorException;
+            throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
 
     @Operation(
             summary = "Edit Token Profile"
@@ -141,7 +138,7 @@ public interface TokenProfileController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String uuid,
             @RequestBody EditTokenProfileRequestDto request)
-            throws ConnectorException;
+            throws ConnectorException, AttributeException;
 
     @Operation(
             summary = "Delete Token Profile"

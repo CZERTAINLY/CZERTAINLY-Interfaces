@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.scep.ScepProfileEditRequestDto;
 import com.czertainly.api.model.client.scep.ScepProfileRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
@@ -114,7 +111,7 @@ public interface ScepProfileController {
 	)
 	public ResponseEntity<ScepProfileDetailDto> createScepProfile(
 			@RequestBody ScepProfileRequestDto request
-	) throws AlreadyExistException, ValidationException, ConnectorException;
+	) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
 
 
 	@Operation(
@@ -132,7 +129,7 @@ public interface ScepProfileController {
 	public ScepProfileDetailDto editScepProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid,
 			@RequestBody ScepProfileEditRequestDto request
-	) throws ConnectorException;
+	) throws ConnectorException, AttributeException;
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------------------------------

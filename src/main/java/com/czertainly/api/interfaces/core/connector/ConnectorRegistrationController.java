@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.connector;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.client.connector.ConnectorRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -51,5 +52,5 @@ public interface ConnectorRegistrationController {
     @Operation(summary = "Register a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector registration initiated")})
     @RequestMapping(path = "/register", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    public UuidDto register(@RequestBody ConnectorRequestDto request) throws ConnectorException, AlreadyExistException;
+    public UuidDto register(@RequestBody ConnectorRequestDto request) throws ConnectorException, AlreadyExistException, AttributeException;
 }

@@ -38,15 +38,15 @@ public enum AttributeContentType implements IPlatformEnum {
     private final String label;
     private final String description;
 
-    private final Class clazz;
+    private final Class<?> clazz;
 
-    private boolean filterByData;
+    private final boolean filterByData;
 
-    AttributeContentType(String code, String label, Class clazz, boolean filterByData) {
+    AttributeContentType(String code, String label, Class<?> clazz, boolean filterByData) {
         this(code, label, null, clazz, filterByData);
     }
 
-    AttributeContentType(String code, String label, String description, Class clazz, boolean filterByData) {
+    AttributeContentType(String code, String label, String description, Class<?> clazz, boolean filterByData) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -62,47 +62,18 @@ public enum AttributeContentType implements IPlatformEnum {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type %s.", code)));
     }
 
-    public static AttributeContentType fromClass(Class clazz) {
-        return Arrays.stream(VALUES)
-                .filter(e -> e.clazz.equals(clazz))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
-    }
-
-    public static Class getClass(AttributeContentType code) {
-        switch (code) {
-            case STRING:
-            case TEXT:
-                return StringAttributeContent.class;
-            case SECRET:
-                return SecretAttributeContent.class;
-            case INTEGER:
-                return IntegerAttributeContent.class;
-            case BOOLEAN:
-                return BooleanAttributeContent.class;
-            case FLOAT:
-                return FloatAttributeContent.class;
-            case CREDENTIAL:
-                return CredentialAttributeContent.class;
-            case DATE:
-                return DateAttributeContent.class;
-            case DATETIME:
-                return DateTimeAttributeContent.class;
-            case FILE:
-                return FileAttributeContent.class;
-            case OBJECT:
-                return ObjectAttributeContent.class;
-            case TIME:
-                return TimeAttributeContent.class;
-            case CODEBLOCK:
-                return CodeBlockAttributeContent.class;
-            default:
-                return null;
-        }
+    public static AttributeContentType fromClass(Class<?> clazz) {
+        return clazz.equals(BaseAttributeContent.class) ? null
+                : Arrays.stream(VALUES).filter(e -> e.clazz.equals(clazz))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
     }
 
     public boolean isFilterByData() {
         return filterByData;
+    }
+
+    public Class<?> getContentClass() {
+        return clazz;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.AddUserRequestDto;
 import com.czertainly.api.model.client.auth.UpdateUserRequestDto;
@@ -71,12 +72,12 @@ public interface UserManagementController {
     @Operation(summary = "Create User")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "User details retrieved")})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<UserDetailDto> createUser(@RequestBody AddUserRequestDto request) throws NotFoundException, CertificateException;
+    ResponseEntity<UserDetailDto> createUser(@RequestBody AddUserRequestDto request) throws NotFoundException, CertificateException, AttributeException;
 
     @Operation(summary = "Update User")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User details updated")})
     @RequestMapping(path = "/{userUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-	UserDetailDto updateUser(@Parameter(description = "User UUID") @PathVariable String userUuid, @RequestBody UpdateUserRequestDto request) throws NotFoundException, CertificateException;
+	UserDetailDto updateUser(@Parameter(description = "User UUID") @PathVariable String userUuid, @RequestBody UpdateUserRequestDto request) throws NotFoundException, CertificateException, AttributeException;
 
     @Operation(summary = "Enable User")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "User enabled")})

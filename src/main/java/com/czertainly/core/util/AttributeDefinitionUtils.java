@@ -336,7 +336,7 @@ public class AttributeDefinitionUtils {
 
             Object attributeContent = null;
             try {
-                attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, AttributeContentType.getClass(contentType)));
+                attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
             } catch (IllegalArgumentException e) {
                 errors.add(ValidationError.create(
                         "Wrong type of value for attribute {}.",
@@ -522,7 +522,7 @@ public class AttributeDefinitionUtils {
                 switch (contentType) {
                     case STRING:
                         BaseAttributeContent<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, StringAttributeContent.class);
-                        if (stringBaseAttributeContent.getData() == null || AttributeContentType.getClass(contentType) == null) {
+                        if (stringBaseAttributeContent.getData() == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
                             wrongValue = true;
                             break;
@@ -530,7 +530,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case INTEGER:
                         BaseAttributeContent<?> integerBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, IntegerAttributeContent.class);
-                        if (integerBaseAttributeContent.getData() == null || AttributeContentType.getClass(contentType) == null) {
+                        if (integerBaseAttributeContent.getData() == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
                             wrongValue = true;
                             break;
@@ -538,7 +538,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case SECRET:
                         BaseAttributeContent<?> secretBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, SecretAttributeContent.class);
-                        if (secretBaseAttributeContent.getData() == null || AttributeContentType.getClass(contentType) == null) {
+                        if (secretBaseAttributeContent.getData() == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
                             wrongValue = true;
                             break;
@@ -546,7 +546,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case BOOLEAN:
                         BaseAttributeContent<?> boolBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BooleanAttributeContent.class);
-                        if (boolBaseAttributeContent.getData() == null || AttributeContentType.getClass(contentType) == null) {
+                        if (boolBaseAttributeContent.getData() == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
                             wrongValue = true;
                             break;
@@ -554,7 +554,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case FLOAT:
                         BaseAttributeContent<?> floatBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, FloatAttributeContent.class);
-                        if (floatBaseAttributeContent.getData() == null || AttributeContentType.getClass(contentType) == null) {
+                        if (floatBaseAttributeContent.getData() == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
                             wrongValue = true;
                             break;
@@ -562,7 +562,7 @@ public class AttributeDefinitionUtils {
                         break;
                     case TEXT:
                         BaseAttributeContent<?> textBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TextAttributeContent.class);
-                        if (textBaseAttributeContent.getData() == null || AttributeContentType.getClass(contentType) == null) {
+                        if (textBaseAttributeContent.getData() == null) {
                             errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
                             wrongValue = true;
                             break;
@@ -740,23 +740,13 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<RequestAttributeDto> createAttributes(String name, List<BaseAttributeContent> value) {
+    public static List<RequestAttributeDto> createAttributes(String name, List<BaseAttributeContent> content) {
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setUuid(UUID.randomUUID().toString());
         attribute.setName(name);
-        attribute.setContent(value);
-        return createAttributes(attribute);
-    }
+        attribute.setContent(content);
 
-    public static List<RequestAttributeDto> createAttributes(RequestAttributeDto attribute) {
-        List<RequestAttributeDto> attributes = createAttributes();
-        attributes.add(attribute);
-
-        return attributes;
-    }
-
-    public static List<RequestAttributeDto> createAttributes() {
-        return new ArrayList<>();
+        return List.of(attribute);
     }
 
     public static List<DataAttribute> clientAttributeConverter(List<RequestAttributeDto> attributes) {
@@ -794,14 +784,19 @@ public class AttributeDefinitionUtils {
     }
 
     public static List<RequestAttributeDto> getClientAttributes(List<?> attributes) {
-        if (attributes == null || attributes.size() == 0) {
+        if (attributes == null || attributes.isEmpty()) {
             return new ArrayList<>();
         }
         List<RequestAttributeDto> convertedDefinition = new ArrayList<>();
         if (attributes.get(0) instanceof BaseAttribute) {
             for (BaseAttribute clt : (List<BaseAttribute>) attributes) {
+                if (clt.getType() != AttributeType.DATA) {
+                    continue;
+                }
+
+                DataAttribute dataAttribute = (DataAttribute) clt;
                 RequestAttributeDto atr = new RequestAttributeDto();
-                atr.setContent((List<BaseAttributeContent>) clt.getContent());
+                atr.setContent(dataAttribute.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
                 convertedDefinition.add(atr);
@@ -810,9 +805,10 @@ public class AttributeDefinitionUtils {
             List<ResponseAttributeDto> itrAttributes = (List<ResponseAttributeDto>) attributes;
             for (ResponseAttributeDto clt : itrAttributes) {
                 RequestAttributeDto atr = new RequestAttributeDto();
-                atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
+                atr.setContentType(clt.getContentType());
+                atr.setContent(clt.getContent());
                 convertedDefinition.add(atr);
             }
         } else {
@@ -830,7 +826,9 @@ public class AttributeDefinitionUtils {
             List<DataAttribute> itrAttributes = (List<DataAttribute>) attributes;
             for (DataAttribute clt : itrAttributes) {
                 if (clt.getProperties() == null) {
-                    clt.setProperties(new DataAttributeProperties());
+                    DataAttributeProperties props = new DataAttributeProperties();
+                    props.setLabel(clt.getName());
+                    clt.setProperties(props);
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
                 atr.setContent(clt.getContent());
@@ -845,7 +843,9 @@ public class AttributeDefinitionUtils {
             List<CustomAttribute> itrAttributes = (List<CustomAttribute>) attributes;
             for (CustomAttribute clt : itrAttributes) {
                 if (clt.getProperties() == null) {
-                    clt.setProperties(new CustomAttributeProperties());
+                    CustomAttributeProperties props = new CustomAttributeProperties();
+                    props.setLabel(clt.getName());
+                    clt.setProperties(props);
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
                 atr.setContent(clt.getContent());
@@ -958,10 +958,10 @@ public class AttributeDefinitionUtils {
             DataAttribute attribute = getAttributeDefinition(requestAttribute.getName(), attributes);
             if (attribute == null) return false;
 
-            var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, AttributeContentType.getClass(attribute.getContentType()));
+            var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentClass());
             if (attributeContent == null) return false;
 
-            if (!attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, AttributeContentType.getClass(attribute.getContentType())))) {
+            if (!attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentClass()))) {
                 return false;
             }
         }

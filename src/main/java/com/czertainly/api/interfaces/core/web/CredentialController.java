@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.credential.CredentialRequestDto;
 import com.czertainly.api.model.client.credential.CredentialUpdateRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
@@ -85,7 +82,7 @@ public interface CredentialController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<?> createCredential(@RequestBody CredentialRequestDto request)
-            throws AlreadyExistException, NotFoundException, ConnectorException;
+            throws AlreadyExistException, NotFoundException, ConnectorException, AttributeException;
 
     @Operation(summary = "Edit Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Credential updated"),
@@ -94,7 +91,7 @@ public interface CredentialController {
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {
             "application/json"})
     public CredentialDto editCredential(@Parameter(description = "Credential UUID") @PathVariable String uuid, @RequestBody CredentialUpdateRequestDto request)
-            throws NotFoundException, ConnectorException;
+            throws NotFoundException, ConnectorException, AttributeException;
 
     @Operation(summary = "Delete Credential")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Credential deleted"),

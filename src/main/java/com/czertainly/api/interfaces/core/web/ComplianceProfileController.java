@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.compliance.*;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
@@ -107,7 +104,7 @@ public interface ComplianceProfileController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<UuidDto> createComplianceProfile(@RequestBody ComplianceProfileRequestDto request)
-            throws AlreadyExistException, ConnectorException;
+            throws AlreadyExistException, ConnectorException, AttributeException;
 
     @Operation(summary = "Add rule to a Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New rule added to the profile"),
