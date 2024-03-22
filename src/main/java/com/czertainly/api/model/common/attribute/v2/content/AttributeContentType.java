@@ -68,24 +68,6 @@ public enum AttributeContentType implements IPlatformEnum {
                 .findFirst().orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
     }
 
-//    public static Class getClass(AttributeContentType code) {
-//        return switch (code) {
-//            case STRING, TEXT -> StringAttributeContent.class;
-//            case SECRET -> SecretAttributeContent.class;
-//            case INTEGER -> IntegerAttributeContent.class;
-//            case BOOLEAN -> BooleanAttributeContent.class;
-//            case FLOAT -> FloatAttributeContent.class;
-//            case CREDENTIAL -> CredentialAttributeContent.class;
-//            case DATE -> DateAttributeContent.class;
-//            case DATETIME -> DateTimeAttributeContent.class;
-//            case FILE -> FileAttributeContent.class;
-//            case OBJECT -> ObjectAttributeContent.class;
-//            case TIME -> TimeAttributeContent.class;
-//            case CODEBLOCK -> CodeBlockAttributeContent.class;
-//            default -> null;
-//        };
-//    }
-
     public boolean isFilterByData() {
         return filterByData;
     }
