@@ -13,6 +13,7 @@ public enum FilterFieldSource implements IPlatformEnum {
 
     META("meta", "Metadata", AttributeType.META),
     CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM),
+    DATA("data", "Data attribute", AttributeType.DATA),
     PROPERTY("property", "Property", null);
 
     private static final FilterFieldSource[] VALUES;
@@ -24,7 +25,7 @@ public enum FilterFieldSource implements IPlatformEnum {
     private final String code;
     private final String label;
     private final String description;
-    private AttributeType attributeType;
+    private final AttributeType attributeType;
 
     FilterFieldSource(String code, String label, AttributeType attributeType) {
         this(code, label ,null, attributeType);
