@@ -15,12 +15,26 @@ public class MetadataAttributeProperties extends BaseAttributeProperties {
     )
     private boolean global = false;
 
+    @Schema(
+            description = "Boolean determining if the new metadata content should be replaced instead of appended.",
+            defaultValue = "false"
+    )
+    private boolean replaceContent = false;
+
     public boolean isGlobal() {
         return global;
     }
 
     public void setGlobal(boolean global) {
         this.global = global;
+    }
+
+    public boolean isReplaceContent() {
+        return replaceContent;
+    }
+
+    public void setReplaceContent(boolean replaceContent) {
+        this.replaceContent = replaceContent;
     }
 
     @Override
