@@ -20,7 +20,7 @@ public enum Resource implements IPlatformEnum {
     AUDIT_LOG("auditLogs", "Audit logs"),
     CREDENTIAL("credentials", "Credential", true, true),
     CONNECTOR("connectors", "Connector", true, true),
-    ATTRIBUTE("attributes", "Attribute"),
+    ATTRIBUTE("attributes", "Attribute", true),
     SCHEDULED_JOB("jobs", "Scheduled job"),
     NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
