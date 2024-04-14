@@ -215,6 +215,80 @@ public interface RAProfileManagementController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid
     ) throws NotFoundException;
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // CMP protocol
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+
+    @Operation(
+            summary = "Get CMP details for RA Profile"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "CMP details retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
+                    )
+            )
+    })
+    @RequestMapping(
+            path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/cmp",
+            method = RequestMethod.GET,
+            produces = {"application/json"}
+    )
+    RaProfileCmpDetailResponseDto getCmpForRaProfile(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid
+    ) throws NotFoundException;
+
+    @Operation(
+            summary = "Activate CMP for RA Profile"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "CMP activated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
+                    )
+            )
+    })
+    @RequestMapping(
+            path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/cmp/activate/{cmpProfileUuid}",
+            method = RequestMethod.PATCH,
+            consumes = {"application/json"},
+            produces = {"application/json"}
+    )
+    RaProfileCmpDetailResponseDto activateCmpForRaProfile(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
+            @Parameter(description = "CMP Profile UUID") @PathVariable String cmpProfileUuid,
+            @RequestBody ActivateCmpForRaProfileRequestDto request
+    ) throws ConnectorException, AttributeException;
+
+    @Operation(
+            summary = "Deactivate CMP for RA Profile"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "CMP deactivated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
+                    )
+            )
+    })
+    @RequestMapping(
+            path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/protocols/cmp/deactivate",
+            method = RequestMethod.PATCH,
+            produces = {"application/json"}
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deactivateCmpForRaProfile(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid
+    ) throws NotFoundException;
+
     @Operation(summary = "Get revocation Attributes", operationId = "listRaProfileRevokeCertificateAttributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Revocation attributes list obtained")})
     @RequestMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", method = RequestMethod.GET, produces = {"application/json"})
