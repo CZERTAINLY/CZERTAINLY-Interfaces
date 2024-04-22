@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.UUID;
 
 public class DiscoveryDto {
     @Schema(description = "Discovery name", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -18,6 +19,8 @@ public class DiscoveryDto {
     private String connectorUuid;
     @Schema(description = "Discovery Kind", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
+    @Schema(description = "List of triggers to be triggered after the discovery is finished, triggers will be evaluated in given order")
+    private List<UUID> triggers;
 
     public String getConnectorUuid() {
         return connectorUuid;
@@ -57,6 +60,14 @@ public class DiscoveryDto {
 
     public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
         this.customAttributes = customAttributes;
+    }
+
+    public List<UUID> getTriggers() {
+        return triggers;
+    }
+
+    public void setTriggers(List<UUID> triggers) {
+        this.triggers = triggers;
     }
 
     @Override

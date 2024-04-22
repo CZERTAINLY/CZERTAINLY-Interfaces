@@ -8,7 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(enumAsRef = true)
 public enum RuleActionType implements IPlatformEnum {
 
-    SET_FIELD("setField", "Set a field of the resource", null)
+    IGNORE("ignore", "Ignore", "Do not proceed with object"),
+    SET_FIELD("setField", "Set field", "Set a field of the resource")
     ;
 
     private final String code;

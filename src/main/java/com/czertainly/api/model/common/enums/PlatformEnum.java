@@ -26,6 +26,7 @@ import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
+import com.czertainly.api.model.core.rules.ResourceEvent;
 import com.czertainly.api.model.core.rules.RuleActionType;
 import com.czertainly.api.model.core.rules.RuleTriggerType;
 import com.czertainly.api.model.core.search.FilterFieldSource;
@@ -99,6 +100,7 @@ public enum PlatformEnum implements IPlatformEnum {
     // Rules
     RULE_ACTION_TYPE(RuleActionType.class, "Rule Action Type"),
     RULE_TRIGGER_TYPE(RuleTriggerType.class, "Rule Trigger Type"),
+    RESOURCE_EVENT(ResourceEvent.class, "Events available for a resource")
 
     ;
 
