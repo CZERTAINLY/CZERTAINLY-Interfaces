@@ -10,18 +10,12 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum CertificateRequestFormat implements IPlatformEnum {
 
-    PKCS10("pkcs10", "PKCS#10");
+    PKCS10("pkcs10", "PKCS#10", "PKCS#10 Certificate Request"),
+    CRMF("crmf", "CRMF", "Certificate Request Message Format"),;
 
-    private String code;
-
-    private String label;
-
-    private String description;
-
-    CertificateRequestFormat(String code, String label) {
-        this.code = code;
-        this.label = label;
-    }
+    private final String code;
+    private final String label;
+    private final String description;
 
     CertificateRequestFormat(String code, String label, String description) {
         this.code = code;
