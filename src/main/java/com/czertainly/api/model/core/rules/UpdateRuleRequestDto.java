@@ -4,6 +4,7 @@ import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,16 +30,11 @@ public class UpdateRuleRequestDto {
     @Schema(
             description = "List of conditions to add in the Rule"
     )
-    private List<RuleConditionRequestDto> conditions;
-
-    @Schema(
-            description = "List of new condition groups to add in the Rule"
-    )
-    private List<RuleConditionGroupRequestDto> conditionGroups;
+    private List<RuleConditionRequestDto> conditions = new ArrayList<>();
 
     @Schema(
             description = "List of UUIDs of existing condition groups to add in the Rule"
     )
-    private List<String> conditionGroupsUuids;
+    private List<String> conditionGroupsUuids = new ArrayList<>();
 
 }

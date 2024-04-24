@@ -4,6 +4,7 @@ import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -42,34 +43,20 @@ public class RuleTriggerRequestDto {
     )
     private Resource triggerResource;
 
-    @Schema(
-            description = "UUID of the the Rule Trigger event source object"
-    )
-    private String triggerResourceUuid;
-
-
-    @Schema(
-            description = "List of new Rules to add in the Rule Trigger"
-    )
-    private List<RuleRequestDto> rules;
 
     @Schema(
             description = "List of UUIDs of existing Rules to add in the Rule Trigger"
     )
-    private List<String> rulesUuids;
+    private List<String> rulesUuids = new ArrayList<>();
 
-    @Schema(
-            description = "List of new Action Groups to add in the Rule Trigger"
-    )
-    private List<RuleActionGroupRequestDto> actionGroups;
 
     @Schema(
             description = "List of UUIDs of existing Action Groups to add in the Rule Trigger"
     )
-    private List<String> actionGroupsUuids;
+    private List<String> actionGroupsUuids = new ArrayList<>();
 
     @Schema(
             description = "List of new Rule Actions to add in the Rule Trigger"
     )
-    private List<RuleActionRequestDto> actions;
+    private List<RuleActionRequestDto> actions = new ArrayList<>();
 }

@@ -39,9 +39,4 @@ public class RuleTriggerDto extends NameAndUuidDto {
     )
     private Resource triggerResource;
 
-    @Schema(
-            description = "UUID of the the Rule Trigger event source object"
-    )
-    private String triggerResourceUuid;
-
 }
