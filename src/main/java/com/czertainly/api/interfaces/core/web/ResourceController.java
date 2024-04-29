@@ -4,6 +4,7 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.core.auth.Resource;
+import com.czertainly.api.model.core.rules.ResourceEvent;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -53,4 +54,9 @@ public interface ResourceController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Filter fields retrieved")})
     @RequestMapping(path = "/{resource}/filters/rules", method = RequestMethod.GET, produces = {"application/json"})
     List<SearchFieldDataByGroupDto> listResourceRuleFilterFields(@Parameter(description = "Resource") @PathVariable Resource resource, @RequestParam(required = false) boolean settable) throws NotFoundException;
+
+    @Operation(summary = "Retrieve a list of all events that can be triggered by a resource")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Events retrieved")})
+    @RequestMapping(path = "/{resource}/events", method = RequestMethod.GET, produces = {"application/json"})
+    List<ResourceEvent> listResourceEvents(@Parameter(description = "Resource") @PathVariable Resource resource);
 }

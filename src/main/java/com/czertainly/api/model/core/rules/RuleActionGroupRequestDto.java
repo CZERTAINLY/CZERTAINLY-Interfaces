@@ -4,6 +4,7 @@ import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -30,6 +31,6 @@ public class RuleActionGroupRequestDto {
             description = "List of new Rule Actions to add in the Rule Actions Group",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RuleActionRequestDto> actions;
+    private List<RuleActionRequestDto> actions = new ArrayList<>();
 
 }

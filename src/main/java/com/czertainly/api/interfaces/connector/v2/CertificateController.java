@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.connector.v2;
 
 import com.czertainly.api.exception.CertificateOperationException;
+import com.czertainly.api.exception.CertificateRequestException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
@@ -99,7 +100,7 @@ public interface CertificateController {
     @PostMapping(path = "/issue", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     CertificateDataResponseDto issueCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody CertificateSignRequestDto request) throws NotFoundException, CertificateOperationException;
+            @RequestBody CertificateSignRequestDto request) throws NotFoundException, CertificateOperationException, CertificateRequestException;
 
     @Operation(
             summary = "Renew Certificate"
@@ -120,7 +121,7 @@ public interface CertificateController {
     @PostMapping(path = "/renew", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     CertificateDataResponseDto renewCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody CertificateRenewRequestDto request) throws NotFoundException, CertificateOperationException;
+            @RequestBody CertificateRenewRequestDto request) throws NotFoundException, CertificateOperationException, CertificateRequestException;
 
     @Operation(
             summary = "List of Attributes to revoke Certificate"

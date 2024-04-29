@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class RuleActionGroupDto extends NameAndUuidDto {
@@ -20,5 +22,11 @@ public class RuleActionGroupDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Resource resource;
+
+    @Schema(
+            description = "List of Rule Actions in the Rule Actions Group",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private List<RuleActionDto> actions;
 
 }

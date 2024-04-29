@@ -192,7 +192,7 @@ public interface CertificateController {
     )
     CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
-    ) throws ValidationException, ConnectorException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, AttributeException;
+    ) throws ValidationException, ConnectorException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, AttributeException, CertificateRequestException;
 
     @Operation(
             summary = "Get certificate chain",

@@ -1,15 +1,19 @@
 package com.czertainly.api.model.core.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Class representing a request to renew certificate
+ * Class representing a request to renew certificate from external clients
  */
+@Builder
 @Data
 public class ClientCertificateRenewRequestDto {
 
@@ -20,7 +24,15 @@ public class ClientCertificateRenewRequestDto {
     private boolean replaceInLocations;
 
     @Schema(
-            description = "Certificate sign request (PKCS#10) encoded as Base64 string. If not provided, Existing CSR will be used"
+            description = "Certificate signing request encoded as Base64 string. If not provided, Existing CSR will be used"
     )
-    private String pkcs10;
+    private String request;
+
+    @Schema(
+            description = "Certificate signing request format",
+            defaultValue = "pkcs10"
+    )
+    @Builder.Default
+    private CertificateRequestFormat format = CertificateRequestFormat.PKCS10;
+
 }
