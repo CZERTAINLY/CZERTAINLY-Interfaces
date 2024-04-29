@@ -78,17 +78,17 @@ public interface RuleController {
     @Operation(summary = "Create Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Condition group created")})
     @RequestMapping(path = "/conditionGroups", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RuleConditionGroupDetailDto createConditionGroup(@RequestBody RuleConditionGroupRequestDto request);
+    RuleConditionGroupDto createConditionGroup(@RequestBody RuleConditionGroupRequestDto request);
 
     @Operation(summary = "Get Condition Group details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Condition group details retrieved")})
     @RequestMapping(path = "/conditionGroups/{conditionGroupUuid}", method = RequestMethod.GET, produces = {"application/json"})
-    RuleConditionGroupDetailDto getConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid) throws NotFoundException;
+    RuleConditionGroupDto getConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid) throws NotFoundException;
 
     @Operation(summary = "Update Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Condition group updated")})
     @RequestMapping(path = "/conditionGroups/{conditionGroupUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleConditionGroupDetailDto updateConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid, @RequestBody UpdateRuleConditionGroupRequestDto request) throws NotFoundException;
+    RuleConditionGroupDto updateConditionGroup(@Parameter(description = "Condition Group UUID") @PathVariable String conditionGroupUuid, @RequestBody UpdateRuleConditionGroupRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Condition Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Condition group deleted")})
@@ -104,17 +104,17 @@ public interface RuleController {
     @Operation(summary = "Create Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Action group created")})
     @RequestMapping(path = "/actionGroups", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RuleActionGroupDetailDto createActionGroup(@RequestBody RuleActionGroupRequestDto request);
+    RuleActionGroupDto createActionGroup(@RequestBody RuleActionGroupRequestDto request);
 
     @Operation(summary = "Get Action Group Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Action group details retrieved")})
     @RequestMapping(path = "/actionGroups/{actionGroupUuid}", method = RequestMethod.GET, produces = {"application/json"})
-    RuleActionGroupDetailDto getActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid) throws NotFoundException;
+    RuleActionGroupDto getActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid) throws NotFoundException;
 
     @Operation(summary = "Update Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Action group updated")})
     @RequestMapping(path = "/actionGroups/{actionGroupUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RuleActionGroupDetailDto updateActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid, @RequestBody UpdateRuleActionGroupRequestDto request) throws NotFoundException;
+    RuleActionGroupDto updateActionGroup(@Parameter(description = "Action Group UUID") @PathVariable String actionGroupUuid, @RequestBody UpdateRuleActionGroupRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Action Group")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Action group deleted")})
