@@ -25,7 +25,7 @@ public enum Resource implements IPlatformEnum {
     NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // AUTH
-    USER("users", "User", false, true),
+    USER("users", "User", false, true, true, false),
     ROLE("roles", "Role", false, true),
 
     // ACME
@@ -38,7 +38,7 @@ public enum Resource implements IPlatformEnum {
     // CERTIFICATES
     AUTHORITY("authorities", "Authority", true, true),
     RA_PROFILE("raProfiles", "RA Profile", true, true),
-    CERTIFICATE("certificates", "Certificate", false, true),
+    CERTIFICATE("certificates", "Certificate", false, true, true, true),
     CERTIFICATE_REQUEST("certificateRequests", "Certificate Request", false, false),
     GROUP("groups", "Group", true, true),
     COMPLIANCE_PROFILE("complianceProfiles", "Compliance Profile", true, true),
@@ -51,7 +51,7 @@ public enum Resource implements IPlatformEnum {
     //CRYPTOGRAPHY
     TOKEN_PROFILE("tokenProfiles", "Token Profile", true, true),
     TOKEN("tokens", "Token", true, true),
-    CRYPTOGRAPHIC_KEY("keys", "Key", false, true),
+    CRYPTOGRAPHIC_KEY("keys", "Key", false, true, true, true),
 
     // APPROVALS
     APPROVAL_PROFILE("approvalProfiles", "Approval profile", true),
@@ -70,27 +70,37 @@ public enum Resource implements IPlatformEnum {
     private final String code;
     private final String label;
     private final String description;
-    private final boolean objectAccess;
-    private final boolean supportCustomAttributes;
+
+    private final boolean hasObjectAccess;
+    private final boolean hasCustomAttributes;
+    private final boolean hasGroups;
+    private final boolean hasOwner;
 
     Resource(String code, String label) {
-        this(code, label,null, false, false);
+        this(code, label, null, false, false, false, false);
     }
 
     Resource(String code, String label, boolean objectAccess) {
-        this(code, label,null, objectAccess, false);
+        this(code, label, null, objectAccess, false, false, false);
     }
 
-    Resource(String code, String label, boolean objectAccess, boolean supportCustomAttributes) {
-        this(code, label,null, objectAccess, supportCustomAttributes);
+    Resource(String code, String label, boolean objectAccess, boolean hasCustomAttributes) {
+        this(code, label, null, objectAccess, hasCustomAttributes, false, false);
+
     }
 
-    Resource(String code, String label, String description, boolean objectAccess, boolean supportCustomAttributes) {
+    Resource(String code, String label, boolean objectAccess, boolean hasCustomAttributes, boolean hasGroups, boolean hasOwner) {
+        this(code, label, null, objectAccess, hasCustomAttributes, hasGroups, hasOwner);
+    }
+
+    Resource(String code, String label, String description, boolean objectAccess, boolean hasCustomAttributes, boolean hasGroups, boolean hasOwner) {
         this.code = code;
         this.label = label;
         this.description = description;
-        this.objectAccess = objectAccess;
-        this.supportCustomAttributes = supportCustomAttributes;
+        this.hasObjectAccess = objectAccess;
+        this.hasCustomAttributes = hasCustomAttributes;
+        this.hasGroups = hasGroups;
+        this.hasOwner = hasOwner;
     }
 
     @Override
@@ -110,11 +120,19 @@ public enum Resource implements IPlatformEnum {
     }
 
     public boolean hasObjectAccess() {
-        return objectAccess;
+        return hasObjectAccess;
     }
 
-    public boolean supportCustomAttributes() {
-        return supportCustomAttributes;
+    public boolean hasCustomAttributes() {
+        return hasCustomAttributes;
+    }
+
+    public boolean hasGroups() {
+        return hasGroups;
+    }
+
+    public boolean hasOwner() {
+        return hasOwner;
     }
 
     @JsonCreator
@@ -127,6 +145,6 @@ public enum Resource implements IPlatformEnum {
     }
 
     public static List<Resource> getCustomAttributesResources() {
-        return Arrays.stream(VALUES).filter(k -> k.supportCustomAttributes).toList();
+        return Arrays.stream(VALUES).filter(k -> k.hasCustomAttributes).toList();
     }
 }
