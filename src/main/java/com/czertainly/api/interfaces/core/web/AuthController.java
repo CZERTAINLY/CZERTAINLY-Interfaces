@@ -6,7 +6,7 @@ import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.auth.Resource;
-import com.czertainly.api.model.core.auth.ResourceDetailDto;
+import com.czertainly.api.model.core.auth.AuthResourceDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,10 +64,10 @@ public interface AuthController {
     @RequestMapping(path = "/profile", method = RequestMethod.PUT, produces = {"application/json"})
     UserDetailDto updateUserProfile(@RequestBody UpdateUserRequestDto request) throws NotFoundException, JsonProcessingException, CertificateException;
 
-    @Operation(summary = "Get all Resources")
+    @Operation(summary = "Get Auth Resources")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Resources retrieved successfully")})
     @RequestMapping(path = "/resources", method = RequestMethod.GET, produces = {"application/json"})
-    List<ResourceDetailDto> getAllResources() throws NotFoundException;
+    List<AuthResourceDto> getAuthResources() throws NotFoundException;
 
     @Operation(summary = "Get List of objects for Object Access")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Objects retrieved")})
