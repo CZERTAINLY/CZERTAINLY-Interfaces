@@ -26,7 +26,7 @@ import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
-import com.czertainly.api.model.core.rules.ResourceEvent;
+import com.czertainly.api.model.core.other.ResourceEvent;
 import com.czertainly.api.model.core.rules.RuleActionType;
 import com.czertainly.api.model.core.rules.RuleTriggerType;
 import com.czertainly.api.model.core.search.FilterFieldSource;

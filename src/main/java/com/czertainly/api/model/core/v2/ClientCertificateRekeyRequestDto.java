@@ -3,8 +3,10 @@ package com.czertainly.api.model.core.v2;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +15,8 @@ import java.util.UUID;
  * Class representing a request to regenerate certificate
  */
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class ClientCertificateRekeyRequestDto {
 

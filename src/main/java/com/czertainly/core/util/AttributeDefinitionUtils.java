@@ -741,8 +741,12 @@ public class AttributeDefinitionUtils {
     }
 
     public static List<RequestAttributeDto> createAttributes(String name, List<BaseAttributeContent> content) {
+        return createAttributes(UUID.randomUUID().toString(), name, content);
+    }
+
+    public static List<RequestAttributeDto> createAttributes(String uuid, String name, List<BaseAttributeContent> content) {
         RequestAttributeDto attribute = new RequestAttributeDto();
-        attribute.setUuid(UUID.randomUUID().toString());
+        attribute.setUuid(uuid);
         attribute.setName(name);
         attribute.setContent(content);
 
