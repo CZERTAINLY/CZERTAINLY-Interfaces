@@ -1,7 +1,11 @@
-package com.czertainly.api.model.core.rules;
+package com.czertainly.api.model.core.other;
 
+import com.czertainly.api.exception.ValidationError;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.czertainly.api.model.core.auth.Resource;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +14,12 @@ public enum ResourceEvent implements IPlatformEnum {
 
     DISCOVERY_FINISHED("discoveryFinished", "Discovery Finished", "Discovery has been finished.", Resource.DISCOVERY, Resource.CERTIFICATE),
     ;
+
+    private static final ResourceEvent[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     private final String code;
     private final String label;
@@ -26,6 +36,7 @@ public enum ResourceEvent implements IPlatformEnum {
     }
 
     @Override
+    @JsonValue
     public String getCode() {
         return this.code;
     }
@@ -47,7 +58,16 @@ public enum ResourceEvent implements IPlatformEnum {
         return producedResource;
     }
 
+    @JsonCreator
+    public static ResourceEvent findByCode(String code) {
+        return Arrays.stream(VALUES)
+                .filter(k -> k.code.equals(code))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ValidationException(ValidationError.create("Unknown Resource event {}", code)));
+    }
+
     public static List<ResourceEvent> listEventsByResource(Resource resource) {
-        return Arrays.stream(ResourceEvent.values()).toList().stream().filter(event -> event.resource == resource).toList();
+        return Arrays.stream(VALUES).filter(event -> event.resource == resource).toList();
     }
 }
