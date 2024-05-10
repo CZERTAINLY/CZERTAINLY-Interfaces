@@ -17,6 +17,7 @@ import com.czertainly.api.model.core.acme.AccountStatus;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.authority.CertificateRevocationReason;
 import com.czertainly.api.model.core.certificate.*;
+import com.czertainly.api.model.core.cmp.ProtectionMethod;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.connector.AuthType;
@@ -86,6 +87,9 @@ public enum PlatformEnum implements IPlatformEnum {
 
     // ACME
     ACME_ACCOUNT_STATUS(AccountStatus.class, "ACME Account status"), // TODO: rename to AcmeAccountStatus
+
+    // CMP
+    CMP_PROTECTION_METHOD(ProtectionMethod.class, "CMP protection method"),
 
     // Attributes
     ATTRIBUTE_TYPE(AttributeType.class, "Attribute Type"),
