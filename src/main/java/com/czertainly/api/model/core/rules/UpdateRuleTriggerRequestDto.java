@@ -36,8 +36,7 @@ public class UpdateRuleTriggerRequestDto {
     private Resource triggerResource;
 
     @Schema(
-            description = "Resource associated with the Rule Trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Resource associated with the Rule Trigger"
     )
     private Resource resource;
 
