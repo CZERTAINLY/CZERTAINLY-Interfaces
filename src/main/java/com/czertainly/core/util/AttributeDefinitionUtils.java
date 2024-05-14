@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -741,8 +742,12 @@ public class AttributeDefinitionUtils {
     }
 
     public static List<RequestAttributeDto> createAttributes(String name, List<BaseAttributeContent> content) {
+        return createAttributes(UUID.randomUUID().toString(), name, content);
+    }
+
+    public static List<RequestAttributeDto> createAttributes(String uuid, String name, List<BaseAttributeContent> content) {
         RequestAttributeDto attribute = new RequestAttributeDto();
-        attribute.setUuid(UUID.randomUUID().toString());
+        attribute.setUuid(uuid);
         attribute.setName(name);
         attribute.setContent(content);
 
@@ -886,6 +891,53 @@ public class AttributeDefinitionUtils {
         } catch (IllegalArgumentException e) {
             logger.warn("Unable to calculate the content type for the content");
             return AttributeContentType.OBJECT;
+        }
+    }
+
+    public static List<BaseAttributeContent> convertContentItemsFromObject(Object object) {
+        return ATTRIBUTES_OBJECT_MAPPER.convertValue(object, new TypeReference<>() {
+        });
+    }
+
+    public static List<BaseAttributeContent<?>> createAttributeContentFromString(AttributeContentType attributeContentType, List<String> values) {
+        if (!attributeContentType.isFilterByData()) {
+            return null;
+        }
+
+        try {
+            List<BaseAttributeContent<?>> contentItems = new ArrayList<>();
+            switch (attributeContentType) {
+                case STRING -> {
+                    values.forEach(v -> contentItems.add(new StringAttributeContent(v)));
+                }
+                case TEXT -> {
+                    values.forEach(v -> contentItems.add(new TextAttributeContent(v)));
+                }
+                case INTEGER -> {
+                    values.forEach(v -> contentItems.add(new IntegerAttributeContent(Integer.valueOf(v))));
+                }
+                case FLOAT -> {
+                    values.forEach(v -> contentItems.add(new FloatAttributeContent(Float.parseFloat(v))));
+                }
+                case BOOLEAN -> {
+                    values.forEach(v -> contentItems.add(new BooleanAttributeContent(Boolean.valueOf(v))));
+                }
+                case DATE -> {
+                    values.forEach(v -> contentItems.add(new DateAttributeContent(LocalDate.parse(v, DateTimeFormatter.ofPattern("yyyy-MM-dd")))));
+                }
+                case TIME -> {
+                    values.forEach(v -> contentItems.add(new TimeAttributeContent(LocalTime.parse(v, DateTimeFormatter.ofPattern("HH:mm:ss")))));
+                }
+                case DATETIME -> {
+                    values.forEach(v -> contentItems.add(new DateTimeAttributeContent(ZonedDateTime.parse(v, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")))));
+                }
+                default -> throw new IllegalStateException("Unexpected content type to parse from string: " + attributeContentType);
+            }
+
+            return contentItems;
+        } catch (Exception e) {
+            logger.debug("Cannot create content items of content type {} from string '{}'", attributeContentType, String.join(", ", values));
+            return null;
         }
     }
 
