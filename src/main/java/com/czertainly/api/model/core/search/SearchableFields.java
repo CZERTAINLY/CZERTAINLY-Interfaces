@@ -113,8 +113,8 @@ public enum SearchableFields {
 
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-    SearchableFields(final String string, final Class<? extends IPlatformEnum> enumClass, final String pathToBeJoin, final Object expectedValue) {
-        this.field = string;
+    SearchableFields(final String field, final Class<? extends IPlatformEnum> enumClass, final String pathToBeJoin, final Object expectedValue) {
+        this.field = field;
         this.enumClass = enumClass;
         this.pathToBeJoin = pathToBeJoin;
         this.expectedValue = expectedValue;
