@@ -30,7 +30,7 @@ public class UserDto {
     @Schema(description = "Description of the user")
     private String description;
 
-    @Schema(description = "Groups of the user")
+    @Schema(description = "Groups of the user", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<NameAndUuidDto> groups = new ArrayList<>();
 
     @Schema(description = "Status of the user. True = Enabled, False = Disabled", requiredMode = Schema.RequiredMode.REQUIRED)
