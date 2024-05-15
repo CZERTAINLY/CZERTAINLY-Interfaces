@@ -41,7 +41,7 @@ public class CmpBaseException extends Exception {
      * @param ex            the underlying exception
      */
     protected CmpBaseException(ASN1OctetString tid, int failureInfo, String errorDetails, Throwable ex) {
-        super(ex == null || ex.getMessage() == null ? errorDetails : ex.getMessage(),
+        super(ex == null || ex.getMessage() == null ? "(TID="+(tid == null ? "n/a" : tid.toString())+") "+errorDetails : "(TID="+(tid == null ? "n/a" : tid.toString())+") "+ex.getMessage(),
                 ex == null || ex.getCause() == null ? ex : ex.getCause());
         if (ex instanceof CmpBaseException) {
             this.failureInfo = ((CmpBaseException) ex).failureInfo;
@@ -68,5 +68,4 @@ public class CmpBaseException extends Exception {
 
     @Override
     public String toString() { return this.getClass().getSimpleName()+" [failureInfo=" + failureInfo + ", errorDetails=" + errorDetails + "]"; }
-
 }

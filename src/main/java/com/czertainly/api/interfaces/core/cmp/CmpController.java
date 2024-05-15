@@ -58,7 +58,7 @@ public interface CmpController {
             description = "Operation is not allowed"
     )})
     @RequestMapping(method = RequestMethod.GET)
-    ResponseEntity<Object> doGet(
+    ResponseEntity<byte[]> doGet(
             @PathVariable String cmpProfileName,
             @RequestParam(required = false) @Schema(
                     description = "DER encoded CMP data",type = "string",format = "binary") byte[] message
@@ -91,7 +91,7 @@ public interface CmpController {
             consumes = {"application/pkixcmp"},
             produces = {"application/pkixcmp"}
     )
-    ResponseEntity<Object> doPost(
+    ResponseEntity<byte[]> doPost(
             @PathVariable String cmpProfileName,
             @RequestBody @Schema(description = "Binary CMP data",type = "string",format = "binary") byte[] request
     ) throws CmpBaseException;

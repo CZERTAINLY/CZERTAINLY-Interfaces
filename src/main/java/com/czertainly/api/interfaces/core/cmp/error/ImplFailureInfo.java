@@ -50,6 +50,10 @@ public enum ImplFailureInfo {
     CRYPTOSIG542(542, "signature-based protection: signature verification is broken"),
     CRYPTOSIG543(543, "signature-based protection: certificate (used for protecting) has key not suitable for signing"),
 
+    // -- handling: message (HAN)
+    CMPHANCERTCONF001(1001,"certConf failed - certificate for given fingerprint is not found"),
+    CMPHANCERTCONF002(1002,"certConf failed - given transactionId and related certificate are not found"),
+
     // -- developer
     TODO(       -999, "Only for developer purpose - inform czertainly admin")
     ;

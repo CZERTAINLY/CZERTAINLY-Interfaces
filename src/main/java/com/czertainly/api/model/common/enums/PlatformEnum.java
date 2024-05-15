@@ -17,6 +17,7 @@ import com.czertainly.api.model.core.acme.AccountStatus;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.authority.CertificateRevocationReason;
 import com.czertainly.api.model.core.certificate.*;
+import com.czertainly.api.model.core.cmp.CmpProfileVariant;
 import com.czertainly.api.model.core.cmp.ProtectionMethod;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
@@ -90,6 +91,7 @@ public enum PlatformEnum implements IPlatformEnum {
 
     // CMP
     CMP_PROTECTION_METHOD(ProtectionMethod.class, "CMP protection method"),
+    CMP_PROFILE_VARIANT(CmpProfileVariant.class, "CMP protocol variant"),
 
     // Attributes
     ATTRIBUTE_TYPE(AttributeType.class, "Attribute Type"),

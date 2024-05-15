@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.cmp.error;
 
 import com.czertainly.api.interfaces.core.cmp.PkiMessageError;
 import org.bouncycastle.asn1.ASN1OctetString;
+import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.cmp.PKIBody;
 import org.bouncycastle.asn1.cmp.PKIFailureInfo;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @param implFailureInfo implementation-based error (czertainly scope, see ${@link ImplFailureInfo})
      */
     public CmpProcessingException(int failureInfo, ImplFailureInfo implFailureInfo) {
-        this(null, failureInfo,implFailureInfo, null);
+        this(new DEROctetString("n/a".getBytes()), failureInfo,implFailureInfo, null);
     }
 
     /**
@@ -32,7 +33,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @param ex failure reason
      */
     public CmpProcessingException(PKIFailureInfo failureInfo, ImplFailureInfo implFailureInfo, Exception ex) {
-        this(null, failureInfo.intValue(),implFailureInfo, ex);
+        this(new DEROctetString("n/a".getBytes()), failureInfo.intValue(),implFailureInfo, ex);
     }
 
     /**
@@ -48,7 +49,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @param errorDetails string description of error
      */
     public CmpProcessingException(int failureInfo, String errorDetails) {
-        super(null, failureInfo, errorDetails, null);
+        super(new DEROctetString("n/a".getBytes()), failureInfo, errorDetails, null);
     }
 
     /**
@@ -77,6 +78,10 @@ public class CmpProcessingException extends CmpBaseException {
         super(tid, failureInfo, implFailureInfo.name() + "("+implFailureInfo.getCode()+"): "+ implFailureInfo.getDescription(), ex);
         this.failureInfo = failureInfo;
         this.implFailureInfo = implFailureInfo;
+    }
+
+    public ImplFailureInfo getImplFailureInfo() {
+        return implFailureInfo;
     }
 
     /**
