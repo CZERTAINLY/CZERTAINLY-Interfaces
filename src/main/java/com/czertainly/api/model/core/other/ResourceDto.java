@@ -21,6 +21,12 @@ public class ResourceDto {
     @Schema(description = "Support assigning custom attributes to resource objects", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean hasCustomAttributes;
 
+    @Schema(description = "Support assigning groups to resource objects", requiredMode = Schema.RequiredMode.REQUIRED)
+    private boolean hasGroups;
+
+    @Schema(description = "Support assigning owner to resource objects", requiredMode = Schema.RequiredMode.REQUIRED)
+    private boolean hasOwner;
+
     @Schema(description = "Has events that can be used in triggers", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean hasEvents;
 
@@ -33,6 +39,14 @@ public class ResourceDto {
 
     public boolean hasCustomAttributes() {
         return hasCustomAttributes;
+    }
+
+    public void hasGroups(boolean hasGroups) {
+        this.hasGroups = hasGroups;
+    }
+
+    public void hasOwner(boolean hasOwner) {
+        this.hasOwner = hasOwner;
     }
 
     public boolean hasEvents() {
@@ -49,6 +63,8 @@ public class ResourceDto {
                 .append("resource", resource)
                 .append("hasObjectAccess", hasObjectAccess)
                 .append("hasCustomAttributes", hasCustomAttributes)
+                .append("hasGroups", hasGroups)
+                .append("hasOwner", hasOwner)
                 .append("hasEvents", hasEvents)
                 .append("hasRuleEvaluator", hasRuleEvaluator)
                 .toString();

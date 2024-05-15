@@ -2,11 +2,14 @@ package com.czertainly.api.model.client.auth;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class AddUserRequestDto {
 
     @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, example = "user1")
@@ -24,8 +27,8 @@ public class AddUserRequestDto {
     @Schema(description = "Email of the user")
     private String email;
 
-    @Schema(description = "Group UUID of the user")
-    private String groupUuid;
+    @Schema(description = "Groups UUIDs of the user")
+    private List<String> groupUuids = new ArrayList<>();
 
     @Schema(description = "Status of the user. True = Enabled, False = Disabled")
     private Boolean enabled;
@@ -43,92 +46,12 @@ public class AddUserRequestDto {
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getCertificateUuid() {
-        return certificateUuid;
-    }
-
-    public void setCertificateUuid(String certificateUuid) {
-        this.certificateUuid = certificateUuid;
-    }
-
-    public String getCertificateData() {
-        return certificateData;
-    }
-
-    public void setCertificateData(String certificateData) {
-        this.certificateData = certificateData;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getGroupUuid() {
-        return groupUuid;
-    }
-
-    public void setGroupUuid(String groupUuid) {
-        this.groupUuid = groupUuid;
-    }
-
-    public List<RequestAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("username", username)
                 .append("description", description)
-                .append("groupUuid", groupUuid)
+                .append("groupUuids", groupUuids)
                 .append("firstName", firstName)
                 .append("lastName", lastName)
                 .append("email", email)
