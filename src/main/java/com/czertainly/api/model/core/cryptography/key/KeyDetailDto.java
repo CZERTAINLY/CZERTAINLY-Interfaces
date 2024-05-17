@@ -71,9 +71,9 @@ public class KeyDetailDto extends NameAndUuidDto {
     private String ownerUuid;
 
     @Schema(
-            description = "Key Group"
+            description = "Groups associated to the key"
     )
-    private GroupDto group;
+    private List<GroupDto> groups;
 
     @Schema(
             description = "Key Objects",

@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.rules;
 
 import com.czertainly.api.model.core.auth.Resource;
+import com.czertainly.api.model.core.other.ResourceEvent;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -31,10 +32,11 @@ public class RuleTriggerRequestDto {
     @Schema(
             description = "Name of the event of the Rule Trigger"
     )
-    private String eventName;
+    private ResourceEvent eventName;
 
     @Schema(
-            description = "Resource associated with the Rule Trigger"
+            description = "Resource associated with the Rule Trigger",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Resource resource;
 

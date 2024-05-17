@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class CertificateDto {
@@ -95,9 +96,9 @@ public class CertificateDto {
     private String fingerprint;
 
     @Schema(
-            description = "Group associated to the Certificate"
+            description = "Groups associated to the Certificate"
     )
-    private GroupDto group;
+    private List<GroupDto> groups;
 
     @Schema(
             description = "Certificate Owner",

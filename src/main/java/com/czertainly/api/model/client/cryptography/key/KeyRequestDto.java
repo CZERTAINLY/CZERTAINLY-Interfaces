@@ -27,9 +27,9 @@ public class KeyRequestDto {
 
 
     @Schema(
-            description = "UUID of the group"
+            description = "UUIDs of the groups to associate with key"
     )
-    private String groupUuid;
+    private List<String> groupUuids;
 
     @Schema(
             description = "List of Attributes to create a Key",
