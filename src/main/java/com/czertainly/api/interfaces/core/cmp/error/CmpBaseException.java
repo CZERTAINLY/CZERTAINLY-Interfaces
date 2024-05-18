@@ -19,8 +19,8 @@ public class CmpBaseException extends Exception {
 
     private static final Logger LOG = LoggerFactory.getLogger(CmpBaseException.class.getName());
 
-    protected final int failureInfo;
-    protected final String errorDetails;
+    protected int failureInfo;
+    protected String errorDetails;
 
     protected CmpBaseException(Exception ex) {
         super(ex);
