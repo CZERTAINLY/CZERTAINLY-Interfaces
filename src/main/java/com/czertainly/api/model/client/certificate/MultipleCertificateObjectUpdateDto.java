@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 public class MultipleCertificateObjectUpdateDto {
 
-    @Schema(description = "Certificate Group UUID (set to empty string to remove certificate from group)")
-    private String groupUuid;
+    @Schema(description = "Certificate Groups UUIDs (set to empty list to remove certificate from all groups)")
+    private List<String> groupUuids;
 
     @Schema(description = "Certificate owner user UUID (set to empty string to remove owner of certificate)")
     private String ownerUuid;
@@ -27,6 +27,6 @@ public class MultipleCertificateObjectUpdateDto {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("groupUuid", groupUuid).append("ownerUuid", ownerUuid).append("raProfileUuid", raProfileUuid).append("certificateUuids", certificateUuids).append("filters", filters).toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("groupUuids", groupUuids).append("ownerUuid", ownerUuid).append("raProfileUuid", raProfileUuid).append("certificateUuids", certificateUuids).append("filters", filters).toString();
     }
 }

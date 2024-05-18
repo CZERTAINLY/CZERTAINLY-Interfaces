@@ -25,8 +25,8 @@ public enum SearchableFields {
     CERTIFICATE_STATE("state", CertificateState.class, null, null),
     CERTIFICATE_VALIDATION_STATUS("validationStatus", CertificateValidationStatus.class, null, null),
     COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class, null, null),
-    GROUP_NAME("group.name", null, null, null),
-    OWNER("owner", null, null, null),
+    GROUP_NAME("groups.name", null, null, null),
+    OWNER("owner.ownerUsername", null, null, null),
     ISSUER_COMMON_NAME("issuerCommonName", null, null, null),
     SIGNATURE_ALGORITHM("signatureAlgorithm", null, null, null),
     FINGERPRINT("fingerprint", null, null, null),
@@ -50,8 +50,8 @@ public enum SearchableFields {
     CONNECTOR_NAME("connectorName", null, null, null),
     KIND("kind", null, null, null),
     NAME("name", null, null, null),
-    CK_GROUP("cryptographicKey.group.name", null, null, null),
-    CK_OWNER("cryptographicKey.owner", null, null, null),
+    CK_GROUP("cryptographicKey.groups.name", null, null, null),
+    CK_OWNER("cryptographicKey.owner.ownerUsername", null, null, null),
     CK_TOKEN_PROFILE("cryptographicKey.tokenProfile.name", null, null, null),
     CK_TOKEN_INSTANCE("cryptographicKey.tokenInstanceReference.name", null, null, null),
     CKI_TYPE("type", KeyType.class, null, null),
@@ -113,8 +113,8 @@ public enum SearchableFields {
 
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-    SearchableFields(final String string, final Class<? extends IPlatformEnum> enumClass, final String pathToBeJoin, final Object expectedValue) {
-        this.field = string;
+    SearchableFields(final String field, final Class<? extends IPlatformEnum> enumClass, final String pathToBeJoin, final Object expectedValue) {
+        this.field = field;
         this.enumClass = enumClass;
         this.pathToBeJoin = pathToBeJoin;
         this.expectedValue = expectedValue;
