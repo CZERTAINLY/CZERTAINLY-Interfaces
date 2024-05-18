@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 public class CmpProcessingException extends CmpBaseException {
 
     private static final Logger LOG = LoggerFactory.getLogger(CmpProcessingException.class.getName());
-
-    protected int failureInfo;
     protected ImplFailureInfo implFailureInfo;
 
     /**
@@ -82,6 +80,10 @@ public class CmpProcessingException extends CmpBaseException {
 
     public ImplFailureInfo getImplFailureInfo() {
         return implFailureInfo;
+    }
+
+    public int getFailureInfo() {
+        return failureInfo;
     }
 
     /**
