@@ -26,7 +26,7 @@ public class RuleTriggerHistoryDto extends UuidDto {
     private boolean actionsPerformed;
 
     @Schema(description = "List of records for each action that has not been performed and each condition that has not been evaluated.")
-    private List<RuleTriggerHistoryRecordDto> triggerHistoryRecordList = new ArrayList<>();
+    private List<RuleTriggerHistoryRecordDto> records = new ArrayList<>();
 
     @Schema(description = "Time at which has the trigger been triggered")
     private LocalDateTime triggeredAt;

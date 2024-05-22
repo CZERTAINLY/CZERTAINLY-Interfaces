@@ -7,16 +7,14 @@ import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class RuleTriggerHistoryRecordDto extends UuidDto {
-
-    @Schema(name = "UUID of the condition")
-    private String ruleConditionUuid;
-
-    @Schema(name = "UUID of the action")
-    private String ruleActionUuid;
-
+public class RuleTriggerHistoryRecordDto {
     @Schema(name = "Message with cause of action/condition failure.")
     private String message;
+
+    @Schema(name = "Condition that is referenced by history record", nullable = true)
+    private RuleConditionDto condition;
+
+    @Schema(name = "Condition that is referenced by history record", nullable = true)
+    private RuleActionDto action;
 }
