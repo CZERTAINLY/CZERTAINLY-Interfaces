@@ -148,4 +148,9 @@ public interface RuleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid) throws NotFoundException;
 
+    @Operation(summary = "Get Trigger History")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger History retrieved")})
+    @RequestMapping(path = "/triggers/{triggerUuid}/history/{triggerObjectUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    List<RuleTriggerHistoryDto> getTriggerHistory(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid, @Parameter(description = "Trigger Object UUID") @PathVariable String triggerObjectUuid);
+
 }
