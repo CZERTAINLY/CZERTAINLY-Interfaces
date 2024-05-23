@@ -9,12 +9,14 @@ import java.io.Serializable;
 @Data
 public class ExecutionItemRequestDto {
     @Schema(
-            description = "Source of the field in the execution item"
+            description = "Source of the field in the execution item",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private FilterFieldSource fieldSource;
 
     @Schema(
-            description = "Field identifier of the execution item"
+            description = "Field identifier of the execution item",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String fieldIdentifier;
 
