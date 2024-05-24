@@ -3,11 +3,10 @@ package com.czertainly.api.model.core.cryptography.key;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class KeyDetailDto extends NameAndUuidDto {
     @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private LocalDateTime creationTime;
+    private OffsetDateTime creationTime;
 
     @Schema(
             description = "UUID of the Token Profile"

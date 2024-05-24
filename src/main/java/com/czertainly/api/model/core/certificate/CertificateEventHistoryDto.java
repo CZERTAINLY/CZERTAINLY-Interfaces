@@ -3,6 +3,7 @@ package com.czertainly.api.model.core.certificate;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class CertificateEventHistoryDto {
     private String certificateUuid;
 
     @Schema(description = "Event creation time", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Date created;
+    private OffsetDateTime created;
 
     @Schema(description = "Created By", requiredMode = Schema.RequiredMode.REQUIRED)
     private String createdBy;
@@ -48,11 +49,11 @@ public class CertificateEventHistoryDto {
         this.certificateUuid = certificateUuid;
     }
 
-    public Date getCreated() {
+    public OffsetDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(OffsetDateTime created) {
         this.created = created;
     }
 

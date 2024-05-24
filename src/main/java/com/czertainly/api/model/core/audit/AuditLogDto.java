@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @JsonPropertyOrder({"id", "uuid", "author", "created", "operationStatus",
         "origination", "affected", "objectIdentifier", "operation", "additionalData"})
@@ -35,7 +35,7 @@ public class AuditLogDto implements Identified {
             description = "Time when the audit log is registered",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private LocalDateTime created;
+    private OffsetDateTime created;
 	
 	@Schema(
             description = "Status of the operation. Either success or failed",
@@ -94,11 +94,11 @@ public class AuditLogDto implements Identified {
         this.author = author;
     }
 
-    public LocalDateTime getCreated() {
+    public OffsetDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(OffsetDateTime created) {
         this.created = created;
     }
 

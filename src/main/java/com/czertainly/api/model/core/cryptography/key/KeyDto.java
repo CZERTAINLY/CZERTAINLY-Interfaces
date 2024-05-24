@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,7 +25,7 @@ public class KeyDto extends NameAndUuidDto {
     @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private LocalDateTime creationTime;
+    private OffsetDateTime creationTime;
 
     @Schema(
             description = "UUID of the Token Profile"
