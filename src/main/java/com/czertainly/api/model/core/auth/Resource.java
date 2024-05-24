@@ -56,6 +56,11 @@ public enum Resource implements IPlatformEnum {
     // APPROVALS
     APPROVAL_PROFILE("approvalProfiles", "Approval profile", true),
     APPROVAL("approvals", "Approval"),
+
+    // WORKFLOWS
+    RULE("rules", "Rule"),
+    ACTION("actions", "Action"),
+    TRIGGER("triggers", "Trigger"),
     ;
 
     private static final Resource[] VALUES;
