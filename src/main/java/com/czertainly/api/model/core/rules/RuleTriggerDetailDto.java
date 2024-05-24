@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.workflows;
+package com.czertainly.api.model.core.rules;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class TriggerDetailDto extends TriggerDto {
+public class RuleTriggerDetailDto extends RuleTriggerDto {
 
     @Schema(
             description = "List of Rules in the Rule Trigger",
@@ -21,5 +21,11 @@ public class TriggerDetailDto extends TriggerDto {
             description = "List of Action Groups in the Rule Trigger",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ActionDto> actions;
+    private List<RuleActionGroupDto> actionGroups;
+
+    @Schema(
+            description = "List of Rule Actions in the Rule Trigger",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private List<RuleActionDto> actions;
 }
