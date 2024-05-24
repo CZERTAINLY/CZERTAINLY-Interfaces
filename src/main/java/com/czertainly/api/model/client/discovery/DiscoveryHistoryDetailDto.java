@@ -4,7 +4,7 @@ import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
-import com.czertainly.api.model.core.rules.RuleTriggerDto;
+import com.czertainly.api.model.core.workflows.TriggerDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -78,5 +78,5 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
             description = "List of associated triggers",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RuleTriggerDto> triggers = new ArrayList<>();
+    private List<TriggerDto> triggers = new ArrayList<>();
 }
