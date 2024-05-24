@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.core.auth.Resource;
@@ -54,7 +55,7 @@ public interface ActionController {
     @Operation(summary = "Create Execution")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Execution created")})
     @RequestMapping(path = "/executions", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    ExecutionDto createExecution(@RequestBody ExecutionRequestDto request);
+    ExecutionDto createExecution(@RequestBody ExecutionRequestDto request) throws AlreadyExistException;
 
     @Operation(summary = "Get Execution Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Execution details retrieved")})
@@ -82,7 +83,7 @@ public interface ActionController {
     @Operation(summary = "Create Action")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Action created")})
     @RequestMapping(path = "/actions", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    ActionDetailDto createAction(@RequestBody ActionRequestDto request);
+    ActionDetailDto createAction(@RequestBody ActionRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Get Action Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Action details retrieved")})

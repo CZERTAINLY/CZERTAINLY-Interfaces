@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum ConditionType implements IPlatformEnum {
 
-    CHECK_FIELD("check field", "Check Field", null)
+    CHECK_FIELD("checkField", "Check Field", null)
     ;
 
     private static final ConditionType[] VALUES;

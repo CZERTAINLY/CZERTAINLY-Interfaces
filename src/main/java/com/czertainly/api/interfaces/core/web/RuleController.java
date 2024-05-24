@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.core.auth.Resource;
@@ -32,7 +33,7 @@ public interface RuleController {
     @Operation(summary = "Create Condition")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Condition created")})
     @RequestMapping(path = "/conditions", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    ConditionDto createCondition(@RequestBody ConditionRequestDto request);
+    ConditionDto createCondition(@RequestBody ConditionRequestDto request) throws AlreadyExistException;
 
     @Operation(summary = "Get Condition details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Condition details retrieved")})
@@ -60,7 +61,7 @@ public interface RuleController {
     @Operation(summary = "Create Rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Rule created")})
     @RequestMapping(path = "/rules", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    RuleDetailDto createRule(@RequestBody RuleRequestDto request);
+    RuleDetailDto createRule(@RequestBody RuleRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Get Rule details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Rule details retrieved")})

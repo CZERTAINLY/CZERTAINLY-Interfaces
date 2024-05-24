@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.core.auth.Resource;
@@ -51,7 +52,7 @@ public interface TriggerController {
     @Operation(summary = "Create Trigger")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Trigger created")})
     @RequestMapping(path = "/triggers", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    TriggerDetailDto createTrigger(@RequestBody TriggerRequestDto request);
+    TriggerDetailDto createTrigger(@RequestBody TriggerRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Get Trigger details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger details retrieved")})
