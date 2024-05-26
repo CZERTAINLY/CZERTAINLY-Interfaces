@@ -72,7 +72,11 @@ public interface TriggerController {
 
     @Operation(summary = "Get Trigger History")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger History retrieved")})
-    @RequestMapping(path = "/triggers/{triggerUuid}/history/{triggerObjectUuid}", method = RequestMethod.GET, produces = {"application/json"})
-    List<TriggerHistoryDto> getTriggerHistory(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid, @Parameter(description = "Trigger Object UUID") @PathVariable String triggerObjectUuid);
+    @RequestMapping(path = "/triggers/{triggerUuid}/history/{associationObjectUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    List<TriggerHistoryDto> getTriggerHistory(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid, @Parameter(description = "Trigger Association Object UUID") @PathVariable String associationObjectUuid);
 
+    @Operation(summary = "Get Trigger History Summary")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger History Summary retrieved")})
+    @RequestMapping(path = "/triggers/history/{associationObjectUuid}", method = RequestMethod.GET, produces = {"application/json"})
+    TriggerHistorySummaryDto getTriggerHistorySummary(@Parameter(description = "Trigger Association Object UUID") @PathVariable String associationObjectUuid) throws NotFoundException;
 }

@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class TriggerHistoryDto extends UuidDto {
     @Schema(description = "UUID of the object that the trigger has been evaluated on.")
     private String objectUuid;
 
-    @Schema(description = "UUID of the object that the trigger has been evaluated on.")
+    @Schema(description = "Reference UUID of the object that the trigger has been evaluated on.")
     private String referenceObjectUuid;
 
     @Schema(description = "All conditions in the trigger have been matched.", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -28,7 +28,7 @@ public class TriggerHistoryDto extends UuidDto {
     private boolean actionsPerformed;
 
     @Schema(description = "Time at which has the trigger been triggered", requiredMode = Schema.RequiredMode.REQUIRED)
-    private LocalDateTime triggeredAt;
+    private OffsetDateTime triggeredAt;
 
     @Schema(description = "Additional message. ")
     private String message;
