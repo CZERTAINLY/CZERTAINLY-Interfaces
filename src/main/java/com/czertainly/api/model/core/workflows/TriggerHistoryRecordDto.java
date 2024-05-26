@@ -12,5 +12,5 @@ public class TriggerHistoryRecordDto {
     private ConditionDto condition;
 
     @Schema(name = "Condition that is referenced by history record")
-    private ExecutionDto action;
+    private ExecutionDto execution;
 }
