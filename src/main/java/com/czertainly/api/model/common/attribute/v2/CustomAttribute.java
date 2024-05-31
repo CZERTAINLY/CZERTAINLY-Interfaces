@@ -63,7 +63,7 @@ public class CustomAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     private CustomAttributeProperties properties;
 
     public CustomAttribute() {
-        super(AttributeType.DATA);
+        super(AttributeType.CUSTOM);
     }
 
     public CustomAttribute(String type) {
@@ -71,7 +71,7 @@ public class CustomAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     }
 
     public CustomAttribute(CustomAttribute original) {
-        super(AttributeType.DATA);
+        super(AttributeType.CUSTOM);
         setUuid(original.getUuid());
         setName(original.getName());
         this.content = original.content;
