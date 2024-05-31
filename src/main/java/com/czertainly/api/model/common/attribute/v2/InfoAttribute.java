@@ -64,7 +64,7 @@ public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
     private InfoAttributeProperties properties;
 
     public InfoAttribute() {
-        super();
+        super(AttributeType.INFO);
     }
 
     public InfoAttribute(AttributeType type) {
