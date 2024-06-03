@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.certificate.EntityInstanceResponseDto;
@@ -125,7 +126,7 @@ public interface EntityInstanceController {
     )
     ResponseEntity<?> createEntityInstance(
             @RequestBody EntityInstanceRequestDto request
-    ) throws AlreadyExistException, ConnectorException;
+    ) throws AlreadyExistException, ConnectorException, AttributeException;
 
     @Operation(
             summary = "Edit Entity instance"
@@ -152,7 +153,7 @@ public interface EntityInstanceController {
     EntityInstanceDto editEntityInstance(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
             @RequestBody EntityInstanceUpdateRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, AttributeException;
 
     @Operation(
             summary = "Delete Entity instance"

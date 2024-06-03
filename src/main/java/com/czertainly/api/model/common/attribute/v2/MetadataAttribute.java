@@ -58,6 +58,7 @@ public class MetadataAttribute extends BaseAttribute<List<BaseAttributeContent>>
     private MetadataAttributeProperties properties;
 
     public MetadataAttribute() {
+        super(AttributeType.META);
     }
 
     public MetadataAttribute(AttributeType type) {

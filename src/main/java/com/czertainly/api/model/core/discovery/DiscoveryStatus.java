@@ -13,6 +13,7 @@ import java.util.Arrays;
 public enum DiscoveryStatus implements IPlatformEnum {
 
     IN_PROGRESS("inProgress", "In Progress"),
+    PROCESSING("processing", "Processing"),
     FAILED("failed", "Failed"),
     COMPLETED("completed", "Completed"),
     WARNING("warning", "Warning")

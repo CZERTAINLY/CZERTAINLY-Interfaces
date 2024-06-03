@@ -15,6 +15,12 @@ public class MetadataAttributeProperties extends BaseAttributeProperties {
     )
     private boolean global = false;
 
+    @Schema(
+            description = "Boolean determining if the new metadata content should overwrite (replace) existing content instead of appending.",
+            defaultValue = "false"
+    )
+    private boolean overwrite = false;
+
     public boolean isGlobal() {
         return global;
     }
@@ -23,10 +29,19 @@ public class MetadataAttributeProperties extends BaseAttributeProperties {
         this.global = global;
     }
 
+    public boolean isOverwrite() {
+        return overwrite;
+    }
+
+    public void setOverwrite(boolean overwrite) {
+        this.overwrite = overwrite;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("global", global)
+                .append("overwrite", overwrite)
                 .append("label", getLabel())
                 .append("group", getGroup())
                 .append("visible", isVisible())

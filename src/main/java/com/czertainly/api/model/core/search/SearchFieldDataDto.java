@@ -1,11 +1,14 @@
 package com.czertainly.api.model.core.search;
 
+import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.enums.PlatformEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class SearchFieldDataDto {
     @Schema(description = "Identifier of field to search",
             requiredMode = Schema.RequiredMode.REQUIRED)
@@ -17,15 +20,19 @@ public class SearchFieldDataDto {
 
     @Schema(description = "Type of the field",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private SearchableFieldType type;
+    private FilterFieldType type;
 
     @Schema(description = "List of available conditions for the field",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<SearchCondition> conditions;
+    private List<FilterConditionOperator> conditions;
 
     @Schema(description = "Platform enum of the field values",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private PlatformEnum platformEnum;
+
+    @Schema(description = "Attribute filter field content type",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private AttributeContentType attributeContentType;
 
     @Schema(description = "Available values for the field")
     private Object value;
@@ -33,65 +40,13 @@ public class SearchFieldDataDto {
     @Schema(description = "Multivalue flag. true = yes, false = no")
     private Boolean multiValue;
 
-    public String getFieldIdentifier() {
-        return fieldIdentifier;
-    }
-    
-    @Deprecated
-    @JsonIgnore
-    public SearchableFields getField() {
-        return null;
-    }
-
-    public void setFieldIdentifier(String fieldIdentifier) {
-        this.fieldIdentifier = fieldIdentifier;
-    }
-
-    public String getFieldLabel() {
-        return fieldLabel;
-    }
-
-    public void setFieldLabel(String fieldLabel) {
-        this.fieldLabel = fieldLabel;
-    }
-
-    public SearchableFieldType getType() {
-        return type;
-    }
-
-    public void setType(SearchableFieldType type) {
-        this.type = type;
-    }
-
-    public List<SearchCondition> getConditions() {
-        return conditions;
-    }
-
-    public void setConditions(List<SearchCondition> conditions) {
-        this.conditions = conditions;
-    }
-
-    public PlatformEnum getPlatformEnum() {
-        return platformEnum;
-    }
-
-    public void setPlatformEnum(PlatformEnum platformEnum) {
-        this.platformEnum = platformEnum;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
     public Boolean isMultiValue() {
         return multiValue;
     }
 
-    public void setMultiValue(Boolean multiValue) {
-        this.multiValue = multiValue;
+    @Deprecated
+    @JsonIgnore
+    public SearchableFields getField() {
+        return null;
     }
 }

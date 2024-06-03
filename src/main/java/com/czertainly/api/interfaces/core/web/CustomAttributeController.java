@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeCreateRequestDto;
@@ -79,13 +80,13 @@ public interface CustomAttributeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Custom Attribute created", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<CustomAttributeDefinitionDetailDto> createCustomAttribute(@RequestBody CustomAttributeCreateRequestDto request)
-            throws AlreadyExistException, NotFoundException;
+            throws AlreadyExistException, NotFoundException, AttributeException;
 
     @Operation(summary = "Edit Custom Attribute")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute updated")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     CustomAttributeDefinitionDetailDto editCustomAttribute(@Parameter(description = "Attribute UUID") @PathVariable String uuid, @RequestBody CustomAttributeUpdateRequestDto request)
-            throws NotFoundException;
+            throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Custom Attribute")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attribute deleted")})
@@ -164,7 +165,7 @@ public interface CustomAttributeController {
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
             @RequestBody List<BaseAttributeContent> request
-            ) throws NotFoundException;
+            ) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Value of a Custom Attribute for a Resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute value deleted")})
@@ -177,5 +178,5 @@ public interface CustomAttributeController {
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid
-    ) throws NotFoundException;
+    ) throws NotFoundException, AttributeException;
 }

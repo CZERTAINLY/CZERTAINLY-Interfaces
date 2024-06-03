@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.approvalprofile.ApprovalProfileResponseDto;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
@@ -86,7 +83,7 @@ public interface AuthorityInstanceController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createAuthorityInstance(@RequestBody AuthorityInstanceRequestDto request)
-            throws AlreadyExistException, ConnectorException;
+            throws AlreadyExistException, ConnectorException, AttributeException;
 
     @Operation(summary = "Edit Authority instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority instance details updated"),
@@ -95,7 +92,7 @@ public interface AuthorityInstanceController {
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {
             "application/json"})
     AuthorityInstanceDto editAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody AuthorityInstanceUpdateRequestDto request)
-            throws ConnectorException;
+            throws ConnectorException, AttributeException;
 
     @Operation(summary = "Delete Authority instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Authority instance deleted")})

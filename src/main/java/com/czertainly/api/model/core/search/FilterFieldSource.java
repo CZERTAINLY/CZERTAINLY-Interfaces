@@ -9,13 +9,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum SearchGroup implements IPlatformEnum {
+public enum FilterFieldSource implements IPlatformEnum {
 
     META("meta", "Metadata", AttributeType.META),
     CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM),
+    DATA("data", "Data attribute", AttributeType.DATA),
     PROPERTY("property", "Property", null);
 
-    private static final SearchGroup[] VALUES;
+    private static final FilterFieldSource[] VALUES;
 
     static {
         VALUES = values();
@@ -24,13 +25,13 @@ public enum SearchGroup implements IPlatformEnum {
     private final String code;
     private final String label;
     private final String description;
-    private AttributeType attributeType;
+    private final AttributeType attributeType;
 
-    SearchGroup(String code, String label, AttributeType attributeType) {
+    FilterFieldSource(String code, String label, AttributeType attributeType) {
         this(code, label ,null, attributeType);
     }
 
-    SearchGroup(String code, String label, String description, AttributeType attributeType) {
+    FilterFieldSource(String code, String label, String description, AttributeType attributeType) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -58,7 +59,7 @@ public enum SearchGroup implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static SearchGroup fromCode(String code) {
+    public static FilterFieldSource fromCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()

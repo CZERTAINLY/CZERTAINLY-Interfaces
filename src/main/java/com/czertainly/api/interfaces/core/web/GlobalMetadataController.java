@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.attribute.AttributeDefinitionDto;
 import com.czertainly.api.model.client.attribute.metadata.*;
@@ -70,13 +71,13 @@ public interface GlobalMetadataController {
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Global Metadata created", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<GlobalMetadataDefinitionDetailDto> createGlobalMetadata(@RequestBody GlobalMetadataCreateRequestDto request)
-            throws AlreadyExistException, NotFoundException;
+            throws AlreadyExistException, NotFoundException, AttributeException;
 
     @Operation(summary = "Edit Global Metadata")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Global Metadata updated")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
     GlobalMetadataDefinitionDetailDto editGlobalMetadata(@Parameter(description = "Global Metadata UUID") @PathVariable String uuid, @RequestBody GlobalMetadataUpdateRequestDto request)
-            throws NotFoundException;
+            throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Global Metadata")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Global Metadata deleted")})

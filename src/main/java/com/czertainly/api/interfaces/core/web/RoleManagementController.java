@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.model.client.auth.RoleRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
@@ -65,12 +66,12 @@ public interface RoleManagementController {
     @Operation(summary = "Create Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Role created")})
     @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<RoleDetailDto> createRole(@RequestBody RoleRequestDto request) throws NotFoundException;
+    ResponseEntity<RoleDetailDto> createRole(@RequestBody RoleRequestDto request) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Update Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Role details updated")})
     @RequestMapping(path = "/{roleUuid}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
-    RoleDetailDto updateRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid, @RequestBody RoleRequestDto request) throws NotFoundException;
+    RoleDetailDto updateRole(@Parameter(description = "Role UUID") @PathVariable String roleUuid, @RequestBody RoleRequestDto request) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Role")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Role deleted")})

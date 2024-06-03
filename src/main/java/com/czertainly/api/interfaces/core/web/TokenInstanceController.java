@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.cryptography.token.TokenInstanceRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
@@ -107,7 +104,7 @@ public interface TokenInstanceController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    TokenInstanceDetailDto createTokenInstance(@RequestBody TokenInstanceRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException;
+    TokenInstanceDetailDto createTokenInstance(@RequestBody TokenInstanceRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
 
     @Operation(
             summary = "Update Token Instance"
@@ -130,7 +127,7 @@ public interface TokenInstanceController {
     TokenInstanceDetailDto updateTokenInstance(
             @Parameter(description = "Token Instance UUID") @PathVariable String uuid,
             @RequestBody TokenInstanceRequestDto request)
-            throws ConnectorException, ValidationException;
+            throws ConnectorException, ValidationException, AttributeException;
 
     @Operation(
             description = "Delete Token Instance"

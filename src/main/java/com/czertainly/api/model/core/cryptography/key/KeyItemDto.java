@@ -8,7 +8,7 @@ import com.czertainly.api.model.core.certificate.group.GroupDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class KeyItemDto extends NameAndUuidDto {
     @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private LocalDateTime creationTime;
+    private OffsetDateTime creationTime;
 
     @Schema(description = "UUID of the wrapper object",
             requiredMode = Schema.RequiredMode.REQUIRED
@@ -66,9 +66,9 @@ public class KeyItemDto extends NameAndUuidDto {
     private String ownerUuid;
 
     @Schema(
-            description = "Key Group"
+            description = "Groups associated to the Key"
     )
-    private GroupDto group;
+    private List<GroupDto> groups;
 
     @Schema(
             description = "Number of associated objects"

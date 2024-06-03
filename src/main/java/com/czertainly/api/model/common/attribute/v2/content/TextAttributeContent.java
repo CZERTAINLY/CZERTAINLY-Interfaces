@@ -16,6 +16,11 @@ public class TextAttributeContent extends BaseAttributeContent<String> {
         this.data = data;
     }
 
+    public TextAttributeContent(String reference, String data) {
+        super(reference);
+        this.data = data;
+    }
+
     public String getData() {
         return data;
     }

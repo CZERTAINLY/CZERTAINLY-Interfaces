@@ -1,9 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.acme.AcmeProfileEditRequestDto;
 import com.czertainly.api.model.client.acme.AcmeProfileRequestDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
@@ -73,12 +70,12 @@ public interface AcmeProfileController {
 	@Operation(summary = "Create ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "ACME Profile created") })
 	@RequestMapping(method = RequestMethod.POST, consumes = { "application/json" }, produces = { "application/json" })
-	public ResponseEntity<UuidDto> createAcmeProfile(@RequestBody AcmeProfileRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException;
+	public ResponseEntity<UuidDto> createAcmeProfile(@RequestBody AcmeProfileRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
 
 	@Operation(summary = "Edit ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile updated") })
 	@RequestMapping(path="/{uuid}", method = RequestMethod.PUT, consumes = { "application/json" }, produces = { "application/json" })
-	public AcmeProfileDto editAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @RequestBody AcmeProfileEditRequestDto request) throws ConnectorException;
+	public AcmeProfileDto editAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @RequestBody AcmeProfileEditRequestDto request) throws ConnectorException, AttributeException;
 
 	@Operation(summary = "Delete ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profile deleted") })
