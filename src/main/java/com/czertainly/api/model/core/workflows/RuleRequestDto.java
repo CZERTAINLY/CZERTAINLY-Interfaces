@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.rules;
+package com.czertainly.api.model.core.workflows;
 
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,29 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class RuleActionGroupRequestDto {
+public class RuleRequestDto {
 
     @Schema(
-            description = "Name of the Rule Action Group",
+            description = "Name of the rule",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
 
     @Schema(
-            description = "Description of the Rule Action Group"
+            description = "Description of the rule"
     )
     private String description;
 
     @Schema(
-            description = "Resource associated with the Rule Action Group",
+            description = "Resource associated with the rule",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Resource resource;
 
     @Schema(
-            description = "List of new Rule Actions to add in the Rule Actions Group",
+            description = "List of UUIDs of existing conditions to add to the rule",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RuleActionRequestDto> actions = new ArrayList<>();
+    private List<String> conditionsUuids = new ArrayList<>();
 
 }

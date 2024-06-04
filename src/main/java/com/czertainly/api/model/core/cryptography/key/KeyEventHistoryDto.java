@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class KeyEventHistoryDto {
     private String keyUuid;
 
     @Schema(description = "Event creation time", requiredMode = Schema.RequiredMode.REQUIRED)
-    private LocalDateTime created;
+    private OffsetDateTime created;
 
     @Schema(description = "Created By", requiredMode = Schema.RequiredMode.REQUIRED)
     private String createdBy;
