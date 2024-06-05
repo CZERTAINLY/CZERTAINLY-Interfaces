@@ -32,8 +32,11 @@ public enum Resource implements IPlatformEnum {
     ACME_ACCOUNT("acmeAccounts", "ACME Account"),
     ACME_PROFILE("acmeProfiles", "ACME Profile", true, true),
 
-    //SCEP
+    // SCEP
     SCEP_PROFILE("scepProfiles", "SCEP Profile", true, true),
+
+    // CMP
+    CMP_PROFILE("cmpProfiles", "CMP Profile", true, true),
 
     // CERTIFICATES
     AUTHORITY("authorities", "Authority", true, true),
