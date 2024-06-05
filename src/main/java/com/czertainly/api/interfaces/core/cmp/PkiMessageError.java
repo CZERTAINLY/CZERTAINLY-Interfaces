@@ -114,7 +114,7 @@ public class PkiMessageError {
             statusText=new PKIFreeText(errorDetails);
         }
         return new PKIStatusInfo(
-                PKIStatus.rejection,//TODO [toce] when error => always 'rejection' (check spec)
+                PKIStatus.rejection,
                 statusText, new PKIFailureInfo(failInfo));
     }
 
