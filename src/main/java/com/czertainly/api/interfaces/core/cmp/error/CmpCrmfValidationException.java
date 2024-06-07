@@ -13,9 +13,12 @@ public class CmpCrmfValidationException extends CmpProcessingException {
     private final int typeOfRequestEnrollment;
 
     /**
+     * Create exception with additional information about failure
+     *
+     * @param tid                     transaction id
      * @param typeOfRequestEnrollment PKI message type of enrollment request, {@link PKIBody#getType()}
-     * @param failureInfo    information about error message (CMP level)
-     * @param errorDetails   description of some details related to the error
+     * @param failureInfo             information about error message (CMP level)
+     * @param errorDetails            description of some details related to the error
      */
     public CmpCrmfValidationException(
             ASN1OctetString tid, int typeOfRequestEnrollment, int failureInfo, String errorDetails) {
@@ -23,19 +26,28 @@ public class CmpCrmfValidationException extends CmpProcessingException {
         this.typeOfRequestEnrollment = typeOfRequestEnrollment;
     }
 
+    /**
+     * Create exception with additional information about failure (implementation level)
+     *
+     * @param tid                     transaction id
+     * @param typeOfRequestEnrollment PKI message type of enrollment request, {@link PKIBody#getType()}
+     * @param failureInfo             information about error message (CMP level)
+     * @param implFailureInfo         information about error message (implementation level)
+     */
     public CmpCrmfValidationException(
             ASN1OctetString tid, int typeOfRequestEnrollment, int failureInfo, ImplFailureInfo implFailureInfo) {
         super(tid, failureInfo, implFailureInfo, null);
         this.typeOfRequestEnrollment = typeOfRequestEnrollment;
     }
-    
+
     /**
      * Prepare response type from request type (using: requestType+1)
+     *
      * @return create {@link PKIBody} for response message
      */
     @Override
     public PKIBody toPKIBody() {
-        return PkiMessageError.generateCrmfErrorBody(this.typeOfRequestEnrollment+1,
+        return PkiMessageError.generateCrmfErrorBody(this.typeOfRequestEnrollment + 1,
                 failureInfo, errorDetails);
     }
 }
