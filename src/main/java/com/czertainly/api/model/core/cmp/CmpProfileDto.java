@@ -17,6 +17,12 @@ public class CmpProfileDto extends NameAndUuidDto {
     private boolean enabled;
 
     @Schema(
+            description = "Variant of the CMP Profile",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private CmpProfileVariant variant;
+
+    @Schema(
             description = "CMP Profile description",
             example = "Sample text description"
     )
@@ -32,4 +38,5 @@ public class CmpProfileDto extends NameAndUuidDto {
             example = "https://your-domain.com/api/v1/protocols/cmp/cmpProfile"
     )
     private String cmpUrl;
+
 }
