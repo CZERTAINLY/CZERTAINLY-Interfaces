@@ -11,7 +11,7 @@ import java.util.Arrays;
 public enum CmpProfileVariant implements IPlatformEnum {
     //V1("v1", "CMPv1", "Implementation of RFC 2510 (CMP version 1)"),
     V2("v2", "CMPv2", "Implementation of RFC 4210 and RFC 4211 (CMP version 2)"),
-    V2_3GPP("v2_3gpp", "CMPv2_3GPP", "3GPP implementation based on CMPv2"),
+    V2_3GPP("v2_3gpp", "CMPv2 3GPP", "3GPP implementation based on CMPv2"),
     V3("v3", "CMPv3", "Implementation of RFC 9483 (lightweight cmp protocol, CMP version 3)"),;
 
     private final String code;
