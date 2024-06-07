@@ -23,6 +23,12 @@ public class CmpCrmfValidationException extends CmpProcessingException {
         this.typeOfRequestEnrollment = typeOfRequestEnrollment;
     }
 
+    public CmpCrmfValidationException(
+            ASN1OctetString tid, int typeOfRequestEnrollment, int failureInfo, ImplFailureInfo implFailureInfo) {
+        super(tid, failureInfo, implFailureInfo, null);
+        this.typeOfRequestEnrollment = typeOfRequestEnrollment;
+    }
+    
     /**
      * Prepare response type from request type (using: requestType+1)
      * @return create {@link PKIBody} for response message
