@@ -34,12 +34,14 @@ public class CmpProfileDetailDto extends CmpProfileDto {
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(
-            description = "Protection Method for the CMP Request"
+            description = "Protection Method for the CMP Request",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private ProtectionMethod requestProtectionMethod;
 
     @Schema(
-            description = "Protection Method for the CMP Response"
+            description = "Protection Method for the CMP Response",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private ProtectionMethod responseProtectionMethod;
 
