@@ -5,7 +5,7 @@ import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.cmp.PKIBody;
 
 /**
- * This exception is created if a enrollment (scope: cmp request, types: ir, cr, kur)
+ * This exception is created if an enrollment (scope: cmp request, types: ir, cr, kur)
  * is failed or in corrupted state.
  */
 public class CmpCrmfValidationException extends CmpProcessingException {
