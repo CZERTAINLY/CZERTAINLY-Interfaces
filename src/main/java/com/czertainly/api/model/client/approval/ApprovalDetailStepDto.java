@@ -3,9 +3,11 @@ package com.czertainly.api.model.client.approval;
 import com.czertainly.api.model.client.approvalprofile.ApprovalStepDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ApprovalDetailStepDto extends ApprovalStepDto {
 

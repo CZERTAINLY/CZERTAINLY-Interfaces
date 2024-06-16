@@ -2,9 +2,11 @@ package com.czertainly.api.model.client.approvalprofile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ApprovalProfileDetailDto extends ApprovalProfileDto {
 

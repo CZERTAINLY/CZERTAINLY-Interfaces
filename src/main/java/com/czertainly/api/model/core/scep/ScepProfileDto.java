@@ -4,9 +4,11 @@ import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.logging.SimpleFormatter;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ScepProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",

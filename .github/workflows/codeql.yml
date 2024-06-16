@@ -72,10 +72,10 @@ jobs:
     #     echo "Run, Build Application using script"
     #     ./location_of_script_within_repo/buildscript.sh
     
-    - name: Set up JDK 17
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: 17
+        java-version: 21
         distribution: 'temurin'
     - name: Cache Maven packages
       uses: actions/cache@v4
