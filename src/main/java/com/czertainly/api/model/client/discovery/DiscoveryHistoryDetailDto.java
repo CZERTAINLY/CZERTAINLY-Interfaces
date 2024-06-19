@@ -7,11 +7,13 @@ import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.czertainly.api.model.core.workflows.TriggerDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
 
