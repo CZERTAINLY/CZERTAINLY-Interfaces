@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum Protocol implements IPlatformEnum {
 
     ACME("acme", "ACME Protocol"),
-    SCEP("scep", "SCEP Protocol")
+    SCEP("scep", "SCEP Protocol"),
+    CMP("cmp", "CMP Protocol")
     ;
 
     private final String code;

@@ -28,6 +28,7 @@ import com.czertainly.api.model.core.cryptography.key.KeyState;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
+import com.czertainly.api.model.core.enums.Protocol;
 import com.czertainly.api.model.core.other.ResourceEvent;
 import com.czertainly.api.model.core.workflows.ConditionType;
 import com.czertainly.api.model.core.workflows.ExecutionType;
@@ -69,6 +70,7 @@ public enum PlatformEnum implements IPlatformEnum {
     CERTIFICATE_REVOCATION_REASON(CertificateRevocationReason.class, "Certificate revocation reason"),
     CERTIFICATE_REQUEST_FORMAT(CertificateRequestFormat.class, "Certificate request format"),
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
+    PROTOCOL(Protocol.class, "Protocol used to issue certificate"),
 
     // keys & tokens
     KEY_ALGORITHM(KeyAlgorithm.class, "Cryptographic key algorithm"),
