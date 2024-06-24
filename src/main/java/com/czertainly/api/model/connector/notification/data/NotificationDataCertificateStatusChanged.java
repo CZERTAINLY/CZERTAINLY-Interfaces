@@ -13,6 +13,9 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
     @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateUuid;
 
+    @Schema(description = "Certificate common name", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String commonName;
+
     @Schema(description = "SHA256 fingerprint of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fingerprint;
 
@@ -28,25 +31,37 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
     @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorityInstanceUuid;
 
+    @Schema(description = "Certificate validity start date")
+    private String notBefore;
+
+    @Schema(description = "Certificate expiration date")
+    private String expiresAt;
+
     @Schema(description = "RA profile UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileUuid;
 
     @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileName;
 
-    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName) {
-        this(oldStatus, newStatus, certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn);
+
+    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName,
+                                                    String commonName, String notBefore, String expiresAt) {
+        this(oldStatus, newStatus, certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn, commonName, notBefore, expiresAt);
         this.authorityInstanceUuid = authorityInstanceUuid;
         this.raProfileUuid = raProfileUuid;
         this.raProfileName = raProfileName;
     }
 
-    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn) {
+    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn,
+                                                    String commonName, String notBefore, String expiresAt) {
         super(oldStatus, newStatus);
         this.certificateUuid = certificateUuid;
         this.fingerprint = fingerprint;
         this.serialNumber = serialNumber;
         this.subjectDn = subjectDn;
         this.issuerDn = issuerDn;
+        this.commonName = commonName;
+        this.expiresAt = expiresAt;
+        this.notBefore = notBefore;
     }
 }
