@@ -15,11 +15,11 @@ public class TriggerDetailDto extends TriggerDto {
             description = "List of Rules in the Rule Trigger",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RuleDto> rules;
+    private List<RuleDetailDto> rules;
 
     @Schema(
             description = "List of Action Groups in the Rule Trigger",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ActionDto> actions;
+    private List<ActionDetailDto> actions;
 }
