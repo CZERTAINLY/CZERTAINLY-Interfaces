@@ -3,7 +3,7 @@ package com.czertainly.api.model.core.enums;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Protocol implements IPlatformEnum {
+public enum CertificateProtocol implements IPlatformEnum {
 
     ACME("acme", "ACME Protocol"),
     SCEP("scep", "SCEP Protocol"),
@@ -13,7 +13,7 @@ public enum Protocol implements IPlatformEnum {
     private final String code;
     private final String label;
 
-   Protocol(String code, String label) {
+   CertificateProtocol(String code, String label) {
         this.code = code;
         this.label = label;
     }
