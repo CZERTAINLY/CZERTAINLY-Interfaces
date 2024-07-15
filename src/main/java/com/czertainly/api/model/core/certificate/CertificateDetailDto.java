@@ -91,6 +91,6 @@ public class CertificateDetailDto extends CertificateDto {
     private List<CertificateDto> relatedCertificates = new ArrayList<>();
 
     @Schema(description = "Information about protocol used to issue the certificate")
-    private  CertificateProtocolDto protocolDto;
+    private  CertificateProtocolDto protocolInfo;
 
 }
