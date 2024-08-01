@@ -1,9 +1,19 @@
 package com.czertainly.api.model.connector.notification.data;
 
+import com.czertainly.api.model.common.attribute.v1.content.ZonedDateTimeDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @NoArgsConstructor
 @Getter
@@ -29,10 +39,16 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
     private String authorityInstanceUuid;
 
     @Schema(description = "Certificate validity start date")
-    private String notBefore;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
+    private ZonedDateTime notBefore;
 
     @Schema(description = "Certificate expiration date")
-    private String expiresAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
+    @JsonSerialize(using = ZonedDateTimeSerializer.class)
+    private ZonedDateTime expiresAt;
 
     @Schema(description = "RA profile UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileUuid;
@@ -42,7 +58,7 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
 
 
     public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName,
-                                                    String notBefore, String expiresAt) {
+                                                    ZonedDateTime notBefore, ZonedDateTime expiresAt) {
         this(oldStatus, newStatus, certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn, notBefore, expiresAt);
         this.authorityInstanceUuid = authorityInstanceUuid;
         this.raProfileUuid = raProfileUuid;
@@ -50,7 +66,7 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
     }
 
     public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn,
-                                                     String notBefore, String expiresAt) {
+                                                     ZonedDateTime notBefore, ZonedDateTime expiresAt) {
         super(oldStatus, newStatus);
         this.certificateUuid = certificateUuid;
         this.fingerprint = fingerprint;
