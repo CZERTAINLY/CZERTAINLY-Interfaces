@@ -16,17 +16,19 @@
     <packaging>jar</packaging>
 
     <description>CZERTAINLY - interfaces definitions and common objects for the platform</description>
-    <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces</url>
+    <url>https://github.com/CZERTAINLY/CZERTAINLY-Interfaces</url>
 
     <properties>
-        <sonar.projectKey>3KeyCompany_CZERTAINLY-Interfaces</sonar.projectKey>
         <maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
+        <sonar.organization>czertainly</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.projectKey>CZERTAINLY_CZERTAINLY-Interfaces</sonar.projectKey>
     </properties>
 
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces/blob/develop/LICENSE.md</url>
+            <url>https://github.com/CZERTAINLY/CZERTAINLY-Interfaces/blob/develop/LICENSE.md</url>
         </license>
     </licenses>
 
@@ -40,9 +42,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com:3KeyCompany/CZERTAINLY-Interfaces.git</connection>
-        <developerConnection>scm:git:ssh://github.com:3KeyCompany/CZERTAINLY-Interfaces.git</developerConnection>
-        <url>https://github.com/3KeyCompany/CZERTAINLY-Interfaces</url>
+        <connection>scm:git:git://github.com:CZERTAINLY/CZERTAINLY-Interfaces.git</connection>
+        <developerConnection>scm:git:ssh://github.com:CZERTAINLY/CZERTAINLY-Interfaces.git</developerConnection>
+        <url>https://github.com/CZERTAINLY/CZERTAINLY-Interfaces</url>
     </scm>
 
     <dependencies>
@@ -171,7 +173,7 @@
                 <repository>
                     <id>github</id>
                     <name>GitHub Packages</name>
-                    <url>https://maven.pkg.github.com/3keycompany/czertainly-interfaces</url>
+                    <url>https://maven.pkg.github.com/czertainly/czertainly-interfaces</url>
                 </repository>
             </distributionManagement>
         </profile>
@@ -186,6 +188,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>@{argLine}</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -201,7 +206,7 @@
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/3keycompany/*</url>
+            <url>https://maven.pkg.github.com/czertainly/*</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>

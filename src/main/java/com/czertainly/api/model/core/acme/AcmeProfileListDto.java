@@ -58,8 +58,8 @@ public class AcmeProfileListDto extends NameAndUuidDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("isEnabled", enabled)
                 .append("description", description)
-                .append("raProfileName", raProfile.getName())
-                .append("raProfileUuid", raProfile.getUuid())
+                .append("raProfileName", raProfile == null ? "N/A" : raProfile.getName())
+                .append("raProfileUuid", raProfile == null ? "N/A" : raProfile.getUuid())
                 .append("directoryUrl", directoryUrl)
                 .toString();
     }
