@@ -2,7 +2,9 @@ package com.czertainly.api.model.core.enums;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(enumAsRef = true)
 public enum CertificateProtocol implements IPlatformEnum {
 
     ACME("acme", "ACME Protocol"),
