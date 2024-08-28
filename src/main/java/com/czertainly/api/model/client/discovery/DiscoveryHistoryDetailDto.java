@@ -31,6 +31,12 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
     private DiscoveryStatus status;
 
     @Schema(
+            description = "Status of Discovery returned by connector",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private DiscoveryStatus connectorStatus;
+
+    @Schema(
             description = "Failure/Success Messages",
             example = "Failed due to network connectivity issues"
     )
@@ -41,16 +47,25 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
             nullable = true
     )
     private Date startTime;
+
     @Schema(
             description = "Date and time when Discovery finished",
             nullable = true
     )
     private Date endTime;
+
     @Schema(
             description = "Number of certificates that are discovered",
             defaultValue = "0"
     )
     private Integer totalCertificatesDiscovered;
+
+    @Schema(
+            description = "Number of certificates that were discovered by connector",
+            defaultValue = "0"
+    )
+    private Integer connectorTotalCertificatesDiscovered;
+
     @Schema(
             description = "UUID of the Discovery Provider",
             requiredMode = Schema.RequiredMode.REQUIRED
@@ -62,6 +77,7 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String connectorName;
+
     @Schema(
             description = "List of Discovery Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
