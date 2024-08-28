@@ -23,6 +23,12 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
     )
     private DiscoveryStatus status;
 
+    @Schema(
+            description = "Status of Discovery returned by connector",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private DiscoveryStatus connectorStatus;
+
 
     @Schema(
             description = "Date and time when Discovery started",
@@ -41,6 +47,12 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
             defaultValue = "0"
     )
     private Integer totalCertificatesDiscovered;
+
+    @Schema(
+            description = "Number of certificates that were discovered by connector",
+            defaultValue = "0"
+    )
+    private Integer connectorTotalCertificatesDiscovered;
 
     @Schema(
             description = "UUID of the Discovery Provider",
@@ -126,14 +138,32 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
         this.connectorName = connectorName;
     }
 
+    public Integer getConnectorTotalCertificatesDiscovered() {
+        return connectorTotalCertificatesDiscovered;
+    }
+
+    public void setConnectorTotalCertificatesDiscovered(Integer connectorTotalCertificatesDiscovered) {
+        this.connectorTotalCertificatesDiscovered = connectorTotalCertificatesDiscovered;
+    }
+
+    public DiscoveryStatus getConnectorStatus() {
+        return connectorStatus;
+    }
+
+    public void setConnectorStatus(DiscoveryStatus connectorStatus) {
+        this.connectorStatus = connectorStatus;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("kind", kind)
                 .append("status", status)
+                .append("connectorStatus", connectorStatus)
                 .append("startTime", startTime)
                 .append("endTime", endTime)
                 .append("totalCertificatesDiscovered", totalCertificatesDiscovered)
+                .append("connectorTotalCertificatesDiscovered", connectorTotalCertificatesDiscovered)
                 .append("connectorUuid", connectorUuid)
                 .append("connectorName", connectorName)
                 .append("uuid", uuid)
