@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 /**
@@ -13,19 +16,19 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeContentType implements IPlatformEnum {
 
-    STRING(Constants.STRING, "String", StringAttributeContent.class, true),
-    TEXT(Constants.TEXT, "Text", TextAttributeContent.class, true),
-    INTEGER(Constants.INTEGER, "Integer number", IntegerAttributeContent.class, true),
-    BOOLEAN(Constants.BOOLEAN, "Boolean", BooleanAttributeContent.class, true),
-    FLOAT(Constants.FLOAT, "Decimal number", FloatAttributeContent.class, true),
-    DATE(Constants.DATE, "Date", DateAttributeContent.class, true),
-    TIME(Constants.TIME, "Time", TimeAttributeContent.class, true),
-    DATETIME(Constants.DATETIME, "DateTime", DateTimeAttributeContent.class, true),
-    SECRET(Constants.SECRET, "Secret", SecretAttributeContent.class, false),
-    FILE(Constants.FILE, "File", FileAttributeContent.class, false),
-    CREDENTIAL(Constants.CREDENTIAL, "Credential", CredentialAttributeContent.class, false),
-    CODEBLOCK(Constants.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, false),
-    OBJECT(Constants.OBJECT, "Object", ObjectAttributeContent.class, false),
+    STRING(Constants.STRING, "String", StringAttributeContent.class, String.class, true),
+    TEXT(Constants.TEXT, "Text", TextAttributeContent.class, String.class, true),
+    INTEGER(Constants.INTEGER, "Integer number", IntegerAttributeContent.class, Integer.class, true),
+    BOOLEAN(Constants.BOOLEAN, "Boolean", BooleanAttributeContent.class, Boolean.class, true),
+    FLOAT(Constants.FLOAT, "Decimal number", FloatAttributeContent.class, Float.class, true),
+    DATE(Constants.DATE, "Date", DateAttributeContent.class, LocalDate.class, true),
+    TIME(Constants.TIME, "Time", TimeAttributeContent.class, LocalTime.class, true),
+    DATETIME(Constants.DATETIME, "DateTime", DateTimeAttributeContent.class, LocalDateTime.class, true),
+    SECRET(Constants.SECRET, "Secret", SecretAttributeContent.class, String.class, false),
+    FILE(Constants.FILE, "File", FileAttributeContent.class, String.class, false),
+    CREDENTIAL(Constants.CREDENTIAL, "Credential", CredentialAttributeContent.class, String.class, false),
+    CODEBLOCK(Constants.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, String.class, false),
+    OBJECT(Constants.OBJECT, "Object", ObjectAttributeContent.class, String.class, false),
     ;
 
     private static final AttributeContentType[] VALUES;
@@ -39,18 +42,20 @@ public enum AttributeContentType implements IPlatformEnum {
     private final String description;
 
     private final Class<?> clazz;
+    private final Class<?> dataJavaClass;
 
     private final boolean filterByData;
 
-    AttributeContentType(String code, String label, Class<?> clazz, boolean filterByData) {
-        this(code, label, null, clazz, filterByData);
+    AttributeContentType(String code, String label, Class<?> clazz, Class<?> dataJavaClass, boolean filterByData) {
+        this(code, label, null, clazz, dataJavaClass, filterByData);
     }
 
-    AttributeContentType(String code, String label, String description, Class<?> clazz, boolean filterByData) {
+    AttributeContentType(String code, String label, String description, Class<?> clazz, Class<?> dataJavaClass, boolean filterByData) {
         this.code = code;
         this.label = label;
         this.description = description;
         this.clazz = clazz;
+        this.dataJavaClass = dataJavaClass;
         this.filterByData = filterByData;
     }
 
@@ -90,6 +95,10 @@ public enum AttributeContentType implements IPlatformEnum {
     @Override
     public String getDescription() {
         return this.description;
+    }
+
+    public Class<?> getDataJavaClass() {
+        return dataJavaClass;
     }
 
     private static class Constants {

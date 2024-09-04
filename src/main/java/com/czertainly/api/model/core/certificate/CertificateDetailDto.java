@@ -6,6 +6,7 @@ import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class CertificateDetailDto extends CertificateDto {
 
@@ -87,4 +89,8 @@ public class CertificateDetailDto extends CertificateDto {
 
     @Schema(description = "List of related certificates")
     private List<CertificateDto> relatedCertificates = new ArrayList<>();
+
+    @Schema(description = "Information about protocol used to issue the certificate")
+    private  CertificateProtocolDto protocolInfo;
+
 }

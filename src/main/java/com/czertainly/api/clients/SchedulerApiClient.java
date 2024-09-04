@@ -23,6 +23,8 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient {
 
     private static final String SCHEDULER_DISABLE = "/v1/scheduler/{jobName}/disable";
 
+    private static final String SCHEDULER_UPDATE = "/v1/scheduler/update";
+
     public void schedulerCreate(final SchedulerRequestDto schedulerDto) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST);
         processRequest(r -> r
@@ -64,6 +66,16 @@ public class SchedulerApiClient extends CzertainlyBaseApiClient {
                 request);
     }
 
+    public void updateScheduledJob(SchedulerRequestDto schedulerRequestDto) throws SchedulerException {
+        final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET);
+        processRequest(r -> r
+                        .uri(schedulerBaseUrl + SCHEDULER_UPDATE)
+                        .body(Mono.just(schedulerRequestDto), SchedulerRequestDto.class)
+                        .retrieve()
+                        .toEntity(SchedulerResponseDto.class)
+                        .block().getBody(),
+                request);
+    }
 
     @Override
     protected String getServiceUrl() {

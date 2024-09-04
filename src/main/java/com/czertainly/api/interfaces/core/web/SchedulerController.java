@@ -6,6 +6,7 @@ import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import com.czertainly.api.model.core.scheduler.ScheduledJobDetailDto;
 import com.czertainly.api.model.core.scheduler.ScheduledJobHistoryResponseDto;
 import com.czertainly.api.model.core.scheduler.ScheduledJobsResponseDto;
+import com.czertainly.api.model.scheduler.UpdateScheduledJob;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -29,6 +30,11 @@ public interface SchedulerController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Scheduled job detail retrieved")})
     @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
     ScheduledJobDetailDto getScheduledJobDetail(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
+
+    @Operation(summary = "Edit Scheduled job")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Scheduled job updated")})
+    @RequestMapping(path = "/{uuid}", method = RequestMethod.PUT, consumes = {"application/json"},produces = {"application/json"})
+    ScheduledJobDetailDto updateScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid, @RequestBody UpdateScheduledJob request) throws NotFoundException, SchedulerException;
 
     @Operation(summary = "Delete Scheduled job")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Scheduled job deleted")})

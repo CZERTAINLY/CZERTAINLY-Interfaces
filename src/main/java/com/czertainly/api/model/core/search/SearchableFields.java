@@ -26,6 +26,7 @@ public enum SearchableFields {
     CERTIFICATE_VALIDATION_STATUS("validationStatus", CertificateValidationStatus.class, null, null),
     COMPLIANCE_STATUS("complianceStatus", ComplianceStatus.class, null, null),
     GROUP_NAME("groups.name", null, null, null),
+    CERT_LOCATION_NAME("locations.location.name", null, null, null),
     OWNER("owner.ownerUsername", null, null, null),
     ISSUER_COMMON_NAME("issuerCommonName", null, null, null),
     SIGNATURE_ALGORITHM("signatureAlgorithm", null, null, null),
@@ -44,12 +45,11 @@ public enum SearchableFields {
     OCSP_VALIDATION("ocspValidation", CertificateValidationStatus.class, null, null),
     CRL_VALIDATION("crlValidation", CertificateValidationStatus.class, null, null),
     SIGNATURE_VALIDATION("signatureValidation", CertificateValidationStatus.class, null, null),
-    START_TIME("startTime", null, null, null),
-    END_TIME("endTime", null, null, null),
-    TOTAL_CERT_DISCOVERED("totalCertificatesDiscovered", null, null, null),
-    CONNECTOR_NAME("connectorName", null, null, null),
-    KIND("kind", null, null, null),
-    NAME("name", null, null, null),
+    PRIVATE_KEY("type", null, "key.items", KeyType.PRIVATE_KEY),
+    TRUSTED_CA("trustedCa",null, null,null),
+
+    // Cryptographic Key
+    CKI_NAME("name", null, null, null),
     CK_GROUP("cryptographicKey.groups.name", null, null, null),
     CK_OWNER("cryptographicKey.owner.ownerUsername", null, null, null),
     CK_TOKEN_PROFILE("cryptographicKey.tokenProfile.name", null, null, null),
@@ -60,21 +60,27 @@ public enum SearchableFields {
     CKI_LENGTH("length", null, null, null),
     CKI_USAGE("usage", KeyUsage.class, null, null),
     CKI_CRYPTOGRAPHIC_ALGORITHM("cryptographicAlgorithm", KeyAlgorithm.class, null, null),
+
+    // Discovery
+    DISCOVERY_NAME("name", null, null, null),
+    DISCOVERY_START_TIME("startTime", null, null, null),
+    DISCOVERY_END_TIME("endTime", null, null, null),
     DISCOVERY_STATUS("status", DiscoveryStatus.class, null, null),
+    DISCOVERY_TOTAL_CERT_DISCOVERED("totalCertificatesDiscovered", null, null, null),
+    DISCOVERY_CONNECTOR_NAME("connectorName", null, null, null),
+    DISCOVERY_KIND("kind", null, null, null),
 
-    ENTITY_NAME("entityInstanceReference.name", null, null, null),
-    ENTITY_CONNECTOR_NAME("entityInstanceReference.connectorName", null, null, null),
-    ENTITY_KIND("entityInstanceReference.kind", null, null, null),
-    ENTITY_INSTANCE_NAME("entityInstanceName", null, null, null),
-    ENABLED("enabled", null, null, null),
-    SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null, null, null),
-    SUPPORT_KEY_MANAGEMENT("supportKeyManagement", null, null, null),
+    // Entity
+    ENTITY_NAME("name", null, null, null),
+    ENTITY_CONNECTOR_NAME("connectorName", null, null, null),
+    ENTITY_KIND("kind", null, null, null),
 
-    PRIVATE_KEY("type", null, "key.items", KeyType.PRIVATE_KEY),
-
-    TRUSTED_CA("trustedCa",null, null,null);
-
-
+    // Location
+    LOCATION_NAME("name", null, null, null),
+    LOCATION_ENTITY_INSTANCE("entityInstanceName", null, null, null),
+    LOCATION_ENABLED("enabled", null, null, null),
+    LOCATION_SUPPORT_MULTIPLE_ENTRIES("supportMultipleEntries", null, null, null),
+    LOCATION_SUPPORT_KEY_MANAGEMENT("supportKeyManagement", null, null, null);
 
     private final String field;
 
