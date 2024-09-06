@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.NotSupportedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -106,7 +107,7 @@ public interface CertificateController {
     @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void bulkUpdateCertificateObjects(@RequestBody MultipleCertificateObjectUpdateDto request)
-            throws NotFoundException;
+            throws NotFoundException, NotSupportedException;
 
     @Operation(summary = "Upload a new Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
@@ -122,7 +123,7 @@ public interface CertificateController {
             "provide an empty array \"[]\" for the value of \"filters\" in the request body")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificates deleted")})
     @PostMapping(path = "/delete", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException;
+    BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request) throws NotFoundException, NotSupportedException;
 
     @Operation(summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})

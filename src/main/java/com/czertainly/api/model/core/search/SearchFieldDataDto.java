@@ -43,10 +43,4 @@ public class SearchFieldDataDto {
     public Boolean isMultiValue() {
         return multiValue;
     }
-
-    @Deprecated
-    @JsonIgnore
-    public SearchableFields getField() {
-        return null;
-    }
 }
