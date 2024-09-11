@@ -2,7 +2,6 @@ package com.czertainly.api.model.core.search;
 
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.enums.PlatformEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -42,11 +41,5 @@ public class SearchFieldDataDto {
 
     public Boolean isMultiValue() {
         return multiValue;
-    }
-
-    @Deprecated
-    @JsonIgnore
-    public SearchableFields getField() {
-        return null;
     }
 }
