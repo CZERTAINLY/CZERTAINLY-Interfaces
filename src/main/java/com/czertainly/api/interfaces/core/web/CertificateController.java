@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.transaction.NotSupportedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +62,12 @@ import java.util.List;
                         responseCode = "500",
                         description = "Internal Server Error",
                         content = @Content
+                ),
+                @ApiResponse(
+                        responseCode = "501",
+                        description = "Not Supported",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)
+                )
                 )
         })
 public interface CertificateController {
@@ -103,7 +108,9 @@ public interface CertificateController {
             "the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches " +
             "the filter criteria. To apply this change for all the Certificates in the inventory, " +
             "provide an empty array \"[]\" for the value of \"filters\" in the request body")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated"),
+            @ApiResponse(responseCode = "501", description = "Certificate objects updated")}
+    )
     @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void bulkUpdateCertificateObjects(@RequestBody MultipleCertificateObjectUpdateDto request)
