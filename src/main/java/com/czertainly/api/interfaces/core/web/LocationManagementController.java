@@ -92,7 +92,7 @@ public interface LocationManagementController {
 
     @Operation(summary = "Get Locations searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Locations searchable field information retrieved")})
-    @RequestMapping(path = "/search", method = RequestMethod.GET, produces = {"application/json"})
+    @RequestMapping(path = "/locations/search", method = RequestMethod.GET, produces = {"application/json"})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(
