@@ -38,8 +38,8 @@ public class StatisticsDto {
     private Map<String, Long> certificateStatByExpiry;
 	@Schema(description = "Map of Certificate count by key size")
     private Map<String, Long> certificateStatByKeySize;
-	@Schema(description = "Map of Certificate count by basic constraints")
-    private Map<String, Long> certificateStatByBasicConstraints;
+	@Schema(description = "Map of Certificate count by subject type")
+    private Map<String, Long> certificateStatBySubjectType;
 	@Schema(description = "Map of Certificate count by state")
     private Map<String, Long> certificateStatByState;
     @Schema(description = "Map of Certificate count by validationStatus")
@@ -169,12 +169,12 @@ public class StatisticsDto {
         this.certificateStatByKeySize = certificateStatByKeySize;
     }
 
-    public Map<String, Long> getCertificateStatByBasicConstraints() {
-        return certificateStatByBasicConstraints;
+    public Map<String, Long> getCertificateStatBySubjectType() {
+        return certificateStatBySubjectType;
     }
 
-    public void setCertificateStatByBasicConstraints(Map<String, Long> certificateStatByBasicConstraints) {
-        this.certificateStatByBasicConstraints = certificateStatByBasicConstraints;
+    public void setCertificateStatBySubjectType(Map<String, Long> certificateStatBySubjectType) {
+        this.certificateStatBySubjectType = certificateStatBySubjectType;
     }
 
     public Map<String, Long> getConnectorStatByStatus() {

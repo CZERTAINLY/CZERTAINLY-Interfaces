@@ -71,6 +71,7 @@ public enum PlatformEnum implements IPlatformEnum {
     CERTIFICATE_REQUEST_FORMAT(CertificateRequestFormat.class, "Certificate request format"),
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
     PROTOCOL(CertificateProtocol.class, "Protocol used to issue certificate"),
+    CERTIFICATE_SUBJECT_TYPE(CertificateSubjectType.class, "Subject Type of certificate"),
 
     // keys & tokens
     KEY_ALGORITHM(KeyAlgorithm.class, "Cryptographic key algorithm"),
