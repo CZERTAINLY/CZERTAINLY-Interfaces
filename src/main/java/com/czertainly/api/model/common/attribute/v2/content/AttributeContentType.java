@@ -105,14 +105,6 @@ public enum AttributeContentType implements IPlatformEnum {
         return contentDataClass;
     }
 
-    public String getJsonType() {
-        return switch (this) {
-            case BOOLEAN -> "boolean";
-            case INTEGER, FLOAT -> "number";
-            default -> "string";
-        };
-    }
-
     private static class Constants {
         /**
          * Simple text Attribute
