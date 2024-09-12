@@ -1,13 +1,17 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
+import com.czertainly.api.model.common.attribute.v2.content.data.CodeBlockAttributeContentData;
+import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
+import com.czertainly.api.model.common.attribute.v2.content.data.FileAttributeContentData;
+import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 
 /**
@@ -23,12 +27,12 @@ public enum AttributeContentType implements IPlatformEnum {
     FLOAT(Constants.FLOAT, "Decimal number", FloatAttributeContent.class, Float.class, true),
     DATE(Constants.DATE, "Date", DateAttributeContent.class, LocalDate.class, true),
     TIME(Constants.TIME, "Time", TimeAttributeContent.class, LocalTime.class, true),
-    DATETIME(Constants.DATETIME, "DateTime", DateTimeAttributeContent.class, LocalDateTime.class, true),
-    SECRET(Constants.SECRET, "Secret", SecretAttributeContent.class, String.class, false),
-    FILE(Constants.FILE, "File", FileAttributeContent.class, String.class, false),
-    CREDENTIAL(Constants.CREDENTIAL, "Credential", CredentialAttributeContent.class, String.class, false),
-    CODEBLOCK(Constants.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, String.class, false),
-    OBJECT(Constants.OBJECT, "Object", ObjectAttributeContent.class, String.class, false),
+    DATETIME(Constants.DATETIME, "DateTime", DateTimeAttributeContent.class, ZonedDateTime.class, true),
+    SECRET(Constants.SECRET, "Secret", SecretAttributeContent.class, SecretAttributeContentData.class, false),
+    FILE(Constants.FILE, "File", FileAttributeContent.class, FileAttributeContentData.class, false),
+    CREDENTIAL(Constants.CREDENTIAL, "Credential", CredentialAttributeContent.class, CredentialAttributeContentData.class, false),
+    CODEBLOCK(Constants.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, CodeBlockAttributeContentData.class, false),
+    OBJECT(Constants.OBJECT, "Object", ObjectAttributeContent.class, Object.class, false),
     ;
 
     private static final AttributeContentType[] VALUES;
@@ -41,21 +45,21 @@ public enum AttributeContentType implements IPlatformEnum {
     private final String label;
     private final String description;
 
-    private final Class<?> clazz;
-    private final Class<?> dataJavaClass;
+    private final Class<?> contentClass;
+    private final Class<?> contentDataClass;
 
     private final boolean filterByData;
 
-    AttributeContentType(String code, String label, Class<?> clazz, Class<?> dataJavaClass, boolean filterByData) {
-        this(code, label, null, clazz, dataJavaClass, filterByData);
+    AttributeContentType(String code, String label, Class<?> contentClass, Class<?> dataJavaClass, boolean filterByData) {
+        this(code, label, null, contentClass, dataJavaClass, filterByData);
     }
 
-    AttributeContentType(String code, String label, String description, Class<?> clazz, Class<?> dataJavaClass, boolean filterByData) {
+    AttributeContentType(String code, String label, String description, Class<?> contentClass, Class<?> contentDataClass, boolean filterByData) {
         this.code = code;
         this.label = label;
         this.description = description;
-        this.clazz = clazz;
-        this.dataJavaClass = dataJavaClass;
+        this.contentClass = contentClass;
+        this.contentDataClass = contentDataClass;
         this.filterByData = filterByData;
     }
 
@@ -69,7 +73,7 @@ public enum AttributeContentType implements IPlatformEnum {
 
     public static AttributeContentType fromClass(Class<?> clazz) {
         return clazz.equals(BaseAttributeContent.class) ? null
-                : Arrays.stream(VALUES).filter(e -> e.clazz.equals(clazz))
+                : Arrays.stream(VALUES).filter(e -> e.contentClass.equals(clazz))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
     }
 
@@ -78,7 +82,7 @@ public enum AttributeContentType implements IPlatformEnum {
     }
 
     public Class<?> getContentClass() {
-        return clazz;
+        return contentClass;
     }
 
     @Override
@@ -97,8 +101,8 @@ public enum AttributeContentType implements IPlatformEnum {
         return this.description;
     }
 
-    public Class<?> getDataJavaClass() {
-        return dataJavaClass;
+    public Class<?> getContentDataClass() {
+        return contentDataClass;
     }
 
     private static class Constants {
