@@ -30,10 +30,10 @@ public class CertificateDetailDto extends CertificateDto {
     private List<String> keyUsage;
 
     @Schema(
-            description = "Basic Constraints",
+            description = "Certificate subject type",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String basicConstraints;
+    private CertificateSubjectType subjectType;
 
     @Schema(
             description = "Certificate metadata"
