@@ -7,13 +7,13 @@ import lombok.Data;
 public class Oauth2SettingsDto {
 
     @Schema(
-            description = "Registration ID of Oauth2 Provider, the ID must be unique.",
+            description = "Name of Oauth2 Provider",
             example = "keycloak, github, facebook, etc.",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String registrationId;
+    private String providerName;
 
-    @Schema(description = "Oauth2 Client settings", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Oauth2ClientSettings clientSettings;
+    @Schema(description = "Oauth2 Provider settings", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Oauth2ProviderSettings clientSettings;
 
 }

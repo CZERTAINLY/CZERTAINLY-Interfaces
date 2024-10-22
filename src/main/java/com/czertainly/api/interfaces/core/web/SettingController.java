@@ -1,10 +1,10 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.settings.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -120,13 +119,13 @@ public interface SettingController {
                     @ApiResponse(responseCode = "200", description = "Oauth2 Provider settings retrieved")
             })
     @GetMapping(
-            path = "/oauth2Providers",
+            path = "/oauth2Providers/{providerName}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<Oauth2SettingsDto> getOauth2ProviderSettings();
+    Oauth2SettingsDto getOauth2ProviderSettings(@Parameter(description = "Oauth2 Provider Name") @PathVariable String providerName);
 
     @Operation(
-            summary = "Update Oauth2 Provider setting"
+            summary = "Update Oauth2 Provider settings"
     )
     @ApiResponses(
             value = {
@@ -138,36 +137,7 @@ public interface SettingController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     void updateOauth2ProviderSettings(
-            @RequestBody List<Oauth2SettingsDto> oauth2SettingsDto
-    );
-
-    @Operation(
-            summary = "Get Oauth2 Resource Server settings"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Oauth2 Resource Server settings retrieved")
-            })
-    @GetMapping(
-            path = "/oauth2ResourceServer",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    Oauth2ResourceServerSettingsDto getOauth2ResourceServerSettings();
-
-    @Operation(
-            summary = "Update Oauth2 Resource Server setting"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Setting updated")
-            })
-    @PutMapping(
-            path = "/oauth2ResourceServer",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    void updateOauth2ResourceServerSettings(
-            @RequestBody Oauth2ResourceServerSettingsDto oauth2ResourceServerSettingsDto
+            @RequestBody Oauth2SettingsDto oauth2SettingsDto
     );
 
 }

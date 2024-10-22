@@ -12,8 +12,7 @@ import java.util.Arrays;
 public enum SettingsSection implements IPlatformEnum {
     PLATFORM("platform", "Platform", "CZERTAINLY platform settings"),
     NOTIFICATIONS("notifications", "Notifications", "CZERTAINLY notifications settings"),
-    OAUTH2_PROVIDER("oauth2Provider", "Oauth2 Provider", "Provider for Oauth2 Authentication"),
-    OAUTH2_RESOURCE_SERVER("oauth2ResourceServer", "Oauth2 Resource Server", "Settings for Oauth2 Resource Server authenticating JWT tokens from headers.")
+    OAUTH2_PROVIDER("oauth2Provider", "Oauth2 Provider", "Provider for Oauth2 Authentication")
     ;
 
     private static final SettingsSection[] VALUES;
