@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class Oauth2SettingsDto {
+public class OAuth2SettingsDto {
 
     @Schema(
             description = "Name of Oauth2 Provider",
@@ -14,6 +14,6 @@ public class Oauth2SettingsDto {
     private String providerName;
 
     @Schema(description = "Oauth2 Provider settings", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Oauth2ProviderSettings clientSettings;
+    private OAuth2ProviderSettings clientSettings;
 
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Oauth2ProviderSettings {
+public class OAuth2ProviderSettings {
 
     @Schema(description = "URL of issuer issuing authentication tokens. If provided, authentication via JWT token is enabled for this provider.")
     private String issuerUrl;

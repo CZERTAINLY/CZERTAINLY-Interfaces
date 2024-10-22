@@ -13,8 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/v1/settings")
@@ -112,20 +110,20 @@ public interface SettingController {
     );
 
     @Operation(
-            summary = "Get Oauth2 Provider settings"
+            summary = "Get OAuth2 Provider settings"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Oauth2 Provider settings retrieved")
+                    @ApiResponse(responseCode = "200", description = "OAuth2 Provider settings retrieved")
             })
     @GetMapping(
             path = "/oauth2Providers/{providerName}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    Oauth2SettingsDto getOauth2ProviderSettings(@Parameter(description = "Oauth2 Provider Name") @PathVariable String providerName);
+    OAuth2SettingsDto getOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
 
     @Operation(
-            summary = "Update Oauth2 Provider settings"
+            summary = "Update OAuth2 Provider settings"
     )
     @ApiResponses(
             value = {
@@ -136,8 +134,6 @@ public interface SettingController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    void updateOauth2ProviderSettings(
-            @RequestBody Oauth2SettingsDto oauth2SettingsDto
-    );
+    void updateOAuth2ProviderSettings(@RequestBody OAuth2SettingsDto oauth2SettingsDto);
 
 }
