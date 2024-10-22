@@ -33,8 +33,8 @@ public class OAuth2ProviderSettings {
     @Schema(description = " The list of scopes that define the access levels and permissions requested by the client application.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String logoutUrl;
 
-    @Schema(description = "URI that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String postLogoutUri;
+    @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String postLogoutUrl;
 
     @Schema(description = "A list of expected audiences for validating the issued tokens, used to match the intended recipients of the tokens.")
     private List<String> audiences = new ArrayList<>();
