@@ -124,7 +124,7 @@ public interface SettingController {
     @Operation(summary = "Retrieve list of configured OAuth2 Providers")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Providers retrieved")})
     @GetMapping(path = "/oauth2Providers", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<String> listOAuth2Providers();
+    List<OAuth2SettingsDto> listOAuth2Providers();
 
     @Operation(summary = "Remove OAuth2 Provider")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OAuth2 Provider removed.")})
