@@ -27,10 +27,10 @@ public class OAuth2ProviderSettings {
     @Schema(description = "The URL where the JSON Web Key Set (JWKS) containing the public keys used to verify JWT tokens can be retrieved.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String jwkSetUrl;
 
-    @Schema(description = " The list of scopes that define the access levels and permissions requested by the client application.", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<String> scope;
+    @Schema(description = " The list of scopes that define the access levels and permissions requested by the client application.")
+    private List<String> scope = new ArrayList<>();
 
-    @Schema(description = " The list of scopes that define the access levels and permissions requested by the client application.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL to end session on provider side.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String logoutUrl;
 
     @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -41,5 +41,8 @@ public class OAuth2ProviderSettings {
 
     @Schema(description = "The allowed time skew, in seconds, for token validation. This accounts for clock differences between systems. Default value is 30 seconds.")
     private int skew = 30;
+
+    @Schema(description = "Duration in seconds after which will inactive user's session be terminated.")
+    private Integer sessionMaxInactiveInterval = 15 * 60;
 
 }

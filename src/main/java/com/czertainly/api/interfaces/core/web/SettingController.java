@@ -68,7 +68,7 @@ public interface SettingController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Setting updated")
+                    @ApiResponse(responseCode = "204", description = "Setting updated")
             })
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -99,7 +99,7 @@ public interface SettingController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Setting updated")
+                    @ApiResponse(responseCode = "204", description = "Setting updated")
             })
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -117,7 +117,7 @@ public interface SettingController {
     OAuth2ProviderSettings getOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
 
     @Operation(summary = "Update OAuth2 Provider settings")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Setting updated")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/oauth2Providers/{providerName}", consumes = MediaType.APPLICATION_JSON_VALUE)
     void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @RequestBody OAuth2ProviderSettings oauth2SettingsDto);
 
