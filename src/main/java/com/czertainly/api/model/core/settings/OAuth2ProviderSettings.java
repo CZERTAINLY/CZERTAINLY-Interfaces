@@ -36,13 +36,16 @@ public class OAuth2ProviderSettings {
     @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String postLogoutUrl;
 
+    @Schema(description = "The URL containing information about user.")
+    private String userInfoUrl;
+
     @Schema(description = "A list of expected audiences for validating the issued tokens, used to match the intended recipients of the tokens.")
     private List<String> audiences = new ArrayList<>();
 
     @Schema(description = "The allowed time skew, in seconds, for token validation. This accounts for clock differences between systems. Default value is 30 seconds.")
     private int skew = 30;
 
-    @Schema(description = "Duration in seconds after which will inactive user's session be terminated.")
-    private Integer sessionMaxInactiveInterval = 15 * 60;
+    @Schema(description = "Duration in seconds after which will inactive user's session be terminated.", defaultValue = "15m")
+    private int sessionMaxInactiveInterval = 15 * 60;
 
 }
