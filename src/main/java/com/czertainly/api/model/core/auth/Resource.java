@@ -64,6 +64,19 @@ public enum Resource implements IPlatformEnum {
     RULE("rules", "Rule"),
     ACTION("actions", "Action"),
     TRIGGER("triggers", "Trigger"),
+
+    // ADDED FOR LOGS PURPOSES
+    CRYPTOGRAPHIC_KEY_ITEM("keyItems", "Key item"),
+    CONDITION("conditions", "Condition"),
+    EXECUTION("executions", "Execution"),
+    COMPLIANCE_RULE("complianceRules", "Compliance Rule"),
+    COMPLIANCE_GROUP("complianceGroups", "Compliance Group"),
+    CUSTOM_ATTRIBUTE("customAttributes", "Custom Attribute"),
+    GLOBAL_METADATA("globalMetadata", "Global Metadata"),
+    ACME_ORDER("acmeOrders", "ACME Order"),
+    ACME_AUTHORIZATION("acmeAuthorizations", "ACME Authorization"),
+    ACME_CHALLENGE("acmeChallenges", "ACME Challenge"),
+    CMP_TRANSACTION("cmpTransactions", "CMP Transaction"),
     ;
 
     private static final Resource[] VALUES;

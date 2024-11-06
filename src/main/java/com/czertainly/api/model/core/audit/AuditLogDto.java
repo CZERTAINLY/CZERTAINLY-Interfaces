@@ -1,168 +1,96 @@
 package com.czertainly.api.model.core.audit;
 
-import com.czertainly.api.model.common.Identified;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.czertainly.api.model.core.logging.enums.Module;
+import com.czertainly.api.model.core.logging.enums.Operation;
+import com.czertainly.api.model.core.logging.enums.OperationResult;
+import com.czertainly.api.model.core.logging.records.ActorRecord;
+import com.czertainly.api.model.core.logging.records.ResourceRecord;
+import com.czertainly.api.model.core.logging.records.SourceRecord;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-@JsonPropertyOrder({"id", "uuid", "author", "created", "operationStatus",
-        "origination", "affected", "objectIdentifier", "operation", "additionalData"})
-public class AuditLogDto implements Identified {
-	
-	@Schema(
+@Data
+public class AuditLogDto {
+
+    @Schema(
             description = "Audit log Id",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Long id;
-	
-	@Schema(
-            description = "Audit log UUID",
+
+    @Schema(
+            description = "Log schema version",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String uuid;
-	
-	@Schema(
-            description = "Requestor of the change",
+    private String version;
+
+    @Schema(
+            description = "Time when the audit log is stored",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String author;
-	
-	@Schema(
-            description = "Time when the audit log is registered",
+    private OffsetDateTime loggedAt;
+
+    @Schema(
+            description = "Module of platform where log occurred",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private OffsetDateTime created;
-	
-	@Schema(
-            description = "Status of the operation. Either success or failed",
+    private Module module;
+
+    @Schema(
+            description = "Actor of log record",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private OperationStatusEnum operationStatus;
-	
-	@Schema(
-            description = "Module triggered the action",
+    private ActorRecord actor;
+
+    @Schema(
+            description = "Source of log record",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private SourceRecord source;
+
+    @Schema(
+            description = "Resource that is subject of action logged",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private ObjectType origination;
-	
-	@Schema(
-            description = "Module affected by the operation",
+    private ResourceRecord resource;
+
+    @Schema(
+            description = "Affiliated resource that is related to subject resource",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ResourceRecord affiliatedResource;
+
+    @Schema(
+            description = "Resource operation that is being logged",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private ObjectType affected;
-	
-	@Schema(
-            description = "Object identifier",
+    private Operation operation;
+
+    @Schema(
+            description = "Result of the resource operation. Either success or failed",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String objectIdentifier;
-	
-	@Schema(
-            description = "Type of operation performed",
-            requiredMode = Schema.RequiredMode.REQUIRED
+    private OperationResult operationResult;
+
+    @Schema(
+            description = "Structured data dependent on resource and its operation",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private OperationType operation;
-    @JsonRawValue
-    private String additionalData;
+    private Serializable operationData;
 
-    public Long getId() {
-        return id;
-    }
+    @Schema(
+            description = "Additional message",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private String message;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public OffsetDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(OffsetDateTime created) {
-        this.created = created;
-    }
-
-    public OperationStatusEnum getOperationStatus() {
-        return operationStatus;
-    }
-
-    public void setOperationStatus(OperationStatusEnum operationStatus) {
-        this.operationStatus = operationStatus;
-    }
-
-    public ObjectType getOrigination() {
-        return origination;
-    }
-
-    public void setOrigination(ObjectType origination) {
-        this.origination = origination;
-    }
-
-    public ObjectType getAffected() {
-        return affected;
-    }
-
-    public void setAffected(ObjectType affected) {
-        this.affected = affected;
-    }
-
-    public String getObjectIdentifier() {
-        return objectIdentifier;
-    }
-
-    public void setObjectIdentifier(String objectIdentifier) {
-        this.objectIdentifier = objectIdentifier;
-    }
-
-    public OperationType getOperation() {
-        return operation;
-    }
-
-    public void setOperation(OperationType operation) {
-        this.operation = operation;
-    }
-
-    public String getAdditionalData() {
-        return additionalData;
-    }
-
-    public void setAdditionalData(String additionalData) {
-        this.additionalData = additionalData;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
-                .append("uuid", uuid)
-                .append("author", author)
-                .append("created", created)
-                .append("operationStatus", operationStatus)
-                .append("originator", origination)
-                .append("affected", affected)
-                .append("objectIdentifier", objectIdentifier)
-                .append("operation", operation)
-                .append("additionalData", additionalData)
-                .toString();
-    }
+    @Schema(
+            description = "Additional data specific to event logged",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private Map<String, Object> additionalData;
 }

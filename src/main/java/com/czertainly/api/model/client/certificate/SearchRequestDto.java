@@ -1,9 +1,11 @@
 package com.czertainly.api.model.client.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class SearchRequestDto {
 
     @Schema(description = "Certificate filter input")
@@ -14,28 +16,4 @@ public class SearchRequestDto {
 
     @Schema(description = "Page number for the request", defaultValue = "1")
     private Integer pageNumber;
-
-    public List<SearchFilterRequestDto> getFilters() {
-        return filters;
-    }
-
-    public void setFilters(List<SearchFilterRequestDto> filters) {
-        this.filters = filters;
-    }
-
-    public Integer getItemsPerPage() {
-        return itemsPerPage;
-    }
-
-    public void setItemsPerPage(Integer itemsPerPage) {
-        this.itemsPerPage = itemsPerPage;
-    }
-
-    public Integer getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(Integer pageNumber) {
-        this.pageNumber = pageNumber;
-    }
 }
