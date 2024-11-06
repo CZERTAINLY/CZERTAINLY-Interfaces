@@ -15,7 +15,7 @@ public class NameAndUuidDto implements Serializable, Loggable {
             example = "7b55ge1c-844f-11dc-a8a3-0242ac120002",
             requiredMode = Schema.RequiredMode.REQUIRED)
     protected String uuid;
-    
+
     @Schema(description = "Object Name",
             example = "Name",
             requiredMode = Schema.RequiredMode.REQUIRED)
