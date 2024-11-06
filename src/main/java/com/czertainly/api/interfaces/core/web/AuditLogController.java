@@ -59,14 +59,14 @@ public interface AuditLogController {
 
 	@Operation(summary = "Export Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Export of audit logs")})
-	@GetMapping(path = "/export", produces = {"application/json"})
-    public ResponseEntity<Resource> exportAuditLogs(List<SearchFilterRequestDto> filters);
+	@PostMapping(path = "/export", produces = {"application/json"})
+    public ResponseEntity<Resource> exportAuditLogs(@RequestBody List<SearchFilterRequestDto> filters);
 
 	@Operation(summary = "Purge Audit logs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Audit logs purged")})
-	@GetMapping(path = "/purge", produces = {"application/json"})
+	@PostMapping(path = "/purge", produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void purgeAuditLogs(List<SearchFilterRequestDto> filters);
+	public void purgeAuditLogs(@RequestBody List<SearchFilterRequestDto> filters);
 
 	@Operation(summary = "Get Audit logs searchable fields information")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Audit logs searchable field information retrieved")})
