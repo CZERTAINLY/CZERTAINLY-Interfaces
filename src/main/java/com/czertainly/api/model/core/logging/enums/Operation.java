@@ -71,6 +71,7 @@ public enum Operation implements IPlatformEnum {
     RENEW_IN_LOCATION("renewInLocation", "Renew in location"),
     CONNECT("connect", "Connect"),
     RECONNECT("reconnect", "Reconnect"),
+    CHECK_HEALTH("checkHealth", "Check health"),
     STATISTICS("statistics", "Statistics"),
     APPROVE("approve", "Approve"),
     APPROVE_OVERRIDE("approveOverride", "Approve override"),
@@ -79,15 +80,22 @@ public enum Operation implements IPlatformEnum {
     PROFILE("profile", "User profile"),
     PROFILE_UPDATE("profileUpdate", "User profile update"),
     IDENTIFY("identify", "Identify"),
+    MARK_AS_READ("markAsRead", "Mark as read"),
     GET_PERMISSIONS("getPermissions", "Get permissions"),
     GET_OBJECT_PERMISSIONS("getObjectPermissions", "Get object permissions"),
     UPDATE_PERMISSIONS("updatePermissions", "Update permissions"),
     UPDATE_OBJECT_PERMISSIONS("updateObjectPermissions", "Update object permissions"),
     SCHEDULE("schedule", "Schedule"),
+    LIST_ATTRIBUTES("listAttributes", "List attributes"),
+    VALIDATE_ATTRIBUTES("validateAttributes", "Validate attributes"),
+    ATTRIBUTE_CALLBACK("attributeCallback", "Attribute callback"),
     UPDATE_ATTRIBUTE_RESOURCES("updateAttributeResources", "Update attribute resources"),
     UPDATE_ATTRIBUTE_CONTENT("updateAttributeContent", "Update attribute content"),
     DELETE_ATTRIBUTE_CONTENT("deleteAttributeContent", "Delete attribute content"),
-    PROMOTE_METADATA("promoteMetadata", "Promote metadata");
+    PROMOTE_METADATA("promoteMetadata", "Promote metadata"),
+    // legacy
+    LIST_CERTIFICATE_PROFILES("listCertificateProfiles", "List Certificate profiles"),
+    LIST_CAS("listCas", "List CAs");
 
     private static final Operation[] VALUES;
 
