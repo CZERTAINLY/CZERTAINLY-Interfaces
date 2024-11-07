@@ -1,10 +1,10 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.settings.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -69,7 +68,7 @@ public interface SettingController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Setting updated")
+                    @ApiResponse(responseCode = "204", description = "Setting updated")
             })
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -86,7 +85,7 @@ public interface SettingController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Notiifcation settings retrieved")
+                    @ApiResponse(responseCode = "200", description = "Notification settings retrieved")
             })
     @RequestMapping(
             method = RequestMethod.GET,
@@ -100,7 +99,7 @@ public interface SettingController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Setting updated")
+                    @ApiResponse(responseCode = "204", description = "Setting updated")
             })
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -111,4 +110,25 @@ public interface SettingController {
     void updateNotificationsSettings(
             @RequestBody NotificationSettingsDto notificationSettingsDto
     );
+
+    @Operation(summary = "Get OAuth2 Provider settings")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Provider settings retrieved")})
+    @GetMapping(path = "/oauth2Providers/{providerName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    OAuth2ProviderSettings getOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
+
+    @Operation(summary = "Update OAuth2 Provider settings")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
+    @PutMapping(path = "/oauth2Providers/{providerName}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @RequestBody OAuth2ProviderSettings oauth2SettingsDto);
+
+    @Operation(summary = "Retrieve list of configured OAuth2 Providers")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Providers retrieved")})
+    @GetMapping(path = "/oauth2Providers", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<OAuth2SettingsDto> listOAuth2Providers();
+
+    @Operation(summary = "Remove OAuth2 Provider")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OAuth2 Provider removed.")})
+    @DeleteMapping(path = "/oauth2Providers/{providerName}")
+    void removeOAuth2Provider(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
+
 }
