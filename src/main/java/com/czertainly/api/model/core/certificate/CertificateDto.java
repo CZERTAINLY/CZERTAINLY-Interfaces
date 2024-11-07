@@ -1,16 +1,19 @@
 package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
+import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class CertificateDto {
+public class CertificateDto implements Loggable {
 
     @Schema(
             description = "UUID of the Certificate",
@@ -143,4 +146,9 @@ public class CertificateDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Boolean trustedCa;
+
+    @Override
+    public Serializable toLogData() {
+        return new NameAndUuidDto(this.uuid, this.subjectDn);
+    }
 }

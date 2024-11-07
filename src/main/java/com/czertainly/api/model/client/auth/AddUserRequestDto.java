@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.auth;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.Named;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class AddUserRequestDto {
+public class AddUserRequestDto implements Named {
 
     @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, example = "user1")
     private String username;
@@ -45,6 +46,11 @@ public class AddUserRequestDto {
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
+
+    @Override
+    public String getName() {
+        return username;
+    }
 
     @Override
     public String toString() {

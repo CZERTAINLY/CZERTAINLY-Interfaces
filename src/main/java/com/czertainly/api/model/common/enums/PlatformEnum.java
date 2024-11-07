@@ -29,6 +29,8 @@ import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import com.czertainly.api.model.core.enums.CertificateProtocol;
+import com.czertainly.api.model.core.logging.enums.*;
+import com.czertainly.api.model.core.logging.enums.Module;
 import com.czertainly.api.model.core.other.ResourceEvent;
 import com.czertainly.api.model.core.workflows.ConditionType;
 import com.czertainly.api.model.core.workflows.ExecutionType;
@@ -111,7 +113,14 @@ public enum PlatformEnum implements IPlatformEnum {
     TRIGGER_TYPE(TriggerType.class, "Trigger Type"),
     CONDITION_TYPE(ConditionType.class, "Condition Type"),
     EXECUTION_TYPE(ExecutionType.class, "Execution Type"),
-    RESOURCE_EVENT(ResourceEvent.class, "Events available for a resource")
+    RESOURCE_EVENT(ResourceEvent.class, "Events available for a resource"),
+
+    // logging
+    MODULE(Module.class, "CZERTAINLY platform module"),
+    ACTOR_TYPE(ActorType.class, "Actor type"),
+    AUTH_METHOD(AuthMethod.class, "Actor auth method"),
+    OPERATION(Operation.class, "Log operation"),
+    OPERATION_RESULT(OperationResult.class, "Log operation result"),
     ;
 
     private static final PlatformEnum[] VALUES;

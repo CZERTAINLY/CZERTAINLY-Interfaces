@@ -1,13 +1,21 @@
 package com.czertainly.api.model.core.v2;
 
+import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.io.Serializable;
 
 /**
  * Response containing signed certificate data
  */
-public class ClientCertificateDataResponseDto {
+@Getter
+@Setter
+public class ClientCertificateDataResponseDto implements Loggable {
 
     @Schema(description = "Base64 encoded Certificate content",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -17,28 +25,17 @@ public class ClientCertificateDataResponseDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    public String getCertificateData() {
-        return certificateData;
-    }
-
-    public void setCertificateData(String certificateData) {
-        this.certificateData = certificateData;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("certificateData", certificateData)
                 .append("certificateUuid", uuid)
                 .toString();
+    }
+
+    @Override
+    public Serializable toLogData() {
+        return new UuidDto(uuid);
     }
 }
 

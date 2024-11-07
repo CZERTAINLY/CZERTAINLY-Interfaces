@@ -1,16 +1,18 @@
 package com.czertainly.api.model.core.auth;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class UserDto {
+public class UserDto implements Loggable {
 
     @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED, example = "5b5f0784-2519-11ed-861d-0242ac120002")
     private String uuid;
@@ -52,5 +54,10 @@ public class UserDto {
                 .append("enabled", enabled)
                 .append("systemUser", systemUser)
                 .toString();
+    }
+
+    @Override
+    public Serializable toLogData() {
+        return new NameAndUuidDto(this.uuid, this.username);
     }
 }
