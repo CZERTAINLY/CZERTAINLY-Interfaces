@@ -3,11 +3,15 @@ package com.czertainly.api.model.client.certificate;
 import com.czertainly.api.model.core.search.FilterFieldSource;
 import com.czertainly.api.model.core.search.FilterConditionOperator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class SearchFilterRequestDto {
 
     @Schema(description = "Field group of search filter", requiredMode = Schema.RequiredMode.REQUIRED)
