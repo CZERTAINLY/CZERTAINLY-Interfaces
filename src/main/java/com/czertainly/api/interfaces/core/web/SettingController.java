@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -119,7 +120,7 @@ public interface SettingController {
     @Operation(summary = "Update OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/oauth2Providers/{providerName}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @RequestBody OAuth2ProviderSettings oauth2SettingsDto);
+    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName,@Valid @RequestBody OAuth2ProviderSettings oauth2SettingsDto);
 
     @Operation(summary = "Retrieve list of configured OAuth2 Providers")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Providers retrieved")})
