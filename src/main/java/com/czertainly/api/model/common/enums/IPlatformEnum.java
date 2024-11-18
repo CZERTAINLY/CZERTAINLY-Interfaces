@@ -1,6 +1,8 @@
 package com.czertainly.api.model.common.enums;
 
-public interface IPlatformEnum {
+import java.io.Serializable;
+
+public interface IPlatformEnum extends Serializable {
 
     String getCode();
 
