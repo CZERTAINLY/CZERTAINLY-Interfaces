@@ -6,6 +6,7 @@ import com.czertainly.api.model.core.logging.enums.OperationResult;
 import com.czertainly.api.model.core.logging.records.ActorRecord;
 import com.czertainly.api.model.core.logging.records.ResourceRecord;
 import com.czertainly.api.model.core.logging.records.SourceRecord;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -14,6 +15,8 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Data
+@JsonPropertyOrder({"id", "version", "loggedAt", "module", "actor", "source", "resource", "affiliatedResource",
+        "operation", "operationResult", "message", "operationData", "additionalData"})
 public class AuditLogDto {
 
     @Schema(
@@ -77,16 +80,16 @@ public class AuditLogDto {
     private OperationResult operationResult;
 
     @Schema(
-            description = "Structured data dependent on resource and its operation",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
-    private Serializable operationData;
-
-    @Schema(
             description = "Additional message",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String message;
+
+    @Schema(
+            description = "Structured data dependent on resource and its operation",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private Serializable operationData;
 
     @Schema(
             description = "Additional data specific to event logged",

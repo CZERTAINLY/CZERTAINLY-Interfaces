@@ -20,7 +20,7 @@ public record LogRecord (
         ResourceRecord affiliatedResource,
         @NotNull Operation operation,
         @NotNull OperationResult operationResult,
-        Serializable operationData,
         String message,
+        Serializable operationData,
         Map<String, Object> additionalData
 ) implements Serializable {}
