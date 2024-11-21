@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
+import java.io.Serializable;
+
 @Data
-public class UtilsSettingsDto {
+public class UtilsSettingsDto implements Serializable {
 
     @URL
     @NotNull

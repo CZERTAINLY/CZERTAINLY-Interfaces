@@ -11,9 +11,6 @@ import java.util.Map;
 public class NotificationSettingsDto implements SettingsDto {
 
     @NotNull
-    @Schema(
-            description = "Type settings of the notification",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Type settings of the notification", requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<NotificationType, String> notificationsMapping;
 }
