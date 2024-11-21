@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class NotificationSettingsDto {
+public class NotificationSettingsDto implements SettingsDto {
 
     @Schema(
             description = "Type settings of the notification",
