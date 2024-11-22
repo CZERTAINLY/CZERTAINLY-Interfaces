@@ -1,0 +1,16 @@
+package com.czertainly.api.model.core.settings;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Data
+public class AuthenticationSettingsDto implements SettingsDto {
+
+    @NotNull
+    @Schema(description = "Map of OAuth2 providers settings where key is provider name", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Map<String, OAuth2ProviderSettingsDto> oAuth2Providers = new HashMap<>();
+}

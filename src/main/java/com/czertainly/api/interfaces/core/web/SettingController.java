@@ -15,8 +15,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/v1/settings")
@@ -44,24 +42,24 @@ public interface SettingController {
     @PutMapping(path = "/notifications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     void updateNotificationsSettings(@RequestBody NotificationSettingsDto notificationSettingsDto);
 
+    @Operation(summary = "Get authentication settings")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication settings retrieved")})
+    @GetMapping(path = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
+    AuthenticationSettingsDto getAuthenticationSettings();
+
     @Operation(summary = "Get OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Provider settings retrieved")})
-    @GetMapping(path = "/oauth2Providers/{providerName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    OAuth2ProviderSettings getOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
+    @GetMapping(path = "/authentication/oauth2Providers/{providerName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    OAuth2ProviderSettingsDto getOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
 
     @Operation(summary = "Update OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
-    @PutMapping(path = "/oauth2Providers/{providerName}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @Valid @RequestBody OAuth2ProviderSettings oauth2SettingsDto);
-
-    @Operation(summary = "Retrieve list of configured OAuth2 Providers")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Providers retrieved")})
-    @GetMapping(path = "/oauth2Providers", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<OAuth2SettingsDto> listOAuth2Providers();
+    @PutMapping(path = "/authentication/oauth2Providers/{providerName}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @Valid @RequestBody OAuth2ProviderSettingsDto oauth2SettingsDto);
 
     @Operation(summary = "Remove OAuth2 Provider")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OAuth2 Provider removed.")})
-    @DeleteMapping(path = "/oauth2Providers/{providerName}")
+    @DeleteMapping(path = "/authentication/oauth2Providers/{providerName}")
     void removeOAuth2Provider(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
 
     @Operation(summary = "Get logging settings")

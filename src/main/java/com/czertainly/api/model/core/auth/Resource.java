@@ -82,7 +82,8 @@ public enum Resource implements IPlatformEnum {
     ACME_AUTHORIZATION("acmeAuthorizations", "ACME Authorization"),
     ACME_CHALLENGE("acmeChallenges", "ACME Challenge"),
     CMP_TRANSACTION("cmpTransactions", "CMP Transaction"),
-    END_ENTITY_PROFILE("endEntityProfile", "End entity profile"),
+    END_ENTITY_PROFILE("endEntityProfiles", "End entity profile"),
+    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider")
     ;
 
     private static final Resource[] VALUES;

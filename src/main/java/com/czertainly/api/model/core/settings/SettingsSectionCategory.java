@@ -12,7 +12,8 @@ import java.util.Arrays;
 public enum SettingsSectionCategory implements IPlatformEnum {
     PLATFORM_UTILS("utils", "Utils", SettingsSection.PLATFORM, "CZERTAINLY platform utils settings"),
     AUDIT_LOGGING("audit", "Audit Logging", SettingsSection.LOGGING, "Audit logging settings"),
-    EVENT_LOGGING("event", "Event Logging", SettingsSection.LOGGING, "Event logging settings");
+    EVENT_LOGGING("event", "Event Logging", SettingsSection.LOGGING, "Event logging settings"),
+    OAUTH2_PROVIDER("oauth2Provider", "OAuth2 Provider", SettingsSection.AUTHENTICATION, "OAuth2 provider settings");
 
     private static final SettingsSectionCategory[] VALUES;
 
