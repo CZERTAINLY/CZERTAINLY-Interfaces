@@ -3,6 +3,7 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.settings.*;
+import com.czertainly.api.model.core.settings.logging.LoggingSettingsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -132,4 +133,23 @@ public interface SettingController {
     @DeleteMapping(path = "/oauth2Providers/{providerName}")
     void removeOAuth2Provider(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
 
+    @Operation(
+            summary = "Get logging settings"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Logging settings retrieved")
+            })
+    @GetMapping(path = "/logging", produces = MediaType.APPLICATION_JSON_VALUE)
+    LoggingSettingsDto getLoggingSettings();
+
+    @Operation(
+            summary = "Update logging setting"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Setting updated")
+            })
+    @PutMapping(path = "/logging", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    void updateLoggingSettings(@RequestBody LoggingSettingsDto loggingSettingsDto);
 }
