@@ -12,7 +12,7 @@ import java.util.Arrays;
 public enum SettingsSection implements IPlatformEnum {
     PLATFORM("platform", "Platform", "CZERTAINLY platform settings"),
     NOTIFICATIONS("notifications", "Notifications", "CZERTAINLY notifications settings"),
-    OAUTH2_PROVIDER("oauth2Provider", "OAuth2 Provider", "Provider for OAuth2 Authentication"),
+    AUTHENTICATION("authentication", "Authentication", "CZERTAINLY authentication settings"),
     LOGGING("logging", "Logging", "CZERTAINLY logging settings");
 
     private static final SettingsSection[] VALUES;
