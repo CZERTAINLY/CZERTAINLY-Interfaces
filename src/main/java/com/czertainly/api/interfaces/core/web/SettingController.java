@@ -47,6 +47,11 @@ public interface SettingController {
     @GetMapping(path = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
     AuthenticationSettingsDto getAuthenticationSettings();
 
+    @Operation(summary = "Update authentication settings")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication settings updated")})
+    @PutMapping(path = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
+    void updateAuthenticationSettings(@RequestBody AuthenticationSettingsUpdateDto authenticationSettingsDto);
+
     @Operation(summary = "Get OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Provider settings retrieved")})
     @GetMapping(path = "/authentication/oauth2Providers/{providerName}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +73,7 @@ public interface SettingController {
     LoggingSettingsDto getLoggingSettings();
 
     @Operation(summary = "Update logging setting")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Setting updated")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Logging settings updated")})
     @PutMapping(path = "/logging", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     void updateLoggingSettings(@RequestBody LoggingSettingsDto loggingSettingsDto);
 }

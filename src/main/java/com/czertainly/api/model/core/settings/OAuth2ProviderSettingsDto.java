@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.settings;
 
+import com.czertainly.api.model.core.logging.Sensitive;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class OAuth2ProviderSettingsDto implements Serializable {
     private String clientId;
 
     @NotNull
+    @Sensitive
     @Schema(description = "The client secret used by the client application to authenticate with the authorization server.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String clientSecret;
 
