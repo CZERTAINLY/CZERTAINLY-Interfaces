@@ -5,11 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class OAuth2ProviderSettingsDto {
+public class OAuth2ProviderSettingsDto implements Serializable {
 
     @NotNull
     @Schema(description = "Name of OAuth2 Provider", requiredMode = Schema.RequiredMode.REQUIRED)
