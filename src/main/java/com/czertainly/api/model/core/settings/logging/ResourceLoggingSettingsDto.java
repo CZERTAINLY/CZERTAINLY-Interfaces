@@ -6,11 +6,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class ResourceLoggingSettingsDto {
+public class ResourceLoggingSettingsDto implements Serializable {
 
     @NotNull
     @Schema(description = "Collect logs for all modules. If true, logged modules list is not taken into account only ignored modules", requiredMode = Schema.RequiredMode.REQUIRED)

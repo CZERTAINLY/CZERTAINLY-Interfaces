@@ -3,6 +3,10 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.settings.*;
+import com.czertainly.api.model.core.settings.authentication.AuthenticationSettingsDto;
+import com.czertainly.api.model.core.settings.authentication.AuthenticationSettingsUpdateDto;
+import com.czertainly.api.model.core.settings.authentication.OAuth2ProviderSettingsDto;
+import com.czertainly.api.model.core.settings.authentication.OAuth2ProviderSettingsUpdateDto;
 import com.czertainly.api.model.core.settings.logging.LoggingSettingsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,7 +34,7 @@ public interface SettingController {
     @Operation(summary = "Update platform setting")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updatePlatformSettings(@RequestBody PlatformSettingsDto platformSettingsDto);
+    void updatePlatformSettings(@Valid @RequestBody PlatformSettingsDto platformSettingsDto);
 
     @Operation(summary = "Get notification settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification settings retrieved")})
@@ -40,7 +44,7 @@ public interface SettingController {
     @Operation(summary = "Update notifications setting")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/notifications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updateNotificationsSettings(@RequestBody NotificationSettingsDto notificationSettingsDto);
+    void updateNotificationsSettings(@Valid @RequestBody NotificationSettingsDto notificationSettingsDto);
 
     @Operation(summary = "Get authentication settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication settings retrieved")})
@@ -50,7 +54,7 @@ public interface SettingController {
     @Operation(summary = "Update authentication settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication settings updated")})
     @PutMapping(path = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
-    void updateAuthenticationSettings(@RequestBody AuthenticationSettingsUpdateDto authenticationSettingsDto);
+    void updateAuthenticationSettings(@Valid @RequestBody AuthenticationSettingsUpdateDto authenticationSettingsDto);
 
     @Operation(summary = "Get OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Provider settings retrieved")})
@@ -60,7 +64,7 @@ public interface SettingController {
     @Operation(summary = "Update OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/authentication/oauth2Providers/{providerName}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @Valid @RequestBody OAuth2ProviderSettingsDto oauth2SettingsDto);
+    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @Valid @RequestBody OAuth2ProviderSettingsUpdateDto oauth2SettingsDto);
 
     @Operation(summary = "Remove OAuth2 Provider")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OAuth2 Provider removed.")})
@@ -75,5 +79,5 @@ public interface SettingController {
     @Operation(summary = "Update logging setting")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Logging settings updated")})
     @PutMapping(path = "/logging", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updateLoggingSettings(@RequestBody LoggingSettingsDto loggingSettingsDto);
+    void updateLoggingSettings(@Valid @RequestBody LoggingSettingsDto loggingSettingsDto);
 }

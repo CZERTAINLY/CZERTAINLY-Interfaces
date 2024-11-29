@@ -1,5 +1,6 @@
-package com.czertainly.api.model.core.settings;
+package com.czertainly.api.model.core.settings.authentication;
 
+import com.czertainly.api.model.core.settings.SettingsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
