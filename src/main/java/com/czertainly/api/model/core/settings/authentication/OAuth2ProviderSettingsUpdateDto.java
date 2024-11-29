@@ -1,4 +1,4 @@
-package com.czertainly.api.model.core.settings;
+package com.czertainly.api.model.core.settings.authentication;
 
 import com.czertainly.api.model.core.logging.Sensitive;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,11 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class OAuth2ProviderSettingsDto implements Serializable {
-
-    @NotNull
-    @Schema(description = "Name of OAuth2 Provider", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String name;
+public class OAuth2ProviderSettingsUpdateDto implements Serializable {
 
     @URL
     @Schema(description = "URL of issuer issuing authentication tokens. If provided, authentication via JWT token is enabled for this provider.")
