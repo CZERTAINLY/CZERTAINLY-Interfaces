@@ -34,7 +34,7 @@ public interface SettingController {
     @Operation(summary = "Update platform setting")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updatePlatformSettings(@RequestBody PlatformSettingsDto platformSettingsDto);
+    void updatePlatformSettings(@Valid @RequestBody PlatformSettingsDto platformSettingsDto);
 
     @Operation(summary = "Get notification settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification settings retrieved")})
@@ -44,7 +44,7 @@ public interface SettingController {
     @Operation(summary = "Update notifications setting")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/notifications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updateNotificationsSettings(@RequestBody NotificationSettingsDto notificationSettingsDto);
+    void updateNotificationsSettings(@Valid @RequestBody NotificationSettingsDto notificationSettingsDto);
 
     @Operation(summary = "Get authentication settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication settings retrieved")})
@@ -54,7 +54,7 @@ public interface SettingController {
     @Operation(summary = "Update authentication settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication settings updated")})
     @PutMapping(path = "/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
-    void updateAuthenticationSettings(@RequestBody AuthenticationSettingsUpdateDto authenticationSettingsDto);
+    void updateAuthenticationSettings(@Valid @RequestBody AuthenticationSettingsUpdateDto authenticationSettingsDto);
 
     @Operation(summary = "Get OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Provider settings retrieved")})
@@ -79,5 +79,5 @@ public interface SettingController {
     @Operation(summary = "Update logging setting")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Logging settings updated")})
     @PutMapping(path = "/logging", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updateLoggingSettings(@RequestBody LoggingSettingsDto loggingSettingsDto);
+    void updateLoggingSettings(@Valid @RequestBody LoggingSettingsDto loggingSettingsDto);
 }
