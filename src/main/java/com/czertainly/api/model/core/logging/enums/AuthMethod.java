@@ -14,6 +14,7 @@ public enum AuthMethod implements IPlatformEnum {
     NONE("none", "None"),
     CERTIFICATE("certificate", "Certificate"),
     TOKEN("token", "Token"),
+    SESSION("session", "Session"),
     API_KEY("apiKey", "API Key"),
     USER_PROXY("userProxy", "User proxy");
 
