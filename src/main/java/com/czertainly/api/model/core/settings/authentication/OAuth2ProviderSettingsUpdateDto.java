@@ -1,8 +1,9 @@
 package com.czertainly.api.model.core.settings.authentication;
 
 import com.czertainly.api.model.core.logging.Sensitive;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
@@ -17,27 +18,22 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "URL of issuer issuing authentication tokens. If provided, authentication via JWT token is enabled for this provider.")
     private String issuerUrl;
 
-    @NotNull
     @Schema(description = "The client ID used to identify the client application during the authorization process.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String clientId;
 
-    @NotNull
     @Sensitive
     @Schema(description = "The client secret used by the client application to authenticate with the authorization server.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String clientSecret;
 
     @URL
-    @NotNull
     @Schema(description = "The URL where the authorization server redirects the user for login and authorization.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String authorizationUrl;
 
     @URL
-    @NotNull
     @Schema(description = "The URl used to exchange the authorization code or credentials for an access token.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String tokenUrl;
 
     @URL
-    @NotNull
     @Schema(description = "The URL where the JSON Web Key Set (JWKS) containing the public keys used to verify JWT tokens can be retrieved.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String jwkSetUrl;
 
@@ -45,12 +41,10 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     private List<String> scope = new ArrayList<>();
 
     @URL
-    @NotNull
     @Schema(description = "URL to end session on provider side.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String logoutUrl;
 
     @URL
-    @NotNull
     @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String postLogoutUrl;
 
@@ -67,4 +61,15 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "Duration in seconds after which will inactive user's session be terminated.", defaultValue = "15m")
     private int sessionMaxInactiveInterval = 15 * 60;
 
+    @AssertTrue(message = "OAuth2 Provider must be either configured for authenticating with JWT token, browser login using client or both. For JWT token, \"issuerUrl\" must not be null, for client login, " +
+            "\"clientId\", \"clientSecret\", \"authorizationUrl\", \"tokenUrl\", \"jwkSetUrl\", \"logoutUrl\", \"postLogoutUrl\" all must be not null.")
+    @JsonIgnore
+    public boolean isValidProviderConfiguration() {
+        boolean validClientConfiguration = (clientId != null) && (clientSecret != null) && (authorizationUrl != null) && (tokenUrl != null) && (jwkSetUrl != null) && (logoutUrl != null) && (postLogoutUrl != null);
+        boolean hasClientConfiguration = (clientId != null) || (clientSecret != null) || (authorizationUrl != null) || (tokenUrl != null) || (jwkSetUrl != null) || (logoutUrl != null) || (postLogoutUrl != null);
+        // If issuer is null, the rest of configuration must be valid for client login
+        // Or issuer is not null, but if any of the client related properties is not null - indicating use for login, all of them must be not nul
+        if (issuerUrl == null || hasClientConfiguration) return validClientConfiguration;
+        return true;
+    }
 }
