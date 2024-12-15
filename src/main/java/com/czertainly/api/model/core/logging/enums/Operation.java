@@ -79,6 +79,8 @@ public enum Operation implements IPlatformEnum {
     APPROVE_OVERRIDE("approveOverride", "Approve override"),
     REJECT("reject", "Reject"),
     REJECT_OVERRIDE("rejectOverride", "Reject override"),
+    LOGIN("login", "Login"),
+    LOGOUT("logout", "Logout"),
     AUTHENTICATION("authentication", "Authentication"),
     GET_USER_PROFILE("getUserProfile", "Get user profile"),
     UPDATE_USER_PROFILE("updateUserProfile", "Update user profile"),
