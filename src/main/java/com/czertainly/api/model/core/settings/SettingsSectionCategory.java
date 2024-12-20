@@ -9,20 +9,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 
-public enum SettingsSection implements IPlatformEnum {
-    PLATFORM("platform", "Platform", "CZERTAINLY platform settings"),
-    NOTIFICATIONS("notifications", "Notifications", "CZERTAINLY notifications settings"),
-    AUTHENTICATION("authentication", "Authentication", "CZERTAINLY authentication settings"),
-    LOGGING("logging", "Logging", "CZERTAINLY logging settings");
+public enum SettingsSectionCategory implements IPlatformEnum {
+    PLATFORM_UTILS("utils", "Utils", SettingsSection.PLATFORM, "CZERTAINLY platform utils settings"),
+    AUDIT_LOGGING("audit", "Audit Logging", SettingsSection.LOGGING, "Audit logging settings"),
+    EVENT_LOGGING("event", "Event Logging", SettingsSection.LOGGING, "Event logging settings"),
+    OAUTH2_PROVIDER("oauth2Provider", "OAuth2 Provider", SettingsSection.AUTHENTICATION, "OAuth2 provider settings");
 
-    private static final SettingsSection[] VALUES;
+    private static final SettingsSectionCategory[] VALUES;
 
     static {
         VALUES = values();
     }
 
     @Schema(
-            description = "Setting section",
+            description = "Setting section category",
             example = "platform",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -30,24 +30,31 @@ public enum SettingsSection implements IPlatformEnum {
 
     @Schema(
             description = "Name",
-            example = "Platform"
+            example = "Utils"
     )
     private final String label;
 
     @Schema(
             description = "Description",
-            example = "CZERTAINLY platform settings"
+            example = "CZERTAINLY platform utils settings"
     )
     private final String description;
 
-    SettingsSection(String code, String label) {
-        this(code, label,null);
+    @Schema(
+            description = "Settings section to which category belongs",
+            example = "CZERTAINLY platform utils settings"
+    )
+    private final SettingsSection section;
+
+    SettingsSectionCategory(String code, String label, SettingsSection section) {
+        this(code, label, section, null);
     }
 
-    SettingsSection(String code, String label, String description) {
+    SettingsSectionCategory(String code, String label, SettingsSection section, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
+        this.section = section;
     }
 
     @Override
@@ -67,7 +74,7 @@ public enum SettingsSection implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static SettingsSection findByCode(String code) {
+    public static SettingsSectionCategory findByCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()

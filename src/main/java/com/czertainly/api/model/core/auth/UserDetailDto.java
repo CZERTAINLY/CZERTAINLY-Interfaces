@@ -1,13 +1,18 @@
 package com.czertainly.api.model.core.auth;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class UserDetailDto extends UserDto {
+public class UserDetailDto extends UserDto implements Loggable {
 
     @Schema(description = "User Certificate details")
     private UserCertificateDto certificate;
@@ -56,5 +61,14 @@ public class UserDetailDto extends UserDto {
                 .append("roles", roles)
                 .append("customAttributes", customAttributes)
                 .toString();
+    }
+
+    @Override
+    public Serializable toLogData() {
+        Map<String, Object> logData = new HashMap<>();
+        logData.put("uuid", getUuid());
+        logData.put("username", getUsername());
+        logData.put("roles", roles.stream().map(NameAndUuidDto::getName).toList());
+        return (Serializable) logData;
     }
 }
