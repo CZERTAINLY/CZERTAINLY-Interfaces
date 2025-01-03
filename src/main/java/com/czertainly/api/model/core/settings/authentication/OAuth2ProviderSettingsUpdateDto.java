@@ -1,9 +1,7 @@
 package com.czertainly.api.model.core.settings.authentication;
 
 import com.czertainly.api.model.core.logging.Sensitive;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
@@ -61,15 +59,4 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "Duration in seconds after which will inactive user's session be terminated.", defaultValue = "15m")
     private int sessionMaxInactiveInterval = 15 * 60;
 
-    @AssertTrue(message = "OAuth2 Provider must be either configured for authenticating with JWT token, browser login using client or both. For JWT token, \"issuerUrl\" must not be null, for client login, " +
-            "\"clientId\", \"clientSecret\", \"authorizationUrl\", \"tokenUrl\", \"jwkSetUrl\", \"logoutUrl\", \"postLogoutUrl\" all must be not null.")
-    @JsonIgnore
-    public boolean isValidProviderConfiguration() {
-        boolean validClientConfiguration = (clientId != null) && (clientSecret != null) && (authorizationUrl != null) && (tokenUrl != null) && (jwkSetUrl != null) && (logoutUrl != null) && (postLogoutUrl != null);
-        boolean hasClientConfiguration = (clientId != null) || (clientSecret != null) || (authorizationUrl != null) || (tokenUrl != null) || (jwkSetUrl != null) || (logoutUrl != null) || (postLogoutUrl != null);
-        // If issuer is null, the rest of configuration must be valid for client login
-        // Or issuer is not null, but if any of the client related properties is not null - indicating use for login, all of them must be not nul
-        if (issuerUrl == null || hasClientConfiguration) return validClientConfiguration;
-        return true;
-    }
 }
