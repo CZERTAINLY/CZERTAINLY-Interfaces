@@ -50,6 +50,9 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "The URL containing information about user.")
     private String userInfoUrl;
 
+    @Schema(description = "JWK Set")
+    private String jwkSet;
+
     @Schema(description = "A list of expected audiences for validating the issued tokens, used to match the intended recipients of the tokens.")
     private List<String> audiences = new ArrayList<>();
 
