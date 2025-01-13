@@ -16,34 +16,37 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "URL of issuer issuing authentication tokens. If provided, authentication via JWT token is enabled for this provider.")
     private String issuerUrl;
 
-    @Schema(description = "The client ID used to identify the client application during the authorization process.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The client ID used to identify the client application during the authorization process.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String clientId;
 
     @Sensitive
-    @Schema(description = "The client secret used by the client application to authenticate with the authorization server.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The client secret used by the client application to authenticate with the authorization server.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String clientSecret;
 
     @URL
-    @Schema(description = "The URL where the authorization server redirects the user for login and authorization.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The URL where the authorization server redirects the user for login and authorization.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorizationUrl;
 
     @URL
-    @Schema(description = "The URl used to exchange the authorization code or credentials for an access token.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The URl used to exchange the authorization code or credentials for an access token.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String tokenUrl;
 
     @URL
-    @Schema(description = "The URL where the JSON Web Key Set (JWKS) containing the public keys used to verify JWT tokens can be retrieved.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The URL where the JSON Web Key Set (JWKS) containing the public keys used to verify JWT tokens can be retrieved.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String jwkSetUrl;
+
+    @Schema(description = "Base64 encoded JWK Set, provided in case JWK Set URL is not available")
+    private String jwkSet;
 
     @Schema(description = " The list of scopes that define the access levels and permissions requested by the client application.")
     private List<String> scope = new ArrayList<>();
 
     @URL
-    @Schema(description = "URL to end session on provider side.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL to end session on provider side.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String logoutUrl;
 
     @URL
-    @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String postLogoutUrl;
 
     @URL
