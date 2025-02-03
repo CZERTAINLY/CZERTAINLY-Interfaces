@@ -5,9 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Setter
+@Getter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = DataAttribute.class, visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataAttribute.class, name = "data"),
@@ -19,6 +23,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeDto.class)
 public class BaseAttribute<T> extends AbstractBaseAttribute {
+
+    /**
+     * Version of the Attribute
+     **/
+    @Schema(
+            description = "Version of the Attribute",
+            example = "2",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            defaultValue = "2"
+    )
+    private int version = 2;
 
     /**
      * UUID of the Attribute
@@ -67,51 +82,6 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
     }
 
     public BaseAttribute(AttributeType type) {
-        this.type = type;
-    }
-
-    @Override
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public T getContent() {
-        return content;
-    }
-
-    public void setContent(T content) {
-        this.content = content;
-    }
-
-    @Override
-    public AttributeType getType() {
-        return type;
-    }
-
-    public void setType(AttributeType type) {
         this.type = type;
     }
 
