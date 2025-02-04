@@ -70,13 +70,13 @@ public interface CryptographicKeyController {
 
     @Operation(summary = "Get CryptographicKey searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CryptographicKey searchable field information retrieved")})
-    @RequestMapping(path = "/keys/search", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/keys/search", produces = {"application/json"})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
 
     @Operation(summary = "List cryptographic keys")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the cryptographic keys")})
-    @RequestMapping(path = "/keys", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/keys", produces = MediaType.APPLICATION_JSON_VALUE)
     CryptographicKeyResponseDto listCryptographicKeys(@RequestBody SearchRequestDto request) throws ValidationException;
 
 
@@ -90,9 +90,8 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Cryptographic Keys retrieved")
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/keys/pairs",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<KeyDto> listKeyPairs(@RequestParam(required = false) Optional<String> tokenProfileUuid);
@@ -106,13 +105,11 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
             })
-    @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
-            method = RequestMethod.GET,
+    @GetMapping(
+            path = "/tokens/keys/{uuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     KeyDetailDto getKey(
-            @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "UUID of the Key") @PathVariable String uuid
     ) throws NotFoundException;
 
@@ -124,13 +121,11 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
             })
-    @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}",
-            method = RequestMethod.GET,
+    @GetMapping(
+            path = "/tokens/keys/{uuid}/items/{keyItemUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     KeyItemDetailDto getKeyItem(
-            @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "UUID of the Key") @PathVariable String uuid,
             @Parameter(description = "UUID of the Key Item") @PathVariable String keyItemUuid
     ) throws NotFoundException;
@@ -154,9 +149,8 @@ public interface CryptographicKeyController {
                                     })
                     )
             })
-    @RequestMapping(
+        @PostMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     KeyDetailDto createKey(@Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
@@ -175,14 +169,12 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key updated"),
                     @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
-            method = RequestMethod.PUT,
+    @PutMapping(
+            path = "/tokens/keys/{uuid}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     KeyDetailDto editKey(
-            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody EditKeyRequestDto request)
             throws ConnectorException, AttributeException;
@@ -201,9 +193,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key sync completed")
             }
     )
-    @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/sync",
-            method = RequestMethod.PATCH
+    @PatchMapping(
+            path = "/tokens/{tokenInstanceUuid}/sync"
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void syncKeys(
@@ -227,9 +218,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key marked as compromised")
             }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/compromise",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -252,9 +242,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key marked as compromised")
             }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/keys/compromise",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -273,9 +262,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key Items marked as compromised")
             }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/keys/items/compromise",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -298,9 +286,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Keys destroyed")
             }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/destroy",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -324,9 +311,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Keys destroyed")
             }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/keys/destroy",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -348,9 +334,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Keys Items destroyed")
             }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/keys/items/destroy",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -379,15 +364,13 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key deleted")
             }
     )
-    @RequestMapping(
-            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
-            method = RequestMethod.DELETE,
+    @DeleteMapping(
+            path = "/tokens/keys/{uuid}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteKey(
-            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -405,9 +388,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Keys deleted")
             }
     )
-    @RequestMapping(
+    @DeleteMapping(
             path = "/keys",
-            method = RequestMethod.DELETE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -430,9 +412,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key Items deleted")
             }
     )
-    @RequestMapping(
+    @DeleteMapping(
             path = "/keys/items",
-            method = RequestMethod.DELETE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -459,9 +440,8 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Key enabled")
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/enable",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -484,8 +464,7 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Keys enabled")
             })
-    @RequestMapping(path = "/keys/enable",
-            method = RequestMethod.PATCH,
+    @PatchMapping(path = "/keys/enable",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -504,8 +483,7 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Key Items enabled")
             })
-    @RequestMapping(path = "/keys/items/enable",
-            method = RequestMethod.PATCH,
+    @PatchMapping(path = "/keys/items/enable",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -529,9 +507,8 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Key disabled")
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/disable",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -553,9 +530,8 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Keys disabled")
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/keys/disable",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -573,9 +549,8 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Key Items disabled")
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/keys/items/disable",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -600,9 +575,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Keys Usages Updates")
             }
     )
-    @RequestMapping(
+    @PutMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/usages",
-            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -623,9 +597,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Keys Usages Updated")
             }
     )
-    @RequestMapping(
+    @PutMapping(
             path = "/keys/usages",
-            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -643,9 +616,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "204", description = "Key Items Usages Updated")
             }
     )
-    @RequestMapping(
+    @PutMapping(
             path = "/keys/items/usages",
-            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -667,9 +639,8 @@ public interface CryptographicKeyController {
                             description = "List of Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listCreateKeyAttributes(
@@ -691,9 +662,8 @@ public interface CryptographicKeyController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Certificate event history retrieved")
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}/history",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<KeyEventHistoryDto> getEventHistory(

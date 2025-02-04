@@ -16,7 +16,8 @@ public enum KeyAlgorithm implements IPlatformEnum {
     ECDSA("ECDSA", "ECDSA", "Elliptic Curve Digital Signature Algorithm"),
     FALCON("FALCON", "FALCON", "Fast Fourier lattice-based compact signatures over NTRU"),
     DILITHIUM("CRYSTALS-Dilithium", "CRYSTALS-Dilithium", "Post-quantum lattice-based signature scheme"),
-    SPHINCSPLUS("SPHINCS+", "SPHINCS+", "Post-quantum stateless hash-based signature scheme");
+    SPHINCSPLUS("SPHINCS+", "SPHINCS+", "Post-quantum stateless hash-based signature scheme"),
+    UNKNOWN("Unknown", "Unknown", "Key algorithm not recognized");
 
     private static final KeyAlgorithm[] VALUES;
 

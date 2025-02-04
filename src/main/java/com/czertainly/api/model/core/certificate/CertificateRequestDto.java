@@ -67,4 +67,9 @@ public class CertificateRequestDto {
     )
     private List<ResponseAttributeDto> signatureAttributes;
 
+    @Schema(
+            description = "UUID of the Public Key"
+    )
+    private String publicKeyUuid;
+
 }
