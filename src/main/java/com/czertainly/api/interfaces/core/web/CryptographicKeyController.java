@@ -106,7 +106,7 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
             })
     @GetMapping(
-            path = "/tokens/keys/{uuid}",
+            path = "/keys/{uuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     KeyDetailDto getKey(
@@ -122,7 +122,7 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
             })
     @GetMapping(
-            path = "/tokens/keys/{uuid}/items/{keyItemUuid}",
+            path = "/keys/{uuid}/items/{keyItemUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     KeyItemDetailDto getKeyItem(
@@ -170,7 +170,7 @@ public interface CryptographicKeyController {
                     @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(
-            path = "/tokens/keys/{uuid}",
+            path = "/keys/{uuid}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -365,7 +365,7 @@ public interface CryptographicKeyController {
             }
     )
     @DeleteMapping(
-            path = "/tokens/keys/{uuid}",
+            path = "/keys/{uuid}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )

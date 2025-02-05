@@ -70,6 +70,6 @@ public class CertificateRequestDto {
     @Schema(
             description = "UUID of the Public Key"
     )
-    private String publicKeyUuid;
+    private String keyUuid;
 
 }
