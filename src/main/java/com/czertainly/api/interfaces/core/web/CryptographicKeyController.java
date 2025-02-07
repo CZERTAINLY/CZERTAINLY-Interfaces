@@ -99,7 +99,24 @@ public interface CryptographicKeyController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
-            summary = "Get Cryptographic Key Detail"
+            summary = "Get Cryptographic Key Detail with Token Instance"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
+            })
+    @GetMapping(
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    KeyDetailDto getKey(
+            @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
+            @Parameter(description = "UUID of the Key") @PathVariable String uuid
+    ) throws NotFoundException;
+
+
+    @Operation(
+            summary = "Get Cryptographic Key Detail without Token Instance"
     )
     @ApiResponses(
             value = {
@@ -115,7 +132,7 @@ public interface CryptographicKeyController {
 
 
     @Operation(
-            summary = "Get Cryptographic Key Detail"
+            summary = "Get Cryptographic Key Detail without Token Instance"
     )
     @ApiResponses(
             value = {
@@ -126,6 +143,23 @@ public interface CryptographicKeyController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     KeyItemDetailDto getKeyItem(
+            @Parameter(description = "UUID of the Key") @PathVariable String uuid,
+            @Parameter(description = "UUID of the Key Item") @PathVariable String keyItemUuid
+    ) throws NotFoundException;
+
+    @Operation(
+            summary = "Get Cryptographic Key Detail with Token Instance"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
+            })
+    @GetMapping(
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    KeyItemDetailDto getKeyItem(
+            @Parameter(description = "UUID of the Token Instance") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "UUID of the Key") @PathVariable String uuid,
             @Parameter(description = "UUID of the Key Item") @PathVariable String keyItemUuid
     ) throws NotFoundException;
@@ -355,7 +389,7 @@ public interface CryptographicKeyController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(
-            summary = "Delete Cryptographic Key",
+            summary = "Delete Cryptographic Key without Token Instance",
             description = "If the request body provided, only those key items will be deleted. If the request body is " +
                     "not provided or given empty, then the entire key will be destroyed"
     )
@@ -371,6 +405,31 @@ public interface CryptographicKeyController {
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteKey(
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody(required = false) List<String> keyItemUuids)
+            throws ConnectorException;
+
+    @Operation(
+            summary = "Delete Cryptographic Key with Token Instance",
+            description = "If the request body provided, only those key items will be deleted. If the request body is " +
+                    "not provided or given empty, then the entire key will be destroyed"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key deleted")
+            }
+    )
+    @DeleteMapping(
+            path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteKey(
+            @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
