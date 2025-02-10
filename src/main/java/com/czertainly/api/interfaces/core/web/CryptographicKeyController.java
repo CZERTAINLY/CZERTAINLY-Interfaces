@@ -167,10 +167,10 @@ public interface CryptographicKeyController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204", description = "Key updated"),
-                    @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(
-            path = "/tokens/keys/{uuid}",
+            path = "/keys/{uuid}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -178,6 +178,23 @@ public interface CryptographicKeyController {
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody EditKeyRequestDto request)
             throws ConnectorException, AttributeException;
+
+
+    @Operation(
+            summary = "Edit Key Item"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key Item updated"),
+                    @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PatchMapping(
+            path = "/keys/{uuid}/items/{keyItemUuid}",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    KeyItemDetailDto editKeyItem(
+            @Parameter(description = "Key UUID") @PathVariable String uuid,  @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
+            @RequestBody EditKeyItemDto request) throws NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
