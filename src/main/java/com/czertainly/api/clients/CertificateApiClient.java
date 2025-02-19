@@ -42,7 +42,8 @@ public class CertificateApiClient extends BaseApiClient {
                 .uri(connector.getUrl() + CERTIFICATE_REVOKE_CONTEXT, authorityUuid, endEntityProfileName)
                 .body(Mono.just(requestDto), CertRevocationDto.class)
                 .retrieve()
-                .bodyToMono(Void.class),
+                .toEntity(Void.class)
+                .block().getBody(),
                 request,
                 connector);
     }
