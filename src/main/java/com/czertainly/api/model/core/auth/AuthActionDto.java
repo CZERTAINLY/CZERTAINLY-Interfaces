@@ -2,21 +2,17 @@ package com.czertainly.api.model.core.auth;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class ActionDto extends NameAndUuidDto {
+@Setter
+@Getter
+public class AuthActionDto extends NameAndUuidDto {
 
     @Schema(description = "Resource label", requiredMode = Schema.RequiredMode.REQUIRED)
     private String displayName;
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
 
     @Override
     public String toString() {

@@ -28,7 +28,7 @@ public class AuthResourceDto extends NameAndUuidDto {
     private Boolean objectAccess;
 
     @Schema(description = "List of Actions for the Resource", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ActionDto> actions;
+    private List<AuthActionDto> actions;
 
     @Override
     public String toString() {
