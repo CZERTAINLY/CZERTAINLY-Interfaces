@@ -855,7 +855,7 @@ public interface CryptographicKeyController {
     @Operation(
             deprecated = true,
             operationId = "getEventHistoryWithToken",
-            summary = "Get Key Item event history"
+            summary = "Get Key Item event history with Token Instance"
     )
     @ApiResponses(
             value = {
