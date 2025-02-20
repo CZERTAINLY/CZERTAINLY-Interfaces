@@ -15,7 +15,7 @@ public class EditKeyRequestDto {
 
     @Schema(
             description = "UUID of the token profile",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenProfileUuid;
 
