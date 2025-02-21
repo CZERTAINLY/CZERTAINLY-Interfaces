@@ -282,6 +282,33 @@ public interface CryptographicKeyController {
             }
     )
     @PatchMapping(
+            path = "/keys/{uuid}/compromise",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void compromiseKey(
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @RequestBody CompromiseKeyRequestDto request)
+            throws NotFoundException;
+
+    /**
+     * @deprecated
+     */
+    @Deprecated(since = "2.14.1", forRemoval = true)
+    @Operation(
+            deprecated = true,
+            operationId = "compromiseKeyWithToken",
+            summary = "Mark Key and its Items as Compromised with Token Instance",
+            description = "If the request body is provided with the UUID of the items of Key, then only those items" +
+                    "will be compromised. Else all the sub items of the key will be compromised"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Key marked as compromised")
+            }
+    )
+    @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/compromise",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -341,6 +368,36 @@ public interface CryptographicKeyController {
 
     @Operation(
             summary = "Destroy Cryptographic Key",
+            description = "If the request body provided, only those key items will be destroyed. If the request body is " +
+                    "not provided or given empty, then the entire key will be destroyed"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Keys destroyed")
+            }
+    )
+    @PatchMapping(
+            path = "/keys/{uuid}/destroy",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void destroyKey(
+            @Parameter(description = "Key UUID") @PathVariable String uuid,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
+            @RequestBody(required = false) List<String> keyItemUuids)
+            throws ConnectorException;
+
+    /**
+     * @deprecated
+     */
+    @Deprecated(since = "2.14.1", forRemoval = true)
+    @Operation(
+            deprecated = true,
+            operationId = "destroyKeyWithToken",
+            summary = "Destroy Cryptographic Key with Token Instance",
             description = "If the request body provided, only those key items will be destroyed. If the request body is " +
                     "not provided or given empty, then the entire key will be destroyed"
     )
