@@ -2,6 +2,9 @@ package com.czertainly.api.model.core.settings.authentication;
 
 import com.czertainly.api.model.core.logging.Sensitive;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
@@ -13,6 +16,7 @@ import java.util.List;
 public class OAuth2ProviderSettingsUpdateDto implements Serializable {
 
     @URL
+    @Pattern(regexp = ".+", message = "URL cannot be empty")
     @Schema(description = "URL of issuer issuing authentication tokens. If provided, authentication via JWT token is enabled for this provider.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String issuerUrl;
 
@@ -24,14 +28,17 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     private String clientSecret;
 
     @URL
+    @Pattern(regexp = ".+", message = "URL cannot be empty")
     @Schema(description = "The URL where the authorization server redirects the user for login and authorization.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorizationUrl;
 
     @URL
+    @Pattern(regexp = ".+", message = "URL cannot be empty")
     @Schema(description = "The URl used to exchange the authorization code or credentials for an access token.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String tokenUrl;
 
     @URL
+    @Pattern(regexp = ".+", message = "URL cannot be empty")
     @Schema(description = "The URL where the JSON Web Key Set (JWKS) containing the public keys used to verify JWT tokens can be retrieved.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String jwkSetUrl;
 
@@ -42,14 +49,17 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     private List<String> scope = new ArrayList<>();
 
     @URL
+    @Pattern(regexp = ".+", message = "URL cannot be empty")
     @Schema(description = "URL to end session on provider side.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String logoutUrl;
 
     @URL
+    @Pattern(regexp = ".+", message = "URL cannot be empty")
     @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String postLogoutUrl;
 
     @URL
+    @Pattern(regexp = ".+", message = "URL cannot be empty")
     @Schema(description = "The URL containing information about user.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String userInfoUrl;
 
