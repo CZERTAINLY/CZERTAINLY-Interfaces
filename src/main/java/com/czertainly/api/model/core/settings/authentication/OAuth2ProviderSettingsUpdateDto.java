@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class OAuth2ProviderSettingsUpdateDto implements Serializable {
 
-    @URL
+    @URL(regexp = "^(http).*")
     @Schema(description = "URL of issuer issuing authentication tokens. If provided, authentication via JWT token is enabled for this provider.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String issuerUrl;
 
@@ -23,15 +23,15 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "The client secret used by the client application to authenticate with the authorization server.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String clientSecret;
 
-    @URL
+    @URL(regexp = "^(http).*")
     @Schema(description = "The URL where the authorization server redirects the user for login and authorization.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorizationUrl;
 
-    @URL
+    @URL(regexp = "^(http).*")
     @Schema(description = "The URl used to exchange the authorization code or credentials for an access token.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String tokenUrl;
 
-    @URL
+    @URL(regexp = "^(http).*")
     @Schema(description = "The URL where the JSON Web Key Set (JWKS) containing the public keys used to verify JWT tokens can be retrieved.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String jwkSetUrl;
 
@@ -41,15 +41,15 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = " The list of scopes that define the access levels and permissions requested by the client application.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<String> scope = new ArrayList<>();
 
-    @URL
+    @URL(regexp = "^(http).*")
     @Schema(description = "URL to end session on provider side.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String logoutUrl;
 
-    @URL
+    @URL(regexp = "^(http).*")
     @Schema(description = "URL that user will be redirected after logout from application.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String postLogoutUrl;
 
-    @URL
+    @URL(regexp = "^(http).*")
     @Schema(description = "The URL containing information about user.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String userInfoUrl;
 
