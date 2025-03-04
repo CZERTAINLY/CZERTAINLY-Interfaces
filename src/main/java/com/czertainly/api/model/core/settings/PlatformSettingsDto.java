@@ -12,4 +12,9 @@ public class PlatformSettingsDto implements SettingsDto {
     @NotNull
     @Schema(description = "Utils settings of the platform", requiredMode = Schema.RequiredMode.REQUIRED)
     private UtilsSettingsDto utils;
+
+    @Valid
+    @Schema(description = "Settings applicable to all certificates in inventory")
+    private CertificateSettingsDto certificateSettingsDto;
+
 }
