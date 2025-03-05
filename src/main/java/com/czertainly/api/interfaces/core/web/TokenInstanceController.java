@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/tokens")
-@Tag(name = "Token Instance Controller", description = "Token Instance Controller API")
+@Tag(name = "Token Instance Management", description = "Token Instance Controller API")
 @ApiResponses(
         value = {
                 @ApiResponse(
@@ -130,7 +130,7 @@ public interface TokenInstanceController {
             throws ConnectorException, ValidationException, AttributeException;
 
     @Operation(
-            description = "Delete Token Instance"
+            summary = "Delete Token Instance"
     )
     @ApiResponses(
             value = {
@@ -182,7 +182,7 @@ public interface TokenInstanceController {
             throws ConnectorException;
 
     @Operation(
-            description = "Delete multiple Token Instance"
+            summary = "Delete multiple Token Instances"
     )
     @ApiResponses(
             value = {

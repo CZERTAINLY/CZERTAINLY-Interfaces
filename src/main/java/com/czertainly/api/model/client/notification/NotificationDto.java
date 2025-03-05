@@ -3,12 +3,14 @@ package com.czertainly.api.model.client.notification;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 public class NotificationDto {
     @Schema(description = "Notification UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID uuid;
@@ -30,4 +32,16 @@ public class NotificationDto {
 
     @Schema(description = "Target object identification (UUID)")
     private List<String> targetObjectIdentification;
+
+    public NotificationDto(UUID uuid, String message, String detail, Date readAt, Date sentAt, Resource targetObjectType, String targetObjectIdentification) {
+        this.uuid = uuid;
+        this.message = message;
+        this.detail = detail;
+        this.readAt = readAt;
+        this.sentAt = sentAt;
+        this.targetObjectType = targetObjectType;
+        if (targetObjectIdentification != null) {
+            this.targetObjectIdentification = List.of(targetObjectIdentification.split(","));
+        }
+    }
 }

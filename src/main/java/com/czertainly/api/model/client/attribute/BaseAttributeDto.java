@@ -3,9 +3,13 @@ package com.czertainly.api.model.client.attribute;
 import com.czertainly.api.model.common.attribute.v2.*;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Setter
+@Getter
 @Schema(
         description = "Base Attribute definition",
         type = "object",
@@ -26,6 +30,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
         }
 )
 public class BaseAttributeDto {
+        /**
+         * Version of the Attribute
+         **/
+        @Schema(
+                description = "Version of the Attribute",
+                example = "2",
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+                defaultValue = "2"
+        )
+        private int version = 2;
+
         /**
          * UUID of the Attribute
          **/
@@ -77,47 +92,7 @@ public class BaseAttributeDto {
                 this.type = type;
         }
 
-        public String getUuid() {
-                return uuid;
-        }
-
-        public void setUuid(String uuid) {
-                this.uuid = uuid;
-        }
-
-        public String getName() {
-                return name;
-        }
-
-        public void setName(String name) {
-                this.name = name;
-        }
-
-        public String getDescription() {
-                return description;
-        }
-
-        public void setDescription(String description) {
-                this.description = description;
-        }
-
-        public AttributeType getType() {
-                return type;
-        }
-
-        public void setType(AttributeType type) {
-                this.type = type;
-        }
-
-        public Object getContent() {
-                return content;
-        }
-
-        public void setContent(Object content) {
-                this.content = content;
-        }
-
-        @Override
+    @Override
         public String toString() {
                 return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                         .append("uuid", uuid)

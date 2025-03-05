@@ -1,6 +1,7 @@
 package com.czertainly.api.model.core.settings.logging;
 
 import com.czertainly.api.model.core.logging.enums.AuditLogOutput;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class AuditLoggingSettingsDto extends ResourceLoggingSettingsDto {
     )
     private AuditLogOutput output = AuditLogOutput.NONE;
 
+    @Hidden
     public void setResourceLogging(ResourceLoggingSettingsDto resourceLoggingSettingsDto) {
         this.setLogAllModules(resourceLoggingSettingsDto.isLogAllModules());
         this.setLogAllResources(resourceLoggingSettingsDto.isLogAllResources());
