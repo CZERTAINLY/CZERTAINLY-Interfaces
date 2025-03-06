@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -107,7 +108,7 @@ public interface RAProfileManagementController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Configuration of validation of RA Profile updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
     @PatchMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/validation", consumes = {"application/json"})
-    void updateRaProfileValidationConfiguration(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody RaProfileValidationUpdateDto request);
+    void updateRaProfileValidationConfiguration(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody @Valid RaProfileValidationUpdateDto request) throws NotFoundException;
 
     @Operation(summary = "Delete RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile deleted")})
