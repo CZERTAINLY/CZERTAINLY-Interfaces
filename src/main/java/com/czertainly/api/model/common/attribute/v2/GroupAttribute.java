@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.model.client.attribute.BaseAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,9 +22,7 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
      * Content of the Attribute
      **/
     @Schema(
-            description = "List of all different types of attributes",
-            type = "object",
-            oneOf = {DataAttribute.class, InfoAttribute.class, GroupAttribute.class}
+            description = "List of all different types of attributes"
     )
     private List<BaseAttribute> content;
 

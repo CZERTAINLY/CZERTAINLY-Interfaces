@@ -4,6 +4,8 @@ import com.czertainly.api.model.client.attribute.BaseAttributeDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +23,25 @@ import org.apache.commons.lang3.builder.ToStringStyle;
         @JsonSubTypes.Type(value = CustomAttribute.class, name = "custom")
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@Schema(implementation = BaseAttributeDto.class)
+@Schema(
+        description = "Base Attribute definition",
+        type = "object",
+        discriminatorProperty = "type",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = "data", schema = DataAttribute.class),
+                @DiscriminatorMapping(value = "info", schema = InfoAttribute.class),
+                @DiscriminatorMapping(value = "group", schema = GroupAttribute.class),
+                @DiscriminatorMapping(value = "meta", schema = MetadataAttribute.class),
+                @DiscriminatorMapping(value = "custom", schema = CustomAttribute.class)
+        },
+        oneOf = {
+                DataAttribute.class,
+                InfoAttribute.class,
+                GroupAttribute.class,
+                MetadataAttribute.class,
+                CustomAttribute.class
+        }
+)
 public class BaseAttribute<T> extends AbstractBaseAttribute {
 
     /**
@@ -63,6 +83,7 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
     )
     private String description;
 
+    @Hidden
     @Schema(
         description = "Content of the Attribute"
     )

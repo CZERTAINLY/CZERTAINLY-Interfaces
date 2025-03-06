@@ -1,9 +1,19 @@
 package com.czertainly.api.model.common.attribute.v2.constraint;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Schema(
+        description = "Base Attribute Constraint definition",
+        type = "object",
+        oneOf = {
+                RegexpAttributeConstraint.class,
+                RangeAttributeConstraint.class,
+                DateTimeAttributeConstraint.class
+        }
+)
 public class BaseAttributeConstraint<T> extends AttributeConstraint {
     @Schema(description = "Description of the constraint")
     private String description;
@@ -14,6 +24,7 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint {
     @Schema(description = "Attribute Constraint Type", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeConstraintType type;
 
+    @Hidden
     @Schema(description = "Attribute Constraint Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;
 
