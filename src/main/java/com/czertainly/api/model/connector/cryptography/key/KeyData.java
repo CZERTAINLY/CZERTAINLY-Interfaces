@@ -6,9 +6,6 @@ import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
 import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.connector.cryptography.key.value.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -42,31 +39,8 @@ public class KeyData {
 
     @Schema(
             description = "Value of the Key",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            discriminatorProperty = "format",
-            discriminatorMapping = {
-                    @DiscriminatorMapping(value = "Raw", schema = RawKeyValue.class),
-                    @DiscriminatorMapping(value = "SubjectPublicKeyInfo", schema = SpkiKeyValue.class),
-                    @DiscriminatorMapping(value = "PrivateKeyInfo", schema = PrkiKeyValue.class),
-                    @DiscriminatorMapping(value = "EncryptedPrivateKeyInfo", schema = EprkiKeyValue.class),
-                    @DiscriminatorMapping(value = "Custom", schema = CustomKeyValue.class)
-            },
-            oneOf = {
-                    RawKeyValue.class,
-                    SpkiKeyValue.class,
-                    PrkiKeyValue.class,
-                    EprkiKeyValue.class,
-                    CustomKeyValue.class
-            }
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "format")
-    @JsonSubTypes({
-            @JsonSubTypes.Type(value = RawKeyValue.class, name = "Raw"),
-            @JsonSubTypes.Type(value = SpkiKeyValue.class, name = "SubjectPublicKeyInfo"),
-            @JsonSubTypes.Type(value = PrkiKeyValue.class, name = "PrivateKeyInfo"),
-            @JsonSubTypes.Type(value = EprkiKeyValue.class, name = "EncryptedPrivateKeyInfo"),
-            @JsonSubTypes.Type(value = CustomKeyValue.class, name = "Custom")
-    })
     private KeyValue value;
 
     @Schema(

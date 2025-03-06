@@ -23,24 +23,7 @@ public class InfoAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      **/
     @Schema(
             description = "Content of the Attribute",
-            type = "object",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            discriminatorProperty = "contentType",
-            oneOf = {
-                    BooleanAttributeContent.class,
-                    CodeBlockAttributeContent.class,
-                    CredentialAttributeContent.class,
-                    DateAttributeContent.class,
-                    DateTimeAttributeContent.class,
-                    FileAttributeContent.class,
-                    FloatAttributeContent.class,
-                    IntegerAttributeContent.class,
-                    ObjectAttributeContent.class,
-                    SecretAttributeContent.class,
-                    StringAttributeContent.class,
-                    TextAttributeContent.class,
-                    TimeAttributeContent.class
-            }
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<BaseAttributeContent> content;
 

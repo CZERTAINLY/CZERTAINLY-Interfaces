@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
@@ -26,6 +27,7 @@ public class BaseAttributeContentDto {
     @Schema(description = "Content Reference")
     private String reference;
 
+    @Hidden
     @Schema(description = "Content Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private Object data;
 

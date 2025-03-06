@@ -53,23 +53,7 @@ public class RequestAttributeDto {
      **/
     @Schema(
             description = "Content of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "object",
-            oneOf = {
-                    BooleanAttributeContent.class,
-                    CodeBlockAttributeContent.class,
-                    CredentialAttributeContent.class,
-                    DateAttributeContent.class,
-                    DateTimeAttributeContent.class,
-                    FileAttributeContent.class,
-                    FloatAttributeContent.class,
-                    IntegerAttributeContent.class,
-                    ObjectAttributeContent.class,
-                    SecretAttributeContent.class,
-                    StringAttributeContent.class,
-                    TextAttributeContent.class,
-                    TimeAttributeContent.class
-            }
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<BaseAttributeContent> content;
 

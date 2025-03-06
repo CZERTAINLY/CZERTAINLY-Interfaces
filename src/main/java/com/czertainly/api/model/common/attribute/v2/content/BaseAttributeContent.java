@@ -1,15 +1,34 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
-import com.czertainly.api.model.client.attribute.BaseAttributeContentDto;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
-@Schema(implementation = BaseAttributeContentDto.class)
+@Schema(
+        description = "Base Attribute content definition",
+        type = "object",
+        oneOf = {
+                BooleanAttributeContent.class,
+                CodeBlockAttributeContent.class,
+                CredentialAttributeContent.class,
+                DateAttributeContent.class,
+                DateTimeAttributeContent.class,
+                FileAttributeContent.class,
+                FloatAttributeContent.class,
+                IntegerAttributeContent.class,
+                ObjectAttributeContent.class,
+                SecretAttributeContent.class,
+                StringAttributeContent.class,
+                TextAttributeContent.class,
+                TimeAttributeContent.class
+        }
+)
 public class BaseAttributeContent<T> extends AttributeContent {
     @Schema(description = "Content Reference")
     private String reference;
 
+    @Hidden
     @Schema(description = "Content Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;
 

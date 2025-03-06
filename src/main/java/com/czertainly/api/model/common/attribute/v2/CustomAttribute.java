@@ -22,24 +22,7 @@ public class CustomAttribute extends BaseAttribute<List<BaseAttributeContent>> {
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute",
-            type = "object",
-            discriminatorProperty = "contentType",
-            oneOf = {
-                    BooleanAttributeContent.class,
-                    CodeBlockAttributeContent.class,
-                    CredentialAttributeContent.class,
-                    DateAttributeContent.class,
-                    DateTimeAttributeContent.class,
-                    FileAttributeContent.class,
-                    FloatAttributeContent.class,
-                    IntegerAttributeContent.class,
-                    ObjectAttributeContent.class,
-                    SecretAttributeContent.class,
-                    StringAttributeContent.class,
-                    TextAttributeContent.class,
-                    TimeAttributeContent.class
-            }
+            description = "Content of the Attribute"
     )
     private List<BaseAttributeContent> content;
 
