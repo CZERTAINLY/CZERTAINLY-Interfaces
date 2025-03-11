@@ -12,7 +12,7 @@ public class PlatformSettingsDto implements SettingsDto {
     private UtilsSettingsDto utils;
 
     @Valid
-    @Schema(description = "Settings applicable to all certificates in inventory")
+    @Schema(description = "Settings applicable to all certificates in inventory by default")
     private CertificateSettingsDto certificates;
 
 }

@@ -14,11 +14,11 @@ public class CertificateSettingsDto implements Serializable {
     @Schema(description = "Indicator whether validation of certificates should be enabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean validationEnabled;
 
-    @Schema(description = "Frequency of validation of certificates in days", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Frequency of validation of certificates in days", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "1 day")
     @Positive
-    private Integer validationFrequency;
+    private Integer validationFrequency = 1;
 
-    @Schema(description = "How many days before expiration should certificate validation status change to Expiring", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "How many days before expiration should certificate validation status change to Expiring", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "30 days")
     @Positive
-    private Integer expiringThreshold;
+    private Integer expiringThreshold = 30;
 }
