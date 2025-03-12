@@ -107,8 +107,8 @@ public interface RAProfileManagementController {
     @Operation(summary = "Update validation configuration of RA profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Configuration of validation of RA Profile updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
-    @PatchMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/validation", consumes = {"application/json"})
-    void updateRaProfileValidationConfiguration(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody @Valid RaProfileValidationUpdateDto request) throws NotFoundException;
+    @PatchMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/validation", consumes = {"application/json"}, produces = {"application/json"})
+    RaProfileDto updateRaProfileValidationConfiguration(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody @Valid RaProfileValidationUpdateDto request) throws NotFoundException;
 
     @Operation(summary = "Delete RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "RA Profile deleted")})
