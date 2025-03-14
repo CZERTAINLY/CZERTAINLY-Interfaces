@@ -11,7 +11,7 @@ public class ScepProfileRequestDto extends BaseScepProfileRequestDto {
     @Schema(
             description = "Name of the SCEP Profile",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "Profile Name 1"
+            examples = {"Profile Name 1"}
     )
     private String name;
 

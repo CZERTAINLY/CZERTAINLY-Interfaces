@@ -2,8 +2,8 @@ package com.czertainly.api.interfaces.connector.cryptography;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.NoAuthController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.operations.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,31 +20,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/cryptographyProvider/tokens/{uuid}/keys")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
 @Tag(
         name = "Cryptographic Operations",
         description = "Cryptographic Operations API defines operations that can be executed on existing cryptographic Keys."
 )
-public interface CryptographicOperationsController {
+public interface CryptographicOperationsController extends NoAuthController {
 
     /////////////////////////////////////////////////////////////////////////////////
     // cipher operations
@@ -70,9 +51,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{keyUuid}/encrypt",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -101,9 +81,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{keyUuid}/decrypt",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -136,9 +115,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{keyUuid}/sign",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -167,9 +145,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{keyUuid}/verify",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -196,9 +173,8 @@ public interface CryptographicOperationsController {
                             description = "List of Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/random/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -224,9 +200,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/random/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -258,9 +233,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/random",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )

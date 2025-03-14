@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class CodeBlockAttributeContentData {
 
     @Schema(description = "Definition of programming languages used for code",
-            example = "JAVA, PHP, C, etc",
+            examples = {"JAVA, PHP, C, etc"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private ProgrammingLanguageEnum language;
 

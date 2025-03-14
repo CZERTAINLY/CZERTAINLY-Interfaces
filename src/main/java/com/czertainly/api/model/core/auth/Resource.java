@@ -93,7 +93,7 @@ public enum Resource implements IPlatformEnum {
     }
 
     @Schema(description = "Resource Name",
-            example = "certificates",
+            examples = {"certificates"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;

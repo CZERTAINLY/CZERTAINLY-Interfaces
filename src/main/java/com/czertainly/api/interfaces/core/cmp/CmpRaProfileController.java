@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.cmp;
 
+import com.czertainly.api.interfaces.NoAuthController;
 import com.czertainly.api.interfaces.core.cmp.error.CmpBaseException;
 import com.czertainly.api.model.core.acme.ProblemDocument;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -12,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequestMapping("/v1/protocols/cmp/raProfile/{raProfileName}")
 @Tag(name = "CMP RA Profile", description = "Interfaces used by CMP clients to request CMP related operations " +
         "on top of RA Profile. CMP Profile defines the behaviour for the specific CMP configuration. CMP Profile is " +
@@ -44,18 +44,18 @@ import org.springframework.web.bind.annotation.*;
                         content = @Content
                 )
         })
-public interface CmpRaProfileController {
+public interface CmpRaProfileController extends NoAuthController {
 
     @Operation(summary = "CMP Get Operations")
     @ApiResponses(value = {@ApiResponse(
             responseCode = "500",
             description = "Operation is not allowed"
     )})
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     ResponseEntity<byte[]> doGet(
             @PathVariable String raProfileName,
             @RequestParam(required = false) @Schema(
-                    description = "DER encoded CMP data",type = "string",format = "binary") byte[] message
+                    description = "DER encoded CMP data", type = "string", format = "binary") byte[] message
     ) throws CmpBaseException;
 
     @Operation(
@@ -65,7 +65,7 @@ public interface CmpRaProfileController {
                     url = "https://www.rfc-editor.org/rfc/rfc4210"
             )
     )
-    @ApiResponses({@ApiResponse(
+    @ApiResponses(value = {@ApiResponse(
             responseCode = "200",
             description = "Operation executed",
             content = {@Content(
@@ -80,14 +80,13 @@ public interface CmpRaProfileController {
                     )
             )}
     )})
-    @RequestMapping(
-            method = {RequestMethod.POST},
+    @PostMapping(
             consumes = {"application/pkixcmp"},
             produces = {"application/pkixcmp"}
     )
     ResponseEntity<byte[]> doPost(
             @PathVariable String raProfileName,
-            @RequestBody @Schema(description = "Binary CMP data",type = "string",format = "binary") byte[] request
+            @RequestBody @Schema(description = "Binary CMP data", type = "string", format = "binary") byte[] request
     ) throws CmpBaseException;
 
 }

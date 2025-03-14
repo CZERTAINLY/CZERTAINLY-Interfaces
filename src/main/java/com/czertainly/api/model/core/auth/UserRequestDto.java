@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class UserRequestDto {
 
-    @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, example = "user1")
+    @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"user1"})
     private String username;
 
     @Schema(description = "First name of the user")

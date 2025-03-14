@@ -10,12 +10,12 @@ import java.util.List;
 public class ApprovalProfileUpdateRequestDto {
 
     @Schema(description = "Description of the Approval profile",
-            example = "Detail description of the approval profile",
+            examples = {"Detail description of the approval profile"},
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
     @Schema(description = "Expiration of the Approval profile in hours",
-            example = "30",
+            examples = {"30"},
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer expiry;
 

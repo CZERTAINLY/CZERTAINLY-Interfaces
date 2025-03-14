@@ -8,12 +8,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ComplianceProfileRulesAdditionRequestDto {
     @Schema(description = "UUID of the Compliance Provider",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "c35bc88c-d0ef-11ec-9d64-0242ac120005")
+            examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120005"})
     private String connectorUuid;
 
     @Schema(description = "Kind of the Compliance Provider",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "x509")
+            examples = {"x509"})
     private String kind;
 
     @Schema(description = "Rule to be added")

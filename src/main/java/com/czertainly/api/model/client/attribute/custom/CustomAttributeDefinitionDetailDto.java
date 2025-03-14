@@ -17,7 +17,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
      */
     @Schema(description = "Type of the Attribute",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "custom",
+            examples = {"custom"},
             defaultValue = "custom")
     private AttributeType type;
 
@@ -26,7 +26,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
      **/
     @Schema(
             description = "Friendly name of the the Attribute",
-            example = "Attribute Name",
+            examples = {"Attribute Name"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
@@ -55,7 +55,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
      **/
     @Schema(
             description = "Group of the Attribute, used for the logical grouping of the Attribute",
-            example = "requiredAttributes"
+            examples = {"requiredAttributes"}
     )
     private String group;
 

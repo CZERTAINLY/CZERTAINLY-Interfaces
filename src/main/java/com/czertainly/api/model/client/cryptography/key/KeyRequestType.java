@@ -21,7 +21,7 @@ public enum KeyRequestType implements IPlatformEnum {
     }
 
     @Schema(description = "Type of the key to be generated",
-            example = "secret", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"secret"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

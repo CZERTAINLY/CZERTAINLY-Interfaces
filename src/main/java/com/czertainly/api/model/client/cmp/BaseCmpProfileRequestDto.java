@@ -14,14 +14,14 @@ public class BaseCmpProfileRequestDto {
 
     @Schema(
             description = "Description of the CMP Profile",
-            example = "Sample text description"
+            examples = {"Sample text description"}
     )
     private String description;
 
     @ValidUuid
     @Schema(
             description = "RA Profile UUID that the CMP Profile is associated with",
-            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
     )
     private String raProfileUuid;
 

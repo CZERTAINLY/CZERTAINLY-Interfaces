@@ -3,8 +3,8 @@ package com.czertainly.api.interfaces.connector;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.NoAuthController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
@@ -14,8 +14,6 @@ import com.czertainly.api.model.connector.authority.CaCertificatesRequestDto;
 import com.czertainly.api.model.connector.authority.CaCertificatesResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,28 +22,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/authorityProvider/authorities")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
 @Tag(name = "Authority Management", description = "Authority Management API")
-public interface AuthorityInstanceController {
+public interface AuthorityInstanceController extends NoAuthController {
 
     @Operation(
             summary = "List Authority instances"
@@ -57,7 +36,7 @@ public interface AuthorityInstanceController {
                             description = "Authority instance list retrieved"
                     )
             })
-    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(produces = {"application/json"})
     List<AuthorityProviderInstanceDto> listAuthorityInstances();
 
     @Operation(
@@ -70,7 +49,7 @@ public interface AuthorityInstanceController {
                             description = "Authority instance retrieved"
                     )
             })
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{uuid}", produces = {"application/json"})
     AuthorityProviderInstanceDto getAuthorityInstance(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
@@ -83,7 +62,7 @@ public interface AuthorityInstanceController {
                             description = "Authority instance created"
                     )
             })
-    @RequestMapping(method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     AuthorityProviderInstanceDto createAuthorityInstance(@RequestBody AuthorityProviderInstanceRequestDto request) throws AlreadyExistException;
 
     @Operation(
@@ -96,7 +75,7 @@ public interface AuthorityInstanceController {
                             description = "Authority instance updated"
                     )
             })
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
     AuthorityProviderInstanceDto updateAuthorityInstance(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid, @RequestBody AuthorityProviderInstanceRequestDto request) throws NotFoundException;
 
     @Operation(
@@ -109,11 +88,11 @@ public interface AuthorityInstanceController {
                             description = "Authority instance removed"
                     )
             })
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeAuthorityInstance(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
-    @RequestMapping(path = "/{uuid}/connect", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{uuid}/connect", produces = {"application/json"})
     @Operation(
             summary = "Connect to Authority"
     )
@@ -137,7 +116,7 @@ public interface AuthorityInstanceController {
                             description = "RA Profile Attributes retrieved"
                     )
             })
-    @RequestMapping(path = "/{uuid}/raProfile/attributes", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{uuid}/raProfile/attributes", produces = {"application/json"})
     List<BaseAttribute> listRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
@@ -151,7 +130,7 @@ public interface AuthorityInstanceController {
                             description = "RA Profile Attributes information validated"
                     )
             })
-    @RequestMapping(path = "/{uuid}/raProfile/attributes/validate", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(path = "/{uuid}/raProfile/attributes/validate", consumes = {"application/json"}, produces = {"application/json"})
     void validateRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
@@ -169,9 +148,8 @@ public interface AuthorityInstanceController {
                             description = "CRL retrieved"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{uuid}/crl",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -193,9 +171,8 @@ public interface AuthorityInstanceController {
                             description = "Authority Instance's certificate chain retrieved"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{uuid}/caCertificates",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )

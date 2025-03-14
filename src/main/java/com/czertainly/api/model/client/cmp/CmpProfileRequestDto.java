@@ -19,7 +19,7 @@ public class CmpProfileRequestDto extends BaseCmpProfileRequestDto {
     @Schema(
             description = "Name of the CMP Profile",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "Example CMP Profile"
+            examples = {"Example CMP Profile"}
     )
     private String name;
 

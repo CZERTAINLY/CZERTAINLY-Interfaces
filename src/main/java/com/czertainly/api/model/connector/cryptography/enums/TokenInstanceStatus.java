@@ -25,7 +25,7 @@ public enum TokenInstanceStatus implements IPlatformEnum {
     }
 
     @Schema(description = "Token instance status",
-            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"ok"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

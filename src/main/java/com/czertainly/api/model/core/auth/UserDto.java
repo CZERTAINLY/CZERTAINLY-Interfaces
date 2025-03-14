@@ -14,10 +14,10 @@ import java.util.List;
 @Data
 public class UserDto implements Loggable {
 
-    @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED, example = "5b5f0784-2519-11ed-861d-0242ac120002")
+    @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"5b5f0784-2519-11ed-861d-0242ac120002"})
     private String uuid;
 
-    @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, example = "user1")
+    @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"user1"})
     private String username;
 
     @Schema(description = "First name of the user")

@@ -16,7 +16,7 @@ public class CertificateFinalizeRequest {
     @Schema(
             description = "CSR in Base64url-encoded version of the DER format",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "<base64url-encoded version of the DER format>"
+            examples = {"<base64url-encoded version of the DER format>"}
     )
     private String csr;
 

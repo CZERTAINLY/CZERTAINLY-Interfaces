@@ -25,7 +25,7 @@ public enum KeyCompromiseReason implements IPlatformEnum {
     }
 
     @Schema(description = "Reason for compromise",
-            example = "Unauthorized Disclosure", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"Unauthorized Disclosure"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

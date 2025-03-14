@@ -49,7 +49,7 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
      **/
     @Schema(
             description = "Version of the Attribute",
-            example = "2",
+            examples = {"2"},
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             defaultValue = "2"
     )
@@ -60,7 +60,7 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
      **/
     @Schema(
             description = "UUID of the Attribute for unique identification",
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
+            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String uuid;
@@ -70,7 +70,7 @@ public class BaseAttribute<T> extends AbstractBaseAttribute {
      **/
     @Schema(
             description = "Name of the Attribute that is used for identification",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;

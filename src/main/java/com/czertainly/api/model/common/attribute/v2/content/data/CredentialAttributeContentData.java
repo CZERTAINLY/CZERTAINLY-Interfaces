@@ -11,7 +11,7 @@ import java.util.List;
 public class CredentialAttributeContentData extends NameAndUuidDto {
 
     @Schema(description = "Credential Kind",
-            example = "SoftKeyStore, Basic, ApiKey, etc",
+            examples = {"SoftKeyStore, Basic, ApiKey, etc"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 

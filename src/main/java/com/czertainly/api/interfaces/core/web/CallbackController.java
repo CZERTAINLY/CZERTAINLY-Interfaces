@@ -3,37 +3,36 @@ package com.czertainly.api.interfaces.core.web;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequestMapping("/v1")
 @Tag(name = "Callback", description = "Callback API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
-						responseCode = "400",
-						description = "Bad Request",
-						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-				),
-				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
 				),
-				@ApiResponse(
-						responseCode = "500",
-						description = "Internal Server Error",
-						content = @Content
+				@ApiResponse(responseCode = "422",
+						description = "Unprocessable Entity",
+						content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+								examples = {
+										@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")
+								})
 				),
 				@ApiResponse(
 						responseCode = "502",
@@ -47,7 +46,7 @@ import org.springframework.web.bind.annotation.*;
 				),
 		})
 
-public interface CallbackController {
+public interface CallbackController extends AuthProtectedController {
 
 	@Operation(summary = "Connector Callback API", description = "API to trigger the Callback for Connector.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})

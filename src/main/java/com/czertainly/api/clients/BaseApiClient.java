@@ -179,7 +179,7 @@ public abstract class BaseApiClient {
         }
         if (HttpStatus.NOT_FOUND.equals(clientResponse.statusCode())) {
             return clientResponse.bodyToMono(String.class)
-                    .flatMap(body -> Mono.error(new NotFoundException(body)));
+                    .flatMap(body -> Mono.error(new ConnectorEntityNotFoundException(body)));
         }
         if (clientResponse.statusCode().is4xxClientError()) {
             return clientResponse.bodyToMono(String.class)
@@ -201,8 +201,7 @@ public abstract class BaseApiClient {
 
             if (unwrapped instanceof IOException || unwrapped instanceof WebClientRequestException) {
                 throw new ConnectorCommunicationException(unwrapped.getMessage(), unwrapped, connector);
-            } else if (unwrapped instanceof ConnectorException) {
-                ConnectorException ce = (ConnectorException) unwrapped;
+            } else if (unwrapped instanceof ConnectorException ce) {
                 ce.setConnector(connector);
                 throw ce;
             } else {

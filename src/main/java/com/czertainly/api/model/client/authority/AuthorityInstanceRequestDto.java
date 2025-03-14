@@ -25,7 +25,7 @@ public class AuthorityInstanceRequestDto {
     private String connectorUuid;
 
     @Schema(description = "Authority instance Kind",
-            example = "LegacyEjbca, ADCS, etc",
+            examples = {"LegacyEjbca, ADCS, etc"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 

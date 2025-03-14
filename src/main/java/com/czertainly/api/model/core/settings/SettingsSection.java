@@ -23,20 +23,20 @@ public enum SettingsSection implements IPlatformEnum {
 
     @Schema(
             description = "Setting section",
-            example = "platform",
+            examples = {"platform"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private final String code;
 
     @Schema(
             description = "Name",
-            example = "Platform"
+            examples = {"Platform"}
     )
     private final String label;
 
     @Schema(
             description = "Description",
-            example = "CZERTAINLY platform settings"
+            examples = {"CZERTAINLY platform settings"}
     )
     private final String description;
 

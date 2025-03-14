@@ -10,10 +10,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.List;
 
 public class ComplianceRulesDto extends NameAndUuidDto {
-    @Schema(description = "Description of the rule", example = "Sample rule description")
+    @Schema(description = "Description of the rule", examples = {"Sample rule description"})
     private String description;
 
-    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "X509")
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
     private CertificateType certificateType;
 
     @Schema(description = "Attributes of the rule")

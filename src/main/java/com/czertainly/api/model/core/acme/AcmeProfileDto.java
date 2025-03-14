@@ -13,31 +13,31 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
-    @Schema(description = "ACME Profile description", example = "Sample description")
+    @Schema(description = "ACME Profile description", examples = {"Sample description"})
     private String description;
-    @Schema(description = "Terms of Service URL", example = "https://sample-url.com/termsOfService")
+    @Schema(description = "Terms of Service URL", examples = {"https://sample-url.com/termsOfService"})
     private String termsOfServiceUrl;
-    @Schema(description = "Website URL", example = "https://sample-company.com")
+    @Schema(description = "Website URL", examples = {"https://sample-company.com"})
     private String websiteUrl;
-    @Schema(description = "DNS Resolver IP address", example = "8.8.8.8")
+    @Schema(description = "DNS Resolver IP address", examples = {"8.8.8.8"})
     private String dnsResolverIp;
-    @Schema(description = "DNS Resolver port number", example = "53")
+    @Schema(description = "DNS Resolver port number", examples = {"53"})
     private String dnsResolverPort;
     @Schema(description = "RA Profile")
     private SimplifiedRaProfileDto raProfile;
-    @Schema(description = "Retry interval for ACME client requests", example = "30")
+    @Schema(description = "Retry interval for ACME client requests", examples = {"30"})
     private Integer retryInterval;
-    @Schema(description = "Disable new Orders (change in Terms of Service)", example = "false")
+    @Schema(description = "Disable new Orders (change in Terms of Service)", examples = {"false"})
     private Boolean termsOfServiceChangeDisable;
-    @Schema(description = "Order validity", example = "36000")
+    @Schema(description = "Order validity", examples = {"36000"})
     private Integer validity;
-    @Schema(description = "ACME Directory URL", example = "https://some-server.com/api/v1/protocols/acme/profile1/directory")
+    @Schema(description = "ACME Directory URL", examples = {"https://some-server.com/api/v1/protocols/acme/profile1/directory"})
     private String directoryUrl;
-    @Schema(description = "Changes of Terms of Service URL", example = "https://some-company.com/termsOfService/change")
+    @Schema(description = "Changes of Terms of Service URL", examples = {"https://some-company.com/termsOfService/change"})
     private String termsOfServiceChangeUrl;
-    @Schema(description = "Require Contact information for new Account", example = "true")
+    @Schema(description = "Require Contact information for new Account", examples = {"true"})
     private Boolean requireContact;
-    @Schema(description = "Require new Account to agree on Terms of Service", example = "true")
+    @Schema(description = "Require new Account to agree on Terms of Service", examples = {"true"})
     private Boolean requireTermsOfService;
     @Schema(description = "List of Attributes to issue a Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;
