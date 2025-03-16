@@ -78,15 +78,18 @@ public interface AuthorityInstanceController extends AuthProtectedController {
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     void deleteAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException;
 
+    @Operation(summary = "List entity profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Entity profiles retrieved")})
     @GetMapping(path = "/{uuid}/endentityprofiles", produces = {"application/json"})
     List<NameAndIdDto> listEntityProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException;
 
+    @Operation(summary = "List certificate profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate profiles retrieved")})
     @GetMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles", produces = {"application/json"})
     List<NameAndIdDto> listCertificateProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
             throws ConnectorException, NotFoundException;
 
+    @Operation(summary = "List CAs in Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CAs in Profile retrieved")})
     @GetMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/cas", produces = {"application/json"})
     List<NameAndIdDto> listCAsInProfile(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)

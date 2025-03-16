@@ -119,7 +119,7 @@ public interface AcmeController extends NoAuthController {
     @Operation(summary = "Validate Challenge", externalDocs = @ExternalDocumentation(description = "RFC 8555, section 7.5.1", url = "https://datatracker.ietf.org/doc/html/rfc8555#section-7.5.1"))
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Challenge validation initiated")})
     @PostMapping(path = "/chall/{challengeId}", consumes = {"application/jose+json"}, produces = {"application/json"})
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Initiate Challenge validation JWS Payload", required = true, content = @Content(schema = @Schema(implementation = Map.class), mediaType = "application/jose+json", examples = {@ExampleObject(value = "{}")}))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Initiate Challenge validation JWS Payload", required = true, content = @Content(schema = @Schema(implementation = Map.class), mediaType = "application/jose+json"))
     ResponseEntity<Challenge> validateChallenge(@Parameter(description = "ACME Profile name") @PathVariable String acmeProfileName, @Parameter(description = "Challenge Id") @PathVariable String challengeId) throws NotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, AcmeProblemDocumentException;
 
     @Operation(summary = "Get Order details", externalDocs = @ExternalDocumentation(description = "RFC 8555, section 7.1.3", url = "https://datatracker.ietf.org/doc/html/rfc8555#section-7.1.3"))

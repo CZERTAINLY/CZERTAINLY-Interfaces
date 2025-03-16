@@ -31,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/v1/attributes/custom")
 @Tag(name = "Custom Attributes", description = "Custom Attributes API")
@@ -107,7 +108,7 @@ public interface CustomAttributeController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Custom Attribute associated to the resources"), @ApiResponse(responseCode = "404", description = "Custom attribute not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PatchMapping(path = "/{uuid}/resources", produces = {"application/json"}, consumes = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateResources(@Parameter(description = "Custom Attribute UUID") @PathVariable String uuid, @io.swagger.v3.oas.annotations.parameters.RequestBody(
+    void updateResources(@Parameter(description = "Custom Attribute UUID", schema = @Schema(implementation = UUID.class)) @PathVariable String uuid, @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "List of Resources", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"raProfiles\",\"authorities\"]")}))
     @RequestBody List<Resource> resources) throws NotFoundException;
@@ -115,7 +116,7 @@ public interface CustomAttributeController extends AuthProtectedController {
     @Operation(summary = "Get Custom Attributes for a resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CustomAttribute.class))))})
     @GetMapping(path = "/resources/{resource}", produces = {"application/json"})
-    List<BaseAttribute> getResourceCustomAttributes(@Parameter(description = "Resource Name") @PathVariable Resource resource);
+    List<BaseAttribute> getResourceCustomAttributes(@Parameter(description = "Resource Name", schema = @Schema(implementation = Resource.class)) @PathVariable Resource resource);
 
     @Operation(summary = "Get available resources for Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})

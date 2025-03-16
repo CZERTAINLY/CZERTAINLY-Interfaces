@@ -47,10 +47,10 @@ import org.springframework.web.bind.annotation.*;
 public interface CmpRaProfileController extends NoAuthController {
 
     @Operation(summary = "CMP Get Operations")
-    @ApiResponses(value = {@ApiResponse(
-            responseCode = "500",
-            description = "Operation is not allowed"
-    )})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CMP Operations retrieved"),
+            @ApiResponse(responseCode = "500", description = "Operation is not allowed")
+    })
     @GetMapping
     ResponseEntity<byte[]> doGet(
             @PathVariable String raProfileName,
