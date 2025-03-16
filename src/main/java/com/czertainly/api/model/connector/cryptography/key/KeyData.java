@@ -6,6 +6,8 @@ import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
 import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.connector.cryptography.key.value.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -41,6 +43,14 @@ public class KeyData {
             description = "Value of the Key",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "format")
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = RawKeyValue.class, name = "Raw"),
+            @JsonSubTypes.Type(value = SpkiKeyValue.class, name = "SubjectPublicKeyInfo"),
+            @JsonSubTypes.Type(value = PrkiKeyValue.class, name = "PrivateKeyInfo"),
+            @JsonSubTypes.Type(value = EprkiKeyValue.class, name = "EncryptedPrivateKeyInfo"),
+            @JsonSubTypes.Type(value = CustomKeyValue.class, name = "Custom")
+    })
     private KeyValue value;
 
     @Schema(
