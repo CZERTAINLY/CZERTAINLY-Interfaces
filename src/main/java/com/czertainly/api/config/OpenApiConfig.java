@@ -15,16 +15,16 @@ import io.swagger.v3.oas.annotations.servers.Server;
 )
 @SecuritySchemes(value = {
         @SecurityScheme(
-                name = SwaggerConfig.CERTIFICATE_SECURITY_SCHEME_NAME,
+                name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME,
                 type = SecuritySchemeType.MUTUALTLS
         ),
         @SecurityScheme(
-                name = SwaggerConfig.BEARER_SECURITY_SCHEME_NAME,
+                name = OpenApiConfig.BEARER_SECURITY_SCHEME_NAME,
                 type = SecuritySchemeType.HTTP,
                 scheme = "Bearer"
         ),
         @SecurityScheme(
-                name = SwaggerConfig.OAUTH2_SECURITY_SCHEME_NAME,
+                name = OpenApiConfig.OAUTH2_SECURITY_SCHEME_NAME,
                 type = SecuritySchemeType.OAUTH2,
                 flows = @OAuthFlows(
                         authorizationCode = @OAuthFlow(
@@ -33,17 +33,11 @@ import io.swagger.v3.oas.annotations.servers.Server;
                         )
                 )
         )
-//        @SecurityScheme(
-//                name = SwaggerConfig.OPENID_CONNECT_SECURITY_SCHEME_NAME,
-//                type = SecuritySchemeType.OPENIDCONNECT,
-//                openIdConnectUrl = "https://example.com/.well-known/openid-configuration"
-//        )
 })
-public class SwaggerConfig {
+public class OpenApiConfig {
         public static final String CERTIFICATE_SECURITY_SCHEME_NAME = "Certificate";
         public static final String BEARER_SECURITY_SCHEME_NAME = "BearerAuth";
         public static final String OAUTH2_SECURITY_SCHEME_NAME = "OAuth2";
-        public static final String OPENID_CONNECT_SECURITY_SCHEME_NAME = "OpenID";
 
-        private SwaggerConfig() {}
+        private OpenApiConfig() {}
 }

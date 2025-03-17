@@ -1,6 +1,6 @@
 package com.czertainly.api.interfaces;
 
-import com.czertainly.api.config.SwaggerConfig;
+import com.czertainly.api.config.OpenApiConfig;
 import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SecurityRequirements(value = {
-        @SecurityRequirement(name = SwaggerConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
-        @SecurityRequirement(name = SwaggerConfig.BEARER_SECURITY_SCHEME_NAME),
-        @SecurityRequirement(name = SwaggerConfig.OAUTH2_SECURITY_SCHEME_NAME),
+        @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
+        @SecurityRequirement(name = OpenApiConfig.BEARER_SECURITY_SCHEME_NAME),
+        @SecurityRequirement(name = OpenApiConfig.OAUTH2_SECURITY_SCHEME_NAME),
 })@ApiResponses(
         value = {
                 @ApiResponse(
