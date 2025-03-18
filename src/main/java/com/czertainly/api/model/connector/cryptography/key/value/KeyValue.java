@@ -11,7 +11,7 @@ import lombok.Setter;
 @Schema(
         description = "Value of the Key",
         type = "object",
-        oneOf = {
+        subTypes = {
                 RawKeyValue.class,
                 SpkiKeyValue.class,
                 PrkiKeyValue.class,
