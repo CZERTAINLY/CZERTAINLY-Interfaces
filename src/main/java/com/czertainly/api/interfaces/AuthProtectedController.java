@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SecurityRequirements(value = {
-        @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.BEARER_SECURITY_SCHEME_NAME),
-        @SecurityRequirement(name = OpenApiConfig.OAUTH2_SECURITY_SCHEME_NAME),
+//        @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
+//        @SecurityRequirement(name = OpenApiConfig.OAUTH2_SECURITY_SCHEME_NAME),
 })@ApiResponses(
         value = {
                 @ApiResponse(

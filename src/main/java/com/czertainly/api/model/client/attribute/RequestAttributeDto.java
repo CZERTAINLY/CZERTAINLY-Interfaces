@@ -7,6 +7,7 @@ import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Request attribute to send attribute content for object")
-public class RequestAttributeDto {
+public class RequestAttributeDto implements Serializable {
 
     /**
      * UUID of the Attribute

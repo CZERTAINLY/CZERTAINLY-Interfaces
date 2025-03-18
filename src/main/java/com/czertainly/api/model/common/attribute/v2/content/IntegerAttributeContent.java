@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
+@Schema(
+        description = "Integer attribute content for integer numbers",
+        type = "object")
 public class IntegerAttributeContent extends BaseAttributeContent<Integer> {
 
     @Schema(description = "Integer attribute value", requiredMode = Schema.RequiredMode.REQUIRED)

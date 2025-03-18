@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(
+        description = "Secret attribute content carrying secrets with defined protection level",
+        type = "object")
 public class SecretAttributeContent extends BaseAttributeContent<SecretAttributeContentData> {
 
     @Schema(description = "Secret attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)

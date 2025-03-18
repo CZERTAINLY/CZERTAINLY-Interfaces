@@ -2,13 +2,13 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.DateTimeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RangeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -19,15 +19,25 @@ import java.util.List;
  * an Attribute definition including its value for the attributes
  * of type Data.
  */
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.")
+@Schema(
+        description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
+        type = "object"
+)
 public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
 
     /**
      * Content of the Attribute
      **/
-    @Schema(
-            description = "Content of the Attribute"
+    @ArraySchema(
+            schema = @Schema(
+                    ref = "BaseAttributeContentDto"
+            ),
+            arraySchema = @Schema(
+                    description = "Content of the Attribute"
+            )
     )
     private List<BaseAttributeContent> content;
 
@@ -87,47 +97,6 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
         setType(original.getType());
         setContentType(original.contentType);
     }
-
-    public List<BaseAttributeContent> getContent() {
-        return content;
-    }
-
-    public void setContent(List<BaseAttributeContent> content) {
-        this.content = content;
-    }
-
-    public AttributeContentType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(AttributeContentType contentType) {
-        this.contentType = contentType;
-    }
-
-    public DataAttributeProperties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(DataAttributeProperties properties) {
-        this.properties = properties;
-    }
-
-    public List<BaseAttributeConstraint> getConstraints() {
-        return constraints;
-    }
-
-    public void setConstraints(List<BaseAttributeConstraint> constraints) {
-        this.constraints = constraints;
-    }
-
-    public AttributeCallback getAttributeCallback() {
-        return attributeCallback;
-    }
-
-    public void setAttributeCallback(AttributeCallback attributeCallback) {
-        this.attributeCallback = attributeCallback;
-    }
-
 
     @Override
     public String toString() {

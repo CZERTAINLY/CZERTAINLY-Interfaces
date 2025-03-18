@@ -2,7 +2,10 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,15 +16,25 @@ import java.util.List;
  * an Attribute definition including its value for the Attributes
  * of type Group.
  */
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Group attribute and its content represents dynamic list of additional attributes retrieved by callback. Its content can not be edited and is not send in requests to store.")
+@Schema(
+        description = "Group attribute and its content represents dynamic list of additional attributes retrieved by callback. Its content can not be edited and is not send in requests to store.",
+        type = "object"
+)
 public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
 
     /**
      * Content of the Attribute
      **/
-    @Schema(
-            description = "List of all different types of attributes"
+    @ArraySchema(
+            schema = @Schema(
+                    ref = "BaseAttributeDto"
+            ),
+            arraySchema = @Schema(
+                    description = "List of all different types of attributes"
+            )
     )
     private List<BaseAttribute> content;
 
@@ -39,22 +52,6 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
 
     public GroupAttribute(String type) {
         super(AttributeType.fromCode(type));
-    }
-
-    public List<BaseAttribute> getContent() {
-        return content;
-    }
-
-    public void setContent(List<BaseAttribute> content) {
-        this.content = content;
-    }
-
-    public AttributeCallback getAttributeCallback() {
-        return attributeCallback;
-    }
-
-    public void setAttributeCallback(AttributeCallback attributeCallback) {
-        this.attributeCallback = attributeCallback;
     }
 
     @Override

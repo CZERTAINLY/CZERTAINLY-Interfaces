@@ -20,19 +20,19 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeContentType implements IPlatformEnum {
 
-    STRING(Constants.STRING, "String", StringAttributeContent.class, String.class, true),
-    TEXT(Constants.TEXT, "Text", TextAttributeContent.class, String.class, true),
-    INTEGER(Constants.INTEGER, "Integer number", IntegerAttributeContent.class, Integer.class, true),
-    BOOLEAN(Constants.BOOLEAN, "Boolean", BooleanAttributeContent.class, Boolean.class, true),
-    FLOAT(Constants.FLOAT, "Decimal number", FloatAttributeContent.class, Float.class, true),
-    DATE(Constants.DATE, "Date", DateAttributeContent.class, LocalDate.class, true),
-    TIME(Constants.TIME, "Time", TimeAttributeContent.class, LocalTime.class, true),
-    DATETIME(Constants.DATETIME, "DateTime", DateTimeAttributeContent.class, ZonedDateTime.class, true),
-    SECRET(Constants.SECRET, "Secret", SecretAttributeContent.class, SecretAttributeContentData.class, false),
-    FILE(Constants.FILE, "File", FileAttributeContent.class, FileAttributeContentData.class, false),
-    CREDENTIAL(Constants.CREDENTIAL, "Credential", CredentialAttributeContent.class, CredentialAttributeContentData.class, false),
-    CODEBLOCK(Constants.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, CodeBlockAttributeContentData.class, false),
-    OBJECT(Constants.OBJECT, "Object", ObjectAttributeContent.class, Object.class, false),
+    STRING(Codes.STRING, "String", StringAttributeContent.class, String.class, true),
+    TEXT(Codes.TEXT, "Text", TextAttributeContent.class, String.class, true),
+    INTEGER(Codes.INTEGER, "Integer number", IntegerAttributeContent.class, Integer.class, true),
+    BOOLEAN(Codes.BOOLEAN, "Boolean", BooleanAttributeContent.class, Boolean.class, true),
+    FLOAT(Codes.FLOAT, "Decimal number", FloatAttributeContent.class, Float.class, true),
+    DATE(Codes.DATE, "Date", DateAttributeContent.class, LocalDate.class, true),
+    TIME(Codes.TIME, "Time", TimeAttributeContent.class, LocalTime.class, true),
+    DATETIME(Codes.DATETIME, "DateTime", DateTimeAttributeContent.class, ZonedDateTime.class, true),
+    SECRET(Codes.SECRET, "Secret", SecretAttributeContent.class, SecretAttributeContentData.class, false),
+    FILE(Codes.FILE, "File", FileAttributeContent.class, FileAttributeContentData.class, false),
+    CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContent.class, CredentialAttributeContentData.class, false),
+    CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, CodeBlockAttributeContentData.class, false),
+    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContent.class, Object.class, false),
     ;
 
     private static final AttributeContentType[] VALUES;
@@ -105,70 +105,70 @@ public enum AttributeContentType implements IPlatformEnum {
         return contentDataClass;
     }
 
-    private static class Constants {
+    public static class Codes {
         /**
          * Simple text Attribute
          **/
-        private static final String STRING = "string";
+        public static final String STRING = "string";
 
         /**
          * Simple integer Attribute
          **/
-        private static final String INTEGER = "integer";
+        public static final String INTEGER = "integer";
 
         /**
          * String Attribute containing sensitive data
          **/
-        private static final String SECRET = "secret";
+        public static final String SECRET = "secret";
 
         /**
          * Attribute containing file data in Base64 string
          **/
-        private static final String FILE = "file";
+        public static final String FILE = "file";
 
         /**
          * Boolean Attribute taking on values {@code true} or {@code false}
          **/
-        private static final String BOOLEAN = "boolean";
+        public static final String BOOLEAN = "boolean";
 
         /**
          * Special Attribute type representing Credential
          **/
-        private static final String CREDENTIAL = "credential";
+        public static final String CREDENTIAL = "credential";
 
         /**
          * Attribute type representing date only
          **/
-        private static final String DATE = "date";
+        public static final String DATE = "date";
 
         /**
          * Attribute type representing float number
          **/
-        private static final String FLOAT = "float";
+        public static final String FLOAT = "float";
 
         /**
          * Attribute type representing general data object
          **/
-        private static final String OBJECT = "object";
+        public static final String OBJECT = "object";
 
         /**
          * Attribute type representing text, which is multiline data
          **/
-        private static final String TEXT = "text";
+        public static final String TEXT = "text";
 
         /**
          * Attribute type representing time only
          **/
-        private static final String TIME = "time";
+        public static final String TIME = "time";
 
         /**
          * Attribute type representing date and time
          **/
-        private static final String DATETIME = "datetime";
+        public static final String DATETIME = "datetime";
 
         /**
          * Attribute type representing code block
          **/
-        private static final String CODEBLOCK = "codeblock";
+        public static final String CODEBLOCK = "codeblock";
     }
 }

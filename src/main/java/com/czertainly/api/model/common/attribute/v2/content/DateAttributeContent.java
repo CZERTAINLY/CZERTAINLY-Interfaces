@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Schema(
+        description = "Date attribute content in predefined format",
+        type = "object")
 public class DateAttributeContent extends BaseAttributeContent<LocalDate> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

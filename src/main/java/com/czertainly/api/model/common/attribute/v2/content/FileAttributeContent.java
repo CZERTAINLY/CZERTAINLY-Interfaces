@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(
+        description = "File attribute content for storing encoded file content with additional info",
+        type = "object")
 public class FileAttributeContent extends BaseAttributeContent<FileAttributeContentData> {
 
     @Schema(description = "File attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)

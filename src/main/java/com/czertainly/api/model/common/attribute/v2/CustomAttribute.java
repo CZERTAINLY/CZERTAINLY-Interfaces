@@ -4,6 +4,8 @@ import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.CustomAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,8 +16,13 @@ import java.util.List;
  * an Attribute definition including its value for the attributes
  * of type Data.
  */
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Custom attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.")
+@Schema(
+        description = "Custom attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
+        type = "object"
+)
 public class CustomAttribute extends BaseAttribute<List<BaseAttributeContent>> {
 
     /**
@@ -64,31 +71,6 @@ public class CustomAttribute extends BaseAttribute<List<BaseAttributeContent>> {
         setType(original.getType());
         setContentType(original.contentType);
     }
-
-    public List<BaseAttributeContent> getContent() {
-        return content;
-    }
-
-    public void setContent(List<BaseAttributeContent> content) {
-        this.content = content;
-    }
-
-    public AttributeContentType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(AttributeContentType contentType) {
-        this.contentType = contentType;
-    }
-
-    public CustomAttributeProperties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(CustomAttributeProperties properties) {
-        this.properties = properties;
-    }
-
 
     @Override
     public String toString() {
