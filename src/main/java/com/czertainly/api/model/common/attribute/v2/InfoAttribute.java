@@ -1,6 +1,5 @@
 package com.czertainly.api.model.common.attribute.v2;
 
-import com.czertainly.api.model.client.attribute.BaseAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.InfoAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

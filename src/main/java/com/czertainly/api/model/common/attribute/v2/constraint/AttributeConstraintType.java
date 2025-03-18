@@ -59,6 +59,10 @@ public enum AttributeConstraintType implements IPlatformEnum {
 
     public static class Codes {
 
+        private Codes() {
+
+        }
+
         public static final String REGEXP = "regExp";
         public static final String RANGE = "range";
         public static final String DATETIME = "dateTime";

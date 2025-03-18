@@ -106,6 +106,11 @@ public enum AttributeContentType implements IPlatformEnum {
     }
 
     public static class Codes {
+
+        private Codes() {
+
+        }
+
         /**
          * Simple text Attribute
          **/
