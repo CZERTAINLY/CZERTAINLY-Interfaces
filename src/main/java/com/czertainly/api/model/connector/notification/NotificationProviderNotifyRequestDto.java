@@ -14,7 +14,7 @@ public class NotificationProviderNotifyRequestDto {
     @Schema(description = "Event type that happened to trigger the notification", requiredMode = Schema.RequiredMode.REQUIRED)
     private NotificationType eventType;
 
-    @Schema(description = "Resource which is represented by data", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "certificate")
+    @Schema(description = "Resource which is represented by data", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"certificate"})
     private Resource resource;
 
     @Schema(description = "Data associated with notification event and resource", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

@@ -28,7 +28,7 @@ public enum DigestAlgorithm implements IPlatformEnum {
     }
 
     @Schema(description = "Digest algorithm code",
-            example = "SHA-1", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"SHA-1"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

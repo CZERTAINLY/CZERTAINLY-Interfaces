@@ -26,7 +26,7 @@ public class ResponseAttributeDto implements Serializable {
      **/
     @Schema(
             description = "UUID of the Attribute",
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
+            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"}
     )
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
@@ -36,7 +36,7 @@ public class ResponseAttributeDto implements Serializable {
      **/
     @Schema(
             description = "Name of the Attribute",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
@@ -46,7 +46,7 @@ public class ResponseAttributeDto implements Serializable {
      **/
     @Schema(
             description = "Label of the the Attribute",
-            example = "Attribute Name",
+            examples = {"Attribute Name"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
@@ -65,7 +65,7 @@ public class ResponseAttributeDto implements Serializable {
      **/
     @Schema(
             description = "Content Type of the Attribute",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeContentType contentType;
@@ -74,23 +74,7 @@ public class ResponseAttributeDto implements Serializable {
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute",
-            type = "object",
-            oneOf = {
-                    BooleanAttributeContent.class,
-                    CodeBlockAttributeContent.class,
-                    CredentialAttributeContent.class,
-                    DateAttributeContent.class,
-                    DateTimeAttributeContent.class,
-                    FileAttributeContent.class,
-                    FloatAttributeContent.class,
-                    IntegerAttributeContent.class,
-                    ObjectAttributeContent.class,
-                    SecretAttributeContent.class,
-                    StringAttributeContent.class,
-                    TextAttributeContent.class,
-                    TimeAttributeContent.class
-            }
+            description = "Content of the Attribute"
     )
     @JsonSerialize(using = ResponseAttributeSerializer.class)
     private List<BaseAttributeContent> content;

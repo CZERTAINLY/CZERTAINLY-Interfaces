@@ -13,7 +13,7 @@ import java.util.List;
 public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "Credential Kind",
-            example = "SoftKeyStore, Basic, ApiKey, etc",
+            examples = {"SoftKeyStore, Basic, ApiKey, etc"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 

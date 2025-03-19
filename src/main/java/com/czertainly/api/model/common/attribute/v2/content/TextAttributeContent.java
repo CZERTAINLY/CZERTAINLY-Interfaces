@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
+@Schema(
+        description = "Text attribute content used to store longer formatted strings",
+        type = "object")
 public class TextAttributeContent extends BaseAttributeContent<String> {
 
     @Schema(description = "Text attribute value", requiredMode = Schema.RequiredMode.REQUIRED)

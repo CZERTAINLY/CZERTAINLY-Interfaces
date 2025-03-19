@@ -6,12 +6,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ComplianceGroupsListRequestDto {
     @Schema(description = "UUID of the Compliance Provider. If not provided, groups from all the Providers is returned",
-            example = "c35bc88c-d0ef-11ec-9d64-0242ac120003",
+            examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120003"},
             defaultValue = "null")
     private String uuid;
 
     @Schema(description = "Kind of the Compliance Provider. If not provided, groups from all the kinds is returned",
-            example = "Kind1",
+            examples = {"Kind1"},
             defaultValue = "null")
     private String kind;
 

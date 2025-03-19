@@ -26,7 +26,7 @@ public enum KeyAlgorithm implements IPlatformEnum {
     }
 
     @Schema(description = "Cryptographic algorithm code",
-            example = "RSA", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"RSA"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

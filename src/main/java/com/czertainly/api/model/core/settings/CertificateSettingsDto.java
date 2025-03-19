@@ -8,6 +8,6 @@ import java.io.Serializable;
 @Data
 public class CertificateSettingsDto implements Serializable {
 
-   @Valid
+    @Valid
     private CertificateValidationSettingsDto certificateValidationSettingsDto;
 }

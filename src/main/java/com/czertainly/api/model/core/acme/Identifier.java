@@ -14,7 +14,7 @@ public class Identifier {
      */
     @Schema(description = "Type of the Identifier",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "dns")
+            examples = {"dns"})
     private String type;
 
     /**
@@ -23,7 +23,7 @@ public class Identifier {
      */
     @Schema(description = "Value of Identifier",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "www.some-domain.com")
+            examples = {"www.some-domain.com"})
     private String value;
 
     public Identifier() {

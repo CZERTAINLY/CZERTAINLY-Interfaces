@@ -19,7 +19,7 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
 
     @Schema(
             description = "Discovery Kind",
-            example = "IP-HostName",
+            examples = {"IP-HostName"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String kind;
@@ -38,7 +38,7 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
 
     @Schema(
             description = "Failure/Success Messages",
-            example = "Failed due to network connectivity issues"
+            examples = {"Failed due to network connectivity issues"}
     )
     private String message;
 

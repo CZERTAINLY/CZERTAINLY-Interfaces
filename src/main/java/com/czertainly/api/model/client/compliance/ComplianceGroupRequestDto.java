@@ -6,13 +6,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ComplianceGroupRequestDto {
 
-    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
+    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
     private String connectorUuid;
 
-    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "default")
+    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"default"})
     private String kind;
 
-    @Schema(description = "UUID of the group", requiredMode = Schema.RequiredMode.REQUIRED, example = "1212a-34dddf34-4334f-34ddfvfdg1y3")
+    @Schema(description = "UUID of the group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
     private String groupUuid;
 
     public String getConnectorUuid() {

@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FileAttributeContent extends BaseAttributeContent<String> {
-    @Schema(description = "Name of the file", example = "example.txt")
+    @Schema(description = "Name of the file", examples = {"example.txt"})
     private String fileName;
 
     @Schema(description = "Content-Type of the data", example="xml")

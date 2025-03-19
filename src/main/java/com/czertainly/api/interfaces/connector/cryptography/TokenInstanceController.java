@@ -3,16 +3,14 @@ package com.czertainly.api.interfaces.connector.cryptography;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceRequestDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceStatusDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,31 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/cryptographyProvider/tokens")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
 @Tag(
         name = "Token Management",
         description = "Token Management API is used to manage Token instance created from Cryptography Providers. Token represents connection with key stores that can perform cryptographic operations. It can manage one or more key stores, or it can be used with external key stores, such as vaults, hardware security modules, etc. Token Profile represents particular key store that can be used to execute cryptographic operations and key management through the Token instance."
 )
-public interface TokenInstanceController {
+public interface TokenInstanceController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List Token instances"
@@ -57,8 +36,7 @@ public interface TokenInstanceController {
                             description = "Token instance list retrieved"
                     )
             })
-    @RequestMapping(
-            method = RequestMethod.GET,
+    @GetMapping(
             produces = {"application/json"}
     )
     List<TokenInstanceDto> listTokenInstances();
@@ -73,9 +51,8 @@ public interface TokenInstanceController {
                             description = "Token instance retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -95,8 +72,7 @@ public interface TokenInstanceController {
                             description = "Token instance created"
                     )
             })
-    @RequestMapping(
-            method = RequestMethod.POST,
+    @PostMapping(
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -117,9 +93,8 @@ public interface TokenInstanceController {
                             description = "Token instance updated"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{uuid}",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -141,9 +116,8 @@ public interface TokenInstanceController {
                             description = "Token instance removed"
                     )
             })
-    @RequestMapping(
-            path = "/{uuid}",
-            method = RequestMethod.DELETE
+    @DeleteMapping(
+            path = "/{uuid}"
     )
     @ResponseStatus(
             HttpStatus.NO_CONTENT
@@ -166,9 +140,8 @@ public interface TokenInstanceController {
                             description = "Token instance status retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}/status",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -188,9 +161,8 @@ public interface TokenInstanceController {
                             description = "Token Profile Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}/tokenProfile/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -210,9 +182,8 @@ public interface TokenInstanceController {
                             description = "Token Profile Attributes validated"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{uuid}/tokenProfile/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -242,9 +213,8 @@ public interface TokenInstanceController {
                             description = "Token activation Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}/activate/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -264,9 +234,8 @@ public interface TokenInstanceController {
                             description = "Token activation Attributes validated"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{uuid}/activate/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -292,9 +261,8 @@ public interface TokenInstanceController {
                             description = "Token activated"
                     )
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/{uuid}/activate",
-            method = RequestMethod.PATCH,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -319,9 +287,8 @@ public interface TokenInstanceController {
                             description = "Token deactivated"
                     )
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/{uuid}/deactivate",
-            method = RequestMethod.PATCH,
             produces = {"application/json"}
     )
     /**

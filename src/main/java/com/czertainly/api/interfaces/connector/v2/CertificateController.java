@@ -4,8 +4,8 @@ import com.czertainly.api.exception.CertificateOperationException;
 import com.czertainly.api.exception.CertificateRequestException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.v2.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,29 +22,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v2/authorityProvider/authorities/{uuid}/certificates")
 @Tag(name = "Certificate Management", description = "Certificate Management API")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-
-public interface CertificateController {
+public interface CertificateController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List of Attributes to issue Certificate"

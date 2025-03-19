@@ -28,7 +28,7 @@ public enum FunctionGroupCode implements IPlatformEnum {
     }
 
     @Schema(description = "Function Group code of the Connector",
-            example = "credentialProvider", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"credentialProvider"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

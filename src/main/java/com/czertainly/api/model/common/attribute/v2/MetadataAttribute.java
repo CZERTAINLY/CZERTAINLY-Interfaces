@@ -4,38 +4,27 @@ import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.MetadataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Info attribute contains content that is for metadata. Its content can not be edited and is not send in requests to store.")
+@Schema(
+        description = "Info attribute contains content that is for metadata. Its content can not be edited and is not send in requests to store.",
+        type = "object"
+)
 public class MetadataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
 
     /**
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute",
-            type = "object",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            discriminatorProperty = "contentType",
-            oneOf = {
-                    BooleanAttributeContent.class,
-                    CodeBlockAttributeContent.class,
-                    CredentialAttributeContent.class,
-                    DateAttributeContent.class,
-                    DateTimeAttributeContent.class,
-                    FileAttributeContent.class,
-                    FloatAttributeContent.class,
-                    IntegerAttributeContent.class,
-                    ObjectAttributeContent.class,
-                    SecretAttributeContent.class,
-                    StringAttributeContent.class,
-                    TextAttributeContent.class,
-                    TimeAttributeContent.class
-            }
+            description = "Content of the Attribute"
     )
     private List<BaseAttributeContent> content;
 
@@ -68,33 +57,6 @@ public class MetadataAttribute extends BaseAttribute<List<BaseAttributeContent>>
     public MetadataAttribute(String type) {
         super(AttributeType.fromCode(type));
     }
-
-    @Override
-    public List<BaseAttributeContent> getContent() {
-        return content;
-    }
-
-    @Override
-    public void setContent(List<BaseAttributeContent> content) {
-        this.content = content;
-    }
-
-    public AttributeContentType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(AttributeContentType contentType) {
-        this.contentType = contentType;
-    }
-
-    public MetadataAttributeProperties getProperties() {
-        return properties;
-    }
-
-    public void setProperties(MetadataAttributeProperties properties) {
-        this.properties = properties;
-    }
-
 
     @Override
     public String toString() {

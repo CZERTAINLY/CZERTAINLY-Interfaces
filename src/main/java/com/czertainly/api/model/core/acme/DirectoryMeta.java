@@ -12,13 +12,13 @@ public class DirectoryMeta {
     /**
      * URL for the Terms and Service to be accepted by the clients
      */
-    @Schema(description = "Terms of Service URL", example = "https://sample-url.com/termsOfService")
+    @Schema(description = "Terms of Service URL", examples = {"https://sample-url.com/termsOfService"})
     private String termsOfService;
 
     /**
      * URL of the website for the ACME configuration
      */
-    @Schema(description = "Website URL", example = "https://sample-company.com")
+    @Schema(description = "Website URL", examples = {"https://sample-company.com"})
     private String website;
 
     /**
@@ -33,7 +33,7 @@ public class DirectoryMeta {
      */
     @Schema(description = "Array of CAA record validation servers",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            example = "[\"example1.com\", \"example2.com\"]")
+            examples = {"[\"example1.com\", \"example2.com\"]"})
     private String[] caaIdentities;
 
     public String getTermsOfService() {

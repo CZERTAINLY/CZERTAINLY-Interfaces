@@ -28,7 +28,7 @@ public enum CertificateEvent {
     UPDATE_LOCATION("Update Location");
 
     @Schema(description = "Certificate Event",
-            example = "Issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"Issue Certificate"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
 
     CertificateEvent(String code) {

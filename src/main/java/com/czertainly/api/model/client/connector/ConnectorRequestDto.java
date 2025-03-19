@@ -12,15 +12,15 @@ import java.util.List;
 public class ConnectorRequestDto implements Named {
 
     @Schema(description = "Name of the Connector",
-            example = "Connector1",
+            examples = {"Connector1"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
     @Schema(description = "URL of the Connector to connect",
-            example = "http://network-discovery-provicer:8080",
+            examples = {"http://network-discovery-provicer:8080"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
     @Schema(description = "Type of authentication for the Connector",
-            example = "none",
+            examples = {"none"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",

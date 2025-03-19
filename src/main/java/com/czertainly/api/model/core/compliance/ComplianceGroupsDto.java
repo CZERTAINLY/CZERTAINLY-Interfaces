@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ComplianceGroupsDto extends NameAndUuidDto {
-    @Schema(description = "Description of the group", example = "Sample group description")
+    @Schema(description = "Description of the group", examples = {"Sample group description"})
     private String description;
 
     public String getDescription() {

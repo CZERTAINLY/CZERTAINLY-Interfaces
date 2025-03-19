@@ -20,7 +20,7 @@ public class CipherResponseData {
 
     @Schema(
             description = "Custom identifier of the data, that should be the same as in the request, if available",
-            example = "customId"
+            examples = {"customId"}
     )
     private String identifier;
 

@@ -31,7 +31,7 @@ public class EntityInstanceDto extends NameAndUuidDto {
     private String connectorName;
 
     @Schema(description = "Entity instance Kind",
-            example = "Keystore, etc.",
+            examples = {"Keystore, etc."},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 

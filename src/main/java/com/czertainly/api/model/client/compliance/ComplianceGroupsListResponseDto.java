@@ -9,16 +9,16 @@ import java.util.List;
 
 public class ComplianceGroupsListResponseDto {
     @Schema(description = "Name of the Compliance Provider",
-            example = "Provider1", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"Provider1"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
     @Schema(description = "UUID of the Compliance Provider",
-            example = "c35bc88c-d0ef-11ec-9d64-0242ac120003",
+            examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120003"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Kind of the Compliance Provider",
-            example = "Kind1",
+            examples = {"Kind1"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 

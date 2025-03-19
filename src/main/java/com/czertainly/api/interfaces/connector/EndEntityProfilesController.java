@@ -1,47 +1,25 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.common.NameAndIdDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
 @Tag(name = "End Entity Profiles", description = "End Entity Profiles API")
-public interface EndEntityProfilesController {
+public interface EndEntityProfilesController extends AuthProtectedConnectorController {
 
-    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(produces = {"application/json"})
     @Operation(
             summary = "List available end entity profiles"
     )
@@ -54,7 +32,7 @@ public interface EndEntityProfilesController {
     )
             throws NotFoundException;
 
-    @RequestMapping(path = "/{endEntityProfileId}/certificateprofiles", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{endEntityProfileId}/certificateprofiles", produces = {"application/json"})
     @Operation(
             summary = "List available certificate profiles for given end entity profile"
     )
@@ -69,7 +47,7 @@ public interface EndEntityProfilesController {
     )
             throws NotFoundException;
 
-    @RequestMapping(path = "/{endEntityProfileId}/cas", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/{endEntityProfileId}/cas", produces = {"application/json"})
     @Operation(
             summary = "List available certification authorities for given end entity profile"
     )

@@ -1,9 +1,24 @@
 package com.czertainly.api.model.common.attribute.v2.constraint;
 
+import com.czertainly.api.model.client.attribute.BaseAttributeConstraintDto;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Getter
+@Setter
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = RegexpAttributeConstraint.class, visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RegexpAttributeConstraint.class, name = AttributeConstraintType.Codes.REGEXP),
+        @JsonSubTypes.Type(value = RangeAttributeConstraint.class, name = AttributeConstraintType.Codes.RANGE),
+        @JsonSubTypes.Type(value = DateTimeAttributeConstraint.class, name = AttributeConstraintType.Codes.DATETIME)
+})
+@Schema(implementation = BaseAttributeConstraintDto.class)
 public class BaseAttributeConstraint<T> extends AttributeConstraint {
     @Schema(description = "Description of the constraint")
     private String description;
@@ -14,6 +29,7 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint {
     @Schema(description = "Attribute Constraint Type", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeConstraintType type;
 
+    @Hidden
     @Schema(description = "Attribute Constraint Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;
 
@@ -29,35 +45,6 @@ public class BaseAttributeConstraint<T> extends AttributeConstraint {
 
     //Empty constructor needed for serialization/deserialization purpose
     public BaseAttributeConstraint() {
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public AttributeConstraintType getType() {
-        return type;
-    }
-
-    @Override
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 
     @Override

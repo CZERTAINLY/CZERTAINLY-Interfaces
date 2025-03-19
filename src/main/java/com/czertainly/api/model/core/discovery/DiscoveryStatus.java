@@ -26,7 +26,7 @@ public enum DiscoveryStatus implements IPlatformEnum {
     }
 
     @Schema(description = "Discovery Status",
-            example = "completed", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"completed"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
