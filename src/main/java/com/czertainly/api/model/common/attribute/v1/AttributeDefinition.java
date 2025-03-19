@@ -17,7 +17,7 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "UUID of the Attribute for unique identification",
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
+            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String uuid;
@@ -27,7 +27,7 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Name of the Attribute that is used for identification",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
@@ -45,7 +45,7 @@ public class AttributeDefinition {
     **/
    @Schema(
            description = "Friendly name of the the Attribute",
-           example = "Attribute Name",
+           examples = {"Attribute Name"},
            requiredMode = Schema.RequiredMode.REQUIRED
    )
    private String label;
@@ -138,7 +138,7 @@ public class AttributeDefinition {
      **/
     @Schema(
             description = "Group of the Attribute, used for the logical grouping of the Attribute",
-            example = "requiredAttributes"
+            examples = {"requiredAttributes"}
     )
     private String group;
 

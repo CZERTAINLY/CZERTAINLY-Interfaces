@@ -25,7 +25,7 @@ public enum ConnectorStatus implements IPlatformEnum {
     }
 
     @Schema(description = "Connector status",
-            example = "connected", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"connected"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

@@ -19,7 +19,7 @@ public class Account {
     @Schema(
             description = "Status of the ACME Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "valid"
+            examples = {"valid"}
     )
     private AccountStatus status;
 
@@ -30,7 +30,7 @@ public class Account {
      */
     @Schema(
             description = "List of contacts for ACME Account",
-            example = "[\"mailto:someadmin@domain.com\"]"
+            examples = {"[\"mailto:someadmin@domain.com\"]"}
     )
     private List<String> contact;
 
@@ -42,7 +42,7 @@ public class Account {
      */
     @Schema(
             description = "Terms of Service agreed flag. Yes = true, No = false",
-            example = "true"
+            examples = {"true"}
     )
     private boolean termsOfServiceAgreed;
 
@@ -53,7 +53,7 @@ public class Account {
     @Schema(
             description = "URL to get the list of Orders for the Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "http://some-server.com/acme/orders/JHJGfgf34s"
+            examples = {"http://some-server.com/acme/orders/JHJGfgf34s"}
 
     )
     private String orders;

@@ -8,17 +8,17 @@ import java.util.List;
 
 public class ComplianceRulesListRequestDto {
     @Schema(description = "UUID of the Compliance Provider. If not provided, rules from all the Providers is returned",
-            example = "c35bc88c-d0ef-11ec-9d64-0242ac120003",
+            examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120003"},
             defaultValue = "null")
     private String uuid;
 
     @Schema(description = "Kind of the Compliance Provider. If not provided, rules from all the kinds is returned",
-            example = "Kind1",
+            examples = {"Kind1"},
             defaultValue = "null")
     private String kind;
 
     @Schema(description = "Type of the certificate to query for the rules",
-            example = "x509",
+            examples = {"x509"},
             defaultValue = "null")
     private List<String> certificateType;
 

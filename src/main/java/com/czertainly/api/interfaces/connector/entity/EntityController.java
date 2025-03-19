@@ -3,8 +3,8 @@ package com.czertainly.api.interfaces.connector.entity;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceRequestDto;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/entityProvider/entities")
 @Tag(
         name = "Entity Management",
@@ -30,25 +29,7 @@ import java.util.List;
                 "Entities can be created, edited, removed. Support for the bulk operation and listing of available " +
                 "Entities for the automation. Location attributes and validation."
 )
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-public interface EntityController {
+public interface EntityController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List Entity instances",
@@ -61,8 +42,7 @@ public interface EntityController {
                             description = "Entity instances retrieved"
                     )
             })
-    @RequestMapping(
-            method = RequestMethod.GET,
+    @GetMapping(
             produces = {"application/json"}
     )
     List<EntityInstanceDto> listEntityInstances();
@@ -77,9 +57,8 @@ public interface EntityController {
                             description = "Entity instance retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{entityUuid}",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     EntityInstanceDto getEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
@@ -96,13 +75,12 @@ public interface EntityController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Attribute validation failed",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute validation error message")),
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, examples = {"Attribute validation error message"})),
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})
 
                     )
             })
-    @RequestMapping(
-            method = RequestMethod.POST,
+    @PostMapping(
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -118,9 +96,8 @@ public interface EntityController {
                             description = "Entity instance updated"
                     )
             })
-    @RequestMapping(
+    @PutMapping(
             path = "/{entityUuid}",
-            method = RequestMethod.PUT,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -136,9 +113,8 @@ public interface EntityController {
                             description = "Entity instance removed"
                     )
             })
-    @RequestMapping(
-            path = "/{entityUuid}",
-            method = RequestMethod.DELETE
+    @DeleteMapping(
+            path = "/{entityUuid}"
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
@@ -153,9 +129,8 @@ public interface EntityController {
                             description = "Entity Location Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{entityUuid}/location/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listLocationAttributes(
@@ -173,14 +148,13 @@ public interface EntityController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Attribute validation failed",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute validation error message")),
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, examples = {"Attribute validation error message"})),
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})
 
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/{entityUuid}/location/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"}
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
+@Schema(
+        description = "Object attribute content for data with custom structure",
+        type = "object")
 public class ObjectAttributeContent extends BaseAttributeContent<Object> {
 
     @Schema(description = "Object attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)

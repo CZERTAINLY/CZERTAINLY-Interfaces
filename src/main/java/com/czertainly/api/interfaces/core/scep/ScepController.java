@@ -1,6 +1,7 @@
 package com.czertainly.api.interfaces.core.scep;
 
 import com.czertainly.api.exception.ScepException;
+import com.czertainly.api.interfaces.NoAuthController;
 import com.czertainly.api.model.core.acme.ProblemDocument;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * List of end points supported for the SCEP implementation in CZERTAINLY
  */
-@RestController
 @RequestMapping("/v1/protocols/scep/{scepProfileName}/pkiclient.exe")
 @Tag(name = "SCEP operations", description = "Interfaces used by SCEP clients to request SCEP related operations. " +
         "SCEP Profile defines the behaviour for the specific SCEP configuration. When the SCEP Profile contains " +
@@ -47,11 +47,11 @@ import org.springframework.web.bind.annotation.*;
                         content = @Content
                 )
         })
-public interface ScepController {
+public interface ScepController extends NoAuthController {
 
     @Operation(summary = "SCEP Get Operations", externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1", url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed", content = @Content(schema = @Schema(description = "Response structure defined in RFC 8894, section 4", type = "string", format = "binary")))})
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     ResponseEntity<Object> doGet(
             @PathVariable String scepProfileName,
             @RequestParam String operation,
@@ -60,7 +60,7 @@ public interface ScepController {
 
     @Operation(summary = "SCEP Post Operations", externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1", url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed", content = @Content(schema = @Schema(description = "Response structure defined in RFC 8894, section 4", type = "string", format = "binary")))})
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.ALL_VALUE)
+    @PostMapping(consumes = MediaType.ALL_VALUE)
     ResponseEntity<Object> doPost(
             @PathVariable String scepProfileName,
             @RequestParam String operation,

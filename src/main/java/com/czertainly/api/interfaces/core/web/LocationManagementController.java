@@ -1,13 +1,13 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.LocationsResponseDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.location.AddLocationRequestDto;
 import com.czertainly.api.model.client.location.EditLocationRequestDto;
 import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
 import com.czertainly.api.model.client.location.PushToLocationRequestDto;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
@@ -27,38 +27,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
 @Tag(name = "Location Management", description = "Location Management API")
 @ApiResponses(
         value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                ),
                 @ApiResponse(
                         responseCode = "502",
                         description = "Connector Error",
@@ -71,7 +45,7 @@ import java.util.Optional;
                 ),
         })
 
-public interface LocationManagementController {
+public interface LocationManagementController extends AuthProtectedController {
 
     @Operation(
             summary = "List Locations"
@@ -83,16 +57,15 @@ public interface LocationManagementController {
                             description = "Locations retrieved"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/locations",
-            method = RequestMethod.POST,
             produces = {"application/json"}
     )
     LocationsResponseDto listLocations(@RequestBody SearchRequestDto request);
 
     @Operation(summary = "Get Locations searchable fields information")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Locations searchable field information retrieved")})
-    @RequestMapping(path = "/locations/search", method = RequestMethod.GET, produces = {"application/json"})
+    @GetMapping(path = "/locations/search", produces = {"application/json"})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(
@@ -110,18 +83,18 @@ public interface LocationManagementController {
                             description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Entity not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/entities/{entityUuid}/locations",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
     ResponseEntity<?> addLocation(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @RequestBody AddLocationRequestDto request
-    ) throws ConnectorException, AlreadyExistException, LocationException, AttributeException;
+    ) throws ConnectorException, AlreadyExistException, LocationException, AttributeException, NotFoundException;
 
     @Operation(
             summary = "Get Location Details"
@@ -131,11 +104,11 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Location detail retrieved"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     LocationDto getLocation(
@@ -157,11 +130,11 @@ public interface LocationManagementController {
                             description = "Unprocessible Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PutMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}",
-            method = RequestMethod.PUT,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -169,7 +142,7 @@ public interface LocationManagementController {
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody EditLocationRequestDto request
-    ) throws ConnectorException, LocationException, AttributeException;
+    ) throws ConnectorException, LocationException, AttributeException, NotFoundException;
 
     @Operation(
             summary = "Delete Location"
@@ -179,12 +152,10 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "204",
                             description = "Location deleted"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
-            path = "/entities/{entityUuid}/locations/{locationUuid}",
-            method = RequestMethod.DELETE
-    )
+    @DeleteMapping(path = "/entities/{entityUuid}/locations/{locationUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteLocation(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
@@ -199,12 +170,10 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "204",
                             description = "Location disabled"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
-            path = "/entities/{entityUuid}/locations/{locationUuid}/disable",
-            method = RequestMethod.PATCH
-    )
+    @PatchMapping(path = "/entities/{entityUuid}/locations/{locationUuid}/disable")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableLocation(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
@@ -219,12 +188,10 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "204",
                             description = "Location enabled"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
-            path = "/entities/{entityUuid}/locations/{locationUuid}/enable",
-            method = RequestMethod.PATCH
-    )
+    @PatchMapping(path = "/entities/{entityUuid}/locations/{locationUuid}/enable")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableLocation(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
@@ -239,11 +206,11 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Push attributes list obtained"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}/attributes/push",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listPushAttributes(
@@ -259,11 +226,11 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "CSR Attributes list obtained"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}/attributes/issue",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listCsrAttributes(
@@ -279,11 +246,11 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Certificate pushed"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PutMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
-            method = RequestMethod.PUT,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -302,11 +269,11 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Certificate removed"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @DeleteMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
-            method = RequestMethod.DELETE,
             produces = {"application/json"}
     )
     LocationDto removeCertificate(
@@ -324,11 +291,11 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Certificate issued"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}/certificates",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -336,7 +303,7 @@ public interface LocationManagementController {
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @RequestBody IssueToLocationRequestDto request
-    ) throws ConnectorException, LocationException;
+    ) throws ConnectorException, LocationException, NotFoundException;
 
     @Operation(
             summary = "Sync Location content"
@@ -346,11 +313,11 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Content updated"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PutMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}/sync",
-            method = RequestMethod.PUT,
             produces = {"application/json"}
     )
     LocationDto updateLocationContent(
@@ -366,16 +333,16 @@ public interface LocationManagementController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Content updated"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Location not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/entities/{entityUuid}/locations/{locationUuid}/certificates/{certificateUuid}",
-            method = RequestMethod.PATCH,
             produces = {"application/json"}
     )
     LocationDto renewCertificateInLocation(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
-    ) throws ConnectorException, LocationException;
+    ) throws ConnectorException, LocationException, NotFoundException;
 }

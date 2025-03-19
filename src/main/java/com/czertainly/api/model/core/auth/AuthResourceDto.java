@@ -13,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class AuthResourceDto extends NameAndUuidDto {
     @Schema(description = "Resource Name",
-            example = "Name",
+            examples = {"Name"},
             requiredMode = Schema.RequiredMode.REQUIRED,
             implementation = Resource.class)
     private String name;

@@ -10,13 +10,13 @@ import java.util.List;
 public class BaseScepProfileRequestDto {
     @Schema(
             description = "Description of the SCEP Profile",
-            example = "Sample description"
+            examples = {"Sample description"}
     )
     private String description;
 
     @Schema(
             description = "RA Profile UUID",
-            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
     )
     private String raProfileUuid;
 

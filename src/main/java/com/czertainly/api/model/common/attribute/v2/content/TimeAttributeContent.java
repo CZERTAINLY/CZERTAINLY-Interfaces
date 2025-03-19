@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalTime;
 import java.util.Objects;
 
+@Schema(
+        description = "Time attribute content in predefined format",
+        type = "object")
 public class TimeAttributeContent extends BaseAttributeContent<LocalTime> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")

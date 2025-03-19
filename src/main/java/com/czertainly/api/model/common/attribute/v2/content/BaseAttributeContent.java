@@ -1,15 +1,21 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDto;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Getter
+@Setter
 @Schema(implementation = BaseAttributeContentDto.class)
-public class BaseAttributeContent<T> extends AttributeContent {
-    @Schema(description = "Content Reference")
+public class BaseAttributeContent<T> extends AttributeContent implements BaseAttributeContentDto {
+
     private String reference;
 
+    @Hidden
     @Schema(description = "Content Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;
 
@@ -22,23 +28,6 @@ public class BaseAttributeContent<T> extends AttributeContent {
 
     public BaseAttributeContent(String reference, T data) {
         this.reference = reference;
-        this.data = data;
-    }
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
-    @Override
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
         this.data = data;
     }
 

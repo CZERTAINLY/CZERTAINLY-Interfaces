@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ResourceEventDto {
 
     @Schema(description = "Resource event code",
-            example = "discoveryFinished",
+            examples = {"discoveryFinished"},
             requiredMode = Schema.RequiredMode.REQUIRED,
             implementation = ResourceEvent.class)
     private ResourceEvent event;

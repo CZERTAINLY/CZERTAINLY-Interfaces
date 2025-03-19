@@ -1,9 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.scep.ScepProfileEditRequestDto;
 import com.czertainly.api.model.client.scep.ScepProfileRequestDto;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
@@ -25,38 +25,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/scepProfiles")
 @Tag(name = "SCEP Profile Management", description = "SCEP Profile Management API")
-@ApiResponses(
-		value = {
-				@ApiResponse(
-						responseCode = "400",
-						description = "Bad Request",
-						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-				),
-				@ApiResponse(
-						responseCode = "401",
-						description = "Unauthorized",
-						content = @Content(schema = @Schema())
-				),
-				@ApiResponse(
-						responseCode = "403",
-						description = "Forbidden",
-						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-				),
-				@ApiResponse(
-						responseCode = "404",
-						description = "Not Found",
-						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-				),
-				@ApiResponse(
-						responseCode = "500",
-						description = "Internal Server Error",
-						content = @Content
-				)
-		})
-public interface ScepProfileController {
+public interface ScepProfileController extends AuthProtectedController {
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------------------------------
@@ -70,25 +41,26 @@ public interface ScepProfileController {
 	@ApiResponses(
 			value = { @ApiResponse(responseCode = "200", description = "SCEP Profile list retrieved")}
 	)
-	@RequestMapping(
-			produces = {"application/json"},
-			method = RequestMethod.GET
+	@GetMapping(
+			produces = {"application/json"}
 	)
-	public List<ScepProfileDto> listScepProfiles();
+	List<ScepProfileDto> listScepProfiles();
 
 
 	@Operation(
 			summary = "Get details of SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "200", description = "SCEP Profile details retrieved") }
+			value = {
+					@ApiResponse(responseCode = "200", description = "SCEP Profile details retrieved"),
+					@ApiResponse(responseCode = "404", description = "SCEP Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			}
 	)
-	@RequestMapping(
+	@GetMapping(
 			path = "/{uuid}",
-			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public ScepProfileDetailDto getScepProfile(
+	ScepProfileDetailDto getScepProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid
 	) throws NotFoundException;
 
@@ -102,34 +74,38 @@ public interface ScepProfileController {
 			summary = "Create SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "201", description = "SCEP Profile created") }
+			value = {
+					@ApiResponse(responseCode = "201", description = "SCEP Profile created"),
+					@ApiResponse(responseCode = "404", description = "SCEP Profile, Certificate or RA Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			}
 	)
-	@RequestMapping(
-			method = RequestMethod.POST,
+	@PostMapping(
 			consumes = { "application/json" },
 			produces = { "application/json" }
 	)
-	public ResponseEntity<ScepProfileDetailDto> createScepProfile(
+	ResponseEntity<ScepProfileDetailDto> createScepProfile(
 			@RequestBody ScepProfileRequestDto request
-	) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
+	) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
 
 
 	@Operation(
 			summary = "Edit SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "200", description = "SCEP Profile updated") }
+			value = {
+					@ApiResponse(responseCode = "200", description = "SCEP Profile updated"),
+					@ApiResponse(responseCode = "404", description = "SCEP Profile, Certificate or RA Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			}
 	)
-	@RequestMapping(
+	@PutMapping(
 			path="/{uuid}",
-			method = RequestMethod.PUT,
 			consumes = { "application/json" },
 			produces = { "application/json" }
 	)
-	public ScepProfileDetailDto editScepProfile(
+	ScepProfileDetailDto editScepProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid,
 			@RequestBody ScepProfileEditRequestDto request
-	) throws ConnectorException, AttributeException;
+	) throws ConnectorException, AttributeException, NotFoundException;
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// -----------------------------------------------------------------------------------------------------------------
@@ -141,15 +117,17 @@ public interface ScepProfileController {
 			summary = "Delete SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "204", description = "SCEP Profile deleted") }
+			value = {
+					@ApiResponse(responseCode = "204", description = "SCEP Profile deleted"),
+					@ApiResponse(responseCode = "404", description = "SCEP Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			}
 	)
-	@RequestMapping(
+	@DeleteMapping(
 			path="/{uuid}",
-			method = RequestMethod.DELETE,
 			produces = { "application/json" }
 	)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteScepProfile(
+	void deleteScepProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid
 	) throws NotFoundException, ValidationException;
 
@@ -160,13 +138,12 @@ public interface ScepProfileController {
 	@ApiResponses(
 			value = { @ApiResponse(responseCode = "200", description = "SCEP Profiles deleted") }
 	)
-	@RequestMapping(
+	@DeleteMapping(
 			path = "/delete",
-			method = RequestMethod.DELETE,
 			consumes = { "application/json" },
 			produces = { "application/json" }
 	)
-	public List<BulkActionMessageDto> bulkDeleteScepProfile(
+	List<BulkActionMessageDto> bulkDeleteScepProfile(
 			@io.swagger.v3.oas.annotations.parameters.RequestBody(
 					description = "SCEP Profile UUIDs",
 					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -180,19 +157,18 @@ public interface ScepProfileController {
 	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "SCEP Profiles forced to delete"),
-			@ApiResponse(responseCode = "422", description = "Unprocessible Entity",
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity",
 					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 							examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))
 	})
-	@RequestMapping(
+	@DeleteMapping(
 			path = "/delete/force",
-			method = RequestMethod.DELETE,
 			produces = {"application/json"}
 	)
-	public List<BulkActionMessageDto> forceDeleteScepProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+	List<BulkActionMessageDto> forceDeleteScepProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
 			description = "SCEP Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids
-	) throws NotFoundException, ValidationException;
+	);
 
 
 	// -----------------------------------------------------------------------------------------------------------------
@@ -205,15 +181,17 @@ public interface ScepProfileController {
 			summary = "Enable SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "204", description = "SCEP Profile enabled") }
+			value = {
+					@ApiResponse(responseCode = "204", description = "SCEP Profile enabled"),
+					@ApiResponse(responseCode = "404", description = "SCEP Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			}
 	)
-	@RequestMapping(
+	@PatchMapping(
 			path = "/{uuid}/enable",
-			method = RequestMethod.PATCH,
 			produces = { "application/json" }
 	)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void enableScepProfile(
+	void enableScepProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid
 	) throws NotFoundException;
 
@@ -224,14 +202,13 @@ public interface ScepProfileController {
 	@ApiResponses(
 			value = { @ApiResponse(responseCode = "204", description = "SCEP Profiles enabled") }
 	)
-	@RequestMapping(
+	@PatchMapping(
 			path = "/enable",
-			method = RequestMethod.PATCH,
 			consumes = { "application/json" },
 			produces = { "application/json" }
 	)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkEnableScepProfile(
+	void bulkEnableScepProfile(
 			@io.swagger.v3.oas.annotations.parameters.RequestBody(
 					description = "SCEP Profile UUIDs",
 					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -248,15 +225,17 @@ public interface ScepProfileController {
 			summary = "Disable SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "204", description = "SCEP Profile disabled") }
+			value = {
+					@ApiResponse(responseCode = "204", description = "SCEP Profile disabled"),
+					@ApiResponse(responseCode = "404", description = "SCEP Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			}
 	)
-	@RequestMapping(
+	@PatchMapping(
 			path = "/{uuid}/disable",
-			method = RequestMethod.PATCH,
 			produces = { "application/json" }
 	)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void disableScepProfile(
+	void disableScepProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid
 	) throws NotFoundException;
 
@@ -267,14 +246,13 @@ public interface ScepProfileController {
 	@ApiResponses(
 			value = { @ApiResponse(responseCode = "204", description = "SCEP Profiles disabled") }
 	)
-	@RequestMapping(
+	@PatchMapping(
 			path = "/disable",
-			method = RequestMethod.PATCH,
 			consumes = { "application/json" },
 			produces = { "application/json" }
 	)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void bulkDisableScepProfile(
+	void bulkDisableScepProfile(
 			@io.swagger.v3.oas.annotations.parameters.RequestBody(
 					description = "SCEP Profile UUIDs",
 					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -293,15 +271,17 @@ public interface ScepProfileController {
 			summary = "Update RA Profile for SCEP Profile"
 	)
 	@ApiResponses(
-			value = { @ApiResponse(responseCode = "200", description = "RA Profile updated") }
+			value = {
+					@ApiResponse(responseCode = "200", description = "RA Profile updated"),
+					@ApiResponse(responseCode = "404", description = "SCEP Profile or RA Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			}
 	)
-	@RequestMapping(
+	@PatchMapping(
 			path = "/{uuid}/raProfiles/{raProfileUuid}",
-			method = RequestMethod.PATCH,
 			produces = { "application/json" }
 	)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updateRaProfile(
+	void updateRaProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid
 	) throws NotFoundException;
@@ -312,10 +292,9 @@ public interface ScepProfileController {
 	@ApiResponses(
 			value = { @ApiResponse(responseCode = "200", description = "List of CA certificates retrieved") }
 	)
-	@RequestMapping(
+	@GetMapping(
 			path = "/caCertificates",
-			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public List<CertificateDto> listScepCaCertificates(@Parameter(description = "flag to return certificates that are eligible for Intune integration") @RequestParam boolean intuneEnabled);
+	List<CertificateDto> listScepCaCertificates(@Parameter(description = "flag to return certificates that are eligible for Intune integration") @RequestParam boolean intuneEnabled);
 }

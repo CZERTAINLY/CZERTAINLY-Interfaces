@@ -22,7 +22,7 @@ public enum KeyEvent {
     ;
 
     @Schema(description = "Key Event",
-            example = "Create Key", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"Create Key"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     KeyEvent(String code) {

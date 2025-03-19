@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ResourceDto {
 
     @Schema(description = "Resource code",
-            example = "certificates",
+            examples = {"certificates"},
             requiredMode = Schema.RequiredMode.REQUIRED,
             implementation = Resource.class)
     private Resource resource;

@@ -1,8 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.cryptography.operations.*;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
@@ -20,38 +21,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/operations/tokens/{tokenInstanceUuid}")
 @Tag(name = "Cryptographic Operations Controller", description = "Cryptographic Operations Controller API")
 @ApiResponses(
         value = {
                 @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
                 )
         })
-public interface CryptographicOperationsController {
+public interface CryptographicOperationsController extends AuthProtectedController {
 
     /////////////////////////////////////////////////////////////////////////////////
     // cipher operations
@@ -67,9 +47,8 @@ public interface CryptographicOperationsController {
                             description = "List of Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/cipher/{algorithm}/attributes",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listCipherAttributes(
@@ -78,7 +57,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable KeyAlgorithm algorithm
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     @Operation(
             summary = "Encrypt data using a Key"
@@ -96,9 +75,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/encrypt",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -108,7 +86,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody CipherDataRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     @Operation(
             summary = "Decrypt data using a Key"
@@ -126,9 +104,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/decrypt",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -138,7 +115,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody CipherDataRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // signature operations
@@ -154,9 +131,8 @@ public interface CryptographicOperationsController {
                             description = "List of Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/signature/{algorithm}/attributes",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listSignatureAttributes(
@@ -165,7 +141,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Key instance UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @Parameter(description = "Cryptographic algorithm") @PathVariable KeyAlgorithm algorithm
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
 
     @Operation(
@@ -184,9 +160,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/sign",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -196,7 +171,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody SignDataRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     @Operation(
             summary = "Verify data using a Key"
@@ -214,9 +189,8 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/verify",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -226,7 +200,7 @@ public interface CryptographicOperationsController {
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @Parameter(description = "Key Item UUID") @PathVariable String keyItemUuid,
             @RequestBody VerifyDataRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     /////////////////////////////////////////////////////////////////////////////////
     // generate random operations
@@ -242,14 +216,13 @@ public interface CryptographicOperationsController {
                             description = "List of Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/random/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listRandomAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
 
     @Operation(
@@ -268,14 +241,13 @@ public interface CryptographicOperationsController {
                                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/random",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     RandomDataResponseDto randomData(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @RequestBody RandomDataRequestDto request
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 }

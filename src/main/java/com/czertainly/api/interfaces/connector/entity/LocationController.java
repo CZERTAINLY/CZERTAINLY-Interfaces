@@ -3,8 +3,8 @@ package com.czertainly.api.interfaces.connector.entity;
 import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.entity.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/entityProvider/entities/{entityUuid}/locations")
 @Tag(
         name = "Location Operations",
@@ -30,25 +29,7 @@ import java.util.List;
                 "pushing new certificates, generation of new key pair and certificate signing requests, " +
                 "removing certificates and management of the Entity end-to-end automation."
 )
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-public interface LocationController {
+public interface LocationController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "Get Location Details",
@@ -61,8 +42,7 @@ public interface LocationController {
                             description = "Location detail and content retrieved"
                     )
             })
-    @RequestMapping(
-            method = RequestMethod.POST,
+    @PostMapping(
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -82,9 +62,8 @@ public interface LocationController {
                             description = "Certificate pushed to Location"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/push",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -104,9 +83,8 @@ public interface LocationController {
                             description = "Attributes for push retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/push/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listPushCertificateAttributes(
@@ -130,9 +108,8 @@ public interface LocationController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/push/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"}
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -152,9 +129,8 @@ public interface LocationController {
                             description = "Certificate removed"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/remove",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -174,9 +150,8 @@ public interface LocationController {
                             description = "CSR generated"
                     )
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/csr",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -196,9 +171,8 @@ public interface LocationController {
                             description = "CSR Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/csr/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     List<BaseAttribute> listGenerateCsrAttributes(
@@ -222,9 +196,8 @@ public interface LocationController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/csr/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"}
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)

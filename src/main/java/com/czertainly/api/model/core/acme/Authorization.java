@@ -27,7 +27,7 @@ public class Authorization {
     @Schema(
             description = "ACME Authorization status",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "pending"
+            examples = {"pending"}
     )
     private AuthorizationStatus status;
 
@@ -58,7 +58,7 @@ public class Authorization {
      */
     @Schema(
             description = "Is wildcard certificate",
-            example = "false"
+            examples = {"false"}
     )
     private Boolean wildcard;
 

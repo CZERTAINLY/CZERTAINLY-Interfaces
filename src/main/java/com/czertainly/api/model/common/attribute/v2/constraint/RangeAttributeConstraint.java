@@ -2,9 +2,16 @@ package com.czertainly.api.model.common.attribute.v2.constraint;
 
 import com.czertainly.api.model.common.attribute.v2.constraint.data.RangeAttributeConstraintData;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Getter
+@Setter
+@Schema(
+        description = "Range attribute constraint to specify boundaries for integer value",
+        type = "object")
 public class RangeAttributeConstraint extends BaseAttributeConstraint<RangeAttributeConstraintData> {
 
     @Schema(description = "Integer Range Attribute Constraint Data")
@@ -17,15 +24,6 @@ public class RangeAttributeConstraint extends BaseAttributeConstraint<RangeAttri
 
     public RangeAttributeConstraint() {
         super(AttributeConstraintType.RANGE);
-    }
-
-    @Override
-    public RangeAttributeConstraintData getData() {
-        return data;
-    }
-
-    public void setData(RangeAttributeConstraintData data) {
-        this.data = data;
     }
 
     @Override

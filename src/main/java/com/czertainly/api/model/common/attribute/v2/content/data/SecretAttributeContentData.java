@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
+import com.czertainly.api.model.core.logging.Sensitive;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 public class SecretAttributeContentData {
 
+    @Sensitive
     @Schema(description = "Secret attribute data")
     private String secret;
 

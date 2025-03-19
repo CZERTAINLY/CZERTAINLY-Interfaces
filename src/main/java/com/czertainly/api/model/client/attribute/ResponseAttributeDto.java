@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -18,14 +19,14 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Response attribute with content for object it belongs to")
-public class ResponseAttributeDto {
+public class ResponseAttributeDto implements Serializable {
 
     /**
      * UUID of the Attribute
      **/
     @Schema(
             description = "UUID of the Attribute",
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
+            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"}
     )
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
@@ -35,7 +36,7 @@ public class ResponseAttributeDto {
      **/
     @Schema(
             description = "Name of the Attribute",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
@@ -45,7 +46,7 @@ public class ResponseAttributeDto {
      **/
     @Schema(
             description = "Label of the the Attribute",
-            example = "Attribute Name",
+            examples = {"Attribute Name"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
@@ -64,7 +65,7 @@ public class ResponseAttributeDto {
      **/
     @Schema(
             description = "Content Type of the Attribute",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeContentType contentType;
@@ -73,23 +74,7 @@ public class ResponseAttributeDto {
      * Content of the Attribute
      **/
     @Schema(
-            description = "Content of the Attribute",
-            type = "object",
-            oneOf = {
-                    BooleanAttributeContent.class,
-                    CodeBlockAttributeContent.class,
-                    CredentialAttributeContent.class,
-                    DateAttributeContent.class,
-                    DateTimeAttributeContent.class,
-                    FileAttributeContent.class,
-                    FloatAttributeContent.class,
-                    IntegerAttributeContent.class,
-                    ObjectAttributeContent.class,
-                    SecretAttributeContent.class,
-                    StringAttributeContent.class,
-                    TextAttributeContent.class,
-                    TimeAttributeContent.class
-            }
+            description = "Content of the Attribute"
     )
     @JsonSerialize(using = ResponseAttributeSerializer.class)
     private List<BaseAttributeContent> content;

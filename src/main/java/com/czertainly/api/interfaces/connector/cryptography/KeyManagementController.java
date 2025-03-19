@@ -2,8 +2,8 @@ package com.czertainly.api.interfaces.connector.cryptography;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.key.CreateKeyRequestDto;
 import com.czertainly.api.model.connector.cryptography.key.KeyDataResponseDto;
@@ -22,31 +22,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/cryptographyProvider/tokens/{uuid}/keys")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
 @Tag(
         name = "Key Management",
         description = "Key Management API for cryptographic key management operations. Each key is managed by a specific token that is connected through the Token instance."
 )
-public interface KeyManagementController {
+public interface KeyManagementController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List of Attributes to create a Secret Key"
@@ -58,9 +39,8 @@ public interface KeyManagementController {
                             description = "List of Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/secret/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -86,9 +66,8 @@ public interface KeyManagementController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/secret/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -120,9 +99,8 @@ public interface KeyManagementController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/secret",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -144,9 +122,8 @@ public interface KeyManagementController {
                             description = "List of Attributes retrieved"
                     )
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/pair/attributes",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -172,9 +149,8 @@ public interface KeyManagementController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/pair/attributes/validate",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -206,9 +182,8 @@ public interface KeyManagementController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/pair",
-            method = RequestMethod.POST,
             consumes = {"application/json"},
             produces = {"application/json"}
     )
@@ -236,8 +211,7 @@ public interface KeyManagementController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
-            method = RequestMethod.GET,
+    @GetMapping(
             produces = {"application/json"}
     )
     /**
@@ -263,9 +237,8 @@ public interface KeyManagementController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{keyUuid}",
-            method = RequestMethod.GET,
             produces = {"application/json"}
     )
     /**
@@ -292,9 +265,8 @@ public interface KeyManagementController {
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}
                             ))
             })
-    @RequestMapping(
-            path = "/{keyUuid}",
-            method = RequestMethod.DELETE
+    @DeleteMapping(
+            path = "/{keyUuid}"
     )
     @ResponseStatus(
             value = HttpStatus.NO_CONTENT

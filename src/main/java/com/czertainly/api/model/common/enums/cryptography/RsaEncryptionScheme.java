@@ -19,7 +19,7 @@ public enum RsaEncryptionScheme implements IPlatformEnum {
     OAEP("OAEP", "OAEP", "Optimal Asymmetric Encryption Padding");
 
     @Schema(description = "Type of the RSA encryption scheme",
-            example = "OAEP", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"OAEP"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

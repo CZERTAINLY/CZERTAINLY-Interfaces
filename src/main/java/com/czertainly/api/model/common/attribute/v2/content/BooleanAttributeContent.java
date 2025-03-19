@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
+@Schema(
+        description = "Boolean attribute content to store true/false values",
+        type = "object")
 public class BooleanAttributeContent extends BaseAttributeContent<Boolean> {
 
     @Schema(description = "Boolean attribute value", requiredMode = Schema.RequiredMode.REQUIRED)

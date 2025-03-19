@@ -1,9 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.cryptography.token.TokenInstanceRequestDto;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.cryptography.token.TokenInstanceDetailDto;
@@ -23,38 +23,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/tokens")
-@Tag(name = "Token Instance Controller", description = "Token Instance Controller API")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-public interface TokenInstanceController {
+@Tag(name = "Token Instance Management", description = "Token Instance Management API")
+public interface TokenInstanceController extends AuthProtectedController {
 
     // Token Instance Operation APIs
     @Operation(
@@ -64,8 +35,7 @@ public interface TokenInstanceController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Token Instances retrieved")
             })
-    @RequestMapping(
-            method = RequestMethod.GET,
+    @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<TokenInstanceDto> listTokenInstances();
@@ -75,16 +45,16 @@ public interface TokenInstanceController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Token Instance Detail retrieved")
+                    @ApiResponse(responseCode = "200", description = "Token Instance Detail retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     TokenInstanceDetailDto getTokenInstance(
             @Parameter(description = "UUID of the Token Instance") @PathVariable String uuid
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     @Operation(
             summary = "Create a new Token Instance"
@@ -98,13 +68,13 @@ public interface TokenInstanceController {
                                     examples = {
                                             @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")
                                     })
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Token Instance, Connector or Credential not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
-            method = RequestMethod.POST,
+    @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    TokenInstanceDetailDto createTokenInstance(@RequestBody TokenInstanceRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
+    TokenInstanceDetailDto createTokenInstance(@RequestBody TokenInstanceRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
 
     @Operation(
             summary = "Update Token Instance"
@@ -118,28 +88,28 @@ public interface TokenInstanceController {
                                     examples = {
                                             @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")
                                     })
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(path = "/{uuid}",
-            method = RequestMethod.PUT,
+    @PutMapping(path = "/{uuid}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     TokenInstanceDetailDto updateTokenInstance(
             @Parameter(description = "Token Instance UUID") @PathVariable String uuid,
             @RequestBody TokenInstanceRequestDto request)
-            throws ConnectorException, ValidationException, AttributeException;
+            throws ConnectorException, ValidationException, AttributeException, NotFoundException;
 
     @Operation(
-            description = "Delete Token Instance"
+            summary = "Delete Token Instance"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Instance deleted")
+                    @ApiResponse(responseCode = "204", description = "Token Instance deleted"),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             }
     )
-    @RequestMapping(
+    @DeleteMapping(
             path = "/{uuid}",
-            method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -152,46 +122,46 @@ public interface TokenInstanceController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Instance Activated")
+                    @ApiResponse(responseCode = "204", description = "Token Instance Activated"),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/{uuid}/activate",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void activateTokenInstance(@Parameter(description = "Token Instance UUID") @PathVariable String uuid,
                                @RequestBody List<RequestAttributeDto> attributes)
-            throws ConnectorException;
+            throws ConnectorException, NotFoundException;
 
     @Operation(
             summary = "Deactivate Token Instance"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Instance Deactivated")
+                    @ApiResponse(responseCode = "204", description = "Token Instance Deactivated"),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/{uuid}/deactivate",
-            method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deactivateTokenInstance(@Parameter(description = "Token Instance UUID") @PathVariable String uuid)
-            throws ConnectorException;
+            throws ConnectorException, NotFoundException;
 
     @Operation(
-            description = "Delete multiple Token Instance"
+            summary = "Delete multiple Token Instances"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Instances deleted")
+                    @ApiResponse(responseCode = "204", description = "Token Instances deleted"),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             }
     )
-    @RequestMapping(
+    @DeleteMapping(
             path = "/delete",
-            method = RequestMethod.DELETE,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -207,16 +177,16 @@ public interface TokenInstanceController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Token Instance Status Reloaded from Connector")
+                    @ApiResponse(responseCode = "200", description = "Token Instance Status Reloaded from Connector"),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/{uuid}",
-            method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     TokenInstanceDetailDto reloadStatus(
             @Parameter(description = "UUID of the Token Instance") @PathVariable String uuid
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
 
     // Token Instance related Attribute APIs
@@ -229,16 +199,16 @@ public interface TokenInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Token Profile Attributes retrieved"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}/tokenProfiles/attributes",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     @Operation(
             summary = "List Token activation Attributes"
@@ -248,14 +218,14 @@ public interface TokenInstanceController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Token activation Attributes retrieved"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/{uuid}/activate/attributes",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<BaseAttribute> listTokenInstanceActivationAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String uuid
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 }
