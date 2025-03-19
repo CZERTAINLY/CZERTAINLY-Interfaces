@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.connector;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @RequestMapping("/v1/authorityProvider/authorities")
 @Tag(name = "Authority Management", description = "Authority Management API")
-public interface AuthorityInstanceController extends NoAuthController {
+public interface AuthorityInstanceController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List Authority instances"

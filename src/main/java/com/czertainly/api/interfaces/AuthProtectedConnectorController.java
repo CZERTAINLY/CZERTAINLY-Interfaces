@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SecurityRequirements(value = {
-        @SecurityRequirement(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME),
-        @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
-        @SecurityRequirement(name = OpenApiConfig.SESSION_SECURITY_SCHEME_NAME),
+        @SecurityRequirement(name = OpenApiConfig.BASIC_SECURITY_SCHEME_NAME),
+        @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_TLS_SECURITY_SCHEME_NAME),
+        @SecurityRequirement(name = OpenApiConfig.CONNECTOR_API_KEY_SECURITY_SCHEME_NAME),
+        @SecurityRequirement(name = OpenApiConfig.NO_SECURITY_SCHEME_NAME),
 })@ApiResponses(
         value = {
                 @ApiResponse(
@@ -39,5 +40,5 @@ import org.springframework.web.bind.annotation.RestController;
                         content = @Content
                 )
         })
-public interface AuthProtectedController {
+public interface AuthProtectedConnectorController {
 }

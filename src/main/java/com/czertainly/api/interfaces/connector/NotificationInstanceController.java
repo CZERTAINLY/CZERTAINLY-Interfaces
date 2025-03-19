@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceRequestDto;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @RequestMapping("/v1/notificationProvider")
 @Tag(name = "Notification instances Management", description = "Notification instances Management API")
-public interface NotificationInstanceController extends NoAuthController {
+public interface NotificationInstanceController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List Notification instances"

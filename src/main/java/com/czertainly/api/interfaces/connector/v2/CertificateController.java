@@ -4,7 +4,7 @@ import com.czertainly.api.exception.CertificateOperationException;
 import com.czertainly.api.exception.CertificateRequestException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.v2.*;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @RequestMapping("/v2/authorityProvider/authorities/{uuid}/certificates")
 @Tag(name = "Certificate Management", description = "Certificate Management API")
-public interface CertificateController extends NoAuthController {
+public interface CertificateController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List of Attributes to issue Certificate"

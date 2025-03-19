@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.connector.entity;
 import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.entity.*;
@@ -29,7 +29,7 @@ import java.util.List;
                 "pushing new certificates, generation of new key pair and certificate signing requests, " +
                 "removing certificates and management of the Entity end-to-end automation."
 )
-public interface LocationController extends NoAuthController {
+public interface LocationController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "Get Location Details",

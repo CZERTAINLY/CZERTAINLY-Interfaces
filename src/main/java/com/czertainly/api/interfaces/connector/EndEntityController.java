@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.core.authority.AddEndEntityRequestDto;
 import com.czertainly.api.model.core.authority.EditEndEntityRequestDto;
 import com.czertainly.api.model.core.authority.EndEntityDto;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/endEntities")
 @Tag(name = "End Entity Management", description = "End Entity Management API")
-public interface EndEntityController extends NoAuthController {
+public interface EndEntityController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List End Entities"

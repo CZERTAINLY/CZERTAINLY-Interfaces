@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.connector.discovery.DiscoveryDataRequestDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryProviderDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryRequestDto;
@@ -29,7 +29,7 @@ import java.io.IOException;
                 "information about discovered certificates and meta data that are specific " +
                 "to implementation of the discovery provider."
 )
-public interface DiscoveryController extends NoAuthController {
+public interface DiscoveryController extends AuthProtectedConnectorController {
 
     @PostMapping(
             path = "/discover",

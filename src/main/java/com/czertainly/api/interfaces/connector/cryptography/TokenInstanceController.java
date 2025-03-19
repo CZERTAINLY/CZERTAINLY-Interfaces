@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.connector.cryptography;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceDto;
@@ -24,7 +24,7 @@ import java.util.List;
         name = "Token Management",
         description = "Token Management API is used to manage Token instance created from Cryptography Providers. Token represents connection with key stores that can perform cryptographic operations. It can manage one or more key stores, or it can be used with external key stores, such as vaults, hardware security modules, etc. Token Profile represents particular key store that can be used to execute cryptographic operations and key management through the Token instance."
 )
-public interface TokenInstanceController extends NoAuthController {
+public interface TokenInstanceController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List Token instances"

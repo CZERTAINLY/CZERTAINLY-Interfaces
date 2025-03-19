@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
@@ -28,7 +28,7 @@ import java.util.List;
                 "data that can be exchanged and properly parsed by the connector. " +
                 "Part of this API is validation of the Attributes."
 )
-public interface AttributesController extends NoAuthController {
+public interface AttributesController extends AuthProtectedConnectorController {
 
     @GetMapping(
             produces = {"application/json"}

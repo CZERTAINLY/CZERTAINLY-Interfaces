@@ -1,6 +1,6 @@
 package com.czertainly.api.interfaces.connector;
 
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.common.HealthDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
                 "Connector returns own status and in some cases " +
                 "can return status of services on which it depends like database, HSM and so on."
 )
-public interface HealthController extends NoAuthController {
+public interface HealthController extends AuthProtectedConnectorController {
 
     @GetMapping(
             produces = {"application/json"}

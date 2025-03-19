@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.core.authority.CertRevocationDto;
 import com.czertainly.api.model.core.authority.CertificateSignRequestDto;
 import com.czertainly.api.model.core.authority.CertificateSignResponseDto;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles/{endEntityProfileName}/certificates")
 @Tag(name = "Certificate Management", description = "Certificate Management API")
-public interface CertificateController extends NoAuthController {
+public interface CertificateController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "Issue Certificate"

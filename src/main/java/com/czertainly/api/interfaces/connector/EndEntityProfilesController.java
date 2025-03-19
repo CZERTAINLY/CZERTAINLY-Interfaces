@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.common.NameAndIdDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @RequestMapping("/v1/authorityProvider/authorities/{uuid}/endEntityProfiles")
 @Tag(name = "End Entity Profiles", description = "End Entity Profiles API")
-public interface EndEntityProfilesController extends NoAuthController {
+public interface EndEntityProfilesController extends AuthProtectedConnectorController {
 
     @GetMapping(produces = {"application/json"})
     @Operation(

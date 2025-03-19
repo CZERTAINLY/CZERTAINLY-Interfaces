@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.connector.compliance.ComplianceGroupsResponseDto;
 import com.czertainly.api.model.connector.compliance.ComplianceRulesResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +26,7 @@ import java.util.List;
                 "certificate content and the list of rule references. Once the values are received, compliance is " +
                 "checked based on the rules."
 )
-public interface ComplianceRulesController extends NoAuthController {
+public interface ComplianceRulesController extends AuthProtectedConnectorController {
     @GetMapping(
             path = "/rules",
             produces = {"application/json"}

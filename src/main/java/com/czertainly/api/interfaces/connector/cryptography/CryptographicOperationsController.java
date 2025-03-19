@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.connector.cryptography;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.operations.*;
@@ -25,7 +25,7 @@ import java.util.List;
         name = "Cryptographic Operations",
         description = "Cryptographic Operations API defines operations that can be executed on existing cryptographic Keys."
 )
-public interface CryptographicOperationsController extends NoAuthController {
+public interface CryptographicOperationsController extends AuthProtectedConnectorController {
 
     /////////////////////////////////////////////////////////////////////////////////
     // cipher operations

@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.connector.entity;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
@@ -29,7 +29,7 @@ import java.util.List;
                 "Entities can be created, edited, removed. Support for the bulk operation and listing of available " +
                 "Entities for the automation. Location attributes and validation."
 )
-public interface EntityController extends NoAuthController {
+public interface EntityController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List Entity instances",

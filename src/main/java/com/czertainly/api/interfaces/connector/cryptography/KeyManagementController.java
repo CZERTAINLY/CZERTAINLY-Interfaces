@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.connector.cryptography;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.key.CreateKeyRequestDto;
@@ -27,7 +27,7 @@ import java.util.List;
         name = "Key Management",
         description = "Key Management API for cryptographic key management operations. Each key is managed by a specific token that is connected through the Token instance."
 )
-public interface KeyManagementController extends NoAuthController {
+public interface KeyManagementController extends AuthProtectedConnectorController {
 
     @Operation(
             summary = "List of Attributes to create a Secret Key"

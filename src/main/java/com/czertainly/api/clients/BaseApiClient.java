@@ -55,7 +55,7 @@ public abstract class BaseApiClient {
     protected TrustManager[] defaultTrustManagers;
 
     public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, Boolean validateConnectorStatus) {
-        if(validateConnectorStatus){
+        if (validateConnectorStatus) {
             validateConnectorStatus(connector.getStatus());
         }
         WebClient.RequestBodySpec request;
@@ -105,7 +105,7 @@ public abstract class BaseApiClient {
     }
 
     public void validateConnectorStatus(ConnectorStatus connectorStatus) throws ValidationException {
-        if(connectorStatus.equals(ConnectorStatus.WAITING_FOR_APPROVAL)){
+        if (connectorStatus.equals(ConnectorStatus.WAITING_FOR_APPROVAL)) {
             throw new ValidationException(ValidationError.create("Connector has invalid status: Waiting For Approval"));
         }
     }

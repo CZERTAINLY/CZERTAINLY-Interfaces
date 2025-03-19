@@ -1,6 +1,6 @@
 package com.czertainly.api.interfaces.connector;
 
-import com.czertainly.api.interfaces.NoAuthController;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.connector.InfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +21,7 @@ import java.util.List;
                 "You can also implement helper end points that are used for callbacks and other relevant operations " +
                 "specific to implementation."
 )
-public interface InfoController extends NoAuthController {
+public interface InfoController extends AuthProtectedConnectorController {
 
     @GetMapping(
             produces = {"application/json"}
