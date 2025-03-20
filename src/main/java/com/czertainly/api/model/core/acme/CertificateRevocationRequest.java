@@ -17,7 +17,7 @@ public class CertificateRevocationRequest {
      */
     @Schema(description = "Certificate in base64url-encoded version of DER format",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "<base64url-encoded version of the DER format>")
+            examples = {"<base64url-encoded version of the DER format>"})
     private String certificate;
 
     /**
@@ -29,7 +29,7 @@ public class CertificateRevocationRequest {
     @Schema(description = "Revocation reason code",
             externalDocs = @ExternalDocumentation(description = "RFC 5280, section 5.3.1", url = "https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1"),
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            example = "1")
+            examples = {"1"})
     private Integer reason;
 
     public String getCertificate() {

@@ -1,11 +1,11 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.cmp.CmpProfileEditRequestDto;
 import com.czertainly.api.model.client.cmp.CmpProfileRequestDto;
 import com.czertainly.api.model.client.cmp.validation.ValidUuid;
 import com.czertainly.api.model.client.cmp.validation.ValidUuidList;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
@@ -29,39 +29,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/cmpProfiles")
 @Tag(name = "CMP Profile Management", description = "CMP Profile Management API")
 @ApiResponses(
         value = {
                 @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
                 )
         })
 @Validated
-public interface CmpProfileController {
+public interface CmpProfileController extends AuthProtectedController {
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -75,9 +54,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "CMP Profile list retrieved")}
     )
-    @RequestMapping(
-            produces = {"application/json"},
-            method = RequestMethod.GET
+    @GetMapping(
+            produces = {"application/json"}
     )
     List<CmpProfileDto> listCmpProfiles();
 
@@ -88,9 +66,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "CMP Profile details retrieved") }
     )
-    @RequestMapping(
+    @GetMapping(
             path = "/{cmpProfileUuid}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     CmpProfileDetailDto getCmpProfile(
@@ -109,14 +86,13 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "201", description = "CMP Profile created") }
     )
-    @RequestMapping(
-            method = RequestMethod.POST,
+    @PostMapping(
             consumes = { "application/json" },
             produces = { "application/json" }
     )
     ResponseEntity<CmpProfileDetailDto> createCmpProfile(
             @Valid @RequestBody CmpProfileRequestDto request
-    ) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
+    ) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
 
 
     @Operation(
@@ -125,16 +101,15 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "CMP Profile updated") }
     )
-    @RequestMapping(
+    @PutMapping(
             path="/{cmpProfileUuid}",
-            method = RequestMethod.PUT,
             consumes = { "application/json" },
             produces = { "application/json" }
     )
     CmpProfileDetailDto editCmpProfile(
             @Parameter(description = "CMP Profile UUID") @PathVariable @ValidUuid String cmpProfileUuid,
             @Valid @RequestBody CmpProfileEditRequestDto request
-    ) throws ConnectorException, AttributeException;
+    ) throws ConnectorException, AttributeException, NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -148,9 +123,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "204", description = "CMP Profile deleted") }
     )
-    @RequestMapping(
+    @DeleteMapping(
             path="/{cmpProfileUuid}",
-            method = RequestMethod.DELETE,
             produces = { "application/json" }
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -165,9 +139,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "CMP Profiles deleted") }
     )
-    @RequestMapping(
+    @DeleteMapping(
             path = "/delete",
-            method = RequestMethod.DELETE,
             consumes = { "application/json" },
             produces = { "application/json" }
     )
@@ -193,9 +166,8 @@ public interface CmpProfileController {
                     )
             )
     })
-    @RequestMapping(
+    @DeleteMapping(
             path = "/delete/force",
-            method = RequestMethod.DELETE,
             produces = {"application/json"}
     )
     List<BulkActionMessageDto> forceDeleteCmpProfiles(
@@ -221,9 +193,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "204", description = "CMP Profile enabled") }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/{cmpProfileUuid}/enable",
-            method = RequestMethod.PATCH,
             produces = { "application/json" }
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -238,9 +209,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "204", description = "CMP Profiles enabled") }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/enable",
-            method = RequestMethod.PATCH,
             consumes = { "application/json" },
             produces = { "application/json" }
     )
@@ -267,9 +237,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "204", description = "CMP Profile disabled") }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/{cmpProfileUuid}/disable",
-            method = RequestMethod.PATCH,
             produces = { "application/json" }
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -284,9 +253,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "204", description = "CMP Profiles disabled") }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/disable",
-            method = RequestMethod.PATCH,
             consumes = { "application/json" },
             produces = { "application/json" }
     )
@@ -313,9 +281,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "RA Profile updated") }
     )
-    @RequestMapping(
+    @PatchMapping(
             path = "/{cmpProfileUuid}/raProfiles/{raProfileUuid}",
-            method = RequestMethod.PATCH,
             produces = { "application/json" }
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -330,9 +297,8 @@ public interface CmpProfileController {
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "List of signing certificates retrieved") }
     )
-    @RequestMapping(
+    @GetMapping(
             path = "/signingCertificates",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<CertificateDto> listCmpSigningCertificates();

@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+@Schema(
+        description = "DateTime attribute content in predefined format with timezone",
+        type = "object")
 public class DateTimeAttributeContent extends BaseAttributeContent<ZonedDateTime> {
 
     // ISO_OFFSET_DATE_TIME	Date Time with Offset	2011-12-03T10:15:30+01:00'

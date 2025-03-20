@@ -24,7 +24,7 @@ public class CmpProfileDto extends NameAndUuidDto {
 
     @Schema(
             description = "CMP Profile description",
-            example = "Sample text description"
+            examples = {"Sample text description"}
     )
     private String description;
 
@@ -35,7 +35,7 @@ public class CmpProfileDto extends NameAndUuidDto {
 
     @Schema(
             description = "CMP URL",
-            example = "https://your-domain.com/api/v1/protocols/cmp/cmpProfile"
+            examples = {"https://your-domain.com/api/v1/protocols/cmp/cmpProfile"}
     )
     private String cmpUrl;
 

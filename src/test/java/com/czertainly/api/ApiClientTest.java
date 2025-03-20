@@ -19,7 +19,7 @@ import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-public class ApiClientTest {
+class ApiClientTest {
 
     private AttributeApiClient attributeApiClient;
 
@@ -41,7 +41,7 @@ public class ApiClientTest {
     }
 
     @Test
-    public void testGetAttributes_unknownHost() {
+    void testGetAttributes_unknownHost() {
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("http://wrong-host:1234");
         connector.setStatus(ConnectorStatus.CONNECTED);
@@ -60,7 +60,7 @@ public class ApiClientTest {
     }
 
     @Test
-    public void testGetAttributes_connectionRefused() {
+    void testGetAttributes_connectionRefused() {
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("http://localhost:1234");
         connector.setStatus(ConnectorStatus.CONNECTED);
@@ -79,7 +79,7 @@ public class ApiClientTest {
     }
 
     @Test
-    public void testGetAttributes_clientNotFoundError() {
+    void testGetAttributes_clientNotFoundError() {
         String bodyString = new NotFoundException("Attribute", 1).getMessage();
 
         mockServer.stubFor(WireMock.get("/v1/credentialProvider/certificate/attributes")
@@ -92,7 +92,7 @@ public class ApiClientTest {
         connector.setUrl("http://localhost:3665");
         connector.setStatus(ConnectorStatus.CONNECTED);
 
-        NotFoundException cause = Assertions.assertThrows(NotFoundException.class, () ->
+        ConnectorEntityNotFoundException cause = Assertions.assertThrows(ConnectorEntityNotFoundException.class, () ->
                 // tested method
                 attributeApiClient.listAttributeDefinitions(
                         connector,
@@ -105,7 +105,7 @@ public class ApiClientTest {
     }
 
     @Test
-    public void testGetAttributes_clientError() {
+    void testGetAttributes_clientError() {
         String bodyString = "Bad client request";
 
         mockServer.stubFor(WireMock.get("/v1/credentialProvider/certificate/attributes")
@@ -132,7 +132,7 @@ public class ApiClientTest {
     }
 
     @Test
-    public void testGetAttributes_serverError() {
+    void testGetAttributes_serverError() {
         String bodyString = "Internal server error";
 
         mockServer.stubFor(WireMock.get("/v1/credentialProvider/certificate/attributes")
@@ -160,7 +160,7 @@ public class ApiClientTest {
 
 
     @Test
-    public void testGetAttributes_waitingForApproval() {
+    void testGetAttributes_waitingForApproval() {
 
         ConnectorDto connector = new ConnectorDto();
         connector.setUrl("http://localhost:3665");

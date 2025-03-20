@@ -24,7 +24,7 @@ public enum KeyFormat implements IPlatformEnum {
     }
 
     @Schema(description = "Key format code",
-            example = "Raw", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"Raw"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

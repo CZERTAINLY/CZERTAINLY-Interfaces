@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.connector.discovery.DiscoveryDataRequestDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryProviderDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryRequestDto;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@RestController
 @RequestMapping("/v1/discoveryProvider")
 @Tag(
         name = "Discovery",
@@ -30,25 +29,7 @@ import java.io.IOException;
                 "information about discovered certificates and meta data that are specific " +
                 "to implementation of the discovery provider."
 )
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-public interface DiscoveryController {
+public interface DiscoveryController extends AuthProtectedConnectorController {
 
     @PostMapping(
             path = "/discover",

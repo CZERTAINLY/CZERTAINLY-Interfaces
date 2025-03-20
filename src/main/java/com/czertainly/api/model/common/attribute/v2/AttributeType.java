@@ -13,11 +13,11 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeType implements IPlatformEnum {
 
-	DATA(Constants.DATA, "Data"),
-    GROUP(Constants.GROUP, "Group"),
-    INFO(Constants.INFO, "Info"),
-    META(Constants.META, "Metadata"),
-    CUSTOM(Constants.CUSTOM, "Custom");
+	DATA(Codes.DATA, "Data"),
+    GROUP(Codes.GROUP, "Group"),
+    INFO(Codes.INFO, "Info"),
+    META(Codes.META, "Metadata"),
+    CUSTOM(Codes.CUSTOM, "Custom");
 
     private static final AttributeType[] VALUES;
 
@@ -65,20 +65,24 @@ public enum AttributeType implements IPlatformEnum {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute type %s.", code)));
     }
     
-    private static class Constants {
+    public static class Codes {
     	/** Data Attributes **/
-        private static final String DATA = "data";
+        public static final String DATA = "data";
 
         /** Group Attributes **/
-        private static final String GROUP = "group";
+        public static final String GROUP = "group";
 
         /** Info Attributes **/
-        private static final String INFO = "info";
+        public static final String INFO = "info";
 
         /** Custom Attributes **/
-        private static final String CUSTOM = "custom";
+        public static final String CUSTOM = "custom";
 
         /** Meta Data Attributes **/
-        private static final String META = "meta";
+        public static final String META = "meta";
+
+        private Codes() {
+
+        }
     }
 }

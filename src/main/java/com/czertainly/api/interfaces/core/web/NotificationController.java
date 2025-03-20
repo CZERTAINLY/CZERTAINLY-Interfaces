@@ -1,11 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.notification.NotificationDto;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.notification.NotificationRequestDto;
 import com.czertainly.api.model.client.notification.NotificationResponseDto;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,62 +20,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/notifications")
 @Tag(name = "Internal Notification",
         description = "Internal Notifications API that manages notifications for logged user in the platform. Note " +
                 "that this API does not manage nor trigger external notifications. For external notifications, please " +
                 "refer to the External Notification Management API."
 )
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-public interface NotificationController {
+public interface NotificationController extends AuthProtectedController {
     @Operation(summary = "List notifications for logged user")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of notifications")})
-    @RequestMapping(method = RequestMethod.GET, produces = {"application/json"})
-    NotificationResponseDto listNotifications(@Parameter(in = ParameterIn.QUERY, description = "Show only unread notifications") NotificationRequestDto request) throws ValidationException;
+    @GetMapping(produces = {"application/json"})
+    NotificationResponseDto listNotifications(@Parameter(in = ParameterIn.QUERY, description = "Show only unread notifications") NotificationRequestDto request);
 
     @Operation(summary = "Delete a notification for logged user")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification deleted")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.DELETE, produces = {"application/json"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Notification deleted"),
+            @ApiResponse(responseCode = "404", description = "Notification not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+    })
+    @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteNotification(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws ValidationException, NotFoundException;
+    void deleteNotification(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Mark notification as read for logged user")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification marked as read")})
-    @RequestMapping(path = "/{uuid}", method = RequestMethod.PATCH, produces = {"application/json"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Notification marked as read"),
+            @ApiResponse(responseCode = "404", description = "Notification not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+    })
+    @PatchMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void markNotificationAsRead(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws ValidationException, NotFoundException;
+    void markNotificationAsRead(@Parameter(description = "Notification UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Delete a list of notifications for logged user")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notifications deleted")})
-    @RequestMapping(method = RequestMethod.DELETE, produces = {"application/json"})
+    @DeleteMapping(produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void bulkDeleteNotification(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Notifications UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -85,7 +60,7 @@ public interface NotificationController {
 
     @Operation(summary = "Mark a list of notifications as read for logged user")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notifications marked as read")})
-    @RequestMapping(method = RequestMethod.PATCH, produces = {"application/json"})
+    @PatchMapping(produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void bulkMarkNotificationAsRead(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Notifications UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),

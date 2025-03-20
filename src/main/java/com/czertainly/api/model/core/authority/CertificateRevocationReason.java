@@ -30,7 +30,7 @@ public enum CertificateRevocationReason implements IPlatformEnum {
     }
 
     @Schema(description = "Revocation Reason code",
-            example = "keyCompromise", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"keyCompromise"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final int reasonCode;

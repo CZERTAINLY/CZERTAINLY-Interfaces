@@ -12,52 +12,52 @@ public class AcmeProfileRequestDto {
     @Schema(
             description = "Name of the ACME Profile",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "Profile Name 1"
+            examples = {"Profile Name 1"}
     )
     private String name;
 
     @Schema(
             description = "Description of the ACME Profile",
-            example = "Sample description"
+            examples = {"Sample description"}
     )
     private String description;
     @Schema(
             description = "Terms of Service URL",
-            example = "https://sample-url.com/termsOfService"
+            examples = {"https://sample-url.com/termsOfService"}
     )
     private String termsOfServiceUrl;
     @Schema(
             description = "Website URL",
-            example = "https://sample-url.com"
+            examples = {"https://sample-url.com"}
     )
     private String websiteUrl;
     @Schema(
             description = "DNS Resolver IP address",
             defaultValue = "System Default",
-            example = "8.8.8.8"
+            examples = {"8.8.8.8"}
     )
     private String dnsResolverIp;
     @Schema(
             description = "DNS Resolver port number",
             defaultValue = "53",
-            example = "53"
+            examples = {"53"}
     )
     private String dnsResolverPort;
     @Schema(
             description = "RA Profile UUID",
-            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
     )
     private String raProfileUuid;
     @Schema(
             description = "Retry interval for the Orders",
             defaultValue = "30",
-            example = "60"
+            examples = {"60"}
     )
     private Integer retryInterval;
     @Schema(
             description = "Order Validity",
             defaultValue = "36000",
-            example = "3000"
+            examples = {"3000"}
     )
     private Integer validity;
     @Schema(
@@ -73,13 +73,13 @@ public class AcmeProfileRequestDto {
     @Schema(
             description = "Require contact information for new Account",
             defaultValue = "false",
-            example = "true"
+            examples = {"true"}
     )
     private Boolean requireContact;
     @Schema(
             description = "Require new Account to agree on Terms of Service",
             defaultValue = "false",
-            example = "false"
+            examples = {"false"}
     )
     private Boolean requireTermsOfService;
     @Schema(description = "List of Custom Attributes")

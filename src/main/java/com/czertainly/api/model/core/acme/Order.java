@@ -18,7 +18,7 @@ public class Order {
      */
     @Schema(description = "Status of the Order",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "pending")
+            examples = {"pending"})
     private OrderStatus status;
 
     /**
@@ -67,21 +67,21 @@ public class Order {
      * Only after the Authorizations, the server will issue the Certificate. This will also include the list of
      * Authorizations that client has completed for the same list of identifiers
      */
-    @Schema(description = "List of URLs to check for Authorizations", example = "[\"https://someserver.com/api/v1/protocols/acme/authz/YT65KFut6\"]")
+    @Schema(description = "List of URLs to check for Authorizations", examples = {"[\"https://someserver.com/api/v1/protocols/acme/authz/YT65KFut6\"]"})
     private List<String> authorizations;
 
     /**
      * URL for finalizing the Order and asking the server to issue the Certificate once the Authorizations
      * are satisfied
      */
-    @Schema(description = "URL to finalize the Order. Mandatory if the Order is in ready state", example = "https://someserver.com/api/v1/protocols/acme/order/YT65KFut6/finalize")
+    @Schema(description = "URL to finalize the Order. Mandatory if the Order is in ready state", examples = {"https://someserver.com/api/v1/protocols/acme/order/YT65KFut6/finalize"})
     private String finalize;
 
     /**
      * URL for the client to download the Certificate that has been issues in response to the Order.
      * This is a non-mandatory field
      */
-    @Schema(description = "URL to download the Certificate", example = "https://someserver.com/api/v1/protocols/acme/cert/YT65KFut6")
+    @Schema(description = "URL to download the Certificate", examples = {"https://someserver.com/api/v1/protocols/acme/cert/YT65KFut6"})
     private String certificate;
 
     public OrderStatus getStatus() {

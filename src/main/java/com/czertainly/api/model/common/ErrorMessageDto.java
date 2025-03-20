@@ -8,7 +8,7 @@ public class ErrorMessageDto {
 
     @Schema(description = "Error message detail",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "Error message")
+            examples = {"Error message"})
     private String message;
 
     public ErrorMessageDto(String message) {

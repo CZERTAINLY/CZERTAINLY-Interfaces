@@ -9,13 +9,13 @@ import java.util.List;
 public class ConnectRequestDto {
 
     @Schema(description = "URL of the Connector to connect",
-            example = "http://network-discovery-provicer:8080",
+            examples = {"http://network-discovery-provicer:8080"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
     @Schema(description = "UUID of the Connector. Mandatory if connection is needed for the same Connector")
     private String uuid;
     @Schema(description = "Type of authentication for the Connector",
-            example = "none",
+            examples = {"none"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",

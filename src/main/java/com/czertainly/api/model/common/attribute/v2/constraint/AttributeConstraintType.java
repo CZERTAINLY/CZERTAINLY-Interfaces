@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum AttributeConstraintType implements IPlatformEnum {
-    REGEXP("regExp", "Regular Expression"),
-    RANGE("range", "Integer Range"),
-    DATETIME("dateTime", "DateTime Range");
+    REGEXP(Codes.REGEXP, "Regular Expression"),
+    RANGE(Codes.RANGE, "Integer Range"),
+    DATETIME(Codes.DATETIME, "DateTime Range");
 
     private static final AttributeConstraintType[] VALUES;
 
@@ -55,6 +55,18 @@ public enum AttributeConstraintType implements IPlatformEnum {
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute constraint type %s.", code)));
+    }
+
+    public static class Codes {
+
+        private Codes() {
+
+        }
+
+        public static final String REGEXP = "regExp";
+        public static final String RANGE = "range";
+        public static final String DATETIME = "dateTime";
+
     }
 
 }

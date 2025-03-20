@@ -15,7 +15,7 @@ individual status.
 public class ComplianceRequestRulesDto {
     @Schema(description = "UUID of the rule",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
+            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
     private String uuid;
 
     @Schema(description = "Attributes for the rule")

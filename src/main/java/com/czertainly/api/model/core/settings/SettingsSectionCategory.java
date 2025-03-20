@@ -24,26 +24,26 @@ public enum SettingsSectionCategory implements IPlatformEnum {
 
     @Schema(
             description = "Setting section category",
-            example = "platform",
+            examples = {"platform"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private final String code;
 
     @Schema(
             description = "Name",
-            example = "Utils"
+            examples = {"Utils"}
     )
     private final String label;
 
     @Schema(
             description = "Description",
-            example = "CZERTAINLY platform utils settings"
+            examples = {"CZERTAINLY platform utils settings"}
     )
     private final String description;
 
     @Schema(
             description = "Settings section to which category belongs",
-            example = "CZERTAINLY platform utils settings"
+            examples = {"CZERTAINLY platform utils settings"}
     )
     private final SettingsSection section;
 

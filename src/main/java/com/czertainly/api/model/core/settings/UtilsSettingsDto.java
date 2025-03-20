@@ -12,7 +12,7 @@ public class UtilsSettingsDto implements Serializable {
     @URL
     @Schema(
             description = "URL of the Util Service",
-            example = "http://util-service:8080",
+            examples = {"http://util-service:8080"},
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String utilsServiceUrl;

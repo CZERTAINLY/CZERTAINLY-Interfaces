@@ -1,9 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.approval.ApprovalResponseDto;
 import com.czertainly.api.model.client.certificate.*;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
@@ -33,43 +33,22 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/certificates")
 @Tag(name = "Certificate Inventory", description = "Certificate Inventory API")
 @ApiResponses(
         value = {
                 @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
                         responseCode = "404",
                         description = "Not Found",
                         content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
                 )
         })
-public interface CertificateController {
+public interface CertificateController extends AuthProtectedController {
 
     @Operation(summary = "List Certificates")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the certificates")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request) throws ValidationException;
+    CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request);
 
     @Operation(summary = "Get Certificate Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
@@ -198,7 +177,7 @@ public interface CertificateController {
     )
     CertificateDetailDto submitCertificateRequest(
             @RequestBody ClientCertificateRequestDto request
-    ) throws ValidationException, ConnectorException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, AttributeException, CertificateRequestException;
+    ) throws ValidationException, ConnectorException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, AttributeException, CertificateRequestException, NotFoundException;
 
     @Operation(
             summary = "Get certificate chain",

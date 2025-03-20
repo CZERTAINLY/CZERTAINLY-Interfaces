@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ComplianceProfileRuleDto extends NameAndUuidDto {
 
-    @Schema(description = "Description of the rule", example = "Sample rule description")
+    @Schema(description = "Description of the rule", examples = {"Sample rule description"})
     private String description;
 
     @Schema(description = "Connector Name", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -27,7 +27,7 @@ public class ComplianceProfileRuleDto extends NameAndUuidDto {
     @Schema(description = "Group UUID")
     private String groupUuid;
 
-    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "X509")
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
     private CertificateType certificateType;
 
     @Schema(description = "List of attributes for the rule", requiredMode = Schema.RequiredMode.REQUIRED)

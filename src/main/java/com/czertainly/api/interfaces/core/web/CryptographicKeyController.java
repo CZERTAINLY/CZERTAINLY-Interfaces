@@ -1,10 +1,10 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.cryptography.CryptographicKeyResponseDto;
 import com.czertainly.api.model.client.cryptography.key.*;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.cryptography.key.KeyDetailDto;
@@ -28,38 +28,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
 @RequestMapping("/v1")
-@Tag(name = "Cryptographic Key Controller", description = "Cryptographic Key Controller API")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-public interface CryptographicKeyController {
+@Tag(name = "Cryptographic Key Management", description = "Cryptographic Key Management API")
+public interface CryptographicKeyController extends AuthProtectedController {
 
     // Token Instance Operation APIs
     // -----------------------------------------------------------------------------------------------------------------
@@ -77,7 +48,7 @@ public interface CryptographicKeyController {
     @Operation(summary = "List cryptographic keys")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the cryptographic keys")})
     @PostMapping(path = "/keys", produces = MediaType.APPLICATION_JSON_VALUE)
-    CryptographicKeyResponseDto listCryptographicKeys(@RequestBody SearchRequestDto request) throws ValidationException;
+    CryptographicKeyResponseDto listCryptographicKeys(@RequestBody SearchRequestDto request);
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -109,7 +80,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Key detail retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Cryptographic Key not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @GetMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}",
@@ -126,7 +98,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Key detail retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Cryptographic Key not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @GetMapping(
             path = "/keys/{uuid}",
@@ -142,7 +115,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Key item detail retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Cryptographic Key item not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @GetMapping(
             path = "/keys/{uuid}/items/{keyItemUuid}",
@@ -164,7 +138,9 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Cryptographic Key Detail retrieved")
+                    @ApiResponse(responseCode = "200", description = "Cryptographic Key detail retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Cryptographic Key item not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             })
     @GetMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}",
@@ -187,8 +163,9 @@ public interface CryptographicKeyController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Cryptographic Key Created Successfully"),
+                    @ApiResponse(responseCode = "404", description = "Token profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
                     @ApiResponse(responseCode = "422",
-                            description = "Unprocessible Entity",
+                            description = "Unprocessable Entity",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                                     examples = {
                                             @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")
@@ -203,7 +180,7 @@ public interface CryptographicKeyController {
                            @Parameter(description = "UUID of the Token Profile") @PathVariable String tokenProfileUuid,
                            @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type,
                            @RequestBody KeyRequestDto request
-    ) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
+    ) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -212,7 +189,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key updated"),
+                    @ApiResponse(responseCode = "200", description = "Key updated"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
                     @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(
@@ -223,7 +201,7 @@ public interface CryptographicKeyController {
     KeyDetailDto editKey(
             @Parameter(description = "Key UUID") @PathVariable String uuid,
             @RequestBody EditKeyRequestDto request)
-            throws ConnectorException, AttributeException;
+            throws ConnectorException, AttributeException, NotFoundException;
 
 
     @Operation(
@@ -231,7 +209,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key Item updated"),
+                    @ApiResponse(responseCode = "200", description = "Key Item updated"),
+                    @ApiResponse(responseCode = "404", description = "Key item or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
                     @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(
@@ -253,7 +232,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key sync completed")
+                    @ApiResponse(responseCode = "204", description = "Key sync completed"),
+                    @ApiResponse(responseCode = "404", description = "Token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PatchMapping(
@@ -263,7 +243,7 @@ public interface CryptographicKeyController {
     void syncKeys(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid
     )
-            throws ConnectorException, AttributeException;
+            throws ConnectorException, AttributeException, NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -278,7 +258,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key marked as compromised")
+                    @ApiResponse(responseCode = "204", description = "Key marked as compromised"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PatchMapping(
@@ -305,7 +286,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key marked as compromised")
+                    @ApiResponse(responseCode = "204", description = "Key marked as compromised"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PatchMapping(
@@ -373,7 +355,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Keys destroyed")
+                    @ApiResponse(responseCode = "204", description = "Keys destroyed"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PatchMapping(
@@ -388,7 +371,7 @@ public interface CryptographicKeyController {
                     description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody(required = false) List<String> keyItemUuids)
-            throws ConnectorException;
+            throws ConnectorException, NotFoundException;
 
     /**
      * @deprecated
@@ -403,7 +386,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Keys destroyed")
+                    @ApiResponse(responseCode = "204", description = "Keys destroyed"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PatchMapping(
@@ -419,7 +403,7 @@ public interface CryptographicKeyController {
                     description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody(required = false) List<String> keyItemUuids)
-            throws ConnectorException;
+            throws ConnectorException, NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -428,7 +412,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Keys destroyed")
+                    @ApiResponse(responseCode = "204", description = "Keys destroyed"),
+                    @ApiResponse(responseCode = "404", description = "Key not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PatchMapping(
@@ -442,7 +427,7 @@ public interface CryptographicKeyController {
                     description = "Key UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody List<String> keyUuids)
-            throws ConnectorException;
+            throws ConnectorException, NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -481,7 +466,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key deleted")
+                    @ApiResponse(responseCode = "204", description = "Key deleted"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @DeleteMapping(
@@ -496,7 +482,7 @@ public interface CryptographicKeyController {
                     description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody(required = false) List<String> keyItemUuids)
-            throws ConnectorException;
+            throws ConnectorException, NotFoundException;
 
     /**
      * @deprecated
@@ -511,7 +497,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key deleted")
+                    @ApiResponse(responseCode = "204", description = "Key deleted"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @DeleteMapping(
@@ -527,7 +514,7 @@ public interface CryptographicKeyController {
                     description = "Key Item UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
             @RequestBody(required = false) List<String> keyItemUuids)
-            throws ConnectorException;
+            throws ConnectorException, NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -589,7 +576,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key enabled")
+                    @ApiResponse(responseCode = "204", description = "Key enabled"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @PatchMapping(
             path = "/keys/{uuid}/enable",
@@ -618,7 +606,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key enabled")
+                    @ApiResponse(responseCode = "204", description = "Key enabled"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/enable",
@@ -685,7 +674,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key disabled")
+                    @ApiResponse(responseCode = "204", description = "Key disabled"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @PatchMapping(
             path = "/keys/{uuid}/disable",
@@ -713,7 +703,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key disabled")
+                    @ApiResponse(responseCode = "204", description = "Key disabled"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/disable",
@@ -780,7 +771,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Keys Usages Updates")
+                    @ApiResponse(responseCode = "204", description = "Keys Usages Updates"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PutMapping(
@@ -806,7 +798,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Keys Usages Updates")
+                    @ApiResponse(responseCode = "204", description = "Keys Usages Updates"),
+                    @ApiResponse(responseCode = "404", description = "Key or token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             }
     )
     @PutMapping(
@@ -871,7 +864,8 @@ public interface CryptographicKeyController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "List of Attributes retrieved"
-                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Token profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @GetMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}/attributes",
@@ -881,7 +875,7 @@ public interface CryptographicKeyController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Type of the key to be created") @PathVariable KeyRequestType type
-    ) throws ConnectorException;
+    ) throws ConnectorException, NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -894,7 +888,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Certificate event history retrieved")
+                    @ApiResponse(responseCode = "200", description = "Certificate event history retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Key item not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @GetMapping(
             path = "/keys/{uuid}/items/{keyItemUuid}/history",
@@ -916,7 +911,8 @@ public interface CryptographicKeyController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Certificate event history retrieved")
+                    @ApiResponse(responseCode = "200", description = "Certificate event history retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Key item not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             })
     @GetMapping(
             path = "/tokens/{tokenInstanceUuid}/keys/{uuid}/items/{keyItemUuid}/history",

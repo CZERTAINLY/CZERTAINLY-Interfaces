@@ -25,7 +25,7 @@ public enum KeyState implements IPlatformEnum {
     }
 
     @Schema(description = "State of the key",
-            example = "active", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"active"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

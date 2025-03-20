@@ -30,7 +30,7 @@ public class GlobalMetadataCreateRequestDto {
      **/
     @Schema(
             description = "Friendly name of the the Attribute",
-            example = "Attribute Name",
+            examples = {"Attribute Name"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String label;
@@ -50,7 +50,7 @@ public class GlobalMetadataCreateRequestDto {
      **/
     @Schema(
             description = "Group of the Attribute, used for the logical grouping of the Attribute",
-            example = "requiredAttributes"
+            examples = {"requiredAttributes"}
     )
     private String group;
 
