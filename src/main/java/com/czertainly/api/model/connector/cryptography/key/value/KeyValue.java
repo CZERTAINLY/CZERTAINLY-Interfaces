@@ -8,16 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Schema(
-        description = "Value of the Key",
-        type = "object",
-        subTypes = {
-                RawKeyValue.class,
-                SpkiKeyValue.class,
-                PrkiKeyValue.class,
-                EprkiKeyValue.class,
-                CustomKeyValue.class
-        }
-)
-public class KeyValue extends AbstractKeyValue {
+@Schema(implementation = KeyValueDto.class)
+public class KeyValue extends AbstractKeyValue implements KeyValueDto {
 }
