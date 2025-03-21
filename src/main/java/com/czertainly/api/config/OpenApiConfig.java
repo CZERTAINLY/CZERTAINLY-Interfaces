@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 name = OpenApiConfig.CONNECTOR_API_KEY_SECURITY_SCHEME_NAME,
                 type = SecuritySchemeType.APIKEY,
                 in = SecuritySchemeIn.HEADER,
-                paramName = "ApiKeyHeaderAttribute",
+                paramName = "X-API-KEY",
                 description = "API Key in header configured for connector"
         ),
         @SecurityScheme(
