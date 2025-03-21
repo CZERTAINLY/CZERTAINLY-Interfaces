@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonPropertyOrder("name")
@@ -14,6 +16,9 @@ public class OAuth2ProviderSettingsDto extends OAuth2ProviderSettingsUpdateDto {
     @NotNull
     @Schema(description = "Name of OAuth2 Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
+
+    @Schema(description = "List of public keys used by the provider", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<JwkDto> jwkSetKeys;
 
 }
 
