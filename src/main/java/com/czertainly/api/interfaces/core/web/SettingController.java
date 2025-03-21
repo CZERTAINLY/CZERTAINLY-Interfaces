@@ -2,10 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.core.settings.*;
-import com.czertainly.api.model.core.settings.authentication.AuthenticationSettingsDto;
-import com.czertainly.api.model.core.settings.authentication.AuthenticationSettingsUpdateDto;
-import com.czertainly.api.model.core.settings.authentication.OAuth2ProviderSettingsDto;
-import com.czertainly.api.model.core.settings.authentication.OAuth2ProviderSettingsUpdateDto;
+import com.czertainly.api.model.core.settings.authentication.*;
 import com.czertainly.api.model.core.settings.logging.LoggingSettingsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

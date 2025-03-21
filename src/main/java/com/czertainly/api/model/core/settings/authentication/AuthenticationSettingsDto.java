@@ -17,5 +17,5 @@ public class AuthenticationSettingsDto implements SettingsDto {
 
     @NotNull
     @Schema(description = "Map of OAuth2 providers settings where key is provider name", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Map<String, OAuth2ProviderSettingsDto> oAuth2Providers = new HashMap<>();
+    private Map<String, OAuth2ProvidersSettingsUpdateDto> oAuth2Providers = new HashMap<>();
 }
