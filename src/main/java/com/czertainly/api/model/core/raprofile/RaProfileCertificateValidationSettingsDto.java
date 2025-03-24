@@ -1,14 +1,12 @@
-package com.czertainly.api.model.core.settings;
+package com.czertainly.api.model.core.raprofile;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class CertificateValidationSettingsDto implements Serializable {
+public class RaProfileCertificateValidationSettingsDto {
 
-    @Schema(description = "Indicator whether validation of certificates should be enabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Indicator whether validation of certificates associated with RA profile should be enabled, if null, then values in platform settings will be used", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "Frequency of validation of certificates in days", requiredMode = Schema.RequiredMode.NOT_REQUIRED, minimum = "1")

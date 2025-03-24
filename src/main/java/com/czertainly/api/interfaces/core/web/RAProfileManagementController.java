@@ -10,7 +10,7 @@ import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.certificate.CertificateDetailDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
-import com.czertainly.api.model.core.raprofile.RaProfileValidationUpdateDto;
+import com.czertainly.api.model.core.raprofile.RaProfileCertificateValidationSettingsUpdateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -91,7 +91,7 @@ public interface RAProfileManagementController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Configuration of validation of RA Profile updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
     @PatchMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/validation", consumes = {"application/json"}, produces = {"application/json"})
-    RaProfileDto updateRaProfileValidationConfiguration(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody @Valid RaProfileValidationUpdateDto request) throws NotFoundException;
+    RaProfileDto updateRaProfileValidationConfiguration(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid, @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid, @RequestBody @Valid RaProfileCertificateValidationSettingsUpdateDto request) throws NotFoundException;
 
     @Operation(summary = "Delete RA Profile")
     @ApiResponses(value = {
