@@ -27,4 +27,5 @@ public class CertificateValidationSettingsUpdateDto implements Serializable {
     public boolean isValid() {
         return !enabled || (frequency != null && expiringThreshold != null);
     }
+
 }
