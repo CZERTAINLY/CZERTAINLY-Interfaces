@@ -1,21 +1,18 @@
 package com.czertainly.api.model.core.settings.authentication;
 
-
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
-@EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper = true)
+@JsonPropertyOrder("name")
 public class OAuth2ProviderSettingsDto extends OAuth2ProviderSettingsUpdateDto {
 
     @NotNull
     @Schema(description = "Name of OAuth2 Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "List of public keys used by the provider", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<JwkDto> jwkSetKeys;
 }

@@ -16,5 +16,5 @@ public class AuthenticationSettingsUpdateDto {
 
     @Valid
     @Schema(description = "List of OAuth2 providers settings to be registered. If null, keep providers as they are, otherwise replace with providers from list")
-    private List<OAuth2ProvidersSettingsUpdateDto> oAuth2Providers;
+    private List<OAuth2ProviderSettingsDto> oAuth2Providers;
 }
