@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.settings;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
@@ -20,4 +22,9 @@ public class CertificateValidationSettingsUpdateDto implements Serializable {
     @Positive
     private Integer expiringThreshold = 30;
 
+    @AssertTrue(message = "Frequency and expiring threshold values must not be null for enabled validation.")
+    @JsonIgnore
+    public boolean isValid() {
+        return !enabled || (frequency != null && expiringThreshold != null);
+    }
 }
