@@ -25,7 +25,7 @@ public interface SettingController extends AuthProtectedController {
     @Operation(summary = "Update platform setting")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updatePlatformSettings(@Valid @RequestBody PlatformSettingsDto platformSettingsDto);
+    void updatePlatformSettings(@Valid @RequestBody PlatformSettingsUpdateDto platformSettingsDto);
 
     @Operation(summary = "Get notification settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification settings retrieved")})
