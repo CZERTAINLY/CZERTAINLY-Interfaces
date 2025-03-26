@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
         @SecurityRequirement(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.SESSION_SECURITY_SCHEME_NAME),
-})@ApiResponses(
+})
+@ApiResponses(
         value = {
                 @ApiResponse(
                         responseCode = "400",
