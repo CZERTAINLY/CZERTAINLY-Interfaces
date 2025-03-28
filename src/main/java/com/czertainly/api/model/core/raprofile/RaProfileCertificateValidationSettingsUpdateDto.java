@@ -23,7 +23,7 @@ public class RaProfileCertificateValidationSettingsUpdateDto {
     @AssertTrue(message = "Frequency and expiring threshold values must not be null for enabled validation.")
     @JsonIgnore
     public boolean isValid() {
-        return !enabled || (frequency != null && expiringThreshold != null);
+        return enabled == null || !enabled || (frequency != null && expiringThreshold != null);
     }
 
 }
