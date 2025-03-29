@@ -55,7 +55,7 @@ public class CertificateRequestDto {
     @Schema(
             description = "Subject alternative names"
     )
-    private Map<String, Object> subjectAlternativeNames;
+    private Map<String, List<String>> subjectAlternativeNames;
 
     @Schema(
             description = "CSR Attributes"
