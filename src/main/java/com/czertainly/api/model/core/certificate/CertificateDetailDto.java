@@ -49,7 +49,7 @@ public class CertificateDetailDto extends CertificateDto {
     @Schema(
             description = "Subject alternative names"
     )
-    private Map<String, Object> subjectAlternativeNames;
+    private Map<String, List<String>> subjectAlternativeNames;
 
     @Schema(
             description = "Locations associated to the Certificate"
