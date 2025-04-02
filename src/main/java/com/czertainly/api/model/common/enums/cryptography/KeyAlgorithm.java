@@ -15,8 +15,9 @@ public enum KeyAlgorithm implements IPlatformEnum {
     RSA("RSA", "RSA", "Rivest–Shamir–Adleman"),
     ECDSA("ECDSA", "ECDSA", "Elliptic Curve Digital Signature Algorithm"),
     FALCON("FALCON", "FALCON", "Fast Fourier lattice-based compact signatures over NTRU"),
-    DILITHIUM("CRYSTALS-Dilithium", "CRYSTALS-Dilithium", "Post-quantum lattice-based signature scheme"),
-    SPHINCSPLUS("SPHINCS+", "SPHINCS+", "Post-quantum stateless hash-based signature scheme"),
+    MLDSA("ML-DSA", "ML-DSA", "Post-quantum lattice-based and the primary signature scheme that is now standardised by NIST, also known as CRYSTALS-Dilithium,"),
+    SLHDSA("SLH-DSA", "SLH-DSA", "Post-quantum stateless hash-based signature scheme that is now standardised by NIST, also known as SPHINCS+"),
+    MLKEM("ML-KEM", "ML-KEM", "Also known as CRYSTALS-Kyber, a lattice-based and the primary KEM that is now standardised by NIST"),
     UNKNOWN("Unknown", "Unknown", "Key algorithm not recognized");
 
     private static final KeyAlgorithm[] VALUES;
