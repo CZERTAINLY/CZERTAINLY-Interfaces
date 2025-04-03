@@ -8,6 +8,7 @@ import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.auth.AuthResourceDto;
 import com.czertainly.api.model.core.auth.UserDetailDto;
+import com.czertainly.api.model.core.auth.UserProfileDetailDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,7 +28,7 @@ public interface AuthController extends AuthProtectedController {
     @Operation(summary = "Profile Authorization")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authenticate a user")})
     @GetMapping(path = "/profile", produces = {"application/json"})
-    UserDetailDto profile();
+    UserProfileDetailDto profile();
 
     @Operation(summary = "Update User Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authenticate a user"), @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
