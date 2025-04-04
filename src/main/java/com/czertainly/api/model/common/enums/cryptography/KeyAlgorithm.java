@@ -17,7 +17,8 @@ public enum KeyAlgorithm implements IPlatformEnum {
     FALCON("FALCON", "FALCON", "Fast Fourier lattice-based compact signatures over NTRU"),
     MLDSA("ML-DSA", "ML-DSA", "Post-quantum lattice-based and the primary signature scheme that is now standardised by NIST, also known as CRYSTALS-Dilithium,"),
     SLHDSA("SLH-DSA", "SLH-DSA", "Post-quantum stateless hash-based signature scheme that is now standardised by NIST, also known as SPHINCS+"),
-    MLKEM("ML-KEM", "ML-KEM", "Also known as CRYSTALS-Kyber, a lattice-based and the primary KEM that is now standardised by NIST"),
+    @Deprecated DILITHIUM("CRYSTALS-Dilithium", "CRYSTALS-Dilithium", "Post-quantum lattice-based signature scheme"),
+    @Deprecated SPHINCSPLUS("SPHINCS+", "SPHINCS+", "Post-quantum stateless hash-based signature scheme"),
     UNKNOWN("Unknown", "Unknown", "Key algorithm not recognized");
 
     private static final KeyAlgorithm[] VALUES;
