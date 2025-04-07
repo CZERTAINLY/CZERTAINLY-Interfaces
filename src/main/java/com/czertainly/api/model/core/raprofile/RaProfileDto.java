@@ -23,11 +23,11 @@ public class RaProfileDto extends NameAndUuidDto {
     private String description;
 
     @Schema(description = "UUID of Authority provider",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorityInstanceUuid;
 
     @Schema(description = "Name of Authority instance",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorityInstanceName;
 
     @Schema(description = "Has Authority of legacy authority provider",

@@ -85,19 +85,19 @@ public class AcmeAccountResponseDto {
     private Boolean termsOfServiceAgreed;
     @Schema(
             description = "RA Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             examples = {"RA Profile 1"}
     )
     private SimplifiedRaProfileDto raProfile;
     @Schema(
             description = "Name of the ACME Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             examples = {"ACME Profile 1"}
     )
     private String acmeProfileName;
     @Schema(
             description = "UUID of the ACME Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
     )
     private String acmeProfileUuid;

@@ -16,17 +16,20 @@ import java.util.List;
 public class TokenInstanceDetailDto extends NameAndUuidDto {
 
     @Schema(
-            description = "Connector Name"
+            description = "Connector Name",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String connectorName;
 
     @Schema(
-            description = "Connector UUID"
+            description = "Connector UUID",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String connectorUuid;
 
     @Schema(
-            description = "Connector Kind"
+            description = "Connector Kind",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String kind;
 
@@ -49,12 +52,14 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
     private List<ResponseAttributeDto> attributes;
 
     @Schema(
-            description = "Token instance Metadata"
+            description = "Token instance Metadata",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<MetadataResponseDto> metadata;
 
     @Schema(
-            description = "Custom Attributes for the Token Instance"
+            description = "Custom Attributes for the Token Instance",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<ResponseAttributeDto> customAttributes;
 }

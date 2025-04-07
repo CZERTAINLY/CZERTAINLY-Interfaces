@@ -2,10 +2,7 @@ package com.czertainly.api.model.core.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.HashMap;
 
 public class CertificateEventHistoryDto {
@@ -30,7 +27,7 @@ public class CertificateEventHistoryDto {
     @Schema(description = "Event message", requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
-    @Schema(description = "Additional information for the event")
+    @Schema(description = "Additional information for the event", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private HashMap<String, Object> additionalInformation;
 
     public String getUuid() {

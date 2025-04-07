@@ -17,7 +17,7 @@ import java.util.List;
 public class KeyDetailDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String description;
 
@@ -27,29 +27,32 @@ public class KeyDetailDto extends NameAndUuidDto {
     private OffsetDateTime creationTime;
 
     @Schema(
-            description = "UUID of the Token Profile"
+            description = "UUID of the Token Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenProfileUuid;
 
     @Schema(
-            description = "Name of the Token Profile"
+            description = "Name of the Token Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenProfileName;
 
     @Schema(
             description = "Token Instance UUID",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenInstanceUuid;
 
     @Schema(
             description = "Token Instance Name",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenInstanceName;
 
     @Schema(
-            description = "Custom Attributes for the Cryptographic Key"
+            description = "Custom Attributes for the Cryptographic Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<ResponseAttributeDto> customAttributes;
 
@@ -60,17 +63,20 @@ public class KeyDetailDto extends NameAndUuidDto {
     private List<ResponseAttributeDto> attributes;
 
     @Schema(
-            description = "Owner of the Key"
+            description = "Owner of the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String owner;
 
     @Schema(
-            description = "UUID of the owner of the Key"
+            description = "UUID of the owner of the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String ownerUuid;
 
     @Schema(
-            description = "Groups associated to the key"
+            description = "Groups associated to the key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<GroupDto> groups;
 
@@ -81,7 +87,8 @@ public class KeyDetailDto extends NameAndUuidDto {
     private List<KeyItemDetailDto> items;
 
     @Schema(
-            description = "List of associated items"
+            description = "List of associated items",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<KeyAssociationDto> associations;
 }
