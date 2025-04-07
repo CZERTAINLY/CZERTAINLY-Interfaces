@@ -29,11 +29,11 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
     private Boolean enabled;
 
     @Schema(description = "UUID of Credential provider Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Name of Credential provider Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorName;
 
     public String getKind() {

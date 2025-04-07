@@ -20,7 +20,7 @@ public class KeyItemDetailDto extends NameAndUuidDto {
 
     @Schema(
             description = "UUID of the key item in the Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String keyReferenceUuid;
 
@@ -37,28 +37,32 @@ public class KeyItemDetailDto extends NameAndUuidDto {
     private KeyAlgorithm keyAlgorithm;
 
     @Schema(
-            description = "Key Format"
+            description = "Key Format",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyFormat format;
 
     @Schema(
-            description = "Key Data"
+            description = "Key Data",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String keyData;
 
     @Schema(
-            description = "Key Length"
+            description = "Key Length",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int length;
 
     @Schema(
-            description = "Metadata for the key"
+            description = "Metadata for the key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<MetadataResponseDto> metadata;
 
     @Schema(
             description = "Key Usages",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<KeyUsage> usage;
 
@@ -75,7 +79,8 @@ public class KeyItemDetailDto extends NameAndUuidDto {
     private KeyState state;
 
     @Schema(
-            description = "Reason for Compromise"
+            description = "Reason for Compromise",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private KeyCompromiseReason reason;
 }

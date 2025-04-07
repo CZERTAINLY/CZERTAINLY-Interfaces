@@ -15,19 +15,20 @@ public class EntityInstanceDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
-    @Schema(description = "List of Custom Attributes")
+    @Schema(description = "List of Custom Attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Status of Entity instance",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String status;
 
     @Schema(description = "UUID of Entity Provider",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Name of Entity Provider",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorName;
 
     @Schema(description = "Entity instance Kind",

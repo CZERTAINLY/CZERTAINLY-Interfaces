@@ -28,17 +28,20 @@ public class CertificateDto implements Loggable {
     private String commonName;
 
     @Schema(
-            description = "Certificate serial number"
+            description = "Certificate serial number",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String serialNumber;
 
     @Schema(
-            description = "Certificate issuer common name"
+            description = "Certificate issuer common name",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String issuerCommonName;
 
     @Schema(
-            description = "Issuer DN of the Certificate"
+            description = "Issuer DN of the Certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String issuerDn;
 
@@ -49,12 +52,14 @@ public class CertificateDto implements Loggable {
     private String subjectDn;
 
     @Schema(
-            description = "Certificate validity start date"
+            description = "Certificate validity start date",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Date notBefore;
 
     @Schema(
-            description = "Certificate expiration date"
+            description = "Certificate expiration date",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Date notAfter;
 
@@ -89,17 +94,20 @@ public class CertificateDto implements Loggable {
     private CertificateValidationStatus validationStatus;
 
     @Schema(
-            description = "RA Profile associated to the Certificate"
+            description = "RA Profile associated to the Certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private SimplifiedRaProfileDto raProfile;
 
     @Schema(
-            description = "SHA256 fingerprint of the Certificate"
+            description = "SHA256 fingerprint of the Certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String fingerprint;
 
     @Schema(
-            description = "Groups associated to the Certificate"
+            description = "Groups associated to the Certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<GroupDto> groups;
 
@@ -116,22 +124,26 @@ public class CertificateDto implements Loggable {
     private String ownerUuid;
 
     @Schema(
-            description = "Certificate type"
+            description = "Certificate type",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CertificateType certificateType;
 
     @Schema(
-            description = "Serial number of the issuer"
+            description = "Serial number of the issuer",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String issuerSerialNumber;
 
     @Schema(
-            description = "Certificate compliance status"
+            description = "Certificate compliance status",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private ComplianceStatus complianceStatus;
 
     @Schema(
-            description = "UUID of the issuer certificate"
+            description = "UUID of the issuer certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String issuerCertificateUuid;
 
@@ -143,7 +155,7 @@ public class CertificateDto implements Loggable {
 
     @Schema(
             description = "Indicator whether CA is marked as trusted, set to null if certificate is not CA",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Boolean trustedCa;
 

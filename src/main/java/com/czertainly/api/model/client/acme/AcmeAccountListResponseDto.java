@@ -43,20 +43,20 @@ public class AcmeAccountListResponseDto {
     private AccountStatus status;
     @Schema(
             description = "RA Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             examples = {"RAProfile1"}
     )
     private SimplifiedRaProfileDto raProfile;
     @Schema(
             description = "Name of the ACME Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             examples = {"ACMEProfile1"}
     )
     private String acmeProfileName;
 
     @Schema(
             description = "UUID of the ACME Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
     )
     private String acmeProfileUuid;
