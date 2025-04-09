@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Getter
@@ -24,4 +26,14 @@ public class CertificateValidationResultDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Map<CertificateValidationCheck, CertificateValidationCheckDto> validationChecks;
+
+    @Schema(
+            description = "Overall certificate validation result message", requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private String message;
+
+    @Schema(
+            description = "Date of the most recent validation of the certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private LocalDateTime validationTimestamp;
 }
