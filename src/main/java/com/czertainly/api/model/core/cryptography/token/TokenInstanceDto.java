@@ -25,17 +25,20 @@ public class TokenInstanceDto extends NameAndUuidDto {
     private Integer tokenProfiles;
 
     @Schema(
-            description = "Connector Name"
+            description = "Connector Name",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String connectorName;
 
     @Schema(
-            description = "Connector UUID"
+            description = "Connector UUID",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String connectorUuid;
 
     @Schema(
-            description = "Connector Kind"
+            description = "Connector Kind",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String kind;
 

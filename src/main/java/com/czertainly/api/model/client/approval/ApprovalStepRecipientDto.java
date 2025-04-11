@@ -16,7 +16,7 @@ public class ApprovalStepRecipientDto {
 
     @Schema(
             description = "UUID of the recipient user",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String userUuid;
 

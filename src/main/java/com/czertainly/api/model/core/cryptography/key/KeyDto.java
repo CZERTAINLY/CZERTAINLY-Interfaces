@@ -18,7 +18,7 @@ import java.util.List;
 public class KeyDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String description;
 
@@ -28,39 +28,44 @@ public class KeyDto extends NameAndUuidDto {
     private OffsetDateTime creationTime;
 
     @Schema(
-            description = "UUID of the Token Profile"
+            description = "UUID of the Token Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenProfileUuid;
 
     @Schema(
-            description = "Name of the Token Profile"
+            description = "Name of the Token Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenProfileName;
 
     @Schema(
             description = "Token Instance UUID",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenInstanceUuid;
 
     @Schema(
             description = "Token Instance Name",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenInstanceName;
 
     @Schema(
-            description = "Owner of the Key"
+            description = "Owner of the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String owner;
 
     @Schema(
-            description = "UUID of the owner of the Key"
+            description = "UUID of the owner of the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String ownerUuid;
 
     @Schema(
-            description = "Groups associated to the key"
+            description = "Groups associated to the key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<GroupDto> groups;
 
@@ -71,7 +76,8 @@ public class KeyDto extends NameAndUuidDto {
     private List<KeyItemDto> items;
 
     @Schema(
-            description = "Number of associated objects"
+            description = "Number of associated objects",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int associations;
 
