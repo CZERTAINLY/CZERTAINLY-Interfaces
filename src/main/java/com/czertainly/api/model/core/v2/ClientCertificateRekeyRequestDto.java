@@ -47,14 +47,12 @@ public class ClientCertificateRekeyRequestDto {
     //------------------------------------------------------------------------------------------------------------------
 
     @Schema(
-            description = "Key UUID",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Key UUID"
     )
     private UUID keyUuid;
 
     @Schema(
-            description = "Token Profile UUID",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            description = "Token Profile UUID"
     )
     private UUID tokenProfileUuid;
 
