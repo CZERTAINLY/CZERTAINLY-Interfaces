@@ -1,9 +1,9 @@
 name: Build CZERTAINLY Interfaces
 on:
   pull_request:
-    branches: [develop]
+    branches: [main]
   push:
-    branches: [develop]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -68,5 +68,5 @@ jobs:
               owner: 'CZERTAINLY',
               repo: 'CZERTAINLY-Interface-Documentation',
               workflow_id: 'publish.yml',
-              ref: 'develop',
+              ref: 'main',
             })
