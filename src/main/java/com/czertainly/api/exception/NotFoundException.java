@@ -1,8 +1,12 @@
 package com.czertainly.api.exception;
 
 import com.czertainly.api.model.core.connector.ConnectorDto;
+import lombok.Getter;
 
-public class NotFoundException extends ConnectorException {
+@Getter
+public class NotFoundException extends Exception {
+
+    private ConnectorDto connector;
 
     public NotFoundException() {
         super();
@@ -21,16 +25,17 @@ public class NotFoundException extends ConnectorException {
     }
 
     public NotFoundException(ConnectorDto connector) {
-        super(connector);
+        this.connector = connector;
     }
 
     public NotFoundException(String message, ConnectorDto connector) {
-        super(message, connector);
+        super(message);
+        this.connector = connector;
     }
 
     public NotFoundException(String objectType, Object identifier, ConnectorDto connector) {
         this(objectType, identifier);
-        super.connector = connector;
+        this.connector = connector;
     }
 
     public NotFoundException(Class<?> objectClass, Object identifier, ConnectorDto connector) {

@@ -13,12 +13,14 @@ public class CertificateRequestDto {
 
 
     @Schema(
-            description = "Certificate type"
+            description = "Certificate type",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CertificateType certificateType;
 
     @Schema(
-            description = "Certificate request format"
+            description = "Certificate request format",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CertificateRequestFormat certificateRequestFormat;
 
@@ -53,22 +55,26 @@ public class CertificateRequestDto {
     private String subjectDn;
 
     @Schema(
-            description = "Subject alternative names"
+            description = "Subject alternative names",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private Map<String, Object> subjectAlternativeNames;
+    private Map<String, List<String>> subjectAlternativeNames;
 
     @Schema(
-            description = "CSR Attributes"
+            description = "CSR Attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<ResponseAttributeDto> attributes;
 
     @Schema(
-            description = "Signature Attributes"
+            description = "Signature Attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<ResponseAttributeDto> signatureAttributes;
 
     @Schema(
-            description = "UUID of the Key"
+            description = "UUID of the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String keyUuid;
 

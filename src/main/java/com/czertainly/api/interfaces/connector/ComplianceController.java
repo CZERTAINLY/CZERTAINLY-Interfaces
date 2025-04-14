@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.connector.compliance.ComplianceRequestDto;
 import com.czertainly.api.model.connector.compliance.ComplianceResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@RestController
 @RequestMapping("/v1/complianceProvider/{kind}")
 @Tag(
         name = "Compliance",
@@ -28,26 +27,7 @@ import java.io.IOException;
                 "certificate content and the list of rule references. Once the values are received, compliance is " +
                 "checked and status will be returned"
 )
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-
-public interface ComplianceController {
+public interface ComplianceController extends AuthProtectedConnectorController {
     @PostMapping(
             path = "/compliance",
             consumes = {"application/json"},

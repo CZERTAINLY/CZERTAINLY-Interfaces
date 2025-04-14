@@ -7,6 +7,7 @@ import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,14 +17,14 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Request attribute to send attribute content for object")
-public class RequestAttributeDto {
+public class RequestAttributeDto implements Serializable {
 
     /**
      * UUID of the Attribute
      **/
     @Schema(
             description = "UUID of the Attribute",
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003",
+            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String uuid;
@@ -33,7 +34,7 @@ public class RequestAttributeDto {
      **/
     @Schema(
             description = "Name of the Attribute",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
@@ -43,7 +44,7 @@ public class RequestAttributeDto {
      **/
     @Schema(
             description = "Content Type of the Attribute",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private AttributeContentType contentType;
@@ -53,23 +54,7 @@ public class RequestAttributeDto {
      **/
     @Schema(
             description = "Content of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "object",
-            oneOf = {
-                    BooleanAttributeContent.class,
-                    CodeBlockAttributeContent.class,
-                    CredentialAttributeContent.class,
-                    DateAttributeContent.class,
-                    DateTimeAttributeContent.class,
-                    FileAttributeContent.class,
-                    FloatAttributeContent.class,
-                    IntegerAttributeContent.class,
-                    ObjectAttributeContent.class,
-                    SecretAttributeContent.class,
-                    StringAttributeContent.class,
-                    TextAttributeContent.class,
-                    TimeAttributeContent.class
-            }
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private List<BaseAttributeContent> content;
 

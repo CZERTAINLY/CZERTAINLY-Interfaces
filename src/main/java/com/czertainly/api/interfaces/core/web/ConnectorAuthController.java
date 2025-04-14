@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.connector.AuthType;
@@ -12,94 +12,70 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
 
-@RestController
 @RequestMapping("/v1/connectors/auth")
 @Tag(name = "Connector Authentication", description = "Connector Authentication API")
 @ApiResponses(
 		value = {
 				@ApiResponse(
-						responseCode = "400",
-						description = "Bad Request",
-						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-				),
-				@ApiResponse(
-						responseCode = "401",
-						description = "Unauthorized",
-						content = @Content(schema = @Schema())
-				),
-				@ApiResponse(
-						responseCode = "403",
-						description = "Forbidden",
-						content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-				),
-				@ApiResponse(
 						responseCode = "404",
 						description = "Not Found",
 						content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-				),
-				@ApiResponse(
-						responseCode = "500",
-						description = "Internal Server Error",
-						content = @Content
 				)
 		})
 
-public interface ConnectorAuthController {
+public interface ConnectorAuthController extends AuthProtectedController {
 
 	@Operation(summary = "Get list of Authentication Types")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Auth Types retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))) })
-	@RequestMapping(path = "/types", method = RequestMethod.GET, produces = {"application/json"})
-	public Set<AuthType> getAuthenticationTypes();
+	@GetMapping(path = "/types", produces = {"application/json"})
+	Set<AuthType> getAuthenticationTypes();
 
 	@Operation(summary = "Get basic auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
-	@RequestMapping(path = "/attributes/basic", method = RequestMethod.GET, produces = {"application/json"})
-	public List<BaseAttribute> getBasicAuthAttributes();
+	@GetMapping(path = "/attributes/basic", produces = {"application/json"})
+	List<BaseAttribute> getBasicAuthAttributes();
 
 	@Operation(summary = "Validate basic auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated") })
-	@RequestMapping(path = "/attributes/basic/validate", method = RequestMethod.POST, consumes = {
+	@PostMapping(path = "/attributes/basic/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	public void validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get Attributes for certificate auth")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
-	@RequestMapping(path = "/attributes/certificate", method = RequestMethod.GET, produces = {"application/json"})
-	public List<BaseAttribute> getCertificateAttributes();
+	@GetMapping(path = "/attributes/certificate", produces = {"application/json"})
+	List<BaseAttribute> getCertificateAttributes();
 
 	@Operation(summary = "Validate certificate auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
-	@RequestMapping(path = "/attributes/certificate/validate", method = RequestMethod.POST, consumes = {
+	@PostMapping(path = "/attributes/certificate/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	public void validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get API Key auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
-	@RequestMapping(path = "/attributes/apiKey", method = RequestMethod.GET, produces = {"application/json"})
-	public List<BaseAttribute> getApiKeyAuthAttributes();
+	@GetMapping(path = "/attributes/apiKey", produces = {"application/json"})
+	List<BaseAttribute> getApiKeyAuthAttributes();
 
 	@Operation(summary = "Validate API Key Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
-	@RequestMapping(path = "/attributes/apiKey/validate", method = RequestMethod.POST, consumes = {
+	@PostMapping(path = "/attributes/apiKey/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	public void validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 
 	@Operation(summary = "Get JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
-	@RequestMapping(path = "/attributes/jwt", method = RequestMethod.GET, produces = {"application/json"})
-	public List<BaseAttribute> getJWTAuthAttributes();
+	@GetMapping(path = "/attributes/jwt", produces = {"application/json"})
+	List<BaseAttribute> getJWTAuthAttributes();
 
 	@Operation(summary = "Validate JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
-	@RequestMapping(path = "/attributes/jwt/validate", method = RequestMethod.POST, consumes = {
+	@PostMapping(path = "/attributes/jwt/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	public void validateJWTAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateJWTAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
 }

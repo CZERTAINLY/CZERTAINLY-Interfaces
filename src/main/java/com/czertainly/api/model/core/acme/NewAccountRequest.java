@@ -17,7 +17,7 @@ public class NewAccountRequest {
      * This is an optional parameter.
      */
     @Schema(description = "List of contacts for the Account. Required if the required flag is set in ACME Profile",
-            example = "[\"mailto:someadmin@domain.com\"]")
+            examples = {"[\"mailto:someadmin@domain.com\"]"})
     private List<String> contact;
 
     /**
@@ -27,7 +27,7 @@ public class NewAccountRequest {
      * This is a non-mandatory field.
      */
     @Schema(description = "Terms of Service agreed flag. true = Yes, false = No. Required if the required flag is set in ACME Profile",
-            example = "false")
+            examples = {"false"})
     private boolean termsOfServiceAgreed;
 
     /**
@@ -37,7 +37,7 @@ public class NewAccountRequest {
      * client.
      * This is a non-mandatory field.
      */
-    @Schema(description = "Return existing Account only flag", defaultValue = "false", example = "false")
+    @Schema(description = "Return existing Account only flag", defaultValue = "false", examples = {"false"})
     private boolean onlyReturnExisting;
 
 

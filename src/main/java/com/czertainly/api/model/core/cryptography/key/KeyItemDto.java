@@ -19,7 +19,7 @@ import java.util.List;
 public class KeyItemDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String description;
 
@@ -34,50 +34,56 @@ public class KeyItemDto extends NameAndUuidDto {
     private String keyWrapperUuid;
 
     @Schema(
-            description = "UUID of the Token Profile"
+            description = "UUID of the Token Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenProfileUuid;
 
     @Schema(
-            description = "Name of the Token Profile"
+            description = "Name of the Token Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenProfileName;
 
     @Schema(
             description = "Token Instance UUID",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenInstanceUuid;
 
     @Schema(
             description = "Token Instance Name",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String tokenInstanceName;
 
     @Schema(
-            description = "Owner of the Key"
+            description = "Owner of the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String owner;
 
     @Schema(
-            description = "UUID of the owner of the Key"
+            description = "UUID of the owner of the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String ownerUuid;
 
     @Schema(
-            description = "Groups associated to the Key"
+            description = "Groups associated to the Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<GroupDto> groups;
 
     @Schema(
-            description = "Number of associated objects"
+            description = "Number of associated objects",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int associations;
 
     @Schema(
             description = "UUID of the key item in the Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String keyReferenceUuid;
 
@@ -94,17 +100,20 @@ public class KeyItemDto extends NameAndUuidDto {
     private KeyAlgorithm keyAlgorithm;
 
     @Schema(
-            description = "Key Format"
+            description = "Key Format",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyFormat format;
 
     @Schema(
-            description = "Key Length"
+            description = "Key Length",
+            requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int length;
+
     @Schema(
             description = "Key Usages",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<KeyUsage> usage;
 

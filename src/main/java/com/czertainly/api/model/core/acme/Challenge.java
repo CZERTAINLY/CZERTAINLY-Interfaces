@@ -13,7 +13,7 @@ public class Challenge {
      */
     @Schema(description = "Type of Challenge",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "dns-01")
+            examples = {"dns-01"})
     private ChallengeType type;
 
     /**
@@ -21,7 +21,7 @@ public class Challenge {
      */
     @Schema(description = "URL to which the response can be posted after the client completes the Challenge",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "https://some-server.com/api/v1/protocols/acme/chall/JHjhrt&6hf")
+            examples = {"https://some-server.com/api/v1/protocols/acme/chall/JHjhrt&6hf"})
     private String url;
 
     /**
@@ -53,7 +53,7 @@ public class Challenge {
      */
     @Schema(description = "Token for the Challenge",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "JGuyIUgkRGFYTER658ykjfYFur76fkFitur7FGHRiytrkfIruFF")
+            examples = {"JGuyIUgkRGFYTER658ykjfYFur76fkFitur7FGHRiytrkfIruFF"})
     private String token;
 
     public ChallengeType getType() {

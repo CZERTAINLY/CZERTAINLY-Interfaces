@@ -18,7 +18,7 @@ public class ResponseAttributeDto {
      **/
     @Schema(
             description = "UUID of the Attribute",
-            example = "166b5cf52-63f2-11ec-90d6-0242ac120003"
+            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"}
     )
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
@@ -28,7 +28,7 @@ public class ResponseAttributeDto {
      **/
     @Schema(
             description = "Name of the Attribute",
-            example = "Attribute",
+            examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String name;
@@ -38,7 +38,7 @@ public class ResponseAttributeDto {
     **/
    @Schema(
            description = "Label of the the Attribute",
-           example = "Attribute Name",
+           examples = {"Attribute Name"},
            requiredMode = Schema.RequiredMode.REQUIRED
    )
    private String label;

@@ -20,20 +20,20 @@ public class ProblemDocument implements Serializable {
      */
     @Schema(description = "Type of the ACME problem",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "notFound")
+            examples = {"notFound"})
     private String type;
 
     /**
      * Title of the problem. In short words.
      */
-    @Schema(description = "ACME problem title", example = "Not Found")
+    @Schema(description = "ACME problem title", examples = {"Not Found"})
     private String title;
 
     /**
      * Details of the problem. These statements should be understandable by the user.
      */
     @Schema(description = "ACME problem details",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "Requested object is not found")
+            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Requested object is not found"})
     private String detail;
 
     /**
@@ -41,7 +41,7 @@ public class ProblemDocument implements Serializable {
      * Terms of Service to be agreed by the client to continue with the ACME operations
      */
     @Schema(description = "URL of the changes if something needs to be approved",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "https://some-company.com/instances/changes")
+            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"https://some-company.com/instances/changes"})
     private String instance;
 
     /**
@@ -54,7 +54,7 @@ public class ProblemDocument implements Serializable {
      * List of supported algorithms supported by the server.
      * This field is mandatory if the client signs the JWS by some unsupported algorithm
      */
-    @Schema(description = "List of supported algorithms", example = "ES256")
+    @Schema(description = "List of supported algorithms", examples = {"ES256"})
     private List<String> algorithms;
 
     public String getType() {

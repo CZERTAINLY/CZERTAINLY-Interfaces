@@ -15,7 +15,8 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
 
-    @Schema(description = "List of Custom Attributes")
+    @Schema(description = "List of Custom Attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(description = "Status of Authority instance",
@@ -23,15 +24,15 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
     private String status;
 
     @Schema(description = "UUID of Authority provider",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorUuid;
 
     @Schema(description = "Name of Authority provider",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorName;
 
     @Schema(description = "Authority Instance Kind",
-            example = "LegacyEjbca, ADCS, etc.",
+            examples = {"LegacyEjbca, ADCS, etc."},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 

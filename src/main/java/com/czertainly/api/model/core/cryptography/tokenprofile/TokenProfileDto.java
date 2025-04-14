@@ -15,7 +15,8 @@ import java.util.List;
 @ToString(callSuper = true)
 public class TokenProfileDto extends NameAndUuidDto {
     @Schema(
-            description = "Description of Token Profile"
+            description = "Description of Token Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String description;
 

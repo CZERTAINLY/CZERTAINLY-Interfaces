@@ -14,7 +14,7 @@ public class ScepProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
-    @Schema(description = "SCEP Profile description", example = "Sample description")
+    @Schema(description = "SCEP Profile description", examples = {"Sample description"})
     private String description;
     @Schema(description = "RA Profile")
     private SimplifiedRaProfileDto raProfile;
@@ -22,9 +22,9 @@ public class ScepProfileDto extends NameAndUuidDto {
     private boolean includeCaCertificate;
     @Schema(description = "Include CA certificate chain in the SCEP response", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean includeCaCertificateChain;
-    @Schema(description = "Renewal time threshold in days", example = "30")
+    @Schema(description = "Renewal time threshold in days", examples = {"30"})
     private Integer renewThreshold;
-    @Schema(description = "SCEP URL", example = "https://some-server.com/api/v1/protocols/scep/profile/pkiclient.exe")
+    @Schema(description = "SCEP URL", examples = {"https://some-server.com/api/v1/protocols/scep/profile/pkiclient.exe"})
     private String scepUrl;
 
     @Schema(description = "Status of Intune")

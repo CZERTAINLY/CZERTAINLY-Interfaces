@@ -19,60 +19,68 @@ import java.util.UUID;
 public class CertificateDetailDto extends CertificateDto {
 
     @Schema(
-            description = "Extended key usages"
+            description = "Extended key usages",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<String> extendedKeyUsage;
 
     @Schema(
             description = "Key usages",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<String> keyUsage;
 
     @Schema(
             description = "Certificate subject type",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private CertificateSubjectType subjectType;
 
     @Schema(
-            description = "Certificate metadata"
+            description = "Certificate metadata",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<MetadataResponseDto> metadata;
 
     @Schema(
             description = "Base64 encoded Certificate content",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String certificateContent;
 
     @Schema(
-            description = "Subject alternative names"
+            description = "Subject alternative names",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private Map<String, Object> subjectAlternativeNames;
+    private Map<String, List<String>> subjectAlternativeNames;
 
     @Schema(
-            description = "Locations associated to the Certificate"
+            description = "Locations associated to the Certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Set<LocationDto> locations;
 
     @Schema(
-            description = "Certificate compliance check result"
+            description = "Certificate compliance check result",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<CertificateComplianceResultDto> nonCompliantRules;
 
     @Schema(
-            description = "List of Custom Attributes"
+            description = "List of Custom Attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<ResponseAttributeDto> customAttributes;
 
     @Schema(
-            description = "Key Pair of the certificate"
+            description = "Key Pair of the certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private KeyDto key;
 
     @Schema(
-            description = "Certificate request data"
+            description = "Certificate request data",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private CertificateRequestDto certificateRequest;
 

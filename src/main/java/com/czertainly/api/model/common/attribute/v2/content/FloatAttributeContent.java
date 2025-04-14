@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
+@Schema(
+        description = "Float attribute content for decimal numbers",
+        type = "object")
 public class FloatAttributeContent extends BaseAttributeContent<Float> {
 
     @Schema(description = "Float attribute value", requiredMode = Schema.RequiredMode.REQUIRED)

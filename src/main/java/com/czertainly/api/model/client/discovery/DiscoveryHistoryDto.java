@@ -14,7 +14,7 @@ public class DiscoveryHistoryDto extends NameAndUuidDto {
 
     @Schema(
             description = "Discovery Kind",
-            example = "IP-HostName",
+            examples = {"IP-HostName"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String kind;

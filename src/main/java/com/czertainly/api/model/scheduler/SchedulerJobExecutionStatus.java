@@ -21,7 +21,7 @@ public enum SchedulerJobExecutionStatus implements IPlatformEnum {
     }
 
     @Schema(description = "Scheduled job execution status code",
-            example = "Secret", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"Secret"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

@@ -1,5 +1,6 @@
 package com.czertainly.api.model.connector.cryptography.key.value;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,5 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class KeyValue extends AbstractKeyValue {
+@Schema(implementation = KeyValueDto.class)
+public class KeyValue extends AbstractKeyValue implements KeyValueDto {
 }

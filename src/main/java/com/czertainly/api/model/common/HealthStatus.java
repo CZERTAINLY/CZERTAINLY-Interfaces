@@ -22,7 +22,7 @@ public enum HealthStatus implements IPlatformEnum {
     }
 
     @Schema(description = "Health Status",
-            example = "ok", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"ok"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

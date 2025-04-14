@@ -16,4 +16,3 @@ public class OAuth2ProviderSettingsDto extends OAuth2ProviderSettingsUpdateDto {
     private String name;
 
 }
-

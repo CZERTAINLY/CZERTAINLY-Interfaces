@@ -23,7 +23,7 @@ public enum KeyType implements IPlatformEnum {
     }
 
     @Schema(description = "Key type code",
-            example = "Secret", requiredMode = Schema.RequiredMode.REQUIRED)
+            examples = {"Secret"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

@@ -1,11 +1,13 @@
 package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/v1/{functionalGroup}/{kind}/attributes")
 @Tag(
         name = "Connector Attributes",
@@ -27,31 +28,16 @@ import java.util.List;
                 "data that can be exchanged and properly parsed by the connector. " +
                 "Part of this API is validation of the Attributes."
 )
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                )
-        })
-public interface AttributesController {
+public interface AttributesController extends AuthProtectedConnectorController {
 
     @GetMapping(
             produces = {"application/json"}
     )
     @Operation(
-            summary = "List available Attributes"
+            summary = "List available Attributes",
+            parameters = {
+                    @Parameter(name = "functionalGroup", description = "Function Group", in = ParameterIn.PATH, schema = @Schema(implementation = FunctionGroupCode.class))
+            }
     )
     @ApiResponses(
             value = {
@@ -70,7 +56,10 @@ public interface AttributesController {
 
     )
     @Operation(
-            summary = "Validate Attributes"
+            summary = "Validate Attributes",
+            parameters = {
+                    @Parameter(name = "functionalGroup", description = "Function Group", in = ParameterIn.PATH, schema = @Schema(implementation = FunctionGroupCode.class))
+            }
     )
     @ApiResponses(
             value = {
@@ -81,7 +70,7 @@ public interface AttributesController {
                     @ApiResponse(
                             responseCode = "422",
                             description = "Attribute validation failed",
-                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, example = "Attribute Validation error message")),
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, examples = {"Attribute Validation error message"})),
                                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})
 
                     )

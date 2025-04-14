@@ -1,11 +1,11 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.cryptography.tokenprofile.AddTokenProfileRequestDto;
 import com.czertainly.api.model.client.cryptography.tokenprofile.BulkTokenProfileKeyUsageRequestDto;
 import com.czertainly.api.model.client.cryptography.tokenprofile.EditTokenProfileRequestDto;
 import com.czertainly.api.model.client.cryptography.tokenprofile.TokenProfileKeyUsageRequestDto;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.cryptography.tokenprofile.TokenProfileDetailDto;
 import com.czertainly.api.model.core.cryptography.tokenprofile.TokenProfileDto;
@@ -26,36 +26,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
 @RequestMapping("/v1")
 @Tag(name = "Token Profile Management", description = "Token Profile Management API")
 @ApiResponses(
         value = {
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "Bad Request",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "Unauthorized",
-                        content = @Content(schema = @Schema())
-                ),
-                @ApiResponse(
-                        responseCode = "403",
-                        description = "Forbidden",
-                        content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "Internal Server Error",
-                        content = @Content
-                ),
                 @ApiResponse(
                         responseCode = "502",
                         description = "Connector Error",
@@ -68,7 +42,7 @@ import java.util.Optional;
                 ),
         })
 
-public interface TokenProfileController {
+public interface TokenProfileController extends AuthProtectedController {
     @Operation(
             summary = "List of available Token Profiles"
     )
@@ -76,9 +50,8 @@ public interface TokenProfileController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Token Profiles retrieved")
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/tokenProfiles",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     List<TokenProfileDto> listTokenProfiles(Optional<Boolean> enabled);
@@ -88,11 +61,11 @@ public interface TokenProfileController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Token Profile details retrieved")
+                    @ApiResponse(responseCode = "200", description = "Token Profile details retrieved"),
+                    @ApiResponse(responseCode = "404", description = "Token Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @GetMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     TokenProfileDetailDto getTokenProfile(
@@ -107,18 +80,18 @@ public interface TokenProfileController {
             value = {
                     @ApiResponse(responseCode = "201", description = "Token Profile added"),
                     @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+                    @ApiResponse(responseCode = "404", description = "Token Instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PostMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     ResponseEntity<TokenProfileDetailDto> createTokenProfile(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @RequestBody AddTokenProfileRequestDto request)
-            throws AlreadyExistException, ValidationException, ConnectorException, AttributeException;
+            throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
 
     @Operation(
             summary = "Edit Token Profile"
@@ -127,10 +100,11 @@ public interface TokenProfileController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Token Profile updated"),
                     @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+                    @ApiResponse(responseCode = "404", description = "Token Profile or Token instance not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+            })
+    @PutMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}",
-            method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -138,18 +112,18 @@ public interface TokenProfileController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String uuid,
             @RequestBody EditTokenProfileRequestDto request)
-            throws ConnectorException, AttributeException;
+            throws ConnectorException, AttributeException, NotFoundException;
 
     @Operation(
             summary = "Delete Token Profile"
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Profile deleted")
+                    @ApiResponse(responseCode = "204", description = "Token Profile deleted"),
+                    @ApiResponse(responseCode = "404", description = "Token Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @DeleteMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}",
-            method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -164,11 +138,11 @@ public interface TokenProfileController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Profile deleted")
+                    @ApiResponse(responseCode = "204", description = "Token Profile deleted"),
+                    @ApiResponse(responseCode = "404", description = "Token Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @DeleteMapping(
             path = "/tokenProfiles/{uuid}",
-            method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTokenProfile(
@@ -180,11 +154,11 @@ public interface TokenProfileController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Profile disabled")
+                    @ApiResponse(responseCode = "204", description = "Token Profile disabled"),
+                    @ApiResponse(responseCode = "404", description = "Token Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}/disable",
-            method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableTokenProfile(
@@ -197,11 +171,11 @@ public interface TokenProfileController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Token Profile enabled")
+                    @ApiResponse(responseCode = "204", description = "Token Profile enabled"),
+                    @ApiResponse(responseCode = "404", description = "Token Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}/enable",
-            method = RequestMethod.PATCH,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -218,8 +192,7 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "204", description = "Token Profiles deleted"),
                     @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @RequestMapping(path = "/tokenProfiles",
-            method = RequestMethod.DELETE,
+    @DeleteMapping(path = "/tokenProfiles",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -235,9 +208,8 @@ public interface TokenProfileController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Token Profiles disabled")
             })
-    @RequestMapping(
+    @PatchMapping(
             path = "/tokenProfiles/disable",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -253,8 +225,7 @@ public interface TokenProfileController {
             value = {
                     @ApiResponse(responseCode = "204", description = "Token Profiles enabled")
             })
-    @RequestMapping(path = "/tokenProfiles/enable",
-            method = RequestMethod.PATCH,
+    @PatchMapping(path = "/tokenProfiles/enable",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -274,12 +245,12 @@ public interface TokenProfileController {
     )
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "204", description = "Key Usages Updated")
+                    @ApiResponse(responseCode = "204", description = "Key Usages Updated"),
+                    @ApiResponse(responseCode = "404", description = "Token Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
             }
     )
-    @RequestMapping(
+    @PutMapping(
             path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/usages",
-            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -287,7 +258,7 @@ public interface TokenProfileController {
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @RequestBody TokenProfileKeyUsageRequestDto request)
-            throws NotFoundException, ValidationException;
+            throws NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -299,9 +270,8 @@ public interface TokenProfileController {
                     @ApiResponse(responseCode = "204", description = "Key Usages Updated")
             }
     )
-    @RequestMapping(
+    @PutMapping(
             path = "/tokens/usages",
-            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)

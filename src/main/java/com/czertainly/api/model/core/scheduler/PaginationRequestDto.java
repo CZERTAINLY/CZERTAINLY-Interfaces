@@ -2,8 +2,10 @@ package com.czertainly.api.model.core.scheduler;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springdoc.core.annotations.ParameterObject;
 
 @Data
+@ParameterObject
 public class PaginationRequestDto {
 
     @Schema(description = "Number of entries per page", defaultValue = "10", maximum = "1000")

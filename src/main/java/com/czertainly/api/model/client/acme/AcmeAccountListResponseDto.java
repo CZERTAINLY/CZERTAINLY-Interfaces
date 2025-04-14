@@ -14,50 +14,50 @@ public class AcmeAccountListResponseDto {
     @Schema(
             description = "ID of the Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "HJAT6gc7i6"
+            examples = {"HJAT6gc7i6"}
     )
     private String accountId;
     @Schema(
             description = "UUID of the Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
     )
     private String uuid;
     @Schema(
             description = "Enabled flag. true = enabled, false=disabled",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "false"
+            examples = {"false"}
     )
     private Boolean enabled;
     @Schema(
             description = "Total number of Orders",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "4"
+            examples = {"4"}
     )
     private Integer totalOrders;
     @Schema(
             description = "Status of the Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "VALID"
+            examples = {"VALID"}
     )
     private AccountStatus status;
     @Schema(
             description = "RA Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "RAProfile1"
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"RAProfile1"}
     )
     private SimplifiedRaProfileDto raProfile;
     @Schema(
             description = "Name of the ACME Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "ACMEProfile1"
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"ACMEProfile1"}
     )
     private String acmeProfileName;
 
     @Schema(
             description = "UUID of the ACME Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "6b55de1c-844f-11ec-a8a3-0242ac120002"
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
     )
     private String acmeProfileUuid;
 
