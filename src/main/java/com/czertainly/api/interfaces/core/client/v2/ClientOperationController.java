@@ -96,7 +96,16 @@ public interface ClientOperationController extends AuthProtectedController {
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
 			@RequestBody ClientCertificateRenewRequestDto request) throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException, CertificateOperationException, CertificateRequestException;
 
-	@Operation(summary = "Rekey Certificate")
+	@Operation(
+			summary = "Rekey Certificate",
+			description = """
+					The rekey operation is used to request a new certificate with a new key pair.
+					The new certificate will be issued with the same subject and attributes as the original certificate,
+					but with a new public key. Therefore, new certificate signing request (CSR) with new key pair needs
+					to be provided, or new key pair managed by the platform needs to be selected. When the same key pair
+					is used, or the subject is changed, the rekey operation will be rejected.
+					"""
+	)
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Certificate regenerated"),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
