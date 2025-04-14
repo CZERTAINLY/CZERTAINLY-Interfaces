@@ -3,7 +3,7 @@ name: Publish package to GitHub Packages
 on:
   push:
     branches:
-      - develop
+      - main
     tags:
       - '*'
   workflow_dispatch:
@@ -23,20 +23,41 @@ jobs:
           server-id: ossrh
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
+
+      - id: check-version
+        name: Check if version is SNAPSHOT
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Project version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          if [[ "${{ github.ref_type }}" == "tag" && "$VERSION" == *SNAPSHOT ]]; then
+            echo "❌ ERROR: Tagged release contains SNAPSHOT version"
+            exit 1
+          fi
+          
+          if [[ "${{ github.ref_type }}" == "branch" && "$VERSION" != *SNAPSHOT ]]; then
+            echo "❌ ERROR: Push to main requires SNAPSHOT version"
+            exit 1
+          fi
+
       - id: install-secret-key
         name: Install gpg secret key
         run: |
           (echo -n "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | base64 --decode | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
+
       - name: Publish to the Maven Central Repository
         run: mvn --batch-mode -Possrh -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} source:jar javadoc:jar deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+
       - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
+
       - name: Publish to GitHub Packages
         run: mvn --batch-mode -Pgithub source:jar javadoc:jar deploy
         env:
