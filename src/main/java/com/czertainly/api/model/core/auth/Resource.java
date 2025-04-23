@@ -39,13 +39,13 @@ public enum Resource implements IPlatformEnum {
     CMP_PROFILE("cmpProfiles", "CMP Profile", true, true),
 
     // CERTIFICATES
-    AUTHORITY("authorities", "Authority", true, true),
-    RA_PROFILE("raProfiles", "RA Profile", true, true),
-    CERTIFICATE("certificates", "Certificate", false, true, true, true),
-    CERTIFICATE_REQUEST("certificateRequests", "Certificate Request", false, false),
-    GROUP("groups", "Group", true, true),
+    AUTHORITY(Codes.AUTHORITY, "Authority", true, true),
+    RA_PROFILE(Codes.RA_PROFILE, "RA Profile", true, true),
+    CERTIFICATE(Codes.CERTIFICATE, "Certificate", false, true, true, true),
+    CERTIFICATE_REQUEST(Codes.CERTIFICATE_REQUEST, "Certificate Request", false, false),
+    GROUP(Codes.GROUP, "Group", true, true),
     COMPLIANCE_PROFILE("complianceProfiles", "Compliance Profile", true, true),
-    DISCOVERY("discoveries", "Discovery", false, true),
+    DISCOVERY(Codes.DISCOVERY, "Discovery", false, true),
 
     // ENTITIES
     ENTITY("entities", "Entity", true, true),
@@ -174,5 +174,18 @@ public enum Resource implements IPlatformEnum {
 
     public static List<Resource> getCustomAttributesResources() {
         return Arrays.stream(VALUES).filter(k -> k.hasCustomAttributes).toList();
+    }
+
+    public static class Codes {
+        public static final String AUTHORITY = "authorities";
+        public static final String RA_PROFILE = "raProfiles";
+        public static final String CERTIFICATE = "certificates";
+        public static final String CERTIFICATE_REQUEST = "certificateRequests";
+        public static final String GROUP = "groups";
+        public static final String DISCOVERY = "discoveries";
+
+        private Codes() {
+
+        }
     }
 }
