@@ -15,19 +15,19 @@ import java.util.List;
 public enum ResourceEvent implements IPlatformEnum {
 
     // Certificates
-    CERTIFICATE_STATUS_CHANGED("certificateStatusChanged", "Certificate validation status changed", "Notification when the certificate changes state with detail about the certificate", Resource.CERTIFICATE),
-    CERTIFICATE_ACTION_PERFORMED("certificateActionPerformed", "Certificate action performed", "Notification after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE),
-    CERTIFICATE_DISCOVERED("certificateDiscovered", "Certificate discovered", "Notification when the certificate changes state with detail about the certificate", Resource.CERTIFICATE, List.of(Resource.DISCOVERY), true),
+    CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed", "Event when the certificate changes validation status with detail about the certificate", Resource.CERTIFICATE),
+    CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed", "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE),
+    CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered", "Event when the certificate has been newly discovered by some discovery", Resource.CERTIFICATE, List.of(Resource.DISCOVERY), true),
 
     // Discoveries
-    DISCOVERY_FINISHED("discoveryFinished", "Discovery Finished", "Discovery has been finished.", Resource.DISCOVERY),
+    DISCOVERY_FINISHED(Codes.DISCOVERY_FINISHED, "Discovery Finished", "Event when discovery has been finished.", Resource.DISCOVERY),
 
     // Approval
-    APPROVAL_REQUESTED("approval_requested", "Approval requested", "Notification about requesting approval on specific operation included", Resource.APPROVAL),
-    APPROVAL_CLOSED("approval_closed", "Approval closed", "Notification after approval was closed informing about the result of approval process", Resource.APPROVAL),
+    APPROVAL_REQUESTED(Codes.APPROVAL_REQUESTED, "Approval requested", "Event about requesting approval on specific operation defined by current approval step", Resource.APPROVAL),
+    APPROVAL_CLOSED(Codes.APPROVAL_CLOSED, "Approval closed", "Event after approval was closed informing about the result of approval process", Resource.APPROVAL),
 
     // Scheduler
-    SCHEDULED_JOB_COMPLETED("scheduled_job_completed", "Scheduled job completed", "Notification about scheduled job execution finished with result and detail of its execution", Resource.SCHEDULED_JOB);
+    SCHEDULED_JOB_FINISHED(Codes.SCHEDULED_JOB_FINISHED, "Scheduled job finished", "Notification about scheduled job execution finished with result and detail of its execution", Resource.SCHEDULED_JOB);
 
     private static final ResourceEvent[] VALUES;
 
@@ -86,6 +86,24 @@ public enum ResourceEvent implements IPlatformEnum {
 
     public static List<ResourceEvent> listEventsByResource(Resource resource) {
         return Arrays.stream(VALUES).filter(event -> event.resource == resource || event.overridingResources.contains(resource)).toList();
+    }
+
+    public static class Codes {
+
+        public static final String CERTIFICATE_STATUS_CHANGED = "certificate_status_changed";
+        public static final String CERTIFICATE_ACTION_PERFORMED = "certificate_action_performed";
+        public static final String CERTIFICATE_DISCOVERED = "certificate_discovered";
+
+        public static final String DISCOVERY_FINISHED = "discovery_finished";
+
+        public static final String APPROVAL_REQUESTED = "approval_requested";
+        public static final String APPROVAL_CLOSED = "approval_closed";
+
+        public static final String SCHEDULED_JOB_FINISHED = "scheduled_job_finished";
+
+        private Codes() {
+
+        }
     }
 
 }
