@@ -18,7 +18,7 @@ public class UpdateTriggerRequestDto {
 
     @Schema(
             description = "Type of the trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private TriggerType type;
 
@@ -33,16 +33,6 @@ public class UpdateTriggerRequestDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean ignoreTrigger;
-
-    @Schema(
-            description = "Event of the trigger"
-    )
-    private ResourceEvent event;
-
-    @Schema(
-            description = "Type of the the trigger event source object"
-    )
-    private Resource eventResource;
 
     @Schema(
             description = "List of UUIDs of existing rules to add to the trigger"

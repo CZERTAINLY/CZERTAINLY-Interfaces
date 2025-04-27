@@ -19,7 +19,7 @@ public class TriggerDto extends NameAndUuidDto {
 
     @Schema(
             description = "Type of the trigger",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private TriggerType type;
 
@@ -34,15 +34,5 @@ public class TriggerDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean ignoreTrigger;
-
-    @Schema(
-            description = "Event that should fire trigger"
-    )
-    private ResourceEvent event;
-
-    @Schema(
-            description = "Resource associated with trigger event"
-    )
-    private Resource eventResource;
 
 }
