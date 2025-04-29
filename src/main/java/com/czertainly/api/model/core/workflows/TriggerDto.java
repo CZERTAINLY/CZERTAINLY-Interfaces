@@ -35,4 +35,9 @@ public class TriggerDto extends NameAndUuidDto {
     )
     private boolean ignoreTrigger;
 
+    @Schema(
+            description = "Event that trigger can be assigned to"
+    )
+    private ResourceEvent event;
+
 }

@@ -35,6 +35,11 @@ public class UpdateTriggerRequestDto {
     private boolean ignoreTrigger;
 
     @Schema(
+            description = "Event that trigger can be assigned to"
+    )
+    private ResourceEvent event;
+
+    @Schema(
             description = "List of UUIDs of existing rules to add to the trigger"
     )
     private List<String> rulesUuids = new ArrayList<>();
