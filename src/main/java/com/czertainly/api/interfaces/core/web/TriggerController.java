@@ -24,7 +24,7 @@ public interface TriggerController extends AuthProtectedController {
     @Operation(summary = "List Triggers")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of triggers")})
     @GetMapping(path = "/triggers", produces = {"application/json"})
-    List<TriggerDto> listTriggers(@RequestParam(required = false) Resource resource, @RequestParam(required = false) Resource eventResource);
+    List<TriggerDto> listTriggers(@RequestParam(required = false) Resource resource);
 
     @Operation(summary = "Create Trigger")
     @ApiResponses(value = {
