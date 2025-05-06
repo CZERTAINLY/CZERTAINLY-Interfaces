@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.notification;
 
 import com.czertainly.api.model.core.notification.RecipientType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Positive;
@@ -32,7 +33,8 @@ public class NotificationProfileUpdateRequestDto {
     @Schema(description = "Is notification profile sending internal notifications", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean internalNotification;
 
-    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED, type = "string", format = "duration", example = "P1DT12H")
     private Duration frequency;
 
     @Positive

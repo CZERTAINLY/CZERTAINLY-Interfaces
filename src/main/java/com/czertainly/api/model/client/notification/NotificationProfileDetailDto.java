@@ -32,7 +32,7 @@ public class NotificationProfileDetailDto {
     private boolean internalNotification;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED, type = "string", format = "duration", example = "P1DT12H")
     private Duration frequency;
 
     @Schema(description = "Maximum number of repetitions of same notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
