@@ -1,7 +1,9 @@
 package com.czertainly.api.exception;
 
 import com.czertainly.api.model.core.other.ResourceEvent;
+import lombok.Getter;
 
+@Getter
 public class EventException extends Exception {
 
     private ResourceEvent event;

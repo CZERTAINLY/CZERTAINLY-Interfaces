@@ -22,7 +22,6 @@ public enum Resource implements IPlatformEnum {
     CONNECTOR("connectors", "Connector", true, true),
     ATTRIBUTE("attributes", "Attribute", true),
     SCHEDULED_JOB("jobs", "Scheduled job"),
-    NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // AUTH
     USER("users", "User", false, true, true, false),
@@ -51,14 +50,18 @@ public enum Resource implements IPlatformEnum {
     ENTITY("entities", "Entity", true, true),
     LOCATION("locations", "Location", true, true),
 
-    //CRYPTOGRAPHY
+    // CRYPTOGRAPHY
     TOKEN_PROFILE("tokenProfiles", "Token Profile", true, true),
     TOKEN("tokens", "Token", true, true),
     CRYPTOGRAPHIC_KEY("keys", "Key", false, true, true, true),
 
     // APPROVALS
-    APPROVAL_PROFILE("approvalProfiles", "Approval profile", true),
+    APPROVAL_PROFILE("approvalProfiles", "Approval profile"),
     APPROVAL("approvals", "Approval"),
+
+    // NOTIFICATIONS
+    NOTIFICATION_PROFILE("notificationProfiles", "Notification profile"),
+    NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // WORKFLOWS
     RULE("rules", "Rule"),
