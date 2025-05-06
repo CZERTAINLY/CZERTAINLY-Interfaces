@@ -22,7 +22,6 @@ public enum Resource implements IPlatformEnum {
     CONNECTOR("connectors", "Connector", true, true),
     ATTRIBUTE("attributes", "Attribute", true),
     SCHEDULED_JOB("jobs", "Scheduled job"),
-    NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // AUTH
     USER("users", "User", false, true, true, false),
@@ -39,26 +38,30 @@ public enum Resource implements IPlatformEnum {
     CMP_PROFILE("cmpProfiles", "CMP Profile", true, true),
 
     // CERTIFICATES
-    AUTHORITY("authorities", "Authority", true, true),
-    RA_PROFILE("raProfiles", "RA Profile", true, true),
-    CERTIFICATE("certificates", "Certificate", false, true, true, true),
-    CERTIFICATE_REQUEST("certificateRequests", "Certificate Request", false, false),
-    GROUP("groups", "Group", true, true),
+    AUTHORITY(Codes.AUTHORITY, "Authority", true, true),
+    RA_PROFILE(Codes.RA_PROFILE, "RA Profile", true, true),
+    CERTIFICATE(Codes.CERTIFICATE, "Certificate", false, true, true, true),
+    CERTIFICATE_REQUEST(Codes.CERTIFICATE_REQUEST, "Certificate Request", false, false),
+    GROUP(Codes.GROUP, "Group", true, true),
     COMPLIANCE_PROFILE("complianceProfiles", "Compliance Profile", true, true),
-    DISCOVERY("discoveries", "Discovery", false, true),
+    DISCOVERY(Codes.DISCOVERY, "Discovery", false, true),
 
     // ENTITIES
     ENTITY("entities", "Entity", true, true),
     LOCATION("locations", "Location", true, true),
 
-    //CRYPTOGRAPHY
+    // CRYPTOGRAPHY
     TOKEN_PROFILE("tokenProfiles", "Token Profile", true, true),
     TOKEN("tokens", "Token", true, true),
     CRYPTOGRAPHIC_KEY("keys", "Key", false, true, true, true),
 
     // APPROVALS
-    APPROVAL_PROFILE("approvalProfiles", "Approval profile", true),
+    APPROVAL_PROFILE("approvalProfiles", "Approval profile"),
     APPROVAL("approvals", "Approval"),
+
+    // NOTIFICATIONS
+    NOTIFICATION_PROFILE("notificationProfiles", "Notification profile"),
+    NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // WORKFLOWS
     RULE("rules", "Rule"),
@@ -174,5 +177,18 @@ public enum Resource implements IPlatformEnum {
 
     public static List<Resource> getCustomAttributesResources() {
         return Arrays.stream(VALUES).filter(k -> k.hasCustomAttributes).toList();
+    }
+
+    public static class Codes {
+        public static final String AUTHORITY = "authorities";
+        public static final String RA_PROFILE = "raProfiles";
+        public static final String CERTIFICATE = "certificates";
+        public static final String CERTIFICATE_REQUEST = "certificateRequests";
+        public static final String GROUP = "groups";
+        public static final String DISCOVERY = "discoveries";
+
+        private Codes() {
+
+        }
     }
 }

@@ -21,9 +21,9 @@ public class ResourceEventDto {
     public ResourceEventDto() {
     }
 
-    public ResourceEventDto(ResourceEvent event, Resource producedResource) {
+    public ResourceEventDto(ResourceEvent event) {
         this.event = event;
-        this.producedResource = producedResource;
+        this.producedResource = event.getResource();
     }
 
     @Override

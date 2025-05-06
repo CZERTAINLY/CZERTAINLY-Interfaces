@@ -31,6 +31,7 @@ import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import com.czertainly.api.model.core.enums.CertificateProtocol;
 import com.czertainly.api.model.core.logging.enums.*;
 import com.czertainly.api.model.core.logging.enums.Module;
+import com.czertainly.api.model.core.notification.RecipientType;
 import com.czertainly.api.model.core.other.ResourceEvent;
 import com.czertainly.api.model.core.workflows.ConditionType;
 import com.czertainly.api.model.core.workflows.ExecutionType;
@@ -108,6 +109,9 @@ public enum PlatformEnum implements IPlatformEnum {
 
     // Scheduler
     SCHEDULER_JOB_EXECUTION_STATUS(SchedulerJobExecutionStatus.class, "Scheduled job execution status"),
+
+    // notifications
+    RECIPIENT_TYPE(RecipientType.class, "Recipient type"),
 
     // workflows
     TRIGGER_TYPE(TriggerType.class, "Trigger Type"),

@@ -48,7 +48,7 @@ public interface ApprovalProfileController extends AuthProtectedController {
     ResponseEntity<?> createApprovalProfile(@RequestBody ApprovalProfileRequestDto approvalProfileRequestDto) throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Edit an Approval profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile updated"), @ApiResponse(responseCode = "404", description = "Approval profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval profile updated", content = @Content(schema = @Schema(implementation = UuidDto.class))), @ApiResponse(responseCode = "404", description = "Approval profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> editApprovalProfile(@Parameter(description = "Approval profile UUID") @PathVariable String uuid, @RequestBody ApprovalProfileUpdateRequestDto approvalProfileUpdateRequestDto) throws NotFoundException;
 
