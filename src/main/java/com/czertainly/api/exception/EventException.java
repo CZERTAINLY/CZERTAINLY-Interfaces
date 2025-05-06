@@ -6,10 +6,11 @@ import lombok.Getter;
 @Getter
 public class EventException extends Exception {
 
-    private ResourceEvent event;
+    private final ResourceEvent event;
 
     public EventException(String message) {
         super(message);
+        this.event = null;
     }
 
     public EventException(ResourceEvent event, String message) {

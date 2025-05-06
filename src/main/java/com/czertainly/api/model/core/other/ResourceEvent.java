@@ -17,7 +17,7 @@ public enum ResourceEvent implements IPlatformEnum {
     // Certificates
     CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed", "Event when the certificate changes validation status with detail about the certificate", Resource.CERTIFICATE),
     CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed", "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE),
-    CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered", "Event when the certificate has been newly discovered by some discovery", Resource.CERTIFICATE, List.of(Resource.DISCOVERY), true),
+    CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered", "Event when the certificate has been newly discovered by some discovery", Resource.CERTIFICATE, List.of(Resource.DISCOVERY)),
 
     // Discoveries
     DISCOVERY_FINISHED(Codes.DISCOVERY_FINISHED, "Discovery Finished", "Event when discovery has been finished.", Resource.DISCOVERY),
@@ -40,22 +40,16 @@ public enum ResourceEvent implements IPlatformEnum {
     private final String description;
     private final Resource resource;
     private final List<Resource> overridingResources;
-    private final boolean allowIgnoreTriggers;
 
     ResourceEvent(final String code, final String label, final String description, final Resource resource) {
-        this(code, label, description, resource, List.of(), false);
+        this(code, label, description, resource, List.of());
     }
 
-    ResourceEvent(final String code, final String label, final String description, final Resource resource, boolean allowIgnoreTriggers) {
-        this(code, label, description, resource, List.of(), allowIgnoreTriggers);
-    }
-
-    ResourceEvent(final String code, final String label, final String description, final Resource resource, final List<Resource> overridingResources, boolean allowIgnoreTriggers) {
+    ResourceEvent(final String code, final String label, final String description, final Resource resource, final List<Resource> overridingResources) {
         this.code = code;
         this.label = label;
         this.description =description;
         this.resource = resource;
-        this.allowIgnoreTriggers = allowIgnoreTriggers;
         this.overridingResources = overridingResources == null ? List.of() : overridingResources;
     }
 
