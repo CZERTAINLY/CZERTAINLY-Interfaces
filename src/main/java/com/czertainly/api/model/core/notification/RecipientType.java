@@ -3,6 +3,7 @@ package com.czertainly.api.model.core.notification;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.czertainly.api.model.core.auth.Resource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,10 +13,10 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum RecipientType implements IPlatformEnum {
 
-    USER("user", "User"),
-    GROUP("group", "Group"),
-    ROLE("role", "Role"),
-    OWNER("owner", "Owner");
+    USER("user", "User", Resource.USER),
+    GROUP("group", "Group", Resource.GROUP),
+    ROLE("role", "Role", Resource.ROLE),
+    OWNER("owner", "Owner", Resource.USER);
 
     private static final RecipientType[] VALUES;
 
@@ -26,15 +27,17 @@ public enum RecipientType implements IPlatformEnum {
     private final String code;
     private final String label;
     private final String description;
+    private final Resource recipientResource;
 
-    RecipientType(String code, String label) {
-        this(code, label,null);
+    RecipientType(String code, String label, Resource recipientResource) {
+        this(code, label,null, recipientResource);
     }
 
-    RecipientType(String code, String label, String description) {
+    RecipientType(String code, String label, String description, Resource recipientResource) {
         this.code = code;
         this.label = label;
         this.description = description;
+        this.recipientResource = recipientResource;
     }
 
     @Override
@@ -51,6 +54,10 @@ public enum RecipientType implements IPlatformEnum {
     @Override
     public String getDescription() {
         return this.description;
+    }
+
+    public Resource getRecipientResource() {
+        return recipientResource;
     }
 
     @JsonCreator
