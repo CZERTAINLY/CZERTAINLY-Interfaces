@@ -12,6 +12,13 @@ public class NotificationProviderNotifyRequestDto {
     @Schema(description = "List of notification recipients", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<NotificationRecipientDto> recipients;
 
+    /**
+     * @deprecated
+     */
+    @Deprecated(forRemoval = true)
+    @Schema(description = "Notification event type that happened to trigger the notification", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String eventType;
+
     @Schema(description = "Event type that happened to trigger the notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ResourceEvent event;
 
