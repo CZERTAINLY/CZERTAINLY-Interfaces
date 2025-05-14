@@ -13,6 +13,7 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum RecipientType implements IPlatformEnum {
 
+    NONE("none", "None", null),
     USER("user", "User", Resource.USER),
     GROUP("group", "Group", Resource.GROUP),
     ROLE("role", "Role", Resource.ROLE),
