@@ -41,9 +41,14 @@ public class NotificationProfileUpdateRequestDto {
     @Schema(description = "Maximum number of repetitions of same notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer repetitions;
 
-    @AssertTrue(message = "Recipient UUID is required when recipient type is not Owner")
+    @AssertTrue(message = "Recipient UUID is required when recipient type is not Owner or None")
     private boolean isRecipientValid() {
-        return (recipientType == RecipientType.OWNER && recipientUuid == null) || (recipientType != RecipientType.OWNER && recipientUuid != null);
+        return ((recipientType == RecipientType.OWNER || recipientType == RecipientType.NONE) && recipientUuid == null) || (recipientType != RecipientType.OWNER && recipientType != RecipientType.NONE && recipientUuid != null);
+    }
+
+    @AssertTrue(message = "Cannot send internal notification to recipient of type None")
+    private boolean isInternalNotificationPossible() {
+        return recipientType == RecipientType.NONE && !internalNotification;
     }
 
     @AssertTrue(message = "Notification instance and/or internal notification is required")
