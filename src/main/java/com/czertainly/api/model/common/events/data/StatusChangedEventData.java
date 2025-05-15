@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.notification.data;
+package com.czertainly.api.model.common.events.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class NotificationDataStatusChanged {
+public class StatusChangedEventData {
     @Schema(description = "Old status of the object", requiredMode = Schema.RequiredMode.REQUIRED)
     private String oldStatus;
 

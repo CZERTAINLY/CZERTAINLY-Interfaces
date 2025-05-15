@@ -3,6 +3,7 @@ package com.czertainly.api.model.core.other;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.czertainly.api.model.common.events.data.*;
 import com.czertainly.api.model.core.auth.Resource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -15,19 +16,19 @@ import java.util.List;
 public enum ResourceEvent implements IPlatformEnum {
 
     // Certificates
-    CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed", "Event when the certificate changes validation status with detail about the certificate", Resource.CERTIFICATE),
-    CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed", "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE),
-    CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered", "Event when the certificate has been newly discovered by some discovery", Resource.CERTIFICATE, List.of(Resource.DISCOVERY)),
+    CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed", "Event when the certificate changes validation status with detail about the certificate", Resource.CERTIFICATE, CertificateStatusChangedEventData.class),
+    CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed", "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE, CertificateActionPerformedEventData.class),
+    CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered", "Event when the certificate has been newly discovered by some discovery", Resource.CERTIFICATE, List.of(Resource.DISCOVERY), CertificateDiscoveredEventData.class),
 
     // Discoveries
-    DISCOVERY_FINISHED(Codes.DISCOVERY_FINISHED, "Discovery Finished", "Event when discovery has been finished.", Resource.DISCOVERY),
+    DISCOVERY_FINISHED(Codes.DISCOVERY_FINISHED, "Discovery Finished", "Event when discovery has been finished.", Resource.DISCOVERY, DiscoveryFinishedEventData.class),
 
     // Approval
-    APPROVAL_REQUESTED(Codes.APPROVAL_REQUESTED, "Approval requested", "Event about requesting approval on specific operation defined by current approval step", Resource.APPROVAL),
-    APPROVAL_CLOSED(Codes.APPROVAL_CLOSED, "Approval closed", "Event after approval was closed informing about the result of approval process", Resource.APPROVAL),
+    APPROVAL_REQUESTED(Codes.APPROVAL_REQUESTED, "Approval requested", "Event about requesting approval on specific operation defined by current approval step", Resource.APPROVAL, ApprovalEventData.class),
+    APPROVAL_CLOSED(Codes.APPROVAL_CLOSED, "Approval closed", "Event after approval was closed informing about the result of approval process", Resource.APPROVAL, ApprovalEventData.class),
 
     // Scheduler
-    SCHEDULED_JOB_FINISHED(Codes.SCHEDULED_JOB_FINISHED, "Scheduled job finished", "Notification about scheduled job execution finished with result and detail of its execution", Resource.SCHEDULED_JOB);
+    SCHEDULED_JOB_FINISHED(Codes.SCHEDULED_JOB_FINISHED, "Scheduled job finished", "Notification about scheduled job execution finished with result and detail of its execution", Resource.SCHEDULED_JOB, ScheduledJobFinishedEventData.class);
 
     private static final ResourceEvent[] VALUES;
 
@@ -40,17 +41,19 @@ public enum ResourceEvent implements IPlatformEnum {
     private final String description;
     private final Resource resource;
     private final List<Resource> overridingResources;
+    private final Class<? extends EventData> eventData;
 
-    ResourceEvent(final String code, final String label, final String description, final Resource resource) {
-        this(code, label, description, resource, List.of());
+    ResourceEvent(final String code, final String label, final String description, final Resource resource, Class<? extends EventData> eventData) {
+        this(code, label, description, resource, List.of(), eventData);
     }
 
-    ResourceEvent(final String code, final String label, final String description, final Resource resource, final List<Resource> overridingResources) {
+    ResourceEvent(final String code, final String label, final String description, final Resource resource, final List<Resource> overridingResources, Class<? extends EventData> eventData) {
         this.code = code;
         this.label = label;
         this.description =description;
         this.resource = resource;
         this.overridingResources = overridingResources == null ? List.of() : overridingResources;
+        this.eventData = eventData;
     }
 
     @Override

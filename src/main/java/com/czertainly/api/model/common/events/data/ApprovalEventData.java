@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.notification.data;
+package com.czertainly.api.model.common.events.data;
 
 import com.czertainly.api.model.client.approval.ApprovalStatusEnum;
 import com.czertainly.api.model.core.auth.Resource;
@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class NotificationDataApproval {
+public class ApprovalEventData implements EventData {
     @Schema(description = "Approval UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String approvalUuid;
 

@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.notification.data;
+package com.czertainly.api.model.common.events.data;
 
 import com.czertainly.api.model.common.attribute.v1.content.ZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,15 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class NotificationDataCertificateStatusChanged extends NotificationDataStatusChanged {
+public class CertificateStatusChangedEventData extends StatusChangedEventData implements EventData {
 
     @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateUuid;
@@ -57,16 +54,16 @@ public class NotificationDataCertificateStatusChanged extends NotificationDataSt
     private String raProfileName;
 
 
-    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName,
-                                                    ZonedDateTime notBefore, ZonedDateTime expiresAt) {
+    public CertificateStatusChangedEventData(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName,
+                                             ZonedDateTime notBefore, ZonedDateTime expiresAt) {
         this(oldStatus, newStatus, certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn, notBefore, expiresAt);
         this.authorityInstanceUuid = authorityInstanceUuid;
         this.raProfileUuid = raProfileUuid;
         this.raProfileName = raProfileName;
     }
 
-    public NotificationDataCertificateStatusChanged(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn,
-                                                     ZonedDateTime notBefore, ZonedDateTime expiresAt) {
+    public CertificateStatusChangedEventData(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn,
+                                             ZonedDateTime notBefore, ZonedDateTime expiresAt) {
         super(oldStatus, newStatus);
         this.certificateUuid = certificateUuid;
         this.fingerprint = fingerprint;
