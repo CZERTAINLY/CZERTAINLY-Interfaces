@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.notification.data;
+package com.czertainly.api.model.common.events.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class NotificationDataScheduledJobCompleted {
+public class ScheduledJobFinishedEventData implements EventData {
     @Schema(description = "Name of the scheduled job", requiredMode = Schema.RequiredMode.REQUIRED)
     private String jobName;
 

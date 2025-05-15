@@ -1,4 +1,4 @@
-package com.czertainly.api.model.connector.notification.data;
+package com.czertainly.api.model.common.events.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class NotificationDataCertificateActionPerformed {
+public class CertificateActionPerformedEventData implements EventData {
 
     @Schema(description = "Certificate action", requiredMode = Schema.RequiredMode.REQUIRED)
     private String action;
