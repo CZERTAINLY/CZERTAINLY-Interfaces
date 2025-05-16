@@ -3,6 +3,7 @@ package com.czertainly.api.model.client.notification;
 import com.czertainly.api.model.core.notification.RecipientType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
@@ -46,9 +47,9 @@ public class NotificationProfileUpdateRequestDto {
         return ((recipientType == RecipientType.OWNER || recipientType == RecipientType.NONE) && recipientUuid == null) || (recipientType != RecipientType.OWNER && recipientType != RecipientType.NONE && recipientUuid != null);
     }
 
-    @AssertTrue(message = "Cannot send internal notification to recipient of type None")
+    @AssertFalse(message = "Cannot send internal notification to recipient of type None")
     private boolean isInternalNotificationPossible() {
-        return recipientType == RecipientType.NONE && !internalNotification;
+        return recipientType == RecipientType.NONE && internalNotification;
     }
 
     @AssertTrue(message = "Notification instance and/or internal notification is required")
