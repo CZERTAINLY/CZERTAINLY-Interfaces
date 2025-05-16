@@ -21,6 +21,8 @@ public enum FilterConditionOperator implements IPlatformEnum {
     ENDS_WITH("ENDS_WITH", "ends with", "end"),
     EMPTY("EMPTY", "empty", "em"),
     NOT_EMPTY("NOT_EMPTY", "not empty", "nem"),
+    IN_NEXT("IN_NEXT", "in next", "in"),
+    IN_PAST("IN_PAST", "in past", "ip"),
     // TODO: remove following
     SUCCESS("SUCCESS", "success", "success"),
     FAILED("FAILED", "failed", "failed"),
