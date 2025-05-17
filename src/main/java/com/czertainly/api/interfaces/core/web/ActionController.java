@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public interface ActionController extends AuthProtectedController {
     @Operation(summary = "Create Execution")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Execution created")})
     @PostMapping(path = "/executions", consumes = {"application/json"}, produces = {"application/json"})
-    ExecutionDto createExecution(@RequestBody ExecutionRequestDto request) throws AlreadyExistException;
+    ExecutionDto createExecution(@Valid @RequestBody ExecutionRequestDto request) throws AlreadyExistException, NotFoundException;
 
     @Operation(summary = "Get Execution Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Execution details retrieved"), @ApiResponse(responseCode = "404", description = "Execution not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
@@ -42,7 +43,7 @@ public interface ActionController extends AuthProtectedController {
     @Operation(summary = "Update Execution")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Execution updated"), @ApiResponse(responseCode = "404", description = "Execution not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PutMapping(path = "/executions/{executionUuid}", consumes = {"application/json"}, produces = {"application/json"})
-    ExecutionDto updateExecution(@Parameter(description = "Execution UUID") @PathVariable String executionUuid, @RequestBody UpdateExecutionRequestDto request) throws NotFoundException;
+    ExecutionDto updateExecution(@Parameter(description = "Execution UUID") @PathVariable String executionUuid, @Valid @RequestBody UpdateExecutionRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete Execution")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Execution deleted"), @ApiResponse(responseCode = "404", description = "Execution not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
