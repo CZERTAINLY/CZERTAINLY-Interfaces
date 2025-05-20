@@ -71,4 +71,13 @@ public interface TriggerController extends AuthProtectedController {
     })
     @GetMapping(path = "/triggers/history/{associationObjectUuid}", produces = {"application/json"})
     TriggerHistorySummaryDto getTriggerHistorySummary(@Parameter(description = "Trigger Association Object UUID") @PathVariable String associationObjectUuid) throws NotFoundException;
+
+    @Operation(summary = "Associate event with triggers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Trigger associations created"),
+            @ApiResponse(responseCode = "404", description = "Rule or Action not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+    })
+    @PostMapping(path = "/events", consumes = {"application/json"}, produces = {"application/json"})
+    void associateTriggers(@RequestBody TriggerEventAssociationRequestDto request) throws NotFoundException;
+
 }
