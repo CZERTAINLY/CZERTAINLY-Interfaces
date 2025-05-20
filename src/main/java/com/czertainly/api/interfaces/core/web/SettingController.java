@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.core.settings.*;
 import com.czertainly.api.model.core.settings.authentication.*;
@@ -22,20 +23,25 @@ public interface SettingController extends AuthProtectedController {
     @GetMapping(path = "/platform", produces = MediaType.APPLICATION_JSON_VALUE)
     PlatformSettingsDto getPlatformSettings();
 
-    @Operation(summary = "Update platform setting")
+    @Operation(summary = "Update platform settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     void updatePlatformSettings(@Valid @RequestBody PlatformSettingsUpdateDto platformSettingsDto);
 
-    @Operation(summary = "Get notification settings")
+    @Operation(summary = "Get events settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification settings retrieved")})
-    @GetMapping(path = "/notifications", produces = MediaType.APPLICATION_JSON_VALUE)
-    NotificationSettingsDto getNotificationsSettings();
+    @GetMapping(path = "/events", produces = MediaType.APPLICATION_JSON_VALUE)
+    EventsSettingsDto getEventsSettings();
 
-    @Operation(summary = "Update notifications setting")
+    @Operation(summary = "Update events settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
-    @PutMapping(path = "/notifications", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    void updateNotificationsSettings(@Valid @RequestBody NotificationSettingsDto notificationSettingsDto);
+    @PutMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    void updateEventsSettings(@Valid @RequestBody EventsSettingsDto eventsSettingsDto) throws NotFoundException;
+
+    @Operation(summary = "Update events settings")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
+    @PatchMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    void updateEventSettings(@Valid @RequestBody EventSettingsDto eventSettingsDto) throws NotFoundException;
 
     @Operation(summary = "Get authentication settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authentication settings retrieved")})
@@ -67,7 +73,7 @@ public interface SettingController extends AuthProtectedController {
     @GetMapping(path = "/logging", produces = MediaType.APPLICATION_JSON_VALUE)
     LoggingSettingsDto getLoggingSettings();
 
-    @Operation(summary = "Update logging setting")
+    @Operation(summary = "Update logging settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Logging settings updated")})
     @PutMapping(path = "/logging", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     void updateLoggingSettings(@Valid @RequestBody LoggingSettingsDto loggingSettingsDto);
