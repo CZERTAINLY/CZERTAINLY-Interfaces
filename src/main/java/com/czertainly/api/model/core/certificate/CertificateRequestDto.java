@@ -37,6 +37,12 @@ public class CertificateRequestDto {
     private String signatureAlgorithm;
 
     @Schema(
+            description = "Certificate alternative signature algorithm",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String altSignatureAlgorithm;
+
+    @Schema(
             description = "Certificate request content",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -73,9 +79,22 @@ public class CertificateRequestDto {
     private List<ResponseAttributeDto> signatureAttributes;
 
     @Schema(
+            description = "Alternative Signature Attributes",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private List<ResponseAttributeDto> altSignatureAttributes;
+
+    @Schema(
             description = "UUID of the Key",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String keyUuid;
+
+    @Schema(
+            description = "UUID of the Alternative Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private String altKeyUuid;
+
 
 }

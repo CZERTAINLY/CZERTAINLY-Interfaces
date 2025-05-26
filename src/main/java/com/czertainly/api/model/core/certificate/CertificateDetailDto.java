@@ -79,6 +79,12 @@ public class CertificateDetailDto extends CertificateDto {
     private KeyDto key;
 
     @Schema(
+            description = "Alternative Key Pair of the certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private KeyDto altKey;
+
+    @Schema(
             description = "Certificate request data",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
