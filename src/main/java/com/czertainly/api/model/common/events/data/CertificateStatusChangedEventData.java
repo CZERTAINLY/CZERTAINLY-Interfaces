@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
@@ -18,7 +19,7 @@ import java.time.ZonedDateTime;
 public class CertificateStatusChangedEventData extends StatusChangedEventData implements EventData {
 
     @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String certificateUuid;
+    private UUID certificateUuid;
 
     @Schema(description = "SHA256 fingerprint of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fingerprint;
@@ -33,7 +34,7 @@ public class CertificateStatusChangedEventData extends StatusChangedEventData im
     private String issuerDn;
 
     @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String authorityInstanceUuid;
+    private UUID authorityInstanceUuid;
 
     @Schema(description = "Certificate validity start date in \"yyyy-MM-dd'T'HH:mm:ssXXX\" format")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -48,13 +49,13 @@ public class CertificateStatusChangedEventData extends StatusChangedEventData im
     private ZonedDateTime expiresAt;
 
     @Schema(description = "RA profile UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String raProfileUuid;
+    private UUID raProfileUuid;
 
     @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileName;
 
 
-    public CertificateStatusChangedEventData(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, String authorityInstanceUuid, String raProfileUuid, String raProfileName,
+    public CertificateStatusChangedEventData(String oldStatus, String newStatus, UUID certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, UUID authorityInstanceUuid, UUID raProfileUuid, String raProfileName,
                                              ZonedDateTime notBefore, ZonedDateTime expiresAt) {
         this(oldStatus, newStatus, certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn, notBefore, expiresAt);
         this.authorityInstanceUuid = authorityInstanceUuid;
@@ -62,7 +63,7 @@ public class CertificateStatusChangedEventData extends StatusChangedEventData im
         this.raProfileName = raProfileName;
     }
 
-    public CertificateStatusChangedEventData(String oldStatus, String newStatus, String certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn,
+    public CertificateStatusChangedEventData(String oldStatus, String newStatus, UUID certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn,
                                              ZonedDateTime notBefore, ZonedDateTime expiresAt) {
         super(oldStatus, newStatus);
         this.certificateUuid = certificateUuid;

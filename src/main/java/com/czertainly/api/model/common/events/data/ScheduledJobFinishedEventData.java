@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,4 +21,7 @@ public class ScheduledJobFinishedEventData implements EventData {
 
     @Schema(description = "Execution status of last job triggered task", requiredMode = Schema.RequiredMode.REQUIRED)
     private String status;
+
+    @Schema(description = "UUID of user that  the scheduled job", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private UUID userUuid;
 }

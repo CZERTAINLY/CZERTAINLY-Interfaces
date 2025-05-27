@@ -2,22 +2,25 @@ package com.czertainly.api.model.common.events.data;
 
 import com.czertainly.api.model.client.approval.ApprovalStatusEnum;
 import com.czertainly.api.model.core.auth.Resource;
+import com.czertainly.api.model.core.notification.RecipientType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class ApprovalEventData implements EventData {
     @Schema(description = "Approval UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String approvalUuid;
+    private UUID approvalUuid;
 
     @Schema(description = "Approval profile UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String approvalProfileUuid;
+    private UUID approvalProfileUuid;
 
     @Schema(description = "Approval profile name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String approvalProfileName;
@@ -41,12 +44,20 @@ public class ApprovalEventData implements EventData {
     private String resourceAction;
 
     @Schema(description = "Approval associated object UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String objectUuid;
+    private UUID objectUuid;
 
     @Schema(description = "UUID of the user that created approval", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String creatorUuid;
+    private UUID creatorUuid;
 
     @Schema(description = "Username of the user that created approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private String creatorUsername;
+
+    @Schema(description = "Approval Recipient type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private RecipientType recipientType;
+
+    @Schema(description = "Approval recipient UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private UUID recipientUuid;
+
+
 
 }
