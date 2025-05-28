@@ -13,12 +13,12 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum RecipientType implements IPlatformEnum {
 
-    NONE("none", "None", null),
-    DEFAULT("default", "Default", null),
-    USER("user", "User", Resource.USER),
-    GROUP("group", "Group", Resource.GROUP),
-    ROLE("role", "Role", Resource.ROLE),
-    OWNER("owner", "Owner", Resource.USER);
+    NONE("none", "None", "None recipient type describes that no specific recipient is required when used", null),
+    DEFAULT("default", "Default", "Default recipients are defined by context, e.g. by event and/or resource that is connected with notification", null),
+    USER("user", "User", "Recipient is registered user", Resource.USER),
+    GROUP("group", "Group", "Recipient is group from inventory", Resource.GROUP),
+    ROLE("role", "Role", "Recipient is registered role", Resource.ROLE),
+    OWNER("owner", "Owner", "Recipient is user that is associated as owner of resource object that is connected with notification", Resource.USER);
 
     private static final RecipientType[] VALUES;
 
