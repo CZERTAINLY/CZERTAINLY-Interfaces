@@ -7,12 +7,14 @@ import com.czertainly.api.model.common.events.data.*;
 import com.czertainly.api.model.core.auth.Resource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Getter
+@Schema(enumAsRef = true)
 public enum ResourceEvent implements IPlatformEnum {
 
     // Certificates
