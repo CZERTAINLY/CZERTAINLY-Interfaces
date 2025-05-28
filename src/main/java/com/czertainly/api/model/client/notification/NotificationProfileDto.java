@@ -4,6 +4,7 @@ import com.czertainly.api.model.core.notification.RecipientType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -34,9 +35,9 @@ public class NotificationProfileDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private RecipientType recipientType;
 
-    @Schema(description = "Recipient UUID of notifications produced by profile",
+    @Schema(description = "Recipient UUIDs of notifications produced by profile",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private UUID recipientUuid;
+    List<UUID> recipientUuids;
 
     @Schema(description = "Notification instance UUID",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)

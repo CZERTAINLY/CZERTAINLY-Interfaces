@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,7 +18,7 @@ public class CertificateActionPerformedEventData implements EventData {
     private String action;
 
     @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String certificateUuid;
+    private UUID certificateUuid;
 
     @Schema(description = "SHA256 fingerprint of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fingerprint;
@@ -31,10 +33,10 @@ public class CertificateActionPerformedEventData implements EventData {
     private String issuerDn;
 
     @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String authorityInstanceUuid;
+    private UUID authorityInstanceUuid;
 
     @Schema(description = "RA profile UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String raProfileUuid;
+    private UUID raProfileUuid;
 
     @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileName;

@@ -33,12 +33,12 @@ public interface SettingController extends AuthProtectedController {
     @GetMapping(path = "/events", produces = MediaType.APPLICATION_JSON_VALUE)
     EventsSettingsDto getEventsSettings();
 
-    @Operation(summary = "Update events settings")
+    @Operation(summary = "Update multiple events settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     void updateEventsSettings(@Valid @RequestBody EventsSettingsDto eventsSettingsDto) throws NotFoundException;
 
-    @Operation(summary = "Update events settings")
+    @Operation(summary = "Update single event settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PatchMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     void updateEventSettings(@Valid @RequestBody EventSettingsDto eventSettingsDto) throws NotFoundException;
