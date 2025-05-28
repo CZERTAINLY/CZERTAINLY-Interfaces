@@ -19,6 +19,6 @@ import java.util.UUID;
 public class EventsSettingsDto implements SettingsDto {
 
     @NotNull
-    @Schema(description = "Map of triggers associated to event where key is resource event enum", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Map of triggers associated to event where key is resource event enum and value is list of trigger UUIDs", requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<ResourceEvent, List<UUID>> eventsMapping = new EnumMap<>(ResourceEvent.class);
 }
