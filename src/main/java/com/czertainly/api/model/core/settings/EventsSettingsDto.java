@@ -15,6 +15,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "DTO representing settings of multiple events mapped by its enum")
 public class EventsSettingsDto implements SettingsDto {
 
     @NotNull
