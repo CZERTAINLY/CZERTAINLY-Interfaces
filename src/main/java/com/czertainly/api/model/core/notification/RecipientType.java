@@ -31,10 +31,6 @@ public enum RecipientType implements IPlatformEnum {
     private final String description;
     private final Resource recipientResource;
 
-    RecipientType(String code, String label, Resource recipientResource) {
-        this(code, label,null, recipientResource);
-    }
-
     RecipientType(String code, String label, String description, Resource recipientResource) {
         this.code = code;
         this.label = label;
