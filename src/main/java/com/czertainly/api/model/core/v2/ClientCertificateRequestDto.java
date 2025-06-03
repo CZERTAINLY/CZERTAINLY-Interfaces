@@ -75,7 +75,7 @@ public class ClientCertificateRequestDto {
     private UUID keyUuid;
 
     @Schema(
-            description = "Alternative Token Profile UUID."
+            description = "Token Profile UUID for the alternative key"
     )
     private UUID altTokenProfileUuid;
     @Schema(
