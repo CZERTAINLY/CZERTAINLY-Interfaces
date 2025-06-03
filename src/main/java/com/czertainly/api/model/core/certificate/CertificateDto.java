@@ -70,16 +70,40 @@ public class CertificateDto implements Loggable {
     private String publicKeyAlgorithm;
 
     @Schema(
+            description = "Alternative Public key algorithm",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String altPublicKeyAlgorithm;
+
+    @Schema(
             description = "Certificate signature algorithm",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String signatureAlgorithm;
 
     @Schema(
+            description = "Certificate alternative signature algorithm",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String altSignatureAlgorithm;
+
+    @Schema(
+            description = "Indicator whether the certificate is hybrid",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private boolean hybridCertificate;
+
+    @Schema(
             description = "Certificate key size",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Integer keySize;
+
+    @Schema(
+            description = "Certificate key size of the alternative key",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private Integer altKeySize;
 
     @Schema(
             description = "State of the Certificate",
