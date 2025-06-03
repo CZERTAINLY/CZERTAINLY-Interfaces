@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -23,9 +24,9 @@ public class NotificationProfileUpdateRequestDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private RecipientType recipientType;
 
-    @Schema(description = "Recipient UUID of notifications produced by profile",
+    @Schema(description = "Recipient UUIDs of notifications produced by profile",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private UUID recipientUuid;
+    private List<UUID> recipientUuids;
 
     @Schema(description = "Notification instance UUID",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -42,14 +43,15 @@ public class NotificationProfileUpdateRequestDto {
     @Schema(description = "Maximum number of repetitions of same notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer repetitions;
 
-    @AssertTrue(message = "Recipient UUID is required when recipient type is not Owner or None")
+    @AssertTrue(message = "Recipient UUID is required when recipient type is not Owner, None or Default")
     private boolean isRecipientValid() {
-        return ((recipientType == RecipientType.OWNER || recipientType == RecipientType.NONE) && recipientUuid == null) || (recipientType != RecipientType.OWNER && recipientType != RecipientType.NONE && recipientUuid != null);
+        return ((recipientType == RecipientType.OWNER || recipientType == RecipientType.NONE || recipientType == RecipientType.DEFAULT) && (recipientUuids == null || recipientUuids.isEmpty()))
+                || (recipientType != RecipientType.OWNER && recipientType != RecipientType.NONE && recipientType != RecipientType.DEFAULT && recipientUuids != null && !recipientUuids.isEmpty());
     }
 
-    @AssertFalse(message = "Cannot send internal notification to recipient of type None")
+    @AssertFalse(message = "Cannot send internal notification to recipient of type None and Default")
     private boolean isInternalNotificationPossible() {
-        return recipientType == RecipientType.NONE && internalNotification;
+        return (recipientType == RecipientType.NONE || recipientType == RecipientType.DEFAULT) && internalNotification;
     }
 
     @AssertTrue(message = "Notification instance and/or internal notification is required")

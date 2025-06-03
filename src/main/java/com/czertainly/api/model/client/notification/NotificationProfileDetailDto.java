@@ -1,11 +1,13 @@
 package com.czertainly.api.model.client.notification;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.notification.RecipientType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.Duration;
+import java.util.List;
 
 @Data
 public class NotificationProfileDetailDto {
@@ -22,8 +24,12 @@ public class NotificationProfileDetailDto {
     @Schema(description = "Latest version of the Notification profile", examples = {"1"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private int version;
 
-    @Schema(description = "Recipient info", requiredMode = Schema.RequiredMode.REQUIRED)
-    private RecipientDto recipient;
+    @Schema(description = "Recipient type of notifications produced by profile",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private RecipientType recipientType;
+
+    @Schema(description = "Recipients info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<NameAndUuidDto> recipients;
 
     @Schema(description = "Notification instance info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private NameAndUuidDto notificationInstance;
