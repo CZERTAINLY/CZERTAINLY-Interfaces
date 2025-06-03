@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.logging.Loggable;
@@ -70,6 +71,12 @@ public class CertificateDto implements Loggable {
     private String publicKeyAlgorithm;
 
     @Schema(
+            description = "Alternative Public key algorithm",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private String altPublicKeyAlgorithm;
+
+    @Schema(
             description = "Certificate signature algorithm",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
@@ -92,6 +99,12 @@ public class CertificateDto implements Loggable {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Integer keySize;
+
+    @Schema(
+            description = "Certificate key size of the alternative key",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private Integer altKeySize;
 
     @Schema(
             description = "State of the Certificate",
