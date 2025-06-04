@@ -87,7 +87,7 @@ public interface TriggerController extends AuthProtectedController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Trigger associations retrieved"),
     })
-    @GetMapping(path = "/events/{resource}/{objectUuid}", produces = {"application/json"})
+    @GetMapping(path = "/events/{resource}/{associationObjectUuid}", produces = {"application/json"})
     Map<ResourceEvent, List<UUID>> getEventTriggersAssociations(@Parameter(description = "Resource", required = true) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid);
 
 
