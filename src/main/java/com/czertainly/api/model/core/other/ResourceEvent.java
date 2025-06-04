@@ -7,17 +7,19 @@ import com.czertainly.api.model.common.events.data.*;
 import com.czertainly.api.model.core.auth.Resource;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Getter
+@Schema(enumAsRef = true)
 public enum ResourceEvent implements IPlatformEnum {
 
     // Certificates
-    CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed", "Event when the certificate changes validation status with detail about the certificate", Resource.CERTIFICATE, CertificateStatusChangedEventData.class),
-    CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed", "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE, CertificateActionPerformedEventData.class),
+    CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed", "Event when the certificate changes validation status with detail about the certificate", Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateStatusChangedEventData.class),
+    CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed", "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateActionPerformedEventData.class),
     CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered", "Event when the certificate has been newly discovered by some discovery", Resource.CERTIFICATE, List.of(Resource.DISCOVERY), CertificateDiscoveredEventData.class),
 
     // Discoveries

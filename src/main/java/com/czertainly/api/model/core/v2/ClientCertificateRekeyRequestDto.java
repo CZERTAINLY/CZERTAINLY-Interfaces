@@ -56,6 +56,16 @@ public class ClientCertificateRekeyRequestDto {
     )
     private UUID tokenProfileUuid;
 
+    @Schema(
+            description = "Alternative Key UUID"
+    )
+    private UUID altKeyUuid;
+
+    @Schema(
+            description = "Token Profile UUID for the alternative key"
+    )
+    private UUID altTokenProfileUuid;
+
     //------------------------------------------------------------------------------------------------------------------
     // Attributes
     //------------------------------------------------------------------------------------------------------------------
@@ -64,4 +74,9 @@ public class ClientCertificateRekeyRequestDto {
             description = "Signature Attributes. If not provided, existing attributes will be used to generate the new CSR"
     )
     private List<RequestAttributeDto> signatureAttributes;
+
+    @Schema(
+            description = "Alternative Signature Attributes. If not provided, existing alternative attributes will be used to generate the new CSR"
+    )
+    private List<RequestAttributeDto> altSignatureAttributes;
 }

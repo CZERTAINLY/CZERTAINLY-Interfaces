@@ -29,6 +29,11 @@ public class ClientCertificateSignRequestDto {
     )
     List<RequestAttributeDto> signatureAttributes;
 
+    @Schema(
+            description = "List of attributes to sign the alternative private key"
+    )
+    List<RequestAttributeDto> altSignatureAttributes;
+
     //------------------------------------------------------------------------------------------------------------------
     // Key Related Parameters
     //------------------------------------------------------------------------------------------------------------------
@@ -59,6 +64,16 @@ public class ClientCertificateSignRequestDto {
             description = "Key UUID. Required if CSR is not uploaded"
     )
     private UUID keyUuid;
+
+    @Schema(
+            description = "Token Profile UUID for the alternative key."
+    )
+    private UUID altTokenProfileUuid;
+
+    @Schema(
+            description = "Alternative Key UUID."
+    )
+    private UUID altKeyUuid;
 
     //------------------------------------------------------------------------------------------------------------------
     // Attributes

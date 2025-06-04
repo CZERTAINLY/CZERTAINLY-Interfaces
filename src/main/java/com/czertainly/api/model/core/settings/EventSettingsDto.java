@@ -12,6 +12,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "DTO representing settings of single event")
 public class EventSettingsDto {
 
     @NotNull
