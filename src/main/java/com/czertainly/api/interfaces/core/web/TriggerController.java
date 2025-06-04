@@ -5,6 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.Resource;
+import com.czertainly.api.model.core.other.ResourceEvent;
 import com.czertainly.api.model.core.workflows.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RequestMapping("/v1/workflows")
 @Tag(name = "Workflow Triggers Management", description = "Workflow Triggers Management API")
@@ -78,6 +81,14 @@ public interface TriggerController extends AuthProtectedController {
             @ApiResponse(responseCode = "404", description = "Rule or Action not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
     })
     @PostMapping(path = "/events", consumes = {"application/json"}, produces = {"application/json"})
-    void associateTriggers(@RequestBody TriggerEventAssociationRequestDto request) throws NotFoundException;
+    void associateEventTriggers(@RequestBody TriggerEventAssociationRequestDto request) throws NotFoundException;
+
+    @Operation(summary = "Get event triggers associations for resource object")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Trigger associations retrieved"),
+    })
+    @GetMapping(path = "/events/{resource}/{objectUuid}", consumes = {"application/json"}, produces = {"application/json"})
+    Map<ResourceEvent, List<UUID>> getEventTriggersAssociations(@Parameter(description = "Resource", required = true) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid);
+
 
 }
