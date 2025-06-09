@@ -13,6 +13,7 @@ import java.util.List;
 @Schema(enumAsRef = true)
 public enum Resource implements IPlatformEnum {
     NONE("NONE", "None"),
+    ANY("ANY", "Any"),
 
     // GENERAL
     DASHBOARD("dashboard", "Dashboard"),
