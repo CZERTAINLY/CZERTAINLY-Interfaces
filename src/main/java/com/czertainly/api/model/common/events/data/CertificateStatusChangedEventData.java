@@ -16,10 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CertificateStatusChangedEventData extends CertificateEventData {
-
-    @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private UUID authorityInstanceUuid;
+public class CertificateStatusChangedEventData extends CertificateEventAuthorityData {
 
     @Schema(description = "Certificate validity start date in \"yyyy-MM-dd'T'HH:mm:ssXXX\" format")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -32,12 +29,6 @@ public class CertificateStatusChangedEventData extends CertificateEventData {
     @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     private ZonedDateTime expiresAt;
-
-    @Schema(description = "RA profile UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private UUID raProfileUuid;
-
-    @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String raProfileName;
 
     @Schema(description = "Old status of the object", requiredMode = Schema.RequiredMode.REQUIRED)
     private String oldStatus;
