@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.enums;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.approval.ApprovalStatusEnum;
 import com.czertainly.api.model.client.cryptography.key.KeyCompromiseReason;
 import com.czertainly.api.model.client.cryptography.key.KeyRequestType;
 import com.czertainly.api.model.common.HealthStatus;
@@ -41,6 +42,7 @@ import com.czertainly.api.model.core.search.FilterConditionOperator;
 import com.czertainly.api.model.core.search.FilterFieldType;
 import com.czertainly.api.model.core.settings.SettingsSection;
 import com.czertainly.api.model.scheduler.SchedulerJobExecutionStatus;
+import com.czertainly.core.model.auth.ResourceAction;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,6 +53,7 @@ import java.util.Arrays;
 public enum PlatformEnum implements IPlatformEnum {
     // general
     RESOURCE(Resource.class, "Platform resource"),
+    RESOURCE_ACTION(ResourceAction.class, "Actions for a Resource"),
     FILTER_CONDITION_OPERATOR(FilterConditionOperator.class, "Filter condition operator"),
     FILTER_FIELD_TYPE(FilterFieldType.class, "Filter field type"),
     FILTER_FIELD_SOURCE(FilterFieldSource.class, "Filter field source"),
@@ -125,6 +128,10 @@ public enum PlatformEnum implements IPlatformEnum {
     AUTH_METHOD(AuthMethod.class, "Actor auth method"),
     OPERATION(Operation.class, "Log operation"),
     OPERATION_RESULT(OperationResult.class, "Log operation result"),
+
+    // Approval
+    APPROVAL_STATUS(ApprovalStatusEnum.class, "Approval Status")
+
     ;
 
     private static final PlatformEnum[] VALUES;
