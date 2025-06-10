@@ -87,6 +87,10 @@ public enum ResourceEvent implements IPlatformEnum {
         return Arrays.stream(VALUES).filter(event -> event.resource == resource || event.overridingResources.contains(resource)).toList();
     }
 
+    public static boolean isResourceOfEvent(Resource resource) {
+        return !Arrays.stream(VALUES).filter(event -> event.resource == resource).toList().isEmpty();
+    }
+
     public static class Codes {
 
         public static final String CERTIFICATE_STATUS_CHANGED = "certificate_status_changed";
