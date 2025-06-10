@@ -16,22 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CertificateStatusChangedEventData extends StatusChangedEventData implements EventData {
-
-    @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private UUID certificateUuid;
-
-    @Schema(description = "SHA256 fingerprint of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String fingerprint;
-
-    @Schema(description = "Certificate serial number", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String serialNumber;
-
-    @Schema(description = "Subject DN of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String subjectDn;
-
-    @Schema(description = "Issuer DN of the Certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String issuerDn;
+public class CertificateStatusChangedEventData extends CertificateEventData {
 
     @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID authorityInstanceUuid;
@@ -54,24 +39,9 @@ public class CertificateStatusChangedEventData extends StatusChangedEventData im
     @Schema(description = "RA profile name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String raProfileName;
 
+    @Schema(description = "Old status of the object", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String oldStatus;
 
-    public CertificateStatusChangedEventData(String oldStatus, String newStatus, UUID certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn, UUID authorityInstanceUuid, UUID raProfileUuid, String raProfileName,
-                                             ZonedDateTime notBefore, ZonedDateTime expiresAt) {
-        this(oldStatus, newStatus, certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn, notBefore, expiresAt);
-        this.authorityInstanceUuid = authorityInstanceUuid;
-        this.raProfileUuid = raProfileUuid;
-        this.raProfileName = raProfileName;
-    }
-
-    public CertificateStatusChangedEventData(String oldStatus, String newStatus, UUID certificateUuid, String fingerprint, String serialNumber, String subjectDn, String issuerDn,
-                                             ZonedDateTime notBefore, ZonedDateTime expiresAt) {
-        super(oldStatus, newStatus);
-        this.certificateUuid = certificateUuid;
-        this.fingerprint = fingerprint;
-        this.serialNumber = serialNumber;
-        this.subjectDn = subjectDn;
-        this.issuerDn = issuerDn;
-        this.expiresAt = expiresAt;
-        this.notBefore = notBefore;
-    }
+    @Schema(description = "New status of the object", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String newStatus;
 }

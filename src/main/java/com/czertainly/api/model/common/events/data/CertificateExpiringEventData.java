@@ -7,26 +7,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class CertificateExpiringEventData implements EventData {
-    @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private UUID certificateUuid;
-
-    @Schema(description = "SHA256 fingerprint of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String fingerprint;
-
-    @Schema(description = "Certificate serial number", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String serialNumber;
-
-    @Schema(description = "Subject DN of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String subjectDn;
-
-    @Schema(description = "Issuer DN of the Certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String issuerDn;
+public class CertificateExpiringEventData extends CertificateEventData {
 
     @Schema(description = "Authority instance reference UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID authorityInstanceUuid;

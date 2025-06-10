@@ -16,22 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CertificateDiscoveredEventData implements EventData {
-
-    @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
-    private UUID certificateUuid;
-
-    @Schema(description = "SHA256 fingerprint of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String fingerprint;
-
-    @Schema(description = "Certificate serial number", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String serialNumber;
-
-    @Schema(description = "Subject DN of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String subjectDn;
-
-    @Schema(description = "Issuer DN of the Certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String issuerDn;
+public class CertificateDiscoveredEventData extends CertificateEventData {
 
     @Schema(description = "Discovery UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID discoveryUuid;
