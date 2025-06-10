@@ -19,24 +19,24 @@ public enum Resource implements IPlatformEnum {
     DASHBOARD("dashboard", "Dashboard"),
     SETTINGS("settings", "Settings"),
     AUDIT_LOG("auditLogs", "Audit logs"),
-    CREDENTIAL("credentials", "Credential", true, true),
-    CONNECTOR("connectors", "Connector", true, true),
-    ATTRIBUTE("attributes", "Attribute", true),
+    CREDENTIAL(Codes.CREDENTIAL, "Credential", true, true),
+    CONNECTOR(Codes.CONNECTOR, "Connector", true, true),
+    ATTRIBUTE(Codes.ATTRIBUTE, "Attribute", true),
     SCHEDULED_JOB("jobs", "Scheduled job"),
 
     // AUTH
-    USER("users", "User", false, true, true, false),
-    ROLE("roles", "Role", false, true),
+    USER(Codes.USER, "User", false, true, true, false),
+    ROLE(Codes.ROLE, "Role", false, true),
 
     // ACME
     ACME_ACCOUNT("acmeAccounts", "ACME Account"),
-    ACME_PROFILE("acmeProfiles", "ACME Profile", true, true),
+    ACME_PROFILE(Codes.ACME_PROFILE, "ACME Profile", true, true),
 
     // SCEP
-    SCEP_PROFILE("scepProfiles", "SCEP Profile", true, true),
+    SCEP_PROFILE(Codes.SCEP_PROFILE, "SCEP Profile", true, true),
 
     // CMP
-    CMP_PROFILE("cmpProfiles", "CMP Profile", true, true),
+    CMP_PROFILE(Codes.CMP_PROFILE, "CMP Profile", true, true),
 
     // CERTIFICATES
     AUTHORITY(Codes.AUTHORITY, "Authority", true, true),
@@ -44,17 +44,17 @@ public enum Resource implements IPlatformEnum {
     CERTIFICATE(Codes.CERTIFICATE, "Certificate", false, true, true, true),
     CERTIFICATE_REQUEST(Codes.CERTIFICATE_REQUEST, "Certificate Request", false, false),
     GROUP(Codes.GROUP, "Group", true, true),
-    COMPLIANCE_PROFILE("complianceProfiles", "Compliance Profile", true, true),
+    COMPLIANCE_PROFILE(Codes.COMPLIANCE_PROFILE, "Compliance Profile", true, true),
     DISCOVERY(Codes.DISCOVERY, "Discovery", false, true),
 
     // ENTITIES
-    ENTITY("entities", "Entity", true, true),
-    LOCATION("locations", "Location", true, true),
+    ENTITY(Codes.ENTITY, "Entity", true, true),
+    LOCATION(Codes.LOCATION, "Location", true, true),
 
     // CRYPTOGRAPHY
-    TOKEN_PROFILE("tokenProfiles", "Token Profile", true, true),
-    TOKEN("tokens", "Token", true, true),
-    CRYPTOGRAPHIC_KEY("keys", "Key", false, true, true, true),
+    TOKEN_PROFILE(Codes.TOKEN_PROFILE, "Token Profile", true, true),
+    TOKEN(Codes.TOKEN, "Token", true, true),
+    CRYPTOGRAPHIC_KEY(Codes.CRYPTOGRAPHIC_KEY, "Key", false, true, true, true),
 
     // APPROVALS
     APPROVAL_PROFILE("approvalProfiles", "Approval profile"),
@@ -187,6 +187,20 @@ public enum Resource implements IPlatformEnum {
         public static final String CERTIFICATE_REQUEST = "certificateRequests";
         public static final String GROUP = "groups";
         public static final String DISCOVERY = "discoveries";
+        public static final String ACME_PROFILE = "acmeProfiles";
+        public static final String ATTRIBUTE = "attributes";
+        public static final String CMP_PROFILE = "cmpProfiles";
+        public static final String COMPLIANCE_PROFILE = "complianceProfiles";
+        public static final String CONNECTOR = "connectors";
+        public static final String CREDENTIAL = "credentials";
+        public static final String CRYPTOGRAPHIC_KEY = "keys";
+        public static final String ENTITY = "entities";
+        public static final String LOCATION = "locations";
+        public static final String ROLE = "roles";
+        public static final String SCEP_PROFILE = "scepProfiles";
+        public static final String TOKEN = "tokens";
+        public static final String TOKEN_PROFILE = "tokenProfiles";
+        public static final String USER = "users";
 
         private Codes() {
 
