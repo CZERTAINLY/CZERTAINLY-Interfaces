@@ -11,6 +11,8 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Objects;
+
 @Setter
 @Getter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = DataAttribute.class, visible = true)
@@ -57,5 +59,16 @@ public class BaseAttribute<T> extends AbstractBaseAttribute implements BaseAttri
                 .append("content", content)
                 .append("type", type)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof BaseAttribute<?> that)) return false;
+        return version == that.version && Objects.equals(uuid, that.uuid) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(getContent(), that.getContent()) && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(version, uuid, name, description, content, type);
     }
 }
