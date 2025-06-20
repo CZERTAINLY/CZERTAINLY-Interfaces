@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.notification;
 
+import com.czertainly.api.model.client.notification.validation.ValidFrequency;
 import com.czertainly.api.model.core.notification.RecipientType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,6 +37,7 @@ public class NotificationProfileUpdateRequestDto {
     private boolean internalNotification;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @ValidFrequency
     @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED, type = "string", format = "duration", example = "P1DT12H")
     private Duration frequency;
 
