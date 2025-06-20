@@ -13,7 +13,6 @@ import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType
 import com.czertainly.api.model.common.attribute.v2.content.data.ProgrammingLanguageEnum;
 import com.czertainly.api.model.common.enums.cryptography.*;
 import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
-import com.czertainly.api.model.connector.notification.NotificationType;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.authority.CertificateRevocationReason;
@@ -58,7 +57,6 @@ public enum PlatformEnum implements IPlatformEnum {
     FILTER_FIELD_TYPE(FilterFieldType.class, "Filter field type"),
     FILTER_FIELD_SOURCE(FilterFieldSource.class, "Filter field source"),
     SETTINGS_SECTION(SettingsSection.class, "Settings section"),
-    NOTIFICATION_TYPE(NotificationType.class, "Notification type"),
 
     // connectors
     AUTH_TYPE(AuthType.class, "Authentication type"),
