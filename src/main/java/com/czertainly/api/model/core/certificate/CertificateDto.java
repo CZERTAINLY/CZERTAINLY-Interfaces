@@ -77,7 +77,7 @@ public class CertificateDto implements Loggable {
 
     @Schema(
             description = "Certificate signature algorithm",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String signatureAlgorithm;
 
