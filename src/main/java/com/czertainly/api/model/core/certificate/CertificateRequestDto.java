@@ -38,7 +38,7 @@ public class CertificateRequestDto {
 
     @Schema(
             description = "Certificate alternative signature algorithm",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String altSignatureAlgorithm;
 

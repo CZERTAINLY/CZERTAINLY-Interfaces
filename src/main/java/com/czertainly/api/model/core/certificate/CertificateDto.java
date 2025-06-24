@@ -71,7 +71,7 @@ public class CertificateDto implements Loggable {
 
     @Schema(
             description = "Alternative Public key algorithm",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String altPublicKeyAlgorithm;
 
@@ -83,7 +83,7 @@ public class CertificateDto implements Loggable {
 
     @Schema(
             description = "Certificate alternative signature algorithm",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String altSignatureAlgorithm;
 
@@ -101,7 +101,7 @@ public class CertificateDto implements Loggable {
 
     @Schema(
             description = "Certificate key size of the alternative key",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Integer altKeySize;
 
