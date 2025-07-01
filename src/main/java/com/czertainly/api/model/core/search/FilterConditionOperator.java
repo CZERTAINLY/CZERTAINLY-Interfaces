@@ -23,6 +23,8 @@ public enum FilterConditionOperator implements IPlatformEnum {
     NOT_EMPTY("NOT_EMPTY", "not empty", "nem"),
     IN_NEXT("IN_NEXT", "in next", "in"),
     IN_PAST("IN_PAST", "in past", "ip"),
+    MATCHES("MATCHES", "matches", "ma"),
+    NOT_MATCHES("NOT_MATCHES", "not matches", "nma"),
     // TODO: remove following
     SUCCESS("SUCCESS", "success", "success"),
     FAILED("FAILED", "failed", "failed"),
