@@ -46,12 +46,12 @@ public interface OidEntryController extends AuthProtectedController {
     @Operation(summary = "Bulk delete OID entries")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OID entries deleted")})
     @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    void bulkDeleteOidEntry(@Valid @RequestBody List<String> oids);
+    void bulkDeleteOidEntry(@RequestBody List<String> oids);
 
     @Operation(summary = "List OID entries with filtering and pagination")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OID entries retrieved")})
     @PostMapping(path = "/list", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    List<OidEntryResponseDto> listOidEntries(@Valid @RequestBody SearchRequestDto searchRequestDto);
+    List<OidEntryResponseDto> listOidEntries(@RequestBody SearchRequestDto searchRequestDto);
 
     @Operation(summary = "Get searchable filter fields for OID entries")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Searchable fields retrieved")})
