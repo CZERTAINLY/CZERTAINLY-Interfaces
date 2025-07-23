@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.core.oid.OidEntryListResponseDto;
 import com.czertainly.api.model.core.oid.OidEntryResponseDto;
 import com.czertainly.api.model.core.oid.OidEntryRequestDto;
 import com.czertainly.api.model.core.oid.OidEntryUpdateRequestDto;
@@ -51,7 +52,7 @@ public interface OidEntryController extends AuthProtectedController {
     @Operation(summary = "List OID entries with filtering and pagination")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OID entries retrieved")})
     @PostMapping(path = "/list", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    List<OidEntryResponseDto> listOidEntries(@RequestBody SearchRequestDto searchRequestDto);
+    OidEntryListResponseDto listOidEntries(@RequestBody SearchRequestDto searchRequestDto);
 
     @Operation(summary = "Get searchable filter fields for OID entries")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Searchable fields retrieved")})

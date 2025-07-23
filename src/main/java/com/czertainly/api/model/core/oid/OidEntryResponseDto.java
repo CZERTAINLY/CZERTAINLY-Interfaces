@@ -16,5 +16,5 @@ public class OidEntryResponseDto {
     private String description;
 
     @Schema(description = "Category of the OID entry", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String category;
+    private OidCategory category;
 }
