@@ -10,10 +10,6 @@ import java.util.List;
 @Data
 public class RdnAttributeTypeOidPropertiesDto implements AdditionalOidPropertiesDto {
 
-    @Schema(description = "Type of value that the OID represents (e.g., BIT STRING, UTF8String)", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank
-    private String valueType;
-
     @Schema(description = "Code to be displayed in RDN string (e.g., CN for Common Name)", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String code;
