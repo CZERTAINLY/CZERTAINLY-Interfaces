@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.core.oid.OidEntryListResponseDto;
@@ -30,19 +31,19 @@ public interface OidEntryController extends AuthProtectedController {
     @Operation(summary = "Get OID entry by OID")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OID entry retrieved")})
     @GetMapping(path = "/{oid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    OidEntryResponseDto getOidEntry(@Parameter(description = "OID identifier") @PathVariable String oid);
+    OidEntryResponseDto getOidEntry(@Parameter(description = "OID identifier") @PathVariable String oid) throws NotFoundException;
 
     @Operation(summary = "Edit an existing OID entry")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OID entry updated")})
     @PutMapping(path = "/{oid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     OidEntryResponseDto editOidEntry(
             @Parameter(description = "OID identifier") @PathVariable String oid,
-            @Valid @RequestBody OidEntryUpdateRequestDto updateDto);
+            @Valid @RequestBody OidEntryUpdateRequestDto updateDto) throws NotFoundException;
 
     @Operation(summary = "Delete an OID entry by OID")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OID entry deleted")})
     @DeleteMapping("/{oid}")
-    void deleteOidEntry(@Parameter(description = "OID identifier") @PathVariable String oid);
+    void deleteOidEntry(@Parameter(description = "OID identifier") @PathVariable String oid) throws NotFoundException;
 
     @Operation(summary = "Bulk delete OID entries")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OID entries deleted")})
