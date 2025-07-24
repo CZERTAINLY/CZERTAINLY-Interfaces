@@ -23,5 +23,10 @@ public class OidEntryRequestDto extends OidEntryUpdateRequestDto implements Seri
             message = "Invalid OID format"
     )
     private String oid;
+
+    @Schema(description = "Category of the OID entry", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank
+    private OidCategory category;
+
 }
 

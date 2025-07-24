@@ -17,10 +17,6 @@ public class OidEntryUpdateRequestDto {
     @Schema(description = "Description of the OID entry", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Category of the OID entry", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank
-    private OidCategory category;
-
     @Schema(description = "Additional properties depending on OID category", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     private AdditionalOidPropertiesDto additionalProperties;
