@@ -204,7 +204,7 @@ public enum Resource implements IPlatformEnum {
         public static final String TOKEN = "tokens";
         public static final String TOKEN_PROFILE = "tokenProfiles";
         public static final String USER = "users";
-        public static final String OID = "oid";
+        public static final String OID = "oids";
 
         private Codes() {
 
