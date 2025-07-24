@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.oid;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +26,7 @@ public class OidEntryRequestDto extends OidEntryUpdateRequestDto implements Seri
     private String oid;
 
     @Schema(description = "Category of the OID entry", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank
+    @NotNull
     private OidCategory category;
 
 }
