@@ -67,13 +67,6 @@ public enum SystemOid {
                 .orElse(null);
     }
 
-    public static SystemOid fromName(String oid) {
-        return Arrays.stream(VALUES)
-                .filter(e -> e.displayName.equals(oid))
-                .findFirst()
-                .orElse(null);
-    }
-
     public static Map<String, String> getMapOfOidToDisplayName(OidCategory category) {
         return Arrays.stream(VALUES)
                 .filter(systemOid -> systemOid.getCategory() == category)
