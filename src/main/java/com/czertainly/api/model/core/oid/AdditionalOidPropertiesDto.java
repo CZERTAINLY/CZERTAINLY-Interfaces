@@ -12,7 +12,7 @@ import java.io.Serializable;
         visible = true
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = RdnAttributeTypeOidPropertiesDto.class, name = "rdnAttribute")
+        @JsonSubTypes.Type(value = RdnAttributeTypeOidPropertiesDto.class, name = OidCategory.Codes.RDN_ATTRIBUTE_TYPE)
 })
 public interface AdditionalOidPropertiesDto extends Serializable {
 }
