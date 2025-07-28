@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class OidEntryRequestDto extends OidEntryUpdateRequestDto implements Serializable {
+public class CustomOidEntryRequestDto extends CustomOidEntryUpdateRequestDto implements Serializable {
 
     @Schema(
             description = "Object Identifier (OID) in dot notation (e.g., 1.2.840.113549.1.1.1)",

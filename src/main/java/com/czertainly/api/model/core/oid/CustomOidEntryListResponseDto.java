@@ -9,8 +9,8 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class OidEntryListResponseDto extends PaginationResponseDto {
+public class CustomOidEntryListResponseDto extends PaginationResponseDto {
 
-    @Schema(description = "List of OID entries")
-    private List<OidEntryResponseDto> oidEntries;
+    @Schema(description = "List of custom OID entries")
+    private List<CustomOidEntryResponseDto> oidEntries;
 }

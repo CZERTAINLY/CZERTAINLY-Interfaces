@@ -7,14 +7,14 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class OidEntryUpdateRequestDto {
+public class CustomOidEntryUpdateRequestDto {
 
-    @Schema(description = "Display name of the OID entry (max 30 characters)", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 30)
+    @Schema(description = "Display name of the custom OID entry (max 30 characters)", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 30)
     @NotBlank
     @Size(max = 30)
     private String displayName;
 
-    @Schema(description = "Description of the OID entry", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Description of the custom OID entry", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
     @Schema(description = "Additional properties depending on OID category", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
