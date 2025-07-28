@@ -9,7 +9,7 @@ public enum OidCategory implements IPlatformEnum {
 
     RDN_ATTRIBUTE_TYPE(Codes.RDN_ATTRIBUTE_TYPE, "RDN Attribute Type", "OID for a type of attribute that can appear in DN"),
     EXTENDED_KEY_USAGE(Codes.EXTENDED_KEY_USAGE, "Extended Key Usage", "OID specifying key purpose in Extended Key Usage extension"),
-    GENERIC(Codes.GENERIC, "Generic", "Generic OID for unspecified use")
+    GENERIC(Codes.GENERIC, "Generic", "Generic OID for general use")
     ;
 
     private static final OidCategory[] VALUES;
