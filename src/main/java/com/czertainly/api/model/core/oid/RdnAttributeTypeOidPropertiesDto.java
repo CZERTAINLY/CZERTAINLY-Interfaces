@@ -14,7 +14,7 @@ public class RdnAttributeTypeOidPropertiesDto implements AdditionalOidProperties
     @NotBlank
     private String code;
 
-    @Schema(description = "Alternative codes that can be encountered as code for RDNs with this OID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Alternative codes that can appear in RDN representing the same OID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<@NotBlank String> altCodes = new ArrayList<>();
 
 }
