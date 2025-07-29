@@ -37,7 +37,7 @@ public class ComplianceRuleResponseDto {
     private String format;
 
     @Schema(description = "Rule attributes")
-    private List<BaseAttribute> attributes;
+    private List<BaseAttribute<?>> attributes;
 
     @Schema(description = "Description of the rule", examples = {"Sample rule description"})
     private String description;

@@ -1,6 +1,5 @@
 package com.czertainly.api.model.core.compliance.v2;
 
-import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -12,7 +11,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class ComplianceGroupListDto extends NameAndUuidDto {
+public class ComplianceGroupListDto {
+    @Schema(description = "Compliance group UUID", requiredMode = Schema.RequiredMode.REQUIRED)
+    private UUID uuid;
+
+    @Schema(description = "Compliance group name", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String name;
+
     @Schema(description = "Description of the compliance group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample group description"})
     private String description;
 

@@ -34,6 +34,7 @@ public class ResourceObjectDto implements Serializable, Loggable {
 
     public ResourceObjectDto(Resource resource, UUID objectUuid, String name) {
         super();
+        this.resource = resource;
         this.objectUuid = objectUuid;
         this.name = name;
     }

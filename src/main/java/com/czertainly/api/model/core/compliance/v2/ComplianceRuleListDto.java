@@ -1,6 +1,5 @@
 package com.czertainly.api.model.core.compliance.v2;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.core.auth.Resource;
@@ -15,7 +14,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class ComplianceRuleListDto extends NameAndUuidDto {
+public class ComplianceRuleListDto {
+    @Schema(description = "Compliance rule UUID", requiredMode = Schema.RequiredMode.REQUIRED)
+    private UUID uuid;
+
+    @Schema(description = "Compliance rule name", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String name;
+
     @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample rule description"})
     private String description;
 
@@ -38,6 +43,6 @@ public class ComplianceRuleListDto extends NameAndUuidDto {
     private String format;
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<BaseAttribute> attributes;
+    private List<BaseAttribute<?>> attributes;
 
 }

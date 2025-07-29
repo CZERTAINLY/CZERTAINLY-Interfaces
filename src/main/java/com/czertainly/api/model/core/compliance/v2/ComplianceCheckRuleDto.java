@@ -1,7 +1,6 @@
 package com.czertainly.api.model.core.compliance.v2;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +14,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class ComplianceCheckRuleDto extends NameAndUuidDto {
+public class ComplianceCheckRuleDto {
+    @Schema(description = "Compliance rule UUID", requiredMode = Schema.RequiredMode.REQUIRED)
+    private UUID uuid;
+
+    @Schema(description = "Compliance rule name", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String name;
+
     @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample rule description"})
     private String description;
 
