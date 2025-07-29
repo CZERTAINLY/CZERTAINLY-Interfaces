@@ -32,6 +32,7 @@ import com.czertainly.api.model.core.enums.CertificateProtocol;
 import com.czertainly.api.model.core.logging.enums.*;
 import com.czertainly.api.model.core.logging.enums.Module;
 import com.czertainly.api.model.core.notification.RecipientType;
+import com.czertainly.api.model.core.oid.OidCategory;
 import com.czertainly.api.model.core.other.ResourceEvent;
 import com.czertainly.api.model.core.workflows.ConditionType;
 import com.czertainly.api.model.core.workflows.ExecutionType;
@@ -76,6 +77,9 @@ public enum PlatformEnum implements IPlatformEnum {
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
     PROTOCOL(CertificateProtocol.class, "Protocol used to issue certificate"),
     CERTIFICATE_SUBJECT_TYPE(CertificateSubjectType.class, "Subject Type of certificate"),
+
+    // oid
+    OID_CATEGORY(OidCategory.class, "OID Category"),
 
     // keys & tokens
     KEY_ALGORITHM(KeyAlgorithm.class, "Cryptographic key algorithm"),

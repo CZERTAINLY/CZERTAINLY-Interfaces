@@ -47,6 +47,9 @@ public enum Resource implements IPlatformEnum {
     COMPLIANCE_PROFILE(Codes.COMPLIANCE_PROFILE, "Compliance Profile", true, true),
     DISCOVERY(Codes.DISCOVERY, "Discovery", false, true),
 
+    // OID
+    OID(Codes.OID, "OID", true, false),
+
     // ENTITIES
     ENTITY(Codes.ENTITY, "Entity", true, true),
     LOCATION(Codes.LOCATION, "Location", true, true),
@@ -201,6 +204,7 @@ public enum Resource implements IPlatformEnum {
         public static final String TOKEN = "tokens";
         public static final String TOKEN_PROFILE = "tokenProfiles";
         public static final String USER = "users";
+        public static final String OID = "oids";
 
         private Codes() {
 
