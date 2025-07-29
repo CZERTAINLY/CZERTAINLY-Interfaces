@@ -33,29 +33,11 @@ public class ResourceDto {
     @Schema(description = "Has rule evaluator that can evaluate conditions and actions", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean hasRuleEvaluator;
 
-    public Boolean hasObjectAccess() {
-        return hasObjectAccess;
-    }
+    @Schema(description = "Is resource subject of compliance check and compliance can be run on objects of this resource", requiredMode = Schema.RequiredMode.REQUIRED)
+    private boolean isComplianceSubject;
 
-    public boolean hasCustomAttributes() {
-        return hasCustomAttributes;
-    }
-
-    public void hasGroups(boolean hasGroups) {
-        this.hasGroups = hasGroups;
-    }
-
-    public void hasOwner(boolean hasOwner) {
-        this.hasOwner = hasOwner;
-    }
-
-    public boolean hasEvents() {
-        return hasEvents;
-    }
-
-    public boolean hasRuleEvaluator() {
-        return hasRuleEvaluator;
-    }
+    @Schema(description = "Can compliance profiles be assigned to objects of this resource", requiredMode = Schema.RequiredMode.REQUIRED)
+    private boolean hasComplianceProfiles;
 
     @Override
     public String toString() {

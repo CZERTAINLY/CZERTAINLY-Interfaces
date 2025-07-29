@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 @Schema(enumAsRef = true)
@@ -94,6 +95,8 @@ public enum Resource implements IPlatformEnum {
     ;
 
     private static final Resource[] VALUES;
+    private static final EnumSet<Resource> complianceSubjects = EnumSet.of(Resource.CERTIFICATE, Resource.CERTIFICATE_REQUEST, Resource.CRYPTOGRAPHIC_KEY);
+    private static final EnumSet<Resource> complianceProfilesAssignable = EnumSet.of(Resource.RA_PROFILE, Resource.TOKEN_PROFILE);
 
     static {
         VALUES = values();
@@ -168,6 +171,14 @@ public enum Resource implements IPlatformEnum {
 
     public boolean hasOwner() {
         return hasOwner;
+    }
+
+    public boolean isComplianceSubject() {
+        return complianceSubjects.contains(this);
+    }
+
+    public boolean hasComplianceProfiles() {
+        return complianceProfilesAssignable.contains(this);
     }
 
     @JsonCreator

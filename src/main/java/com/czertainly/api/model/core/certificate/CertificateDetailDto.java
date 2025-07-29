@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
+import com.czertainly.api.model.core.compliance.v2.ComplianceCheckResultDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -60,11 +61,19 @@ public class CertificateDetailDto extends CertificateDto {
     )
     private Set<LocationDto> locations;
 
+    @Deprecated(since = "2.16.0", forRemoval = true)
+    @Schema(
+            deprecated = true,
+            description = "Certificate compliance check result. Deprecated, use `complianceResult` property instead.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private List<CertificateComplianceResultDto> nonCompliantRules;
+
     @Schema(
             description = "Certificate compliance check result",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<CertificateComplianceResultDto> nonCompliantRules;
+    private ComplianceCheckResultDto complianceResult;
 
     @Schema(
             description = "List of Custom Attributes",

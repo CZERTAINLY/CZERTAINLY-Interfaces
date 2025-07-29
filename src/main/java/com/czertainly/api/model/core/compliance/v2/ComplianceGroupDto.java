@@ -1,0 +1,24 @@
+package com.czertainly.api.model.core.compliance.v2;
+
+import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.auth.Resource;
+import com.czertainly.api.model.core.compliance.ComplianceRuleAvailabilityStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class ComplianceGroupDto extends NameAndUuidDto {
+    @Schema(description = "Description of the compliance group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample group description"})
+    private String description;
+
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
+    private ComplianceRuleAvailabilityStatus availabilityStatus;
+
+    @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {Resource.Codes.CERTIFICATE})
+    private Resource resource;
+
+}

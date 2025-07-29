@@ -10,20 +10,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 /*
-List of possible status for the Compliance checks. This Object will be used only to
-define the status of overall compliance. This object should not be used to define
-the compliance status of the individual rules
+List of possible status for rule compared to existing association in compliance profile. It indicates to user if rule needs to be replaced/removed or changed.
  */
-@Schema(enumAsRef = true)
-public enum ComplianceStatus implements IPlatformEnum {
-    NOT_CHECKED("not_checked", "Not checked"),
-    OK("ok", "Compliant"),
-    NOK("nok", "Not Compliant"),
-    NA("na", "Not Applicable"),
-    NOT_AVAILABLE("not_available", "Not Applicable"),
-    ;
 
-    private static final ComplianceStatus[] VALUES;
+@Schema(enumAsRef = true)
+public enum ComplianceRuleAvailabilityStatus implements IPlatformEnum {
+    AVAILABLE("available", "Available"),
+    NOT_AVAILABLE("not_available", "Not available"),
+    UPDATED("updated", "Updated");
+
+    private static final ComplianceRuleAvailabilityStatus[] VALUES;
 
     static {
         VALUES = values();
@@ -33,11 +29,11 @@ public enum ComplianceStatus implements IPlatformEnum {
     private final String label;
     private final String description;
 
-    ComplianceStatus(String code, String label) {
-        this(code, label,null);
+    ComplianceRuleAvailabilityStatus(String code, String label) {
+        this(code, label, null);
     }
 
-    ComplianceStatus(String code, String label, String description) {
+    ComplianceRuleAvailabilityStatus(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -60,11 +56,11 @@ public enum ComplianceStatus implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static ComplianceStatus findByCode(String code) {
+    public static ComplianceRuleAvailabilityStatus findByCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Compliance status {}", code)));
+                        new ValidationException(ValidationError.create("Unknown Compliance rule availability status {}", code)));
     }
 }

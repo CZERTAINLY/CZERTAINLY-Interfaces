@@ -3,6 +3,8 @@ package com.czertainly.api.model.core.cryptography.key;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
+import com.czertainly.api.model.core.compliance.ComplianceStatus;
+import com.czertainly.api.model.core.compliance.v2.ComplianceCheckResultDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -91,4 +93,16 @@ public class KeyDetailDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<KeyAssociationDto> associations;
+
+    @Schema(
+            description = "Key compliance status",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private ComplianceStatus complianceStatus;
+
+    @Schema(
+            description = "Key compliance check result",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ComplianceCheckResultDto complianceResult;
 }
