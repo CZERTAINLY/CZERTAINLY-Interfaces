@@ -9,9 +9,8 @@ import lombok.Data;
 @Data
 public class CustomOidEntryUpdateRequestDto {
 
-    @Schema(description = "Display name of the custom OID entry (max 30 characters)", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 30)
+    @Schema(description = "Display name of the custom OID entry", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 30)
     @NotBlank
-    @Size(max = 30)
     private String displayName;
 
     @Schema(description = "Description of the custom OID entry", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
