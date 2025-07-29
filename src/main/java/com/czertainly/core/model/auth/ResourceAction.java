@@ -35,6 +35,7 @@ public enum ResourceAction implements IPlatformEnum {
     RENEW("renew"),
     REKEY("rekey"),
     REVOKE("revoke"),
+    ARCHIVE("archive"),
 
     // Audit Log export
     EXPORT("export"),

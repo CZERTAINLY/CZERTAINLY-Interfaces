@@ -32,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/v1/certificates")
 @Tag(name = "Certificate Inventory", description = "Certificate Inventory API")
@@ -48,7 +49,7 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "List Certificates")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the certificates")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request);
+    CertificateResponseDto listCertificates(@RequestBody CertificateSearchRequestDto request);
 
     @Operation(summary = "Get Certificate Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
@@ -207,5 +208,30 @@ public interface CertificateController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
     @GetMapping(path = "/{uuid}/approvals", produces = {MediaType.APPLICATION_JSON_VALUE})
     ApprovalResponseDto listCertificateApprovals(@Parameter(description = "Certificate UUID") @PathVariable String uuid, final PaginationRequestDto paginationRequestDto);
+
+    @Operation(summary = "Archive a certificate")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate archived")})
+    @PatchMapping(path = "/{uuid}/archive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void archiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+
+    @Operation(summary = "Unarchive a certificate")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate unarchived")})
+    @PatchMapping(path = "/{uuid}/unarchive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void unarchiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+
+    @Operation(summary = "Archive a list of certificates")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificates archived")})
+    @PatchMapping(path = "/archive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void bulkArchiveCertificate(@RequestBody List<UUID> uuids);
+
+    @Operation(summary = "Unarchive a list of certificates")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificates unarchived")})
+    @PatchMapping(path = "/unarchive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void bulkUnarchiveCertificate(@RequestBody List<UUID> uuids);
+
 
 }

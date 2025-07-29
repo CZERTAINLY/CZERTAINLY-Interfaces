@@ -25,7 +25,10 @@ public enum CertificateEvent {
     UPDATE_OWNER("Update Owner"),
     UPLOAD("Upload Certificate"),
     DISCOVERY("Certificate Discovered"),
-    UPDATE_LOCATION("Update Location");
+    UPDATE_LOCATION("Update Location"),
+    ARCHIVE("Archive certificate"),
+    UNARCHIVE("Unarchive certificate"),
+    ;
 
     @Schema(description = "Certificate Event",
             examples = {"Issue Certificate"}, requiredMode = Schema.RequiredMode.REQUIRED)
