@@ -33,7 +33,9 @@ public enum SystemOid {
     CODE_SIGNING("1.3.6.1.5.5.7.3.3", "Code Signing", OidCategory.EXTENDED_KEY_USAGE),
     EMAIL_PROTECTION("1.3.6.1.5.5.7.3.4", "Email Protection", OidCategory.EXTENDED_KEY_USAGE),
     TIME_STAMPING("1.3.6.1.5.5.7.3.8", "Time Stamping", OidCategory.EXTENDED_KEY_USAGE),
-    OCSP_SIGNING("1.3.6.1.5.5.7.3.9", "OCSP Signing", OidCategory.EXTENDED_KEY_USAGE)
+    OCSP_SIGNING("1.3.6.1.5.5.7.3.9", "OCSP Signing", OidCategory.EXTENDED_KEY_USAGE),
+    DOCUMENT_SIGNING("1.3.6.1.4.1.311.10.3.12","Document Signing", OidCategory.EXTENDED_KEY_USAGE),
+    AUTHENTIC_DOCUMENTS_TRUST("1.2.840.113583.1.1.5", "Authentic Documents Trust", OidCategory.EXTENDED_KEY_USAGE)
     ;
 
     private static final SystemOid[] VALUES;
