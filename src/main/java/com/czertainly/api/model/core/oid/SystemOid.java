@@ -72,15 +72,4 @@ public enum SystemOid {
                 .orElse(null);
     }
 
-    public static Map<String, String> getMapOfOidToDisplayName(OidCategory category) {
-        return Arrays.stream(VALUES)
-                .filter(systemOid -> systemOid.getCategory() == category)
-                .collect(Collectors.toMap(SystemOid::getOid, SystemOid::getDisplayName));
-    }
-
-    public static Map<String, String> getMapOfOidToCode() {
-        return Arrays.stream(VALUES)
-                .filter(systemOid -> systemOid.getCategory() == OidCategory.RDN_ATTRIBUTE_TYPE)
-                .collect(Collectors.toMap(SystemOid::getOid, SystemOid::getCode));
-    }
 }
