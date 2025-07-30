@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ComplianceCheckResultDto {
+public class ComplianceCheckResultDto implements Serializable {
 
     @Schema(description = "Overall compliance result status", requiredMode = Schema.RequiredMode.REQUIRED)
     private ComplianceStatus status;

@@ -61,6 +61,9 @@ public class CertificateDetailDto extends CertificateDto {
     )
     private Set<LocationDto> locations;
 
+    /**
+     * @deprecated As of release 2.16.0. Replaced by {@link #complianceResult} property instead that is used by compliance v2 implementation.
+     */
     @Deprecated(since = "2.16.0", forRemoval = true)
     @Schema(
             deprecated = true,
