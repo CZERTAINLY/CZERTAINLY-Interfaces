@@ -213,13 +213,13 @@ public interface CertificateController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate archived")})
     @PatchMapping(path = "/{uuid}/archive")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void archiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    void archiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Unarchive a certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate unarchived")})
     @PatchMapping(path = "/{uuid}/unarchive")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void unarchiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    void unarchiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Archive a list of certificates")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificates archived")})
