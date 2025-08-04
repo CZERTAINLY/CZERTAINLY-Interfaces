@@ -26,7 +26,7 @@ public enum Problem {
     UNSUPPORTED_CONTACT("unsupportedContact", "Unsupported Contact", "A contact for an account used an unsupported protocol scheme"),
     UNSUPPORTED_IDENTIFIER("unsupportedIdentifier", "Unsupported Identifier", "An identifier is of an unsupported type"),
     USER_ACTION_REQUIRED("userActionRequired", "User Action Required", "Visit the \"instance\" URL and take actions specified there"),
-    ARCHIVED("archived","Archived certificate" ,"Certificate is archived");
+    ARCHIVED("archived", "Archived certificate", "Certificate is archived");
 
     private String type;
     private String title;

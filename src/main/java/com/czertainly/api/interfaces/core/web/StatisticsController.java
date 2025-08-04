@@ -18,5 +18,5 @@ public interface StatisticsController extends AuthProtectedController {
     @Operation(summary = "Get Dashboard/Statistics Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Details retrieved")})
     @GetMapping(produces = {"application/json"})
-    StatisticsDto getStatistics(@Parameter(description = "Include archived certificates in the statistics") @RequestParam(value = "includeArchived") boolean includeArchived);
+    StatisticsDto getStatistics(@Parameter(description = "Include archived certificates in the statistics") @RequestParam(value = "includeArchived", required = false, defaultValue = "false") boolean includeArchived);
 }
