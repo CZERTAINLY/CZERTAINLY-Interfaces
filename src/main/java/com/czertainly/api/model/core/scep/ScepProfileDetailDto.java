@@ -3,7 +3,7 @@ package com.czertainly.api.model.core.scep;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
-import com.czertainly.api.model.core.raprofile.RaProfileDto;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,4 +25,7 @@ public class ScepProfileDetailDto extends ScepProfileDto {
     private String intuneTenant;
     @Schema(description = "Intune application ID")
     private String intuneApplicationId;
+
+    @Schema(description = "Properties to set for certificates associated with protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto protocolCertificateAssociations;
 }
