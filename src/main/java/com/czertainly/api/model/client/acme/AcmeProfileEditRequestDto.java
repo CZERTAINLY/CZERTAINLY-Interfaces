@@ -96,6 +96,18 @@ public class AcmeProfileEditRequestDto {
     @Schema(description = "Properties to set for certificates associated with protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsDto protocolCertificateAssociations;
 
+    public Boolean isRequireTermsOfService() {
+        return requireTermsOfService;
+    }
+
+    public Boolean isRequireContact() {
+        return requireContact;
+    }
+
+    public Boolean isTermsOfServiceChangeDisable() {
+        return termsOfServiceChangeDisable;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)

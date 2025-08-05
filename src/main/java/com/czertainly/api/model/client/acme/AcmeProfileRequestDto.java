@@ -110,4 +110,12 @@ public class AcmeProfileRequestDto {
                 .append("customAttributes", customAttributes)
                 .toString();
     }
+
+    public Boolean isRequireTermsOfService() {
+        return requireTermsOfService;
+    }
+
+    public Boolean isRequireContact() {
+        return requireContact;
+    }
 }
