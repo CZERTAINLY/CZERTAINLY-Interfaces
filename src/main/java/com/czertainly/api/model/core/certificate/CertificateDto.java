@@ -183,6 +183,13 @@ public class CertificateDto implements Loggable {
     )
     private Boolean trustedCa;
 
+    @Schema(
+            description = "Certificate is archived",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            defaultValue = "false"
+    )
+    private boolean archived;
+
     @Override
     public Serializable toLogData() {
         return new NameAndUuidDto(this.uuid, this.subjectDn);
