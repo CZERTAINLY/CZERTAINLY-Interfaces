@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -84,7 +85,7 @@ public interface ScepProfileController extends AuthProtectedController {
 			produces = { "application/json" }
 	)
 	ResponseEntity<ScepProfileDetailDto> createScepProfile(
-			@RequestBody ScepProfileRequestDto request
+			@RequestBody @Valid ScepProfileRequestDto request
 	) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
 
 
@@ -104,7 +105,7 @@ public interface ScepProfileController extends AuthProtectedController {
 	)
 	ScepProfileDetailDto editScepProfile(
 			@Parameter(description = "SCEP Profile UUID") @PathVariable String uuid,
-			@RequestBody ScepProfileEditRequestDto request
+			@RequestBody @Valid ScepProfileEditRequestDto request
 	) throws ConnectorException, AttributeException, NotFoundException;
 
 	// -----------------------------------------------------------------------------------------------------------------
