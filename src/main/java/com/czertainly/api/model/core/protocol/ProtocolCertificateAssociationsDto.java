@@ -24,6 +24,6 @@ public class ProtocolCertificateAssociationsDto implements Serializable {
 
     @AssertTrue(message = "At least one protocol certificate association must be present")
     private boolean isAtLeastOnePropertyPresent() {
-        return ownerUuid != null && !groupUuids.isEmpty() && !customAttributes.isEmpty() ;
+        return ownerUuid != null || !groupUuids.isEmpty() || !customAttributes.isEmpty() ;
     }
 }
