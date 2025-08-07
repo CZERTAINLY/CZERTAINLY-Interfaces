@@ -69,6 +69,6 @@ public class BaseCmpProfileRequestDto {
 
     @Valid
     @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private ProtocolCertificateAssociationsDto protocolCertificateAssociations;
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
 }
