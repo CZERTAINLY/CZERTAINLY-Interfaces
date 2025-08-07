@@ -3,6 +3,7 @@ package com.czertainly.api.model.client.acme;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -93,8 +94,9 @@ public class AcmeProfileEditRequestDto {
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
-    @Schema(description = "Properties to set for certificates associated with protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private ProtocolCertificateAssociationsDto protocolCertificateAssociations;
+    @Valid
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
     public Boolean isRequireTermsOfService() {
         return requireTermsOfService;

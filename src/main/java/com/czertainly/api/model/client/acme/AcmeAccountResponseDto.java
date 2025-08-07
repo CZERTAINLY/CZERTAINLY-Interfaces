@@ -107,4 +107,8 @@ public class AcmeAccountResponseDto {
 
     @Schema(description = "Properties to set for certificates associated with protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsDto protocolCertificateAssociations;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

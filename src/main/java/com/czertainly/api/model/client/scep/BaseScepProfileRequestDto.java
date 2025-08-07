@@ -3,6 +3,7 @@ package com.czertainly.api.model.client.scep;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.Data;
 
 import java.util.List;
@@ -72,6 +73,7 @@ public class BaseScepProfileRequestDto {
     @Schema(description = "Intune Application Key")
     private String intuneApplicationKey;
 
-    @Schema(description = "Properties to set for certificates associated with protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private ProtocolCertificateAssociationsDto protocolCertificateAssociations;
+    @Valid
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 }
