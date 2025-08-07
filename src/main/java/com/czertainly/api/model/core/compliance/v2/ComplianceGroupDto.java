@@ -22,7 +22,7 @@ public class ComplianceGroupDto {
     @Schema(description = "Description of the compliance group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample group description"})
     private String description;
 
-    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
+    @Schema(description = "Availability status of the compliance group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
     private ComplianceRuleAvailabilityStatus availabilityStatus;
 
     @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {Resource.Codes.CERTIFICATE})

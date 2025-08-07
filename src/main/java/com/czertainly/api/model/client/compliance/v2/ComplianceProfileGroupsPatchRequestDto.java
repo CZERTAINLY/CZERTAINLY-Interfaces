@@ -16,7 +16,7 @@ public class ComplianceProfileGroupsPatchRequestDto {
     private boolean removal;
 
     @Schema(description = "UUID of the group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
-    private UUID ruleUuid;
+    private UUID groupUuid;
 
     @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
     private UUID connectorUuid;
