@@ -32,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/v1/certificates")
 @Tag(name = "Certificate Inventory", description = "Certificate Inventory API")
@@ -48,31 +49,31 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "List Certificates")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the certificates")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateResponseDto listCertificates(@RequestBody SearchRequestDto request);
+    CertificateResponseDto listCertificates(@RequestBody CertificateSearchRequestDto request);
 
     @Operation(summary = "Get Certificate Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
     @GetMapping(path = "/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateDetailDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid)
+    CertificateDetailDto getCertificate(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid)
             throws NotFoundException, CertificateException, IOException;
 
     @Operation(summary = "Download Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate downloaded")})
     @GetMapping(path = "/{uuid}/{certificateFormat}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateDownloadResponseDto downloadCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam CertificateFormatEncoding encoding)
+    CertificateDownloadResponseDto downloadCertificate(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam CertificateFormatEncoding encoding)
             throws NotFoundException, CertificateException, IOException;
 
     @Operation(summary = "Delete a certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate deleted")})
     @DeleteMapping(path = "/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteCertificate(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    void deleteCertificate(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Update Certificate Objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated")})
     @PatchMapping(path = "/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestBody CertificateUpdateObjectsDto request)
+    void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid, @RequestBody CertificateUpdateObjectsDto request)
             throws NotFoundException, CertificateOperationException, ValidationException, AttributeException;
 
     @Operation(summary = "Update Group and/or Owner for multiple Certificates", description = "In this operation, when the list of " +
@@ -117,7 +118,7 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "Get Certificate event history")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate event history retrieved")})
     @GetMapping(path = "/{uuid}/history", produces = {MediaType.APPLICATION_JSON_VALUE})
-    List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException;
+    List<CertificateEventHistoryDto> getCertificateEventHistory(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(
             summary = "List of available Locations for the Certificate",
@@ -135,7 +136,7 @@ public interface CertificateController extends AuthProtectedController {
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     List<LocationDto> listLocations(
-            @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid
+            @Parameter(description = "Certificate UUID") @PathVariable UUID certificateUuid
     ) throws NotFoundException;
 
     @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkCertificatesCompliance")
@@ -147,7 +148,7 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "Get Certificate Validation Result")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate validation detail retrieved")})
     @GetMapping(path = "/{uuid}/validate", produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateValidationResultDto getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable String uuid) throws NotFoundException, CertificateException;
+    CertificateValidationResultDto getCertificateValidationResult(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid) throws NotFoundException, CertificateException;
 
     @Operation(summary = "Get CSR Generation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved")})
@@ -162,7 +163,7 @@ public interface CertificateController extends AuthProtectedController {
     List<CertificateContentDto> getCertificateContent(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Certificate UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                                                      @RequestBody List<String> uuids);
+                                                      @RequestBody List<UUID> uuids);
 
     @Operation(
             summary = "Submit certificate request"
@@ -193,7 +194,7 @@ public interface CertificateController extends AuthProtectedController {
             path = "/{uuid}/chain",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    CertificateChainResponseDto getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException;
+    CertificateChainResponseDto getCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid, @RequestParam(required = false) boolean withEndCertificate) throws NotFoundException;
 
     @Operation(summary = "Download Certificate Chain in chosen format")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Chain certificates downloaded")})
@@ -201,11 +202,36 @@ public interface CertificateController extends AuthProtectedController {
             path = {"/{uuid}/chain/{certificateFormat}"},
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
-    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable String uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate, @RequestParam CertificateFormatEncoding encoding) throws NotFoundException, CertificateException;
+    CertificateChainDownloadResponseDto downloadCertificateChain(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid, @Parameter(description = "Certificate format") @PathVariable CertificateFormat certificateFormat, @RequestParam(required = false) boolean withEndCertificate, @RequestParam CertificateFormatEncoding encoding) throws NotFoundException, CertificateException;
 
     @Operation(summary = "List Certificates Approvals")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
     @GetMapping(path = "/{uuid}/approvals", produces = {MediaType.APPLICATION_JSON_VALUE})
-    ApprovalResponseDto listCertificateApprovals(@Parameter(description = "Certificate UUID") @PathVariable String uuid, final PaginationRequestDto paginationRequestDto);
+    ApprovalResponseDto listCertificateApprovals(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid, final PaginationRequestDto paginationRequestDto);
+
+    @Operation(summary = "Archive a certificate")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate archived")})
+    @PatchMapping(path = "/{uuid}/archive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void archiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid) throws NotFoundException;
+
+    @Operation(summary = "Unarchive a certificate")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate unarchived")})
+    @PatchMapping(path = "/{uuid}/unarchive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void unarchiveCertificate(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid) throws NotFoundException;
+
+    @Operation(summary = "Archive a list of certificates")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificates archived")})
+    @PatchMapping(path = "/archive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void bulkArchiveCertificate(@RequestBody List<UUID> uuids);
+
+    @Operation(summary = "Unarchive a list of certificates")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificates unarchived")})
+    @PatchMapping(path = "/unarchive")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void bulkUnarchiveCertificate(@RequestBody List<UUID> uuids);
+
 
 }

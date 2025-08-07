@@ -2,7 +2,6 @@ package com.czertainly.api.model.core.oid;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,10 +23,6 @@ public class CustomOidEntryRequestDto extends CustomOidEntryUpdateRequestDto imp
             message = "Invalid OID format"
     )
     private String oid;
-
-    @Schema(description = "Category of the OID entry", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull
-    private OidCategory category;
 
 }
 

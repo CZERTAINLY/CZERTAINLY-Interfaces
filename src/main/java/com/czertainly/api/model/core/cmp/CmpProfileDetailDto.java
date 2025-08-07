@@ -3,7 +3,9 @@ package com.czertainly.api.model.core.cmp;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -49,5 +51,9 @@ public class CmpProfileDetailDto extends CmpProfileDto {
             description = "Signing certificate for the CMP responses"
     )
     private CertificateDto signingCertificate;
+
+    @Valid
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
 }

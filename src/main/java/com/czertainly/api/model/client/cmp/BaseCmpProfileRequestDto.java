@@ -3,7 +3,9 @@ package com.czertainly.api.model.client.cmp;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.cmp.validation.ValidUuid;
 import com.czertainly.api.model.core.cmp.ProtectionMethod;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -64,5 +66,9 @@ public class BaseCmpProfileRequestDto {
             description = "UUID of the Certificate to be used as signing certificate for CMP responses. Required when responseProtectionMethod is signature"
     )
     private String signingCertificateUuid;
+
+    @Valid
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
 }

@@ -18,8 +18,7 @@ public enum CertificateState implements IPlatformEnum {
 	PENDING_REVOKE("pending_revoke", "Pending revoke", "Revoke action pending (CA approval)"),
 	FAILED("failed", "Failed", "Issue action failed"),
 	ISSUED("issued", "Issued"),
-	REVOKED("revoked", "Revoked"),
-	ARCHIVED("archived", "Archived"),
+	REVOKED("revoked", "Revoked")
 	;
 
 	private static final CertificateState[] VALUES;

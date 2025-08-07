@@ -98,6 +98,9 @@ public enum Operation implements IPlatformEnum {
     UPDATE_ATTRIBUTE_CONTENT("updateAttributeContent", "Update attribute content"),
     DELETE_ATTRIBUTE_CONTENT("deleteAttributeContent", "Delete attribute content"),
     PROMOTE_METADATA("promoteMetadata", "Promote metadata"),
+    ARCHIVE("archive", "Archive certificate"),
+    UNARCHIVE("unarchive", "Unarchive certificate"),
+
     // legacy
     LIST_CERTIFICATE_PROFILES("listCertificateProfiles", "List Certificate profiles"),
     LIST_CAS("listCas", "List CAs");

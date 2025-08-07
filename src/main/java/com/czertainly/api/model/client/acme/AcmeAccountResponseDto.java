@@ -2,13 +2,16 @@ package com.czertainly.api.model.client.acme;
 
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.acme.AccountStatus;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.util.List;
 
 /**
  * Set of properties to represent the Account object from ACME.
  */
+@Data
 public class AcmeAccountResponseDto {
 
     @Schema(
@@ -102,123 +105,10 @@ public class AcmeAccountResponseDto {
     )
     private String acmeProfileUuid;
 
-    public String getAccountId() {
-        return accountId;
-    }
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public Boolean isEnabled() {
+    public boolean isEnabled() {
         return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Integer getTotalOrders() {
-        return totalOrders;
-    }
-
-    public void setTotalOrders(Integer totalOrders) {
-        this.totalOrders = totalOrders;
-    }
-
-    public AccountStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AccountStatus status) {
-        this.status = status;
-    }
-
-    public List<String> getContact() {
-        return contact;
-    }
-
-    public void setContact(List<String> contact) {
-        this.contact = contact;
-    }
-
-    public Boolean isTermsOfServiceAgreed() {
-        return termsOfServiceAgreed;
-    }
-
-    public void setTermsOfServiceAgreed(Boolean termsOfServiceAgreed) {
-        this.termsOfServiceAgreed = termsOfServiceAgreed;
-    }
-
-    public SimplifiedRaProfileDto getRaProfile() {
-        return raProfile;
-    }
-
-    public void setRaProfile(SimplifiedRaProfileDto raProfile) {
-        this.raProfile = raProfile;
-    }
-
-    public String getAcmeProfileName() {
-        return acmeProfileName;
-    }
-
-    public void setAcmeProfileName(String acmeProfileName) {
-        this.acmeProfileName = acmeProfileName;
-    }
-
-    public String getAcmeProfileUuid() {
-        return acmeProfileUuid;
-    }
-
-    public void setAcmeProfileUuid(String acmeProfileUuid) {
-        this.acmeProfileUuid = acmeProfileUuid;
-    }
-
-    public Integer getSuccessfulOrders() {
-        return successfulOrders;
-    }
-
-    public void setSuccessfulOrders(Integer successfulOrders) {
-        this.successfulOrders = successfulOrders;
-    }
-
-    public Integer getFailedOrders() {
-        return failedOrders;
-    }
-
-    public void setFailedOrders(Integer failedOrders) {
-        this.failedOrders = failedOrders;
-    }
-
-    public Integer getPendingOrders() {
-        return pendingOrders;
-    }
-
-    public void setPendingOrders(Integer pendingOrders) {
-        this.pendingOrders = pendingOrders;
-    }
-
-    public Integer getValidOrders() {
-        return validOrders;
-    }
-
-    public void setValidOrders(Integer validOrders) {
-        this.validOrders = validOrders;
-    }
-
-    public Integer getProcessingOrders() {
-        return processingOrders;
-    }
-
-    public void setProcessingOrders(Integer processingOrders) {
-        this.processingOrders = processingOrders;
     }
 }
