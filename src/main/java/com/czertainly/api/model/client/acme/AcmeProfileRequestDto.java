@@ -89,7 +89,7 @@ public class AcmeProfileRequestDto {
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
-    @Schema(description = "Associations to set for certificates issued by protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     private ProtocolCertificateAssociationsDto certificateAssociations;
 

@@ -52,7 +52,7 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
 
-    @Schema(description = "Properties to set for certificates associated with protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsDto certificateAssociations;
 
     @Override
