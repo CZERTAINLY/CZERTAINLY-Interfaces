@@ -77,6 +77,7 @@ public enum PlatformEnum implements IPlatformEnum {
     DISCOVERY_STATUS(DiscoveryStatus.class, "Discovery status"),
     PROTOCOL(CertificateProtocol.class, "Protocol used to issue certificate"),
     CERTIFICATE_SUBJECT_TYPE(CertificateSubjectType.class, "Subject Type of certificate"),
+    CERTIFICATE_KEY_USAGE(CertificateKeyUsage.class, "Key Usage of Certificate"),
 
     // oid
     OID_CATEGORY(OidCategory.class, "OID Category"),
