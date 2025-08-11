@@ -3,16 +3,22 @@ package com.czertainly.api.model.core.acme;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
+
     @Schema(description = "ACME Profile description", examples = {"Sample description"})
     private String description;
     @Schema(description = "Terms of Service URL", examples = {"https://sample-url.com/termsOfService"})
@@ -46,144 +52,8 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttributeDto> customAttributes;
 
-    public AcmeProfileDto() {
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getTermsOfServiceUrl() {
-        return termsOfServiceUrl;
-    }
-
-    public void setTermsOfServiceUrl(String termsOfServiceUrl) {
-        this.termsOfServiceUrl = termsOfServiceUrl;
-    }
-
-    public String getDnsResolverIp() {
-        return dnsResolverIp;
-    }
-
-    public void setDnsResolverIp(String dnsResolverIp) {
-        this.dnsResolverIp = dnsResolverIp;
-    }
-
-    public String getDnsResolverPort() {
-        return dnsResolverPort;
-    }
-
-    public void setDnsResolverPort(String dnsResolverPort) {
-        this.dnsResolverPort = dnsResolverPort;
-    }
-
-    public SimplifiedRaProfileDto getRaProfile() {
-        return raProfile;
-    }
-
-    public void setRaProfile(SimplifiedRaProfileDto raProfile) {
-        this.raProfile = raProfile;
-    }
-
-    public List<ResponseAttributeDto> getIssueCertificateAttributes() {
-        return issueCertificateAttributes;
-    }
-
-    public void setIssueCertificateAttributes(List<ResponseAttributeDto> issueCertificateAttributes) {
-        this.issueCertificateAttributes = issueCertificateAttributes;
-    }
-
-    public List<ResponseAttributeDto> getRevokeCertificateAttributes() {
-        return revokeCertificateAttributes;
-    }
-
-    public void setRevokeCertificateAttributes(List<ResponseAttributeDto> revokeCertificateAttributes) {
-        this.revokeCertificateAttributes = revokeCertificateAttributes;
-    }
-
-    public Integer getRetryInterval() {
-        return retryInterval;
-    }
-
-    public void setRetryInterval(Integer retryInterval) {
-        this.retryInterval = retryInterval;
-    }
-
-    public Boolean isTermsOfServiceChangeDisable() {
-        return termsOfServiceChangeDisable;
-    }
-
-    public void setTermsOfServiceChangeDisable(Boolean termsOfServiceChangeDisable) {
-        this.termsOfServiceChangeDisable = termsOfServiceChangeDisable;
-    }
-
-    public Integer getValidity() {
-        return validity;
-    }
-
-    public void setValidity(Integer validity) {
-        this.validity = validity;
-    }
-
-    public String getDirectoryUrl() {
-        return directoryUrl;
-    }
-
-    public void setDirectoryUrl(String directoryUrl) {
-        this.directoryUrl = directoryUrl;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean isRequireContact() {
-        return requireContact;
-    }
-
-    public void setRequireContact(Boolean requireContact) {
-        this.requireContact = requireContact;
-    }
-
-    public Boolean isRequireTermsOfService() {
-        return requireTermsOfService;
-    }
-
-    public void setRequireTermsOfService(Boolean requireTermsOfService) {
-        this.requireTermsOfService = requireTermsOfService;
-    }
-
-    public String getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(String websiteUrl) {
-        this.websiteUrl = websiteUrl;
-    }
-
-    public String getTermsOfServiceChangeUrl() {
-        return termsOfServiceChangeUrl;
-    }
-
-    public void setTermsOfServiceChangeUrl(String termsOfServiceChangeUrl) {
-        this.termsOfServiceChangeUrl = termsOfServiceChangeUrl;
-    }
-
-    public List<ResponseAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
     @Override
     public String toString() {

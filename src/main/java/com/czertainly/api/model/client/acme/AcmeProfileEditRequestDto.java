@@ -1,12 +1,16 @@
 package com.czertainly.api.model.client.acme;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Data
 public class AcmeProfileEditRequestDto {
 
     @Schema(
@@ -90,128 +94,20 @@ public class AcmeProfileEditRequestDto {
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
 
+    @Valid
+    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
-    public String getTermsOfServiceUrl() {
-        return termsOfServiceUrl;
-    }
-
-    public void setTermsOfServiceUrl(String termsOfServiceUrl) {
-        this.termsOfServiceUrl = termsOfServiceUrl;
-    }
-
-    public String getDnsResolverIp() {
-        return dnsResolverIp;
-    }
-
-    public void setDnsResolverIp(String dnsResolverIp) {
-        this.dnsResolverIp = dnsResolverIp;
-    }
-
-    public String getDnsResolverPort() {
-        return dnsResolverPort;
-    }
-
-    public void setDnsResolverPort(String dnsResolverPort) {
-        this.dnsResolverPort = dnsResolverPort;
-    }
-
-    public List<RequestAttributeDto> getIssueCertificateAttributes() {
-        return issueCertificateAttributes;
-    }
-
-    public void setIssueCertificateAttributes(List<RequestAttributeDto> issueCertificateAttributes) {
-        this.issueCertificateAttributes = issueCertificateAttributes;
-    }
-
-    public List<RequestAttributeDto> getRevokeCertificateAttributes() {
-        return revokeCertificateAttributes;
-    }
-
-    public void setRevokeCertificateAttributes(List<RequestAttributeDto> revokeCertificateAttributes) {
-        this.revokeCertificateAttributes = revokeCertificateAttributes;
-    }
-
-    public String getRaProfileUuid() {
-        return raProfileUuid;
-    }
-
-    public void setRaProfileUuid(String raProfileUuid) {
-        this.raProfileUuid = raProfileUuid;
-    }
-
-    public Integer getRetryInterval() {
-        return retryInterval;
-    }
-
-    public void setRetryInterval(Integer retryInterval) {
-        this.retryInterval = retryInterval;
-    }
-
-    public Boolean isTermsOfServiceChangeDisable() {
-        return termsOfServiceChangeDisable;
-    }
-
-    public void setTermsOfServiceChangeDisable(Boolean termsOfServiceChangeDisable) {
-        this.termsOfServiceChangeDisable = termsOfServiceChangeDisable;
-    }
-
-    public Integer getValidity() {
-        return validity;
-    }
-
-    public void setValidity(Integer validity) {
-        this.validity = validity;
-    }
-
-    public String getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setWebsiteUrl(String websiteUrl) {
-        this.websiteUrl = websiteUrl;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public Boolean isRequireTermsOfService() {
+        return requireTermsOfService;
     }
 
     public Boolean isRequireContact() {
         return requireContact;
     }
 
-    public void setRequireContact(Boolean requireContact) {
-        this.requireContact = requireContact;
-    }
-
-    public Boolean isRequireTermsOfService() {
-        return requireTermsOfService;
-    }
-
-    public void setRequireTermsOfService(Boolean requireTermsOfService) {
-        this.requireTermsOfService = requireTermsOfService;
-    }
-
-    public String getTermsOfServiceChangeUrl() {
-        return termsOfServiceChangeUrl;
-    }
-
-    public void setTermsOfServiceChangeUrl(String termsOfServiceChangeUrl) {
-        this.termsOfServiceChangeUrl = termsOfServiceChangeUrl;
-    }
-
-    public List<RequestAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
-
-    public AcmeProfileEditRequestDto() {
+    public Boolean isTermsOfServiceChangeDisable() {
+        return termsOfServiceChangeDisable;
     }
 
     @Override

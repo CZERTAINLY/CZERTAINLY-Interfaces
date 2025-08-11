@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,12 +42,12 @@ public interface AcmeProfileController extends AuthProtectedController {
 	@Operation(summary = "Create ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "ACME Profile created"), @ApiResponse(responseCode = "404", description = "RA Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))) })
 	@PostMapping(consumes = { "application/json" }, produces = { "application/json" })
-	ResponseEntity<UuidDto> createAcmeProfile(@RequestBody AcmeProfileRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
+	ResponseEntity<UuidDto> createAcmeProfile(@RequestBody @Valid AcmeProfileRequestDto request) throws AlreadyExistException, ValidationException, ConnectorException, AttributeException, NotFoundException;
 
 	@Operation(summary = "Edit ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "ACME Profile updated"), @ApiResponse(responseCode = "404", description = "ACME Profile or RA profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))) })
 	@PutMapping(path="/{uuid}", consumes = { "application/json" }, produces = { "application/json" })
-	AcmeProfileDto editAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @RequestBody AcmeProfileEditRequestDto request) throws ConnectorException, AttributeException, NotFoundException;
+	AcmeProfileDto editAcmeProfile(@Parameter(description = "ACME Profile UUID") @PathVariable String uuid, @RequestBody @Valid AcmeProfileEditRequestDto request) throws ConnectorException, AttributeException, NotFoundException;
 
 	@Operation(summary = "Delete ACME Profile")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "ACME Profile deleted"), @ApiResponse(responseCode = "404", description = "ACME Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))) })
