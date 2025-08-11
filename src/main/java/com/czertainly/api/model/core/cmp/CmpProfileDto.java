@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.cmp;
 
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,5 +39,8 @@ public class CmpProfileDto extends NameAndUuidDto {
             examples = {"https://your-domain.com/api/v1/protocols/cmp/cmpProfile"}
     )
     private String cmpUrl;
+
+    @Schema(description = "Properties to set for certificates associated with protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtocolCertificateAssociationsDto certificateAssociations;
 
 }
