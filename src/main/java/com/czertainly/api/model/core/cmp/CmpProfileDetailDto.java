@@ -1,7 +1,6 @@
 package com.czertainly.api.model.core.cmp;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,11 +13,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CmpProfileDetailDto extends CmpProfileDto {
-
-    @Schema(
-            description = "RA Profile associated with the CMP Profile"
-    )
-    private SimplifiedRaProfileDto raProfile;
 
     @Schema(
             description = "List of Attributes to issue a Certificate for the associated RA Profile"
