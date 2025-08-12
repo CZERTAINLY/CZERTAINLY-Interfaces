@@ -28,7 +28,7 @@ public class CertificateDetailDto extends CertificateDto {
             description = "Key usages",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<String> keyUsage;
+    private List<CertificateKeyUsage> keyUsage;
 
     @Schema(
             description = "Certificate subject type",
