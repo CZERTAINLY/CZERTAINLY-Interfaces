@@ -1,11 +1,13 @@
 package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
 
-@Getter
+@Schema(enumAsRef = true)
 public enum CertificateKeyUsage implements IPlatformEnum {
 
     DIGITAL_SIGNATURE("digitalSignature", "Digital Signature", 0),
@@ -20,12 +22,24 @@ public enum CertificateKeyUsage implements IPlatformEnum {
 
     private final String code;
     private final String label;
+    @Getter
     private final int index;
 
     CertificateKeyUsage(String code, String label, int index) {
         this.code = code;
         this.label = label;
         this.index = index;
+    }
+
+    @Override
+    @JsonValue
+    public String getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getLabel() {
+        return this.label;
     }
 
     @Override
