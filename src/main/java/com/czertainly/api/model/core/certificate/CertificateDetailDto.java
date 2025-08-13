@@ -93,6 +93,7 @@ public class CertificateDetailDto extends CertificateDto {
     @Schema(
             description = "Source certificate UUID"
     )
+    @Deprecated(since = "2.15.2")
     private UUID sourceCertificateUuid;
 
     @Schema(description = "List of issue attributes")
@@ -102,6 +103,7 @@ public class CertificateDetailDto extends CertificateDto {
     private List<ResponseAttributeDto> revokeAttributes = new ArrayList<>();
 
     @Schema(description = "List of related certificates")
+    @Deprecated(since = "2.15.2")
     private List<CertificateDto> relatedCertificates = new ArrayList<>();
 
     @Schema(description = "Information about protocol used to issue the certificate")
