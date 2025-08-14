@@ -3,7 +3,6 @@ package com.czertainly.api.model.core.certificate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
 
