@@ -100,6 +100,7 @@ public enum Operation implements IPlatformEnum {
     PROMOTE_METADATA("promoteMetadata", "Promote metadata"),
     ARCHIVE("archive", "Archive certificate"),
     UNARCHIVE("unarchive", "Unarchive certificate"),
+    GET_ASSOCIATIONS("getAssociations", "Get associations"),
 
     // legacy
     LIST_CERTIFICATE_PROFILES("listCertificateProfiles", "List Certificate profiles"),
