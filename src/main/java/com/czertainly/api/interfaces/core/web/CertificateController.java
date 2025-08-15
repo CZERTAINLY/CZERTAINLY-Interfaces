@@ -233,5 +233,27 @@ public interface CertificateController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void bulkUnarchiveCertificate(@RequestBody List<UUID> uuids);
 
+    @Operation(summary = "Get relations for a certificate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Certificate relations retrieved successfully")
+    })
+    @GetMapping("/{uuid}/relations")
+    CertificateRelationsDto getCertificateRelations(@PathVariable UUID uuid) throws NotFoundException;
+
+    @Operation(summary = "Associate a source certificate to the given certificate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Source certificate associated successfully")
+    })
+    @PatchMapping("/{uuid}/relations/{sourceCertificateUuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void associateSourceCertificate(@PathVariable UUID uuid, @PathVariable UUID sourceCertificateUuid) throws NotFoundException;
+
+    @Operation(summary = "Remove a source certificate association from the given certificate")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Source certificate association removed successfully")
+    })
+    @DeleteMapping("/{uuid}/relations/{sourceCertificateUuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void removeSourceCertificateAssociation(@PathVariable UUID uuid, @PathVariable UUID sourceCertificateUuid) throws NotFoundException;
 
 }
