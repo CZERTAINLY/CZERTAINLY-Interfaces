@@ -93,7 +93,11 @@ public class CertificateDetailDto extends CertificateDto {
     @Schema(
             description = "Source certificate UUID"
     )
-    @Deprecated(since = "2.15.2")
+    @Deprecated(since = "2.16.0")
+    /**
+     * @deprecated source certificates can be retrieved by calling {@link com.czertainly.api.interfaces.core.web.CertificateController#getCertificateRelations(UUID)}},
+     * returning in {@link CertificateRelationsDto}
+     */
     private UUID sourceCertificateUuid;
 
     @Schema(description = "List of issue attributes")
@@ -103,7 +107,11 @@ public class CertificateDetailDto extends CertificateDto {
     private List<ResponseAttributeDto> revokeAttributes = new ArrayList<>();
 
     @Schema(description = "List of related certificates")
-    @Deprecated(since = "2.15.2")
+    @Deprecated(since = "2.16.0")
+    /**
+     * @deprecated related certificates can be retrieved by calling {@link com.czertainly.api.interfaces.core.web.CertificateController#getCertificateRelations(UUID)}},
+     * returning in {@link CertificateRelationsDto}
+     */
     private List<CertificateDto> relatedCertificates = new ArrayList<>();
 
     @Schema(description = "Information about protocol used to issue the certificate")
