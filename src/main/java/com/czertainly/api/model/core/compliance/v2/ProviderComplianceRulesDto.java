@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,9 +23,9 @@ public class ProviderComplianceRulesDto {
     private String kind;
 
     @Schema(description = "Provider rules associated", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ComplianceRuleDto> rules;
+    private List<ComplianceRuleDto> rules = new ArrayList<>();
 
     @Schema(description = "Provider groups associated", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ComplianceGroupDto> groups;
+    private List<ComplianceGroupDto> groups = new ArrayList<>();
 
 }

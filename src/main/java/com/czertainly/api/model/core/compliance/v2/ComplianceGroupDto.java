@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class ComplianceGroupDto {
+public class ComplianceGroupDto extends BaseComplianceRuleDto {
     @Schema(description = "Compliance group UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID uuid;
 
