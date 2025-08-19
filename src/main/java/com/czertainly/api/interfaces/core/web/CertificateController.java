@@ -254,6 +254,6 @@ public interface CertificateController extends AuthProtectedController {
     })
     @DeleteMapping("/{uuid}/relations/{certificateUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeSourceCertificateAssociation(@PathVariable @Parameter(description = "Certificate UUID") UUID uuid, @PathVariable @Parameter(description = "UUID of certificate to disassociate the certificate with") UUID certificateUuid) throws NotFoundException;
+    void removeCertificateAssociation(@PathVariable @Parameter(description = "Certificate UUID") UUID uuid, @PathVariable @Parameter(description = "UUID of certificate to disassociate the certificate with") UUID certificateUuid) throws NotFoundException;
 
 }
