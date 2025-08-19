@@ -27,8 +27,8 @@ public enum FilterConditionOperator implements IPlatformEnum {
     NOT_MATCHES("NOT_MATCHES", "not matches", "nma"),
     COUNT_EQUAL("COUNT_EQUAL", "count equals", "ce"),
     COUNT_NOT_EQUAL("COUNT_NOT_EQUAL", "count not equals", "cne"),
-    COUNT_GREATER_THAN("COUNT_GREATER_THAN", "count greater then", "cge"),
-    COUNT_LESS_THAN("COUNT_LESS_THAN", "count less then", "cle"),
+    COUNT_GREATER_THAN("COUNT_GREATER_THAN", "count greater than", "cge"),
+    COUNT_LESS_THAN("COUNT_LESS_THAN", "count less than", "cle"),
     // TODO: remove following
     SUCCESS("SUCCESS", "success", "success"),
     FAILED("FAILED", "failed", "failed"),
