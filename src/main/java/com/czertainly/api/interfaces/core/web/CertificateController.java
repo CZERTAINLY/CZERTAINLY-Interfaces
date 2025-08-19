@@ -242,18 +242,18 @@ public interface CertificateController extends AuthProtectedController {
 
     @Operation(summary = "Associate a source certificate to the given certificate")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Source certificate associated successfully")
+            @ApiResponse(responseCode = "204", description = "Certificates associated successfully")
     })
-    @PatchMapping("/{uuid}/relations/{sourceCertificateUuid}")
+    @PatchMapping("/{uuid}/relations/{certificateUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void associateSourceCertificate(@PathVariable UUID uuid, @PathVariable UUID sourceCertificateUuid) throws NotFoundException;
+    void associateCertificates(@PathVariable @Parameter(description = "Certificate UUID") UUID uuid, @PathVariable @Parameter(description = "UUID of certificate to associate the certificate with") UUID certificateUuid) throws NotFoundException;
 
     @Operation(summary = "Remove a source certificate association from the given certificate")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Source certificate association removed successfully")
+            @ApiResponse(responseCode = "204", description = "Certificate association removed successfully")
     })
-    @DeleteMapping("/{uuid}/relations/{sourceCertificateUuid}")
+    @DeleteMapping("/{uuid}/relations/{certificateUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeSourceCertificateAssociation(@PathVariable UUID uuid, @PathVariable UUID sourceCertificateUuid) throws NotFoundException;
+    void removeSourceCertificateAssociation(@PathVariable @Parameter(description = "Certificate UUID") UUID uuid, @PathVariable @Parameter(description = "UUID of certificate to disassociate the certificate with") UUID certificateUuid) throws NotFoundException;
 
 }

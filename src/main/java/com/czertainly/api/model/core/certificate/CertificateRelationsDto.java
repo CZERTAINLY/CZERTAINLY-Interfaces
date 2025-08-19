@@ -17,14 +17,14 @@ public class CertificateRelationsDto {
     private UUID certificateUuid;
 
     @Schema(
-            description = "List of related certificates where the subject certificate is the source certificate",
+            description = "List of certificates that renew, rekey or replace the subject certificate",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<CertificateSimpleDto> relatedCertificates;
+    private List<CertificateSimpleDto> successorCertificates;
 
     @Schema(
-            description = "List of source certificates where the subject certificate is not the source certificate",
+            description = "List of certificates which the subject certificate renews, rekeys or replaces.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<CertificateSimpleDto> sourceCertificates;
+    private List<CertificateSimpleDto> predecessorCertificates;
 }
