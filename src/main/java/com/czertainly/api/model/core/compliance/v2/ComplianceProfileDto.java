@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.compliance.v2;
 
+import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +27,7 @@ public class ComplianceProfileDto {
 
     @Schema(description = "List of groups", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ProviderComplianceRulesDto> providerRules;
+
+    @Schema(description = "List of Custom Attributes")
+    private List<ResponseAttributeDto> customAttributes;
 }

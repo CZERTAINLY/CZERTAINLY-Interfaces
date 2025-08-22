@@ -1,9 +1,15 @@
 package com.czertainly.api.model.core.compliance;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ComplianceProviderSummaryDto {
     @Schema(description = "Name of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
@@ -14,29 +20,10 @@ public class ComplianceProviderSummaryDto {
     @Schema(description = "Number of groups for the Provider")
     private Integer numberOfGroups;
 
-    //Default getters and setters
-    public String getConnectorName() {
-        return connectorName;
-    }
-
-    public void setConnectorName(String connectorName) {
+    public ComplianceProviderSummaryDto(String connectorName) {
         this.connectorName = connectorName;
-    }
-
-    public Integer getNumberOfRules() {
-        return numberOfRules;
-    }
-
-    public void setNumberOfRules(Integer numberOfRules) {
-        this.numberOfRules = numberOfRules;
-    }
-
-    public Integer getNumberOfGroups() {
-        return numberOfGroups;
-    }
-
-    public void setNumberOfGroups(Integer numberOfGroups) {
-        this.numberOfGroups = numberOfGroups;
+        this.numberOfRules = 0;
+        this.numberOfGroups = 0;
     }
 
     @Override
