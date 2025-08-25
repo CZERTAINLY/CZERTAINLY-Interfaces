@@ -1,14 +1,17 @@
 package com.czertainly.api.model.core.certificate;
 
+import com.czertainly.api.model.common.enums.BitMaskEnum;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 @Schema(enumAsRef = true)
-public enum CertificateKeyUsage implements IPlatformEnum {
+public enum CertificateKeyUsage implements IPlatformEnum, BitMaskEnum<CertificateKeyUsage> {
 
     DIGITAL_SIGNATURE("digitalSignature", "Digital Signature", 0),
     NON_REPUDIATION("nonRepudiation", "Non Repudiation", 1),
@@ -62,4 +65,12 @@ public enum CertificateKeyUsage implements IPlatformEnum {
     }
 
 
+    public static Set<CertificateKeyUsage> convertBitMaskToList(int bitmask) {
+        return BitMaskEnum.convertBitMaskToList(bitmask, CertificateKeyUsage.class);
+    }
+
+    @Override
+    public int getBit() {
+        return 1 << getIndex();
+    }
 }
