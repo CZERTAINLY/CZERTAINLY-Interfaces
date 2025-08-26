@@ -7,11 +7,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 @Schema(enumAsRef = true)
-public enum CertificateKeyUsage implements IPlatformEnum, BitMaskEnum<CertificateKeyUsage> {
+public enum CertificateKeyUsage implements IPlatformEnum, BitMaskEnum {
 
     DIGITAL_SIGNATURE("digitalSignature", "Digital Signature", 0),
     NON_REPUDIATION("nonRepudiation", "Non Repudiation", 1),

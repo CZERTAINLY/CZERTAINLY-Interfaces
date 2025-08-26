@@ -11,11 +11,10 @@ import lombok.Getter;
 import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 @Schema(enumAsRef = true)
-public enum KeyUsage implements IPlatformEnum, BitMaskEnum<KeyUsage> {
+public enum KeyUsage implements IPlatformEnum, BitMaskEnum {
 
     SIGN("sign", "Sign", "Allow for signing. Applies to Sign operation. Valid for PGP Key, Private Key", 1),
     VERIFY("verify", "Verify", "Allow for signature verification. Applies to Signature Verify and Validate operations. Valid for PGP Key, Certificate and Public Key.", 1 << 1),
