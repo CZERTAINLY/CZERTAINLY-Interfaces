@@ -99,13 +99,8 @@ public enum KeyUsage implements IPlatformEnum, BitMaskEnum {
                         new ValidationException(ValidationError.create("Unknown key usage {}", code)));
     }
 
-    public static Set<KeyUsage> convertBitMaskToList(int bitmask) {
-        return BitMaskEnum.convertBitMaskToList(bitmask, KeyUsage.class);
+    public static Set<KeyUsage> convertBitMaskToSet(int bitmask) {
+        return BitMaskEnum.convertBitMaskToSet(bitmask, KeyUsage.class);
     }
 
-    public static int convertListToBitMask(Set<KeyUsage> enums) {
-        return BitMaskEnum.convertListToBitMask(enums);
-    }
-
-
-    }
+}

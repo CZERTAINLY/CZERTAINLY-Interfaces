@@ -7,7 +7,7 @@ public interface BitMaskEnum {
 
     int getBit();
 
-    static <E extends BitMaskEnum> int convertListToBitMask(Set<E> enums) {
+    static <E extends BitMaskEnum> int convertSetToBitMask(Set<E> enums) {
         int bitmask = 0;
         for (E enumEntry : enums) {
             bitmask |= enumEntry.getBit();
@@ -15,7 +15,7 @@ public interface BitMaskEnum {
         return bitmask;
     }
 
-    static <E extends BitMaskEnum> Set<E> convertBitMaskToList(int bitmask, Class<E> enumClass) {
+    static <E extends BitMaskEnum> Set<E> convertBitMaskToSet(int bitmask, Class<E> enumClass) {
         Set<E> result = new HashSet<>();
         for (E constant : enumClass.getEnumConstants()) {
             if ((bitmask & constant.getBit()) != 0) {

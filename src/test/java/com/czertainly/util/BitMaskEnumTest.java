@@ -13,17 +13,17 @@ class BitMaskEnumTest {
     @Test
     void testKeyUsage() {
         Set<KeyUsage> keyUsages = Set.of(KeyUsage.SIGN, KeyUsage.WRAP, KeyUsage.UNWRAP);
-        int bitMask = BitMaskEnum.convertListToBitMask(keyUsages);
-        Assertions.assertEquals(keyUsages, KeyUsage.convertBitMaskToList(bitMask));
+        int bitMask = BitMaskEnum.convertSetToBitMask(keyUsages);
+        Assertions.assertEquals(keyUsages, KeyUsage.convertBitMaskToSet(bitMask));
         keyUsages = Set.of();
-        bitMask = BitMaskEnum.convertListToBitMask(keyUsages);
-        Assertions.assertEquals(keyUsages, KeyUsage.convertBitMaskToList(bitMask));
+        bitMask = BitMaskEnum.convertSetToBitMask(keyUsages);
+        Assertions.assertEquals(keyUsages, KeyUsage.convertBitMaskToSet(bitMask));
     }
 
     @Test
     void testCertificateKeyUsage() {
         Set<CertificateKeyUsage> keyUsages = Set.of(CertificateKeyUsage.KEY_AGREEMENT, CertificateKeyUsage.KEY_ENCIPHERMENT, CertificateKeyUsage.KEY_CERT_SIGN);
-        int bitMask = BitMaskEnum.convertListToBitMask(keyUsages);
+        int bitMask = BitMaskEnum.convertSetToBitMask(keyUsages);
         Assertions.assertEquals(keyUsages, CertificateKeyUsage.convertBitMaskToList(bitMask));
     }
 
