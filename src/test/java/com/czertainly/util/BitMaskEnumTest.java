@@ -24,7 +24,7 @@ class BitMaskEnumTest {
     void testCertificateKeyUsage() {
         Set<CertificateKeyUsage> keyUsages = Set.of(CertificateKeyUsage.KEY_AGREEMENT, CertificateKeyUsage.KEY_ENCIPHERMENT, CertificateKeyUsage.KEY_CERT_SIGN);
         int bitMask = BitMaskEnum.convertSetToBitMask(keyUsages);
-        Assertions.assertEquals(keyUsages, CertificateKeyUsage.convertBitMaskToList(bitMask));
+        Assertions.assertEquals(keyUsages, CertificateKeyUsage.convertBitMaskToSet(bitMask));
     }
 
 }

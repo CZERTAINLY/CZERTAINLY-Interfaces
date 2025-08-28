@@ -64,7 +64,7 @@ public enum CertificateKeyUsage implements IPlatformEnum, BitMaskEnum {
     }
 
 
-    public static Set<CertificateKeyUsage> convertBitMaskToList(int bitmask) {
+    public static Set<CertificateKeyUsage> convertBitMaskToSet(int bitmask) {
         return BitMaskEnum.convertBitMaskToSet(bitmask, CertificateKeyUsage.class);
     }
 
