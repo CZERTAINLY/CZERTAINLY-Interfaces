@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -22,9 +20,9 @@ public class ProviderComplianceRulesRequestDto {
     private String kind;
 
     @Schema(description = "Provider rules associated", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ComplianceRuleRequestDto> rules = new ArrayList<>();
+    private Set<ComplianceRuleRequestDto> rules = new HashSet<>();
 
     @Schema(description = "Provider groups UUIDS to associate profile with", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<UUID> groups = new ArrayList<>();
+    private Set<UUID> groups = new HashSet<>();
 
 }

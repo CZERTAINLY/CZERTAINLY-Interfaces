@@ -2,18 +2,14 @@ package com.czertainly.api.interfaces.connector.v2;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.connector.compliance.v2.ComplianceGroupResponseDto;
-import com.czertainly.api.model.connector.compliance.v2.ComplianceRuleResponseDto;
+import com.czertainly.api.model.connector.compliance.v2.*;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,6 +48,26 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
             @RequestParam(required = false) String format
     ) throws IOException, NotFoundException;
 
+    @PostMapping(
+            path = "/rules",
+            produces = {"application/json"}
+    )
+    @Operation(
+            summary = "Get list of rules and groups with rules in one batch"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Rules retrieved successfully"
+                    )
+            }
+    )
+    ComplianceRulesBatchResponseDto getRulesBatch(
+            @Parameter(description = "Connector kind") @PathVariable String kind,
+            @RequestBody ComplianceRulesBatchRequestDto request
+    ) throws IOException, NotFoundException;
+
     @GetMapping(
             path = "/groups",
             produces = {"application/json"}
@@ -88,6 +104,6 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
             }
     )
     List<ComplianceRuleResponseDto> getGroupRules(@Parameter(description = "Connector kind") @PathVariable String kind,
-                                                   @Parameter(description = "Group kind") @PathVariable UUID uuid)
+                                                   @Parameter(description = "Group UUID") @PathVariable UUID uuid)
             throws IOException, NotFoundException;
 }

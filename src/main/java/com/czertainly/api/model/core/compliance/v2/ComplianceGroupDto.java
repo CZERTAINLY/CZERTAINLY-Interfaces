@@ -25,6 +25,9 @@ public class ComplianceGroupDto extends BaseComplianceRuleDto {
     @Schema(description = "Availability status of the compliance group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
     private ComplianceRuleAvailabilityStatus availabilityStatus;
 
+    @Schema(description = "Reason why compliance group availability status is `Updated`", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String updatedReason;
+
     @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {Resource.Codes.CERTIFICATE})
     private Resource resource;
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,11 +24,11 @@ public class ComplianceProfileDto {
     private String description;
 
     @Schema(description = "List of internal rules", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ComplianceRuleDto> internalRules;
+    private List<ComplianceRuleDto> internalRules = new ArrayList<>();
 
     @Schema(description = "List of groups", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ProviderComplianceRulesDto> providerRules;
+    private List<ProviderComplianceRulesDto> providerRules = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto> customAttributes = new ArrayList<>();
 }

@@ -27,6 +27,9 @@ public class ComplianceRuleResponseDto {
     @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Rule1"})
     private String name;
 
+    @Schema(description = "Description of the rule", examples = {"Sample rule description"})
+    private String description;
+
     @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {Resource.Codes.CERTIFICATE})
     private Resource resource;
 
@@ -37,9 +40,5 @@ public class ComplianceRuleResponseDto {
     private String format;
 
     @Schema(description = "Rule attributes")
-    private List<BaseAttribute<?>> attributes;
-
-    @Schema(description = "Description of the rule", examples = {"Sample rule description"})
-    private String description;
-
+    private List<BaseAttribute> attributes;
 }

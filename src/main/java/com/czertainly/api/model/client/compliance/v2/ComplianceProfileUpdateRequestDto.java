@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -17,12 +16,12 @@ public class ComplianceProfileUpdateRequestDto {
     private String description;
 
     @Schema(description = "UUIDs of internal rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<UUID> internalRules;
+    private Set<UUID> internalRules = new HashSet<>();
 
     @Schema(description = "Provider rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ProviderComplianceRulesRequestDto> providerRules;
+    private List<ProviderComplianceRulesRequestDto> providerRules = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto> customAttributes = new ArrayList<>();
 
 }
