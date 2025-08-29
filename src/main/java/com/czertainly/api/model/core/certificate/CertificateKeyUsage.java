@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Set;
 
 @Schema(enumAsRef = true)
@@ -64,7 +65,7 @@ public enum CertificateKeyUsage implements IPlatformEnum, BitMaskEnum {
     }
 
 
-    public static Set<CertificateKeyUsage> convertBitMaskToSet(int bitmask) {
+    public static EnumSet<CertificateKeyUsage> convertBitMaskToSet(int bitmask) {
         return BitMaskEnum.convertBitMaskToSet(bitmask, CertificateKeyUsage.class);
     }
 
