@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 /*
-List if possible status for the individual rules on Compliance checks. This Object will be
+List of possible status for the individual rules on Compliance checks. This Object will be
 used only to define the status of individual rules. This object should not be used to define
 the overall compliance status
  */
