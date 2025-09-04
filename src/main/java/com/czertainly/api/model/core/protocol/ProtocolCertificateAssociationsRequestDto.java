@@ -21,7 +21,8 @@ public class ProtocolCertificateAssociationsRequestDto implements Serializable {
     @Schema(description = "Custom Attributes to be associated with certificate by protocol",  requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttributeDto> customAttributes = new ArrayList<>();
 
-    public boolean isEmpty() {
-        return ownerUuid == null && groupUuids.isEmpty() && customAttributes.isEmpty();
+        return ownerUuid == null
+                && (groupUuids == null || groupUuids.isEmpty())
+                && (customAttributes == null || customAttributes.isEmpty());
     }
 }
