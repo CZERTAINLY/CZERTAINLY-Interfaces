@@ -2,7 +2,6 @@ package com.czertainly.api.model.core.protocol;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,8 +21,4 @@ public class ProtocolCertificateAssociationsDto implements Serializable {
     @Schema(description = "Custom Attributes to be associated with certificate by protocol",  requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttributeDto> customAttributes = new ArrayList<>();
 
-    @AssertTrue(message = "At least one protocol certificate association must be present")
-    private boolean isAtLeastOnePropertyPresent() {
-        return ownerUuid != null || !groupUuids.isEmpty() || !customAttributes.isEmpty() ;
-    }
 }
