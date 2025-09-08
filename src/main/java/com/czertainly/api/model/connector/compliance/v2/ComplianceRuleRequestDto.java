@@ -2,9 +2,7 @@ package com.czertainly.api.model.connector.compliance.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ComplianceRuleRequestDto {
     @Schema(description = "UUID of the rule",
             requiredMode = Schema.RequiredMode.REQUIRED,

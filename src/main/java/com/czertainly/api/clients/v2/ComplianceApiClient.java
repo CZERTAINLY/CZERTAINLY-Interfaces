@@ -20,9 +20,11 @@ import java.util.UUID;
 public class ComplianceApiClient extends BaseApiClient {
 
     private static final String COMPLIANCE_BASE_CONTEXT = "/v2/complianceProvider/{kind}";
-    private static final String COMPLIANCE_RULE_GET_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/rules";
-    private static final String COMPLIANCE_GROUP_GET_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/groups";
-    private static final String COMPLIANCE_GROUP_RULE_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/groups/{uuid}";
+    private static final String COMPLIANCE_RULES_GET_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/rules";
+    private static final String COMPLIANCE_RULE_GET_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/rules/{ruleUuid}";
+    private static final String COMPLIANCE_GROUPS_GET_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/groups";
+    private static final String COMPLIANCE_GROUP_GET_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/groups/{groupUuid}";
+    private static final String COMPLIANCE_GROUP_RULES_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/groups/{groupUuid}/rules";
     private static final String COMPLIANCE_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/compliance";
 
     private static final String RESOURCE_QUERY_HEADER = "resource";
@@ -37,7 +39,7 @@ public class ComplianceApiClient extends BaseApiClient {
     public List<ComplianceRuleResponseDto> getComplianceRules(ConnectorDto connector, String kind, Resource resource, String type, String format) throws ConnectorException {
         URI uri;
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
-        uriBuilder.path(COMPLIANCE_RULE_GET_CONTEXT.replace("{kind}", kind));
+        uriBuilder.path(COMPLIANCE_RULES_GET_CONTEXT.replace("{kind}", kind));
 
         if (resource != null) {
             uriBuilder.queryParam(RESOURCE_QUERY_HEADER, resource);
@@ -59,11 +61,23 @@ public class ComplianceApiClient extends BaseApiClient {
                 connector);
     }
 
+    public ComplianceRuleResponseDto getComplianceRule(ConnectorDto connector, String kind, UUID ruleUuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
+
+        return processRequest(r -> r
+                        .uri(connector.getUrl() + COMPLIANCE_RULE_GET_CONTEXT, kind, ruleUuid)
+                        .retrieve()
+                        .toEntity(ComplianceRuleResponseDto.class)
+                        .block().getBody(),
+                request,
+                connector);
+    }
+
     public ComplianceRulesBatchResponseDto getComplianceRulesBatch(ConnectorDto connector, String kind, ComplianceRulesBatchRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + COMPLIANCE_RULE_GET_CONTEXT, kind)
+                        .uri(connector.getUrl() + COMPLIANCE_RULES_GET_CONTEXT, kind)
                         .body(Mono.just(requestDto), ComplianceRulesBatchRequestDto.class)
                         .retrieve()
                         .toEntity(ComplianceRulesBatchResponseDto.class)
@@ -75,7 +89,7 @@ public class ComplianceApiClient extends BaseApiClient {
     public List<ComplianceGroupResponseDto> getComplianceGroups(ConnectorDto connector, String kind, Resource resource) throws ConnectorException {
         URI uri;
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
-        uriBuilder.path(COMPLIANCE_RULE_GET_CONTEXT.replace("{kind}", kind));
+        uriBuilder.path(COMPLIANCE_GROUPS_GET_CONTEXT.replace("{kind}", kind));
 
         if (resource != null) {
             uriBuilder.queryParam(RESOURCE_QUERY_HEADER, resource);
@@ -90,12 +104,23 @@ public class ComplianceApiClient extends BaseApiClient {
                 connector);
     }
 
-
-    public List<ComplianceRuleResponseDto> getComplianceGroupRules(ConnectorDto connector, String kind, UUID uuid) throws ConnectorException {
+    public ComplianceGroupResponseDto getComplianceGroup(ConnectorDto connector, String kind, UUID groupUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + COMPLIANCE_GROUP_RULE_CONTEXT, kind, uuid)
+                        .uri(connector.getUrl() + COMPLIANCE_GROUP_GET_CONTEXT, kind, groupUuid)
+                        .retrieve()
+                        .toEntity(ComplianceGroupResponseDto.class)
+                        .block().getBody(),
+                request,
+                connector);
+    }
+
+    public List<ComplianceRuleResponseDto> getComplianceGroupRules(ConnectorDto connector, String kind, UUID groupUuid) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
+
+        return processRequest(r -> r
+                        .uri(connector.getUrl() + COMPLIANCE_GROUP_RULES_CONTEXT, kind, groupUuid)
                         .retrieve()
                         .toEntityList(ComplianceRuleResponseDto.class)
                         .block().getBody(),

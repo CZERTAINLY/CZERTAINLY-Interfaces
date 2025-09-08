@@ -1,5 +1,9 @@
 package com.czertainly.api.interfaces.core.web.v2;
 
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.AttributeException;
+import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.compliance.v2.ComplianceProfileGroupsPatchRequestDto;
 import com.czertainly.api.model.client.compliance.v2.ComplianceProfileRequestDto;
@@ -41,23 +45,23 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @Operation(summary = "Details of a Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance Profile details retrieved")})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
-    ComplianceProfileDto getComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid);
+    ComplianceProfileDto getComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Add Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Compliance profile added"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
-    ComplianceProfileDto createComplianceProfile(@RequestBody ComplianceProfileRequestDto request);
+    ComplianceProfileDto createComplianceProfile(@RequestBody ComplianceProfileRequestDto request) throws ConnectorException, NotFoundException, AlreadyExistException, AttributeException;
 
     @Operation(summary = "Update Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance profile updated"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
-    ComplianceProfileDto updateComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid, @RequestBody ComplianceProfileUpdateRequestDto request);
+    ComplianceProfileDto updateComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid, @RequestBody ComplianceProfileUpdateRequestDto request) throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance Profile deleted")})
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid);
+    void deleteComplianceProfile(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Delete multiple Compliance Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance Profiles deleted"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
@@ -73,29 +77,34 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @Operation(summary = "Get Compliance rules", description = "Lists compliance rules. If provider UUID is sent (also kind is required) then provider rules are listed, otherwise lists internal rules")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance rules retrieved"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @GetMapping(path = "/rules", produces = {"application/json"})
-    List<ComplianceRuleListDto> getComplianceRules(@RequestParam Resource resource, @RequestParam(required = false) UUID connectorUuid, @RequestParam(required = false) String kind, @RequestParam(required = false) String type, @RequestParam(required = false) String format);
+    List<ComplianceRuleListDto> getComplianceRules(@RequestParam(required = false) UUID connectorUuid, @RequestParam(required = false) String kind, @RequestParam Resource resource, @RequestParam(required = false) String type, @RequestParam(required = false) String format) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Get Compliance groups")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance groups retrieved"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @GetMapping(path = "/groups", produces = {"application/json"})
-    List<ComplianceGroupListDto> getComplianceGroups(@RequestParam(required = false) Resource resource, @RequestParam UUID connectorUuid, @RequestParam String kind);
+    List<ComplianceGroupListDto> getComplianceGroups(@RequestParam UUID connectorUuid, @RequestParam String kind, @RequestParam(required = false) Resource resource) throws ConnectorException, NotFoundException;
+
+    @Operation(summary = "Get Compliance group rules")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance group rules retrieved"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
+    @GetMapping(path = "/groups/{groupUuid}/rules", produces = {"application/json"})
+    List<ComplianceRuleListDto> getComplianceGroupRules(@PathVariable UUID groupUuid, @RequestParam UUID connectorUuid, @RequestParam String kind) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Add/remove compliance rule to/from Compliance Profile", description = "If provider UUID is sent (also kind is required) then provider rules is handled, otherwise handling internal rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Rule added/removed to/from the profile"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PatchMapping(path = "/{uuid}/rules", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void patchComplianceProfileRule(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid, @RequestBody ComplianceProfileRulesPatchRequestDto request);
+    void patchComplianceProfileRule(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid, @RequestBody ComplianceProfileRulesPatchRequestDto request) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Add/remove group to/from Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Group is added/removed to/from the profile"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PatchMapping(path = "/{uuid}/groups", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void patchComplianceProfileGroup(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid, @RequestBody ComplianceProfileGroupsPatchRequestDto request);
+    void patchComplianceProfileGroup(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid, @RequestBody ComplianceProfileGroupsPatchRequestDto request) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Get associations of Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Associated resource objects retrieved")})
     @GetMapping(path = "/{uuid}/associations", produces = {"application/json"})
-    List<ResourceObjectDto> getAssociations(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid);
+    List<ResourceObjectDto> getAssociations(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Associate Compliance Profile to specified resource object")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource object association successful"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})

@@ -69,6 +69,26 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
     ) throws IOException, NotFoundException;
 
     @GetMapping(
+            path = "/rules/{ruleUuid}",
+            produces = {"application/json"}
+    )
+    @Operation(
+            summary = "Get specific rule"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Rule retrieved successfully"
+                    )
+            }
+    )
+    ComplianceRuleResponseDto getRule(
+            @Parameter(description = "Connector kind") @PathVariable String kind,
+            @Parameter(description = "Rule UUID") @PathVariable UUID ruleUuid
+    ) throws IOException, NotFoundException;
+
+    @GetMapping(
             path = "/groups",
             produces = {"application/json"}
     )
@@ -89,7 +109,27 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
     ) throws IOException, NotFoundException;
 
     @GetMapping(
-            path = "/groups/{uuid}",
+            path = "/groups/{groupUuid}",
+            produces = {"application/json"}
+    )
+    @Operation(
+            summary = "Get specific group"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Group retrieved successfully"
+                    )
+            }
+    )
+    ComplianceGroupResponseDto getGroup(
+            @Parameter(description = "Connector kind") @PathVariable String kind,
+            @Parameter(description = "Group UUID") @PathVariable UUID groupUuid
+    ) throws IOException, NotFoundException;
+
+    @GetMapping(
+            path = "/groups/{groupUuid}/rules",
             produces = {"application/json"}
     )
     @Operation(
@@ -104,6 +144,6 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
             }
     )
     List<ComplianceRuleResponseDto> getGroupRules(@Parameter(description = "Connector kind") @PathVariable String kind,
-                                                   @Parameter(description = "Group UUID") @PathVariable UUID uuid)
-            throws IOException, NotFoundException;
+                                                  @Parameter(description = "Group UUID") @PathVariable UUID groupUuid
+    ) throws IOException, NotFoundException;
 }
