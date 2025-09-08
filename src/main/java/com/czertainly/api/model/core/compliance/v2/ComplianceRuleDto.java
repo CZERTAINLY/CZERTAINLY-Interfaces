@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class ComplianceRuleDto extends BaseComplianceRuleDto {
+public class ComplianceRuleDto {
     @Schema(description = "Compliance rule UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID uuid;
 

@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/v2/complianceProfiles")
-@Tag(name = "Compliance Profile Management", description = "Compliance Profile Management API")
+@Tag(name = "Compliance Profile Management v2", description = "Compliance Profile Management v2 API")
 @ApiResponses(value = {@ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface ComplianceProfileController extends AuthProtectedController {
 
@@ -110,29 +110,16 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource object association successful"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PatchMapping(path = "/{uuid}/associations/{resource}/{associationObjectUuid}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void associateComplianceProfile(@Parameter(description = "Compliance Profile UUID", required = true) @PathVariable UUID uuid, @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid);
+    void associateComplianceProfile(@Parameter(description = "Compliance Profile UUID", required = true) @PathVariable UUID uuid, @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid) throws NotFoundException;
 
     @Operation(summary = "Disassociate Compliance Profile from specified resource object")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource object disassociation successful"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @DeleteMapping(path = "/{uuid}/associations/{resource}/{associationObjectUuid}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void disassociateComplianceProfile(@Parameter(description = "Compliance Profile UUID", required = true) @PathVariable UUID uuid, @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid);
+    void disassociateComplianceProfile(@Parameter(description = "Compliance Profile UUID", required = true) @PathVariable UUID uuid, @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid) throws NotFoundException;
 
     @Operation(summary = "Get associated Compliance Profiles for resource object")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Associated Compliance Profiles retrieved")})
     @GetMapping(path = "/associations/{resource}/{associationObjectUuid}", produces = {"application/json"})
     List<ComplianceProfileListDto> getAssociatedComplianceProfiles(@Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid);
-
-    @Operation(summary = "Initiate Certificate Compliance Check for requested compliance profiles")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
-    @PostMapping(path = "/compliance", produces = {"application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void checkCompliance(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "RA Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<UUID> uuids);
-
-    @Operation(summary = "Initiate Certificate Compliance Check for requested resource object")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
-    @PostMapping(path = "/compliance/{resource}/{objectUuid}", produces = {"application/json"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void checkResourceObjectCompliance(@Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid);
-
 }
