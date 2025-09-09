@@ -22,7 +22,7 @@ public class ComplianceGroupDto {
     @Schema(description = "Description of the compliance group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample group description"})
     private String description;
 
-    @Schema(description = "Availability status of the compliance group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
+    @Schema(description = "Availability status of the compliance group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {ComplianceRuleAvailabilityStatus.Codes.AVAILABLE})
     private ComplianceRuleAvailabilityStatus availabilityStatus;
 
     @Schema(description = "Reason why compliance group availability status is `Updated`", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

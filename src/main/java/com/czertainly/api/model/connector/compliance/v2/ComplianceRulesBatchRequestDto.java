@@ -20,7 +20,7 @@ public class ComplianceRulesBatchRequestDto {
     @Schema(description = "UUIDs of the groups to retrieve", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
     private Set<UUID> groupUuids = new HashSet<>();
 
-    @Schema(description = "UUIDs of the groups to retrieve", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
+    @Schema(description = "Flag to determine whether to include group rules in the response", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
     private boolean withGroupRules;
 
 }

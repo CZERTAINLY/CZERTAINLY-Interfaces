@@ -48,7 +48,8 @@ public class ResourceDto {
                 .append("hasGroups", hasGroups)
                 .append("hasOwner", hasOwner)
                 .append("hasEvents", hasEvents)
-                .append("hasRuleEvaluator", hasRuleEvaluator)
+                .append("isComplianceSubject", isComplianceSubject)
+                .append("hasComplianceProfiles", hasComplianceProfiles)
                 .toString();
     }
 }

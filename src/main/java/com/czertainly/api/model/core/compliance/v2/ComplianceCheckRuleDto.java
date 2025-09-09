@@ -25,7 +25,7 @@ public class ComplianceCheckRuleDto implements Serializable {
     @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample rule description"})
     private String description;
 
-    @Schema(description = "Result status of rule compliance check", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
+    @Schema(description = "Result status of rule compliance check", requiredMode = Schema.RequiredMode.REQUIRED, examples = {ComplianceRuleStatus.Codes.OK})
     private ComplianceRuleStatus status;
 
     @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
