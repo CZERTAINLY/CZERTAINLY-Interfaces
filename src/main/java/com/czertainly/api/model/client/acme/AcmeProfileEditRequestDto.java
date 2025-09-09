@@ -1,7 +1,7 @@
 package com.czertainly.api.model.client.acme;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
+import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -96,7 +96,7 @@ public class AcmeProfileEditRequestDto {
 
     @Valid
     @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private ProtocolCertificateAssociationsDto certificateAssociations;
+    private ProtocolCertificateAssociationsRequestDto certificateAssociations;
 
     public Boolean isRequireTermsOfService() {
         return requireTermsOfService;
