@@ -1,27 +1,12 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.AttributeException;
-import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.compliance.v2.ComplianceProfileGroupsPatchRequestDto;
-import com.czertainly.api.model.client.compliance.v2.ComplianceProfileRequestDto;
-import com.czertainly.api.model.client.compliance.v2.ComplianceProfileRulesPatchRequestDto;
-import com.czertainly.api.model.client.compliance.v2.ComplianceProfileUpdateRequestDto;
-import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.auth.Resource;
-import com.czertainly.api.model.core.compliance.v2.ComplianceGroupListDto;
-import com.czertainly.api.model.core.compliance.v2.ComplianceProfileDto;
-import com.czertainly.api.model.core.compliance.v2.ComplianceProfileListDto;
-import com.czertainly.api.model.core.compliance.v2.ComplianceRuleListDto;
-import com.czertainly.api.model.core.other.ResourceObjectDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -47,6 +32,6 @@ public interface ComplianceController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @PostMapping(path = "/{resource}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void checkResourceObjectCompliance(@Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Resource object UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> objectUuids);
+    void checkResourceObjectsCompliance(@Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Resource object UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> objectUuids);
 
 }

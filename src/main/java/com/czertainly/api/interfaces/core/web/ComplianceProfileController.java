@@ -55,7 +55,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     List<ComplianceRulesListResponseDto> getComplianceRules(@RequestParam(required = false, name = "complianceProvider") String complianceProviderUuid,
                                                             @RequestParam(required = false) String kind,
                                                             @RequestParam(required = false) List<CertificateType> certificateType)
-            throws NotFoundException;
+            throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Get Compliance groups")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance groups retrieved"),
@@ -64,7 +64,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @GetMapping(path = "/groups", produces = {"application/json"})
     List<ComplianceGroupsListResponseDto> getComplianceGroups(@RequestParam(required = false, name = "complianceProvider") String complianceProviderUuid,
                                                               @RequestParam(required = false) String kind)
-            throws NotFoundException;
+            throws NotFoundException, ConnectorException;
 
     @Operation(summary = "List of available Compliance Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance Profiles retrieved")})
@@ -75,7 +75,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance Profile details retrieved")})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
     ComplianceProfileDto getComplianceProfile(@Parameter(description = "Compliance Profile UUID")
-                                              @PathVariable String uuid) throws NotFoundException;
+                                              @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Add Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Compliance profile added"),
@@ -92,7 +92,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @PostMapping(path = "/{uuid}/rules", consumes = {"application/json"}, produces = {"application/json"})
     ComplianceProfileRuleDto addRule(@Parameter(description = "Compliance Profile UUID")
                  @PathVariable String uuid, @RequestBody ComplianceRuleAdditionRequestDto request)
-            throws AlreadyExistException, NotFoundException, ValidationException;
+            throws AlreadyExistException, NotFoundException, ValidationException, ConnectorException;
 
     @Operation(summary = "Delete rule from a Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New group is added to the profile"),
@@ -102,7 +102,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeRule(@Parameter(description = "Compliance Profile UUID")
                     @PathVariable String uuid, @RequestBody ComplianceRuleDeletionRequestDto request)
-            throws NotFoundException;
+            throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Add group to a Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New group is deleted from the profile"),
@@ -112,7 +112,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void addGroup(@Parameter(description = "Compliance Profile UUID")
                   @PathVariable String uuid, @RequestBody ComplianceGroupRequestDto request)
-            throws AlreadyExistException, NotFoundException;
+            throws AlreadyExistException, NotFoundException, ConnectorException;
 
     @Operation(summary = "Delete group from a Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "New rule is added to the profile"),
@@ -122,7 +122,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeGroup(@Parameter(description = "Compliance Profile UUID")
                      @PathVariable String uuid, @RequestBody ComplianceGroupRequestDto request)
-            throws NotFoundException;
+            throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Delete Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance Profile deleted")})
