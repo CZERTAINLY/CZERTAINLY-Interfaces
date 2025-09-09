@@ -19,7 +19,7 @@ public class ResourceObjectDto implements Serializable, Loggable {
     protected Resource resource;
 
     @Schema(description = "Object UUID",
-            examples = {"7b55ge1c-844f-11dc-a8a3-0242ac120002"},
+            examples = {"2dcc528b-9e16-46c6-877e-74eae258173f"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     protected UUID objectUuid;
 
