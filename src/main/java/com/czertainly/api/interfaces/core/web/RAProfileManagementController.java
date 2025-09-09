@@ -8,7 +8,6 @@ import com.czertainly.api.model.client.raprofile.*;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.certificate.CertificateDetailDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import com.czertainly.api.model.core.raprofile.RaProfileCertificateValidationSettingsUpdateDto;
@@ -30,7 +29,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RequestMapping("/v1")
 @Tag(name = "RA Profile Management", description = "RA Profile Management API")
