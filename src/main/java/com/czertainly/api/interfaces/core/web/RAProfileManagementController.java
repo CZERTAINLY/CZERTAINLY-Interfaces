@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
+import com.czertainly.api.interfaces.core.web.v2.ComplianceController;
 import com.czertainly.api.model.client.approvalprofile.ApprovalProfileDto;
 import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto;
 import com.czertainly.api.model.client.raprofile.*;
