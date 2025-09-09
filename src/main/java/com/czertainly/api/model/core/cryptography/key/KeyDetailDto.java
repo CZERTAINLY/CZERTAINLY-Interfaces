@@ -4,7 +4,6 @@ import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
-import com.czertainly.api.model.core.compliance.v2.ComplianceCheckResultDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -100,9 +99,4 @@ public class KeyDetailDto extends NameAndUuidDto {
     )
     private ComplianceStatus complianceStatus;
 
-    @Schema(
-            description = "Key compliance check result",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
-    private ComplianceCheckResultDto complianceResult;
 }
