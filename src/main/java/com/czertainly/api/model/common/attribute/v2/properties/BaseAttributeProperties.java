@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class BaseAttributeProperties {
+import java.io.Serializable;
+
+public class BaseAttributeProperties implements Serializable {
 
     /**
      * Friendly name of the Attribute

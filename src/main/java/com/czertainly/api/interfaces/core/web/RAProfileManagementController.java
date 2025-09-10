@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
+import com.czertainly.api.interfaces.core.web.v2.ComplianceController;
 import com.czertainly.api.model.client.approvalprofile.ApprovalProfileDto;
 import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto;
 import com.czertainly.api.model.client.raprofile.*;
@@ -330,7 +331,11 @@ public interface RAProfileManagementController extends AuthProtectedController {
     List<BaseAttribute> listIssueCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
                                                        @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException, NotFoundException;
 
-    @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkRaProfileCompliance")
+    /**
+     * @deprecated As of release 2.16.0. Replaced by {@link ComplianceController#checkResourceObjectsCompliance} with resource Certificate.
+     */
+    @Deprecated(since = "2.16.0", forRemoval = true)
+    @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkRaProfileCompliance", deprecated = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Compliance check initiated"),
             @ApiResponse(responseCode = "404", description = "RA Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
@@ -342,7 +347,11 @@ public interface RAProfileManagementController extends AuthProtectedController {
             examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
                          @RequestBody List<String> uuids) throws NotFoundException;
 
-    @Operation(summary = "Get Compliance Profiles for an RA Profile")
+    /**
+     * @deprecated As of release 2.16.0. Replaced by {@link com.czertainly.api.interfaces.core.web.v2.ComplianceProfileController#getAssociatedComplianceProfiles} with resource RA Profile.
+     */
+    @Deprecated(since = "2.16.0", forRemoval = true)
+    @Operation(summary = "Get Compliance Profiles for an RA Profile", deprecated = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Compliance Profiles retrieved"),
             @ApiResponse(responseCode = "404", description = "RA Profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))

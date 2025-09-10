@@ -10,16 +10,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 /*
-List if possible status for the individual rules on Compliance checks. This Object will be
+List of possible statuses for the individual rules on Compliance checks. This object will be
 used only to define the status of individual rules. This object should not be used to define
 the overall compliance status
  */
 
 @Schema(enumAsRef = true)
 public enum ComplianceRuleStatus implements IPlatformEnum {
-    OK("ok", "Compliant"),
-    NOK("nok", "Not Compliant"),
-    NA("na", "Not Applicable"),
+    OK(Codes.OK, "Compliant"),
+    NOK(Codes.NOK, "Not Compliant"),
+    NA(Codes.NA, "Not Applicable"),
     ;
 
     private static final ComplianceRuleStatus[] VALUES;
@@ -33,7 +33,7 @@ public enum ComplianceRuleStatus implements IPlatformEnum {
     private final String description;
 
     ComplianceRuleStatus(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     ComplianceRuleStatus(String code, String label, String description) {
@@ -65,5 +65,15 @@ public enum ComplianceRuleStatus implements IPlatformEnum {
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown Compliance rule status {}", code)));
+    }
+
+    public static class Codes {
+
+        private Codes() {
+        }
+
+        public static final String OK = "ok";
+        public static final String NOK = "nok";
+        public static final String NA = "na";
     }
 }

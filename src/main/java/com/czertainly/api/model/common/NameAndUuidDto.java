@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Data
 public class NameAndUuidDto implements Serializable, Loggable {
@@ -29,6 +30,10 @@ public class NameAndUuidDto implements Serializable, Loggable {
         super();
         this.uuid = uuid;
         this.name = name;
+    }
+
+    public NameAndUuidDto(UUID uuid, String name) {
+        this(uuid.toString(), name);
     }
 
     @Override

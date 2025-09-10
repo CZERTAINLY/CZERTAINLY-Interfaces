@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
+import com.czertainly.api.interfaces.core.web.v2.ComplianceController;
 import com.czertainly.api.model.client.approval.ApprovalResponseDto;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.common.ErrorMessageDto;
@@ -139,7 +140,11 @@ public interface CertificateController extends AuthProtectedController {
             @Parameter(description = "Certificate UUID") @PathVariable UUID certificateUuid
     ) throws NotFoundException;
 
-    @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkCertificatesCompliance")
+    /**
+     * @deprecated As of release 2.16.0. Replaced by {@link ComplianceController#checkResourceObjectsCompliance} with resource Certificate.
+     */
+    @Deprecated(since = "2.16.0", forRemoval = true)
+    @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkCertificatesCompliance", deprecated = true)
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @PostMapping(path = "/compliance", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
