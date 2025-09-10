@@ -11,6 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Schema(name = "ComplianceProfileRequestDtoV2")
 public class ComplianceProfileRequestDto extends ComplianceProfileUpdateRequestDto {
 
     @NotNull

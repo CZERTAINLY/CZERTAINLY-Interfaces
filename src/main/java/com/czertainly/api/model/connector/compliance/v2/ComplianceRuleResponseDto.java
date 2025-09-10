@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +40,6 @@ public class ComplianceRuleResponseDto {
     @Schema(description = "Format of the resource object data that are sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"pkcs7"})
     private String format;
 
-    @Schema(description = "Rule attributes")
-    private List<BaseAttribute> attributes;
+    @Schema(description = "Rule attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<BaseAttribute> attributes = new ArrayList<>();
 }

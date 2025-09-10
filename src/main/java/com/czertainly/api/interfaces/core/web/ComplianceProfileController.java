@@ -162,7 +162,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void associateProfiles(@Parameter(description = "Compliance Profile UUID") @PathVariable String uuid,
                            @RequestBody RaProfileAssociationRequestDto raProfiles)
-            throws ConnectorException, NotFoundException;
+            throws ConnectorException, NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Disassociate Compliance Profile to RA Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "RA Profile disassociation successful"),

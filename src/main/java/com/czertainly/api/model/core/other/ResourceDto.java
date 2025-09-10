@@ -34,7 +34,7 @@ public class ResourceDto {
     private boolean hasRuleEvaluator;
 
     @Schema(description = "Is resource subject of compliance check and can compliance be run on objects of this resource", requiredMode = Schema.RequiredMode.REQUIRED)
-    private boolean isComplianceSubject;
+    private boolean complianceSubject;
 
     @Schema(description = "Can compliance profiles be assigned to objects of this resource", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean hasComplianceProfiles;
@@ -49,7 +49,7 @@ public class ResourceDto {
                 .append("hasOwner", hasOwner)
                 .append("hasEvents", hasEvents)
                 .append("hasRuleEvaluator", hasRuleEvaluator)
-                .append("isComplianceSubject", isComplianceSubject)
+                .append("complianceSubject", complianceSubject)
                 .append("hasComplianceProfiles", hasComplianceProfiles)
                 .toString();
     }

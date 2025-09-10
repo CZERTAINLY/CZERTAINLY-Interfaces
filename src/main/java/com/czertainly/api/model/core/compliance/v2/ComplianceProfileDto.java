@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@Schema(name = "ComplianceProfileDtoV2")
 public class ComplianceProfileDto {
     @Schema(description = "Compliance profile UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID uuid;
