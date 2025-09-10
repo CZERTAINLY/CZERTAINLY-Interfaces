@@ -33,7 +33,7 @@ public class ResourceDto {
     @Schema(description = "Has rule evaluator that can evaluate conditions and actions", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean hasRuleEvaluator;
 
-    @Schema(description = "Is resource subject of compliance check and compliance can be run on objects of this resource", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Is resource subject of compliance check and can compliance be run on objects of this resource", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean isComplianceSubject;
 
     @Schema(description = "Can compliance profiles be assigned to objects of this resource", requiredMode = Schema.RequiredMode.REQUIRED)

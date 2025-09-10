@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 /*
-List of possible status for rule compared to existing association in compliance profile. It indicates to user if rule needs to be replaced/removed or changed.
+List of possible statuses for rule compared to existing association in compliance profile. It indicates to user if rule needs to be replaced/removed or changed.
  */
 
 @Schema(enumAsRef = true)
