@@ -5,6 +5,7 @@ import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
 import com.czertainly.api.model.common.enums.cryptography.KeyType;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
+import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -128,4 +129,10 @@ public class KeyItemDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private KeyState state;
+
+    @Schema(
+            description = "Key compliance status",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private ComplianceStatus complianceStatus;
 }

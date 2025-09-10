@@ -4,6 +4,8 @@ import com.czertainly.api.model.common.attribute.v2.*;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 @Schema(
         description = "Base Attribute definition",
         type = "object",
@@ -23,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 CustomAttribute.class
         }
 )
-public interface BaseAttributeDto {
+public interface BaseAttributeDto extends Serializable {
         /**
          * Version of the Attribute
          **/

@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.cryptography.key;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
+import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -80,5 +81,11 @@ public class KeyDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private int associations;
+
+    @Schema(
+            description = "Key compliance status",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private ComplianceStatus complianceStatus;
 
 }
