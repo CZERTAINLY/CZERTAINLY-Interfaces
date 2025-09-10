@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,10 +25,10 @@ import java.io.IOException;
 @Tag(
         name = "Compliance",
         description = "Compliance Provider API. " +
-                "Used to check the compliance of a certificate. The provider contains the " +
+                "Used to check the compliance of resource objects. The provider contains the " +
                 "list of rules for checking the compliance. The user can choose the list of compliance checks " +
-                "has to be performed. To check for the compliance of a certificate, the Connector accepts " +
-                "certificate content and the list of rule references. Once the values are received, compliance is " +
+                "that has to be performed. To check for the compliance of a resource object, the Connector accepts " +
+                "its content and the list of rule references. Once the values are received, compliance is " +
                 "checked and status will be returned"
 )
 public interface ComplianceController extends AuthProtectedConnectorController {
@@ -37,7 +38,7 @@ public interface ComplianceController extends AuthProtectedConnectorController {
             produces = {"application/json"}
     )
     @Operation(
-            summary = "Check certificate compliance"
+            summary = "Check resource object compliance"
     )
     @ApiResponses(
             value = {
@@ -54,5 +55,5 @@ public interface ComplianceController extends AuthProtectedConnectorController {
             }
     )
     ComplianceResponseDto checkCompliance(@Parameter(description = "Connector Kind") @PathVariable String kind,
-                                          @RequestBody ComplianceRequestDto request) throws IOException, NotFoundException;
+                                          @RequestBody @Valid ComplianceRequestDto request) throws IOException, NotFoundException;
 }

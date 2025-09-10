@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,8 +22,8 @@ import java.util.UUID;
         description = "Compliance Provider rules API. " +
                 "Used to get the list of rules provided by the connector. " +
                 "These rules will be made available for the users to choose from the list." +
-                "To check for the compliance of a certificate, the Connector accepts " +
-                "certificate content and the list of rule references. Once the values are received, compliance is " +
+                "To check for the compliance of resource objects, the Connector accepts " +
+                "content and the list of rule references. Once the values are received, compliance is " +
                 "checked based on the rules."
 )
 public interface ComplianceRuleController extends AuthProtectedConnectorController {
@@ -65,7 +66,7 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
     )
     ComplianceRulesBatchResponseDto getRulesBatch(
             @Parameter(description = "Connector kind") @PathVariable String kind,
-            @RequestBody ComplianceRulesBatchRequestDto request
+            @RequestBody @Valid ComplianceRulesBatchRequestDto request
     ) throws IOException, NotFoundException;
 
     @GetMapping(

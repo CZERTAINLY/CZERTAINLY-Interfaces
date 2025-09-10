@@ -1,7 +1,9 @@
 package com.czertainly.api.model.connector.compliance.v2;
 
 import com.czertainly.api.model.core.auth.Resource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -34,5 +36,11 @@ public class ComplianceRequestDto {
 
     @Schema(description = "List of UUIDs of Compliance rules")
     private List<ComplianceRuleRequestDto> rules;
+
+    @JsonIgnore
+    @AssertTrue(message = "If type or format is specified, resource is required.")
+    public boolean isValid() {
+        return (type == null && format == null) || resource != null;
+    }
 
 }

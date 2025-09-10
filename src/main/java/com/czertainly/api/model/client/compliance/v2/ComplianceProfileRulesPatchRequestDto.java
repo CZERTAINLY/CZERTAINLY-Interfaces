@@ -32,8 +32,8 @@ public class ComplianceProfileRulesPatchRequestDto {
     private List<RequestAttributeDto> attributes;
 
     @JsonIgnore
-    @AssertTrue(message = "If connector UUID is specified, kind is also required.")
+    @AssertTrue(message = "If connector UUID is specified, kind is also required and vice versa")
     public boolean isValid() {
-        return connectorUuid == null || kind != null;
+        return (connectorUuid == null && kind == null) || (connectorUuid != null && kind != null);
     }
 }

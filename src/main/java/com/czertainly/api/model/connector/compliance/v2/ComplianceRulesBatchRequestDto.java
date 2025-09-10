@@ -1,6 +1,8 @@
 package com.czertainly.api.model.connector.compliance.v2;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,5 +24,11 @@ public class ComplianceRulesBatchRequestDto {
 
     @Schema(description = "Flag to determine whether to include group rules in the response", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
     private boolean withGroupRules;
+
+    @JsonIgnore
+    @AssertTrue(message = "At least one group or rule needs to be retrieved in batch")
+    public boolean isValid() {
+        return (ruleUuids != null && !ruleUuids.isEmpty()) || (groupUuids != null && !groupUuids.isEmpty());
+    }
 
 }
