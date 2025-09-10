@@ -4,10 +4,12 @@ import com.czertainly.api.model.core.auth.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -31,11 +33,13 @@ public class ComplianceRequestDto {
     @Schema(description = "Format of the resource object data that are sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"pkcs7"})
     private String format;
 
+    @NotNull
     @Schema(description = "Base64 encoded content of resource object", requiredMode = Schema.RequiredMode.REQUIRED)
     private String data;
 
-    @Schema(description = "List of UUIDs of Compliance rules")
-    private List<ComplianceRuleRequestDto> rules;
+    @NotNull
+    @Schema(description = "List of UUIDs of Compliance rules", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<ComplianceRuleRequestDto> rules = new ArrayList<>();
 
     @JsonIgnore
     @AssertTrue(message = "If type or format is specified, resource is required.")

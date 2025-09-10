@@ -2,6 +2,7 @@ package com.czertainly.api.model.client.compliance.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +19,7 @@ public class ComplianceProfileUpdateRequestDto {
     @Schema(description = "UUIDs of internal rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Set<UUID> internalRules = new HashSet<>();
 
+    @Valid
     @Schema(description = "Provider rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ProviderComplianceRulesRequestDto> providerRules = new ArrayList<>();
 

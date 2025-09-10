@@ -2,6 +2,7 @@ package com.czertainly.api.model.connector.compliance.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ComplianceRuleRequestDto {
+
+    @NotNull
     @Schema(description = "UUID of the rule",
             requiredMode = Schema.RequiredMode.REQUIRED,
             examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})

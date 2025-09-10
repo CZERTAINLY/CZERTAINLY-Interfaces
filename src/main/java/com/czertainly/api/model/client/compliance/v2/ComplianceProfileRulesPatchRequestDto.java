@@ -4,6 +4,7 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,9 +17,11 @@ import java.util.UUID;
 @ToString
 public class ComplianceProfileRulesPatchRequestDto {
 
+    @NotNull
     @Schema(description = "Indicates if removing or adding rule with UUID specified in request", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
     private boolean removal;
 
+    @NotNull
     @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
     private UUID ruleUuid;
 
