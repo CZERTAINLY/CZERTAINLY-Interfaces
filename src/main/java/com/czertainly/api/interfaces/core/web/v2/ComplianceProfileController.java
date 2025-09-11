@@ -89,13 +89,13 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @GetMapping(path = "/groups/{groupUuid}/rules", produces = {"application/json"})
     List<ComplianceRuleListDto> getComplianceGroupRules(@PathVariable UUID groupUuid, @RequestParam UUID connectorUuid, @RequestParam String kind) throws ConnectorException, NotFoundException;
 
-    @Operation(operationId = "patchComplianceProfileRuleV2", summary = "Add/remove compliance rule to/from Compliance Profile", description = "If provider UUID is sent (also kind is required) then provider rules is handled, otherwise handling internal rule")
+    @Operation(operationId = "patchComplianceProfileRulesV2", summary = "Add/remove compliance rule to/from Compliance Profile", description = "If provider UUID is sent (also kind is required) then provider rules is handled, otherwise handling internal rule")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Rule added/removed to/from the profile"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PatchMapping(path = "/{uuid}/rules", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void patchComplianceProfileRule(@Parameter(description = "Compliance Profile UUID") @PathVariable UUID uuid, @RequestBody @Valid ComplianceProfileRulesPatchRequestDto request) throws ConnectorException, NotFoundException;
 
-    @Operation(operationId = "patchComplianceProfileGroupV2", summary = "Add/remove group to/from Compliance Profile")
+    @Operation(operationId = "patchComplianceProfileGroupsV2", summary = "Add/remove group to/from Compliance Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Group is added/removed to/from the profile"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PatchMapping(path = "/{uuid}/groups", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -110,7 +110,7 @@ public interface ComplianceProfileController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource object association successful"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PatchMapping(path = "/{uuid}/associations/{resource}/{associationObjectUuid}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void associateComplianceProfile(@Parameter(description = "Compliance Profile UUID", required = true) @PathVariable UUID uuid, @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid) throws NotFoundException;
+    void associateComplianceProfile(@Parameter(description = "Compliance Profile UUID", required = true) @PathVariable UUID uuid, @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid) throws NotFoundException, AlreadyExistException;
 
     @Operation(operationId = "disassociateComplianceProfileV2", summary = "Disassociate Compliance Profile from specified resource object")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Resource object disassociation successful"), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})

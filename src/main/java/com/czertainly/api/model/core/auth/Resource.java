@@ -173,7 +173,7 @@ public enum Resource implements IPlatformEnum {
         return hasOwner;
     }
 
-    public boolean isComplianceSubject() {
+    public boolean complianceSubject() {
         return complianceSubjects.contains(this);
     }
 
