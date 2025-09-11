@@ -30,7 +30,7 @@ public enum Resource implements IPlatformEnum {
     ROLE(Codes.ROLE, "Role", false, true),
 
     // ACME
-    ACME_ACCOUNT("acmeAccounts", "ACME Account"),
+    ACME_ACCOUNT(Codes.ACME_ACCOUNT, "ACME Account"),
     ACME_PROFILE(Codes.ACME_PROFILE, "ACME Profile", true, true),
 
     // SCEP
@@ -216,6 +216,7 @@ public enum Resource implements IPlatformEnum {
         public static final String TOKEN_PROFILE = "tokenProfiles";
         public static final String USER = "users";
         public static final String OID = "oids";
+        public static final String ACME_ACCOUNT = "acmeAccounts";
 
         private Codes() {
 
