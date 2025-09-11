@@ -1,6 +1,8 @@
 package com.czertainly.api.model.core.protocol;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -21,6 +23,8 @@ public class ProtocolCertificateAssociationsRequestDto implements Serializable {
     @Schema(description = "Custom Attributes to be associated with certificate by protocol",  requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttributeDto> customAttributes = new ArrayList<>();
 
+    @Hidden
+    @JsonIgnore
     public boolean isEmpty() {
         return ownerUuid == null
                 && (groupUuids == null || groupUuids.isEmpty())
