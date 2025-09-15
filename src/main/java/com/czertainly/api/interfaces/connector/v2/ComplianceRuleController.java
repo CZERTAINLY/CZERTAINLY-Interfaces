@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ import java.util.UUID;
 public interface ComplianceRuleController extends AuthProtectedConnectorController {
     @GetMapping(
             path = "/rules",
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Get list of rules"
@@ -51,7 +52,7 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
 
     @PostMapping(
             path = "/rules",
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Get list of rules and groups with rules in one batch"
@@ -71,7 +72,7 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
 
     @GetMapping(
             path = "/rules/{ruleUuid}",
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Get specific rule"
@@ -91,7 +92,7 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
 
     @GetMapping(
             path = "/groups",
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Get list of groups"
@@ -111,7 +112,7 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
 
     @GetMapping(
             path = "/groups/{groupUuid}",
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Get specific group"
@@ -131,7 +132,7 @@ public interface ComplianceRuleController extends AuthProtectedConnectorControll
 
     @GetMapping(
             path = "/groups/{groupUuid}/rules",
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Get list of rules for a group"

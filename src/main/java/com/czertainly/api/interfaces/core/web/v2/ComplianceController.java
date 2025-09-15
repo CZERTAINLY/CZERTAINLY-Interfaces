@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,13 +25,13 @@ public interface ComplianceController extends AuthProtectedController {
 
     @Operation(operationId = "checkComplianceV2", summary = "Initiate compliance check for requested compliance profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
-    @PostMapping(produces = {"application/json"})
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void checkCompliance(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Compliance Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> uuids, @Parameter(description = "Filter objects checked by compliance based on its resource and evaluate only rules applicable to that resource") @RequestParam(required = false) Resource resource, @Parameter(description = "Filter objects checked by compliance based on its type and evaluate only rules applicable to that resource type", example = "X.509") @RequestParam(required = false) String type);
 
     @Operation(operationId = "checkResourceObjectsComplianceV2", summary = "Initiate compliance Check for requested resource objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
-    @PostMapping(path = "/{resource}", produces = {"application/json"})
+    @PostMapping(path = "/{resource}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void checkResourceObjectsCompliance(@Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Resource object UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> objectUuids);
 
