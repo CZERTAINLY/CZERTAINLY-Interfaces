@@ -2,8 +2,11 @@ package com.czertainly.api.model.client.attribute.custom;
 
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
+import com.czertainly.api.model.common.validation.ValidEnumValue;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -24,6 +27,8 @@ public class CustomAttributeCreateRequestDto {
     /**
      * Content Type of the Attribute
      */
+    @NotNull
+    @ValidEnumValue(enumClass = AttributeContentType.class)
     @Schema(description = "Attribute Content Type", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeContentType contentType;
 

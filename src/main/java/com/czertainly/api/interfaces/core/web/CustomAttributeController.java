@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public interface CustomAttributeController extends AuthProtectedController {
     @Operation(summary = "Create Custom Attribute")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Custom Attribute created", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<CustomAttributeDefinitionDetailDto> createCustomAttribute(@RequestBody CustomAttributeCreateRequestDto request)
+    ResponseEntity<CustomAttributeDefinitionDetailDto> createCustomAttribute(@RequestBody @Valid CustomAttributeCreateRequestDto request)
             throws AlreadyExistException, AttributeException;
 
     @Operation(summary = "Edit Custom Attribute")
