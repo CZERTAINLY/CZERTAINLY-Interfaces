@@ -18,6 +18,11 @@ public class AuditLoggingSettingsDto extends ResourceLoggingSettingsDto {
     )
     private AuditLogOutput output = AuditLogOutput.NONE;
 
+    @Schema(
+            description = "Additional data should be logged"
+    )
+    private boolean verbose = false;
+
     @Hidden
     public void setResourceLogging(ResourceLoggingSettingsDto resourceLoggingSettingsDto) {
         this.setLogAllModules(resourceLoggingSettingsDto.isLogAllModules());
