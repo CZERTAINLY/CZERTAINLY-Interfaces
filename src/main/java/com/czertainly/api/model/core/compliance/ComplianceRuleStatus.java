@@ -20,7 +20,7 @@ public enum ComplianceRuleStatus implements IPlatformEnum {
     OK(Codes.OK, "Compliant"),
     NOK(Codes.NOK, "Not Compliant"),
     NA(Codes.NA, "Not Applicable"),
-    ;
+    NOT_AVAILABLE(Codes.NOT_AVAILABLE, "Not Available");
 
     private static final ComplianceRuleStatus[] VALUES;
 
@@ -75,5 +75,6 @@ public enum ComplianceRuleStatus implements IPlatformEnum {
         public static final String OK = "ok";
         public static final String NOK = "nok";
         public static final String NA = "na";
+        public static final String NOT_AVAILABLE = "not_available";
     }
 }
