@@ -35,12 +35,12 @@ public class ComplianceInternalRuleRequestDto {
     @NotNull
     @NotEmpty
     @Schema(description = "List of the condition items to add to compliance internal rule", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ConditionItemRequestDto> items = new ArrayList<>();
+    private List<ConditionItemRequestDto> conditionItems = new ArrayList<>();
 
     @JsonIgnore
     @AssertTrue(message = "Resource must be a valid compliance subject")
     public boolean isResourceValid() {
-        return resource.complianceSubject();
+        return resource != null && resource.complianceSubject();
     }
 
 }
