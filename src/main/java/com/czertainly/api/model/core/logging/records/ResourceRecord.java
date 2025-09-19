@@ -11,10 +11,9 @@ import java.util.UUID;
 @Builder
 public record ResourceRecord(
         @NotNull Resource type,
-        List<UUID> uuids,
-        List<String> names
+        List<NameAndUuid> objects
 ) implements Serializable {
     public ResourceRecord(Resource type, UUID uuid, String name) {
-        this(type, uuid == null ? null : List.of(uuid), name == null ? null : List.of(name));
+        this(type, List.of(new NameAndUuid(name, uuid)));
     }
 }
