@@ -3,6 +3,7 @@ package com.czertainly.api.model.core.compliance.v2;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.compliance.ComplianceRuleAvailabilityStatus;
+import com.czertainly.api.model.core.workflows.ConditionItemDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,5 +46,8 @@ public class ComplianceRuleDto {
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttributeDto> attributes = new ArrayList<>();
+
+    @Schema(description = "List of the compliance internal rule condition items", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<ConditionItemDto> conditionItems;
 
 }
