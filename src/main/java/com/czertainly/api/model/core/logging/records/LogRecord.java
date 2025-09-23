@@ -25,5 +25,5 @@ public record LogRecord (
         String message,
         Serializable operationData,
         Map<String, Object> additionalData,
-        @NotNull @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX") OffsetDateTime timestamp
+        @NotNull @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") OffsetDateTime timestamp
         ) implements Serializable {}
