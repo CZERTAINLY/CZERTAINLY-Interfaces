@@ -19,9 +19,7 @@ public enum ComplianceStatus implements IPlatformEnum {
     NOT_CHECKED("not_checked", "Not checked"),
     OK("ok", "Compliant"),
     NOK("nok", "Not Compliant"),
-    NA("na", "Not Applicable"),
-    NOT_AVAILABLE("not_available", "Not Available"),
-    ;
+    NA("na", "Not Applicable");
 
     private static final ComplianceStatus[] VALUES;
 
@@ -34,7 +32,7 @@ public enum ComplianceStatus implements IPlatformEnum {
     private final String description;
 
     ComplianceStatus(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     ComplianceStatus(String code, String label, String description) {
