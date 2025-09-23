@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Builder
@@ -22,5 +23,6 @@ public record LogRecord (
         @NotNull OperationResult operationResult,
         String message,
         Serializable operationData,
-        Map<String, Object> additionalData
-) implements Serializable {}
+        Map<String, Object> additionalData,
+        @NotNull OffsetDateTime timestamp
+        ) implements Serializable {}
