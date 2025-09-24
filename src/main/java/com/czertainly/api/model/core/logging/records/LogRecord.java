@@ -3,10 +3,12 @@ package com.czertainly.api.model.core.logging.records;
 import com.czertainly.api.model.core.logging.enums.OperationResult;
 import com.czertainly.api.model.core.logging.enums.Operation;
 import com.czertainly.api.model.core.logging.enums.Module;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Builder
@@ -22,5 +24,6 @@ public record LogRecord (
         @NotNull OperationResult operationResult,
         String message,
         Serializable operationData,
-        Map<String, Object> additionalData
-) implements Serializable {}
+        Map<String, Object> additionalData,
+        @NotNull @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX") OffsetDateTime timestamp
+        ) implements Serializable {}
