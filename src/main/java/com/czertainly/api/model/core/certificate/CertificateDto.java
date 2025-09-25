@@ -11,6 +11,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class CertificateDto implements Loggable {
@@ -193,5 +194,15 @@ public class CertificateDto implements Loggable {
     @Override
     public Serializable toLogData() {
         return new NameAndUuidDto(this.uuid, this.subjectDn);
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of(serialNumber);
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return List.of(UUID.fromString(uuid));
     }
 }

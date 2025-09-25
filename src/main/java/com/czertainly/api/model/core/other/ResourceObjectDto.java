@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -42,5 +43,15 @@ public class ResourceObjectDto implements Serializable, Loggable {
     @Override
     public Serializable toLogData() {
         return this;
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of(name);
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return List.of(objectUuid);
     }
 }
