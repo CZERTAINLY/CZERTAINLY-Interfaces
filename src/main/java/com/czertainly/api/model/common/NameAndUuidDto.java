@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -47,5 +48,15 @@ public class NameAndUuidDto implements Serializable, Loggable {
     @Override
     public Serializable toLogData() {
         return new NameAndUuidDto(uuid, name);
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of(this.name);
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return this.uuid == null ? List.of() : List.of(UUID.fromString(this.uuid));
     }
 }

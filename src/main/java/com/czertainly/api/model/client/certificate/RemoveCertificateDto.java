@@ -1,10 +1,17 @@
 package com.czertainly.api.model.client.certificate;
 
+import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
-public class RemoveCertificateDto {
+@Getter
+@Setter
+public class RemoveCertificateDto implements Loggable {
 	
 	@Schema(
 			description = "List of Certificate UUIDs"
@@ -16,19 +23,19 @@ public class RemoveCertificateDto {
 	)
 	private List<SearchFilterRequestDto> filters;
 
-	public List<String> getUuids() {
-		return uuids;
+
+	@Override
+	public Serializable toLogData() {
+		return null;
 	}
 
-	public void setUuids(List<String> uuids) {
-		this.uuids = uuids;
+	@Override
+	public List<String> toLogResourceObjectsNames() {
+		return List.of();
 	}
 
-	public List<SearchFilterRequestDto> getFilters() {
-		return filters;
-	}
-
-	public void setFilters(List<SearchFilterRequestDto> filters) {
-		this.filters = filters;
+	@Override
+	public List<UUID> toLogResourceObjectsUuids() {
+		return uuids.stream().map(UUID::fromString).toList();
 	}
 }

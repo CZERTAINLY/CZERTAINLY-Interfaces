@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class UserDetailDto extends UserDto implements Loggable {
 
@@ -70,5 +71,15 @@ public class UserDetailDto extends UserDto implements Loggable {
         logData.put("username", getUsername());
         logData.put("roles", roles.stream().map(NameAndUuidDto::getName).toList());
         return (Serializable) logData;
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of();
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return List.of();
     }
 }

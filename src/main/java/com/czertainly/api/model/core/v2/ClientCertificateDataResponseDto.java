@@ -9,6 +9,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Response containing signed certificate data
@@ -36,6 +38,16 @@ public class ClientCertificateDataResponseDto implements Loggable {
     @Override
     public Serializable toLogData() {
         return new UuidDto(uuid);
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of();
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return List.of(UUID.fromString(uuid));
     }
 }
 

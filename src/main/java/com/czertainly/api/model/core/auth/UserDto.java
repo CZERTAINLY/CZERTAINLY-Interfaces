@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class UserDto implements Loggable {
@@ -59,5 +60,15 @@ public class UserDto implements Loggable {
     @Override
     public Serializable toLogData() {
         return new NameAndUuidDto(this.uuid, this.username);
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of(username);
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return List.of(UUID.fromString(uuid));
     }
 }

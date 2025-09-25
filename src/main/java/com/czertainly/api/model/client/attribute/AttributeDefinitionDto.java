@@ -8,6 +8,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 
 public class AttributeDefinitionDto implements Loggable {
 
@@ -97,5 +99,15 @@ public class AttributeDefinitionDto implements Loggable {
     @Override
     public Serializable toLogData() {
         return new NameAndUuidDto(this.uuid, this.name);
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of(name);
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return List.of(UUID.fromString(uuid));
     }
 }
