@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 @Data
-@JsonPropertyOrder({"id", "version", "loggedAt", "module", "actor", "source", "resource", "affiliatedResource",
+@JsonPropertyOrder({"id", "version", "loggedAt", "timestamp", "module", "actor", "source", "resource", "affiliatedResource",
         "operation", "operationResult", "message", "operationData", "additionalData"})
 public class AuditLogDto {
 
