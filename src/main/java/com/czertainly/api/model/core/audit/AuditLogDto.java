@@ -38,6 +38,12 @@ public class AuditLogDto {
     private OffsetDateTime loggedAt;
 
     @Schema(
+            description = "Time when the audit log has been created",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private OffsetDateTime timestamp;
+
+    @Schema(
             description = "Module of platform where log occurred",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
