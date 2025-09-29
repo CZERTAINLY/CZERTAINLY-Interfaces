@@ -16,10 +16,12 @@ the compliance status of the individual rules
  */
 @Schema(enumAsRef = true)
 public enum ComplianceStatus implements IPlatformEnum {
-    NOT_CHECKED("not_checked", "Not checked"),
-    OK("ok", "Compliant"),
-    NOK("nok", "Not Compliant"),
-    NA("na", "Not Applicable");
+    NOT_CHECKED(Codes.NOT_CHECKED, "Not checked"),
+    OK(Codes.OK, "Compliant"),
+    NOK(Codes.NOK, "Not Compliant"),
+    NA(Codes.NA, "Not Applicable"),
+    FAILED(Codes.FAILED, "Failed");
+
 
     private static final ComplianceStatus[] VALUES;
 
@@ -64,5 +66,17 @@ public enum ComplianceStatus implements IPlatformEnum {
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown Compliance status {}", code)));
+    }
+
+    public static class Codes {
+
+        private Codes() {
+        }
+
+        public static final String NOT_CHECKED = "not_checked";
+        public static final String OK = "ok";
+        public static final String NOK = "nok";
+        public static final String NA = "na";
+        public static final String FAILED = "failed";
     }
 }

@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /*
 Contains the list of parameters required for creating a new compliance check request.
@@ -22,6 +23,7 @@ any incoming compliance check request
 @Getter
 @Setter
 @ToString
+@Schema(name = "ComplianceRequestDtoV2", description = "Request for Compliance Check V2")
 public class ComplianceRequestDto {
 
     @Schema(description = "Resource of rules to be checked", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {Resource.Codes.CERTIFICATE})
@@ -40,6 +42,10 @@ public class ComplianceRequestDto {
     @NotNull
     @Schema(description = "List of UUIDs of Compliance rules", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceRuleRequestDto> rules = new ArrayList<>();
+
+    @NotNull
+    @Schema(description = "List of UUIDs of Compliance groups", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<UUID> groups = new ArrayList<>();
 
     @JsonIgnore
     @AssertTrue(message = "If type or format is specified, resource is required.")

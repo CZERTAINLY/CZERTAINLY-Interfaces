@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.compliance.v2;
 
 import com.czertainly.api.model.core.auth.Resource;
+import com.czertainly.api.model.core.logging.Loggable;
 import com.czertainly.api.model.core.workflows.ConditionItemRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,13 +13,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @ToString
-public class ComplianceInternalRuleRequestDto {
+public class ComplianceInternalRuleRequestDto implements Loggable {
 
     @NotNull
     @NotBlank
@@ -43,4 +46,18 @@ public class ComplianceInternalRuleRequestDto {
         return resource != null && resource.complianceSubject();
     }
 
+    @Override
+    public Serializable toLogData() {
+        return null;
+    }
+
+    @Override
+    public List<String> toLogResourceObjectsNames() {
+        return List.of(name);
+    }
+
+    @Override
+    public List<UUID> toLogResourceObjectsUuids() {
+        return List.of();
+    }
 }

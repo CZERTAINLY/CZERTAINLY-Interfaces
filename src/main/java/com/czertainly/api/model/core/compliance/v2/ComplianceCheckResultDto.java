@@ -22,6 +22,9 @@ public class ComplianceCheckResultDto implements Serializable {
     @Schema(description = "Date of the most recent compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private OffsetDateTime timestamp;
 
+    @Schema(description = "Overall compliance check result message", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String message;
+
     @Schema(description = "Compliance rules that didn't pass compliance check", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceCheckRuleDto> failedRules = new ArrayList<>();
 
