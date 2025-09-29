@@ -103,10 +103,4 @@ public class CertificateRequestDto {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private ComplianceStatus complianceStatus;
-
-    @Schema(
-            description = "Certificate request compliance check result",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
-    private ComplianceCheckResultDto complianceResult;
 }

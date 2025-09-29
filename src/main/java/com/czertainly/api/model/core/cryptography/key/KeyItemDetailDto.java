@@ -92,9 +92,4 @@ public class KeyItemDetailDto extends NameAndUuidDto {
     )
     private ComplianceStatus complianceStatus;
 
-    @Schema(
-            description = "Key compliance check result",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
-    private ComplianceCheckResultDto complianceResult;
 }

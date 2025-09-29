@@ -31,6 +31,8 @@ public enum Operation implements IPlatformEnum {
     DISASSOCIATE("disassociate", "Disassociate"),
     HISTORY("history", "History"),
     SUMMARY("summary", "Summary"),
+    LIST_RULES("listRules", "List rules"),
+    GET_COMPLIANCE_RESULT("getComplianceResult", "Get compliance result"),
     CHECK_COMPLIANCE("checkCompliance", "Check compliance"),
     CHECK_VALIDATION("checkValidation", "Check validation"),
     ISSUE("issue", "Issue"),

@@ -2,8 +2,8 @@ package com.czertainly.api.interfaces.connector.v2;
 
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.connector.compliance.ComplianceResponseDto;
 import com.czertainly.api.model.connector.compliance.v2.ComplianceRequestDto;
+import com.czertainly.api.model.connector.compliance.v2.ComplianceResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

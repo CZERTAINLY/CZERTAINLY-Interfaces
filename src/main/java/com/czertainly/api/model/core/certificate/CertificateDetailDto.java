@@ -2,6 +2,7 @@ package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
+import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.compliance.v2.ComplianceCheckResultDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.location.LocationDto;
@@ -62,7 +63,7 @@ public class CertificateDetailDto extends CertificateDto {
     private Set<LocationDto> locations;
 
     /**
-     * @deprecated As of release 2.16.0. Replaced by {@link #complianceResult} property instead that is used by compliance v2 implementation.
+     * @deprecated As of release 2.16.0. Replaced by {@link com.czertainly.api.interfaces.core.web.v2.ComplianceController#getComplianceCheckResult(Resource, UUID)} endpoint instead that is part of compliance v2 implementation.
      */
     @Deprecated(since = "2.16.0", forRemoval = true)
     @Schema(
@@ -71,12 +72,6 @@ public class CertificateDetailDto extends CertificateDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<CertificateComplianceResultDto> nonCompliantRules;
-
-    @Schema(
-            description = "Certificate compliance check result",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
-    private ComplianceCheckResultDto complianceResult;
 
     @Schema(
             description = "List of Custom Attributes",
