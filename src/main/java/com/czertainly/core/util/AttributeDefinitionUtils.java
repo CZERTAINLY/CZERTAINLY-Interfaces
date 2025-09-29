@@ -370,7 +370,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    private static List<ValidationError> validateConstraints(BaseAttribute attribute, List<BaseAttributeContent> contents) {
+    public static List<ValidationError> validateConstraints(BaseAttribute attribute, List<BaseAttributeContent> contents) {
         List<BaseAttributeConstraint> constraints = null;
         AttributeContentType contentType = null;
         String label = null;
