@@ -18,13 +18,13 @@ individual status.
 @Setter
 @Schema(name = "ComplianceResponseRuleDtoV2", description = "Response of Compliance Rule Check V2")
 public class ComplianceResponseRuleDto {
-    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "166b5cf52-63f2-11ec-90d6-0242ac120003")
     private UUID uuid;
 
-    @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Rule1"})
+    @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "Rule1")
     private String name;
 
-    @Schema(description = "Rule status", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"ok"})
+    @Schema(description = "Rule status", requiredMode = Schema.RequiredMode.REQUIRED, example = ComplianceRuleStatus.Codes.OK)
     private ComplianceRuleStatus status;
 
     @Override
