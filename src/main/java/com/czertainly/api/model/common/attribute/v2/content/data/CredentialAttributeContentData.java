@@ -1,14 +1,21 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-public class CredentialAttributeContentData extends NameAndUuidDto {
+@Setter
+@Getter
+@EqualsAndHashCode(callSuper = true)
+public class CredentialAttributeContentData extends NameAndUuidDto implements AttributeContentData {
 
     @Schema(description = "Credential Kind",
             examples = {"SoftKeyStore, Basic, ApiKey, etc"},
@@ -19,22 +26,6 @@ public class CredentialAttributeContentData extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<DataAttribute> attributes;
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    public List<DataAttribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<DataAttribute> attributes) {
-        this.attributes = attributes;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -43,5 +34,11 @@ public class CredentialAttributeContentData extends NameAndUuidDto {
                 .append("kind", kind)
                 .append("attributes", attributes)
                 .toString();
+    }
+
+    @Override
+    public void validate() throws ValidationException {
+        if (kind == null) throw new ValidationException("Kind is not present in credential attribute content data");
+        if (attributes == null) throw new ValidationException("Attributes are not present in credential attribute content data");
     }
 }

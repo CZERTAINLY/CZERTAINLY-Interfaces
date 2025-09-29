@@ -1,14 +1,19 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
+import com.czertainly.api.exception.ValidationException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.util.MimeType;
 
 import java.util.Objects;
 
-public class FileAttributeContentData {
+@Setter
+@Getter
+public class FileAttributeContentData implements AttributeContentData {
 
     @Schema(description = "File content", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
@@ -20,30 +25,6 @@ public class FileAttributeContentData {
     private String mimeType;
 
     public FileAttributeContentData() {
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getMimeType() {
-        return this.mimeType;
-    }
-
-    public void setMimeType(String contentType) {
-        this.mimeType = contentType;
     }
 
     @JsonIgnore
@@ -71,5 +52,12 @@ public class FileAttributeContentData {
                 .append("fileName", fileName)
                 .append("mimeType", mimeType)
                 .toString();
+    }
+
+    @Override
+    public void validate() throws ValidationException {
+        if (content == null) throw new ValidationException("Content is not present in file attribute content data");
+        if (fileName == null) throw new ValidationException("File name is not present in file attribute content data");
+        if (mimeType == null) throw new ValidationException("MIME type is not present in file attribute content data");
     }
 }
