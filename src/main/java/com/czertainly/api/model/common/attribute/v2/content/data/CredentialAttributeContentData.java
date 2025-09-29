@@ -1,6 +1,5 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
-import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +14,7 @@ import java.util.List;
 @Setter
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class CredentialAttributeContentData extends NameAndUuidDto implements AttributeContentData {
+public class CredentialAttributeContentData extends NameAndUuidDto {
 
     @Schema(description = "Credential Kind",
             examples = {"SoftKeyStore, Basic, ApiKey, etc"},
@@ -34,11 +33,5 @@ public class CredentialAttributeContentData extends NameAndUuidDto implements At
                 .append("kind", kind)
                 .append("attributes", attributes)
                 .toString();
-    }
-
-    @Override
-    public void validate() throws ValidationException {
-        if (kind == null) throw new ValidationException("Kind is not present in credential attribute content data");
-        if (attributes == null) throw new ValidationException("Attributes are not present in credential attribute content data");
     }
 }
