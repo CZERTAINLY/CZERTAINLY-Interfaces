@@ -1,13 +1,18 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.core.logging.Sensitive;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
-public class SecretAttributeContentData {
+@Setter
+@Getter
+public class SecretAttributeContentData implements AttributeContentData{
 
     @Sensitive
     @Schema(description = "Secret attribute data")
@@ -25,22 +30,6 @@ public class SecretAttributeContentData {
 
     public SecretAttributeContentData(String secret, ProtectionLevel protectionLevel) {
         this.secret = secret;
-        this.protectionLevel = protectionLevel;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public ProtectionLevel getProtectionLevel() {
-        return protectionLevel;
-    }
-
-    public void setProtectionLevel(ProtectionLevel protectionLevel) {
         this.protectionLevel = protectionLevel;
     }
 
@@ -63,5 +52,10 @@ public class SecretAttributeContentData {
                 .append("secret", secret)
                 .append("protectionLevel", protectionLevel)
                 .toString();
+    }
+
+    @Override
+    public void validate() throws ValidationException {
+        if (secret == null) throw new ValidationException("Secret is not present in secret attribute content data");
     }
 }
