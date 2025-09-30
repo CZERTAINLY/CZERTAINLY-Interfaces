@@ -21,8 +21,6 @@ public class CodeBlockAttributeContentData implements AttributeContentData {
     @NotNull
     private String code;
 
-
-
     public CodeBlockAttributeContentData(final ProgrammingLanguageEnum language, final String code) {
         this.language = language;
         this.code = code;
