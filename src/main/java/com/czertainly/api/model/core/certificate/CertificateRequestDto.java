@@ -2,17 +2,22 @@ package com.czertainly.api.model.core.certificate;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
-import com.czertainly.api.model.core.compliance.v2.ComplianceCheckResultDto;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 public class CertificateRequestDto {
 
+    @Schema(
+            description = "UUID of the Certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private UUID uuid;
 
     @Schema(
             description = "Certificate type",
