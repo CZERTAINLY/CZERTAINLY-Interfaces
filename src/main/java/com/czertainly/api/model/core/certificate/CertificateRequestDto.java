@@ -14,7 +14,7 @@ import java.util.UUID;
 public class CertificateRequestDto {
 
     @Schema(
-            description = "UUID of the Certificate",
+            description = "UUID of the Certificate Request",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private UUID uuid;
