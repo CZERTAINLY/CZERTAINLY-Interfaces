@@ -23,11 +23,13 @@ public class DateTimeAttributeContent extends BaseAttributeContent<ZonedDateTime
 
     public DateTimeAttributeContent(ZonedDateTime data) {
         this.data = data;
+        setContentType(AttributeContentType.DATETIME);
     }
 
     public DateTimeAttributeContent(String reference, ZonedDateTime data) {
         super(reference, data);
         this.data = data;
+        setContentType(AttributeContentType.DATETIME);
     }
 
     public DateTimeAttributeContent() {

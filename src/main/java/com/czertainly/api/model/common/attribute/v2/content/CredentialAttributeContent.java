@@ -21,6 +21,7 @@ public class CredentialAttributeContent extends BaseAttributeContent<CredentialA
     public CredentialAttributeContent(String reference, CredentialAttributeContentData data) {
         super(reference);
         this.data = data;
+        setContentType(AttributeContentType.CREDENTIAL);
     }
 
     public CredentialAttributeContentData getData() {

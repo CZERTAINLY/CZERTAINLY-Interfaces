@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,10 +34,10 @@ import java.util.*;
 
 import static com.czertainly.core.util.AttributeDefinitionUtils.*;
 
-public class AttributeDefinitionUtilsTest {
+class AttributeDefinitionUtilsTest {
 
     @Test
-    public void testGetAttribute() {
+    void testGetAttribute() {
         String attributeName = "testAttribute";
         List<RequestAttributeDto> attributes = createAttributes(attributeName, List.of(new IntegerAttributeContent(1234)));
 
@@ -49,7 +48,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeContent() {
+    void testGetAttributeContent() {
         String attribute1Name = "testAttribute1";
         String attribute2Name = "testAttribute2";
 
@@ -79,7 +78,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeNameAndUuidContent() {
+    void testGetAttributeNameAndUuidContent() {
         String attribute1Name = "testAttribute1";
 
         HashMap<String, Object> attribute2Value = new HashMap<>();
@@ -95,7 +94,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeCredentialContent() {
+    void testGetAttributeCredentialContent() {
         String attribute1Name = "testAttribute1";
         List<RequestAttributeDto> credentialAttributes = createAttributes("credAttr", List.of(new IntegerAttributeContent(987)));
 
@@ -114,14 +113,16 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testAttributeSerialization() {
-        String attrData = "[{\"name\": \"tokenType\", \"content\": [{\"reference\": \"PEM\", \"data\": \"PEM\"}]}, " +
-                "{\"name\": \"description\", \"content\": [{\"reference\": \"DEMO RA Profile\", \"data\": \"DEMO RA Profile\"}]}, " +
-                "{\"name\": \"endEntityProfile\", \"content\": [{\"reference\": \"DemoTLSServerEndEntityProfile\", \"data\": {\"id\": 0, \"name\": \"DemoTLSServerEndEntityProfile\"}}]}, " +
-                "{\"name\": \"certificateProfile\", \"content\": [{\"reference\": \"DemoTLSServerEECertificateProfile\", \"data\": {\"id\": 0, \"name\": \"DemoTLSServerEECertificateProfile\"}}]}, " +
-                "{\"name\": \"certificationAuthority\", \"content\": [{\"reference\": \"DemoServerSubCA\", \"data\": {\"id\": 0, \"name\": \"DemoServerSubCA\"}}]}, " +
-                "{\"name\": \"sendNotifications\", \"content\": [{\"reference\": \"\", \"data\": false}]}, " +
-                "{\"name\": \"keyRecoverable\", \"content\": [{\"reference\": \"\", \"data\": true}]}]";
+    void testAttributeSerialization() {
+        String attrData = """
+                [{"name": "tokenType", "content": [{"reference": "PEM", "data": "PEM", "contentType": "string"}]},
+                {"name": "description", "content": [{"reference": "DEMO RA Profile", "data": "DEMO RA Profile", "contentType": "string"}]},
+                {"name": "endEntityProfile", "content": [{"reference": "DemoTLSServerEndEntityProfile", "data": {"id": 0, "name": "DemoTLSServerEndEntityProfile"}, "contentType": "object"}]},
+                {"name": "certificateProfile", "content": [{"reference": "DemoTLSServerEECertificateProfile", "data": {"id": 0, "name": "DemoTLSServerEECertificateProfile"}, "contentType": "object"}]},
+                {"name": "certificationAuthority", "content": [{"reference": "DemoServerSubCA", "data": {"id": 0, "name": "DemoServerSubCA"}, "contentType": "object"}]},
+                {"name": "sendNotifications", "content": [{"reference": "", "data": false, "contentType": "boolean"}]},
+                {"name": "keyRecoverable", "content": [{"reference": "", "data": true, "contentType": "boolean"}]}]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
         Assertions.assertNotNull(attrs);
@@ -138,7 +139,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_success() {
+    void testValidateAttributes_success() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         StringAttributeContent attributeContent = new StringAttributeContent("1234");
@@ -162,7 +163,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_failNoAttribute() {
+    void testValidateAttributes_failNoAttribute() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
 
@@ -184,7 +185,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_failNoValue() {
+    void testValidateAttributes_failNoValue() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
 
@@ -212,7 +213,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_regex() {
+    void testValidateAttributes_regex() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         StringAttributeContent attributeContent = new StringAttributeContent("1234");
@@ -241,7 +242,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_regexFail() {
+    void testValidateAttributes_regexFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         StringAttributeContent attributeContent = new StringAttributeContent("12345");
@@ -277,7 +278,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_regexPass() {
+    void testValidateAttributes_regexPass() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         StringAttributeContent attributeContent = new StringAttributeContent("1234");
@@ -307,7 +308,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_IntegerRange() {
+    void testValidateAttributes_IntegerRange() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         IntegerAttributeContent attributeContent = new IntegerAttributeContent(1234);
@@ -338,7 +339,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_IntegerRangeFail() {
+    void testValidateAttributes_IntegerRangeFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         IntegerAttributeContent attributeContent = new IntegerAttributeContent(2001);
@@ -374,7 +375,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_IntegerRangeTypeFail() {
+    void testValidateAttributes_IntegerRangeTypeFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         StringAttributeContent attributeContent = new StringAttributeContent("2001");
@@ -410,7 +411,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_FloatRange() {
+    void testValidateAttributes_FloatRange() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         FloatAttributeContent attributeContent = new FloatAttributeContent(121.34f);
@@ -426,7 +427,7 @@ public class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
-        definition.setContentType(AttributeContentType.INTEGER);
+        definition.setContentType(AttributeContentType.FLOAT);
 
         DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
@@ -441,7 +442,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_FloatRangeFail() {
+    void testValidateAttributes_FloatRangeFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         FloatAttributeContent attributeContent = new FloatAttributeContent(20.01f);
@@ -477,7 +478,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_DateTime() {
+    void testValidateAttributes_DateTime() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
@@ -508,7 +509,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_DateTimeFailure() {
+    void testValidateAttributes_DateTimeFailure() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
         DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
@@ -545,7 +546,7 @@ public class AttributeDefinitionUtilsTest {
 
 
     @Test
-    public void testValidateAttributes_credentialMap() {
+    void testValidateAttributes_credentialMap() {
         String attributeName = "testAttribute1";
 
         DataAttribute definition = new DataAttribute();
@@ -568,7 +569,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_credentialDto() {
+    void testValidateAttributes_credentialDto() {
         String attributeName = "testAttribute1";
 
         DataAttribute definition = new DataAttribute();
@@ -586,7 +587,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_credentialFail() {
+    void testValidateAttributes_credentialFail() {
         String attributeName = "testAttribute1";
 
         DataAttribute definition = new DataAttribute();
@@ -607,7 +608,7 @@ public class AttributeDefinitionUtilsTest {
 
     @Test
     @Disabled
-    public void testValidateAttributes_unknownAttribute() {
+    void testValidateAttributes_unknownAttribute() {
         String attributeName = "testAttribute1";
 
         DataAttribute definition = new DataAttribute();
@@ -628,7 +629,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributeCallback_success() {
+    void testValidateAttributeCallback_success() {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
         mappings.add(new AttributeCallbackMapping(
                 "credentialKind",
@@ -647,7 +648,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributeCallback_fail() {
+    void testValidateAttributeCallback_fail() {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
         mappings.add(new AttributeCallbackMapping(
                 "credentialKind",
@@ -682,20 +683,23 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeJsonContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"reference\": \"Item\",\n" +
-                "      \"data\": {\n" +
-                "        \"customField\": 1234,\n" +
-                "        \"exists\": true,\n" +
-                "        \"name\": \"testingName\"\n" +
-                "      }\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeJsonContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "reference": "Item",
+                      "data": {
+                        "customField": 1234,
+                        "exists": true,
+                        "name": "testingName"
+                      },
+                      "contentType": "object"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -705,15 +709,18 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeStringContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"Item\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeStringContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "Item",
+                      "contentType": "string"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -723,15 +730,18 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeInetegerContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": 1234\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeIntegerContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": 1234,
+                      "contentType": "integer"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -741,15 +751,18 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeDateTimeContent_success() throws ParseException {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"2011-12-03T10:15:30+01:00\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeDateTimeContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "2011-12-03T10:15:30+01:00",
+                      "contentType": "datetime"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -762,15 +775,18 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeDateContent_success() throws ParseException {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"2001-07-04\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeDateContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "2001-07-04",
+                      "contentType": "date"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -783,21 +799,22 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeTimeContent_success() throws ParseException {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"12:14:25\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeTimeContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "12:14:25",
+                      "contentType": "time"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         TimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContent.class).get(0);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         String dateInString = "12:14:25";
         LocalTime localTime = LocalTime.parse(dateInString);
@@ -806,15 +823,18 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetStringAttributeContentValue_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testStringAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"Test String Value\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetStringAttributeContentValue_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testStringAttribute",
+                    "content": [{
+                      "data": "Test String Value",
+                      "contentType": "string"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -825,15 +845,18 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetFileAttributeContentValue_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testFileAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": {\"content\":\"Test File Value\"}\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetFileAttributeContentValue_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testFileAttribute",
+                    "content": [{
+                      "data": {"content":"Test File Value"},
+                      "contentType": "file"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -844,19 +867,22 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetCredentialAttributeContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testCredentialAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"reference\": \"Test Credential Value\",\n" +
-                "      \"data\": {\n" +
-                "        \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
-                "        \"name\": \"Test Credential\"\n" +
-                "      }\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetCredentialAttributeContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testCredentialAttribute",
+                    "content": [{
+                      "reference": "Test Credential Value",
+                      "data": {
+                        "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
+                        "name": "Test Credential"
+                      },
+                      "contentType": "object"
+                    }]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -867,23 +893,28 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeContentAsListOfString_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testAttributeListString\",\n" +
-                "    \"content\": [\n" +
-                "      {\n" +
-                "        \"data\": \"string1\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"data\": \"string2\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"data\": \"string3\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeContentAsListOfString_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testAttributeListString",
+                    "content": [
+                      {
+                        "data": "string1",
+                        "contentType": "string"
+                      },
+                      {
+                        "data": "string2",
+                        "contentType": "string"
+                      },
+                      {
+                        "data": "string3",
+                        "contentType": "string"
+                      }
+                    ]
+                  }
+                ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -894,28 +925,32 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetJsonAttributeContentAsListOfUuidAndName_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testCredentialAttribute\",\n" +
-                "    \"content\": [\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 1\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
-                "          \"name\": \"Test Credential 1\"\n" +
-                "        }\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 2\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
-                "          \"name\": \"Test Credential 2\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "]";
+    void testGetJsonAttributeContentAsListOfUuidAndName_success() {
+        String attrData = """
+                 [
+                   {
+                     "name": "testCredentialAttribute",
+                     "content": [
+                       {
+                         "reference": "Test Credential Value 1",
+                         "data": {
+                           "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
+                           "name": "Test Credential 1"
+                         },
+                         "contentType": "object"
+                       },
+                       {
+                         "reference": "Test Credential Value 2",
+                         "data": {
+                           "uuid": "696a354f-55d2-4507-b454-a5a7475a7932",
+                           "name": "Test Credential 2"
+                         },
+                        "contentType": "object"
+                       }
+                     ]
+                   }
+                 ]
+                """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
@@ -926,44 +961,48 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetJsonAttributeConstraints_success() {
+    void testGetJsonAttributeConstraints_success() {
         String regExp = "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])|(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\\\-]*[a-zA-Z0-9])\\\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\\\-]*[A-Za-z0-9]))$";
 
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"uuid\": \"93ca0ba2-3863-4ffa-a469-fd14ab3992bf\",\n" +
-                "    \"name\": \"address\",\n" +
-                "    \"type\": \"data\",\n" +
-                "    \"contentType\": \"string\",\n" +
-                "    \"properties\": {\n" +
-                "       \"label\": \"Test Credential Value 1\",\n" +
-                "       \"visible\": true,\n" +
-                "       \"required\": true\n" +
-                "    },\n" +
-                "    \"constraints\": [\n" +
-                "      {\n" +
-                "       \"type\": \"regExp\",\n" +
-                "       \"data\": \"" + regExp + "\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"content\": [\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 1\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
-                "          \"name\": \"Test Credential 1\"\n" +
-                "        }\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 2\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
-                "          \"name\": \"Test Credential 2\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "]";
+        String attrData = """
+                [
+                  {
+                    "uuid": "93ca0ba2-3863-4ffa-a469-fd14ab3992bf",
+                    "name": "address",
+                    "type": "data",
+                    "contentType": "string",
+                    "properties": {
+                       "label": "Test Credential Value 1",
+                       "visible": true,
+                       "required": true
+                    },
+                    "constraints": [
+                      {
+                       "type": "regExp",
+                       "data": "%s"
+                      }
+                    ],
+                    "content": [
+                      {
+                        "reference": "Test Credential Value 1",
+                        "data": {
+                          "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
+                          "name": "Test Credential 1"
+                        },
+                        "contentType": "object"
+                      },
+                      {
+                        "reference": "Test Credential Value 2",
+                        "data": {
+                          "uuid": "696a354f-55d2-4507-b454-a5a7475a7932",
+                          "name": "Test Credential 2"
+                        },
+                        "contentType": "object"
+                      }
+                    ]
+                  }
+                ]
+                """.formatted(regExp);
 
         List<DataAttribute> attrs = deserialize(attrData, DataAttribute.class);
         Assertions.assertEquals(1, attrs.size());

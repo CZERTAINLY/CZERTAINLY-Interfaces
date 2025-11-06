@@ -13,16 +13,19 @@ public class FloatAttributeContent extends BaseAttributeContent<Float> {
     private Float data;
 
     public FloatAttributeContent() {
+        setContentType(AttributeContentType.FLOAT);
     }
 
     public FloatAttributeContent(Float data) {
         super(data.toString());
         this.data = data;
+        setContentType(AttributeContentType.FLOAT);
     }
 
     public FloatAttributeContent(String reference, Float data) {
         super(reference);
         this.data = data;
+        setContentType(AttributeContentType.FLOAT);
     }
 
     public Float getData() {

@@ -13,16 +13,19 @@ public class StringAttributeContent extends BaseAttributeContent<String> {
     private String data;
 
     public StringAttributeContent() {
+        setContentType(AttributeContentType.STRING);
     }
 
     public StringAttributeContent(String data) {
         super(data);
         this.data = data;
+        setContentType(AttributeContentType.STRING);
     }
 
     public StringAttributeContent(String reference, String data) {
         super(reference);
         this.data = data;
+        setContentType(AttributeContentType.STRING);
     }
 
     public String getData() {

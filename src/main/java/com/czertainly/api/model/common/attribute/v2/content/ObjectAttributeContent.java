@@ -13,15 +13,18 @@ public class ObjectAttributeContent extends BaseAttributeContent<Object> {
     private Object data;
 
     public ObjectAttributeContent() {
+        setContentType(AttributeContentType.OBJECT);
     }
 
     public ObjectAttributeContent(Object data) {
         this.data = data;
+        setContentType(AttributeContentType.OBJECT);
     }
 
     public ObjectAttributeContent(String reference, Object data) {
         super(reference);
         this.data = data;
+        setContentType(AttributeContentType.OBJECT);
     }
 
     public Object getData() {

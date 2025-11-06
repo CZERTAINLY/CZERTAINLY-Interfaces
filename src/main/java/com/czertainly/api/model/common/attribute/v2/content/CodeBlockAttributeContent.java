@@ -16,6 +16,7 @@ public class CodeBlockAttributeContent extends BaseAttributeContent<CodeBlockAtt
 
     public CodeBlockAttributeContent(String reference, CodeBlockAttributeContentData data) {
         super(reference, data);
+        setContentType(AttributeContentType.CODEBLOCK);
     }
 
     @Override

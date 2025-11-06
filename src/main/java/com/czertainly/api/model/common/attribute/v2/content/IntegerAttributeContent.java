@@ -17,11 +17,13 @@ public class IntegerAttributeContent extends BaseAttributeContent<Integer> {
 
     public IntegerAttributeContent(Integer data) {
         this.data = data;
+        setContentType(AttributeContentType.INTEGER);
     }
 
     public IntegerAttributeContent(String reference, Integer data) {
         super(reference);
         this.data = data;
+        setContentType(AttributeContentType.INTEGER);
     }
 
     @Override
@@ -37,9 +39,8 @@ public class IntegerAttributeContent extends BaseAttributeContent<Integer> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof IntegerAttributeContent)) return false;
+        if (!(o instanceof IntegerAttributeContent that)) return false;
         if (!super.equals(o)) return false;
-        IntegerAttributeContent that = (IntegerAttributeContent) o;
         return Objects.equals(data, that.data);
     }
 
