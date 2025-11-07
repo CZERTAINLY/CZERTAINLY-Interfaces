@@ -30,7 +30,7 @@ public class Account {
      */
     @Schema(
             description = "List of contacts for ACME Account",
-            examples = {"[\"mailto:someadmin@domain.com\"]"}
+            example = "[\"mailto:someadmin@domain.com\"]"
     )
     private List<String> contact;
 
@@ -42,7 +42,7 @@ public class Account {
      */
     @Schema(
             description = "Terms of Service agreed flag. Yes = true, No = false",
-            examples = {"true"}
+            example = "true"
     )
     private boolean termsOfServiceAgreed;
 

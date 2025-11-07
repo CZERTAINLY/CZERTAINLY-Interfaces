@@ -41,4 +41,8 @@ public enum CertificateSubjectType implements IPlatformEnum {
     public boolean isCa() {
         return this.equals(ROOT_CA) || this.equals(INTERMEDIATE_CA);
     }
+
+    public boolean isSelfSigned() {
+        return this.equals(ROOT_CA) || this.equals(SELF_SIGNED_END_ENTITY);
+    }
 }

@@ -26,13 +26,13 @@ public class AcmeAccountListResponseDto {
     @Schema(
             description = "Enabled flag. true = enabled, false=disabled",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"false"}
+            example = "false"
     )
     private Boolean enabled;
     @Schema(
             description = "Total number of Orders",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"4"}
+            example = "4"
     )
     private Integer totalOrders;
     @Schema(

@@ -18,7 +18,7 @@ public class ComplianceRuleRequestDto {
     @NotNull
     @Schema(description = "UUID of the rule",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+            example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
     private UUID uuid;
 
     @Schema(description = "Attributes for the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

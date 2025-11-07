@@ -13,13 +13,11 @@ import java.util.List;
 @ToString
 public class ComplianceRulesBatchResponseDto {
     @Schema(description = "List of the batch rules to retrieve",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceRuleResponseDto> rules = new ArrayList<>();
 
     @Schema(description = "UUIDs of the groups to retrieve",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceGroupBatchResponseDto> groups = new ArrayList<>();
 
 }

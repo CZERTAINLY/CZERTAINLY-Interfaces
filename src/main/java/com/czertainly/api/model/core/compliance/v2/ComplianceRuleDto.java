@@ -26,7 +26,7 @@ public class ComplianceRuleDto {
     @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample rule description"})
     private String description;
 
-    @Schema(description = "UUID of the group to which the rule belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+    @Schema(description = "UUID of the group to which the rule belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
     private UUID groupUuid;
 
     @Schema(description = "Availability status of the compliance rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {ComplianceRuleAvailabilityStatus.Codes.AVAILABLE})
