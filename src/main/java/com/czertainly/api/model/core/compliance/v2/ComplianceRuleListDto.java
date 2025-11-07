@@ -30,7 +30,7 @@ public class ComplianceRuleListDto {
     @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String kind;
 
-    @Schema(description = "UUID of the group to which the rule belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+    @Schema(description = "UUID of the group to which the rule belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"20354d7a-e4fe-47af-8ff6-187bca92f3f9"})
     private UUID groupUuid;
 
     @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {Resource.Codes.CERTIFICATE})

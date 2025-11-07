@@ -31,19 +31,19 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private String dnsResolverPort;
     @Schema(description = "RA Profile")
     private SimplifiedRaProfileDto raProfile;
-    @Schema(description = "Retry interval for ACME client requests", examples = {"30"})
+    @Schema(description = "Retry interval for ACME client requests", example = "30")
     private Integer retryInterval;
-    @Schema(description = "Disable new Orders (change in Terms of Service)", examples = {"false"})
+    @Schema(description = "Disable new Orders (change in Terms of Service)", example = "false")
     private Boolean termsOfServiceChangeDisable;
-    @Schema(description = "Order validity", examples = {"36000"})
+    @Schema(description = "Order validity", example = "36000")
     private Integer validity;
     @Schema(description = "ACME Directory URL", examples = {"https://some-server.com/api/v1/protocols/acme/profile1/directory"})
     private String directoryUrl;
     @Schema(description = "Changes of Terms of Service URL", examples = {"https://some-company.com/termsOfService/change"})
     private String termsOfServiceChangeUrl;
-    @Schema(description = "Require Contact information for new Account", examples = {"true"})
+    @Schema(description = "Require Contact information for new Account", example = "true")
     private Boolean requireContact;
-    @Schema(description = "Require new Account to agree on Terms of Service", examples = {"true"})
+    @Schema(description = "Require new Account to agree on Terms of Service", example = "true")
     private Boolean requireTermsOfService;
     @Schema(description = "List of Attributes to issue a Certificate")
     private List<ResponseAttributeDto> issueCertificateAttributes;

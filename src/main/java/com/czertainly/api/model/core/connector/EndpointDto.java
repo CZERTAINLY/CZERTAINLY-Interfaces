@@ -22,7 +22,7 @@ public class EndpointDto extends NameAndUuidDto {
     private String method;
     @Schema(
             description = "True if the Endpoint is required for implementation",
-            examples = {"true"},
+            example = "true",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean required;

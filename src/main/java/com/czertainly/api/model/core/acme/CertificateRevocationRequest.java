@@ -29,7 +29,7 @@ public class CertificateRevocationRequest {
     @Schema(description = "Revocation reason code",
             externalDocs = @ExternalDocumentation(description = "RFC 5280, section 5.3.1", url = "https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1"),
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            examples = {"1"})
+            example = "1")
     private Integer reason;
 
     public String getCertificate() {

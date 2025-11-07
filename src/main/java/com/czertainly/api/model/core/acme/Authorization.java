@@ -58,7 +58,7 @@ public class Authorization {
      */
     @Schema(
             description = "Is wildcard certificate",
-            examples = {"false"}
+            example = "false"
     )
     private Boolean wildcard;
 

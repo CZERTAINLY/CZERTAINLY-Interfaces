@@ -29,43 +29,43 @@ public class AcmeAccountResponseDto {
     @Schema(
             description = "Enabled flag. enabled=true, disabled=false",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"false"}
+            example = "false"
     )
     private Boolean enabled;
     @Schema(
             description = "Order count for the Account",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"23"}
+            example = "23"
     )
     private Integer totalOrders;
     @Schema(
             description = "Number of successful Orders",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"2"}
+            example = "2"
     )
     private Integer successfulOrders;
     @Schema(
             description = "Number of failed Orders",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"239"}
+            example = "239"
     )
     private Integer failedOrders;
     @Schema(
             description = "Number of pending Orders",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"24"}
+            example = "24"
     )
     private Integer pendingOrders;
     @Schema(
             description = "Number of valid Orders",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"23"}
+            example = "23"
     )
     private Integer validOrders;
     @Schema(
             description = "Number of processing Orders",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"27"}
+            example = "27"
     )
     private Integer processingOrders;
     @Schema(
@@ -77,13 +77,13 @@ public class AcmeAccountResponseDto {
     @Schema(
             description = "Contact information",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"mailto: someadmin@domain.com"}
+            example = "[\"mailto: someadmin@domain.com\"]"
     )
     private List<String> contact;
     @Schema(
             description = "Terms of Service Agreed",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"true"}
+            example = "true"
     )
     private Boolean termsOfServiceAgreed;
     @Schema(

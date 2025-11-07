@@ -48,13 +48,13 @@ public class AcmeProfileEditRequestDto {
     @Schema(
             description = "Retry interval for the Orders",
             defaultValue = "30",
-            examples = {"60"}
+            example = "60"
     )
     private Integer retryInterval;
     @Schema(
             description = "Disable new Orders due to change in Terms of Service",
             defaultValue = "false",
-            examples = {"false"}
+            example = "false"
     )
     private Boolean termsOfServiceChangeDisable;
 
@@ -66,7 +66,7 @@ public class AcmeProfileEditRequestDto {
     @Schema(
             description = "Order Validity",
             defaultValue = "36000",
-            examples = {"3000"}
+            example = "3000"
     )
     private Integer validity;
     @Schema(
@@ -82,13 +82,13 @@ public class AcmeProfileEditRequestDto {
     @Schema(
             description = "Require contact information for new Account",
             defaultValue = "false",
-            examples = {"true"}
+            example = "true"
     )
     private Boolean requireContact;
     @Schema(
             description = "Require new Account to agree on Terms of Service",
             defaultValue = "false",
-            examples = {"false"}
+            example = "false"
     )
     private Boolean requireTermsOfService;
     @Schema(description = "List of Custom Attributes")

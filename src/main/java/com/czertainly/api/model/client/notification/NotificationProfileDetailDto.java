@@ -21,7 +21,7 @@ public class NotificationProfileDetailDto {
     @Schema(description = "Description of the Notification profile", examples = {"Detail description of the notification profile"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Latest version of the Notification profile", examples = {"1"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Latest version of the Notification profile", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     private int version;
 
     @Schema(description = "Recipient type of notifications produced by profile",

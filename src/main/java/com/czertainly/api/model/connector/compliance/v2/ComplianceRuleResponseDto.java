@@ -19,10 +19,10 @@ to request for additional information for the rule.
 @Setter
 @ToString
 public class ComplianceRuleResponseDto {
-    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
     private UUID uuid;
 
-    @Schema(description = "UUID of the group to which the rule belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+    @Schema(description = "UUID of the group to which the rule belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
     private UUID groupUuid;
 
     @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Rule1"})

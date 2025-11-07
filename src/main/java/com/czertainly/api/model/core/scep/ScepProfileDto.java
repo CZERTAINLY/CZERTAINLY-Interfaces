@@ -6,8 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.logging.SimpleFormatter;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class ScepProfileDto extends NameAndUuidDto {
@@ -22,7 +20,7 @@ public class ScepProfileDto extends NameAndUuidDto {
     private boolean includeCaCertificate;
     @Schema(description = "Include CA certificate chain in the SCEP response", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean includeCaCertificateChain;
-    @Schema(description = "Renewal time threshold in days", examples = {"30"})
+    @Schema(description = "Renewal time threshold in days", example = "30")
     private Integer renewThreshold;
     @Schema(description = "SCEP URL", examples = {"https://some-server.com/api/v1/protocols/scep/profile/pkiclient.exe"})
     private String scepUrl;

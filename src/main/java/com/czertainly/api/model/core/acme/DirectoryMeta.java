@@ -33,7 +33,7 @@ public class DirectoryMeta {
      */
     @Schema(description = "Array of CAA record validation servers",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            examples = {"[\"example1.com\", \"example2.com\"]"})
+            example = "[\"example1.com\", \"example2.com\"]")
     private String[] caaIdentities;
 
     public String getTermsOfService() {

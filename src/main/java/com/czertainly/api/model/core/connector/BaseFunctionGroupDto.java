@@ -11,7 +11,7 @@ public class BaseFunctionGroupDto {
     protected FunctionGroupCode functionGroupCode;
 
     @Schema(description = "List of supported functional group kinds",
-            examples = {"[\"SoftKeyStore\", \"Basic\", \"ApiKey\"]"},
+            example = "[\"SoftKeyStore\", \"Basic\", \"ApiKey\"]",
             requiredMode = Schema.RequiredMode.REQUIRED)
     protected List<String> kinds;
 
