@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ComplianceProfileGroupsPatchRequestDto {
 
     @NotNull
-    @Schema(description = "Indicates if removing or adding group with UUID specified in request", requiredMode = Schema.RequiredMode.REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
+    @Schema(description = "Indicates if removing or adding group with UUID specified in request", requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
     private boolean removal;
 
     @NotNull

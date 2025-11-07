@@ -25,7 +25,7 @@ public class ApprovalProfileRequestDto {
     private boolean enabled;
 
     @Schema(description = "Expiration of the Approval profile in hours",
-            example = "30",
+            example = "24",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer expiry;
 
