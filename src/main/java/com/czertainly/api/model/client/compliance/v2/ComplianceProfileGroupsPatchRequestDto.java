@@ -14,15 +14,15 @@ import java.util.UUID;
 public class ComplianceProfileGroupsPatchRequestDto {
 
     @NotNull
-    @Schema(description = "Indicates if removing or adding group with UUID specified in request", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
+    @Schema(description = "Indicates if removing or adding group with UUID specified in request", requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
     private boolean removal;
 
     @NotNull
-    @Schema(description = "UUID of the group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
+    @Schema(description = "UUID of the group", requiredMode = Schema.RequiredMode.REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
     private UUID groupUuid;
 
     @NotNull
-    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"1212a-34dddf34-4334f-34ddfvfdg1y3"})
+    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
     private UUID connectorUuid;
 
     @NotNull

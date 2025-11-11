@@ -10,7 +10,7 @@ public class AcmeProfileListDto extends NameAndUuidDto {
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"false"})
+            example = "false")
     private boolean enabled;
     @Schema(description = "ACME Profile description", examples = {"Some description"})
     private String description;

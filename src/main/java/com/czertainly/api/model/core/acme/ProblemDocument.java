@@ -54,7 +54,7 @@ public class ProblemDocument implements Serializable {
      * List of supported algorithms supported by the server.
      * This field is mandatory if the client signs the JWS by some unsupported algorithm
      */
-    @Schema(description = "List of supported algorithms", examples = {"ES256"})
+    @Schema(description = "List of supported algorithms", example = "[\"ES256\"]")
     private List<String> algorithms;
 
     public String getType() {

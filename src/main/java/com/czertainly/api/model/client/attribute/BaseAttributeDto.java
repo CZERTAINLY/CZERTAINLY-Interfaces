@@ -29,7 +29,7 @@ public interface BaseAttributeDto {
          **/
         @Schema(
                 description = "Version of the Attribute",
-                examples = {"2"},
+                example = "2",
                 requiredMode = Schema.RequiredMode.NOT_REQUIRED,
                 defaultValue = "2"
         )
@@ -40,7 +40,7 @@ public interface BaseAttributeDto {
          **/
         @Schema(
                 description = "UUID of the Attribute for unique identification",
-                examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"},
+                example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7",
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
         String getUuid();

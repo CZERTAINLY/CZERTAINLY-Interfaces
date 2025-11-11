@@ -13,8 +13,7 @@ import java.util.List;
 @ToString
 public class ComplianceGroupBatchResponseDto extends ComplianceGroupResponseDto {
     @Schema(description = "List of the group rules",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            examples = {"166b5cf52-63f2-11ec-90d6-0242ac120003"})
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ComplianceRuleResponseDto> rules = new ArrayList<>();
 
 }

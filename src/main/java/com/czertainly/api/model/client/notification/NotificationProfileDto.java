@@ -27,7 +27,7 @@ public class NotificationProfileDto {
     private String description;
 
     @Schema(description = "Latest version of the Notification profile",
-            examples = {"1"},
+            example = "1",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private int version;
 
