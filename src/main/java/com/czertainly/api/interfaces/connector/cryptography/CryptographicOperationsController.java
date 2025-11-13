@@ -4,7 +4,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.cryptography.operations.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -180,7 +180,7 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
     /**
      * @throws NotFoundException Token instance not found
      */
-    List<BaseAttribute> listRandomAttributes(
+    List<BaseAttributeV2> listRandomAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
 

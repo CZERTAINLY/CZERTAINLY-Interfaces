@@ -2,7 +2,7 @@ package com.czertainly.api.model.client.attribute.custom;
 
 import com.czertainly.api.model.client.attribute.AttributeDefinitionDto;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -94,7 +94,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(
             description = "Predefined content for the attribute if needed. The content of the Attribute must satisfy the type"
     )
-    private List<BaseAttributeContent> content;
+    private List<BaseAttributeContentV2> content;
 
     /**
      * List of resources
@@ -160,11 +160,11 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
         this.multiSelect = multiSelect;
     }
 
-    public List<BaseAttributeContent> getContent() {
+    public List<BaseAttributeContentV2> getContent() {
         return content;
     }
 
-    public void setContent(List<BaseAttributeContent> content) {
+    public void setContent(List<BaseAttributeContentV2> content) {
         this.content = content;
     }
 

@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.connector;
 import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderNotifyRequestDto;
@@ -100,6 +100,6 @@ public interface NotificationInstanceController extends AuthProtectedConnectorCo
     @Operation(summary = "List of mapping attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of mapping attributes")})
     @GetMapping(path = "/{kind}/attributes/mapping", produces = {"application/json"})
-    List<DataAttribute> listMappingAttributes(@Parameter(description = "Kind") @PathVariable String kind);
+    List<DataAttributeV2> listMappingAttributes(@Parameter(description = "Kind") @PathVariable String kind);
 
 }

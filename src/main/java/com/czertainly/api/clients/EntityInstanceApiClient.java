@@ -3,7 +3,7 @@ package com.czertainly.api.clients;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceRequestDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
@@ -93,13 +93,13 @@ public class EntityInstanceApiClient extends BaseApiClient {
     }
 
 
-    public List<BaseAttribute> listLocationAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
+    public List<BaseAttributeV2> listLocationAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ENTITY_INSTANCE_LOCATION_ATTRS_CONTEXT, entityUuid)
                 .retrieve()
-                .toEntityList(BaseAttribute.class)
+                .toEntityList(BaseAttributeV2.class)
                 .block().getBody(),
                 request,
                 connector);

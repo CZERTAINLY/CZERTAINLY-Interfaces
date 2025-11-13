@@ -1,7 +1,6 @@
 package com.czertainly.api.model.connector.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;

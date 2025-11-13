@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.compliance.v2;
 
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -41,5 +41,5 @@ public class ComplianceRuleResponseDto {
     private String format;
 
     @Schema(description = "Rule attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<BaseAttribute> attributes = new ArrayList<>();
+    private List<BaseAttributeV2> attributes = new ArrayList<>();
 }

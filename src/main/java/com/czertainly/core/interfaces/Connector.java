@@ -1,10 +1,10 @@
 package com.czertainly.core.interfaces;
 
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 
 import java.util.List;
 
 public interface Connector {
 
-    List<BaseAttribute> getAttributes();
+    List<BaseAttributeV2> getAttributes();
 }

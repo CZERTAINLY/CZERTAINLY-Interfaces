@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.compliance;
 
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -27,7 +27,7 @@ public class ComplianceRulesResponseDto {
     private CertificateType certificateType;
 
     @Schema(description = "Rule attributes")
-    private List<BaseAttribute> attributes;
+    private List<BaseAttributeV2> attributes;
 
     @Schema(description = "Description of the rule", examples = {"Sample rule description"})
     private String description;
@@ -50,11 +50,11 @@ public class ComplianceRulesResponseDto {
         this.name = name;
     }
 
-    public List<BaseAttribute> getAttributes() {
+    public List<BaseAttributeV2> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<BaseAttribute> attributes) {
+    public void setAttributes(List<BaseAttributeV2> attributes) {
         this.attributes = attributes;
     }
 

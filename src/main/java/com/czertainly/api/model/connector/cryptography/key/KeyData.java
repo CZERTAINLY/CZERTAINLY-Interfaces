@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.cryptography.key;
 
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.czertainly.api.model.common.enums.cryptography.KeyFormat;
 import com.czertainly.api.model.common.enums.cryptography.KeyType;
@@ -62,6 +62,6 @@ public class KeyData {
     @Schema(
             description = "Metadata for the Key, specific data that can be technology specific"
     )
-    private List<MetadataAttribute> metadata;
+    private List<MetadataAttributeV2> metadata;
 
 }

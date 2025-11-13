@@ -20,19 +20,19 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeContentType implements IPlatformEnum {
 
-    STRING(Codes.STRING, "String", StringAttributeContent.class, String.class, true),
-    TEXT(Codes.TEXT, "Text", TextAttributeContent.class, String.class, true),
-    INTEGER(Codes.INTEGER, "Integer number", IntegerAttributeContent.class, Integer.class, true),
-    BOOLEAN(Codes.BOOLEAN, "Boolean", BooleanAttributeContent.class, Boolean.class, true),
-    FLOAT(Codes.FLOAT, "Decimal number", FloatAttributeContent.class, Float.class, true),
-    DATE(Codes.DATE, "Date", DateAttributeContent.class, LocalDate.class, true),
-    TIME(Codes.TIME, "Time", TimeAttributeContent.class, LocalTime.class, true),
-    DATETIME(Codes.DATETIME, "DateTime", DateTimeAttributeContent.class, ZonedDateTime.class, true),
-    SECRET(Codes.SECRET, "Secret", SecretAttributeContent.class, SecretAttributeContentData.class, false),
-    FILE(Codes.FILE, "File", FileAttributeContent.class, FileAttributeContentData.class, false),
-    CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContent.class, CredentialAttributeContentData.class, false),
-    CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContent.class, CodeBlockAttributeContentData.class, false),
-    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContent.class, Object.class, false),
+    STRING(Codes.STRING, "String", StringAttributeContentV2.class, String.class, true),
+    TEXT(Codes.TEXT, "Text", TextAttributeContentV2.class, String.class, true),
+    INTEGER(Codes.INTEGER, "Integer number", IntegerAttributeContentV2.class, Integer.class, true),
+    BOOLEAN(Codes.BOOLEAN, "Boolean", BooleanAttributeContentV2.class, Boolean.class, true),
+    FLOAT(Codes.FLOAT, "Decimal number", FloatAttributeContentV2.class, Float.class, true),
+    DATE(Codes.DATE, "Date", DateAttributeContentV2.class, LocalDate.class, true),
+    TIME(Codes.TIME, "Time", TimeAttributeContentV2.class, LocalTime.class, true),
+    DATETIME(Codes.DATETIME, "DateTime", DateTimeAttributeContentV2.class, ZonedDateTime.class, true),
+    SECRET(Codes.SECRET, "Secret", SecretAttributeContentV2.class, SecretAttributeContentData.class, false),
+    FILE(Codes.FILE, "File", FileAttributeContentV2.class, FileAttributeContentData.class, false),
+    CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContentV2.class, CredentialAttributeContentData.class, false),
+    CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContentV2.class, CodeBlockAttributeContentData.class, false),
+    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContentV2.class, Object.class, false),
     ;
 
     private static final AttributeContentType[] VALUES;
@@ -72,7 +72,7 @@ public enum AttributeContentType implements IPlatformEnum {
     }
 
     public static AttributeContentType fromClass(Class<?> clazz) {
-        return clazz.equals(BaseAttributeContent.class) ? null
+        return clazz.equals(BaseAttributeContentV2.class) ? null
                 : Arrays.stream(VALUES).filter(e -> e.contentClass.equals(clazz))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
     }

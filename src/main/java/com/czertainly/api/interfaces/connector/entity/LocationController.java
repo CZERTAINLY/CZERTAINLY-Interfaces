@@ -5,7 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.entity.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -87,7 +87,7 @@ public interface LocationController extends AuthProtectedConnectorController {
             path = "/push/attributes",
             produces = {"application/json"}
     )
-    List<BaseAttribute> listPushCertificateAttributes(
+    List<BaseAttributeV2> listPushCertificateAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
     ) throws NotFoundException;
 
@@ -175,7 +175,7 @@ public interface LocationController extends AuthProtectedConnectorController {
             path = "/csr/attributes",
             produces = {"application/json"}
     )
-    List<BaseAttribute> listGenerateCsrAttributes(
+    List<BaseAttributeV2> listGenerateCsrAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
     ) throws NotFoundException;
 

@@ -4,7 +4,7 @@ import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.core.v2.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -51,7 +51,7 @@ public interface ClientOperationController extends AuthProtectedController {
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@GetMapping(path = "/attributes/issue", produces = {"application/json"})
-	List<BaseAttribute> listIssueCertificateAttributes(
+	List<BaseAttributeV2> listIssueCertificateAttributes(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws NotFoundException, ConnectorException;
 
@@ -119,7 +119,7 @@ public interface ClientOperationController extends AuthProtectedController {
 	@Operation(summary = "Get revocation Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes obtained") })
 	@GetMapping(path = "/attributes/revoke", produces = {"application/json"})
-	List<BaseAttribute> listRevokeCertificateAttributes(
+	List<BaseAttributeV2> listRevokeCertificateAttributes(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException, NotFoundException;
 

@@ -5,7 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.authority.CertificateRevocationListRequestDto;
@@ -117,7 +117,7 @@ public interface AuthorityInstanceController extends AuthProtectedConnectorContr
                     )
             })
     @GetMapping(path = "/{uuid}/raProfile/attributes", produces = {"application/json"})
-    List<BaseAttribute> listRAProfileAttributes(
+    List<BaseAttributeV2> listRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(

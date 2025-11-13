@@ -1,7 +1,7 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderNotifyRequestDto;
@@ -91,12 +91,12 @@ public class NotificationInstanceApiClient extends BaseApiClient {
                 .getBody(), request, connector);
     }
 
-    public List<DataAttribute> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
+    public List<DataAttributeV2> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r.uri(connector.getUrl() + NOTIFICATION_INSTANCE_MAPPING_ATTRIBUTES_CONTEXT, kind)
                 .retrieve()
-                .toEntityList(DataAttribute.class)
+                .toEntityList(DataAttributeV2.class)
                 .block()
                 .getBody(), request, connector);
     }

@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.entity;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -12,13 +12,13 @@ public class EntityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Entity instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<BaseAttribute> attributes;
+    private List<BaseAttributeV2> attributes;
 
-    public List<BaseAttribute> getAttributes() {
+    public List<BaseAttributeV2> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<BaseAttribute> attributes) {
+    public void setAttributes(List<BaseAttributeV2> attributes) {
         this.attributes = attributes;
     }
 

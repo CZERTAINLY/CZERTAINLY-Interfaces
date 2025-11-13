@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.cryptography.key;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -21,6 +21,6 @@ public class DestroyKeyRequestDto {
     @Schema(
             description = "Attributes of the Key"
     )
-    private List<MetadataAttribute> keyAttributes;
+    private List<MetadataAttributeV2> keyAttributes;
 
 }

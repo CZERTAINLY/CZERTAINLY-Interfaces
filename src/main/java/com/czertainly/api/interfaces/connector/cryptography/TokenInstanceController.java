@@ -5,7 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceRequestDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceStatusDto;
@@ -168,7 +168,7 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
     /**
      * @throws NotFoundException Token instance not found
      */
-    List<BaseAttribute> listTokenProfileAttributes(
+    List<BaseAttributeV2> listTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
 
@@ -220,7 +220,7 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
     /**
      * @throws NotFoundException Token instance not found
      */
-    List<BaseAttribute> listTokenInstanceActivationAttributes(
+    List<BaseAttributeV2> listTokenInstanceActivationAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws NotFoundException;
 

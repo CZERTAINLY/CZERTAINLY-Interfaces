@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -46,7 +46,7 @@ public class CertificateRenewRequestDto {
             description = "Metadata for the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<MetadataAttribute> meta;
+    private List<MetadataAttributeV2> meta;
 
     @Override
     public String toString() {

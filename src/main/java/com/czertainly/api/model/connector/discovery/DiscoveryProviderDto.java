@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.discovery;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,7 +25,7 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 	
 	@Schema(description = "Certificate Metadata",
 			requiredMode = Schema.RequiredMode.REQUIRED)
-	private List<MetadataAttribute> meta;
+	private List<MetadataAttributeV2> meta;
 
 	public String getUuid() {
 		return uuid;
@@ -59,11 +59,11 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 		this.totalCertificatesDiscovered = totalCertificatesDiscovered;
 	}
 
-	public List<MetadataAttribute> getMeta() {
+	public List<MetadataAttributeV2> getMeta() {
 		return meta;
 	}
 
-	public void setMeta(List<MetadataAttribute> meta) {
+	public void setMeta(List<MetadataAttributeV2> meta) {
 		this.meta = meta;
 	}
 

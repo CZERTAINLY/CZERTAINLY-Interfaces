@@ -6,7 +6,7 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.*;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -98,7 +98,7 @@ public interface AuthorityInstanceController extends AuthProtectedController {
     @Operation(summary = "List RA Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
     @GetMapping(path = "/{uuid}/attributes/raProfile", produces = {"application/json"})
-    List<BaseAttribute> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException;
+    List<BaseAttributeV2> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Validate RA Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information validated")})

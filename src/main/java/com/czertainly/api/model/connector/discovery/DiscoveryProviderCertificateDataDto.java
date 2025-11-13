@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.discovery;
 
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -26,7 +26,7 @@ public class DiscoveryProviderCertificateDataDto {
 			description = "Metadata for the Certificate",
 			requiredMode = Schema.RequiredMode.REQUIRED
 	)
-	private List<MetadataAttribute> meta;
+	private List<MetadataAttributeV2> meta;
 
 	public String getUuid() {
 		return uuid;
@@ -44,11 +44,11 @@ public class DiscoveryProviderCertificateDataDto {
 		this.base64Content = base64Content;
 	}
 
-	public List<MetadataAttribute> getMeta() {
+	public List<MetadataAttributeV2> getMeta() {
 		return meta;
 	}
 
-	public void setMeta(List<MetadataAttribute> meta) {
+	public void setMeta(List<MetadataAttributeV2> meta) {
 		this.meta = meta;
 	}
 

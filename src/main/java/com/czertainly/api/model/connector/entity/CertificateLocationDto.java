@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,7 +18,7 @@ public class CertificateLocationDto {
     @Schema(
             description = "Metadata of the Certificate related to the Location"
     )
-    private List<MetadataAttribute> metadata;
+    private List<MetadataAttributeV2> metadata;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
@@ -32,12 +32,12 @@ public class CertificateLocationDto {
     @Schema(
             description = "List of Attributes to replace Certificate"
     )
-    private List<DataAttribute> pushAttributes;
+    private List<DataAttributeV2> pushAttributes;
 
     @Schema(
             description = "List of Attributes to renew Certificate"
     )
-    private List<DataAttribute> csrAttributes;
+    private List<DataAttributeV2> csrAttributes;
 
     public String getCertificateData() {
         return certificateData;
@@ -47,11 +47,11 @@ public class CertificateLocationDto {
         this.certificateData = certificateData;
     }
 
-    public List<MetadataAttribute> getMetadata() {
+    public List<MetadataAttributeV2> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(List<MetadataAttribute> metadata) {
+    public void setMetadata(List<MetadataAttributeV2> metadata) {
         this.metadata = metadata;
     }
 
@@ -71,19 +71,19 @@ public class CertificateLocationDto {
         this.withKey = withKey;
     }
 
-    public List<DataAttribute> getPushAttributes() {
+    public List<DataAttributeV2> getPushAttributes() {
         return pushAttributes;
     }
 
-    public void setPushAttributes(List<DataAttribute> pushAttributes) {
+    public void setPushAttributes(List<DataAttributeV2> pushAttributes) {
         this.pushAttributes = pushAttributes;
     }
 
-    public List<DataAttribute> getCsrAttributes() {
+    public List<DataAttributeV2> getCsrAttributes() {
         return csrAttributes;
     }
 
-    public void setCsrAttributes(List<DataAttribute> csrAttributes) {
+    public void setCsrAttributes(List<DataAttributeV2> csrAttributes) {
         this.csrAttributes = csrAttributes;
     }
 

@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.entity;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class RemoveCertificateRequestDto {
             description = "Metadata of the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<MetadataAttribute> certificateMetadata;
+    private List<MetadataAttributeV2> certificateMetadata;
 
     @Schema(
             description = "List of Location Attributes",
@@ -20,11 +20,11 @@ public class RemoveCertificateRequestDto {
     )
     private List<RequestAttributeDto> locationAttributes;
 
-    public List<MetadataAttribute> getCertificateMetadata() {
+    public List<MetadataAttributeV2> getCertificateMetadata() {
         return certificateMetadata;
     }
 
-    public void setCertificateMetadata(List<MetadataAttribute> certificateMetadata) {
+    public void setCertificateMetadata(List<MetadataAttributeV2> certificateMetadata) {
         this.certificateMetadata = certificateMetadata;
     }
 

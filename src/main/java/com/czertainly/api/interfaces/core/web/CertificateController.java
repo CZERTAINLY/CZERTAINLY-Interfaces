@@ -7,7 +7,7 @@ import com.czertainly.api.model.client.approval.ApprovalResponseDto;
 import com.czertainly.api.model.client.certificate.*;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.core.certificate.*;
 import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
@@ -158,7 +158,7 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "Get CSR Generation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved")})
     @GetMapping(path = "/csr/attributes", produces = {MediaType.APPLICATION_JSON_VALUE})
-    List<BaseAttribute> getCsrGenerationAttributes();
+    List<BaseAttributeV2> getCsrGenerationAttributes();
 
     @Operation(summary = "Get Certificate Content")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate content retrieved"),

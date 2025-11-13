@@ -1,7 +1,7 @@
 package com.czertainly.api.model.common.attribute.v2.content.data;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class CredentialAttributeContentData extends NameAndUuidDto {
 
     @Schema(description = "List of Credential Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<DataAttribute> attributes;
+    private List<DataAttributeV2> attributes;
 
     @Override
     public String toString() {
