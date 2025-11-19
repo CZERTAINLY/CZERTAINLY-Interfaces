@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.attribute;
 
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -56,9 +57,9 @@ public class RequestAttributeDto implements Serializable {
             description = "Content of the Attribute",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<BaseAttributeContentV2> content;
+    private List<BaseAttributeContent> content;
 
-    public void setContent(List<BaseAttributeContentV2> content) {
+    public void setContent(List<BaseAttributeContent> content) {
         this.content = content;
         if (contentType == null && content != null && !content.isEmpty()) {
             contentType = AttributeContentType.fromClass(content.get(0).getClass());

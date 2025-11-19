@@ -12,6 +12,7 @@ import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateReq
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
@@ -133,7 +134,7 @@ public interface CustomAttributeController extends AuthProtectedController {
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
-            @RequestBody List<BaseAttributeContentV2> request
+            @RequestBody List<BaseAttributeContent> request
             ) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Value of a Custom Attribute for a Resource")

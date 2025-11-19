@@ -16,8 +16,6 @@ public class BaseAttributeContentV2<T> extends BaseAttributeContent implements B
 
     private String reference;
 
-    private int version = 2;
-
     @Hidden
     @Schema(description = "Content Data", requiredMode = Schema.RequiredMode.REQUIRED)
     private T data;

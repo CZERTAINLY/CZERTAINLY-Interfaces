@@ -1,6 +1,7 @@
 package com.czertainly.api.config.serializer;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
@@ -16,18 +17,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttributeContentV2>> {
+public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttributeContent>> {
 
     public ResponseAttributeSerializer() {
         this(null);
     }
 
-    public ResponseAttributeSerializer(Class<List<BaseAttributeContentV2>> t) {
+    public ResponseAttributeSerializer(Class<List<BaseAttributeContent>> t) {
         super(t);
     }
 
     @Override
-    public void serialize(List<BaseAttributeContentV2> response, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(List<BaseAttributeContent> response, JsonGenerator gen, SerializerProvider provider) throws IOException {
         ResponseAttributeDto responseAttributeDto = (ResponseAttributeDto) gen.getCurrentValue();
         if (response == null) {
             gen.writeNull();
@@ -35,7 +36,7 @@ public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttribut
         }
         if (responseAttributeDto.getContentType() == null) {
             gen.writeStartArray();
-            for (BaseAttributeContentV2 content : response) {
+            for (BaseAttributeContent content : response) {
                 gen.writeObject(content);
             }
             gen.writeEndArray();
@@ -45,14 +46,15 @@ public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttribut
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         if (responseAttributeDto.getContentType().equals(AttributeContentType.SECRET)) {
             gen.writeStartArray();
-            for (BaseAttributeContentV2 content : responseAttributeDto.getContent()) {
+            for (BaseAttributeContent content : responseAttributeDto.getContent()) {
                 SecretAttributeContentV2 secretAttributeContent = objectMapper.convertValue(content, SecretAttributeContentV2.class);
                 secretAttributeContent.setData(null);
                 gen.writeObject(secretAttributeContent);
             }
         } else if (responseAttributeDto.getContentType().equals(AttributeContentType.CREDENTIAL)) {
             gen.writeStartArray();
-            for (BaseAttributeContentV2 credential : responseAttributeDto.getContent()) {
+            for (BaseAttributeContent credential : responseAttributeDto.getContent()) {
+                BaseAttributeContentV2 credentialV2 = (BaseAttributeContentV2) credential;
                 CredentialAttributeContentV2 credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContentV2.class);
                 List<DataAttributeV2> credentialAttributes = new ArrayList<>();
                 CredentialAttributeContentData credentialDto = credentialAttributeContent.getData();
@@ -76,12 +78,12 @@ public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttribut
                 }
 
                 credentialDto.setAttributes(credentialAttributes);
-                credential.setData(credentialDto);
-                gen.writeObject(credential);
+                credentialV2.setData(credentialDto);
+                gen.writeObject(credentialV2);
             }
         } else {
             gen.writeStartArray();
-            for (BaseAttributeContentV2 content : response) {
+            for (BaseAttributeContent content : response) {
                 gen.writeObject(content);
             }
         }

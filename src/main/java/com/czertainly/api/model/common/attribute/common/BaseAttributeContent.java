@@ -19,9 +19,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@Schema(implementation = BaseAttributeDto.class)
+@Schema(implementation = BaseAttributeContentDto.class)
 public abstract class BaseAttributeContent extends AttributeContent implements BaseAttributeContentDto {
 
-
+    @Schema
+    private int version;
 
 }

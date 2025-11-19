@@ -1,11 +1,14 @@
 package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.config.serializer.ResponseAttributeSerializer;
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -19,6 +22,8 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Response attribute with content for object it belongs to")
+@Getter
+@Setter
 public class ResponseAttributeDto implements Serializable {
 
     /**
@@ -77,58 +82,10 @@ public class ResponseAttributeDto implements Serializable {
             description = "Content of the Attribute"
     )
     @JsonSerialize(using = ResponseAttributeSerializer.class)
-    private List<BaseAttributeContentV2> content;
+    private List<BaseAttributeContent> content;
 
     public ResponseAttributeDto() {
         super();
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public AttributeType getType() {
-        return type;
-    }
-
-    public void setType(AttributeType type) {
-        this.type = type;
-    }
-
-    public List<BaseAttributeContentV2> getContent() {
-        return content;
-    }
-
-    public void setContent(List<BaseAttributeContentV2> content) {
-        this.content = content;
-    }
-
-    public AttributeContentType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(AttributeContentType contentType) {
-        this.contentType = contentType;
     }
 
     @Override

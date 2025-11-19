@@ -2,7 +2,7 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public abstract class BaseApiClient {
     private static final Logger logger = LoggerFactory.getLogger(BaseApiClient.class);
@@ -55,7 +54,7 @@ public abstract class BaseApiClient {
     protected TrustManager[] defaultTrustManagers;
 
     public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, Boolean validateConnectorStatus) {
-        if (validateConnectorStatus) {
+        if (validateConnectorStatus.equals(Boolean.TRUE)) {
             validateConnectorStatus(connector.getStatus());
         }
         WebClient.RequestBodySpec request;
@@ -73,8 +72,10 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case BASIC:
-                BaseAttributeContentV2<String> username = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes, false);
-                BaseAttributeContentV2<String> password = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes, false);
+                BaseAttributeContent username = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes, false);
+                BaseAttributeContent password = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes, false);
+
+                if (username == null || password == null) throw new IllegalArgumentException("Missing username or password in authentication");
 
                 request = webClient
                         .method(method)
@@ -88,8 +89,10 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case API_KEY:
-                BaseAttributeContentV2<String> apiKeyHeader = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes, false);
-                BaseAttributeContentV2<String> apiKey = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes, false);
+                BaseAttributeContent apiKeyHeader = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes, false);
+                BaseAttributeContent apiKey = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes, false);
+
+                if (apiKeyHeader == null || apiKey == null) throw new IllegalArgumentException("Missing API Key or API Key header in authentication");
 
                 request = webClient
                         .method(method)
@@ -119,11 +122,11 @@ public abstract class BaseApiClient {
             if (keyStoreData != null && !keyStoreData.getData().getContent().isEmpty()) {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                BaseAttributeContentV2<String> keyStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes, false);
-                BaseAttributeContentV2<String> keyStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes, false);
+                BaseAttributeContent keyStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes, false);
+                BaseAttributeContent keyStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes, false);
                 byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData.getData().getContent());
 
-                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword.getData(), keyStoreType.getData()), keyStorePassword.getData().toCharArray());
+                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword.getData(), keyStoreType.getData()), ((String) keyStorePassword.getData()).toCharArray());
                 km = kmf.getKeyManagers()[0];
             }
 
@@ -134,8 +137,8 @@ public abstract class BaseApiClient {
             if (trustStoreData != null && !trustStoreData.getData().getContent().isEmpty()) {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                BaseAttributeContentV2<String> trustStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes, false);
-                BaseAttributeContentV2<String> trustStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes, false);
+                BaseAttributeContent trustStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes, false);
+                BaseAttributeContent trustStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes, false);
                 byte[] trustStoreBytes = Base64.getDecoder().decode(trustStoreData.getData().getContent());
 
                 tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getData(), trustStoreType.getData()));
@@ -172,7 +175,7 @@ public abstract class BaseApiClient {
             return clientResponse.bodyToMono(ERROR_LIST_TYPE_REF).flatMap(body ->
                     Mono.error(new ValidationException(body.stream()
                                     .map(ValidationError::create)
-                                    .collect(Collectors.toList())
+                                    .toList()
                             )
                     )
             );
