@@ -10,7 +10,7 @@ import com.czertainly.api.model.client.location.IssueToLocationRequestDto;
 import com.czertainly.api.model.client.location.PushToLocationRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.location.LocationDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -213,7 +213,7 @@ public interface LocationManagementController extends AuthProtectedController {
             path = "/entities/{entityUuid}/locations/{locationUuid}/attributes/push",
             produces = {"application/json"}
     )
-    List<BaseAttributeV2> listPushAttributes(
+    List<BaseAttribute> listPushAttributes(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;
@@ -233,7 +233,7 @@ public interface LocationManagementController extends AuthProtectedController {
             path = "/entities/{entityUuid}/locations/{locationUuid}/attributes/issue",
             produces = {"application/json"}
     )
-    List<BaseAttributeV2> listCsrAttributes(
+    List<BaseAttribute> listCsrAttributes(
             @Parameter(description = "Entity UUID") @PathVariable String entityUuid,
             @Parameter(description = "Location UUID") @PathVariable String locationUuid
     ) throws NotFoundException, LocationException;

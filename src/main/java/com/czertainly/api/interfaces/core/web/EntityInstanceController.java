@@ -12,7 +12,7 @@ import com.czertainly.api.model.client.entity.EntityInstanceRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.entity.EntityInstanceDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -172,7 +172,7 @@ public interface EntityInstanceController extends AuthProtectedController {
             path = "/{entityUuid}/attributes/location",
             produces = {"application/json"}
     )
-    List<BaseAttributeV2> listLocationAttributes(
+    List<BaseAttribute> listLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid
     ) throws ConnectorException, NotFoundException;
 

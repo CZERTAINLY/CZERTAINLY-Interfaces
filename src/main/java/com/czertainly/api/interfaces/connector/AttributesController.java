@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.connector;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,7 +47,7 @@ public interface AttributesController extends AuthProtectedConnectorController {
                     )
             }
     )
-    List<BaseAttributeV2> listAttributeDefinitions(@Parameter(description = "Kind") @PathVariable String kind);
+    List<BaseAttribute> listAttributeDefinitions(@Parameter(description = "Kind") @PathVariable String kind);
 
     @PostMapping(
             path = "/validate",

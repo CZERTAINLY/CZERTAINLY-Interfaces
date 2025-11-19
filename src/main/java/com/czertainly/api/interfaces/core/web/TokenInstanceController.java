@@ -5,7 +5,7 @@ import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.cryptography.token.TokenInstanceRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.cryptography.token.TokenInstanceDetailDto;
 import com.czertainly.api.model.core.cryptography.token.TokenInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -206,7 +206,7 @@ public interface TokenInstanceController extends AuthProtectedController {
             path = "/{uuid}/tokenProfiles/attributes",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<BaseAttributeV2> listTokenProfileAttributes(
+    List<BaseAttribute> listTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid
     ) throws ConnectorException, NotFoundException;
 
@@ -225,7 +225,7 @@ public interface TokenInstanceController extends AuthProtectedController {
             path = "/{uuid}/activate/attributes",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<BaseAttributeV2> listTokenInstanceActivationAttributes(
+    List<BaseAttribute> listTokenInstanceActivationAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String uuid
     ) throws ConnectorException, NotFoundException;
 }

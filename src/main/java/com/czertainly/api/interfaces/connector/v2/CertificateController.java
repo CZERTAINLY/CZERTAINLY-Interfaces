@@ -6,7 +6,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.v2.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,7 +37,7 @@ public interface CertificateController extends AuthProtectedConnectorController 
                     )
             })
     @GetMapping(path = "/issue/attributes", produces = {MediaType.APPLICATION_JSON_VALUE})
-    List<BaseAttributeV2> listIssueCertificateAttributes(
+    List<BaseAttribute> listIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
@@ -120,7 +120,7 @@ public interface CertificateController extends AuthProtectedConnectorController 
                             ))
             })
     @GetMapping(path = "/revoke/attributes", produces = {MediaType.APPLICATION_JSON_VALUE})
-    List<BaseAttributeV2> listRevokeCertificateAttributes(
+    List<BaseAttribute> listRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(
