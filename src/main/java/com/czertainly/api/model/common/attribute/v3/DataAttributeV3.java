@@ -7,6 +7,7 @@ import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -28,6 +29,7 @@ import java.util.List;
         description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
         type = "object"
 )
+@JsonDeserialize
 public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3>> {
 
     /**

@@ -1,7 +1,7 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV2;
-import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV3;
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -12,9 +12,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @Schema(implementation = BaseAttributeContentDtoV2.class)
-public class BaseAttributeContentV2<T> extends AttributeContent implements BaseAttributeContentDtoV2 {
+public class BaseAttributeContentV2<T> extends BaseAttributeContent implements BaseAttributeContentDtoV2 {
 
     private String reference;
+
+    private int version = 2;
 
     @Hidden
     @Schema(description = "Content Data", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -45,5 +47,10 @@ public class BaseAttributeContentV2<T> extends AttributeContent implements BaseA
     @Override
     public int hashCode() {
         return Objects.hash(reference, data);
+    }
+
+    @Override
+    public int getVersion() {
+        return 2;
     }
 }

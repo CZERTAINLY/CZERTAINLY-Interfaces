@@ -1,10 +1,12 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.model.client.attribute.BaseAttributeDtoV2;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -26,6 +28,7 @@ import java.util.Objects;
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(name = "BaseAttributeV2", implementation = BaseAttributeDtoV2.class)
+@JsonDeserialize(using = BaseAttributeDeserializer.class)
 public class BaseAttributeV2<T> extends BaseAttribute implements BaseAttributeDtoV2 {
 
     private int version = 2;

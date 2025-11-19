@@ -13,19 +13,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 @DiscriminatorMapping(value = "2", schema = BaseAttributeV2.class),
                 @DiscriminatorMapping(value = "3", schema = BaseAttributeV3.class),
         },
-        oneOf = {BaseAttributeV2.class,
+        oneOf = {
+                BaseAttributeV2.class,
                 BaseAttributeV3.class
         }
 )
-public interface BaseAttributeVersionDto {
+public interface BaseAttributeDto {
         /**
          * Version of the Attribute
          **/
         @Schema(
                 description = "Version of the Attribute",
                 example = "3",
-                requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-                defaultValue = "3"
+                requiredMode = Schema.RequiredMode.NOT_REQUIRED
         )
         int getVersion();
 }

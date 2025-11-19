@@ -2,11 +2,14 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV3;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.AbstractBaseAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.core.ParameterizedTypeReference;
@@ -36,14 +39,26 @@ public class AttributeApiClient extends BaseApiClient {
         this.defaultTrustManagers = defaultTrustManagers;
     }
 
-    public List<BaseAttribute> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
+    public List<BaseAttributeV2> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
                 .retrieve()
-                .toEntityList(BaseAttribute.class)
+                .toEntityList(BaseAttributeV2.class)
                 .block().getBody(),
+                request,
+                connector);
+    }
+
+    public List<BaseAttribute> test(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
+
+        return processRequest(r -> r
+                        .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
+                        .retrieve()
+                        .toEntityList(BaseAttribute.class)
+                        .block().getBody(),
                 request,
                 connector);
     }
@@ -112,6 +127,18 @@ public class AttributeApiClient extends BaseApiClient {
                 .retrieve()
                 .toEntity(Object.class)
                 .block().getBody(),
+                request,
+                connector);
+    }
+
+    public List<BaseAttributeContentV3> testCont(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
+
+        return processRequest(r -> r
+                        .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
+                        .retrieve()
+                        .toEntityList(BaseAttributeContentV3.class)
+                        .block().getBody(),
                 request,
                 connector);
     }

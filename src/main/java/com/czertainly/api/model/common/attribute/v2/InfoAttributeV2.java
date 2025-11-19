@@ -3,6 +3,7 @@ package com.czertainly.api.model.common.attribute.v2;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.InfoAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ import java.util.List;
         description = "Info attribute contains content that is for information purpose or represents additional information for object (metadata). Its content can not be edited and is not send in requests to store.",
         type = "object"
 )
+@JsonDeserialize
 public class InfoAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> {
 
     /**

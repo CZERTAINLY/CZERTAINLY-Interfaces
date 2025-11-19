@@ -1,6 +1,7 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV3;
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -32,7 +33,7 @@ import java.util.Objects;
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeContentDtoV3.class)
-public class BaseAttributeContentV3<T> extends AttributeContent implements BaseAttributeContentDtoV3 {
+public class BaseAttributeContentV3<T> extends BaseAttributeContent implements BaseAttributeContentDtoV3 {
 
     private String reference;
 
@@ -68,5 +69,10 @@ public class BaseAttributeContentV3<T> extends AttributeContent implements BaseA
     @Override
     public int hashCode() {
         return Objects.hash(reference, data);
+    }
+
+    @Override
+    public int getVersion() {
+        return 3;
     }
 }

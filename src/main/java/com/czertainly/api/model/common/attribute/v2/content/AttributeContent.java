@@ -5,4 +5,6 @@ import java.io.Serializable;
 public abstract class AttributeContent implements Serializable {
 
     public abstract <T extends Object> T getData();
+    public abstract int getVersion();
+
 }

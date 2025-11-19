@@ -3,6 +3,7 @@ package com.czertainly.api.model.common.attribute.v2;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.CustomAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ import java.util.List;
         description = "Custom attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
         type = "object"
 )
+@JsonDeserialize
 public class CustomAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> {
 
     /**

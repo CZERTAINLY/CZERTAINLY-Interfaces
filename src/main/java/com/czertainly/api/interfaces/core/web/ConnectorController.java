@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
+import com.czertainly.api.model.client.attribute.ReqV3;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.connector.ConnectDto;
 import com.czertainly.api.model.client.connector.ConnectRequestDto;
@@ -9,6 +10,7 @@ import com.czertainly.api.model.client.connector.ConnectorRequestDto;
 import com.czertainly.api.model.client.connector.ConnectorUpdateRequestDto;
 import com.czertainly.api.model.common.*;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
@@ -138,11 +140,18 @@ public interface ConnectorController extends AuthProtectedController {
 			"application/json" })
 	public List<BaseAttribute> getAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable FunctionGroupCode functionGroup,
                                                    @Parameter(description = "Kind") @PathVariable String kind) throws NotFoundException, ConnectorException;
+
+	@Operation(summary = "Test")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
+	@PostMapping(path = "/test", consumes = "application/json", produces = {
+			"application/json" })
+	void test(@RequestBody ReqV3 reqV3) throws NotFoundException, ConnectorException;
+
 	
 	@Operation(summary = "Get attributes of all Function Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes received")})
 	@GetMapping(path = "/{uuid}/attributes", produces = {"application/json"})
-	public Map<FunctionGroupCode, Map<String, List<BaseAttribute>>> getAttributesAll(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
+	public Map<FunctionGroupCode, Map<String, List<BaseAttributeV2>>> getAttributesAll(@Parameter(description = "Connector UUID") @PathVariable String uuid) throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Validate Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes Validated")})
@@ -171,4 +180,6 @@ public interface ConnectorController extends AuthProtectedController {
 			description = "Connector UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 			examples={@ExampleObject(value="[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
 											 @RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+
+
 }

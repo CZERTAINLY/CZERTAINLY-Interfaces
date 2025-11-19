@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -23,6 +24,7 @@ import java.util.List;
         description = "Group attribute and its content represents dynamic list of additional attributes retrieved by callback. Its content can not be edited and is not send in requests to store.",
         type = "object"
 )
+@JsonDeserialize
 public class GroupAttributeV2 extends BaseAttributeV2<List<BaseAttributeV2>> {
 
     /**
