@@ -4,7 +4,7 @@ import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.operations.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -87,13 +87,13 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttributeV2> listRandomAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listRandomAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CRYPTOP_RANDOM_ATTRS_CONTEXT, uuid)
                 .retrieve()
-                .toEntityList(BaseAttributeV2.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);

@@ -3,6 +3,7 @@ package com.czertainly.api.clients;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
@@ -101,13 +102,13 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     }
 
 
-    public List<BaseAttributeV2> listRAProfileAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listRAProfileAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + AUTHORITY_INSTANCE_RA_ATTRS_CONTEXT, uuid)
                 .retrieve()
-                .toEntityList(BaseAttributeV2.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);

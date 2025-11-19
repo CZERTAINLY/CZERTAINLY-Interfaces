@@ -2,7 +2,7 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.entity.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -58,13 +58,13 @@ public class LocationApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttributeV2> listPushCertificateAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
+    public List<BaseAttribute> listPushCertificateAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_PUSH_ATTRS_CONTEXT, entityUuid)
                 .retrieve()
-                .toEntityList(BaseAttributeV2.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);
@@ -109,13 +109,13 @@ public class LocationApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttributeV2> listGenerateCsrAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
+    public List<BaseAttribute> listGenerateCsrAttributes(ConnectorDto connector, String entityUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + LOCATION_CSR_ATTRS_CONTEXT, entityUuid)
                 .retrieve()
-                .toEntityList(BaseAttributeV2.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);

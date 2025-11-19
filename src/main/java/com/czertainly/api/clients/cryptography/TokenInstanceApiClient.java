@@ -4,7 +4,7 @@ import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceRequestDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceStatusDto;
@@ -112,13 +112,13 @@ public class TokenInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttributeV2> listTokenProfileAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listTokenProfileAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + TOKEN_INSTANCE_PROFILE_ATTRS_CONTEXT, uuid)
                 .retrieve()
-                .toEntityList(BaseAttributeV2.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);
@@ -137,13 +137,13 @@ public class TokenInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttributeV2> listTokenInstanceActivationAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listTokenInstanceActivationAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + TOKEN_INSTANCE_ACTIVATE_ATTRS_CONTEXT, uuid)
                 .retrieve()
-                .toEntityList(BaseAttributeV2.class)
+                .toEntityList(BaseAttribute.class)
                 .block().getBody(),
                 request,
                 connector);
