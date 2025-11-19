@@ -6,6 +6,7 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
@@ -44,15 +45,17 @@ public class AttributeDefinitionUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(AttributeDefinitionUtils.class);
 
-    public static <T extends BaseAttributeV2<?>> T getAttributeDefinition(String name, List<T> attributes) {
+    static <T extends BaseAttributeV2<?>> T getAttributeDefinition(String name, List<T> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
     }
 
+    // in int
     public static <T extends BaseAttributeV2<?>> boolean containsAttributeDefinition(String name, List<T> attributes) {
         BaseAttributeV2 definition = getAttributeDefinition(name, attributes);
         return definition != null;
     }
 
+    // in int
     public static <T extends Object> T getRequestAttributes(String name, List<?> attributes) {
         if (attributes.size() == 0) {
             return null;
@@ -192,17 +195,6 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static String serializeRequestAttributes(List<RequestAttributeDto> attributes) {
-        if (attributes == null) {
-            return null;
-        }
-        try {
-            return ATTRIBUTES_OBJECT_MAPPER.writeValueAsString(attributes);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
     public static <T extends BaseAttributeContentV2<?>> String serializeAttributeContent(List<T> attributeContent) {
         if (attributeContent == null) {
             return null;
@@ -220,29 +212,6 @@ public class AttributeDefinitionUtils {
         }
         try {
             return ATTRIBUTES_OBJECT_MAPPER.readValue(attributesJson, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public static <T extends BaseAttributeV2<?>> T deserializeSingleAttribute(String attributeJson, Class<T> clazz) {
-        if (attributeJson == null) {
-            return null;
-        }
-        try {
-            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributeJson, clazz);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public static List<RequestAttributeDto> deserializeRequestAttributes(String attributesJson) {
-        if (attributesJson == null) {
-            return null;
-        }
-        try {
-            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributesJson, new TypeReference<>() {
-            });
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -369,7 +338,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<ValidationError> validateConstraints(BaseAttributeV2 attribute, List<BaseAttributeContentV2> contents) {
+    public static List<ValidationError> validateConstraints(BaseAttributeV2 attribute, List<BaseAttributeContent> contents) {
         List<BaseAttributeConstraint> constraints = null;
         AttributeContentType contentType = null;
         String label = null;
@@ -740,11 +709,11 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<RequestAttributeDto> createAttributes(String name, List<BaseAttributeContentV2> content) {
+    public static List<RequestAttributeDto> createAttributes(String name, List<BaseAttributeContent> content) {
         return createAttributes(UUID.randomUUID().toString(), name, content);
     }
 
-    public static List<RequestAttributeDto> createAttributes(String uuid, String name, List<BaseAttributeContentV2> content) {
+    public static List<RequestAttributeDto> createAttributes(String uuid, String name, List<BaseAttributeContent> content) {
         RequestAttributeDto attribute = new RequestAttributeDto();
         attribute.setUuid(uuid);
         attribute.setName(name);
@@ -760,7 +729,7 @@ public class AttributeDefinitionUtils {
         List<DataAttributeV2> convertedDefinition = new ArrayList<>();
         for (RequestAttributeDto clt : attributes) {
             DataAttributeV2 atr = new DataAttributeV2();
-            atr.setContent(clt.getContent());
+//            atr.setContent(clt.getContent());
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());
             convertedDefinition.add(atr);
@@ -775,7 +744,7 @@ public class AttributeDefinitionUtils {
         List<DataAttributeV2> convertedDefinition = new ArrayList<>();
         for (ResponseAttributeDto clt : attributes) {
             DataAttributeV2 atr = new DataAttributeV2();
-            atr.setContent(clt.getContent());
+//            atr.setContent(clt.getContent());
             atr.setName(clt.getName());
             atr.setUuid(clt.getUuid());
             atr.setContentType(clt.getContentType());
@@ -800,7 +769,7 @@ public class AttributeDefinitionUtils {
 
                 DataAttributeV2 dataAttribute = (DataAttributeV2) clt;
                 RequestAttributeDto atr = new RequestAttributeDto();
-                atr.setContent(dataAttribute.getContent());
+//                atr.setContent(dataAttribute.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
                 convertedDefinition.add(atr);
@@ -835,7 +804,7 @@ public class AttributeDefinitionUtils {
                     clt.setProperties(props);
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
-                atr.setContent(clt.getContent());
+//                atr.setContent((List<BaseAttributeContent>) new BaseAttributeContent((BaseAttributeContentV2) clt.getContent()));
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
                 atr.setLabel(clt.getProperties().getLabel());
@@ -852,7 +821,7 @@ public class AttributeDefinitionUtils {
                     clt.setProperties(props);
                 }
                 ResponseAttributeDto atr = new ResponseAttributeDto();
-                atr.setContent(clt.getContent());
+//                atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
                 atr.setLabel(clt.getProperties().getLabel());
@@ -871,7 +840,7 @@ public class AttributeDefinitionUtils {
                 // complete definition stored in the database.
                 atr.setLabel(clt.getName());
                 atr.setType(AttributeType.DATA);
-                atr.setContentType(deriveAttributeContentTypeFromContent(clt.getContent()));
+//                atr.setContentType(deriveAttributeContentTypeFromContent(clt.getContent()));
                 convertedDefinition.add(atr);
             }
         } else {

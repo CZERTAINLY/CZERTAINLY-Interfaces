@@ -19,14 +19,12 @@ import java.util.Objects;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = BooleanAttributeContentV3.class, name = AttributeContentType.Codes.BOOLEAN),
         @JsonSubTypes.Type(value = CodeBlockAttributeContentV3.class, name = AttributeContentType.Codes.CODEBLOCK),
-        @JsonSubTypes.Type(value = CredentialAttributeContentV3.class, name = AttributeContentType.Codes.CREDENTIAL),
         @JsonSubTypes.Type(value = DateAttributeContentV3.class, name = AttributeContentType.Codes.DATE),
         @JsonSubTypes.Type(value = DateTimeAttributeContentV3.class, name = AttributeContentType.Codes.DATETIME),
         @JsonSubTypes.Type(value = FileAttributeContentV3.class, name = AttributeContentType.Codes.FILE),
         @JsonSubTypes.Type(value = FloatAttributeContentV3.class, name = AttributeContentType.Codes.FLOAT),
         @JsonSubTypes.Type(value = IntegerAttributeContentV3.class, name = AttributeContentType.Codes.INTEGER),
         @JsonSubTypes.Type(value = ObjectAttributeContentV3.class, name = AttributeContentType.Codes.OBJECT),
-        @JsonSubTypes.Type(value = SecretAttributeContentV3.class, name = AttributeContentType.Codes.SECRET),
         @JsonSubTypes.Type(value = StringAttributeContentV3.class, name = AttributeContentType.Codes.STRING),
         @JsonSubTypes.Type(value = TextAttributeContentV3.class, name = AttributeContentType.Codes.TEXT),
         @JsonSubTypes.Type(value = TimeAttributeContentV3.class, name = AttributeContentType.Codes.TIME)
