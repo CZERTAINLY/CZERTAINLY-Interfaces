@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.compliance.v2;
 
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.workflows.ConditionItemDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +43,7 @@ public class ComplianceRuleListDto {
     private String format;
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<BaseAttributeV2> attributes;
+    private List<BaseAttribute> attributes;
 
     @Schema(description = "List of the compliance internal rule condition items", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ConditionItemDto> conditionItems;

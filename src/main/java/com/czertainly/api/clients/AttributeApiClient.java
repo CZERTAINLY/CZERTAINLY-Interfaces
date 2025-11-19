@@ -51,30 +51,6 @@ public class AttributeApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<BaseAttribute> test(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
-
-        return processRequest(r -> r
-                        .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
-                        .retrieve()
-                        .toEntityList(BaseAttribute.class)
-                        .block().getBody(),
-                request,
-                connector);
-    }
-
-    public List<AbstractBaseAttribute> listAttributeDefinitions1(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
-
-        return processRequest(r -> r
-                        .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
-                        .retrieve()
-                        .toEntityList(AbstractBaseAttribute.class)
-                        .block().getBody(),
-                request,
-                connector);
-    }
-
     public Void validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttributeDto> attributes, String functionGroupType) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 

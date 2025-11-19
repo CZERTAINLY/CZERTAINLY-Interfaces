@@ -1,7 +1,7 @@
 package com.czertainly.api.model.connector.notification;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ public class NotificationProviderInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Notification instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<BaseAttributeV2> attributes;
+    private List<BaseAttribute> attributes;
 
 
     @Override
