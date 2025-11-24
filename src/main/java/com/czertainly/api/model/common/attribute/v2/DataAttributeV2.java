@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;

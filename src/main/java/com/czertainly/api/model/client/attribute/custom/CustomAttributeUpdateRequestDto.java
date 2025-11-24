@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.attribute.custom;
 
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
+import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -92,7 +93,7 @@ public class CustomAttributeUpdateRequestDto {
     @Schema(
             description = "Predefined content for the attribute if needed. The content of the Attribute must satisfy the type"
     )
-    private List<BaseAttributeContentV2> content;
+    private List<BaseAttributeContentV3> content;
 
     /**
      * List of resources to be associated to the attribute

@@ -7,7 +7,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.notification.NotificationInstanceDto;
 import com.czertainly.api.model.core.notification.NotificationInstanceRequestDto;
 import com.czertainly.api.model.core.notification.NotificationInstanceUpdateRequestDto;
@@ -90,7 +90,7 @@ public interface NotificationInstanceController extends AuthProtectedController 
             @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
     })
     @GetMapping(path = "/attributes/mapping/{connectorUuid}/{kind}", produces = {"application/json"})
-    List<DataAttributeV3> listMappingAttributes(
+    List<BaseAttribute> listMappingAttributes(
             @Parameter(description = "Connector UUID") @PathVariable String connectorUuid,
             @Parameter(description = "Kind") @PathVariable String kind) throws ConnectorException, NotFoundException;
 }

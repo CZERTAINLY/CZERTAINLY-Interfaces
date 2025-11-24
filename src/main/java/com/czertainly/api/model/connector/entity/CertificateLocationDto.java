@@ -1,14 +1,20 @@
 package com.czertainly.api.model.connector.entity;
 
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class CertificateLocationDto {
 
     @Schema(description = "Base64-encoded Certificate content",
@@ -32,60 +38,12 @@ public class CertificateLocationDto {
     @Schema(
             description = "List of Attributes to replace Certificate"
     )
-    private List<DataAttributeV2> pushAttributes;
+    private List<BaseAttribute> pushAttributes;
 
     @Schema(
             description = "List of Attributes to renew Certificate"
     )
-    private List<DataAttributeV2> csrAttributes;
-
-    public String getCertificateData() {
-        return certificateData;
-    }
-
-    public void setCertificateData(String certificateData) {
-        this.certificateData = certificateData;
-    }
-
-    public List<MetadataAttributeV2> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(List<MetadataAttributeV2> metadata) {
-        this.metadata = metadata;
-    }
-
-    public CertificateType getCertificateType() {
-        return certificateType;
-    }
-
-    public void setCertificateType(CertificateType certificateType) {
-        this.certificateType = certificateType;
-    }
-
-    public boolean isWithKey() {
-        return withKey;
-    }
-
-    public void setWithKey(boolean withKey) {
-        this.withKey = withKey;
-    }
-
-    public List<DataAttributeV2> getPushAttributes() {
-        return pushAttributes;
-    }
-
-    public void setPushAttributes(List<DataAttributeV2> pushAttributes) {
-        this.pushAttributes = pushAttributes;
-    }
-
-    public List<DataAttributeV2> getCsrAttributes() {
-        return csrAttributes;
-    }
-
-    public void setCsrAttributes(List<DataAttributeV2> csrAttributes) {
-        this.csrAttributes = csrAttributes;
-    }
+    private List<BaseAttribute> csrAttributes;
 
     @Override
     public String toString() {

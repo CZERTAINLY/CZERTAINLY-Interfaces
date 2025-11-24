@@ -11,11 +11,11 @@ import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitio
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
+import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
+import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -117,7 +117,7 @@ public interface CustomAttributeController extends AuthProtectedController {
     @Operation(summary = "Get Custom Attributes for a resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CustomAttributeV2.class))))})
     @GetMapping(path = "/resources/{resource}", produces = {"application/json"})
-    List<BaseAttribute> getResourceCustomAttributes(@Parameter(description = "Resource Name", schema = @Schema(implementation = Resource.class)) @PathVariable Resource resource);
+    List<CustomAttributeV3> getResourceCustomAttributes(@Parameter(description = "Resource Name", schema = @Schema(implementation = Resource.class)) @PathVariable Resource resource);
 
     @Operation(summary = "Get available resources for Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})
@@ -134,7 +134,7 @@ public interface CustomAttributeController extends AuthProtectedController {
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
-            @RequestBody List<BaseAttributeContent> request
+            @RequestBody List<BaseAttributeContentV3<?>> request
             ) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Value of a Custom Attribute for a Resource")

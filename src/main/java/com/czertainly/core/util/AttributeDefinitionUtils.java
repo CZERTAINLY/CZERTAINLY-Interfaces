@@ -6,6 +6,7 @@ import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
@@ -22,6 +23,7 @@ import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.properties.CustomAttributeProperties;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
+import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -45,13 +47,13 @@ public class AttributeDefinitionUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(AttributeDefinitionUtils.class);
 
-    static <T extends BaseAttributeV2<?>> T getAttributeDefinition(String name, List<T> attributes) {
+    static <T extends BaseAttribute> T getAttributeDefinition(String name, List<T> attributes) {
         return attributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
     }
 
     // in int
-    public static <T extends BaseAttributeV2<?>> boolean containsAttributeDefinition(String name, List<T> attributes) {
-        BaseAttributeV2 definition = getAttributeDefinition(name, attributes);
+    public static <T extends BaseAttribute> boolean containsAttributeDefinition(String name, List<T> attributes) {
+        BaseAttribute definition = getAttributeDefinition(name, attributes);
         return definition != null;
     }
 
@@ -172,7 +174,7 @@ public class AttributeDefinitionUtils {
         return null;
     }
 
-    public static <T extends BaseAttributeV2<?>> String serialize(List<T> attributes) {
+    public static <T extends BaseAttribute> String serialize(List<T> attributes) {
         if (attributes == null) {
             return null;
         }
@@ -184,7 +186,7 @@ public class AttributeDefinitionUtils {
     }
 
 
-    public static <T extends BaseAttributeV2<?>> String serialize(T attribute) {
+    public static <T extends BaseAttribute> String serialize(T attribute) {
         if (attribute == null) {
             return null;
         }
@@ -206,7 +208,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends BaseAttributeV2<?>> List<T> deserialize(String attributesJson, Class<T> clazz) {
+    public static <T extends BaseAttribute> List<T> deserialize(String attributesJson, Class<T> clazz) {
         if (attributesJson == null) {
             return null;
         }
@@ -229,7 +231,7 @@ public class AttributeDefinitionUtils {
     }
 
 
-    public static List<DataAttributeV2> mergeAttributes(List<BaseAttributeV2> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
+    public static List<BaseAttribute> mergeAttributes(List<? extends BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         if (definitions == null || attributes == null) {
             return List.of();
         }
@@ -250,7 +252,7 @@ public class AttributeDefinitionUtils {
     }
 
     //TODO - Rework
-    public static void validateAttributes(List<BaseAttributeV2> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
+    public static void validateAttributes(List<? extends BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
         List<ValidationError> errors = new ArrayList<>();
 
         // When the Group Attribute contains a group of other attributes, we currently do not have the definition of them
@@ -266,7 +268,7 @@ public class AttributeDefinitionUtils {
             }
         }
 
-        for (BaseAttributeV2 definition : definitions) {
+        for (BaseAttribute definition : definitions) {
 
             RequestAttributeDto attribute = getRequestAttributes(definition.getName(), attributes);
 
@@ -338,7 +340,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<ValidationError> validateConstraints(BaseAttributeV2 attribute, List<BaseAttributeContent> contents) {
+    public static List<ValidationError> validateConstraints(BaseAttribute attribute, List<? extends BaseAttributeContent> contents) {
         List<BaseAttributeConstraint> constraints = null;
         AttributeContentType contentType = null;
         String label = null;
@@ -466,7 +468,7 @@ public class AttributeDefinitionUtils {
         return errors;
     }
 
-    public static void validateAttributeContent(BaseAttributeV2 definition, Object attributeContent, List<ValidationError> errors) {
+    public static void validateAttributeContent(BaseAttribute definition, Object attributeContent, List<ValidationError> errors) {
 
         if (definition.getType() == null) {
             errors.add(ValidationError.create("Type of attribute definition not set."));
@@ -850,7 +852,7 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static AttributeContentType deriveAttributeContentTypeFromContent(List<BaseAttributeContentV2> content) {
+    public static AttributeContentType deriveAttributeContentTypeFromContent(List<? extends BaseAttributeContent> content) {
         if (content == null || content.isEmpty() || content.get(0).getData() instanceof LinkedHashMap) {
             return AttributeContentType.OBJECT;
         }
