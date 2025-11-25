@@ -1,10 +1,12 @@
 package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
+import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -29,7 +31,7 @@ import java.util.List;
         type = "object"
 )
 @JsonDeserialize
-public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> {
+public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> implements DataAttribute<BaseAttributeContentV2> {
 
     /**
      * Content of the Attribute
@@ -110,5 +112,10 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
                 .append("constraints", constraints)
                 .append("attributeCallback", attributeCallback)
                 .toString();
+    }
+
+    @Override
+    public void setContent(List<BaseAttributeContentV2> content) {
+        this.content = content;
     }
 }

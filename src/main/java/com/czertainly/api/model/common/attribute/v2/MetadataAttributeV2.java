@@ -1,5 +1,7 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.MetadataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,7 +22,7 @@ import java.util.List;
         type = "object"
 )
 @JsonDeserialize
-public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> {
+public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> implements MetadataAttribute<BaseAttributeContentV2> {
 
     /**
      * Content of the Attribute

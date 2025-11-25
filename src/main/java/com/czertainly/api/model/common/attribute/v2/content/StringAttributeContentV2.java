@@ -1,9 +1,13 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Setter
+@Getter
 @Schema(
         description = "String attribute content",
         type = "object")
@@ -22,14 +26,6 @@ public class StringAttributeContentV2 extends BaseAttributeContentV2<String> {
 
     public StringAttributeContentV2(String reference, String data) {
         super(reference);
-        this.data = data;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
         this.data = data;
     }
 
