@@ -32,7 +32,7 @@ public class ComplianceProfileRulesPatchRequestDto {
     private String kind;
 
     @Schema(description = "Attributes for the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
     @JsonIgnore
     @AssertTrue(message = "If connector UUID is specified, kind is also required and vice versa")

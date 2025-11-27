@@ -2,35 +2,24 @@ package com.czertainly.api.model.client.authority;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class AuthorityInstanceUpdateRequestDto {
 
     @Schema(description = "List of Authority instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
-    public List<RequestAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<RequestAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<RequestAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
 
     @Override
     public String toString() {

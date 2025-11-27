@@ -114,7 +114,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateRAProfileAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateRAProfileAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto<?>> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r

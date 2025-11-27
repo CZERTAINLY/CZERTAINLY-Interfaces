@@ -37,12 +37,12 @@ public class TokenProfileDetailDto extends NameAndUuidDto {
             description = "List of Token Profile attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+    private List<ResponseAttributeDto<?>> attributes = new ArrayList<>();
 
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto<?>> customAttributes;
 
     @Schema(
             description = "Token Instance Status",

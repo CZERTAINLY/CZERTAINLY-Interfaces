@@ -1,6 +1,7 @@
 package com.czertainly.api.model.connector.v2;
 
-import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,7 +18,7 @@ public class CertificateIdentificationResponseDto {
             description = "Metadata for identified certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<MetadataAttributeV2> meta;
+    private List<MetadataAttribute<? extends AttributeContent>> meta;
 
     @Override
     public String toString() {

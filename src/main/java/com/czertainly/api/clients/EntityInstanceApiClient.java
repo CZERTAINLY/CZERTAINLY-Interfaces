@@ -106,7 +106,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateLocationAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateLocationAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto<?>> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r

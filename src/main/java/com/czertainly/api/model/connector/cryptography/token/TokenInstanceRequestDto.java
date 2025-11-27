@@ -23,6 +23,6 @@ public class TokenInstanceRequestDto {
 
     @Schema(description = "List of Token instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
 }

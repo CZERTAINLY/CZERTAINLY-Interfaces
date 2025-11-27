@@ -1,12 +1,17 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class LocationDetailResponseDto {
 
     @Schema(
@@ -19,7 +24,7 @@ public class LocationDetailResponseDto {
             description = "Location metadata",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<MetadataAttributeV2> metadata;
+    private List<MetadataAttribute<? extends AttributeContent>> metadata;
 
     @Schema(
             description = "Support for multiple Certificates in the Location",
@@ -35,37 +40,6 @@ public class LocationDetailResponseDto {
     )
     private boolean supportKeyManagement;
 
-    public List<CertificateLocationDto> getCertificates() {
-        return certificates;
-    }
-
-    public void setCertificates(List<CertificateLocationDto> certificates) {
-        this.certificates = certificates;
-    }
-
-    public List<MetadataAttributeV2> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(List<MetadataAttributeV2> metadata) {
-        this.metadata = metadata;
-    }
-
-    public boolean isMultipleEntries() {
-        return multipleEntries;
-    }
-
-    public void setMultipleEntries(boolean multipleEntries) {
-        this.multipleEntries = multipleEntries;
-    }
-
-    public boolean isSupportKeyManagement() {
-        return supportKeyManagement;
-    }
-
-    public void setSupportKeyManagement(boolean supportKeyManagement) {
-        this.supportKeyManagement = supportKeyManagement;
-    }
 
     @Override
     public String toString() {

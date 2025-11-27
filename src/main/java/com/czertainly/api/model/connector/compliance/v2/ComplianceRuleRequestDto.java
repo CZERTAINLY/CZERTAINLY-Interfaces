@@ -22,6 +22,6 @@ public class ComplianceRuleRequestDto {
     private UUID uuid;
 
     @Schema(description = "Attributes for the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
 }

@@ -44,5 +44,5 @@ public class EditKeyRequestDto {
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 }

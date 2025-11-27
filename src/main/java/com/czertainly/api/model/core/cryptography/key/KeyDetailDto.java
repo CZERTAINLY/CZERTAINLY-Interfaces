@@ -55,13 +55,13 @@ public class KeyDetailDto extends NameAndUuidDto {
             description = "Custom Attributes for the Cryptographic Key",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto<?>> customAttributes;
 
     @Schema(
             description = "Attributes for the Cryptographic Key",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttributeDto<?>> attributes;
 
     @Schema(
             description = "Owner of the Key",

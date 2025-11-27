@@ -21,7 +21,7 @@ public class NotificationProviderInstanceRequestDto {
 
     @Schema(description = "List of Notification instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
     @Override
     public String toString() {

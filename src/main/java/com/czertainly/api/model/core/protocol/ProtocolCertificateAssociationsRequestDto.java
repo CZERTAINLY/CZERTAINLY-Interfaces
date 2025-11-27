@@ -21,7 +21,7 @@ public class ProtocolCertificateAssociationsRequestDto implements Serializable {
     private List<UUID> groupUuids = new ArrayList<>();
 
     @Schema(description = "Custom Attributes to be associated with certificate by protocol",  requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> customAttributes = new ArrayList<>();
+    private List<RequestAttributeDto<?>> customAttributes = new ArrayList<>();
 
     @Hidden
     @JsonIgnore

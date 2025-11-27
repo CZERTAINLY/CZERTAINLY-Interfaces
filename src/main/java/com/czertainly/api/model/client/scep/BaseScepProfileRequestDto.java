@@ -26,7 +26,7 @@ public class BaseScepProfileRequestDto {
             description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> issueCertificateAttributes;
+    private List<RequestAttributeDto<?>> issueCertificateAttributes;
 
     @Schema(
             description = "UUID of the Certificate to be used as CA Certificate for SCEP Requests",
@@ -37,7 +37,7 @@ public class BaseScepProfileRequestDto {
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
     @Schema(
             description = "Minimum expiry days to allow renewal of certificate. Empty or the value '0' will be " +

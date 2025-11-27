@@ -10,5 +10,5 @@ import java.util.List;
 public class ActivateScepForRaProfileRequestDto {
     @Schema(description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> issueCertificateAttributes;
+    private List<RequestAttributeDto<?>> issueCertificateAttributes;
 }

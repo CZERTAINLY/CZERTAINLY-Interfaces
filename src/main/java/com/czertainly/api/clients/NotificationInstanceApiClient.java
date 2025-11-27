@@ -2,17 +2,20 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderNotifyRequestDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.TrustManager;
 import java.util.List;
+import java.util.Objects;
 
 public class NotificationInstanceApiClient extends BaseApiClient {
 
@@ -92,13 +95,14 @@ public class NotificationInstanceApiClient extends BaseApiClient {
                 .getBody(), request, connector);
     }
 
-    public List<BaseAttribute> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
+    public List<DataAttribute<?>> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
-        return processRequest(r -> r.uri(connector.getUrl() + NOTIFICATION_INSTANCE_MAPPING_ATTRIBUTES_CONTEXT, kind)
-                .retrieve()
-                .toEntityList(BaseAttribute.class)
-                .block()
+        return processRequest(r -> Objects.requireNonNull(r.uri(connector.getUrl() + NOTIFICATION_INSTANCE_MAPPING_ATTRIBUTES_CONTEXT, kind)
+                        .retrieve()
+                        .toEntity(new ParameterizedTypeReference<List<DataAttribute<?>>>() {
+                        })
+                        .block())
                 .getBody(), request, connector);
     }
 

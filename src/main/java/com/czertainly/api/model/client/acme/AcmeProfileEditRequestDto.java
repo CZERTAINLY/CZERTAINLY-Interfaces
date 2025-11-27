@@ -73,12 +73,12 @@ public class AcmeProfileEditRequestDto {
             description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> issueCertificateAttributes;
+    private List<RequestAttributeDto<?>> issueCertificateAttributes;
     @Schema(
             description = "List of Attributes to revoke Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> revokeCertificateAttributes;
+    private List<RequestAttributeDto<?>> revokeCertificateAttributes;
     @Schema(
             description = "Require contact information for new Account",
             defaultValue = "false",
@@ -92,7 +92,7 @@ public class AcmeProfileEditRequestDto {
     )
     private Boolean requireTermsOfService;
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
     @Valid
     @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

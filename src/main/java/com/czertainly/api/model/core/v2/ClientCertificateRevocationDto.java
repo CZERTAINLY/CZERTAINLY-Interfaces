@@ -19,7 +19,7 @@ public class ClientCertificateRevocationDto {
 
     @Schema(description = "List of Attributes to revoke Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
     @Schema(
             description = "Destroy Key upon successful revocation",

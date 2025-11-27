@@ -2,7 +2,6 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.ReqV3;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.client.connector.ConnectDto;
 import com.czertainly.api.model.client.connector.ConnectRequestDto;
@@ -151,7 +150,7 @@ public interface ConnectorController extends AuthProtectedController {
 	@PostMapping(path = "/{uuid}/{functionGroup}/{kind}/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
     void validateAttributes(@Parameter(description = "Connector UUID") @PathVariable String uuid, @Parameter(description = "Function Group name") @PathVariable String functionGroup,
-                            @Parameter(description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttributeDto> attributes)
+                            @Parameter(description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttributeDto<?>> attributes)
 			throws NotFoundException, ConnectorException;
 
 	@Operation(summary = "Delete multiple Connectors")

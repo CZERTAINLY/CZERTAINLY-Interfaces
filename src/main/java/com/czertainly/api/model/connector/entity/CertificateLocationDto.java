@@ -1,9 +1,8 @@
 package com.czertainly.api.model.connector.entity;
 
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
-import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class CertificateLocationDto {
     @Schema(
             description = "Metadata of the Certificate related to the Location"
     )
-    private List<MetadataAttributeV2> metadata;
+    private List<MetadataAttribute<? extends AttributeContent>> metadata;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",

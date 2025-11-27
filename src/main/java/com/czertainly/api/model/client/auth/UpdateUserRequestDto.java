@@ -39,7 +39,7 @@ public class UpdateUserRequestDto {
     private String certificateUuid;
 
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
     @Override
     public String toString() {

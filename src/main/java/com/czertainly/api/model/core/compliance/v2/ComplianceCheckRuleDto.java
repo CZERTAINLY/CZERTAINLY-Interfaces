@@ -41,6 +41,6 @@ public class ComplianceCheckRuleDto implements Serializable {
     private Resource resource;
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttributeDto<?>> attributes;
 
 }

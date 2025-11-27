@@ -11,7 +11,6 @@ import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitio
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
@@ -130,7 +129,7 @@ public interface CustomAttributeController extends AuthProtectedController {
             path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<ResponseAttributeDto> updateAttributeContentForResource(
+    List<ResponseAttributeDto<?>> updateAttributeContentForResource(
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
@@ -143,7 +142,7 @@ public interface CustomAttributeController extends AuthProtectedController {
             path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<ResponseAttributeDto> deleteAttributeContentForResource(
+    List<ResponseAttributeDto<?>> deleteAttributeContentForResource(
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid

@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
+import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -22,10 +23,12 @@ public class DateAttributeContentV3 extends BaseAttributeContentV3<LocalDate> {
     private LocalDate data;
 
     public DateAttributeContentV3() {
+        setContentType(AttributeContentType.DATE);
     }
 
     public DateAttributeContentV3(LocalDate data) {
         this.data = data;
+        setContentType(AttributeContentType.DATE);
     }
 
     public LocalDate getData() {

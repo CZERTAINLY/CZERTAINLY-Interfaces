@@ -1,7 +1,8 @@
 package com.czertainly.api.model.connector.cryptography.token;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -19,6 +20,6 @@ public class TokenInstanceDto extends NameAndUuidDto {
     @Schema(
             description = "Token instance Metadata"
     )
-    private List<MetadataAttributeV2> metadata;
+    private List<MetadataAttribute<? extends AttributeContent>> metadata;
 
 }

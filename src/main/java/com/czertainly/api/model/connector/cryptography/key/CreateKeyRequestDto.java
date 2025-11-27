@@ -15,10 +15,10 @@ public class CreateKeyRequestDto {
 
     @Schema(description = "List of Token Profile Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> tokenProfileAttributes;
+    private List<RequestAttributeDto<?>> tokenProfileAttributes;
 
     @Schema(description = "List of Attributes to create a Key",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> createKeyAttributes;
+    private List<RequestAttributeDto<?>> createKeyAttributes;
 
 }

@@ -200,6 +200,6 @@ public interface EntityInstanceController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> attributes
+            @RequestBody List<RequestAttributeDto<?>> attributes
     ) throws ConnectorException, NotFoundException;
 }

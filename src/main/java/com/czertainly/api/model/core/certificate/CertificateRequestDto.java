@@ -77,19 +77,19 @@ public class CertificateRequestDto {
             description = "CSR Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttributeDto<?>> attributes;
 
     @Schema(
             description = "Signature Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> signatureAttributes;
+    private List<ResponseAttributeDto<?>> signatureAttributes;
 
     @Schema(
             description = "Alternative Signature Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> altSignatureAttributes;
+    private List<ResponseAttributeDto<?>> altSignatureAttributes;
 
     @Schema(
             description = "UUID of the Key",

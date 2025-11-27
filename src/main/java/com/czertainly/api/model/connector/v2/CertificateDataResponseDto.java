@@ -1,6 +1,7 @@
 package com.czertainly.api.model.connector.v2;
 
-import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class CertificateDataResponseDto {
             description = "Metadata for the Certificate",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<MetadataAttributeV2> meta;
+    private List<MetadataAttribute<? extends AttributeContent>> meta;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",

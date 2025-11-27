@@ -35,12 +35,12 @@ public class KeyRequestDto {
             description = "List of Attributes to create a Key",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
     @Schema(
             description = "Custom Attributes for the key"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
     @Schema(description = "Enabled status of created key. True = Enabled, False = Disabled",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,

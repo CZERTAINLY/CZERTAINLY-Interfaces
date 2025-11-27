@@ -50,12 +50,12 @@ public class CertificateInLocationDto {
     @Schema(
             description = "Applied push attributes"
     )
-    private List<ResponseAttributeDto> pushAttributes;
+    private List<ResponseAttributeDto<?>> pushAttributes;
 
     @Schema(
             description = "Applied issue attributes"
     )
-    private List<ResponseAttributeDto> csrAttributes;
+    private List<ResponseAttributeDto<?>> csrAttributes;
 
     @Schema(
             description = "If the Certificate in Location has associated private key",

@@ -24,6 +24,6 @@ public class ComplianceProfileUpdateRequestDto {
     private List<ProviderComplianceRulesRequestDto> providerRules = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> customAttributes = new ArrayList<>();
+    private List<RequestAttributeDto<?>> customAttributes = new ArrayList<>();
 
 }

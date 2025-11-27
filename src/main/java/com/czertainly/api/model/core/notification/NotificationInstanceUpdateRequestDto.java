@@ -17,7 +17,7 @@ public class NotificationInstanceUpdateRequestDto {
     private String description;
 
     @Schema(description = "List of Notification instance Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
     @Schema(description = "List of attribute mappings between mapping attributes and (recipient) custom attributes")
     private List<AttributeMappingDto> attributeMappings;

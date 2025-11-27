@@ -22,5 +22,5 @@ public class UploadCertificateRequestDto {
             description = "Custom Attributes for the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 }

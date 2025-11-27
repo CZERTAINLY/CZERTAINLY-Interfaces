@@ -33,17 +33,17 @@ public class ClientCertificateRequestDto {
     @Schema(
             description = "List of attributes to create CSR. Required if CSR is not provided"
     )
-    List<RequestAttributeDto> csrAttributes;
+    List<RequestAttributeDto<?>> csrAttributes;
 
     @Schema(
             description = "List of attributes to sign the CSR"
     )
-    List<RequestAttributeDto> signatureAttributes;
+    List<RequestAttributeDto<?>> signatureAttributes;
 
     @Schema(
             description = "List of attributes to sign the alternative private key, in case of hybrid CSR"
     )
-    List<RequestAttributeDto> altSignatureAttributes;
+    List<RequestAttributeDto<?>> altSignatureAttributes;
 
     //------------------------------------------------------------------------------------------------------------------
     // Key Related Parameters
@@ -91,11 +91,11 @@ public class ClientCertificateRequestDto {
             description = "List of RA Profile related Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> issueAttributes;
+    private List<RequestAttributeDto<?>> issueAttributes;
 
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
 }

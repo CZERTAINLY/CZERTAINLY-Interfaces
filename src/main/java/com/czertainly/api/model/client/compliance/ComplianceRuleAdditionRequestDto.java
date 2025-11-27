@@ -2,11 +2,15 @@ package com.czertainly.api.model.client.compliance;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Setter
+@Getter
 public class ComplianceRuleAdditionRequestDto {
 
     @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
@@ -19,39 +23,7 @@ public class ComplianceRuleAdditionRequestDto {
     private String ruleUuid;
 
     @Schema(description = "Attributes for the rule")
-    private List<RequestAttributeDto> attributes;
-
-    public String getConnectorUuid() {
-        return connectorUuid;
-    }
-
-    public void setConnectorUuid(String connectorUuid) {
-        this.connectorUuid = connectorUuid;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    public String getRuleUuid() {
-        return ruleUuid;
-    }
-
-    public void setRuleUuid(String ruleUuid) {
-        this.ruleUuid = ruleUuid;
-    }
-
-    public List<RequestAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<RequestAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
+    private List<RequestAttributeDto<?>> attributes;
 
     @Override
     public String toString() {

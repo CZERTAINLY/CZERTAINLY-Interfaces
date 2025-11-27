@@ -77,7 +77,7 @@ public class CertificateDetailDto extends CertificateDto {
             description = "List of Custom Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto<?>> customAttributes;
 
     @Schema(
             description = "Key Pair of the certificate",
@@ -108,10 +108,10 @@ public class CertificateDetailDto extends CertificateDto {
     private UUID sourceCertificateUuid;
 
     @Schema(description = "List of issue attributes")
-    private List<ResponseAttributeDto> issueAttributes = new ArrayList<>();
+    private List<ResponseAttributeDto<?>> issueAttributes = new ArrayList<>();
 
     @Schema(description = "List of revoke attributes")
-    private List<ResponseAttributeDto> revokeAttributes = new ArrayList<>();
+    private List<ResponseAttributeDto<?>> revokeAttributes = new ArrayList<>();
 
     @Schema(description = "List of related certificates")
     @Deprecated(since = "2.16.0", forRemoval = true)

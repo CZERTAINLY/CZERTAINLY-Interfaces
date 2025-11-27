@@ -40,11 +40,11 @@ public class RaProfileDto extends NameAndUuidDto {
 
     @Schema(description = "List of RA Profiles attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+    private List<ResponseAttributeDto<?>> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto<?>> customAttributes;
 
     @Schema(description = "List of protocols enabled",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)

@@ -27,10 +27,10 @@ public class RaProfileAcmeDetailResponseDto extends NameAndUuidDto {
             description = "List of Attributes to issue Certificate"
     )
 
-    private List<ResponseAttributeDto> issueCertificateAttributes;
+    private List<ResponseAttributeDto<?>> issueCertificateAttributes;
 
     @Schema(
             description = "List of Attributes to revoke Certificate"
     )
-    private List<ResponseAttributeDto> revokeCertificateAttributes;
+    private List<ResponseAttributeDto<?>> revokeCertificateAttributes;
 }

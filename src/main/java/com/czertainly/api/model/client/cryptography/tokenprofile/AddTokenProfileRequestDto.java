@@ -32,12 +32,12 @@ public class AddTokenProfileRequestDto {
             description = "List of Attributes to create Token Profile",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttributeDto<?>> attributes;
 
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
     @Schema(
             description = "Enabled flag - true = enabled; false = disabled",

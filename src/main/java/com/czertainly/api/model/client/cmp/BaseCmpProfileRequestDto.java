@@ -30,17 +30,17 @@ public class BaseCmpProfileRequestDto {
     @Schema(
             description = "List of Attributes to issue Certificate for the associated RA Profile. Required when raProfileUuid is provided"
     )
-    private List<RequestAttributeDto> issueCertificateAttributes;
+    private List<RequestAttributeDto<?>> issueCertificateAttributes;
 
     @Schema(
             description = "List of Attributes to revoke Certificate for the associated RA Profile. Required when raProfileUuid is provided"
     )
-    private List<RequestAttributeDto> revokeCertificateAttributes;
+    private List<RequestAttributeDto<?>> revokeCertificateAttributes;
 
     @Schema(
             description = "List of Custom Attributes for CMP Profile"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttributeDto<?>> customAttributes;
 
     @NotNull
     @Schema(

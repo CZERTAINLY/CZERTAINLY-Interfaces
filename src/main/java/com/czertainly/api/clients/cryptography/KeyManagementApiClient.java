@@ -49,7 +49,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateCreateSecretKeyAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateCreateSecretKeyAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto<?>> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -87,7 +87,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateCreateKeyPairAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateCreateKeyPairAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto<?>> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r

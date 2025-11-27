@@ -186,7 +186,7 @@ public class V2AttributeMigrationUtils {
                     for (AttributeDefinition item : oldCredentialAttributeValue) {
                         credentialAttributes.add(getNewAttributes(item, DataAttributeV2.class));
                     }
-                    credentialDto.setAttributes(credentialAttributes);
+//                    credentialDto.setAttributes(credentialAttributes);
                     attributeContents.add(new CredentialAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), credentialDto));
                     break;
                 case DATE:

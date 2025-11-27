@@ -1,11 +1,12 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV3;
-import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -31,7 +32,8 @@ import java.util.Objects;
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeContentDtoV3.class)
-public class BaseAttributeContentV3<T> extends BaseAttributeContent implements BaseAttributeContentDtoV3 {
+@JsonDeserialize
+public class BaseAttributeContentV3<T> extends AttributeContent implements BaseAttributeContentDtoV3 {
 
     private String reference;
 
@@ -69,8 +71,4 @@ public class BaseAttributeContentV3<T> extends BaseAttributeContent implements B
         return Objects.hash(reference, data);
     }
 
-    @Override
-    public int getVersion() {
-        return 3;
-    }
 }

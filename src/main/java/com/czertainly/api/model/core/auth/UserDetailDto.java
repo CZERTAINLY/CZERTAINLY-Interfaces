@@ -4,6 +4,8 @@ import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Setter
+@Getter
 public class UserDetailDto extends UserDto implements Loggable {
 
     @Schema(description = "User Certificate details")
@@ -22,31 +26,7 @@ public class UserDetailDto extends UserDto implements Loggable {
     private List<RoleDto> roles;
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
-
-    public List<RoleDto> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<RoleDto> roles) {
-        this.roles = roles;
-    }
-
-    public UserCertificateDto getCertificate() {
-        return certificate;
-    }
-
-    public void setCertificate(UserCertificateDto certificate) {
-        this.certificate = certificate;
-    }
-
-    public List<ResponseAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
+    private List<ResponseAttributeDto<?>> customAttributes;
 
     @Override
     public String toString() {

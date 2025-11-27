@@ -1,11 +1,15 @@
 package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.config.serializer.ResponseAttributeSerializer;
-import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +24,26 @@ import java.util.List;
  * an Attribute definition including its value for the
  * detail API responses
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Response attribute with content for object it belongs to")
-@Getter
 @Setter
-public class ResponseAttributeDto implements Serializable {
+@Getter
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ResponseAttributeV3Dto.class, name = "3"),
+        @JsonSubTypes.Type(value = ResponseAttributeV2Dto.class, name = "2")
+})
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Response attribute to send attribute content for object",
+        type = "object",
+        discriminatorProperty = "version",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = "2", schema = ResponseAttributeV2Dto.class),
+                @DiscriminatorMapping(value = "3", schema = ResponseAttributeV3Dto.class),
+        },
+        oneOf = {
+                ResponseAttributeV3Dto.class,
+                ResponseAttributeV2Dto.class
+        })
+public abstract class ResponseAttributeDto<T extends AttributeContent> implements Serializable {
 
     /**
      * UUID of the Attribute
@@ -82,7 +101,7 @@ public class ResponseAttributeDto implements Serializable {
             description = "Content of the Attribute"
     )
     @JsonSerialize(using = ResponseAttributeSerializer.class)
-    private List<BaseAttributeContent> content;
+    private List<T> content;
 
     public ResponseAttributeDto() {
         super();
@@ -99,4 +118,6 @@ public class ResponseAttributeDto implements Serializable {
                 .append("content", content)
                 .toString();
     }
+
+    public abstract int getVersion();
 }

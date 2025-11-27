@@ -49,7 +49,7 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
             description = "List of Token instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttributeDto<?>> attributes;
 
     @Schema(
             description = "Token instance Metadata",
@@ -61,6 +61,6 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
             description = "Custom Attributes for the Token Instance",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto<?>> customAttributes;
 }
 

@@ -17,17 +17,17 @@ public class CmpProfileDetailDto extends CmpProfileDto {
     @Schema(
             description = "List of Attributes to issue a Certificate for the associated RA Profile"
     )
-    private List<ResponseAttributeDto> issueCertificateAttributes;
+    private List<ResponseAttributeDto<?>> issueCertificateAttributes;
 
     @Schema(
             description = "List of Attributes to revoke a Certificate for the associated RA Profile"
     )
-    private List<ResponseAttributeDto> revokeCertificateAttributes;
+    private List<ResponseAttributeDto<?>> revokeCertificateAttributes;
 
     @Schema(
             description = "List of Custom Attributes for CMP Profile"
     )
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto<?>> customAttributes;
 
     @Schema(
             description = "Protection Method for the CMP Request",

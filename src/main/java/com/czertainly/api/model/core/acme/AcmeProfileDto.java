@@ -46,11 +46,11 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Require new Account to agree on Terms of Service", example = "true")
     private Boolean requireTermsOfService;
     @Schema(description = "List of Attributes to issue a Certificate")
-    private List<ResponseAttributeDto> issueCertificateAttributes;
+    private List<ResponseAttributeDto<?>> issueCertificateAttributes;
     @Schema(description = "List of Attributes to revoke a Certificate")
-    private List<ResponseAttributeDto> revokeCertificateAttributes;
+    private List<ResponseAttributeDto<?>> revokeCertificateAttributes;
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttributeDto<?>> customAttributes;
 
     @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsDto certificateAssociations;

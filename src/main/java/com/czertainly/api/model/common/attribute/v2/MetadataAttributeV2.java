@@ -1,6 +1,5 @@
 package com.czertainly.api.model.common.attribute.v2;
 
-import com.czertainly.api.model.common.attribute.common.BaseAttributeContent;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.properties.MetadataAttributeProperties;
@@ -13,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -69,5 +69,17 @@ public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeConte
                 .append("contentType", contentType)
                 .append("properties", properties)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof MetadataAttributeV2 that)) return false;
+        if (!super.equals(object)) return false;
+        return Objects.equals(content, that.content) && contentType == that.contentType && Objects.equals(properties, that.properties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), content, contentType, properties);
     }
 }

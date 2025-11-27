@@ -2,35 +2,23 @@ package com.czertainly.api.model.client.raprofile;
 
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Setter
+@Getter
 public class ActivateAcmeForRaProfileRequestDto {
     @Schema(description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> issueCertificateAttributes;
+    private List<RequestAttributeDto<?>> issueCertificateAttributes;
 
     @Schema(description = "List of Attributes to revoke Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> revokeCertificateAttributes;
-
-    public List<RequestAttributeDto> getIssueCertificateAttributes() {
-        return issueCertificateAttributes;
-    }
-
-    public void setIssueCertificateAttributes(List<RequestAttributeDto> issueCertificateAttributes) {
-        this.issueCertificateAttributes = issueCertificateAttributes;
-    }
-
-    public List<RequestAttributeDto> getRevokeCertificateAttributes() {
-        return revokeCertificateAttributes;
-    }
-
-    public void setRevokeCertificateAttributes(List<RequestAttributeDto> revokeCertificateAttributes) {
-        this.revokeCertificateAttributes = revokeCertificateAttributes;
-    }
+    private List<RequestAttributeDto<?>> revokeCertificateAttributes;
 
     @Override
     public String toString() {

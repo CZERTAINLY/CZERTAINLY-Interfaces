@@ -27,5 +27,5 @@ public class RaProfileScepDetailResponseDto extends NameAndUuidDto {
             description = "List of Attributes to issue Certificate"
     )
 
-    private List<ResponseAttributeDto> issueCertificateAttributes;
+    private List<ResponseAttributeDto<?>> issueCertificateAttributes;
 }

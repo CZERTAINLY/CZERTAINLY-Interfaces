@@ -1,7 +1,10 @@
 package com.czertainly.api.model.common.attribute.common;
 
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
+import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -19,13 +22,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 public interface BaseAttributeContentDto {
 
-    /**
-     * Version of the Attribute
-     **/
-    @Schema(
-            description = "Version of the Attribute",
-            example = "3",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
-    int getVersion();
+
 }
