@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.client.cryptography.token.TokenInstanceRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
@@ -132,7 +132,7 @@ public interface TokenInstanceController extends AuthProtectedController {
     )
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void activateTokenInstance(@Parameter(description = "Token Instance UUID") @PathVariable String uuid,
-                               @RequestBody List<RequestAttributeDto> attributes)
+                               @RequestBody List<RequestAttribute>attributes)
             throws ConnectorException, NotFoundException;
 
     @Operation(

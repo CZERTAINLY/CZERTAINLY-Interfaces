@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
@@ -31,7 +31,7 @@ public class GenerateCsrResponseDto {
             description = "List of Attributes to push Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> pushAttributes;
+    private List<RequestAttribute>pushAttributes;
 
     @Override
     public String toString() {

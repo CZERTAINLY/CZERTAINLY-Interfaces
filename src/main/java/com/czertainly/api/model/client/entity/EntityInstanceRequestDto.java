@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.entity;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +19,10 @@ public class EntityInstanceRequestDto {
 
     @Schema(description = "List of Entity instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto<?>> attributes;
+    private List<RequestAttribute> attributes;
 
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto<?>> customAttributes;
+    private List<RequestAttribute> customAttributes;
 
     @Schema(description = "UUID of Entity Provider",
             requiredMode = Schema.RequiredMode.REQUIRED)

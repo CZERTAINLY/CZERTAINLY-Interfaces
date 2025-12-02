@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.certificate;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -22,5 +22,5 @@ public class UploadCertificateRequestDto {
             description = "Custom Attributes for the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto<?>> customAttributes;
+    private List<RequestAttribute> customAttributes;
 }

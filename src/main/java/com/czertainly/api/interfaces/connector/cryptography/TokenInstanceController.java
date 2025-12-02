@@ -4,7 +4,7 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceRequestDto;
@@ -196,7 +196,7 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
      */
     void validateTokenProfileAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes
+            @RequestBody List<RequestAttribute>attributes
     ) throws ValidationException, NotFoundException;
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -248,7 +248,7 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
      */
     void validateTokenInstanceActivationAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes
+            @RequestBody List<RequestAttribute>attributes
     ) throws ValidationException, NotFoundException;
 
     @Operation(
@@ -274,7 +274,7 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
      */
     void activateTokenInstance(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes
+            @RequestBody List<RequestAttribute>attributes
     ) throws NotFoundException;
 
     @Operation(

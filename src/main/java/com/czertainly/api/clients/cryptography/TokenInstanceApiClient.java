@@ -3,7 +3,7 @@ package com.czertainly.api.clients.cryptography;
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceRequestDto;
@@ -29,7 +29,7 @@ public class TokenInstanceApiClient extends BaseApiClient {
     private static final String TOKEN_INSTANCE_DEACTIVATE_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT + "/deactivate";
     private static final String TOKEN_INSTANCE_STATUS_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT + "/status";
 
-    private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
+    private static final ParameterizedTypeReference<List<RequestAttribute>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
     public TokenInstanceApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
@@ -124,7 +124,7 @@ public class TokenInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateTokenProfileAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto<?>> attributes) throws ValidationException, ConnectorException {
+    public void validateTokenProfileAttributes(ConnectorDto connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -149,7 +149,7 @@ public class TokenInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateTokenInstanceActivationAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateTokenInstanceActivationAttributes(ConnectorDto connector, String uuid, List<RequestAttribute>attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -162,7 +162,7 @@ public class TokenInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void activateTokenInstance(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ConnectorException {
+    public void activateTokenInstance(ConnectorDto connector, String uuid, List<RequestAttribute>attributes) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PATCH, connector, true);
 
         processRequest(r -> r

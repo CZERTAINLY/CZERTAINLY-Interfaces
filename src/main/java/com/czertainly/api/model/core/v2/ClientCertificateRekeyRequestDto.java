@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.v2;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -73,10 +73,10 @@ public class ClientCertificateRekeyRequestDto {
     @Schema(
             description = "Signature Attributes. If not provided, existing attributes will be used to generate the new CSR"
     )
-    private List<RequestAttributeDto> signatureAttributes;
+    private List<RequestAttribute>signatureAttributes;
 
     @Schema(
             description = "Alternative Signature Attributes. If not provided, existing alternative attributes will be used to generate the new CSR"
     )
-    private List<RequestAttributeDto> altSignatureAttributes;
+    private List<RequestAttribute>altSignatureAttributes;
 }

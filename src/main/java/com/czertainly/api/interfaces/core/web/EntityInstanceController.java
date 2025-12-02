@@ -5,7 +5,7 @@ import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.client.certificate.EntityInstanceResponseDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceRequestDto;
@@ -200,6 +200,6 @@ public interface EntityInstanceController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto<?>> attributes
+            @RequestBody List<RequestAttribute> attributes
     ) throws ConnectorException, NotFoundException;
 }

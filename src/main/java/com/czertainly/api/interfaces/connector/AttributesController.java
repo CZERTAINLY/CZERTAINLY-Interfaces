@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.connector;
 
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -76,6 +76,6 @@ public interface AttributesController extends AuthProtectedConnectorController {
                     )
             }
     )
-    void validateAttributes(@Parameter(required = true, description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttributeDto> attributes) throws ValidationException;
+    void validateAttributes(@Parameter(required = true, description = "Kind") @PathVariable String kind, @RequestBody List<RequestAttribute>attributes) throws ValidationException;
 
 }

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.cryptography.key;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -15,10 +15,10 @@ public class CreateKeyRequestDto {
 
     @Schema(description = "List of Token Profile Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto<?>> tokenProfileAttributes;
+    private List<RequestAttribute> tokenProfileAttributes;
 
     @Schema(description = "List of Attributes to create a Key",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto<?>> createKeyAttributes;
+    private List<RequestAttribute> createKeyAttributes;
 
 }

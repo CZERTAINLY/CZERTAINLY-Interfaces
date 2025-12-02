@@ -4,7 +4,6 @@ import com.czertainly.api.config.serializer.ResponseAttributeSerializer;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -40,8 +39,8 @@ import java.util.List;
                 @DiscriminatorMapping(value = "3", schema = ResponseAttributeV3Dto.class),
         },
         oneOf = {
-                ResponseAttributeV3Dto.class,
-                ResponseAttributeV2Dto.class
+                ResponseAttributeV2Dto.class,
+                ResponseAttributeV3Dto.class
         })
 public abstract class ResponseAttributeDto<T extends AttributeContent> implements Serializable {
 
@@ -103,7 +102,7 @@ public abstract class ResponseAttributeDto<T extends AttributeContent> implement
     @JsonSerialize(using = ResponseAttributeSerializer.class)
     private List<T> content;
 
-    public ResponseAttributeDto() {
+    protected ResponseAttributeDto() {
         super();
     }
 

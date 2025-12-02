@@ -2,10 +2,7 @@ package com.czertainly.core.util;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.client.attribute.ResponseAttributeV2Dto;
-import com.czertainly.api.model.client.attribute.ResponseAttributeV3Dto;
+import com.czertainly.api.model.client.attribute.*;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
@@ -66,8 +63,8 @@ public class AttributeDefinitionUtils {
         if (attributes.isEmpty()) {
             return null;
         }
-        if (attributes.get(0) instanceof RequestAttributeDto) {
-            List<RequestAttributeDto> reloadedAttributes = (List<RequestAttributeDto>) attributes;
+        if (attributes.get(0) instanceof RequestAttribute) {
+            List<RequestAttribute>reloadedAttributes = (List<RequestAttribute>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
         } else if (attributes.get(0) instanceof BaseAttributeV2) {
             List<BaseAttributeV2> reloadedAttributes = (List<BaseAttributeV2>) attributes;
@@ -81,8 +78,8 @@ public class AttributeDefinitionUtils {
 
     }
 
-    public static boolean containsRequestAttributes(String name, List<RequestAttributeDto> attributes) {
-        RequestAttributeDto definition = getRequestAttributes(name, attributes);
+    public static boolean containsRequestAttributes(String name, List<RequestAttribute>attributes) {
+        RequestAttribute definition = getRequestAttributes(name, attributes);
         return definition != null;
     }
 
@@ -90,16 +87,17 @@ public class AttributeDefinitionUtils {
         if (attributes.size() == 0) {
             return null;
         }
-        if (attributes.get(0) instanceof RequestAttributeDto) {
-            RequestAttributeDto definition = getRequestAttributes(name, attributes);
-            if (definition == null || definition.getContent() == null) {
-                return null;
-            }
-            if (!singleItem) {
-                return (T) definition.getContent();
-            } else {
-                return ((List<T>) definition.getContent()).get(0);
-            }
+        if (attributes.get(0) instanceof RequestAttribute) {
+//            RequestAttribute definition = getRequestAttributes(name, attributes);
+//            if (definition == null || definition.getContent() == null) {
+//                return null;
+//            }
+//            if (!singleItem) {
+//                return (T) definition.getContent();
+//            } else {
+//                return ((List<T>) definition.getContent()).get(0);
+//            }
+            return (T) List.of(new RequestAttributeV2Dto());
         } else if (attributes.get(0) instanceof BaseAttributeV2) {
             BaseAttributeV2 definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
@@ -129,12 +127,12 @@ public class AttributeDefinitionUtils {
         if (attributes == null || attributes.size() == 0) {
             return null;
         }
-        if (attributes.get(0) instanceof RequestAttributeDto) {
-            RequestAttributeDto definition = getRequestAttributes(name, attributes);
-            if (definition == null || definition.getContent() == null) {
-                return null;
-            }
-            return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
+        if (attributes.get(0) instanceof RequestAttribute) {
+//            RequestAttribute definition = getRequestAttributes(name, attributes);
+//            if (definition == null || definition.getContent() == null) {
+//                return null;
+//            }
+            return ATTRIBUTES_OBJECT_MAPPER.convertValue("", ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
         } else if (attributes.get(0) instanceof BaseAttributeV2) {
             BaseAttributeV2 definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
@@ -152,7 +150,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static NameAndIdDto getNameAndIdData(String name, List<RequestAttributeDto> attributes) {
+    public static NameAndIdDto getNameAndIdData(String name, List<RequestAttribute>attributes) {
         if (attributes.size() == 0) {
             return null;
         }
@@ -161,7 +159,7 @@ public class AttributeDefinitionUtils {
         return converted;
     }
 
-    public static NameAndUuidDto getNameAndUuidData(String name, List<RequestAttributeDto<?>> attributes) {
+    public static NameAndUuidDto getNameAndUuidData(String name, List<RequestAttributeDto> attributes) {
         if (attributes.size() == 0) {
             return null;
         }
@@ -170,7 +168,7 @@ public class AttributeDefinitionUtils {
         return converted;
     }
 
-    public static CredentialAttributeContentData getCredentialContent(String name, List<RequestAttributeDto> attributes) {
+    public static CredentialAttributeContentData getCredentialContent(String name, List<RequestAttributeDto>attributes) {
         List<CredentialAttributeContentV2> content = AttributeDefinitionUtils.getAttributeContent(name, attributes, CredentialAttributeContentV2.class);
         if (content != null && !content.isEmpty()) {
             return content.get(0).getData();
@@ -246,7 +244,7 @@ public class AttributeDefinitionUtils {
     }
 
 
-    public static List<BaseAttribute> mergeAttributes(List<? extends BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
+    public static List<BaseAttribute> mergeAttributes(List<? extends BaseAttribute> definitions, List<RequestAttributeDto>attributes) throws ValidationException {
         if (definitions == null || attributes == null) {
             return List.of();
         }
@@ -267,7 +265,7 @@ public class AttributeDefinitionUtils {
     }
 
     //TODO - Rework
-    public static void validateAttributes(List<? extends BaseAttribute> definitions, List<RequestAttributeDto> attributes) throws ValidationException {
+    public static void validateAttributes(List<? extends BaseAttribute> definitions, List<RequestAttributeDto>attributes) throws ValidationException {
         List<ValidationError> errors = new ArrayList<>();
 
         // When the Group Attribute contains a group of other attributes, we currently do not have the definition of them
@@ -321,14 +319,14 @@ public class AttributeDefinitionUtils {
             }
 
             Object attributeContent = null;
-            try {
-                attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
-            } catch (IllegalArgumentException e) {
-                errors.add(ValidationError.create(
-                        "Wrong type of value for attribute {}.",
-                        label));
-                continue;
-            }
+//            try {
+//                attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
+//            } catch (IllegalArgumentException e) {
+//                errors.add(ValidationError.create(
+//                        "Wrong type of value for attribute {}.",
+//                        label));
+//                continue;
+//            }
 
             if (isRequired && attributeContent == null) {
                 errors.add(ValidationError.create("Value of required attribute {} not set.", label));
@@ -346,8 +344,8 @@ public class AttributeDefinitionUtils {
                 }
             }
 
-            validateAttributeContent(definition, attribute.getContent(), errors);
-            errors.addAll(validateConstraints(definition, attribute.getContent()));
+//            validateAttributeContent(definition, attribute.getContent(), errors);
+//            errors.addAll(validateConstraints(definition, attribute.getContent()));
         }
 
         if (!errors.isEmpty()) {
@@ -727,20 +725,17 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static List<RequestAttributeDto> createAttributes(String name, List<AttributeContent> content) {
+    public static List<RequestAttributeDto>createAttributes(String name, List<AttributeContent> content) {
         return createAttributes(UUID.randomUUID().toString(), name, content);
     }
 
-    public static List<RequestAttributeDto> createAttributes(String uuid, String name, List<AttributeContent> content) {
-        RequestAttributeDto attribute = new RequestAttributeDto();
-        attribute.setUuid(uuid);
-        attribute.setName(name);
-        attribute.setContent(content);
+    public static List<RequestAttributeDto>createAttributes(String uuid, String name, List<AttributeContent> content) {
+        RequestAttributeDto attribute = new RequestAttributeV2Dto();
 
         return List.of(attribute);
     }
 
-    public static List<DataAttributeV2> clientAttributeConverter(List<RequestAttributeDto> attributes) {
+    public static List<DataAttributeV2> clientAttributeConverter(List<RequestAttributeDto>attributes) {
         if (attributes == null) {
             return new ArrayList<>();
         }
@@ -774,36 +769,36 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static List<RequestAttributeDto<?>> getClientAttributes(List<?> attributes) {
-        if (attributes == null || attributes.isEmpty()) {
-            return new ArrayList<>();
-        }
-        List<RequestAttributeDto<?>> convertedDefinition = new ArrayList<>();
-        if (attributes.get(0) instanceof BaseAttributeV2) {
-            for (BaseAttributeV2 clt : (List<BaseAttributeV2>) attributes) {
-                if (clt.getType() != AttributeType.DATA) {
-                    continue;
-                }
-                RequestAttributeDto atr = new RequestAttributeDto();
-                atr.setName(clt.getName());
-                atr.setUuid(clt.getUuid());
-                convertedDefinition.add(atr);
-            }
-        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
-            List<ResponseAttributeDto> itrAttributes = (List<ResponseAttributeDto>) attributes;
-            for (ResponseAttributeDto clt : itrAttributes) {
-                RequestAttributeDto atr = new RequestAttributeDto();
-                atr.setName(clt.getName());
-                atr.setUuid(clt.getUuid());
-                atr.setContentType(clt.getContentType());
-                atr.setContent(clt.getContent());
-                convertedDefinition.add(atr);
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
-        }
-        return convertedDefinition;
-    }
+//    public static List<RequestAttributeDto> getClientAttributes(List<?> attributes) {
+//        if (attributes == null || attributes.isEmpty()) {
+//            return new ArrayList<>();
+//        }
+//        List<RequestAttributeDto> convertedDefinition = new ArrayList<>();
+//        if (attributes.get(0) instanceof BaseAttributeV2) {
+//            for (BaseAttributeV2 clt : (List<BaseAttributeV2>) attributes) {
+//                if (clt.getType() != AttributeType.DATA) {
+//                    continue;
+//                }
+//                RequestAttributeDto atr = new RequestAttributeDto();
+//                atr.setName(clt.getName());
+//                atr.setUuid(clt.getUuid());
+//                convertedDefinition.add(atr);
+//            }
+//        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
+//            List<ResponseAttributeDto> itrAttributes = (List<ResponseAttributeDto>) attributes;
+//            for (ResponseAttributeDto clt : itrAttributes) {
+//                RequestAttributeDto atr = new RequestAttributeDto();
+//                atr.setName(clt.getName());
+//                atr.setUuid(clt.getUuid());
+//                atr.setContentType(clt.getContentType());
+//                atr.setContent(clt.getContent());
+//                convertedDefinition.add(atr);
+//            }
+//        } else {
+//            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
+//        }
+//        return convertedDefinition;
+//    }
 
     public static List<ResponseAttributeDto<?>> getResponseAttributes(List<?> attributes) {
         if (attributes == null || attributes.isEmpty()) {
@@ -845,10 +840,10 @@ public class AttributeDefinitionUtils {
                 convertedDefinition.add(atr);
             }
         } else if (attributes.get(0) instanceof RequestAttributeDto) {
-            List<RequestAttributeDto> itrAttributes = (List<RequestAttributeDto>) attributes;
+            List<RequestAttributeDto>itrAttributes = (List<RequestAttributeDto>) attributes;
             for (RequestAttributeDto clt : itrAttributes) {
                 ResponseAttributeV2Dto atr = new ResponseAttributeV2Dto();
-                atr.setContent(clt.getContent());
+//                atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
                 // This branch of setting the label, type and content is for the attributes that do not have the
@@ -988,7 +983,7 @@ public class AttributeDefinitionUtils {
      * @param attributes        List of attribute definitions
      * @return True if attribute is equal and false if attribute is not equal
      */
-    public static boolean checkAttributeEquality(List<RequestAttributeDto<?>> requestAttributes, List<DataAttribute<?>> attributes) {
+    public static boolean checkAttributeEquality(List<RequestAttributeDto> requestAttributes, List<DataAttribute<?>> attributes) {
         for (RequestAttributeDto requestAttribute : requestAttributes) {
             DataAttributeV2 attribute = (DataAttributeV2) attributes.stream().filter(x -> x.getName().equals(requestAttribute.getName())).findFirst().orElse(null);
             if (attribute == null) return false;

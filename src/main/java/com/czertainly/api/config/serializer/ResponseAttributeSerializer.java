@@ -71,7 +71,7 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
                             credentialAttributeContents.addAll(dataAttributeV2.getContent());
                         }
                         dataAttributeV2.setContent(credentialAttributeContents);
-                        credentialAttributes.add(dataAttributeV2);
+//                        credentialAttributes.add(dataAttributeV2);
                     }
                 }
 

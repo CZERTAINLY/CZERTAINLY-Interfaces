@@ -2,7 +2,7 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
@@ -23,7 +23,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
     private static final String ENTITY_INSTANCE_LOCATION_ATTRS_CONTEXT = ENTITY_INSTANCE_IDENTIFIED_CONTEXT + "/location/attributes";
     private static final String ENTITY_INSTANCE_LOCATION_ATTRS_VALIDATE_CONTEXT = ENTITY_INSTANCE_LOCATION_ATTRS_CONTEXT + "/validate";
 
-    private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
+    private static final ParameterizedTypeReference<List<RequestAttribute>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
     public EntityInstanceApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
@@ -106,7 +106,7 @@ public class EntityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateLocationAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto<?>> attributes) throws ValidationException, ConnectorException {
+    public void validateLocationAttributes(ConnectorDto connector, String entityUuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r

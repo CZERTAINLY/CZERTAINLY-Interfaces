@@ -2,7 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.czertainly.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.*;
@@ -104,7 +104,7 @@ public interface AuthorityInstanceController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information validated")})
     @PostMapping(path = "/{uuid}/attributes/raProfile/validate", consumes = {
             "application/json"}, produces = {"application/json"})
-    void validateRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody List<RequestAttributeDto> attributes)
+    void validateRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody List<RequestAttribute>attributes)
             throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Delete multiple Authority instances")

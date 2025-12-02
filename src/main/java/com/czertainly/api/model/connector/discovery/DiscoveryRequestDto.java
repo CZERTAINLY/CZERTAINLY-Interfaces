@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.discovery;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +23,7 @@ public class DiscoveryRequestDto {
 
     @Schema(description = "Discovery Provider Attributes. Mandatory for creating new Discovery"
     )
-    private List<RequestAttributeDto<?>> attributes;
+    private List<RequestAttribute> attributes;
 
     @Override
     public String toString() {

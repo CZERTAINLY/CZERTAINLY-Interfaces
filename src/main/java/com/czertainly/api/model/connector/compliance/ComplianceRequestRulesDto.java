@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.compliance;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +23,7 @@ public class ComplianceRequestRulesDto {
     private String uuid;
 
     @Schema(description = "Attributes for the rule")
-    private List<RequestAttributeDto<?>> attributes;
+    private List<RequestAttribute> attributes;
 
     //Default getters and setters
 

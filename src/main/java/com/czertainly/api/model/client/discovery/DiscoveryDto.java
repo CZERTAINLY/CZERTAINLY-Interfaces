@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.discovery;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +16,9 @@ public class DiscoveryDto {
     @Schema(description = "Discovery name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
     @Schema(description = "List of Attributes for Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto<?>> attributes;
+    private List<RequestAttribute> attributes;
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto<?>> customAttributes;
+    private List<RequestAttribute> customAttributes;
     @Schema(description = "Discovery Provider UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
     @Schema(description = "Discovery Kind", requiredMode = Schema.RequiredMode.REQUIRED)

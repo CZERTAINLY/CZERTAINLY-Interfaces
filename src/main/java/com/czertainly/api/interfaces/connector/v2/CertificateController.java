@@ -5,7 +5,7 @@ import com.czertainly.api.exception.CertificateRequestException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.v2.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,7 +59,7 @@ public interface CertificateController extends AuthProtectedConnectorController 
     @PostMapping(path = "/issue/attributes/validate", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     void validateIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
+            @RequestBody List<RequestAttribute>attributes) throws NotFoundException, ValidationException;
 
     @Operation(
             summary = "Issue Certificate"
@@ -142,7 +142,7 @@ public interface CertificateController extends AuthProtectedConnectorController 
     @PostMapping(path = "/revoke/attributes/validate", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     void validateRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ValidationException;
+            @RequestBody List<RequestAttribute>attributes) throws NotFoundException, ValidationException;
 
     @Operation(
             summary = "Revoke Certificate"

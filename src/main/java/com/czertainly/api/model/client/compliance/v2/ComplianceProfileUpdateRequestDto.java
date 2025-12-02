@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.compliance.v2;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -24,6 +24,6 @@ public class ComplianceProfileUpdateRequestDto {
     private List<ProviderComplianceRulesRequestDto> providerRules = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto<?>> customAttributes = new ArrayList<>();
+    private List<RequestAttribute> customAttributes = new ArrayList<>();
 
 }

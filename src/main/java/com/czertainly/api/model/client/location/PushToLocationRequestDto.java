@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.location;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -16,14 +16,14 @@ public class PushToLocationRequestDto {
             description = "List of push Attributes for Location",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttribute>attributes;
 
 
-    public List<RequestAttributeDto> getAttributes() {
+    public List<RequestAttribute>getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<RequestAttributeDto> attributes) {
+    public void setAttributes(List<RequestAttribute>attributes) {
         this.attributes = attributes;
     }
 

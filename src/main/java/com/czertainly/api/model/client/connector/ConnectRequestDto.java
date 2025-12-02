@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.connector;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.connector.AuthType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -20,7 +20,7 @@ public class ConnectRequestDto {
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> authAttributes;
+    private List<RequestAttribute>authAttributes;
 
     public String getUrl() {
         return url;
@@ -46,11 +46,11 @@ public class ConnectRequestDto {
         this.authType = authType;
     }
 
-    public List<RequestAttributeDto> getAuthAttributes() {
+    public List<RequestAttribute>getAuthAttributes() {
         return authAttributes;
     }
 
-    public void setAuthAttributes(List<RequestAttributeDto> authAttributes) {
+    public void setAuthAttributes(List<RequestAttribute>authAttributes) {
         this.authAttributes = authAttributes;
     }
 }

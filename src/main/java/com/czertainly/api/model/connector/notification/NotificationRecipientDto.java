@@ -1,7 +1,7 @@
 
 package com.czertainly.api.model.connector.notification;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -16,5 +16,5 @@ public class NotificationRecipientDto {
     private String email;
 
     @Schema(description = "Mapped attributes values for recipient", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> mappedAttributes;
+    private List<RequestAttribute>mappedAttributes;
 }

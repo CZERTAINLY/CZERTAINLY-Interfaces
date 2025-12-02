@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.connector;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.Named;
 import com.czertainly.api.model.core.connector.AuthType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,9 +29,9 @@ public class ConnectorRequestDto implements Named {
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto<?>> authAttributes;
+    private List<RequestAttribute> authAttributes;
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto<?>> customAttributes;
+    private List<RequestAttribute> customAttributes;
 
     @Override
     public String toString() {

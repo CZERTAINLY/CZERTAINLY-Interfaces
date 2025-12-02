@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -26,13 +26,13 @@ public class PushCertificateRequestDto {
             description = "List of Location Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> locationAttributes;
+    private List<RequestAttribute>locationAttributes;
 
     @Schema(
             description = "List of Attributes to push Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> pushAttributes;
+    private List<RequestAttribute>pushAttributes;
 
     public String getCertificate() {
         return certificate;
@@ -50,19 +50,19 @@ public class PushCertificateRequestDto {
         this.certificateType = certificateType;
     }
 
-    public List<RequestAttributeDto> getLocationAttributes() {
+    public List<RequestAttribute>getLocationAttributes() {
         return locationAttributes;
     }
 
-    public void setLocationAttributes(List<RequestAttributeDto> locationAttributes) {
+    public void setLocationAttributes(List<RequestAttribute>locationAttributes) {
         this.locationAttributes = locationAttributes;
     }
 
-    public List<RequestAttributeDto> getPushAttributes() {
+    public List<RequestAttribute>getPushAttributes() {
         return pushAttributes;
     }
 
-    public void setPushAttributes(List<RequestAttributeDto> pushAttributes) {
+    public void setPushAttributes(List<RequestAttribute>pushAttributes) {
         this.pushAttributes = pushAttributes;
     }
 

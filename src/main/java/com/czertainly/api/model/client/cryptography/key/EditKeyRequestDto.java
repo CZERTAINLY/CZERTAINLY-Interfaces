@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.cryptography.key;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -44,5 +44,5 @@ public class EditKeyRequestDto {
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto<?>> customAttributes;
+    private List<RequestAttribute> customAttributes;
 }

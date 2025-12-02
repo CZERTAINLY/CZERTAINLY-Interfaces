@@ -3,7 +3,7 @@ package com.czertainly.api.interfaces.connector.cryptography;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.key.CreateKeyRequestDto;
 import com.czertainly.api.model.connector.cryptography.key.KeyDataResponseDto;
@@ -80,7 +80,7 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
      */
     void validateCreateSecretKeyAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes
+            @RequestBody List<RequestAttribute>attributes
     ) throws NotFoundException, ValidationException;
 
     @Operation(
@@ -163,7 +163,7 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
      */
     void validateCreateKeyPairAttributes(
             @Parameter(description = "Token instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes
+            @RequestBody List<RequestAttribute>attributes
     ) throws NotFoundException, ValidationException;
 
     @Operation(

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.notification;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -21,7 +21,7 @@ public class NotificationProviderInstanceRequestDto {
 
     @Schema(description = "List of Notification instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto<?>> attributes;
+    private List<RequestAttribute> attributes;
 
     @Override
     public String toString() {

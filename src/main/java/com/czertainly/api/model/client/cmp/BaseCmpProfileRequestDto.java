@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.cmp;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.client.cmp.validation.ValidUuid;
 import com.czertainly.api.model.core.cmp.ProtectionMethod;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
@@ -30,17 +30,17 @@ public class BaseCmpProfileRequestDto {
     @Schema(
             description = "List of Attributes to issue Certificate for the associated RA Profile. Required when raProfileUuid is provided"
     )
-    private List<RequestAttributeDto<?>> issueCertificateAttributes;
+    private List<RequestAttribute> issueCertificateAttributes;
 
     @Schema(
             description = "List of Attributes to revoke Certificate for the associated RA Profile. Required when raProfileUuid is provided"
     )
-    private List<RequestAttributeDto<?>> revokeCertificateAttributes;
+    private List<RequestAttribute> revokeCertificateAttributes;
 
     @Schema(
             description = "List of Custom Attributes for CMP Profile"
     )
-    private List<RequestAttributeDto<?>> customAttributes;
+    private List<RequestAttribute> customAttributes;
 
     @NotNull
     @Schema(

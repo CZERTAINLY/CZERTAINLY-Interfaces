@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.raprofile;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -13,12 +13,12 @@ public class ActivateCmpForRaProfileRequestDto {
             description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto<?>> issueCertificateAttributes;
+    private List<RequestAttribute> issueCertificateAttributes;
 
     @Schema(
             description = "List of Attributes to revoke Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto<?>> revokeCertificateAttributes;
+    private List<RequestAttribute> revokeCertificateAttributes;
 
 }

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.v2;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -33,17 +33,17 @@ public class ClientCertificateRequestDto {
     @Schema(
             description = "List of attributes to create CSR. Required if CSR is not provided"
     )
-    List<RequestAttributeDto<?>> csrAttributes;
+    List<RequestAttribute> csrAttributes;
 
     @Schema(
             description = "List of attributes to sign the CSR"
     )
-    List<RequestAttributeDto<?>> signatureAttributes;
+    List<RequestAttribute> signatureAttributes;
 
     @Schema(
             description = "List of attributes to sign the alternative private key, in case of hybrid CSR"
     )
-    List<RequestAttributeDto<?>> altSignatureAttributes;
+    List<RequestAttribute> altSignatureAttributes;
 
     //------------------------------------------------------------------------------------------------------------------
     // Key Related Parameters
@@ -91,11 +91,11 @@ public class ClientCertificateRequestDto {
             description = "List of RA Profile related Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto<?>> issueAttributes;
+    private List<RequestAttribute> issueAttributes;
 
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto<?>> customAttributes;
+    private List<RequestAttribute> customAttributes;
 
 }

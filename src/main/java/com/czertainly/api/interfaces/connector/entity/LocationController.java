@@ -4,7 +4,7 @@ import com.czertainly.api.exception.LocationException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.entity.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -115,7 +115,7 @@ public interface LocationController extends AuthProtectedConnectorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validatePushCertificateAttributes(
             @Parameter(description = "Entity Instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> pushAttributes
+            @RequestBody List<RequestAttribute>pushAttributes
     ) throws NotFoundException, ValidationException;
 
     @Operation(
@@ -203,6 +203,6 @@ public interface LocationController extends AuthProtectedConnectorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateGenerateCsrAttributes(
             @Parameter(description = "Entity Instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> csrAttributes
+            @RequestBody List<RequestAttribute>csrAttributes
     ) throws NotFoundException, ValidationException;
 }

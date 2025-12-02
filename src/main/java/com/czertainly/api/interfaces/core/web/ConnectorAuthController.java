@@ -1,7 +1,7 @@
 package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
 import com.czertainly.api.model.core.connector.AuthType;
@@ -44,7 +44,7 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated") })
 	@PostMapping(path = "/attributes/basic/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	void validateBasicAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateBasicAuthAttributes(@RequestBody List<RequestAttribute>attributes);
 
 	@Operation(summary = "Get Attributes for certificate auth")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
@@ -55,7 +55,7 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
 	@PostMapping(path = "/attributes/certificate/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	void validateCertificateAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateCertificateAttributes(@RequestBody List<RequestAttribute>attributes);
 
 	@Operation(summary = "Get API Key auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
@@ -66,7 +66,7 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
 	@PostMapping(path = "/attributes/apiKey/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	void validateApiKeyAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateApiKeyAuthAttributes(@RequestBody List<RequestAttribute>attributes);
 
 	@Operation(summary = "Get JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
@@ -77,5 +77,5 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
 	@PostMapping(path = "/attributes/jwt/validate", consumes = {
 			"application/json" }, produces = { "application/json" })
-	void validateJWTAuthAttributes(@RequestBody List<RequestAttributeDto> attributes);
+	void validateJWTAuthAttributes(@RequestBody List<RequestAttribute>attributes);
 }

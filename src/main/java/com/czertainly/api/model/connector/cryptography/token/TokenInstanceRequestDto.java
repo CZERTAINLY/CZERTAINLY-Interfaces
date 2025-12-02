@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.cryptography.token;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -23,6 +23,6 @@ public class TokenInstanceRequestDto {
 
     @Schema(description = "List of Token instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto<?>> attributes;
+    private List<RequestAttribute> attributes;
 
 }
