@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.compliance;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ public class ComplianceProfileDto extends NameAndUuidDto {
     private List<SimplifiedRaProfileDto> raProfiles;
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     //Default getters and setters
 

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.credential;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -23,10 +23,10 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "List of Credential Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseAttributeDto<?>> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto<?>> customAttributes = new ArrayList<>();
+    private List<ResponseAttribute> customAttributes = new ArrayList<>();
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             requiredMode = Schema.RequiredMode.REQUIRED)

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.raprofile;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -40,11 +40,11 @@ public class RaProfileDto extends NameAndUuidDto {
 
     @Schema(description = "List of RA Profiles attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto<?>> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(description = "List of protocols enabled",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)

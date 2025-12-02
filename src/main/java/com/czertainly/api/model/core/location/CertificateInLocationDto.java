@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.location;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.core.certificate.CertificateState;
 import com.czertainly.api.model.core.certificate.CertificateValidationStatus;
@@ -50,12 +50,12 @@ public class CertificateInLocationDto {
     @Schema(
             description = "Applied push attributes"
     )
-    private List<ResponseAttributeDto<?>> pushAttributes;
+    private List<ResponseAttribute> pushAttributes;
 
     @Schema(
             description = "Applied issue attributes"
     )
-    private List<ResponseAttributeDto<?>> csrAttributes;
+    private List<ResponseAttribute> csrAttributes;
 
     @Schema(
             description = "If the Certificate in Location has associated private key",

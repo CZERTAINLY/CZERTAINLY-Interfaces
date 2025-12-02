@@ -69,8 +69,8 @@ public class AttributeDefinitionUtils {
         } else if (attributes.get(0) instanceof BaseAttributeV2) {
             List<BaseAttributeV2> reloadedAttributes = (List<BaseAttributeV2>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
-            List<ResponseAttributeDto> reloadedAttributes = (List<ResponseAttributeDto>) attributes;
+        } else if (attributes.get(0) instanceof ResponseAttribute) {
+            List<ResponseAttribute> reloadedAttributes = (List<ResponseAttribute>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
         } else {
             throw new IllegalArgumentException("Invalid Object to get Attribute value");
@@ -108,8 +108,8 @@ public class AttributeDefinitionUtils {
             } else {
                 return ((List<T>) definition.getContent()).get(0);
             }
-        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
-            ResponseAttributeDto definition = getRequestAttributes(name, attributes);
+        } else if (attributes.get(0) instanceof ResponseAttribute) {
+            ResponseAttribute definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
@@ -139,8 +139,8 @@ public class AttributeDefinitionUtils {
                 return null;
             }
             return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
-        } else if (attributes.get(0) instanceof ResponseAttributeDto) {
-            ResponseAttributeDto definition = getRequestAttributes(name, attributes);
+        } else if (attributes.get(0) instanceof ResponseAttribute) {
+            ResponseAttribute definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
@@ -750,12 +750,12 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static List<DataAttributeV2> responseAttributeConverter(List<ResponseAttributeDto> attributes) {
+    public static List<DataAttributeV2> responseAttributeConverter(List<ResponseAttribute> attributes) {
         if (attributes == null) {
             return new ArrayList<>();
         }
         List<DataAttributeV2> convertedDefinition = new ArrayList<>();
-        for (ResponseAttributeDto clt : attributes) {
+        for (ResponseAttribute clt : attributes) {
             DataAttributeV2 atr = new DataAttributeV2();
 //            atr.setContent(clt.getContent());
             atr.setName(clt.getName());
@@ -800,11 +800,11 @@ public class AttributeDefinitionUtils {
 //        return convertedDefinition;
 //    }
 
-    public static List<ResponseAttributeDto<?>> getResponseAttributes(List<?> attributes) {
+    public static List<ResponseAttribute> getResponseAttributes(List<?> attributes) {
         if (attributes == null || attributes.isEmpty()) {
             return new ArrayList<>();
         }
-        List<ResponseAttributeDto<?>> convertedDefinition = new ArrayList<>();
+        List<ResponseAttribute> convertedDefinition = new ArrayList<>();
         if (attributes.get(0) instanceof DataAttributeV2) {
             List<DataAttributeV2> itrAttributes = (List<DataAttributeV2>) attributes;
             for (DataAttributeV2 clt : itrAttributes) {

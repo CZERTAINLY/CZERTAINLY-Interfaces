@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.acme;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
@@ -46,11 +46,11 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "Require new Account to agree on Terms of Service", example = "true")
     private Boolean requireTermsOfService;
     @Schema(description = "List of Attributes to issue a Certificate")
-    private List<ResponseAttributeDto<?>> issueCertificateAttributes;
+    private List<ResponseAttribute> issueCertificateAttributes;
     @Schema(description = "List of Attributes to revoke a Certificate")
-    private List<ResponseAttributeDto<?>> revokeCertificateAttributes;
+    private List<ResponseAttribute> revokeCertificateAttributes;
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsDto certificateAssociations;

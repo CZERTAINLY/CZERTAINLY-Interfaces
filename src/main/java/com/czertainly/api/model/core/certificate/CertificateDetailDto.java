@@ -1,9 +1,8 @@
 package com.czertainly.api.model.core.certificate;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.core.auth.Resource;
-import com.czertainly.api.model.core.compliance.v2.ComplianceCheckResultDto;
 import com.czertainly.api.model.core.cryptography.key.KeyDto;
 import com.czertainly.api.model.core.location.LocationDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -77,7 +76,7 @@ public class CertificateDetailDto extends CertificateDto {
             description = "List of Custom Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(
             description = "Key Pair of the certificate",
@@ -108,10 +107,10 @@ public class CertificateDetailDto extends CertificateDto {
     private UUID sourceCertificateUuid;
 
     @Schema(description = "List of issue attributes")
-    private List<ResponseAttributeDto<?>> issueAttributes = new ArrayList<>();
+    private List<ResponseAttribute> issueAttributes = new ArrayList<>();
 
     @Schema(description = "List of revoke attributes")
-    private List<ResponseAttributeDto<?>> revokeAttributes = new ArrayList<>();
+    private List<ResponseAttribute> revokeAttributes = new ArrayList<>();
 
     @Schema(description = "List of related certificates")
     @Deprecated(since = "2.16.0", forRemoval = true)

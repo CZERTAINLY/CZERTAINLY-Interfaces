@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.cryptography.tokenprofile;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
@@ -37,12 +37,12 @@ public class TokenProfileDetailDto extends NameAndUuidDto {
             description = "List of Token Profile attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ResponseAttributeDto<?>> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(
             description = "Token Instance Status",

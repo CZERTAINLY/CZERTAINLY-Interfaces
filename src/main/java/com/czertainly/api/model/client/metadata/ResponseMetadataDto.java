@@ -1,7 +1,7 @@
 package com.czertainly.api.model.client.metadata;
 
 import com.czertainly.api.config.serializer.ResponseAttributeSerializer;
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.attribute.ResponseAttributeV2Dto;
 import com.czertainly.api.model.client.attribute.ResponseAttributeV3Dto;
 import com.czertainly.api.model.common.NameAndUuidDto;
@@ -121,7 +121,7 @@ public abstract class ResponseMetadataDto<T extends AttributeContent> {
                 .toString();
     }
 
-    public ResponseAttributeDto<?> toResponseAttribute() {
+    public ResponseAttribute toResponseAttribute() {
         if (version == 2) {
             ResponseAttributeV2Dto responseAttributeV2Dto = new ResponseAttributeV2Dto();
             responseAttributeV2Dto.setContent((List<BaseAttributeContentV2<?>>) content);

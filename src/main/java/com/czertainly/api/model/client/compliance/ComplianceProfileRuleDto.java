@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.compliance;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,7 +35,7 @@ public class ComplianceProfileRuleDto extends NameAndUuidDto {
     private CertificateType certificateType;
 
     @Schema(description = "List of attributes for the rule", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseAttributeDto<?>> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "UUID of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String complianceProfileUuid;

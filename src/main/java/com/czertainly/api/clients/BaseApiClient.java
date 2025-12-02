@@ -1,7 +1,7 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.*;
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.czertainly.api.model.core.connector.ConnectorDto;
@@ -65,7 +65,7 @@ public abstract class BaseApiClient {
             return (WebClient.RequestBodyUriSpec) request;
         }
 
-        List<ResponseAttributeDto<?>> authAttributes = connector.getAuthAttributes();
+        List<ResponseAttribute> authAttributes = connector.getAuthAttributes();
 
         switch (connector.getAuthType()) {
             case NONE:
@@ -113,7 +113,7 @@ public abstract class BaseApiClient {
         }
     }
 
-    private SslContext createSslContext(List<ResponseAttributeDto<?>> attributes) {
+    private SslContext createSslContext(List<ResponseAttribute> attributes) {
         try {
             SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
 

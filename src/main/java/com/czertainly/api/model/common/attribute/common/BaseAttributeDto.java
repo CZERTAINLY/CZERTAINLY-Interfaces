@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
+        title = "BaseAttributeDto",
         description = "Base Attribute definition",
         type = "object",
         discriminatorProperty = "version",

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.cryptography.token;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -49,7 +49,7 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
             description = "List of Token instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ResponseAttributeDto<?>> attributes;
+    private List<ResponseAttribute> attributes;
 
     @Schema(
             description = "Token instance Metadata",
@@ -61,6 +61,6 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
             description = "Custom Attributes for the Token Instance",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 }
 

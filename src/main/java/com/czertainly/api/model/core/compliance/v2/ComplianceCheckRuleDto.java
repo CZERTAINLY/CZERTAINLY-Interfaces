@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.compliance.v2;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,6 +41,6 @@ public class ComplianceCheckRuleDto implements Serializable {
     private Resource resource;
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto<?>> attributes;
+    private List<ResponseAttribute> attributes;
 
 }

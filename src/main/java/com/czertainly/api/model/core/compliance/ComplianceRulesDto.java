@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.compliance;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +22,7 @@ public class ComplianceRulesDto extends NameAndUuidDto {
 
     //Default getters and setters
     @Schema(description = "Attributes of the rule")
-    private List<ResponseAttributeDto<?>> attributes;
+    private List<ResponseAttribute> attributes;
 
     @Override
     public String toString() {

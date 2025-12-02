@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.protocol;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -19,6 +19,6 @@ public class ProtocolCertificateAssociationsDto implements Serializable {
     private List<UUID> groupUuids = new ArrayList<>();
 
     @Schema(description = "Custom Attributes to be associated with certificate by protocol",  requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto<?>> customAttributes = new ArrayList<>();
+    private List<ResponseAttribute> customAttributes = new ArrayList<>();
 
 }

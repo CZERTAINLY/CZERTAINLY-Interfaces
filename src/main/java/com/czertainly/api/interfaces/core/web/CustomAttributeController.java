@@ -4,7 +4,7 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeCreateRequestDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitionDetailDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitionDto;
@@ -129,7 +129,7 @@ public interface CustomAttributeController extends AuthProtectedController {
             path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<ResponseAttributeDto<?>> updateAttributeContentForResource(
+    List<ResponseAttribute> updateAttributeContentForResource(
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
@@ -142,7 +142,7 @@ public interface CustomAttributeController extends AuthProtectedController {
             path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<ResponseAttributeDto<?>> deleteAttributeContentForResource(
+    List<ResponseAttribute> deleteAttributeContentForResource(
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid

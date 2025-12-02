@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.entity;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -17,11 +17,11 @@ public class EntityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Entity instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseAttributeDto<?>> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(description = "Status of Entity instance",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.certificate;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.core.compliance.ComplianceRuleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class CertificateComplianceResultDto {
     private ComplianceRuleStatus status;
 
     @Schema(description = "Attributes of the rule")
-    private List<ResponseAttributeDto<?>> attributes;
+    private List<ResponseAttribute> attributes;
 
     //Default getters and setters
 

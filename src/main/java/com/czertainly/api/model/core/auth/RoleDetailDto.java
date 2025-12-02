@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.auth;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ public class RoleDetailDto extends RoleDto {
     private List<UserDto> users;
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
 
     @Override

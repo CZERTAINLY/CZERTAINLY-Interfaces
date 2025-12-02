@@ -1,6 +1,7 @@
 package com.czertainly.api.config.serializer;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
+import com.czertainly.api.model.client.attribute.ResponseAttributeV2Dto;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
@@ -26,12 +27,12 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
 
     @Override
     public void serialize(List<AttributeContent> response, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        ResponseAttributeDto responseAttributeDto = (ResponseAttributeDto) gen.getCurrentValue();
+        ResponseAttributeV2Dto responseAttribute = (ResponseAttributeV2Dto) gen.getCurrentValue();
         if (response == null) {
             gen.writeNull();
             return;
         }
-        if (responseAttributeDto.getContentType() == null) {
+        if (responseAttribute.getContentType() == null) {
             gen.writeStartArray();
             for (AttributeContent content : response) {
                 gen.writeObject(content);
@@ -41,16 +42,16 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
         }
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        if (responseAttributeDto.getContentType().equals(AttributeContentType.SECRET)) {
+        if (responseAttribute.getContentType().equals(AttributeContentType.SECRET)) {
             gen.writeStartArray();
-            for (Object content : responseAttributeDto.getContent()) {
+            for (Object content : responseAttribute.getContent()) {
                 SecretAttributeContentV2 secretAttributeContent = objectMapper.convertValue(content, SecretAttributeContentV2.class);
                 secretAttributeContent.setData(null);
                 gen.writeObject(secretAttributeContent);
             }
-        } else if (responseAttributeDto.getContentType().equals(AttributeContentType.CREDENTIAL)) {
+        } else if (responseAttribute.getContentType().equals(AttributeContentType.CREDENTIAL)) {
             gen.writeStartArray();
-            for (Object credential : responseAttributeDto.getContent()) {
+            for (Object credential : responseAttribute.getContent()) {
                 BaseAttributeContentV2 credentialV2 = (BaseAttributeContentV2) credential;
                 CredentialAttributeContentV2 credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContentV2.class);
                 List<DataAttribute<?>> credentialAttributes = new ArrayList<>();

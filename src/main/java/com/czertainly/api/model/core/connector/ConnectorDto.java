@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.connector;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -28,13 +28,13 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
     private AuthType authType;
     @Schema(description = "List of Attributes for the authentication type",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto<?>> authAttributes;
+    private List<ResponseAttribute> authAttributes;
     @Schema(description = "Status of the Connector",
             examples = {"CONNECTED"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto<?>> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Override
     public String toString() {

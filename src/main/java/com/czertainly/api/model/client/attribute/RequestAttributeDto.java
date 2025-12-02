@@ -1,11 +1,8 @@
 package com.czertainly.api.model.client.attribute;
 
-import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.List;
 
 /**
  * This class contains set of properties to represent
