@@ -5,6 +5,8 @@ import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.UUID;
+
 @Schema(
         description = "Response attribute to send attribute content for object",
         type = "object",
@@ -28,7 +30,7 @@ public interface ResponseAttributeDto {
                 example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7",
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
-        String getUuid();
+        UUID getUuid();
 
         /**
          * Name of the Attribute

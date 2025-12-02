@@ -24,6 +24,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 @Setter
 @Getter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", defaultImpl = BaseAttributeV3.class, visible = true)
@@ -40,8 +42,8 @@ import java.util.List;
                 @DiscriminatorMapping(value = "3", schema = ResponseMetadataV3Dto.class),
         },
         oneOf = {
-               ResponseMetadataV3Dto.class,
-               ResponseMetadataV2Dto.class
+                ResponseMetadataV3Dto.class,
+                ResponseMetadataV2Dto.class
         })
 public abstract class ResponseMetadataDto<T extends AttributeContent> {
 
@@ -121,27 +123,26 @@ public abstract class ResponseMetadataDto<T extends AttributeContent> {
                 .toString();
     }
 
-    public ResponseAttribute toResponseAttribute() {
-        if (version == 2) {
-            ResponseAttributeV2Dto responseAttributeV2Dto = new ResponseAttributeV2Dto();
-            responseAttributeV2Dto.setContent((List<BaseAttributeContentV2<?>>) content);
-            responseAttributeV2Dto.setUuid(uuid);
-            responseAttributeV2Dto.setType(type);
-            responseAttributeV2Dto.setName(name);
-            responseAttributeV2Dto.setLabel(label);
-            responseAttributeV2Dto.setContentType(contentType);
-            return responseAttributeV2Dto;
+    public ResponseAttributeV3Dto toResponseAttribute() {
+        ResponseAttributeV3Dto responseAttributeV3Dto = new ResponseAttributeV3Dto();
+        List<BaseAttributeContentV3<?>> responseContent;
+        if (content.getFirst() instanceof BaseAttributeContentV2) {
+            responseContent = content.stream().<BaseAttributeContentV3<?>>map(c -> {
+                BaseAttributeContentV3<?> contentV3 = new BaseAttributeContentV3<>();
+                contentV3.setContentType(contentType);
+                contentV3.setData(c.getData());
+                contentV3.setReference(c.getReference());
+                return contentV3;
+            }).toList();
+        } else {
+            responseContent = (List<BaseAttributeContentV3<?>>) content;
         }
-        if (version == 3) {
-            ResponseAttributeV3Dto responseAttributeV3Dto = new ResponseAttributeV3Dto();
-            responseAttributeV3Dto.setContent((List<BaseAttributeContentV3<?>>) content);
-            responseAttributeV3Dto.setUuid(uuid);
-            responseAttributeV3Dto.setType(type);
-            responseAttributeV3Dto.setName(name);
-            responseAttributeV3Dto.setLabel(label);
-            responseAttributeV3Dto.setContentType(contentType);
-            return responseAttributeV3Dto;
-        }
-        return null;
+        responseAttributeV3Dto.setContent(responseContent);
+        responseAttributeV3Dto.setUuid(UUID.fromString(uuid));
+        responseAttributeV3Dto.setType(type);
+        responseAttributeV3Dto.setName(name);
+        responseAttributeV3Dto.setLabel(label);
+        responseAttributeV3Dto.setContentType(contentType);
+        return responseAttributeV3Dto;
     }
 }

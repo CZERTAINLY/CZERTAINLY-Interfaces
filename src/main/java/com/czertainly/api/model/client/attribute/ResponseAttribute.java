@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 /**
  * This class contains set of properties to represent
  * an Attribute definition including its value for the

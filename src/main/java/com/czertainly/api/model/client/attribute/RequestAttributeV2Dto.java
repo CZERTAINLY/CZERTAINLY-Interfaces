@@ -2,19 +2,19 @@ package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RequestAttributeV2Dto extends RequestAttribute {
 
 
-    private String uuid;
+    private UUID uuid;
 
     private String name;
 

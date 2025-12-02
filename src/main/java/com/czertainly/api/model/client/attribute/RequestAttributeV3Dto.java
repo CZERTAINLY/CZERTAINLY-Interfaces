@@ -2,13 +2,18 @@ package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RequestAttributeV3Dto extends RequestAttribute {
 
     @Override
@@ -16,7 +21,7 @@ public class RequestAttributeV3Dto extends RequestAttribute {
         return 3;
     }
 
-    private String uuid;
+    private UUID uuid;
 
     private String name;
 
