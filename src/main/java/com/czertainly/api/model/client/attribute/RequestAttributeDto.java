@@ -15,12 +15,12 @@ import java.util.UUID;
         type = "object",
         discriminatorProperty = "version",
         discriminatorMapping = {
-                @DiscriminatorMapping(value = "2", schema = RequestAttributeV2Dto.class),
-                @DiscriminatorMapping(value = "3", schema = RequestAttributeV3Dto.class),
+                @DiscriminatorMapping(value = "2", schema = RequestAttributeV2.class),
+                @DiscriminatorMapping(value = "3", schema = RequestAttributeV3.class),
         },
         oneOf = {
-                RequestAttributeV3Dto.class,
-                RequestAttributeV2Dto.class
+                RequestAttributeV3.class,
+                RequestAttributeV2.class
         })
 public interface RequestAttributeDto {
 

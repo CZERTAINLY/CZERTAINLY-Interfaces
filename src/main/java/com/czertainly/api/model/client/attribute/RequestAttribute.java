@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = RequestAttributeV3Dto.class, name = "3"),
-        @JsonSubTypes.Type(value = RequestAttributeV2Dto.class, name = "2")
+        @JsonSubTypes.Type(value = RequestAttributeV3.class, name = "3"),
+        @JsonSubTypes.Type(value = RequestAttributeV2.class, name = "2")
 })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(implementation = RequestAttributeDto.class)

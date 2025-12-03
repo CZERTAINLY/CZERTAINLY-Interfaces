@@ -350,10 +350,10 @@ public class AttributeDefinitionUtils {
             try {
 
                 if (version == 2) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV2Dto) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
+                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV2) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
                 if (version == 3) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV3Dto) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
+                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV3) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
             } catch (IllegalArgumentException e) {
                 errors.add(ValidationError.create(
@@ -380,9 +380,9 @@ public class AttributeDefinitionUtils {
 
             validateAttributeContent(definition, attribute, errors);
             if (version == 2)
-                errors.addAll(validateConstraints(definition, ((RequestAttributeV2Dto) attribute).getContent()));
+                errors.addAll(validateConstraints(definition, ((RequestAttributeV2) attribute).getContent()));
             if (version == 3)
-                errors.addAll(validateConstraints(definition, ((RequestAttributeV3Dto) attribute).getContent()));
+                errors.addAll(validateConstraints(definition, ((RequestAttributeV3) attribute).getContent()));
         }
 
 
@@ -821,7 +821,7 @@ public class AttributeDefinitionUtils {
                     if (clt.getType() != AttributeType.DATA) {
                         continue;
                     }
-                    RequestAttributeV2Dto atr = new RequestAttributeV2Dto();
+                    RequestAttributeV2 atr = new RequestAttributeV2();
                     atr.setName(clt.getName());
                     if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
                     atr.setContent((List<BaseAttributeContentV2<?>>) clt.getContent());
@@ -833,7 +833,7 @@ public class AttributeDefinitionUtils {
                     if (clt.getType() != AttributeType.DATA) {
                         continue;
                     }
-                    RequestAttributeV3Dto atr = new RequestAttributeV3Dto();
+                    RequestAttributeV3 atr = new RequestAttributeV3();
                     atr.setName(clt.getName());
                     if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
                     atr.setContent((List<BaseAttributeContentV3<?>>) clt.getContent());
@@ -844,14 +844,14 @@ public class AttributeDefinitionUtils {
             List<ResponseAttribute> itrAttributes = (List<ResponseAttribute>) attributes;
             for (ResponseAttribute clt : itrAttributes) {
                 if (clt.getVersion() == 2) {
-                    RequestAttributeV2Dto atr = new RequestAttributeV2Dto();
+                    RequestAttributeV2 atr = new RequestAttributeV2();
                     atr.setName(clt.getName());
                     atr.setUuid(clt.getUuid());
                     atr.setContentType(clt.getContentType());
                     atr.setContent(clt.getContent());
                 }
                 if (clt.getVersion() == 3) {
-                    RequestAttributeV2Dto atr = new RequestAttributeV2Dto();
+                    RequestAttributeV2 atr = new RequestAttributeV2();
                     atr.setName(clt.getName());
                     atr.setUuid(clt.getUuid());
                     atr.setContentType(clt.getContentType());

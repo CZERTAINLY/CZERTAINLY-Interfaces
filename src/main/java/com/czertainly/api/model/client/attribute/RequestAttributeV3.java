@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestAttributeV3Dto extends RequestAttribute {
+public class RequestAttributeV3 extends RequestAttribute {
 
     @Override
     public int getVersion() {

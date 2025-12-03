@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestAttributeV2Dto extends RequestAttribute {
+public class RequestAttributeV2 extends RequestAttribute {
 
 
     private UUID uuid;
