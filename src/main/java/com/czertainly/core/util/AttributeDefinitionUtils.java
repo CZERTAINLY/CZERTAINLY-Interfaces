@@ -26,7 +26,7 @@ import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProp
 import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
-import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
+import com.czertainly.api.model.common.attribute.v3.content.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -941,38 +941,30 @@ public class AttributeDefinitionUtils {
         });
     }
 
-    public static List<BaseAttributeContentV2<?>> createAttributeContentFromString(AttributeContentType attributeContentType, List<String> values) {
+    public static List<BaseAttributeContentV3<?>> createAttributeContentFromString(AttributeContentType attributeContentType, List<String> values) {
         if (!attributeContentType.isFilterByData()) {
             return null;
         }
 
         try {
-            List<BaseAttributeContentV2<?>> contentItems = new ArrayList<>();
+            List<BaseAttributeContentV3<?>> contentItems = new ArrayList<>();
             switch (attributeContentType) {
-                case STRING -> {
-                    values.forEach(v -> contentItems.add(new StringAttributeContentV2(v)));
-                }
-                case TEXT -> {
-                    values.forEach(v -> contentItems.add(new TextAttributeContentV2(v)));
-                }
-                case INTEGER -> {
-                    values.forEach(v -> contentItems.add(new IntegerAttributeContentV2(Integer.valueOf(v))));
-                }
-                case FLOAT -> {
-                    values.forEach(v -> contentItems.add(new FloatAttributeContentV2(Float.parseFloat(v))));
-                }
-                case BOOLEAN -> {
-                    values.forEach(v -> contentItems.add(new BooleanAttributeContentV2(Boolean.valueOf(v))));
-                }
-                case DATE -> {
-                    values.forEach(v -> contentItems.add(new DateAttributeContentV2(LocalDate.parse(v, DateTimeFormatter.ofPattern("yyyy-MM-dd")))));
-                }
-                case TIME -> {
-                    values.forEach(v -> contentItems.add(new TimeAttributeContentV2(LocalTime.parse(v, DateTimeFormatter.ofPattern("HH:mm:ss")))));
-                }
-                case DATETIME -> {
-                    values.forEach(v -> contentItems.add(new DateTimeAttributeContentV2(ZonedDateTime.parse(v, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")))));
-                }
+                case STRING ->
+                    values.forEach(v -> contentItems.add(new StringAttributeContentV3(v)));
+                case TEXT ->
+                    values.forEach(v -> contentItems.add(new TextAttributeContentV3(v)));
+                case INTEGER ->
+                    values.forEach(v -> contentItems.add(new IntegerAttributeContentV3(Integer.valueOf(v))));
+                case FLOAT ->
+                    values.forEach(v -> contentItems.add(new FloatAttributeContentV3(Float.parseFloat(v))));
+                case BOOLEAN ->
+                    values.forEach(v -> contentItems.add(new BooleanAttributeContentV3(Boolean.valueOf(v))));
+                case DATE ->
+                    values.forEach(v -> contentItems.add(new DateAttributeContentV3(LocalDate.parse(v, DateTimeFormatter.ofPattern("yyyy-MM-dd")))));
+                case TIME ->
+                    values.forEach(v -> contentItems.add(new TimeAttributeContentV3(LocalTime.parse(v, DateTimeFormatter.ofPattern("HH:mm:ss")))));
+                case DATETIME ->
+                    values.forEach(v -> contentItems.add(new DateTimeAttributeContentV3(ZonedDateTime.parse(v, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")))));
                 default ->
                         throw new IllegalStateException("Unexpected content type to parse from string: " + attributeContentType);
             }
