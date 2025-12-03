@@ -19,8 +19,6 @@ public class AttributeContentDeserializer extends JsonDeserializer<AttributeCont
         boolean hasContentType = node.has("contentType");
 
         if (hasContentType) return jsonParser.getCodec().treeToValue(node, BaseAttributeContentV3.class);
-        else return   jsonParser.getCodec().treeToValue(node, BaseAttributeContentV2.class);
-
-
+        else return jsonParser.getCodec().treeToValue(node, BaseAttributeContentV2.class);
     }
 }

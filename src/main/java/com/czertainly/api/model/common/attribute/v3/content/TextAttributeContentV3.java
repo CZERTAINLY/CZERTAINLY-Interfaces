@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
+import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
@@ -13,15 +14,18 @@ public class TextAttributeContentV3 extends BaseAttributeContentV3<String> {
     private String data;
 
     public TextAttributeContentV3() {
+        setContentType(AttributeContentType.TEXT);
     }
 
     public TextAttributeContentV3(String data) {
         this.data = data;
+        setContentType(AttributeContentType.TEXT);
     }
 
     public TextAttributeContentV3(String reference, String data) {
         super(reference);
         this.data = data;
+        setContentType(AttributeContentType.TEXT);
     }
 
     public String getData() {

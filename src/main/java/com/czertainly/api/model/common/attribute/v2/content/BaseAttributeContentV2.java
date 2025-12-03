@@ -49,4 +49,9 @@ public class BaseAttributeContentV2<T> extends AttributeContent implements BaseA
         return Objects.hash(reference, data);
     }
 
+    @Override
+    @Hidden
+    public AttributeContentType getContentType() {
+        return null;
+    }
 }

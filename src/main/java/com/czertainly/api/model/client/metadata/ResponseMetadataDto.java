@@ -126,7 +126,7 @@ public abstract class ResponseMetadataDto<T extends AttributeContent> {
     public ResponseAttributeV3Dto toResponseAttribute() {
         ResponseAttributeV3Dto responseAttributeV3Dto = new ResponseAttributeV3Dto();
         List<BaseAttributeContentV3<?>> responseContent;
-        if (content.getFirst() instanceof BaseAttributeContentV2) {
+        if (content.get(0) instanceof BaseAttributeContentV2) {
             responseContent = content.stream().<BaseAttributeContentV3<?>>map(c -> {
                 BaseAttributeContentV3<?> contentV3 = new BaseAttributeContentV3<>();
                 contentV3.setContentType(contentType);
