@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.metadata;
 
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -7,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -19,6 +22,6 @@ import lombok.Setter;
 @Schema(implementation = ResponseMetadataDto.class)
 public abstract class ResponseMetadata implements ResponseMetadataDto {
 
-    public abstract <T> T getContent();
+    public abstract <T extends AttributeContent> List<T> getContent();
 
 }
