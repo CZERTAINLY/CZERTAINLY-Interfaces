@@ -1,7 +1,6 @@
 package com.czertainly.api.config.serializer;
 
-import com.czertainly.api.model.client.attribute.ResponseAttribute;
-import com.czertainly.api.model.client.attribute.ResponseAttributeV2Dto;
+import com.czertainly.api.model.client.attribute.ResponseAttributeV2;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
@@ -27,7 +26,7 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
 
     @Override
     public void serialize(List<AttributeContent> response, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        ResponseAttributeV2Dto responseAttribute = (ResponseAttributeV2Dto) gen.getCurrentValue();
+        ResponseAttributeV2 responseAttribute = (ResponseAttributeV2) gen.getCurrentValue();
         if (response == null) {
             gen.writeNull();
             return;

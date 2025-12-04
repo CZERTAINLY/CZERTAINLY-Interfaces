@@ -12,12 +12,12 @@ import java.util.UUID;
         type = "object",
         discriminatorProperty = "version",
         discriminatorMapping = {
-                @DiscriminatorMapping(value = "2", schema = ResponseAttributeV2Dto.class),
-                @DiscriminatorMapping(value = "3", schema = ResponseAttributeV3Dto.class),
+                @DiscriminatorMapping(value = "2", schema = ResponseAttributeV2.class),
+                @DiscriminatorMapping(value = "3", schema = ResponseAttributeV3.class),
         },
         oneOf = {
-                ResponseAttributeV2Dto.class,
-                ResponseAttributeV3Dto.class
+                ResponseAttributeV2.class,
+                ResponseAttributeV3.class
         }
 )
 public interface ResponseAttributeDto {

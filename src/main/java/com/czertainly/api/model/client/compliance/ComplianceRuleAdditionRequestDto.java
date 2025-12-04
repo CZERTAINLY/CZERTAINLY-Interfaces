@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.compliance;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeV3;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ public class ComplianceRuleAdditionRequestDto {
     private String ruleUuid;
 
     @Schema(description = "Attributes for the rule")
-    private List<RequestAttribute> attributes;
+    private List<RequestAttributeV3> attributes;
 
     @Override
     public String toString() {

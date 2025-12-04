@@ -21,7 +21,7 @@ public class MetadataResponseDto {
     private Resource sourceObjectType;
 
     @Schema(description = "List of Metadata", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseMetadataDto<?>> items;
+    private List<ResponseMetadata> items;
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package com.czertainly.api.model.connector.compliance.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeV3;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -22,6 +23,6 @@ public class ComplianceRuleRequestDto {
     private UUID uuid;
 
     @Schema(description = "Attributes for the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttribute> attributes;
+    private List<RequestAttributeV3> attributes;
 
 }

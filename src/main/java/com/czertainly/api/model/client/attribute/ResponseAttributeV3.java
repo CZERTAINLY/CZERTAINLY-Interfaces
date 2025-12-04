@@ -2,8 +2,7 @@ package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
-import com.czertainly.api.model.core.auth.UserWithPaginationDto;
+import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,9 +15,9 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseAttributeV2Dto extends ResponseAttribute {
+public class ResponseAttributeV3 extends ResponseAttribute {
 
-    private List<BaseAttributeContentV2<?>> content;
+    private List<BaseAttributeContentV3<?>> content;
 
     private UUID uuid;
 
@@ -32,6 +31,6 @@ public class ResponseAttributeV2Dto extends ResponseAttribute {
 
     @Override
     public int getVersion() {
-        return 2;
+        return 3;
     }
 }

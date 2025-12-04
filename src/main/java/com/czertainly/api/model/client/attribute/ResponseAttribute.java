@@ -16,8 +16,8 @@ import lombok.Setter;
 @Getter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ResponseAttributeV3Dto.class, name = "3"),
-        @JsonSubTypes.Type(value = ResponseAttributeV2Dto.class, name = "2")
+        @JsonSubTypes.Type(value = ResponseAttributeV3.class, name = "3"),
+        @JsonSubTypes.Type(value = ResponseAttributeV2.class, name = "2")
 })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(implementation = ResponseAttributeDto.class)

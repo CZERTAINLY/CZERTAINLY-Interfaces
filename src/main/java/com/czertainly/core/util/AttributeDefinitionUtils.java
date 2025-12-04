@@ -877,7 +877,7 @@ public class AttributeDefinitionUtils {
                     props.setLabel(clt.getName());
                     clt.setProperties(props);
                 }
-                ResponseAttributeV2Dto atr = new ResponseAttributeV2Dto();
+                ResponseAttributeV2 atr = new ResponseAttributeV2();
 //                atr.setContent((List<BaseAttributeContent>) new BaseAttributeContent((BaseAttributeContentV2) clt.getContent()));
                 atr.setName(clt.getName());
                 if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
@@ -894,7 +894,7 @@ public class AttributeDefinitionUtils {
                     props.setLabel(clt.getName());
                     clt.setProperties(props);
                 }
-                ResponseAttributeV2Dto atr = new ResponseAttributeV2Dto();
+                ResponseAttributeV2 atr = new ResponseAttributeV2();
 //                atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(UUID.fromString(clt.getUuid()));
@@ -906,7 +906,7 @@ public class AttributeDefinitionUtils {
         } else if (attributes.get(0) instanceof RequestAttributeDto) {
             List<RequestAttributeDto> itrAttributes = (List<RequestAttributeDto>) attributes;
             for (RequestAttributeDto clt : itrAttributes) {
-                ResponseAttributeV2Dto atr = new ResponseAttributeV2Dto();
+                ResponseAttributeV2 atr = new ResponseAttributeV2();
 //                atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(clt.getUuid());
