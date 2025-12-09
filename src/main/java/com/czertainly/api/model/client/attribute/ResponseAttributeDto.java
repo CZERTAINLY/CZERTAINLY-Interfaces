@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.attribute;
 
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
@@ -10,10 +11,10 @@ import java.util.UUID;
 @Schema(
         description = "Response attribute to send attribute content for object",
         type = "object",
-        discriminatorProperty = "version",
+        discriminatorProperty = "schemaVersion",
         discriminatorMapping = {
-                @DiscriminatorMapping(value = "2", schema = ResponseAttributeV2.class),
-                @DiscriminatorMapping(value = "3", schema = ResponseAttributeV3.class),
+                @DiscriminatorMapping(value = AttributeVersion.Codes.V2, schema = ResponseAttributeV2.class),
+                @DiscriminatorMapping(value = AttributeVersion.Codes.V3, schema = ResponseAttributeV3.class),
         },
         oneOf = {
                 ResponseAttributeV2.class,
@@ -75,5 +76,5 @@ public interface ResponseAttributeDto {
                 description = "Version of the Attribute",
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
-        int getVersion();
+        AttributeVersion getSchemaVersion();
 }

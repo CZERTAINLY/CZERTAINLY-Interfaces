@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.attribute;
 
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import lombok.AllArgsConstructor;
@@ -17,8 +18,8 @@ import java.util.UUID;
 public class RequestAttributeV3 extends RequestAttribute {
 
     @Override
-    public int getVersion() {
-        return 3;
+    public AttributeVersion getVersion() {
+        return AttributeVersion.V3;
     }
 
     private UUID uuid;

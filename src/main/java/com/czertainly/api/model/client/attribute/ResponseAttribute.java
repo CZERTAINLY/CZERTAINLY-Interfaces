@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.attribute;
 
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -14,10 +15,10 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "schemaVersion", visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ResponseAttributeV3.class, name = "3"),
-        @JsonSubTypes.Type(value = ResponseAttributeV2.class, name = "2")
+        @JsonSubTypes.Type(value = ResponseAttributeV3.class, name = AttributeVersion.Codes.V3),
+        @JsonSubTypes.Type(value = ResponseAttributeV2.class, name = AttributeVersion.Codes.V2)
 })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(implementation = ResponseAttributeDto.class)

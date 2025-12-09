@@ -81,7 +81,7 @@ public interface ResponseMetadataDto {
             examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    int getVersion();
+    String getVersion();
 
 
 }

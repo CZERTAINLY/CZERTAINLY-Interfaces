@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.attribute;
 
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
@@ -30,7 +31,7 @@ public class ResponseAttributeV2 extends ResponseAttribute {
     private AttributeContentType contentType;
 
     @Override
-    public int getVersion() {
-        return 2;
+    public AttributeVersion getSchemaVersion() {
+        return AttributeVersion.V2;
     }
 }

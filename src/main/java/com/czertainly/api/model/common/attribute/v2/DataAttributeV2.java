@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
@@ -78,6 +79,9 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
             description = "Optional definition of callback for getting the content of the Attribute based on the action"
     )
     private AttributeCallback attributeCallback;
+
+    @Schema
+    private AttributeVersion schemaVersion = AttributeVersion.V2;
 
     public DataAttributeV2() {
         super(AttributeType.DATA);

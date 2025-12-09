@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.attribute;
 
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,8 +16,8 @@ import java.util.UUID;
         type = "object",
         discriminatorProperty = "version",
         discriminatorMapping = {
-                @DiscriminatorMapping(value = "2", schema = RequestAttributeV2.class),
-                @DiscriminatorMapping(value = "3", schema = RequestAttributeV3.class),
+                @DiscriminatorMapping(value = AttributeVersion.Codes.V2, schema = RequestAttributeV2.class),
+                @DiscriminatorMapping(value = AttributeVersion.Codes.V3, schema = RequestAttributeV3.class),
         },
         oneOf = {
                 RequestAttributeV3.class,
@@ -60,7 +61,7 @@ public interface RequestAttributeDto {
             description = "Version of the Attribute",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    int getVersion();
+    AttributeVersion getVersion();
 
 
 }

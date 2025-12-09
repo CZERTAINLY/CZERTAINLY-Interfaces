@@ -27,7 +27,7 @@ public class ResponseMetadataV2 extends ResponseMetadata {
     private List<BaseAttributeContentV2<?>> content;
 
     @Override
-    public int getVersion() {
-        return 2;
+    public String getVersion() {
+        return "2";
     }
 }

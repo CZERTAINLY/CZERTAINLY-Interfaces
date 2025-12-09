@@ -19,6 +19,6 @@ public class SignatureDataRequestDto {
             description = "List of signature Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttribute>signatureAttributes;
+    private List<RequestAttribute> signatureAttributes;
 
 }

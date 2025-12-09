@@ -5,9 +5,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.*;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.common.AttributeContent;
-import com.czertainly.api.model.common.attribute.common.BaseAttribute;
-import com.czertainly.api.model.common.attribute.common.DataAttribute;
+import com.czertainly.api.model.common.attribute.common.*;
 import com.czertainly.api.model.common.attribute.v2.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
@@ -21,7 +19,6 @@ import com.czertainly.api.model.common.attribute.v2.constraint.data.DateTimeAttr
 import com.czertainly.api.model.common.attribute.v2.constraint.data.RangeAttributeConstraintData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.properties.CustomAttributeProperties;
 import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
@@ -79,11 +76,6 @@ public class AttributeDefinitionUtils {
             throw new IllegalArgumentException("Invalid Object to get Attribute value");
         }
 
-    }
-
-    public static boolean containsRequestAttributes(String name, List<RequestAttribute> attributes) {
-        RequestAttribute definition = getRequestAttributes(name, attributes);
-        return definition != null;
     }
 
     public static <T extends Object> T getAttributeContent(String name, List<?> attributes, Boolean singleItem) {
@@ -190,6 +182,17 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static <T extends BaseAttribute> String serializeMetadata(List<MetadataAttribute<?>> attributes) {
+        if (attributes == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.writeValueAsString(attributes);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public static <T extends DataAttribute<?>> String serializeData(List<T> attributes) {
         if (attributes == null) {
             return null;
@@ -235,6 +238,19 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static <T extends MetadataAttribute<?>> List<T> deserializeMetadata(String attributesJson, Class<MetadataAttribute> clazz) {
+        if (attributesJson == null) {
+            return null;
+        }
+        try {
+            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributesJson, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+
+
     public static <T extends BaseAttributeContentV2<?>> List<T> deserializeAttributeContent(String attributeContentJson, Class<T> clazz) {
         if (attributeContentJson == null) {
             return null;
@@ -255,7 +271,7 @@ public class AttributeDefinitionUtils {
         List<BaseAttribute> attributeDefinitions = clientAttributeConverter(attributes);
         return attributeDefinitions.stream()
                 .map(a -> {
-                    if (a.getVersion() == 2) {
+                    if (a.getSchemaVersion().equals("2")) {
                         DataAttributeV2 definition = (DataAttributeV2) getAttributeDefinition(a.getName(), definitions);
                         if (definition == null) {
                             return a;
@@ -265,7 +281,7 @@ public class AttributeDefinitionUtils {
                         extended.setContent(a.getContent());
                         return extended;
                     }
-                    if (a.getVersion() == 3) {
+                    if (a.getSchemaVersion().equals("3")) {
                         DataAttributeV3 definition = (DataAttributeV3) getAttributeDefinition(a.getName(), definitions);
                         if (definition == null) {
                             return a;
@@ -305,10 +321,10 @@ public class AttributeDefinitionUtils {
             boolean isReadOnly = false;
             String label = null;
             AttributeContentType contentType = null;
-            int version = definition.getVersion();
+            AttributeVersion version = definition.getSchemaVersion();
 
             if (definition.getType().equals(AttributeType.DATA)) {
-                if (version == 2) {
+                if (version.equals("2")) {
                     DataAttributeV2 dataAttribute = (DataAttributeV2) definition;
                     contentType = dataAttribute.getContentType();
                     if (dataAttribute.getProperties() != null) {
@@ -317,7 +333,7 @@ public class AttributeDefinitionUtils {
                         label = dataAttribute.getProperties().getLabel();
                     }
                 }
-                if (version == 3) {
+                if (version.equals("3")) {
                     DataAttributeV3 dataAttribute = (DataAttributeV3) definition;
                     contentType = dataAttribute.getContentType();
                     if (dataAttribute.getProperties() != null) {
@@ -349,10 +365,10 @@ public class AttributeDefinitionUtils {
             Object attributeContent = null;
             try {
 
-                if (version == 2) {
+                if (version.equals("2")) {
                     attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV2) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
-                if (version == 3) {
+                if (version.equals("3")) {
                     attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV3) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
             } catch (IllegalArgumentException e) {
@@ -379,9 +395,9 @@ public class AttributeDefinitionUtils {
             }
 
             validateAttributeContent(definition, attribute, errors);
-            if (version == 2)
+            if (version.equals("2"))
                 errors.addAll(validateConstraints(definition, ((RequestAttributeV2) attribute).getContent()));
-            if (version == 3)
+            if (version.equals("3"))
                 errors.addAll(validateConstraints(definition, ((RequestAttributeV3) attribute).getContent()));
         }
 
@@ -542,7 +558,7 @@ public class AttributeDefinitionUtils {
         }
         boolean wrongValue = false;
         try {
-            if (definition.getVersion() == 2) {
+            if (definition.getSchemaVersion().equals("2")) {
                 for (Object baseAttributeContent : (List<Object>) attributeContent) {
                     switch (contentType) {
                         case STRING:
@@ -773,14 +789,14 @@ public class AttributeDefinitionUtils {
         }
         List<BaseAttribute> convertedDefinition = new ArrayList<>();
         for (RequestAttribute clt : attributes) {
-            if (clt.getVersion() == 2) {
+            if (clt.getVersion().equals("2")) {
                 DataAttributeV2 atr = new DataAttributeV2();
                 atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(String.valueOf(clt.getUuid()));
                 convertedDefinition.add(atr);
             }
-            if (clt.getVersion() == 3) {
+            if (clt.getVersion().equals("3")) {
                 DataAttributeV2 atr = new DataAttributeV2();
                 atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
@@ -816,7 +832,7 @@ public class AttributeDefinitionUtils {
         }
         List<RequestAttribute> convertedDefinition = new ArrayList<>();
         if (attributes.get(0) instanceof BaseAttribute baseAttribute) {
-            if (baseAttribute.getVersion() == 2) {
+            if (baseAttribute.getSchemaVersion().equals("2")) {
                 for (BaseAttributeV2<?> clt : (List<BaseAttributeV2<?>>) attributes) {
                     if (clt.getType() != AttributeType.DATA) {
                         continue;
@@ -828,7 +844,7 @@ public class AttributeDefinitionUtils {
                     convertedDefinition.add(atr);
                 }
             }
-            if (baseAttribute.getVersion() == 3) {
+            if (baseAttribute.getSchemaVersion().equals("3")) {
                 for (BaseAttributeV3<?> clt : (List<BaseAttributeV3<?>>) attributes) {
                     if (clt.getType() != AttributeType.DATA) {
                         continue;
@@ -843,14 +859,14 @@ public class AttributeDefinitionUtils {
         } else if (attributes.get(0) instanceof ResponseAttribute) {
             List<ResponseAttribute> itrAttributes = (List<ResponseAttribute>) attributes;
             for (ResponseAttribute clt : itrAttributes) {
-                if (clt.getVersion() == 2) {
+                if (clt.getSchemaVersion().equals("2")) {
                     RequestAttributeV2 atr = new RequestAttributeV2();
                     atr.setName(clt.getName());
                     atr.setUuid(clt.getUuid());
                     atr.setContentType(clt.getContentType());
                     atr.setContent(clt.getContent());
                 }
-                if (clt.getVersion() == 3) {
+                if (clt.getSchemaVersion().equals("3")) {
                     RequestAttributeV2 atr = new RequestAttributeV2();
                     atr.setName(clt.getName());
                     atr.setUuid(clt.getUuid());
@@ -861,66 +877,6 @@ public class AttributeDefinitionUtils {
         } else {
             throw new IllegalArgumentException("Invalid argument provided to get Attributes");
         }
-        return convertedDefinition;
-    }
-
-    public static List<ResponseAttribute> getResponseAttributes(List<?> attributes) {
-        if (attributes == null || attributes.isEmpty()) {
-            return new ArrayList<>();
-        }
-        List<ResponseAttribute> convertedDefinition = new ArrayList<>();
-        if (attributes.get(0) instanceof DataAttributeV2) {
-            List<DataAttributeV2> itrAttributes = (List<DataAttributeV2>) attributes;
-            for (DataAttributeV2 clt : itrAttributes) {
-                if (clt.getProperties() == null) {
-                    DataAttributeProperties props = new DataAttributeProperties();
-                    props.setLabel(clt.getName());
-                    clt.setProperties(props);
-                }
-                ResponseAttributeV2 atr = new ResponseAttributeV2();
-//                atr.setContent((List<BaseAttributeContent>) new BaseAttributeContent((BaseAttributeContentV2) clt.getContent()));
-                atr.setName(clt.getName());
-                if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
-                atr.setLabel(clt.getProperties().getLabel());
-                atr.setType(clt.getType());
-                atr.setContentType(clt.getContentType());
-                convertedDefinition.add(atr);
-            }
-        } else if (attributes.get(0) instanceof CustomAttributeV2) {
-            List<CustomAttributeV2> itrAttributes = (List<CustomAttributeV2>) attributes;
-            for (CustomAttributeV2 clt : itrAttributes) {
-                if (clt.getProperties() == null) {
-                    CustomAttributeProperties props = new CustomAttributeProperties();
-                    props.setLabel(clt.getName());
-                    clt.setProperties(props);
-                }
-                ResponseAttributeV2 atr = new ResponseAttributeV2();
-//                atr.setContent(clt.getContent());
-                atr.setName(clt.getName());
-                atr.setUuid(UUID.fromString(clt.getUuid()));
-                atr.setLabel(clt.getProperties().getLabel());
-                atr.setType(clt.getType());
-                atr.setContentType(clt.getContentType());
-                convertedDefinition.add(atr);
-            }
-        } else if (attributes.get(0) instanceof RequestAttributeDto) {
-            List<RequestAttributeDto> itrAttributes = (List<RequestAttributeDto>) attributes;
-            for (RequestAttributeDto clt : itrAttributes) {
-                ResponseAttributeV2 atr = new ResponseAttributeV2();
-//                atr.setContent(clt.getContent());
-                atr.setName(clt.getName());
-                atr.setUuid(clt.getUuid());
-                // This branch of setting the label, type and content is for the attributes that do not have the
-                // complete definition stored in the database.
-                atr.setLabel(clt.getName());
-                atr.setType(AttributeType.DATA);
-//                atr.setContentType(deriveAttributeContentTypeFromContent(clt.getContent()));
-                convertedDefinition.add(atr);
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid argument provided to get Attributes");
-        }
-
         return convertedDefinition;
     }
 
@@ -1054,4 +1010,5 @@ public class AttributeDefinitionUtils {
         }
         return true;
     }
+
 }

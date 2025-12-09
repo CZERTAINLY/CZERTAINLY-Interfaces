@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", visible = true, defaultImpl = RequestAttributeV2.class)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RequestAttributeV3.class, name = "3"),
         @JsonSubTypes.Type(value = RequestAttributeV2.class, name = "2")

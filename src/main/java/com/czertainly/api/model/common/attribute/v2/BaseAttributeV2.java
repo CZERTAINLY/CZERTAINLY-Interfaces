@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.model.client.attribute.BaseAttributeDtoV2;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -31,13 +32,15 @@ import java.util.Objects;
 @JsonDeserialize(using = BaseAttributeDeserializer.class)
 public class BaseAttributeV2<T> extends BaseAttribute implements BaseAttributeDtoV2 {
 
-    private int version = 2;
+    private AttributeVersion schemaVersion = AttributeVersion.V2;
 
     private String uuid;
 
     private String name;
 
     private String description;
+
+    private int version = 2;
 
     @Hidden
     @Schema(
@@ -68,7 +71,7 @@ public class BaseAttributeV2<T> extends BaseAttribute implements BaseAttributeDt
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof BaseAttributeV2<?> that)) return false;
-        return version == that.version && Objects.equals(uuid, that.uuid) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(getContent(), that.getContent()) && type == that.type;
+        return version == (that.version) && Objects.equals(uuid, that.uuid) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(getContent(), that.getContent()) && type == that.type;
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceRequestDto;
 import com.czertainly.api.model.connector.cryptography.token.TokenInstanceStatusDto;
@@ -201,7 +202,7 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
 
     /////////////////////////////////////////////////////////////////////////////////
     // activation of token
-    /////////////////////////////////////////////////////////////////////////////////
+    /// //////////////////////////////////////////////////////////////////////////////
 
     @Operation(
             summary = "List Token activation Attributes"

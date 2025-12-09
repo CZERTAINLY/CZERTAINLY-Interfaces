@@ -5,6 +5,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.czertainly.api.model.connector.cryptography.key.CreateKeyRequestDto;
 import com.czertainly.api.model.connector.cryptography.key.KeyDataResponseDto;
 import com.czertainly.api.model.connector.cryptography.key.KeyPairDataResponseDto;

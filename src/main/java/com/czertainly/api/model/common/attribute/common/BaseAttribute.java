@@ -11,10 +11,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", defaultImpl = BaseAttributeV3.class, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "schemaVersion", defaultImpl = BaseAttributeV3.class, visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = BaseAttributeV3.class, name = "3"),
-        @JsonSubTypes.Type(value = BaseAttributeV2.class, name = "2")
+        @JsonSubTypes.Type(value = BaseAttributeV2.class, name = AttributeVersion.Codes.V2),
+        @JsonSubTypes.Type(value = BaseAttributeV3.class, name = AttributeVersion.Codes.V3)
 })
 @Getter
 @Setter
@@ -23,6 +23,6 @@ import lombok.Setter;
 public abstract class BaseAttribute extends AbstractBaseAttribute implements BaseAttributeDto {
 
     @Schema
-    private int version;
+    private AttributeVersion schemaVersion;
 
 }

@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v3;
 
 import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.model.client.attribute.BaseAttributeDtoV3;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -32,7 +33,7 @@ import java.util.Objects;
 @JsonDeserialize(using = BaseAttributeDeserializer.class)
 public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDtoV3 {
 
-    private int version = 3;
+    private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     private String uuid;
 
@@ -70,11 +71,11 @@ public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDt
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof BaseAttributeV3<?> that)) return false;
-        return version == that.version && Objects.equals(uuid, that.uuid) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(getContent(), that.getContent()) && type == that.type;
+        return schemaVersion.equals(that.schemaVersion) && Objects.equals(uuid, that.uuid) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(getContent(), that.getContent()) && type == that.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(version, uuid, name, description, content, type);
+        return Objects.hash(schemaVersion, uuid, name, description, content, type);
     }
 }

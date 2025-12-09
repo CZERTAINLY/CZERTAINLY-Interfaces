@@ -29,7 +29,7 @@ public class ResponseMetadataV3 extends ResponseMetadata {
 
 
     @Override
-    public int getVersion() {
-        return 3;
+    public String getVersion() {
+        return "3";
     }
 }

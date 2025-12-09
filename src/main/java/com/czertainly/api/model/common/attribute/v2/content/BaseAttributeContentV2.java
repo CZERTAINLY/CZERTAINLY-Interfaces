@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2.content;
 
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV2;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,6 +52,7 @@ public class BaseAttributeContentV2<T> extends AttributeContent implements BaseA
 
     @Override
     @Hidden
+    @JsonIgnore
     public AttributeContentType getContentType() {
         return null;
     }

@@ -1,5 +1,6 @@
 package com.czertainly.api.model.client.attribute;
 
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContentV2;
 import lombok.*;
@@ -22,9 +23,9 @@ public class RequestAttributeV2 extends RequestAttribute {
 
     private List<BaseAttributeContentV2<?>> content;
 
+    private AttributeVersion version = AttributeVersion.V2;
 
-    @Override
-    public int getVersion() {
-        return 2;
+    public RequestAttributeV2(UUID uuid, String name, AttributeContentType contentType, List<BaseAttributeContentV2<?>> content) {
+        this(uuid, name, contentType, content, AttributeVersion.V2);
     }
 }
