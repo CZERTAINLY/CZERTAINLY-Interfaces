@@ -272,7 +272,7 @@ public class AttributeDefinitionUtils {
         List<BaseAttribute> attributeDefinitions = clientAttributeConverter(attributes);
         return attributeDefinitions.stream()
                 .map(a -> {
-                    if (a.getSchemaVersion().equals("2")) {
+                    if (a.getVersion() == 2) {
                         DataAttributeV2 definition = (DataAttributeV2) getAttributeDefinition(a.getName(), definitions);
                         if (definition == null) {
                             return a;
@@ -282,7 +282,7 @@ public class AttributeDefinitionUtils {
                         extended.setContent(a.getContent());
                         return extended;
                     }
-                    if (a.getSchemaVersion().equals("3")) {
+                    if (a.getVersion() == 3) {
                         DataAttributeV3 definition = (DataAttributeV3) getAttributeDefinition(a.getName(), definitions);
                         if (definition == null) {
                             return a;
@@ -306,26 +306,26 @@ public class AttributeDefinitionUtils {
         // we will need to skip the validation of Attributes that are unknown and rely on proper validation by the
         // connector.
         // TODO: Validation of Attributes that has unknown definition
-        for (RequestAttributeDto attribute : attributes) {
+        for (RequestAttribute attribute : attributes) {
             if (!containsAttributeDefinition(attribute.getName(), definitions)) {
                 // do not throw error in case the definition is not found, warn only
                 logger.warn("Cannot validate Attribute '{}' as it has unknown definition", attribute.getName());
-                // errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
+                 errors.add(ValidationError.create("Attribute {} not supported.", attribute.getName()));
             }
         }
 
         for (BaseAttribute definition : definitions) {
 
-            RequestAttributeDto attribute = getRequestAttributes(definition.getName(), attributes);
+            RequestAttribute attribute = getRequestAttributes(definition.getName(), attributes);
 
             boolean isRequired = false;
             boolean isReadOnly = false;
             String label = null;
             AttributeContentType contentType = null;
-            AttributeVersion version = definition.getSchemaVersion();
+            int version = definition.getVersion();
 
             if (definition.getType().equals(AttributeType.DATA)) {
-                if (version.equals("2")) {
+                if (version == 2) {
                     DataAttributeV2 dataAttribute = (DataAttributeV2) definition;
                     contentType = dataAttribute.getContentType();
                     if (dataAttribute.getProperties() != null) {
@@ -334,7 +334,7 @@ public class AttributeDefinitionUtils {
                         label = dataAttribute.getProperties().getLabel();
                     }
                 }
-                if (version.equals("3")) {
+                if (version == 3) {
                     DataAttributeV3 dataAttribute = (DataAttributeV3) definition;
                     contentType = dataAttribute.getContentType();
                     if (dataAttribute.getProperties() != null) {
@@ -366,10 +366,10 @@ public class AttributeDefinitionUtils {
             Object attributeContent = null;
             try {
 
-                if (version.equals("2")) {
+                if (version == 2) {
                     attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV2) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
-                if (version.equals("3")) {
+                if (version == 3) {
                     attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV3) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
             } catch (IllegalArgumentException e) {
@@ -396,9 +396,9 @@ public class AttributeDefinitionUtils {
             }
 
             validateAttributeContent(definition, attribute, errors);
-            if (version.equals("2"))
+            if (version == 2)
                 errors.addAll(validateConstraints(definition, ((RequestAttributeV2) attribute).getContent()));
-            if (version.equals("3"))
+            if (version == 3)
                 errors.addAll(validateConstraints(definition, ((RequestAttributeV3) attribute).getContent()));
         }
 
@@ -408,6 +408,10 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    public static boolean containsRequestAttributes(String name, List<RequestAttribute> attributes) {
+        RequestAttributeDto definition = getRequestAttributes(name, attributes);
+        return definition != null;
+    }
 
     public static List<ValidationError> validateConstraints(BaseAttribute attribute, List<? extends AttributeContent> contents) {
         List<BaseAttributeConstraint> constraints = null;
@@ -538,7 +542,7 @@ public class AttributeDefinitionUtils {
         return errors;
     }
 
-    public static void validateAttributeContent(BaseAttribute definition, Object attributeContent, List<ValidationError> errors) {
+    public static void validateAttributeContent(BaseAttribute definition, RequestAttribute attributeContent, List<ValidationError> errors) {
 
         if (definition.getType() == null) {
             errors.add(ValidationError.create("Type of attribute definition not set."));
@@ -559,8 +563,8 @@ public class AttributeDefinitionUtils {
         }
         boolean wrongValue = false;
         try {
-            if (definition.getSchemaVersion().equals("2")) {
-                for (Object baseAttributeContent : (List<Object>) attributeContent) {
+            if (definition.getVersion() == 2) {
+                for (AttributeContent baseAttributeContent : (List<AttributeContent>) attributeContent.getContent()) {
                     switch (contentType) {
                         case STRING:
                             BaseAttributeContentV2<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, StringAttributeContentV2.class);
@@ -833,7 +837,7 @@ public class AttributeDefinitionUtils {
         }
         List<RequestAttribute> convertedDefinition = new ArrayList<>();
         if (attributes.get(0) instanceof BaseAttribute baseAttribute) {
-            if (baseAttribute.getSchemaVersion().equals("2")) {
+            if (baseAttribute.getVersion() == 2) {
                 for (BaseAttributeV2<?> clt : (List<BaseAttributeV2<?>>) attributes) {
                     if (clt.getType() != AttributeType.DATA) {
                         continue;
@@ -845,7 +849,7 @@ public class AttributeDefinitionUtils {
                     convertedDefinition.add(atr);
                 }
             }
-            if (baseAttribute.getSchemaVersion().equals("3")) {
+            if (baseAttribute.getVersion() == 3) {
                 for (BaseAttributeV3<?> clt : (List<BaseAttributeV3<?>>) attributes) {
                     if (clt.getType() != AttributeType.DATA) {
                         continue;

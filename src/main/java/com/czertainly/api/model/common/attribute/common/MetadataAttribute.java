@@ -17,11 +17,6 @@ import java.util.List;
                 MetadataAttributeV3.class
         }
 )
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "schemaVersion", defaultImpl = MetadataAttributeV2.class, visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = MetadataAttributeV3.class, name = AttributeVersion.Codes.V3),
-        @JsonSubTypes.Type(value = MetadataAttributeV2.class, name = AttributeVersion.Codes.V2)
-})
 public interface MetadataAttribute<T extends AttributeContent> extends Attribute {
 
     List<T> getContent();

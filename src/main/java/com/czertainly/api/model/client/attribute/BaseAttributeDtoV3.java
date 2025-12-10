@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.v3.*;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -64,4 +65,14 @@ public interface BaseAttributeDtoV3 {
                 defaultValue = AttributeType.Codes.DATA
         )
         AttributeType getType();
+
+        /**
+         * Version of the Attribute
+         **/
+        @Schema(
+                description = "Version of the Attribute",
+                example = "3",
+                requiredMode = Schema.RequiredMode.REQUIRED
+        )
+        AttributeVersion getSchemaVersion();
 }

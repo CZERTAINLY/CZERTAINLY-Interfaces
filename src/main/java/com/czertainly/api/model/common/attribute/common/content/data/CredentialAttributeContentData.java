@@ -24,7 +24,7 @@ public class CredentialAttributeContentData extends NameAndUuidDto {
 
     @Schema(description = "List of Credential Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<DataAttribute<?>> attributes;
+    private List<DataAttributeV2> attributes;
 
     @Override
     public String toString() {

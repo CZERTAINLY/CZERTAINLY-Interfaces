@@ -42,11 +42,12 @@ public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDt
     private String description;
 
     @Hidden
-
     @Schema(
         description = "Content of the Attribute"
     )
     private T content;
+
+    private int version = 3;
 
     private AttributeType type = AttributeType.DATA;
 

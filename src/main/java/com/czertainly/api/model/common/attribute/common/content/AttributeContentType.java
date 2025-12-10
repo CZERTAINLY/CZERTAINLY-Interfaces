@@ -4,6 +4,7 @@ import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAt
 import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.common.content.data.SecretAttributeContentData;
+import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

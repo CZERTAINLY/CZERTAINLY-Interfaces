@@ -33,14 +33,13 @@ import java.util.Objects;
 @JsonDeserialize(using = BaseAttributeDeserializer.class)
 public class BaseAttributeV2<T> extends BaseAttribute implements BaseAttributeDtoV2 {
 
-    private AttributeVersion schemaVersion = AttributeVersion.V2;
-
     private String uuid;
 
     private String name;
 
     private String description;
 
+    @Schema(description = "Version of the attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private int version = 2;
 
     @Hidden
@@ -79,4 +78,6 @@ public class BaseAttributeV2<T> extends BaseAttribute implements BaseAttributeDt
     public int hashCode() {
         return Objects.hash(version, uuid, name, description, content, type);
     }
+
+
 }

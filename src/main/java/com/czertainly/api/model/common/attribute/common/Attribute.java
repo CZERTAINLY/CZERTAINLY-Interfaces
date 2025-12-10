@@ -6,9 +6,9 @@ public interface Attribute {
 
     String getUuid();
 
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-    AttributeVersion getSchemaVersion();
 
     String getName();
     AttributeType getType();
+
+    int getVersion();
 }

@@ -13,7 +13,4 @@ import lombok.Setter;
 @Schema(implementation = BaseAttributeDto.class)
 public abstract class BaseAttribute extends AbstractBaseAttribute implements BaseAttributeDto {
 
-    @Schema
-    private AttributeVersion schemaVersion;
-
 }

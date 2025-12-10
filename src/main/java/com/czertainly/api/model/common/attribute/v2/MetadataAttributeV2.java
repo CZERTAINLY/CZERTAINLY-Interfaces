@@ -1,6 +1,7 @@
 package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
@@ -84,4 +85,5 @@ public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeConte
     public int hashCode() {
         return Objects.hash(super.hashCode(), content, contentType, properties);
     }
+
 }

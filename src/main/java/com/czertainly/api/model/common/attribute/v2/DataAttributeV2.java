@@ -83,7 +83,7 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
     private AttributeCallback attributeCallback;
 
     @Schema
-    private AttributeVersion schemaVersion = AttributeVersion.V2;
+    private int version = 2;
 
     public DataAttributeV2() {
         super(AttributeType.DATA);

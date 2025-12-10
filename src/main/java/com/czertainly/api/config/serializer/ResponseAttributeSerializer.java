@@ -54,7 +54,7 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
             for (Object credential : responseAttribute.getContent()) {
                 BaseAttributeContentV2 credentialV2 = (BaseAttributeContentV2) credential;
                 CredentialAttributeContentV2 credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContentV2.class);
-                List<DataAttribute<?>> credentialAttributes = new ArrayList<>();
+                List<DataAttributeV2> credentialAttributes = new ArrayList<>();
                 CredentialAttributeContentData credentialDto = credentialAttributeContent.getData();
 
                 // attributes can be null when serializing credential content not loaded with full credentials but as NameAndUuidDto

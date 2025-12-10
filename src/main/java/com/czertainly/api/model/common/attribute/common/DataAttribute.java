@@ -20,18 +20,9 @@ import java.util.List;
         oneOf = {
                 DataAttributeV2.class,
                 DataAttributeV3.class
-        },
-        discriminatorMapping = {
-                @DiscriminatorMapping(value = AttributeVersion.Codes.V2, schema = DataAttributeV2.class),
-                @DiscriminatorMapping(value = AttributeVersion.Codes.V3, schema = DataAttributeV3.class)
         }
 
 )
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "schemaVersion", defaultImpl = DataAttributeV2.class, visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = DataAttributeV3.class, name = AttributeVersion.Codes.V3),
-        @JsonSubTypes.Type(value = DataAttributeV2.class, name = AttributeVersion.Codes.V2)
-})
 public interface DataAttribute<T> extends Attribute {
 
     List<T> getContent();
