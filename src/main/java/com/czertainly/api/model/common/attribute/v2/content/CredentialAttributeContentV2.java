@@ -1,6 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
-import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(

@@ -1,6 +1,7 @@
 package com.czertainly.api.model.common.attribute.v2;
 
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

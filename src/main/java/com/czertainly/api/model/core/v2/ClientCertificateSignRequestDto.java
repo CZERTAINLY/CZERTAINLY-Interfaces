@@ -4,6 +4,8 @@ import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,28 +13,23 @@ import java.util.UUID;
 /**
  * Class representing a request to sign CSR from external clients
  */
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class ClientCertificateSignRequestDto {
 
     @Schema(
             description = "List of attributes to create CSR. Required if CSR is not provided"
     )
-    List<RequestAttribute>csrAttributes;
+    List<RequestAttribute> csrAttributes;
 
     @Schema(
             description = "List of attributes to sign the CSR"
     )
-    List<RequestAttribute>signatureAttributes;
+    List<RequestAttribute> signatureAttributes;
 
     @Schema(
             description = "List of attributes to sign the alternative private key"
     )
-    List<RequestAttribute>altSignatureAttributes;
+    List<RequestAttribute> altSignatureAttributes;
 
     //------------------------------------------------------------------------------------------------------------------
     // Key Related Parameters
@@ -48,7 +45,6 @@ public class ClientCertificateSignRequestDto {
             description = "Certificate signing request format",
             defaultValue = "pkcs10"
     )
-    @Builder.Default
     private CertificateRequestFormat format = CertificateRequestFormat.PKCS10;
 
     //------------------------------------------------------------------------------------------------------------------
@@ -83,11 +79,19 @@ public class ClientCertificateSignRequestDto {
             description = "List of RA Profile related Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttribute>attributes;
+    private List<RequestAttribute> attributes;
 
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttribute>customAttributes;
+    private List<RequestAttribute> customAttributes;
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("attributes", attributes)
+                .append("customAttributes", customAttributes)
+                .toString();
+    }
 
 }

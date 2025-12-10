@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.search;
 
-import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.enums.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

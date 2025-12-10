@@ -1,6 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2.content;
 
-import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.SecretAttributeContentData;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 

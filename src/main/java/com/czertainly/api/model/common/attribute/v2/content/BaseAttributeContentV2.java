@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2.content;
 
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV2;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.Hidden;

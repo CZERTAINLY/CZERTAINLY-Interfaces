@@ -1,7 +1,7 @@
 package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.attribute.common.AttributeVersion;
-import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.czertainly.api.exception;
 
-import com.czertainly.api.model.common.attribute.v2.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeType;
 import lombok.Getter;
 
 @Getter

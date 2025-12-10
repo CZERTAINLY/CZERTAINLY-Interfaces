@@ -2,7 +2,7 @@ package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV3;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
-import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

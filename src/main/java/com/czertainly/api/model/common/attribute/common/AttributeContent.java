@@ -1,7 +1,7 @@
 package com.czertainly.api.model.common.attribute.common;
 
 import com.czertainly.api.config.serializer.AttributeContentDeserializer;
-import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.Serializable;

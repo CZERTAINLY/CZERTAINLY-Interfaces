@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.model.client.attribute.BaseAttributeDtoV2;
+import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.fasterxml.jackson.annotation.JsonInclude;

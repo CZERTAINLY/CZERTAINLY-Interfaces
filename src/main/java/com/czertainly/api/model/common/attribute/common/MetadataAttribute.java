@@ -1,9 +1,8 @@
 package com.czertainly.api.model.common.attribute.common;
 
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
-import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.czertainly.api.model.common.attribute.v2.properties.MetadataAttributeProperties;
-import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
+import com.czertainly.api.model.common.attribute.common.properties.MetadataAttributeProperties;
 import com.czertainly.api.model.common.attribute.v3.MetadataAttributeV3;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

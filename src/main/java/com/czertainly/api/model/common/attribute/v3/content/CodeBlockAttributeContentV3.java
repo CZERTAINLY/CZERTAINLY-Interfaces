@@ -1,7 +1,7 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
-import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v2.content.data.CodeBlockAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(

@@ -1,32 +1,15 @@
 package com.czertainly.util;
 
-import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.AttributeType;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
-import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
-import com.czertainly.api.model.common.attribute.v2.constraint.DateTimeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RangeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.data.DateTimeAttributeConstraintData;
-import com.czertainly.api.model.common.attribute.v2.constraint.data.RangeAttributeConstraintData;
+import com.czertainly.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
-import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;

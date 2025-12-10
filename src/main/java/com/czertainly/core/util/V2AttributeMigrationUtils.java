@@ -1,23 +1,24 @@
 package com.czertainly.core.util;
 
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.v1.AttributeType;
 import com.czertainly.api.model.common.attribute.v1.content.JsonAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
-import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallbackMapping;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeValueTarget;
+import com.czertainly.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.czertainly.api.model.common.attribute.v2.content.data.CodeBlockAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.content.data.FileAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
-import com.czertainly.api.model.common.attribute.v2.properties.MetadataAttributeProperties;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.SecretAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.properties.DataAttributeProperties;
+import com.czertainly.api.model.common.attribute.common.properties.MetadataAttributeProperties;
 import com.czertainly.core.deprecated.AttributeDefinitionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -88,7 +89,7 @@ public class V2AttributeMigrationUtils {
         attribute.setName(oldAttribute.getName());
         attribute.setUuid(oldAttribute.getUuid());
         attribute.setDescription(oldAttribute.getDescription());
-        attribute.setType(com.czertainly.api.model.common.attribute.v2.AttributeType.DATA);
+        attribute.setType(com.czertainly.api.model.common.attribute.common.AttributeType.DATA);
         attribute.setContentType(getAttributeContentType(oldAttribute.getType()));
         attribute.setContent(getAttributeContent(oldAttribute.getType() != null ? oldAttribute.getType() : AttributeType.STRING, oldAttribute.getContent()));
         attribute.setProperties(properties);
@@ -114,7 +115,7 @@ public class V2AttributeMigrationUtils {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
         for (com.czertainly.api.model.common.attribute.v1.AttributeCallbackMapping oldMapping : oldCallback.getMappings()) {
             AttributeCallbackMapping mapping = new AttributeCallbackMapping();
-            mapping.setAttributeType(com.czertainly.api.model.common.attribute.v2.AttributeType.DATA);
+            mapping.setAttributeType(com.czertainly.api.model.common.attribute.common.AttributeType.DATA);
             mapping.setAttributeContentType(getAttributeContentType(oldMapping.getAttributeType()));
             mapping.setFrom(oldMapping.getFrom());
             mapping.setTo(oldMapping.getTo());
@@ -317,7 +318,7 @@ public class V2AttributeMigrationUtils {
         attribute.setContentType(getMetadataAttributeType(oldMetadata.getValue()));
 
         attribute.setContent(getMetadataAttributeValue(oldMetadata.getValue()));
-        attribute.setType(com.czertainly.api.model.common.attribute.v2.AttributeType.META);
+        attribute.setType(com.czertainly.api.model.common.attribute.common.AttributeType.META);
         return attribute;
     }
 
