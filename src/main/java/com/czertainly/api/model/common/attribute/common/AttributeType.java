@@ -60,7 +60,7 @@ public enum AttributeType implements IPlatformEnum {
     @JsonCreator
     public static AttributeType fromCode(String code) {
         return Arrays.stream(VALUES)
-                .filter(e -> e.code.equals(code))
+                .filter(e -> e.code.equalsIgnoreCase(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute type %s.", code)));
     }
