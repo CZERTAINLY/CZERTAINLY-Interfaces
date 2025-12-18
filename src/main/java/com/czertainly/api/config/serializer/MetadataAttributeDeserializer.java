@@ -14,13 +14,10 @@ import java.io.IOException;
 
 public class MetadataAttributeDeserializer extends JsonDeserializer<MetadataAttribute<?>> {
     @Override
-    public MetadataAttribute<?> deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public MetadataAttribute<?> deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
 
-        String version = node.has("version") ? node.get("version").asText() : null;
-        if (version == null) {
-            throw new IllegalArgumentException("Missing required fields: attributeType or version");
-        }
+        String version = node.has("version") ? node.get("version").asText() : "2";
 
         Class<? extends MetadataAttribute<?>> valueType = null;
         if (version.equals("2")) {

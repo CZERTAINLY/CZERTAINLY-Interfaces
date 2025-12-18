@@ -1,8 +1,10 @@
 package com.czertainly.api.config.serializer;
 
-import com.czertainly.api.model.common.attribute.common.AttributeType;
-import com.czertainly.api.model.common.attribute.common.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
+import com.czertainly.api.model.common.attribute.common.*;
+import com.czertainly.api.model.common.attribute.v2.GroupAttributeV2;
+import com.czertainly.api.model.common.attribute.v2.InfoAttributeV2;
+import com.czertainly.api.model.common.attribute.v3.GroupAttributeV3;
+import com.czertainly.api.model.common.attribute.v3.InfoAttributeV3;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -12,36 +14,77 @@ import java.io.IOException;
 public class BaseAttributeSerializer
         extends JsonSerializer<BaseAttribute> {
 
+    public static final String CONTENT_TYPE = "contentType";
+    public static final String ATTR_PROPERTIES = "properties";
+
     @Override
     public void serialize(BaseAttribute value,
                           JsonGenerator gen,
                           SerializerProvider serializers)
             throws IOException {
 
-        if (value.getType() == AttributeType.CUSTOM) {
-            CustomAttributeV3 customAttributeV3 = (CustomAttributeV3) value;
-            gen.writeStartObject();
+        gen.writeStartObject();
 
-            gen.writeStringField("type", value.getType().getCode());
-            gen.writeNumberField("version", value.getVersion());
-            gen.writeStringField("uuid", value.getUuid());
-            gen.writeStringField("name", value.getName());
-            gen.writeStringField("description", value.getDescription());
+        gen.writeStringField("type", value.getType().getCode());
+        gen.writeNumberField("version", value.getVersion());
+        gen.writeStringField("uuid", value.getUuid());
+        gen.writeStringField("name", value.getName());
+        gen.writeStringField("description", value.getDescription());
 
-            gen.writeFieldName("content");
-            serializers.defaultSerializeValue(value.getContent(), gen);
+        gen.writeFieldName("content");
+        serializers.defaultSerializeValue(value.getContent(), gen);
 
-            gen.writeStringField("contentType", customAttributeV3.getContentType().getCode());
 
-            gen.writeFieldName("properties");
-            serializers.defaultSerializeValue(customAttributeV3.getProperties(), gen);
-
-            gen.writeEndObject();
-        } else {
-            JsonSerializer<Object> defaultSerializer =
-                    serializers.findValueSerializer(value.getClass());
-
-            defaultSerializer.serialize(value, gen, serializers);
+        switch (value.getType()) {
+            case DATA -> {
+                DataAttribute<?> attribute = (DataAttribute<?>) value;
+                gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
+                gen.writeFieldName(ATTR_PROPERTIES);
+                serializers.defaultSerializeValue(attribute.getProperties(), gen);
+                gen.writeEndObject();
+            }
+            case GROUP -> {
+                if (value.getVersion() == 2) {
+                    GroupAttributeV2 attribute = (GroupAttributeV2) value;
+                    serializers.defaultSerializeValue(attribute.getAttributeCallback(), gen);
+                    gen.writeEndObject();
+                }
+                if (value.getVersion() == 3) {
+                    GroupAttributeV3 attribute = (GroupAttributeV3) value;
+                    serializers.defaultSerializeValue(attribute.getAttributeCallback(), gen);
+                    gen.writeEndObject();
+                }
+            }
+            case INFO -> {
+                if (value.getVersion() == 2) {
+                    InfoAttributeV2 attribute = (InfoAttributeV2) value;
+                    gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
+                    gen.writeFieldName(ATTR_PROPERTIES);
+                    serializers.defaultSerializeValue(attribute.getProperties(), gen);
+                    gen.writeEndObject();
+                }
+                if (value.getVersion() == 3) {
+                    InfoAttributeV3 attribute = (InfoAttributeV3) value;
+                    gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
+                    gen.writeFieldName(ATTR_PROPERTIES);
+                    serializers.defaultSerializeValue(attribute.getProperties(), gen);
+                    gen.writeEndObject();
+                }
+            }
+            case META -> {
+                MetadataAttribute<?> attribute = (MetadataAttribute<?>) value;
+                gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
+                gen.writeFieldName(ATTR_PROPERTIES);
+                serializers.defaultSerializeValue(attribute.getProperties(), gen);
+                gen.writeEndObject();
+            }
+            case CUSTOM -> {
+                CustomAttribute<?> attribute = (CustomAttribute<?>) value;
+                gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
+                gen.writeFieldName(ATTR_PROPERTIES);
+                serializers.defaultSerializeValue(attribute.getProperties(), gen);
+                gen.writeEndObject();
+        }
         }
     }
 

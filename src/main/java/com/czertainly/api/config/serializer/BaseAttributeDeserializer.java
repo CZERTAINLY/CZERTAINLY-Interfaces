@@ -16,7 +16,7 @@ public class BaseAttributeDeserializer extends JsonDeserializer<BaseAttribute> {
     public BaseAttribute deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
 
-        String version = node.has("version") ? node.get("version").asText() : null;
+        String version = node.has("version") ? node.get("version").asText() : "2";
         String attributeTypeCode = node.has("type") ? node.get("type").asText() : null;
 
         if (attributeTypeCode == null || version == null) {
