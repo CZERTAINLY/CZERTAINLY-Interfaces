@@ -11,6 +11,7 @@ import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitio
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.common.attribute.common.CustomAttribute;
 import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
@@ -114,9 +115,9 @@ public interface CustomAttributeController extends AuthProtectedController {
     @RequestBody List<Resource> resources) throws NotFoundException;
 
     @Operation(summary = "Get Custom Attributes for a resource")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CustomAttributeV2.class))))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CustomAttribute.class))))})
     @GetMapping(path = "/resources/{resource}", produces = {"application/json"})
-    List<CustomAttributeV3> getResourceCustomAttributes(@Parameter(description = "Resource Name", schema = @Schema(implementation = Resource.class)) @PathVariable Resource resource);
+    List<CustomAttribute<?>> getResourceCustomAttributes(@Parameter(description = "Resource Name", schema = @Schema(implementation = Resource.class)) @PathVariable Resource resource);
 
     @Operation(summary = "Get available resources for Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})
@@ -135,7 +136,6 @@ public interface CustomAttributeController extends AuthProtectedController {
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
             @RequestBody List<BaseAttributeContentV3<?>> request
             ) throws NotFoundException, AttributeException;
-
     @Operation(summary = "Delete Value of a Custom Attribute for a Resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute value deleted"), @ApiResponse(responseCode = "404", description = "Custom attribute not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(

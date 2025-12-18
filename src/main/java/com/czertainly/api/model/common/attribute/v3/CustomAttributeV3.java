@@ -1,6 +1,7 @@
 package com.czertainly.api.model.common.attribute.v3;
 
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.CustomAttribute;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.properties.CustomAttributeProperties;
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
@@ -29,7 +30,7 @@ import java.util.List;
 )
 @JsonDeserialize
 @JsonSerialize
-public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3>> {
+public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3>> implements CustomAttribute<BaseAttributeContentV3> {
 
     /**
      * Content of the Attribute
