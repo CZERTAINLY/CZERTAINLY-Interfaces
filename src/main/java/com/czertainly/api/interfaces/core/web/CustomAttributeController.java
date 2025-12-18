@@ -11,11 +11,9 @@ import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitio
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.CustomAttribute;
-import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
-import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -134,7 +132,7 @@ public interface CustomAttributeController extends AuthProtectedController {
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
-            @RequestBody List<BaseAttributeContentV3<?>> request
+            @RequestBody List<AttributeContent> request
             ) throws NotFoundException, AttributeException;
     @Operation(summary = "Delete Value of a Custom Attribute for a Resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute value deleted"), @ApiResponse(responseCode = "404", description = "Custom attribute not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
