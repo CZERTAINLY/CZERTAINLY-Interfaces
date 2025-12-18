@@ -30,7 +30,6 @@ import java.util.Objects;
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeDtoV3.class)
-@JsonDeserialize(using = BaseAttributeDeserializer.class)
 public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDtoV3 {
 
     private AttributeVersion schemaVersion = AttributeVersion.V3;

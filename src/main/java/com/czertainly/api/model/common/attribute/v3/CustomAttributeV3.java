@@ -6,6 +6,7 @@ import com.czertainly.api.model.common.attribute.common.properties.CustomAttribu
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import java.util.List;
         type = "object"
 )
 @JsonDeserialize
+@JsonSerialize
 public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3>> {
 
     /**

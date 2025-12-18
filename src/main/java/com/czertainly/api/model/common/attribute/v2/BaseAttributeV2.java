@@ -30,7 +30,6 @@ import java.util.Objects;
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(name = "BaseAttributeV2", implementation = BaseAttributeDtoV2.class)
-@JsonDeserialize(using = BaseAttributeDeserializer.class)
 public class BaseAttributeV2<T> extends BaseAttribute implements BaseAttributeDtoV2 {
 
     private String uuid;

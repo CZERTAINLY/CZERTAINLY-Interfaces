@@ -10,6 +10,7 @@ import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContent
 import com.czertainly.api.model.common.attribute.common.properties.DataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -32,6 +33,7 @@ import java.util.List;
         type = "object"
 )
 @JsonDeserialize
+@JsonSerialize
 public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3>> implements DataAttribute<BaseAttributeContentV3> {
 
     /**

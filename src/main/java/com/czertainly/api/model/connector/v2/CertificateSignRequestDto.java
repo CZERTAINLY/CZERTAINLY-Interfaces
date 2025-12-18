@@ -33,13 +33,13 @@ public class CertificateSignRequestDto {
             description = "List of RA Profiles attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttribute>raProfileAttributes;
+    private List<RequestAttribute> raProfileAttributes;
 
     @Schema(
             description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttribute>attributes;
+    private List<RequestAttribute> attributes;
 
     @Override
     public String toString() {

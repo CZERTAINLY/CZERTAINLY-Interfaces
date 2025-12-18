@@ -8,6 +8,7 @@ import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.common.properties.MetadataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ import java.util.Objects;
         type = "object"
 )
 @JsonDeserialize
+@JsonSerialize
 public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> implements MetadataAttribute<BaseAttributeContentV2> {
 
     /**

@@ -67,7 +67,7 @@ public enum AttributeContentType implements IPlatformEnum {
     @JsonCreator
     public static AttributeContentType fromCode(String code) {
         return Arrays.stream(VALUES)
-                .filter(e -> e.code.equals(code))
+                .filter(e -> e.code.equalsIgnoreCase(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type %s.", code)));
     }

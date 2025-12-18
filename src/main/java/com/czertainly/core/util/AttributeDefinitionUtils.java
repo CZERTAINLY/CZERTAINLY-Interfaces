@@ -798,14 +798,14 @@ public class AttributeDefinitionUtils {
         }
         List<BaseAttribute> convertedDefinition = new ArrayList<>();
         for (RequestAttribute clt : attributes) {
-            if (clt.getVersion().equals("2")) {
+            if (clt.getVersion() == AttributeVersion.V2) {
                 DataAttributeV2 atr = new DataAttributeV2();
                 atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(String.valueOf(clt.getUuid()));
                 convertedDefinition.add(atr);
             }
-            if (clt.getVersion().equals("3")) {
+            if (clt.getVersion() == AttributeVersion.V3) {
                 DataAttributeV2 atr = new DataAttributeV2();
                 atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
