@@ -13,7 +13,6 @@ import java.util.List;
 @Schema(
         description = "Data Attribute",
         type = "object",
-        discriminatorProperty = "schemaVersion",
         oneOf = {
                 DataAttributeV2.class,
                 DataAttributeV3.class

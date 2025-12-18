@@ -24,7 +24,7 @@ public class ComplianceRequestRulesDto {
     private String uuid;
 
     @Schema(description = "Attributes for the rule")
-    private List<RequestAttributeV3> attributes;
+    private List<RequestAttribute> attributes;
 
     //Default getters and setters
 
