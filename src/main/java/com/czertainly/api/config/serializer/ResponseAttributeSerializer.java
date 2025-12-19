@@ -60,9 +60,9 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
                 if (credentialDto.getAttributes() != null) {
                     for (DataAttribute<?> credentialAttribute : credentialDto.getAttributes()) {
                         DataAttributeV2 dataAttributeV2 = (DataAttributeV2) credentialAttribute;
-                        List<BaseAttributeContentV2> credentialAttributeContents = new ArrayList<>();
+                        List<BaseAttributeContentV2<?>> credentialAttributeContents = new ArrayList<>();
                         if (dataAttributeV2.getContentType().equals(AttributeContentType.SECRET)) {
-                            for (BaseAttributeContentV2 baseAttributeContent : dataAttributeV2.getContent()) {
+                            for (BaseAttributeContentV2<?> baseAttributeContent : dataAttributeV2.getContent()) {
                                 SecretAttributeContentV2 secretAttributeContent = objectMapper.convertValue(baseAttributeContent, SecretAttributeContentV2.class);
                                 secretAttributeContent.setData(null);
                                 credentialAttributeContents.add(secretAttributeContent);

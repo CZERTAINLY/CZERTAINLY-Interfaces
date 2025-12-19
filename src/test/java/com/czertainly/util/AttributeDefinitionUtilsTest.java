@@ -3,6 +3,7 @@ package com.czertainly.util;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.client.attribute.RequestAttributeV2;
+import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
@@ -135,14 +136,14 @@ class AttributeDefinitionUtilsTest {
         Assertions.assertNotNull(attrs);
         Assertions.assertEquals(7, attrs.size());
 
-//        NameAndIdDto endEntityProfile = getNameAndIdData("endEntityProfile", AttributeDefinitionUtils.getClientAttributes(attrs));
-//        Assertions.assertNotNull(endEntityProfile);
-//        Assertions.assertEquals(0, endEntityProfile.getId());
-//        Assertions.assertEquals("DemoTLSServerEndEntityProfile", endEntityProfile.getName());
-//
-//        String serialized = serialize(attrs);
-//        Assertions.assertTrue(serialized.matches("^.*\"name\":\"tokenType\".*\"content\":.*\"data\":\"PEM\".*$"));
-//        Assertions.assertTrue(serialized.matches("^.*\"name\":\"keyRecoverable\".*\"data\":true.*$"));
+        NameAndIdDto endEntityProfile = getNameAndIdData("endEntityProfile", AttributeDefinitionUtils.getClientAttributes(attrs));
+        Assertions.assertNotNull(endEntityProfile);
+        Assertions.assertEquals(0, endEntityProfile.getId());
+        Assertions.assertEquals("DemoTLSServerEndEntityProfile", endEntityProfile.getName());
+
+        String serialized = serialize(attrs);
+        Assertions.assertTrue(serialized.matches("^.*\"name\":\"tokenType\".*\"content\":.*\"data\":\"PEM\".*$"));
+        Assertions.assertTrue(serialized.matches("^.*\"name\":\"keyRecoverable\".*\"data\":true.*$"));
     }
 
     @Test

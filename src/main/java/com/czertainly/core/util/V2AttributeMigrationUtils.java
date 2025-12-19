@@ -98,7 +98,7 @@ public class V2AttributeMigrationUtils {
         return (T) attribute;
     }
 
-    private static List<BaseAttributeConstraint> getAttributeConstraint(String regex) {
+    private static List<BaseAttributeConstraint<?>> getAttributeConstraint(String regex) {
         if (regex == null) {
             return null;
         }
@@ -137,8 +137,8 @@ public class V2AttributeMigrationUtils {
         return AttributeContentType.fromCode(type.getCode());
     }
 
-    private static List<BaseAttributeContentV2> getAttributeContent(AttributeType attributeType, Object oldContentData) {
-        List<BaseAttributeContentV2> attributeContents = new ArrayList<>();
+    private static List<BaseAttributeContentV2<?>> getAttributeContent(AttributeType attributeType, Object oldContentData) {
+        List<BaseAttributeContentV2<?>> attributeContents = new ArrayList<>();
         List<com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent> oldContentListItems = new ArrayList<>();
         if (oldContentData == null) {
             return null;
@@ -187,7 +187,7 @@ public class V2AttributeMigrationUtils {
                     for (AttributeDefinition item : oldCredentialAttributeValue) {
                         credentialAttributes.add(getNewAttributes(item, DataAttributeV2.class));
                     }
-//                    credentialDto.setAttributes(credentialAttributes);
+                    credentialDto.setAttributes(credentialAttributes);
                     attributeContents.add(new CredentialAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), credentialDto));
                     break;
                 case DATE:
@@ -336,7 +336,7 @@ public class V2AttributeMigrationUtils {
         }
     }
 
-    private static List<BaseAttributeContentV2> getMetadataAttributeValue(Object value) {
+    private static List<BaseAttributeContentV2<?>> getMetadataAttributeValue(Object value) {
         if (value instanceof String) {
             String metadataValue = (String) value;
             return List.of(new StringAttributeContentV2(metadataValue, metadataValue));

@@ -27,7 +27,7 @@ public interface DataAttribute<T> extends Attribute {
 
     DataAttributeProperties getProperties();
 
-    List<BaseAttributeConstraint> getConstraints();
+    List<BaseAttributeConstraint<?>> getConstraints();
 
     AttributeCallback getAttributeCallback();
 
