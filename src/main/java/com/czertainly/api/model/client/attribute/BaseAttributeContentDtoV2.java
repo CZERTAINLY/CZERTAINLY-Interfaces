@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(
         description = "Base Attribute ContentV2 definition",
         type = "object",
-        title = "TitleTest",
         oneOf = {
                 BooleanAttributeContentV2.class,
                 CodeBlockAttributeContentV2.class,
