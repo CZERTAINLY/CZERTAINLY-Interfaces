@@ -6,9 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
-public class CodeBlockAttributeContentData implements AttributeContentData {
+public class CodeBlockAttributeContentData implements AttributeContentData, Serializable {
 
     @Schema(description = "Definition of programming languages used for code",
             examples = {"JAVA, PHP, C, etc"},

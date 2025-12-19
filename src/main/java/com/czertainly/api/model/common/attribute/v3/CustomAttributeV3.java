@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class contains set of properties to represent
@@ -86,5 +87,26 @@ public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContent
                 .append("contentType", contentType)
                 .append("properties", properties)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomAttributeV3 that)) return false;
+        if (!super.equals(o)) return false;
+
+        return Objects.equals(content, that.content)
+                && contentType == that.contentType
+                && Objects.equals(properties, that.properties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                super.hashCode(),
+                content,
+                contentType,
+                properties
+        );
     }
 }

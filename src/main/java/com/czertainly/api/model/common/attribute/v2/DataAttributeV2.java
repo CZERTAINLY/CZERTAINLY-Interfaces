@@ -1,7 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
 import com.czertainly.api.model.common.attribute.common.AttributeType;
-import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
@@ -19,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class contains set of properties to represent
@@ -123,5 +123,30 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
     @Override
     public void setContent(List<BaseAttributeContentV2> content) {
         this.content = content;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataAttributeV2 that)) return false;
+        if (!super.equals(o)) return false;
+
+        return Objects.equals(content, that.content)
+                && contentType == that.contentType
+                && Objects.equals(properties, that.properties)
+                && Objects.equals(constraints, that.constraints)
+                && Objects.equals(attributeCallback, that.attributeCallback);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                super.hashCode(),
+                content,
+                contentType,
+                properties,
+                attributeCallback,
+                constraints
+        );
     }
 }
