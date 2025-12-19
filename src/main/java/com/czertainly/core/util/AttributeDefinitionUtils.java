@@ -377,10 +377,10 @@ public class AttributeDefinitionUtils {
             try {
 
                 if (version == 2) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV2) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
+                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
                 if (version == 3) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(((RequestAttributeV3) attribute).getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
+                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
                 }
             } catch (IllegalArgumentException e) {
                 errors.add(ValidationError.create(
@@ -407,9 +407,9 @@ public class AttributeDefinitionUtils {
 
             validateAttributeContent(definition, attribute, errors);
             if (version == 2)
-                errors.addAll(validateConstraints(definition, ((RequestAttributeV2) attribute).getContent()));
+                errors.addAll(validateConstraints(definition, attribute.getContent()));
             if (version == 3)
-                errors.addAll(validateConstraints(definition, ((RequestAttributeV3) attribute).getContent()));
+                errors.addAll(validateConstraints(definition, attribute.getContent()));
         }
 
 
