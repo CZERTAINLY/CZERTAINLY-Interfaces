@@ -13,9 +13,6 @@ public class DateTimeAttributeConstraintData {
     @Schema(description = "End of the datetime for validation")
     private LocalDateTime to;
 
-    public DateTimeAttributeConstraintData() {
-    }
-
     public LocalDateTime getFrom() {
         return from;
     }

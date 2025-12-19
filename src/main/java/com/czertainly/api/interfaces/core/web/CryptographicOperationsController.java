@@ -6,7 +6,6 @@ import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.cryptography.operations.*;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,7 +51,7 @@ public interface CryptographicOperationsController extends AuthProtectedControll
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/cipher/{algorithm}/attributes",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<BaseAttributeV3<?>> listCipherAttributes(
+    List<BaseAttribute> listCipherAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
@@ -136,7 +135,7 @@ public interface CryptographicOperationsController extends AuthProtectedControll
             path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/signature/{algorithm}/attributes",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<BaseAttributeV3<?>> listSignatureAttributes(
+    List<BaseAttribute> listSignatureAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key instance UUID") @PathVariable String uuid,

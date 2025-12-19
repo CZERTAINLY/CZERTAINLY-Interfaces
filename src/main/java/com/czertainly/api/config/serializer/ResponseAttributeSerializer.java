@@ -43,43 +43,9 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         if (responseAttribute.getContentType().equals(AttributeContentType.SECRET)) {
-            gen.writeStartArray();
-            for (Object content : responseAttribute.getContent()) {
-                SecretAttributeContentV2 secretAttributeContent = objectMapper.convertValue(content, SecretAttributeContentV2.class);
-                secretAttributeContent.setData(null);
-                gen.writeObject(secretAttributeContent);
-            }
+            writeSecretAttributeContent(gen, responseAttribute, objectMapper);
         } else if (responseAttribute.getContentType().equals(AttributeContentType.CREDENTIAL)) {
-            gen.writeStartArray();
-            for (BaseAttributeContentV2<?> credential : responseAttribute.getContent()) {
-                CredentialAttributeContentV2 credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContentV2.class);
-                List<DataAttributeV2> credentialAttributes = new ArrayList<>();
-                CredentialAttributeContentData credentialDto = credentialAttributeContent.getData();
-
-                // attributes can be null when serializing credential content not loaded with full credentials but as NameAndUuidDto
-                if (credentialDto.getAttributes() != null) {
-                    for (DataAttribute<?> credentialAttribute : credentialDto.getAttributes()) {
-                        DataAttributeV2 dataAttributeV2 = (DataAttributeV2) credentialAttribute;
-                        List<BaseAttributeContentV2<?>> credentialAttributeContents = new ArrayList<>();
-                        if (dataAttributeV2.getContentType().equals(AttributeContentType.SECRET)) {
-                            for (BaseAttributeContentV2<?> baseAttributeContent : dataAttributeV2.getContent()) {
-                                SecretAttributeContentV2 secretAttributeContent = objectMapper.convertValue(baseAttributeContent, SecretAttributeContentV2.class);
-                                secretAttributeContent.setData(null);
-                                credentialAttributeContents.add(secretAttributeContent);
-                            }
-                        } else {
-                            credentialAttributeContents.addAll(dataAttributeV2.getContent());
-                        }
-                        dataAttributeV2.setContent(credentialAttributeContents);
-                        credentialAttributes.add(dataAttributeV2);
-                    }
-                }
-
-
-                credentialDto.setAttributes(credentialAttributes);
-                CredentialAttributeContentV2 credentialAttributeContentV2 = new CredentialAttributeContentV2(credential.getReference(),credentialDto);
-                gen.writeObject(credentialAttributeContentV2);
-            }
+            writeCredentialAttributeContent(gen, responseAttribute, objectMapper);
         } else {
             gen.writeStartArray();
             for (AttributeContent content : response) {
@@ -87,6 +53,52 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
             }
         }
         gen.writeEndArray();
+    }
+
+    private static void writeCredentialAttributeContent(JsonGenerator gen, ResponseAttributeV2 responseAttribute, ObjectMapper objectMapper) throws IOException {
+        gen.writeStartArray();
+        for (BaseAttributeContentV2<?> credential : responseAttribute.getContent()) {
+            CredentialAttributeContentV2 credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContentV2.class);
+            List<DataAttributeV2> credentialAttributes = new ArrayList<>();
+            CredentialAttributeContentData credentialDto = credentialAttributeContent.getData();
+
+            // attributes can be null when serializing credential content not loaded with full credentials but as NameAndUuidDto
+            if (credentialDto.getAttributes() != null) {
+                addCredentialAttributes(objectMapper, credentialDto, credentialAttributes);
+            }
+
+
+            credentialDto.setAttributes(credentialAttributes);
+            CredentialAttributeContentV2 credentialAttributeContentV2 = new CredentialAttributeContentV2(credential.getReference(),credentialDto);
+            gen.writeObject(credentialAttributeContentV2);
+        }
+    }
+
+    private static void addCredentialAttributes(ObjectMapper objectMapper, CredentialAttributeContentData credentialDto, List<DataAttributeV2> credentialAttributes) {
+        for (DataAttribute<?> credentialAttribute : credentialDto.getAttributes()) {
+            DataAttributeV2 dataAttributeV2 = (DataAttributeV2) credentialAttribute;
+            List<BaseAttributeContentV2<?>> credentialAttributeContents = new ArrayList<>();
+            if (dataAttributeV2.getContentType().equals(AttributeContentType.SECRET)) {
+                for (BaseAttributeContentV2<?> baseAttributeContent : dataAttributeV2.getContent()) {
+                    SecretAttributeContentV2 secretAttributeContent = objectMapper.convertValue(baseAttributeContent, SecretAttributeContentV2.class);
+                    secretAttributeContent.setData(null);
+                    credentialAttributeContents.add(secretAttributeContent);
+                }
+            } else {
+                credentialAttributeContents.addAll(dataAttributeV2.getContent());
+            }
+            dataAttributeV2.setContent(credentialAttributeContents);
+            credentialAttributes.add(dataAttributeV2);
+        }
+    }
+
+    private static void writeSecretAttributeContent(JsonGenerator gen, ResponseAttributeV2 responseAttribute, ObjectMapper objectMapper) throws IOException {
+        gen.writeStartArray();
+        for (Object content : responseAttribute.getContent()) {
+            SecretAttributeContentV2 secretAttributeContent = objectMapper.convertValue(content, SecretAttributeContentV2.class);
+            secretAttributeContent.setData(null);
+            gen.writeObject(secretAttributeContent);
+        }
     }
 }
 

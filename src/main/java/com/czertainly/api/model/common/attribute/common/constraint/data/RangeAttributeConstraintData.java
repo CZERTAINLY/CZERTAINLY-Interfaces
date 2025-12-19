@@ -1,34 +1,19 @@
 package com.czertainly.api.model.common.attribute.common.constraint.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Setter
+@Getter
 public class RangeAttributeConstraintData {
     @Schema(description = "Start of the range for validation")
     private Integer from;
 
     @Schema(description = "End of the range for validation")
     private Integer to;
-
-    public RangeAttributeConstraintData() {
-    }
-
-    public Integer getFrom() {
-        return from;
-    }
-
-    public void setFrom(Integer from) {
-        this.from = from;
-    }
-
-    public Integer getTo() {
-        return to;
-    }
-
-    public void setTo(Integer to) {
-        this.to = to;
-    }
 
     @Override
     public String toString() {

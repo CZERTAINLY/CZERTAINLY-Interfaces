@@ -24,9 +24,6 @@ public class FileAttributeContentData implements AttributeContentData {
     @Schema(description = "Type of the file uploaded", requiredMode = Schema.RequiredMode.REQUIRED)
     private String mimeType;
 
-    public FileAttributeContentData() {
-    }
-
     @JsonIgnore
     public MimeType getMimeTypeObject() {
         return this.mimeType != null ? MimeType.valueOf(this.mimeType) : null;
