@@ -1,5 +1,6 @@
 package com.czertainly.core.util;
 
+import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.*;
@@ -31,6 +32,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -47,7 +50,10 @@ import java.util.stream.Collectors;
 public class AttributeDefinitionUtils {
 
     private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = JsonMapper.builder()
-            .findAndAddModules()                     // <--- IMPORTANT
+            .addModule(new JavaTimeModule())
+            .addModule(new SimpleModule()
+                .addDeserializer(BaseAttribute.class, new BaseAttributeDeserializer())
+            )
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .build();
 
