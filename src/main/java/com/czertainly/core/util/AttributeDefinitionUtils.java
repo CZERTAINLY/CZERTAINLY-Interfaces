@@ -734,52 +734,73 @@ public class AttributeDefinitionUtils {
         }
         List<RequestAttribute> convertedDefinition = new ArrayList<>();
         if (attributes.get(0) instanceof BaseAttribute baseAttribute) {
+
             if (baseAttribute.getVersion() == 2) {
-                for (BaseAttributeV2<?> clt : (List<BaseAttributeV2<?>>) attributes) {
-                    if (clt.getType() != AttributeType.DATA) {
-                        continue;
-                    }
-                    RequestAttributeV2 atr = new RequestAttributeV2();
-                    atr.setName(clt.getName());
-                    if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
-                    atr.setContent((List<BaseAttributeContentV2<?>>) clt.getContent());
-                    convertedDefinition.add(atr);
-                }
+                convertBaseAttributesV2ToRequestAttributes((List<BaseAttributeV2<?>>) attributes, convertedDefinition);
             }
             if (baseAttribute.getVersion() == 3) {
-                for (BaseAttributeV3<?> clt : (List<BaseAttributeV3<?>>) attributes) {
-                    if (clt.getType() != AttributeType.DATA) {
-                        continue;
-                    }
-                    RequestAttributeV3 atr = new RequestAttributeV3();
-                    atr.setName(clt.getName());
-                    if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
-                    atr.setContent((List<BaseAttributeContentV3<?>>) clt.getContent());
-                    convertedDefinition.add(atr);
-                }
+                convertBaseAttributesV3ToRequestAttributes((List<BaseAttributeV3<?>>) attributes, convertedDefinition);
             }
         } else if (attributes.get(0) instanceof ResponseAttribute) {
-            List<ResponseAttribute> itrAttributes = (List<ResponseAttribute>) attributes;
-            for (ResponseAttribute clt : itrAttributes) {
-                if (clt.getSchemaVersion().equals("2")) {
-                    RequestAttributeV2 atr = new RequestAttributeV2();
-                    atr.setName(clt.getName());
-                    atr.setUuid(clt.getUuid());
-                    atr.setContentType(clt.getContentType());
-                    atr.setContent(clt.getContent());
-                }
-                if (clt.getSchemaVersion().equals("3")) {
-                    RequestAttributeV2 atr = new RequestAttributeV2();
-                    atr.setName(clt.getName());
-                    atr.setUuid(clt.getUuid());
-                    atr.setContentType(clt.getContentType());
-                    atr.setContent(clt.getContent());
-                }
-            }
+            convertResponseToRequestAttribute((List<ResponseAttribute>) attributes);
         } else {
             throw new IllegalArgumentException("Invalid argument provided to get Attributes");
         }
         return convertedDefinition;
+    }
+
+    private static void convertResponseToRequestAttribute(List<ResponseAttribute> attributes) {
+        List<ResponseAttribute> itrAttributes = attributes;
+        for (ResponseAttribute clt : itrAttributes) {
+            if (clt.getSchemaVersion() == AttributeVersion.V2) {
+                convertResponseAttributeV2ToResponseAttribute(clt);
+            }
+            if (clt.getSchemaVersion() == AttributeVersion.V3) {
+                convertResponseAttributeV3ToResponseAttribute(clt);
+            }
+        }
+    }
+
+    private static void convertResponseAttributeV3ToResponseAttribute(ResponseAttribute clt) {
+        RequestAttributeV3 atr = new RequestAttributeV3();
+        atr.setName(clt.getName());
+        atr.setUuid(clt.getUuid());
+        atr.setContentType(clt.getContentType());
+        atr.setContent(clt.getContent());
+    }
+
+    private static void convertResponseAttributeV2ToResponseAttribute(ResponseAttribute clt) {
+        RequestAttributeV2 atr = new RequestAttributeV2();
+        atr.setName(clt.getName());
+        atr.setUuid(clt.getUuid());
+        atr.setContentType(clt.getContentType());
+        atr.setContent(clt.getContent());
+    }
+
+    private static void convertBaseAttributesV3ToRequestAttributes(List<BaseAttributeV3<?>> attributes, List<RequestAttribute> convertedDefinition) {
+        for (BaseAttributeV3<?> clt : attributes) {
+            if (clt.getType() != AttributeType.DATA) {
+                continue;
+            }
+            RequestAttributeV3 atr = new RequestAttributeV3();
+            atr.setName(clt.getName());
+            if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
+            atr.setContent((List<BaseAttributeContentV3<?>>) clt.getContent());
+            convertedDefinition.add(atr);
+        }
+    }
+
+    private static void convertBaseAttributesV2ToRequestAttributes(List<BaseAttributeV2<?>> attributes, List<RequestAttribute> convertedDefinition) {
+        for (BaseAttributeV2<?> clt : attributes) {
+            if (clt.getType() != AttributeType.DATA) {
+                continue;
+            }
+            RequestAttributeV2 atr = new RequestAttributeV2();
+            atr.setName(clt.getName());
+            if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
+            atr.setContent((List<BaseAttributeContentV2<?>>) clt.getContent());
+            convertedDefinition.add(atr);
+        }
     }
 
     public static AttributeContentType deriveAttributeContentTypeFromContent(List<? extends AttributeContent> content) {
