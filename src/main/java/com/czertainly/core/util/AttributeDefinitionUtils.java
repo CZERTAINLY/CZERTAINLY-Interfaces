@@ -78,7 +78,7 @@ public class AttributeDefinitionUtils {
             List<RequestAttribute> reloadedAttributes = (List<RequestAttribute>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
         } else if (attributes.get(0) instanceof BaseAttributeV2) {
-            List<BaseAttributeV2> reloadedAttributes = (List<BaseAttributeV2>) attributes;
+            List<BaseAttributeV2<?>> reloadedAttributes = (List<BaseAttributeV2<?>>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
         } else if (attributes.get(0) instanceof ResponseAttribute) {
             List<ResponseAttribute> reloadedAttributes = (List<ResponseAttribute>) attributes;
@@ -99,13 +99,12 @@ public class AttributeDefinitionUtils {
                 return null;
             }
             if (!singleItem) {
-                return (T) definition.getContent();
+                return definition.getContent();
             } else {
                 return ((List<T>) definition.getContent()).get(0);
             }
-//            return (T) List.of(new RequestAttributeV2Dto());
         } else if (attributes.get(0) instanceof BaseAttributeV2) {
-            BaseAttributeV2 definition = getRequestAttributes(name, attributes);
+            BaseAttributeV2<?> definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
@@ -120,7 +119,7 @@ public class AttributeDefinitionUtils {
                 return null;
             }
             if (!singleItem) {
-                return (T) definition.getContent();
+                return definition.getContent();
             } else {
                 return ((List<T>) definition.getContent()).get(0);
             }
@@ -140,7 +139,7 @@ public class AttributeDefinitionUtils {
             }
             return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
         } else if (attributes.get(0) instanceof BaseAttributeV2) {
-            BaseAttributeV2 definition = getRequestAttributes(name, attributes);
+            BaseAttributeV2<?> definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
@@ -183,17 +182,6 @@ public class AttributeDefinitionUtils {
     }
 
     public static <T extends BaseAttribute> String serialize(List<T> attributes) {
-        if (attributes == null) {
-            return null;
-        }
-        try {
-            return ATTRIBUTES_OBJECT_MAPPER.writeValueAsString(attributes);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public static <T extends BaseAttribute> String serializeMetadata(List<MetadataAttribute<?>> attributes) {
         if (attributes == null) {
             return null;
         }
@@ -248,19 +236,6 @@ public class AttributeDefinitionUtils {
             throw new IllegalStateException(e);
         }
     }
-
-    public static <T extends MetadataAttribute<?>> List<T> deserializeMetadata(String attributesJson, Class<MetadataAttribute> clazz) {
-        if (attributesJson == null) {
-            return null;
-        }
-        try {
-            return ATTRIBUTES_OBJECT_MAPPER.readValue(attributesJson, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-
 
     public static <T extends BaseAttributeContentV2<?>> List<T> deserializeAttributeContent(String attributeContentJson, Class<T> clazz) {
         if (attributeContentJson == null) {
