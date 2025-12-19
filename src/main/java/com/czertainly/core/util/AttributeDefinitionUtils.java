@@ -8,20 +8,18 @@ import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.*;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
-import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallbackMapping;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeValueTarget;
 import com.czertainly.api.model.common.attribute.common.callback.RequestAttributeCallback;
-import com.czertainly.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.common.constraint.data.DateTimeAttributeConstraintData;
 import com.czertainly.api.model.common.attribute.common.constraint.data.RangeAttributeConstraintData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.common.attribute.common.properties.DataAttributeProperties;
 import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
@@ -352,10 +350,10 @@ public class AttributeDefinitionUtils {
             try {
 
                 if (version == 2) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
+                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentV2Class()));
                 }
                 if (version == 3) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentClass()));
+                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentV2Class()));
                 }
             } catch (IllegalArgumentException e) {
                 errors.add(ValidationError.create(
@@ -381,10 +379,7 @@ public class AttributeDefinitionUtils {
             }
 
             validateAttributeContent(definition, attribute, errors);
-            if (version == 2)
-                errors.addAll(validateConstraints(definition, attribute.getContent()));
-            if (version == 3)
-                errors.addAll(validateConstraints(definition, attribute.getContent()));
+            errors.addAll(validateConstraints(definition, attribute.getContent()));
         }
 
 
@@ -551,145 +546,65 @@ public class AttributeDefinitionUtils {
 
         // TODO: checking all items in the list for the type
 
-        AttributeContentType contentType;
-        String label = null;
-        if (definition.getType().equals(AttributeType.DATA)) {
-            DataAttribute<?> dataAttribute = (DataAttribute<?>) definition;
-            contentType = dataAttribute.getContentType();
-            if (dataAttribute.getProperties() != null) label = dataAttribute.getProperties().getLabel();
-        } else {
-            CustomAttributeV2 customAttribute = (CustomAttributeV2) definition;
-            contentType = customAttribute.getContentType();
-            if (customAttribute.getProperties() != null) label = customAttribute.getProperties().getLabel();
-        }
-        boolean wrongValue = false;
+        AttributeContentType contentType = definition.getType() == AttributeType.DATA ? ((DataAttribute<?>) definition).getContentType() : ((CustomAttribute<?>) definition).getContentType();
+        String label = getLabel(definition);
         try {
-            if (definition.getVersion() == 2) {
-                for (AttributeContent baseAttributeContent : (List<AttributeContent>) attributeContent.getContent()) {
-                    switch (contentType) {
-                        case STRING:
-                            BaseAttributeContentV2<?> stringBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, StringAttributeContentV2.class);
-                            if (stringBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case INTEGER:
-                            BaseAttributeContentV2<?> integerBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, IntegerAttributeContentV2.class);
-                            if (integerBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case SECRET:
-                            BaseAttributeContentV2<?> secretBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, SecretAttributeContentV2.class);
-                            if (secretBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case BOOLEAN:
-                            BaseAttributeContentV2<?> boolBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, BooleanAttributeContentV2.class);
-                            if (boolBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case FLOAT:
-                            BaseAttributeContentV2<?> floatBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, FloatAttributeContentV2.class);
-                            if (floatBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case TEXT:
-                            BaseAttributeContentV2<?> textBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TextAttributeContentV2.class);
-                            if (textBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case FILE:
-                            FileAttributeContentV2 fileBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, FileAttributeContentV2.class);
-                            if (fileBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            Base64.getDecoder().decode(fileBaseAttributeContent.getData().getContent());
-                            break;
-                        case CREDENTIAL:
-                            CredentialAttributeContentV2 credentialBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, CredentialAttributeContentV2.class);
-                            if (credentialBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            CredentialDto credentialDto = ATTRIBUTES_OBJECT_MAPPER.convertValue(credentialBaseAttributeContent.getData(), CredentialDto.class);
-                            if (credentialDto == null) {
-                                errors.add(ValidationError.create("Wrong data of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case DATE:
-                            DateAttributeContentV2 dateBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, DateAttributeContentV2.class);
-                            if (dateBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case OBJECT:
-                            ObjectAttributeContentV2 jsonBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, ObjectAttributeContentV2.class);
-                            if (jsonBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case TIME:
-                            TimeAttributeContentV2 timeBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, TimeAttributeContentV2.class);
-                            if (timeBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case DATETIME:
-                            DateTimeAttributeContentV2 dateTimeBaseAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, DateTimeAttributeContentV2.class);
-                            if (dateTimeBaseAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        case CODEBLOCK:
-                            final CodeBlockAttributeContentV2 codeBlockAttributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, CodeBlockAttributeContentV2.class);
-                            if (codeBlockAttributeContent.getData() == null) {
-                                errors.add(ValidationError.create("Wrong value of Attribute {} {}.", label, definition.getType()));
-                                wrongValue = true;
-                                break;
-                            }
-                            break;
-                        default:
-                            errors.add(ValidationError.create("Unknown type of Attribute definition {} {}.", label, definition.getType()));
-                            break;
-                    }
+            for (AttributeContent baseAttributeContent : (List<AttributeContent>) attributeContent.getContent()) {
+                if (definition.getVersion() == 2) {
+                    validateAttributeContentByContentType(baseAttributeContent, contentType.getContentV2Class(), label, definition.getType(), errors);
+                }
+                if (definition.getVersion() == 3) {
+                    validateAttributeContentByContentType(baseAttributeContent, contentType.getContentV3Class(), label, definition.getType(), errors);
                 }
             }
         } catch (Exception e) {
-            wrongValue = true;
+            errors.add(ValidationError.create("Attribute {} of type {} has wrong value.", label, definition.getType()));
+        }
+    }
+
+    private static String getLabel(BaseAttribute definition) {
+        String label = null;
+        if (definition.getType().equals(AttributeType.DATA)) {
+            DataAttribute<?> dataAttribute = (DataAttribute<?>) definition;
+            if (dataAttribute.getProperties() != null) label = dataAttribute.getProperties().getLabel();
+        } else {
+            CustomAttribute<?> customAttribute = (CustomAttribute<?>) definition;
+            if (customAttribute.getProperties() != null) label = customAttribute.getProperties().getLabel();
+        }
+        return label;
+    }
+
+    private static void validateAttributeContentByContentType(
+            Object baseAttributeContent,
+            Class<?> targetClass,
+            String label,
+            AttributeType type,
+            List<ValidationError> errors
+    ) {
+        AttributeContent content = (AttributeContent) ATTRIBUTES_OBJECT_MAPPER.convertValue(baseAttributeContent, targetClass);
+
+        ValidationError wrongValueError = ValidationError.create(
+                "Wrong value of Attribute {} {}.", label, type
+        );
+
+        if (content.getData() == null) {
+            errors.add(wrongValueError);
+            return;
         }
 
-        if (wrongValue) {
-            errors.add(ValidationError.create("Attribute {} of type {} has wrong value.", label, definition.getType()));
+        if (targetClass == CredentialAttributeContentV2.class) {
+            CredentialDto credentialDto = ATTRIBUTES_OBJECT_MAPPER.convertValue(content.getData(), CredentialDto.class);
+            if (credentialDto == null) {
+                errors.add(wrongValueError);
+            }
+        }
+
+        if (targetClass == FileAttributeContentV2.class || targetClass == FileAttributeContentV3.class) {
+            try {
+                Base64.getDecoder().decode(((FileAttributeContentData) (content.getData())).getContent());
+            } catch (Exception e) {
+                errors.add(wrongValueError);
+            }
         }
     }
 
@@ -985,10 +900,10 @@ public class AttributeDefinitionUtils {
             DataAttributeV2 attribute = (DataAttributeV2) attributes.stream().filter(x -> x.getName().equals(requestAttribute.getName())).findFirst().orElse(null);
             if (attribute == null) return false;
 
-            var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentClass());
+            var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentV2Class());
             if (attributeContent == null) return false;
 
-            if (!attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentClass()))) {
+            if (!attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentV2Class()))) {
                 return false;
             }
         }

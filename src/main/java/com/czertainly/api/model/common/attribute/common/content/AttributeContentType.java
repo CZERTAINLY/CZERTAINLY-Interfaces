@@ -5,10 +5,12 @@ import com.czertainly.api.model.common.attribute.common.content.data.CredentialA
 import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.common.content.data.SecretAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
+import com.czertainly.api.model.common.attribute.v3.content.*;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,20 +23,21 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeContentType implements IPlatformEnum {
 
-    STRING(Codes.STRING, "String", StringAttributeContentV2.class, String.class, true),
-    TEXT(Codes.TEXT, "Text", TextAttributeContentV2.class, String.class, true),
-    INTEGER(Codes.INTEGER, "Integer number", IntegerAttributeContentV2.class, Integer.class, true),
-    BOOLEAN(Codes.BOOLEAN, "Boolean", BooleanAttributeContentV2.class, Boolean.class, true),
-    FLOAT(Codes.FLOAT, "Decimal number", FloatAttributeContentV2.class, Float.class, true),
-    DATE(Codes.DATE, "Date", DateAttributeContentV2.class, LocalDate.class, true),
-    TIME(Codes.TIME, "Time", TimeAttributeContentV2.class, LocalTime.class, true),
-    DATETIME(Codes.DATETIME, "DateTime", DateTimeAttributeContentV2.class, ZonedDateTime.class, true),
-    SECRET(Codes.SECRET, "Secret", SecretAttributeContentV2.class, SecretAttributeContentData.class, false),
-    FILE(Codes.FILE, "File", FileAttributeContentV2.class, FileAttributeContentData.class, false),
-    CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContentV2.class, CredentialAttributeContentData.class, false),
-    CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContentV2.class, CodeBlockAttributeContentData.class, false),
-    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContentV2.class, Object.class, false),
+    STRING(Codes.STRING, "String", StringAttributeContentV2.class, StringAttributeContentV3.class, String.class, true),
+    TEXT(Codes.TEXT, "Text", TextAttributeContentV2.class, TextAttributeContentV3.class, String.class, true),
+    INTEGER(Codes.INTEGER, "Integer number", IntegerAttributeContentV2.class, IntegerAttributeContentV3.class, Integer.class, true),
+    BOOLEAN(Codes.BOOLEAN, "Boolean", BooleanAttributeContentV2.class, BooleanAttributeContentV3.class, Boolean.class, true),
+    FLOAT(Codes.FLOAT, "Decimal number", FloatAttributeContentV2.class, FloatAttributeContentV3.class, Float.class, true),
+    DATE(Codes.DATE, "Date", DateAttributeContentV2.class, DateAttributeContentV3.class, LocalDate.class, true),
+    TIME(Codes.TIME, "Time", TimeAttributeContentV2.class, TimeAttributeContentV3.class, LocalTime.class, true),
+    DATETIME(Codes.DATETIME, "DateTime", DateTimeAttributeContentV2.class, DateTimeAttributeContentV3.class, ZonedDateTime.class, true),
+    SECRET(Codes.SECRET, "Secret", SecretAttributeContentV2.class, null, SecretAttributeContentData.class, false),
+    FILE(Codes.FILE, "File", FileAttributeContentV2.class, FileAttributeContentV3.class, FileAttributeContentData.class, false),
+    CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContentV2.class, null, CredentialAttributeContentData.class, false),
+    CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContentV2.class, CodeBlockAttributeContentV3.class, CodeBlockAttributeContentData.class, false),
+    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContentV2.class, ObjectAttributeContentV3.class, Object.class, false)
     ;
+
 
     private static final AttributeContentType[] VALUES;
 
@@ -46,20 +49,25 @@ public enum AttributeContentType implements IPlatformEnum {
     private final String label;
     private final String description;
 
-    private final Class<?> contentClass;
+    private final Class<?> contentV2Class;
+
+    @Getter
+    private final Class<?> contentV3Class;
     private final Class<?> contentDataClass;
 
     private final boolean filterByData;
 
-    AttributeContentType(String code, String label, Class<?> contentClass, Class<?> dataJavaClass, boolean filterByData) {
-        this(code, label, null, contentClass, dataJavaClass, filterByData);
+    AttributeContentType(String code, String label, Class<?> contentV2Class, Class<?> contentV3Class, Class<?> dataJavaClass, boolean filterByData) {
+        this(code, label, null, contentV2Class, contentV3Class, dataJavaClass, filterByData);
     }
 
-    AttributeContentType(String code, String label, String description, Class<?> contentClass, Class<?> contentDataClass, boolean filterByData) {
+    AttributeContentType(String code, String label, String description, Class<?> contentV2Class,
+                         Class<?> contentV3Class, Class<?> contentDataClass, boolean filterByData) {
         this.code = code;
         this.label = label;
         this.description = description;
-        this.contentClass = contentClass;
+        this.contentV2Class = contentV2Class;
+        this.contentV3Class = contentV3Class;
         this.contentDataClass = contentDataClass;
         this.filterByData = filterByData;
     }
@@ -74,7 +82,7 @@ public enum AttributeContentType implements IPlatformEnum {
 
     public static AttributeContentType fromClass(Class<?> clazz) {
         return clazz.equals(BaseAttributeContentV2.class) ? null
-                : Arrays.stream(VALUES).filter(e -> e.contentClass.equals(clazz))
+                : Arrays.stream(VALUES).filter(e -> e.contentV2Class.equals(clazz))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
     }
 
@@ -82,8 +90,8 @@ public enum AttributeContentType implements IPlatformEnum {
         return filterByData;
     }
 
-    public Class<?> getContentClass() {
-        return contentClass;
+    public Class<?> getContentV2Class() {
+        return contentV2Class;
     }
 
     @Override
