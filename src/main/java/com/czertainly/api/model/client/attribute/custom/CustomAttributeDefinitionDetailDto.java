@@ -1,8 +1,8 @@
 package com.czertainly.api.model.client.attribute.custom;
 
 import com.czertainly.api.model.client.attribute.AttributeDefinitionDto;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
-import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -98,7 +98,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(
             description = "Predefined content for the attribute if needed. The content of the Attribute must satisfy the type"
     )
-    private List<BaseAttributeContentV3> content;
+    private List<AttributeContent> content;
 
     /**
      * List of resources

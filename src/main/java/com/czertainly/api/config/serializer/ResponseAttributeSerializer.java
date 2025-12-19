@@ -51,8 +51,7 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
             }
         } else if (responseAttribute.getContentType().equals(AttributeContentType.CREDENTIAL)) {
             gen.writeStartArray();
-            for (Object credential : responseAttribute.getContent()) {
-                BaseAttributeContentV2 credentialV2 = (BaseAttributeContentV2) credential;
+            for (BaseAttributeContentV2<?> credential : responseAttribute.getContent()) {
                 CredentialAttributeContentV2 credentialAttributeContent = objectMapper.convertValue(credential, CredentialAttributeContentV2.class);
                 List<DataAttributeV2> credentialAttributes = new ArrayList<>();
                 CredentialAttributeContentData credentialDto = credentialAttributeContent.getData();
@@ -72,13 +71,14 @@ public class ResponseAttributeSerializer extends StdSerializer<List<AttributeCon
                             credentialAttributeContents.addAll(dataAttributeV2.getContent());
                         }
                         dataAttributeV2.setContent(credentialAttributeContents);
-//                        credentialAttributes.add(dataAttributeV2);
+                        credentialAttributes.add(dataAttributeV2);
                     }
                 }
 
+
                 credentialDto.setAttributes(credentialAttributes);
-                credentialV2.setData(credentialDto);
-                gen.writeObject(credentialV2);
+                CredentialAttributeContentV2 credentialAttributeContentV2 = new CredentialAttributeContentV2(credential.getReference(),credentialDto);
+                gen.writeObject(credentialAttributeContentV2);
             }
         } else {
             gen.writeStartArray();

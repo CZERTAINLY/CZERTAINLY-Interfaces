@@ -6,8 +6,6 @@ import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v2.CustomAttributeV2;
-import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.common.attribute.common.properties.DataAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -37,7 +35,7 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3>> implements DataAttribute<BaseAttributeContentV3> {
+public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3<?>>> implements DataAttribute<BaseAttributeContentV3<?>> {
 
     /**
      * Content of the Attribute
@@ -50,7 +48,7 @@ public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3
                     description = "Content of the Attribute"
             )
     )
-    private List<BaseAttributeContentV3> content;
+    private List<BaseAttributeContentV3<?>> content;
 
     /**
      * Type of the Attribute content
@@ -77,7 +75,7 @@ public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3
     @Schema(
             description = "Optional constraints used for validating the Attribute content"
     )
-    private List<BaseAttributeConstraint> constraints;
+    private List<BaseAttributeConstraint<?>> constraints;
 
     /**
      * Optional definition of callback for getting the content of the Attribute based on the action
@@ -107,6 +105,7 @@ public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3
         this.constraints = original.constraints;
         this.attributeCallback = original.attributeCallback;
         this.contentType = original.contentType;
+        this.schemaVersion = original.schemaVersion;
         setDescription(original.getDescription());
         setType(original.getType());
         setContentType(original.contentType);

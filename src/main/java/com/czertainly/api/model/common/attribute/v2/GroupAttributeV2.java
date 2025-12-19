@@ -29,7 +29,7 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class GroupAttributeV2 extends BaseAttributeV2<List<BaseAttributeV2>> {
+public class GroupAttributeV2 extends BaseAttributeV2<List<BaseAttributeV2<?>>> {
 
     /**
      * Content of the Attribute
@@ -42,7 +42,7 @@ public class GroupAttributeV2 extends BaseAttributeV2<List<BaseAttributeV2>> {
                     description = "List of all different types of attributes"
             )
     )
-    private List<BaseAttributeV2> content;
+    private List<BaseAttributeV2<?>> content;
 
     /**
      * Optional definition of callback for getting the content of the Attribute based on the action

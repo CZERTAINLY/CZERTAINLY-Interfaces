@@ -6,7 +6,6 @@ import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.common.callback.RequestAttributeCallback;
-import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.core.ParameterizedTypeReference;
@@ -100,18 +99,6 @@ public class AttributeApiClient extends BaseApiClient {
                 .retrieve()
                 .toEntity(Object.class)
                 .block().getBody(),
-                request,
-                connector);
-    }
-
-    public List<BaseAttributeContentV3> testCont(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
-
-        return processRequest(r -> r
-                        .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
-                        .retrieve()
-                        .toEntityList(BaseAttributeContentV3.class)
-                        .block().getBody(),
                 request,
                 connector);
     }

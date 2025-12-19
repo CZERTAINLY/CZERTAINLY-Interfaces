@@ -30,7 +30,7 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class InfoAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> {
+public class InfoAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2<?>>> {
 
     /**
      * Content of the Attribute
@@ -39,7 +39,7 @@ public class InfoAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
             description = "Content of the Attribute",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<BaseAttributeContentV2> content;
+    private List<BaseAttributeContentV2<?>> content;
 
     /**
      * Type of the Attribute content

@@ -34,7 +34,7 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> implements DataAttribute<BaseAttributeContentV2> {
+public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2<?>>> implements DataAttribute<BaseAttributeContentV2<?>> {
 
     /**
      * Content of the Attribute
@@ -47,7 +47,7 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
                     description = "Content of the Attribute"
             )
     )
-    private List<BaseAttributeContentV2> content;
+    private List<BaseAttributeContentV2<?>> content;
 
     /**
      * Type of the Attribute content
@@ -74,7 +74,7 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
     @Schema(
             description = "Optional constraints used for validating the Attribute content"
     )
-    private List<BaseAttributeConstraint> constraints;
+    private List<BaseAttributeConstraint<?>> constraints;
 
     /**
      * Optional definition of callback for getting the content of the Attribute based on the action
@@ -121,7 +121,7 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
     }
 
     @Override
-    public void setContent(List<BaseAttributeContentV2> content) {
+    public void setContent(List<BaseAttributeContentV2<?>> content) {
         this.content = content;
     }
 

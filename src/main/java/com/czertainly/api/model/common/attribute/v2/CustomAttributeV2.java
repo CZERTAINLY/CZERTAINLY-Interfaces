@@ -31,7 +31,7 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class CustomAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2>> implements CustomAttribute<BaseAttributeContentV2> {
+public class CustomAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2<?>>> implements CustomAttribute<BaseAttributeContentV2<?>> {
 
     /**
      * Content of the Attribute
@@ -39,7 +39,7 @@ public class CustomAttributeV2 extends BaseAttributeV2<List<BaseAttributeContent
     @Schema(
             description = "Content of the Attribute"
     )
-    private List<BaseAttributeContentV2> content;
+    private List<BaseAttributeContentV2<?>> content;
 
     /**
      * Type of the Attribute content
