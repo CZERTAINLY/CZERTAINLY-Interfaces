@@ -298,93 +298,93 @@ public class AttributeDefinitionUtils {
         }
 
         for (BaseAttribute definition : definitions) {
-
-            RequestAttribute attribute = getRequestAttributes(definition.getName(), attributes);
-
-            boolean isRequired = false;
-            boolean isReadOnly = false;
-            String label = null;
-            AttributeContentType contentType = null;
-            int version = definition.getVersion();
-
-            if (definition.getType().equals(AttributeType.DATA)) {
-                if (version == 2) {
-                    DataAttributeV2 dataAttribute = (DataAttributeV2) definition;
-                    contentType = dataAttribute.getContentType();
-                    if (dataAttribute.getProperties() != null) {
-                        isRequired = dataAttribute.getProperties().isRequired();
-                        isReadOnly = dataAttribute.getProperties().isReadOnly();
-                        label = dataAttribute.getProperties().getLabel();
-                    }
-                }
-                if (version == 3) {
-                    DataAttributeV3 dataAttribute = (DataAttributeV3) definition;
-                    contentType = dataAttribute.getContentType();
-                    if (dataAttribute.getProperties() != null) {
-                        isRequired = dataAttribute.getProperties().isRequired();
-                        isReadOnly = dataAttribute.getProperties().isReadOnly();
-                        label = dataAttribute.getProperties().getLabel();
-                    }
-                }
-            } else if (definition.getType().equals(AttributeType.CUSTOM)) {
-                CustomAttributeV3 customAttribute = (CustomAttributeV3) definition;
-                contentType = customAttribute.getContentType();
-                if (customAttribute.getProperties() != null) {
-                    isRequired = customAttribute.getProperties().isRequired();
-                    isReadOnly = customAttribute.getProperties().isReadOnly();
-                    label = customAttribute.getProperties().getLabel();
-                }
-            } else {
-                logger.warn("Cannot validate " + definition.getType() + " attributes");
-                continue;
-            }
-
-            if (attribute == null) {
-                if (isRequired) {
-                    errors.add(ValidationError.create("Required attribute {} not found.", label));
-                }
-                continue; // skip other validations
-            }
-
-            Object attributeContent = null;
-            try {
-
-                if (version == 2) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentV2Class()));
-                }
-                if (version == 3) {
-                    attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentV2Class()));
-                }
-            } catch (IllegalArgumentException e) {
-                errors.add(ValidationError.create(
-                        "Wrong type of value for attribute {}.",
-                        label));
-                continue;
-            }
-
-            if (isRequired && attributeContent == null) {
-                errors.add(ValidationError.create("Value of required attribute {} not set.", label));
-                continue; // required attribute has no value, skip other validations
-            }
-
-            if (isReadOnly) {
-                Object definitionContent = definition.getContent();
-                if (definitionContent == null || !definitionContent.equals(attributeContent)) {
-                    errors.add(ValidationError.create(
-                            "Wrong value of read only attribute {}. Definition value = {} and attribute value = {}.",
-                            label,
-                            definitionContent,
-                            attributeContent));
-                }
-            }
-
-            validateAttributeContent(definition, attribute, errors);
-            errors.addAll(validateConstraints(definition, attribute.getContent()));
+            validateSingleAttribute(attributes, definition, errors);
         }
 
 
         if (!errors.isEmpty()) {
             throw new ValidationException("Attributes validation failed.", errors);
+        }
+    }
+
+    private static void validateSingleAttribute(List<RequestAttribute> attributes, BaseAttribute definition, List<ValidationError> errors) {
+        RequestAttribute attribute = getRequestAttributes(definition.getName(), attributes);
+
+        boolean isRequired = false;
+        boolean isReadOnly = false;
+        String label = null;
+        AttributeContentType contentType;
+        int version = definition.getVersion();
+
+        if (definition.getType().equals(AttributeType.DATA)) {
+            DataAttribute<?> dataAttribute = (DataAttributeV2) definition;
+            contentType = dataAttribute.getContentType();
+            if (dataAttribute.getProperties() != null) {
+                isRequired = dataAttribute.getProperties().isRequired();
+                isReadOnly = dataAttribute.getProperties().isReadOnly();
+                label = dataAttribute.getProperties().getLabel();
+            }
+        } else if (definition.getType().equals(AttributeType.CUSTOM)) {
+            CustomAttribute<?> customAttribute = (CustomAttribute<?>) definition;
+            contentType = customAttribute.getContentType();
+            if (customAttribute.getProperties() != null) {
+                isRequired = customAttribute.getProperties().isRequired();
+                isReadOnly = customAttribute.getProperties().isReadOnly();
+                label = customAttribute.getProperties().getLabel();
+            }
+        } else {
+            logger.warn("Cannot validate {} attributes", definition.getType());
+            return;
+        }
+
+        if (attribute == null) {
+            if (isRequired) {
+                errors.add(ValidationError.create("Required attribute {} not found.", label));
+            }
+            return;
+        }
+
+        Object attributeContent = null;
+        try {
+            attributeContent = getAttributeContent(version, attributeContent, attribute, contentType);
+        } catch (IllegalArgumentException e) {
+            errors.add(ValidationError.create(
+                    "Wrong type of value for attribute {}.",
+                    label));
+            return;
+        }
+
+        if (isRequired && attributeContent == null) {
+            errors.add(ValidationError.create("Value of required attribute {} not set.", label));
+            return;
+        }
+
+        if (isReadOnly) {
+            validateReadOnly(definition, errors, attributeContent, label);
+        }
+
+        validateAttributeContent(definition, attribute, errors);
+        errors.addAll(validateConstraints(definition, attribute.getContent()));
+    }
+
+    private static Object getAttributeContent(int version, Object attributeContent, RequestAttribute attribute, AttributeContentType contentType) {
+        if (version == 2) {
+            attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentV2Class()));
+        }
+        if (version == 3) {
+            attributeContent = ATTRIBUTES_OBJECT_MAPPER.convertValue(attribute.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, contentType.getContentV3Class()));
+        }
+        return attributeContent;
+    }
+
+    private static void validateReadOnly(BaseAttribute definition, List<ValidationError> errors, Object attributeContent, String label) {
+        Object definitionContent = definition.getContent();
+        if (definitionContent == null || !definitionContent.equals(attributeContent)) {
+            errors.add(ValidationError.create(
+                    "Wrong value of read only attribute {}. Definition value = {} and attribute value = {}.",
+                    label,
+                    definitionContent,
+                    attributeContent));
         }
     }
 
