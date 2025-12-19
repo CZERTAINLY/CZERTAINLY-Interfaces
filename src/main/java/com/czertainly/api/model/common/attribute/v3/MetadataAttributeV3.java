@@ -26,7 +26,7 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class MetadataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3>> implements MetadataAttribute<BaseAttributeContentV3> {
+public class MetadataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3<?>>> implements MetadataAttribute<BaseAttributeContentV3<?>> {
 
     /**
      * Content of the Attribute
@@ -34,7 +34,7 @@ public class MetadataAttributeV3 extends BaseAttributeV3<List<BaseAttributeConte
     @Schema(
             description = "Content of the Attribute"
     )
-    private List<BaseAttributeContentV3> content;
+    private List<BaseAttributeContentV3<?>> content;
 
     /**
      * Type of the Attribute content

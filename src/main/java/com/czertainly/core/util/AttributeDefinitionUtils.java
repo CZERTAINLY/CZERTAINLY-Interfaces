@@ -797,25 +797,6 @@ public class AttributeDefinitionUtils {
         return convertedDefinition;
     }
 
-    public static List<DataAttributeV2> responseAttributeConverter(List<ResponseAttribute> attributes) {
-        if (attributes == null) {
-            return new ArrayList<>();
-        }
-        List<DataAttributeV2> convertedDefinition = new ArrayList<>();
-        for (ResponseAttribute clt : attributes) {
-            DataAttributeV2 atr = new DataAttributeV2();
-//            atr.setContent(clt.getContent());
-            atr.setName(clt.getName());
-            atr.setUuid(String.valueOf(clt.getUuid()));
-            atr.setContentType(clt.getContentType());
-            DataAttributeProperties properties = new DataAttributeProperties();
-            properties.setLabel(clt.getLabel());
-            atr.setProperties(properties);
-            convertedDefinition.add(atr);
-        }
-        return convertedDefinition;
-    }
-
     public static List<RequestAttribute> getClientAttributes(List<?> attributes) {
         if (attributes == null || attributes.isEmpty()) {
             return new ArrayList<>();
@@ -957,7 +938,7 @@ public class AttributeDefinitionUtils {
         if (list != null) {
             List<T> listContent = new ArrayList<>();
             for (Object item : list) {
-                BaseAttributeContentV2 ac = (BaseAttributeContentV2) ATTRIBUTES_OBJECT_MAPPER.convertValue(item, clazz);
+                BaseAttributeContentV2<?> ac = (BaseAttributeContentV2<?>) ATTRIBUTES_OBJECT_MAPPER.convertValue(item, clazz);
                 listContent.add((T) ac.getData());
             }
             return listContent;
