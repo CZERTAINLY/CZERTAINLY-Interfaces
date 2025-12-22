@@ -21,6 +21,7 @@ public interface CustomAttribute<T> extends Attribute {
     List<T> getContent();
     void setContent(List<T> content);
     AttributeContentType getContentType();
+    String getDescription();
 
     CustomAttributeProperties getProperties();
 }
