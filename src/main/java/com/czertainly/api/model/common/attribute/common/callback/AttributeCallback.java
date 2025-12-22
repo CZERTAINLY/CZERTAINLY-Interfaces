@@ -1,12 +1,17 @@
 package com.czertainly.api.model.common.attribute.common.callback;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class AttributeCallback {
+@Setter
+@Getter
+public class AttributeCallback implements Serializable {
 
     @Schema(
             description = "Context part of callback URL",
@@ -25,30 +30,6 @@ public class AttributeCallback {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Set<AttributeCallbackMapping> mappings;
-
-    public String getCallbackContext() {
-        return callbackContext;
-    }
-
-    public void setCallbackContext(String callbackContext) {
-        this.callbackContext = callbackContext;
-    }
-
-    public String getCallbackMethod() {
-        return callbackMethod;
-    }
-
-    public void setCallbackMethod(String callbackMethod) {
-        this.callbackMethod = callbackMethod;
-    }
-
-    public Set<AttributeCallbackMapping> getMappings() {
-        return mappings;
-    }
-
-    public void setMappings(Set<AttributeCallbackMapping> mappings) {
-        this.mappings = mappings;
-    }
 
     @Override
     public String toString() {
