@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResponseAttributeSerializer extends StdSerializer<List<AttributeContent>> {
+public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttributeContentV2<?>>> {
 
-    public ResponseAttributeSerializer(Class<List<AttributeContent>> t) {
-        super(t);
+    public ResponseAttributeSerializer() {
+        super((Class<List<BaseAttributeContentV2<?>>>) null);
     }
 
     @Override
-    public void serialize(List<AttributeContent> response, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(List<BaseAttributeContentV2<?>> response, JsonGenerator gen, SerializerProvider provider) throws IOException {
         ResponseAttributeV2 responseAttribute = (ResponseAttributeV2) gen.getCurrentValue();
         if (response == null) {
             gen.writeNull();
