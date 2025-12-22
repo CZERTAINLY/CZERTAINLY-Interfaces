@@ -7,6 +7,7 @@ import com.czertainly.api.model.client.cryptography.key.KeyCompromiseReason;
 import com.czertainly.api.model.client.cryptography.key.KeyRequestType;
 import com.czertainly.api.model.common.HealthStatus;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeValueTarget;
 import com.czertainly.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
@@ -113,6 +114,7 @@ public enum PlatformEnum implements IPlatformEnum {
     ATTRIBUTE_CONSTRAINT_TYPE(AttributeConstraintType.class, "Attribute constraint type"),
     ATTRIBUTE_CALLBACK_VALUE_TARGET(AttributeValueTarget.class, "Attribute callback mapping value target"), // TODO: rename to AttributeCallbackValueTarget
     PROGRAMMING_LANGUAGE(ProgrammingLanguageEnum.class, "Programming language for code block attribute"),
+    ATTRIBUTE_VERSION(AttributeVersion.class, "Version of attribute"),
 
     // Scheduler
     SCHEDULER_JOB_EXECUTION_STATUS(SchedulerJobExecutionStatus.class, "Scheduled job execution status"),
