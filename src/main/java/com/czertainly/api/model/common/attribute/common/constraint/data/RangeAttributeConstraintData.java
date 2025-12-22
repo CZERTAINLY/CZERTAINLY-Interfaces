@@ -6,9 +6,11 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
-public class RangeAttributeConstraintData {
+public class RangeAttributeConstraintData implements Serializable {
     @Schema(description = "Start of the range for validation")
     private Integer from;
 

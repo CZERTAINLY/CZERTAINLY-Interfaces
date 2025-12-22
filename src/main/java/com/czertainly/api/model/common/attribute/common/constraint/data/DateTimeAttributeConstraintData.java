@@ -1,33 +1,22 @@
 package com.czertainly.api.model.common.attribute.common.constraint.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DateTimeAttributeConstraintData {
+@Setter
+@Getter
+public class DateTimeAttributeConstraintData implements Serializable {
     @Schema(description = "Start of the datetime for validation")
     private LocalDateTime from;
 
     @Schema(description = "End of the datetime for validation")
     private LocalDateTime to;
-
-    public LocalDateTime getFrom() {
-        return from;
-    }
-
-    public void setFrom(LocalDateTime from) {
-        this.from = from;
-    }
-
-    public LocalDateTime getTo() {
-        return to;
-    }
-
-    public void setTo(LocalDateTime to) {
-        this.to = to;
-    }
 
     @Override
     public String toString() {

@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = RegexpAttributeConstraint.class, visible = true)
@@ -19,7 +21,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
         @JsonSubTypes.Type(value = DateTimeAttributeConstraint.class, name = AttributeConstraintType.Codes.DATETIME)
 })
 @Schema(implementation = BaseAttributeConstraintDto.class)
-public class BaseAttributeConstraint<T> extends AttributeConstraint {
+public class BaseAttributeConstraint<T extends Serializable> extends AttributeConstraint {
     @Schema(description = "Description of the constraint")
     private String description;
 
