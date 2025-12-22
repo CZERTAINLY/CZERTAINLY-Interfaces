@@ -4,14 +4,18 @@ import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Set;
 
+@Setter
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AttributeCallbackMapping {
+public class AttributeCallbackMapping implements Serializable {
 
     /**
      * Name of the attribute whose value is to be used as value of path variable or request param or body field
@@ -152,54 +156,6 @@ public class AttributeCallbackMapping {
         this.to = to;
         this.targets = targets;
         this.value = value;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public AttributeType getAttributeType() {
-        return attributeType;
-    }
-
-    public void setAttributeType(AttributeType attributeType) {
-        this.attributeType = attributeType;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public Set<AttributeValueTarget> getTargets() {
-        return targets;
-    }
-
-    public void setTargets(Set<AttributeValueTarget> targets) {
-        this.targets = targets;
-    }
-
-    public Serializable getValue() {
-        return value;
-    }
-
-    public void setValue(Serializable value) {
-        this.value = value;
-    }
-
-    public AttributeContentType getAttributeContentType() {
-        return attributeContentType;
-    }
-
-    public void setAttributeContentType(AttributeContentType attributeContentType) {
-        this.attributeContentType = attributeContentType;
     }
 
     @Override

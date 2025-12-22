@@ -1,7 +1,9 @@
 package com.czertainly.api.model.common.attribute.common;
 
 
-public interface Attribute {
+import java.io.Serializable;
+
+public interface Attribute extends Serializable {
 
     String getUuid();
 

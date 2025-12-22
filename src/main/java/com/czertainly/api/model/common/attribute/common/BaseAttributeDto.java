@@ -4,6 +4,8 @@ import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 @Schema(
         description = "Base Attribute definition",
         type = "object",
@@ -12,6 +14,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 BaseAttributeV3.class
         }
 )
-public interface BaseAttributeDto {
+public interface BaseAttributeDto extends Serializable {
 
 }
