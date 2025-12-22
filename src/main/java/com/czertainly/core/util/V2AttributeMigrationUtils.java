@@ -218,7 +218,7 @@ public class V2AttributeMigrationUtils {
 
     private static void getCredentialContent(JsonAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
         CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
-        LinkedHashMap credentialData = (LinkedHashMap) oldContent.getData();
+        LinkedHashMap<String, Object> credentialData = (LinkedHashMap<String, Object>) oldContent.getData();
         credentialDto.setName((String) credentialData.get("name"));
         credentialDto.setUuid((String) credentialData.get("uuid"));
         credentialDto.setKind((String) credentialData.get("kind"));
@@ -239,7 +239,7 @@ public class V2AttributeMigrationUtils {
         attributeContents.add(new CredentialAttributeContentV2(oldContent.getValue(), credentialDto));
     }
 
-    private static void getBooleanContent(BaseAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+    private static void getBooleanContent(BaseAttributeContent<?> oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
         if (oldContent.getValue() instanceof Boolean) {
             attributeContents.add(new BooleanAttributeContentV2((Boolean) oldContent.getValue()));
         } else {
