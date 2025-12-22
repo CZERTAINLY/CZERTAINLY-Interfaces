@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @Setter
 @Getter
-public class SecretAttributeContentData implements AttributeContentData{
+public class SecretAttributeContentData implements AttributeContentData {
 
     @Sensitive
     @Schema(description = "Secret attribute data")

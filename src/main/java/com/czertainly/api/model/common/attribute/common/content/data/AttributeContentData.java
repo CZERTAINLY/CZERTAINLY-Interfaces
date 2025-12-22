@@ -2,7 +2,9 @@ package com.czertainly.api.model.common.attribute.common.content.data;
 
 import com.czertainly.api.exception.ValidationException;
 
-public interface AttributeContentData {
+import java.io.Serializable;
+
+public interface AttributeContentData extends Serializable {
 
     void validate() throws ValidationException;
 }
