@@ -6,6 +6,7 @@ import com.czertainly.api.model.common.attribute.common.content.AttributeContent
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Schema(
@@ -21,7 +22,7 @@ import java.util.UUID;
                 ResponseAttributeV3.class
         }
 )
-public interface ResponseAttributeDto {
+public interface ResponseAttributeDto extends Serializable {
 
         /**
          * UUID of the Attribute
