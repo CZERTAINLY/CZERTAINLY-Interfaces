@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.InvalidMimeTypeException;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -213,7 +214,7 @@ public class V2AttributeMigrationUtils {
                     attributeContents.add(new SecretAttributeContentV2("", new SecretAttributeContentData((String) oldContent.getValue())));
                     break;
                 case JSON:
-                    attributeContents.add(new ObjectAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), ((JsonAttributeContent) oldContent).getData()));
+                    attributeContents.add(new ObjectAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), (Serializable) ((JsonAttributeContent) oldContent).getData()));
                     break;
                 case FILE:
                     FileAttributeContentData data = new FileAttributeContentData();
@@ -350,7 +351,7 @@ public class V2AttributeMigrationUtils {
             Boolean metadataValue = (Boolean) value;
             return List.of(new BooleanAttributeContentV2(metadataValue ? "Yes" : "No", metadataValue));
         } else {
-            return List.of(new ObjectAttributeContentV2(value));
+            return List.of(new ObjectAttributeContentV2((Serializable) value));
         }
     }
 
