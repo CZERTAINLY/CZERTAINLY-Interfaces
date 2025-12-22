@@ -3,6 +3,8 @@ package com.czertainly.core.util;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.v1.AttributeType;
+import com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.v1.content.FileAttributeContent;
 import com.czertainly.api.model.common.attribute.v1.content.JsonAttributeContent;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
@@ -52,13 +54,13 @@ public class V2AttributeMigrationUtils {
             } else {
                 logger.debug("Migrating record with is: {}", rows.getString(rowIdentifier));
             }
-            List<BaseAttributeV2> attributeDefinitions = new ArrayList<>();
+            List<BaseAttributeV2<?>> attributeDefinitions = new ArrayList<>();
             List<AttributeDefinition> oldAttributeValue = AttributeDefinitionUtils.deserialize(rows.getString(columnName));
             if (oldAttributeValue == null) {
                 continue;
             }
             for (AttributeDefinition item : oldAttributeValue) {
-                attributeDefinitions.add(getNewAttributes(item, BaseAttributeV2.class));
+                attributeDefinitions.add(getNewAttributes(item));
             }
             String updateCommand;
             String serializedAttributes = com.czertainly.core.util.AttributeDefinitionUtils.serialize(attributeDefinitions);
@@ -72,7 +74,7 @@ public class V2AttributeMigrationUtils {
         return migrationCommands;
     }
 
-    public static <T extends BaseAttributeV2> T getNewAttributes(AttributeDefinition oldAttribute, Class<T> clazz) {
+    public static <T extends BaseAttributeV2> T getNewAttributes(AttributeDefinition oldAttribute) {
 
         //Old Attribute Value to new attribute properties
 
@@ -158,38 +160,10 @@ public class V2AttributeMigrationUtils {
                     attributeContents.add(new IntegerAttributeContentV2(oldContent.getValue().toString(), Integer.parseInt(oldContent.getValue().toString())));
                     break;
                 case BOOLEAN:
-                    if (oldContent.getValue() instanceof Boolean) {
-                        attributeContents.add(new BooleanAttributeContentV2((Boolean) oldContent.getValue()));
-                    } else {
-                        String otherValue = oldContent.getValue().toString().toLowerCase();
-                        if (otherValue.equals("yes")) {
-                            attributeContents.add(new BooleanAttributeContentV2(true));
-                        } else {
-                            attributeContents.add(new BooleanAttributeContentV2(false));
-                        }
-                    }
+                    getBooleanContent(oldContent, attributeContents);
                     break;
                 case CREDENTIAL:
-                    CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
-                    LinkedHashMap credentialData = (LinkedHashMap) ((JsonAttributeContent) oldContent).getData();
-                    credentialDto.setName((String) credentialData.get("name"));
-                    credentialDto.setUuid((String) credentialData.get("uuid"));
-                    credentialDto.setKind((String) credentialData.get("kind"));
-                    List<DataAttributeV2> credentialAttributes = new ArrayList<>();
-                    List<AttributeDefinition> oldCredentialAttributeValue = new ArrayList<>();
-                    try {
-                        oldCredentialAttributeValue = AttributeDefinitionUtils.deserialize(mapper.writeValueAsString(credentialData.get("attributes")));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                    if (oldCredentialAttributeValue == null) {
-                        oldCredentialAttributeValue = new ArrayList<>();
-                    }
-                    for (AttributeDefinition item : oldCredentialAttributeValue) {
-                        credentialAttributes.add(getNewAttributes(item, DataAttributeV2.class));
-                    }
-                    credentialDto.setAttributes(credentialAttributes);
-                    attributeContents.add(new CredentialAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), credentialDto));
+                    getCredentialContent((JsonAttributeContent) oldContent, attributeContents);
                     break;
                 case DATE:
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -217,17 +191,7 @@ public class V2AttributeMigrationUtils {
                     attributeContents.add(new ObjectAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), (Serializable) ((JsonAttributeContent) oldContent).getData()));
                     break;
                 case FILE:
-                    FileAttributeContentData data = new FileAttributeContentData();
-                    com.czertainly.api.model.common.attribute.v1.content.FileAttributeContent oldContentFileData = (com.czertainly.api.model.common.attribute.v1.content.FileAttributeContent) oldContent;
-                    data.setContent(oldContentFileData.getValue());
-                    data.setFileName(oldContentFileData.getFileName());
-                    if (oldContentFileData.getContentType() != null && !oldContentFileData.getContentType().isEmpty())
-                        try {
-                            data.setMimeType(oldContentFileData.getContentType());
-                        } catch (InvalidMimeTypeException e) {
-                            //Do nothing
-                        }
-                    attributeContents.add(new FileAttributeContentV2(oldContentFileData.getFileName(), data));
+                    getFileContent((FileAttributeContent) oldContent, attributeContents);
                     break;
                 case CODEBLOCK:
                     CodeBlockAttributeContentData codeBlockAttributeContentData = (CodeBlockAttributeContentData) oldContent.getValue();
@@ -236,6 +200,56 @@ public class V2AttributeMigrationUtils {
             }
         }
         return attributeContents;
+    }
+
+    private static void getFileContent(FileAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+        FileAttributeContentData data = new FileAttributeContentData();
+        FileAttributeContent oldContentFileData = oldContent;
+        data.setContent(oldContentFileData.getValue());
+        data.setFileName(oldContentFileData.getFileName());
+        if (oldContentFileData.getContentType() != null && !oldContentFileData.getContentType().isEmpty())
+            try {
+                data.setMimeType(oldContentFileData.getContentType());
+            } catch (InvalidMimeTypeException e) {
+                //Do nothing
+            }
+        attributeContents.add(new FileAttributeContentV2(oldContentFileData.getFileName(), data));
+    }
+
+    private static void getCredentialContent(JsonAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+        CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
+        LinkedHashMap credentialData = (LinkedHashMap) oldContent.getData();
+        credentialDto.setName((String) credentialData.get("name"));
+        credentialDto.setUuid((String) credentialData.get("uuid"));
+        credentialDto.setKind((String) credentialData.get("kind"));
+        List<DataAttributeV2> credentialAttributes = new ArrayList<>();
+        List<AttributeDefinition> oldCredentialAttributeValue = new ArrayList<>();
+        try {
+            oldCredentialAttributeValue = AttributeDefinitionUtils.deserialize(mapper.writeValueAsString(credentialData.get("attributes")));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        if (oldCredentialAttributeValue == null) {
+            oldCredentialAttributeValue = new ArrayList<>();
+        }
+        for (AttributeDefinition item : oldCredentialAttributeValue) {
+            credentialAttributes.add(getNewAttributes(item));
+        }
+        credentialDto.setAttributes(credentialAttributes);
+        attributeContents.add(new CredentialAttributeContentV2(oldContent.getValue(), credentialDto));
+    }
+
+    private static void getBooleanContent(BaseAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+        if (oldContent.getValue() instanceof Boolean) {
+            attributeContents.add(new BooleanAttributeContentV2((Boolean) oldContent.getValue()));
+        } else {
+            String otherValue = oldContent.getValue().toString().toLowerCase();
+            if (otherValue.equals("yes")) {
+                attributeContents.add(new BooleanAttributeContentV2(true));
+            } else {
+                attributeContents.add(new BooleanAttributeContentV2(false));
+            }
+        }
     }
 
     private static com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent convertOldContents(AttributeType attributeType, Object oldContentData) {
@@ -290,7 +304,7 @@ public class V2AttributeMigrationUtils {
         return migrationCommands;
     }
 
-    public static List<MetadataAttributeV2> getMetadataMigrationAttributes(String metadata) throws SQLException, JsonProcessingException {
+    public static List<MetadataAttributeV2> getMetadataMigrationAttributes(String metadata) throws JsonProcessingException {
         List<MetadataAttributeV2> metadataDefinitions = new ArrayList<>();
         if (metadata == null) {
             return null;
@@ -349,7 +363,7 @@ public class V2AttributeMigrationUtils {
             return List.of(new FloatAttributeContentV2(metadataValue.toString(), metadataValue));
         } else if (value instanceof Boolean) {
             Boolean metadataValue = (Boolean) value;
-            return List.of(new BooleanAttributeContentV2(metadataValue ? "Yes" : "No", metadataValue));
+            return List.of(new BooleanAttributeContentV2(Boolean.TRUE.equals(metadataValue) ? "Yes" : "No", metadataValue));
         } else {
             return List.of(new ObjectAttributeContentV2((Serializable) value));
         }
