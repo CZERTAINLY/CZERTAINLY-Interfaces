@@ -5,6 +5,7 @@ import com.czertainly.api.model.common.attribute.common.content.AttributeContent
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -23,7 +24,7 @@ import java.util.UUID;
                 RequestAttributeV3.class,
                 RequestAttributeV2.class
         })
-public interface RequestAttributeDto {
+public interface RequestAttributeDto extends Serializable {
 
 
     /**
