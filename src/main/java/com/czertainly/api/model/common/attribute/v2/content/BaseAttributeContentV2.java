@@ -10,14 +10,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Schema(implementation = BaseAttributeContentDtoV2.class)
 @JsonDeserialize
-public class BaseAttributeContentV2<T extends Serializable> extends AttributeContent implements BaseAttributeContentDtoV2 {
+public class BaseAttributeContentV2<T> extends AttributeContent implements BaseAttributeContentDtoV2 {
 
     private String reference;
 

@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
@@ -34,7 +33,7 @@ import java.util.Objects;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeContentDtoV3.class)
 @JsonDeserialize
-public class BaseAttributeContentV3<T extends Serializable> extends AttributeContent implements BaseAttributeContentDtoV3 {
+public class BaseAttributeContentV3<T> extends AttributeContent implements BaseAttributeContentDtoV3 {
 
     private String reference;
 

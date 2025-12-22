@@ -13,7 +13,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Setter
@@ -28,7 +27,7 @@ import java.util.Objects;
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(name = "BaseAttributeV2", implementation = BaseAttributeDtoV2.class)
-public class BaseAttributeV2<T extends Serializable> extends BaseAttribute implements BaseAttributeDtoV2 {
+public class BaseAttributeV2<T> extends BaseAttribute implements BaseAttributeDtoV2 {
 
     private String uuid;
 
