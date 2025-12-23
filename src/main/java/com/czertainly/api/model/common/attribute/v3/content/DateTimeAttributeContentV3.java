@@ -1,11 +1,11 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v2.content.ZonedDateTimeDeserializer;
+import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeDeserializer;
+import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.ZonedDateTime;
