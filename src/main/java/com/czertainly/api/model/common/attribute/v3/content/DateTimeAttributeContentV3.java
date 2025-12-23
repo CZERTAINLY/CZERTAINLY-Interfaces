@@ -2,10 +2,8 @@ package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeDeserializer;
-import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.ZonedDateTime;
@@ -19,7 +17,6 @@ public class DateTimeAttributeContentV3 extends BaseAttributeContentV3<ZonedDate
     // ISO_OFFSET_DATE_TIME	Date Time with Offset	2011-12-03T10:15:30+01:00'
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @Schema(description = "DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX", requiredMode = Schema.RequiredMode.REQUIRED)
     private ZonedDateTime data;
 
