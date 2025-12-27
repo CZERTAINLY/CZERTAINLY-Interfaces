@@ -1,14 +1,19 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class CertificateLocationDto {
 
     @Schema(description = "Base64-encoded Certificate content",
@@ -18,7 +23,7 @@ public class CertificateLocationDto {
     @Schema(
             description = "Metadata of the Certificate related to the Location"
     )
-    private List<MetadataAttribute> metadata;
+    private List<MetadataAttribute<? extends AttributeContent>> metadata;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
@@ -32,60 +37,12 @@ public class CertificateLocationDto {
     @Schema(
             description = "List of Attributes to replace Certificate"
     )
-    private List<DataAttribute> pushAttributes;
+    private List<BaseAttribute> pushAttributes;
 
     @Schema(
             description = "List of Attributes to renew Certificate"
     )
-    private List<DataAttribute> csrAttributes;
-
-    public String getCertificateData() {
-        return certificateData;
-    }
-
-    public void setCertificateData(String certificateData) {
-        this.certificateData = certificateData;
-    }
-
-    public List<MetadataAttribute> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(List<MetadataAttribute> metadata) {
-        this.metadata = metadata;
-    }
-
-    public CertificateType getCertificateType() {
-        return certificateType;
-    }
-
-    public void setCertificateType(CertificateType certificateType) {
-        this.certificateType = certificateType;
-    }
-
-    public boolean isWithKey() {
-        return withKey;
-    }
-
-    public void setWithKey(boolean withKey) {
-        this.withKey = withKey;
-    }
-
-    public List<DataAttribute> getPushAttributes() {
-        return pushAttributes;
-    }
-
-    public void setPushAttributes(List<DataAttribute> pushAttributes) {
-        this.pushAttributes = pushAttributes;
-    }
-
-    public List<DataAttribute> getCsrAttributes() {
-        return csrAttributes;
-    }
-
-    public void setCsrAttributes(List<DataAttribute> csrAttributes) {
-        this.csrAttributes = csrAttributes;
-    }
+    private List<BaseAttribute> csrAttributes;
 
     @Override
     public String toString() {

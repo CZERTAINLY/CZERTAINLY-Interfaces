@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.compliance.v2;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.compliance.ComplianceRuleAvailabilityStatus;
 import com.czertainly.api.model.core.workflows.ConditionItemDto;
@@ -45,7 +45,7 @@ public class ComplianceRuleDto {
     private String format;
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of the compliance internal rule condition items", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ConditionItemDto> conditionItems;

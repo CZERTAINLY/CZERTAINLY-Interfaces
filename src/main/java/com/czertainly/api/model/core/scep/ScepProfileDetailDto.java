@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.scep;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.czertainly.api.model.core.certificate.CertificateDto;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsDto;
@@ -17,9 +17,9 @@ public class ScepProfileDetailDto extends ScepProfileDto {
     @Schema(description = "RA Profile")
     private SimplifiedRaProfileDto raProfile;
     @Schema(description = "List of Attributes to issue a Certificate")
-    private List<ResponseAttributeDto> issueCertificateAttributes;
+    private List<ResponseAttribute> issueCertificateAttributes;
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttribute> customAttributes;
     @Schema(description = "CA Certificate for the SCEP Profile")
     private CertificateDto caCertificate;
     @Schema(description = "Intune tenant")

@@ -1,16 +1,21 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 public class PushCertificateResponseDto {
 
+    @Setter
+    @Getter
     @Schema(
             description = "Certificate metadata"
     )
-    private List<MetadataAttribute> certificateMetadata;
+    private List<MetadataAttribute<? extends AttributeContent>> certificateMetadata;
 
     @Schema(description = "Is private key available for the certificate in location")
     private Boolean withKey;
@@ -23,11 +28,4 @@ public class PushCertificateResponseDto {
         this.withKey = hasPrivateKey;
     }
 
-    public List<MetadataAttribute> getCertificateMetadata() {
-        return certificateMetadata;
-    }
-
-    public void setCertificateMetadata(List<MetadataAttribute> certificateMetadata) {
-        this.certificateMetadata = certificateMetadata;
-    }
 }

@@ -5,7 +5,7 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.cryptography.operations.*;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.enums.cryptography.KeyAlgorithm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -204,7 +204,7 @@ public interface CryptographicOperationsController extends AuthProtectedControll
 
     /////////////////////////////////////////////////////////////////////////////////
     // generate random operations
-    /////////////////////////////////////////////////////////////////////////////////
+    /// //////////////////////////////////////////////////////////////////////////////
 
     @Operation(
             summary = "List of random generator Attributes"

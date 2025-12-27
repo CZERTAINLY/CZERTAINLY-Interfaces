@@ -4,8 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.entity.EntityInstanceDto;
 import com.czertainly.api.model.connector.entity.EntityInstanceRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -160,5 +160,5 @@ public interface EntityController extends AuthProtectedConnectorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
+            @RequestBody List<RequestAttribute>attributes) throws ValidationException, NotFoundException;
 }

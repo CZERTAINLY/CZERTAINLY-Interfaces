@@ -1,14 +1,18 @@
 package com.czertainly.api.model.core.connector;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Setter
+@Getter
 public class ConnectorDto extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "List of Function Groups implemented by the Connector",
@@ -24,61 +28,13 @@ public class ConnectorDto extends NameAndUuidDto implements Serializable {
     private AuthType authType;
     @Schema(description = "List of Attributes for the authentication type",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto> authAttributes;
+    private List<ResponseAttribute> authAttributes;
     @Schema(description = "Status of the Connector",
             examples = {"CONNECTED"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
-
-    public List<FunctionGroupDto> getFunctionGroups() {
-        return functionGroups;
-    }
-
-    public void setFunctionGroups(List<FunctionGroupDto> functionGroups) {
-        this.functionGroups = functionGroups;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public AuthType getAuthType() {
-        return authType;
-    }
-
-    public void setAuthType(AuthType authType) {
-        this.authType = authType;
-    }
-
-    public List<ResponseAttributeDto> getAuthAttributes() {
-        return authAttributes;
-    }
-
-    public void setAuthAttributes(List<ResponseAttributeDto> authAttributes) {
-        this.authAttributes = authAttributes;
-    }
-
-    public ConnectorStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ConnectorStatus status) {
-        this.status = status;
-    }
-
-    public List<ResponseAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
+    private List<ResponseAttribute> customAttributes;
 
     @Override
     public String toString() {

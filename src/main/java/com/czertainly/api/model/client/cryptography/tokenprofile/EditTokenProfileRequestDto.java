@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.cryptography.tokenprofile;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.cryptography.key.KeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -23,12 +23,12 @@ public class EditTokenProfileRequestDto {
             description = "List of Attributes for Token Profile",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttribute> attributes;
 
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttribute> customAttributes;
 
     @Schema(
             description = "Enabled flag - true = enabled; false = disabled"

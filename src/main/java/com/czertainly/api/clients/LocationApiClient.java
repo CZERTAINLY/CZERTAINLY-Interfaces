@@ -1,8 +1,8 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.entity.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,7 +24,7 @@ public class LocationApiClient extends BaseApiClient {
     private static final String LOCATION_CSR_ATTRS_CONTEXT = LOCATION_BASE_CONTEXT + "/csr/attributes";
     private static final String LOCATION_CSR_ATTRS_VALIDATE_CONTEXT = LOCATION_BASE_CONTEXT + "/csr/attributes/validate";
 
-    private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
+    private static final ParameterizedTypeReference<List<RequestAttribute>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
     public LocationApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
@@ -70,7 +70,7 @@ public class LocationApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validatePushCertificateAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> pushAttributes) throws ConnectorException {
+    public void validatePushCertificateAttributes(ConnectorDto connector, String entityUuid, List<RequestAttribute>pushAttributes) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -121,7 +121,7 @@ public class LocationApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateGenerateCsrAttributes(ConnectorDto connector, String entityUuid, List<RequestAttributeDto> pushAttributes) throws ConnectorException {
+    public void validateGenerateCsrAttributes(ConnectorDto connector, String entityUuid, List<RequestAttribute>pushAttributes) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.location;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,17 +24,17 @@ public class IssueToLocationRequestDto {
             description = "List of CSR Attributes for Location",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> csrAttributes;
+    private List<RequestAttribute>csrAttributes;
 
     @Schema(
             description = "List of certificate issue Attributes for RA Profile",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> issueAttributes;
+    private List<RequestAttribute>issueAttributes;
 
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttribute>customAttributes;
 
     @Schema(description = "List of Certificate Custom Attributes")
-    private List<RequestAttributeDto> certificateCustomAttributes;
+    private List<RequestAttribute>certificateCustomAttributes;
 }

@@ -8,7 +8,7 @@ import com.czertainly.api.model.client.compliance.SimplifiedComplianceProfileDto
 import com.czertainly.api.model.client.raprofile.*;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.certificate.CertificateDetailDto;
 import com.czertainly.api.model.core.raprofile.RaProfileDto;
 import com.czertainly.api.model.core.raprofile.RaProfileCertificateValidationSettingsUpdateDto;
@@ -320,7 +320,7 @@ public interface RAProfileManagementController extends AuthProtectedController {
     })
     @GetMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/revoke", produces = {"application/json"})
     List<BaseAttribute> listRevokeCertificateAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
-                                                        @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException, NotFoundException;
+                                                          @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Get issue Certificate Attributes", operationId = "listRaProfileIssueCertificateAttributes")
     @ApiResponses(value = {

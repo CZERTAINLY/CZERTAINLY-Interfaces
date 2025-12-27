@@ -1,13 +1,17 @@
 package com.czertainly.api.model.client.connector;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.connector.AuthType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Setter
+@Getter
 public class ConnectorUpdateRequestDto {
 
     @Schema(description = "URL of the Connector to connect",
@@ -17,41 +21,9 @@ public class ConnectorUpdateRequestDto {
             examples = {"none"})
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE")
-    private List<RequestAttributeDto> authAttributes;
+    private List<RequestAttribute> authAttributes;
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto> customAttributes;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public AuthType getAuthType() {
-        return authType;
-    }
-
-    public void setAuthType(AuthType authType) {
-        this.authType = authType;
-    }
-
-    public List<RequestAttributeDto> getAuthAttributes() {
-        return authAttributes;
-    }
-
-    public void setAuthAttributes(List<RequestAttributeDto> authAttributes) {
-        this.authAttributes = authAttributes;
-    }
-
-    public List<RequestAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
+    private List<RequestAttribute> customAttributes;
 
     @Override
     public String toString() {

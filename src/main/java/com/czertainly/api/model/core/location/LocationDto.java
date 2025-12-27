@@ -1,9 +1,11 @@
 package com.czertainly.api.model.core.location;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -13,6 +15,8 @@ import java.util.List;
 /**
  * Class representing Location
  */
+@Setter
+@Getter
 public class LocationDto extends NameAndUuidDto {
 
     @Schema(description = "Description of the Location")
@@ -28,10 +32,10 @@ public class LocationDto extends NameAndUuidDto {
 
     @Schema(description = "List of Location attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
             requiredMode = Schema.RequiredMode.REQUIRED)
@@ -56,85 +60,6 @@ public class LocationDto extends NameAndUuidDto {
     @Schema(description = "Location metadata")
     private List<MetadataResponseDto> metadata;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getEntityInstanceUuid() {
-        return entityInstanceUuid;
-    }
-
-    public void setEntityInstanceUuid(String entityInstanceUuid) {
-        this.entityInstanceUuid = entityInstanceUuid;
-    }
-
-    public String getEntityInstanceName() {
-        return entityInstanceName;
-    }
-
-    public void setEntityInstanceName(String entityInstanceName) {
-        this.entityInstanceName = entityInstanceName;
-    }
-
-    public List<ResponseAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<ResponseAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public boolean isSupportMultipleEntries() {
-        return supportMultipleEntries;
-    }
-
-    public void setSupportMultipleEntries(boolean supportMultipleEntries) {
-        this.supportMultipleEntries = supportMultipleEntries;
-    }
-
-    public boolean isSupportKeyManagement() {
-        return supportKeyManagement;
-    }
-
-    public void setSupportKeyManagement(boolean supportKeyManagement) {
-        this.supportKeyManagement = supportKeyManagement;
-    }
-
-    public List<MetadataResponseDto> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(List<MetadataResponseDto> metadata) {
-        this.metadata = metadata;
-    }
-
-    public List<CertificateInLocationDto> getCertificates() {
-        return certificates;
-    }
-
-    public void setCertificates(List<CertificateInLocationDto> certificates) {
-        this.certificates = certificates;
-    }
-
-    public List<ResponseAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
 
     @Override
     public String toString() {

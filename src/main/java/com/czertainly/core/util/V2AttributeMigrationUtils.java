@@ -1,23 +1,26 @@
 package com.czertainly.core.util;
 
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.v1.AttributeType;
+import com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.v1.content.FileAttributeContent;
 import com.czertainly.api.model.common.attribute.v1.content.JsonAttributeContent;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
-import com.czertainly.api.model.common.attribute.v2.constraint.BaseAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
+import com.czertainly.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallbackMapping;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeValueTarget;
+import com.czertainly.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
 import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.czertainly.api.model.common.attribute.v2.content.data.CodeBlockAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.content.data.FileAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.content.data.SecretAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
-import com.czertainly.api.model.common.attribute.v2.properties.MetadataAttributeProperties;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.content.data.SecretAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.properties.DataAttributeProperties;
+import com.czertainly.api.model.common.attribute.common.properties.MetadataAttributeProperties;
 import com.czertainly.core.deprecated.AttributeDefinitionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,8 +29,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.InvalidMimeTypeException;
-import org.springframework.util.MimeType;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -51,13 +54,13 @@ public class V2AttributeMigrationUtils {
             } else {
                 logger.debug("Migrating record with is: {}", rows.getString(rowIdentifier));
             }
-            List<BaseAttribute> attributeDefinitions = new ArrayList<>();
+            List<BaseAttributeV2<?>> attributeDefinitions = new ArrayList<>();
             List<AttributeDefinition> oldAttributeValue = AttributeDefinitionUtils.deserialize(rows.getString(columnName));
             if (oldAttributeValue == null) {
                 continue;
             }
             for (AttributeDefinition item : oldAttributeValue) {
-                attributeDefinitions.add(getNewAttributes(item, BaseAttribute.class));
+                attributeDefinitions.add(getNewAttributes(item));
             }
             String updateCommand;
             String serializedAttributes = com.czertainly.core.util.AttributeDefinitionUtils.serialize(attributeDefinitions);
@@ -71,11 +74,11 @@ public class V2AttributeMigrationUtils {
         return migrationCommands;
     }
 
-    public static <T extends BaseAttribute> T getNewAttributes(AttributeDefinition oldAttribute,Class<T> clazz) {
+    public static <T extends BaseAttributeV2> T getNewAttributes(AttributeDefinition oldAttribute) {
 
         //Old Attribute Value to new attribute properties
 
-        DataAttribute attribute = new DataAttribute();
+        DataAttributeV2 attribute = new DataAttributeV2();
 
         DataAttributeProperties properties = new DataAttributeProperties();
         properties.setList(oldAttribute.isList());
@@ -89,7 +92,7 @@ public class V2AttributeMigrationUtils {
         attribute.setName(oldAttribute.getName());
         attribute.setUuid(oldAttribute.getUuid());
         attribute.setDescription(oldAttribute.getDescription());
-        attribute.setType(com.czertainly.api.model.common.attribute.v2.AttributeType.DATA);
+        attribute.setType(com.czertainly.api.model.common.attribute.common.AttributeType.DATA);
         attribute.setContentType(getAttributeContentType(oldAttribute.getType()));
         attribute.setContent(getAttributeContent(oldAttribute.getType() != null ? oldAttribute.getType() : AttributeType.STRING, oldAttribute.getContent()));
         attribute.setProperties(properties);
@@ -98,7 +101,7 @@ public class V2AttributeMigrationUtils {
         return (T) attribute;
     }
 
-    private static List<BaseAttributeConstraint> getAttributeConstraint(String regex) {
+    private static List<BaseAttributeConstraint<?>> getAttributeConstraint(String regex) {
         if (regex == null) {
             return null;
         }
@@ -115,7 +118,7 @@ public class V2AttributeMigrationUtils {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
         for (com.czertainly.api.model.common.attribute.v1.AttributeCallbackMapping oldMapping : oldCallback.getMappings()) {
             AttributeCallbackMapping mapping = new AttributeCallbackMapping();
-            mapping.setAttributeType(com.czertainly.api.model.common.attribute.v2.AttributeType.DATA);
+            mapping.setAttributeType(com.czertainly.api.model.common.attribute.common.AttributeType.DATA);
             mapping.setAttributeContentType(getAttributeContentType(oldMapping.getAttributeType()));
             mapping.setFrom(oldMapping.getFrom());
             mapping.setTo(oldMapping.getTo());
@@ -137,8 +140,8 @@ public class V2AttributeMigrationUtils {
         return AttributeContentType.fromCode(type.getCode());
     }
 
-    private static List<BaseAttributeContent> getAttributeContent(AttributeType attributeType, Object oldContentData) {
-        List<BaseAttributeContent> attributeContents = new ArrayList<>();
+    private static List<BaseAttributeContentV2<?>> getAttributeContent(AttributeType attributeType, Object oldContentData) {
+        List<BaseAttributeContentV2<?>> attributeContents = new ArrayList<>();
         List<com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent> oldContentListItems = new ArrayList<>();
         if (oldContentData == null) {
             return null;
@@ -151,90 +154,102 @@ public class V2AttributeMigrationUtils {
         for (com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent oldContent : oldContentListItems) {
             switch (attributeType) {
                 case STRING:
-                    attributeContents.add(new StringAttributeContent(oldContent.getValue().toString(), oldContent.getValue().toString()));
+                    attributeContents.add(new StringAttributeContentV2(oldContent.getValue().toString(), oldContent.getValue().toString()));
                     break;
                 case INTEGER:
-                    attributeContents.add(new IntegerAttributeContent(oldContent.getValue().toString(), Integer.parseInt(oldContent.getValue().toString())));
+                    attributeContents.add(new IntegerAttributeContentV2(oldContent.getValue().toString(), Integer.parseInt(oldContent.getValue().toString())));
                     break;
                 case BOOLEAN:
-                    if (oldContent.getValue() instanceof Boolean) {
-                        attributeContents.add(new BooleanAttributeContent((Boolean) oldContent.getValue()));
-                    } else {
-                        String otherValue = oldContent.getValue().toString().toLowerCase();
-                        if (otherValue.equals("yes")) {
-                            attributeContents.add(new BooleanAttributeContent(true));
-                        } else {
-                            attributeContents.add(new BooleanAttributeContent(false));
-                        }
-                    }
+                    getBooleanContent(oldContent, attributeContents);
                     break;
                 case CREDENTIAL:
-                    CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
-                    LinkedHashMap credentialData = (LinkedHashMap) ((JsonAttributeContent) oldContent).getData();
-                    credentialDto.setName((String) credentialData.get("name"));
-                    credentialDto.setUuid((String) credentialData.get("uuid"));
-                    credentialDto.setKind((String) credentialData.get("kind"));
-                    List<DataAttribute> credentialAttributes = new ArrayList<>();
-                    List<AttributeDefinition> oldCredentialAttributeValue = new ArrayList<>();
-                    try {
-                        oldCredentialAttributeValue = AttributeDefinitionUtils.deserialize(mapper.writeValueAsString(credentialData.get("attributes")));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                    if (oldCredentialAttributeValue == null) {
-                        oldCredentialAttributeValue = new ArrayList<>();
-                    }
-                    for (AttributeDefinition item : oldCredentialAttributeValue) {
-                        credentialAttributes.add(getNewAttributes(item, DataAttribute.class));
-                    }
-                    credentialDto.setAttributes(credentialAttributes);
-                    attributeContents.add(new CredentialAttributeContent(((JsonAttributeContent) oldContent).getValue(), credentialDto));
+                    getCredentialContent((JsonAttributeContent) oldContent, attributeContents);
                     break;
                 case DATE:
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    attributeContents.add(new DateAttributeContent(LocalDate.parse(oldContent.getValue().toString(), df)));
+                    attributeContents.add(new DateAttributeContentV2(LocalDate.parse(oldContent.getValue().toString(), df)));
                     break;
                 case DATETIME:
                     DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                     ZonedDateTime z = ZonedDateTime.parse(oldContent.getValue().toString(), f);
-                    attributeContents.add(new DateTimeAttributeContent(z));
+                    attributeContents.add(new DateTimeAttributeContentV2(z));
                     break;
                 case FLOAT:
-                    attributeContents.add(new FloatAttributeContent(oldContent.getValue().toString(), (Float) oldContent.getValue()));
+                    attributeContents.add(new FloatAttributeContentV2(oldContent.getValue().toString(), (Float) oldContent.getValue()));
                     break;
                 case TIME:
                     DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm:ss");
-                    attributeContents.add(new TimeAttributeContent(LocalTime.parse(oldContent.getValue().toString(), tf)));
+                    attributeContents.add(new TimeAttributeContentV2(LocalTime.parse(oldContent.getValue().toString(), tf)));
                     break;
                 case TEXT:
-                    attributeContents.add(new TextAttributeContent((String) oldContent.getValue()));
+                    attributeContents.add(new TextAttributeContentV2((String) oldContent.getValue()));
                     break;
                 case SECRET:
-                    attributeContents.add(new SecretAttributeContent("", new SecretAttributeContentData((String) oldContent.getValue())));
+                    attributeContents.add(new SecretAttributeContentV2("", new SecretAttributeContentData((String) oldContent.getValue())));
                     break;
                 case JSON:
-                    attributeContents.add(new ObjectAttributeContent(((JsonAttributeContent) oldContent).getValue(), ((JsonAttributeContent) oldContent).getData()));
+                    attributeContents.add(new ObjectAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), (Serializable) ((JsonAttributeContent) oldContent).getData()));
                     break;
                 case FILE:
-                    FileAttributeContentData data = new FileAttributeContentData();
-                    com.czertainly.api.model.common.attribute.v1.content.FileAttributeContent oldContentFileData = (com.czertainly.api.model.common.attribute.v1.content.FileAttributeContent) oldContent;
-                    data.setContent(oldContentFileData.getValue());
-                    data.setFileName(oldContentFileData.getFileName());
-                    if (oldContentFileData.getContentType() != null && !oldContentFileData.getContentType().isEmpty())
-                        try {
-                            data.setMimeType(oldContentFileData.getContentType());
-                        } catch (InvalidMimeTypeException e) {
-                            //Do nothing
-                        }
-                    attributeContents.add(new FileAttributeContent(oldContentFileData.getFileName(), data));
+                    getFileContent((FileAttributeContent) oldContent, attributeContents);
                     break;
                 case CODEBLOCK:
                     CodeBlockAttributeContentData codeBlockAttributeContentData = (CodeBlockAttributeContentData) oldContent.getValue();
-                    attributeContents.add(new CodeBlockAttributeContent("", new CodeBlockAttributeContentData(codeBlockAttributeContentData.getLanguage(), codeBlockAttributeContentData.getCode())));
+                    attributeContents.add(new CodeBlockAttributeContentV2("", new CodeBlockAttributeContentData(codeBlockAttributeContentData.getLanguage(), codeBlockAttributeContentData.getCode())));
                     break;
             }
         }
         return attributeContents;
+    }
+
+    private static void getFileContent(FileAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+        FileAttributeContentData data = new FileAttributeContentData();
+        FileAttributeContent oldContentFileData = oldContent;
+        data.setContent(oldContentFileData.getValue());
+        data.setFileName(oldContentFileData.getFileName());
+        if (oldContentFileData.getContentType() != null && !oldContentFileData.getContentType().isEmpty())
+            try {
+                data.setMimeType(oldContentFileData.getContentType());
+            } catch (InvalidMimeTypeException e) {
+                //Do nothing
+            }
+        attributeContents.add(new FileAttributeContentV2(oldContentFileData.getFileName(), data));
+    }
+
+    private static void getCredentialContent(JsonAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+        CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
+        LinkedHashMap<String, Object> credentialData = (LinkedHashMap<String, Object>) oldContent.getData();
+        credentialDto.setName((String) credentialData.get("name"));
+        credentialDto.setUuid((String) credentialData.get("uuid"));
+        credentialDto.setKind((String) credentialData.get("kind"));
+        List<DataAttributeV2> credentialAttributes = new ArrayList<>();
+        List<AttributeDefinition> oldCredentialAttributeValue = new ArrayList<>();
+        try {
+            oldCredentialAttributeValue = AttributeDefinitionUtils.deserialize(mapper.writeValueAsString(credentialData.get("attributes")));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        if (oldCredentialAttributeValue == null) {
+            oldCredentialAttributeValue = new ArrayList<>();
+        }
+        for (AttributeDefinition item : oldCredentialAttributeValue) {
+            credentialAttributes.add(getNewAttributes(item));
+        }
+        credentialDto.setAttributes(credentialAttributes);
+        attributeContents.add(new CredentialAttributeContentV2(oldContent.getValue(), credentialDto));
+    }
+
+    private static void getBooleanContent(BaseAttributeContent<?> oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+        if (oldContent.getValue() instanceof Boolean) {
+            attributeContents.add(new BooleanAttributeContentV2((Boolean) oldContent.getValue()));
+        } else {
+            String otherValue = oldContent.getValue().toString().toLowerCase();
+            if (otherValue.equals("yes")) {
+                attributeContents.add(new BooleanAttributeContentV2(true));
+            } else {
+                attributeContents.add(new BooleanAttributeContentV2(false));
+            }
+        }
     }
 
     private static com.czertainly.api.model.common.attribute.v1.content.BaseAttributeContent convertOldContents(AttributeType attributeType, Object oldContentData) {
@@ -265,7 +280,7 @@ public class V2AttributeMigrationUtils {
                 logger.debug("Metadata - Migrating record with is: {}", rows.getString(rowIdentifier));
             }
 
-            List<MetadataAttribute> metadataDefinitions = new ArrayList<>();
+            List<MetadataAttributeV2> metadataDefinitions = new ArrayList<>();
             if (rows.getString(columnName) == null) {
                 continue;
             }
@@ -289,8 +304,8 @@ public class V2AttributeMigrationUtils {
         return migrationCommands;
     }
 
-    public static List<MetadataAttribute> getMetadataMigrationAttributes(String metadata) throws SQLException, JsonProcessingException {
-        List<MetadataAttribute> metadataDefinitions = new ArrayList<>();
+    public static List<MetadataAttributeV2> getMetadataMigrationAttributes(String metadata) throws JsonProcessingException {
+        List<MetadataAttributeV2> metadataDefinitions = new ArrayList<>();
         if (metadata == null) {
             return null;
         }
@@ -305,8 +320,8 @@ public class V2AttributeMigrationUtils {
         return metadataDefinitions;
     }
 
-    public static MetadataAttribute getMetadataAttribute(Map.Entry<String, Object> oldMetadata) {
-        MetadataAttribute attribute = new MetadataAttribute();
+    public static MetadataAttributeV2 getMetadataAttribute(Map.Entry<String, Object> oldMetadata) {
+        MetadataAttributeV2 attribute = new MetadataAttributeV2();
         attribute.setUuid(null);
         attribute.setName(oldMetadata.getKey());
 
@@ -318,7 +333,7 @@ public class V2AttributeMigrationUtils {
         attribute.setContentType(getMetadataAttributeType(oldMetadata.getValue()));
 
         attribute.setContent(getMetadataAttributeValue(oldMetadata.getValue()));
-        attribute.setType(com.czertainly.api.model.common.attribute.v2.AttributeType.META);
+        attribute.setType(com.czertainly.api.model.common.attribute.common.AttributeType.META);
         return attribute;
     }
 
@@ -336,21 +351,21 @@ public class V2AttributeMigrationUtils {
         }
     }
 
-    private static List<BaseAttributeContent> getMetadataAttributeValue(Object value) {
+    private static List<BaseAttributeContentV2<?>> getMetadataAttributeValue(Object value) {
         if (value instanceof String) {
             String metadataValue = (String) value;
-            return List.of(new StringAttributeContent(metadataValue, metadataValue));
+            return List.of(new StringAttributeContentV2(metadataValue, metadataValue));
         } else if (value instanceof Integer) {
             Integer metadataValue = (Integer) value;
-            return List.of(new IntegerAttributeContent(metadataValue.toString(), metadataValue));
+            return List.of(new IntegerAttributeContentV2(metadataValue.toString(), metadataValue));
         } else if (value instanceof Float) {
             Float metadataValue = (Float) value;
-            return List.of(new FloatAttributeContent(metadataValue.toString(), metadataValue));
+            return List.of(new FloatAttributeContentV2(metadataValue.toString(), metadataValue));
         } else if (value instanceof Boolean) {
             Boolean metadataValue = (Boolean) value;
-            return List.of(new BooleanAttributeContent(metadataValue ? "Yes" : "No", metadataValue));
+            return List.of(new BooleanAttributeContentV2(Boolean.TRUE.equals(metadataValue) ? "Yes" : "No", metadataValue));
         } else {
-            return List.of(new ObjectAttributeContent(value));
+            return List.of(new ObjectAttributeContentV2((Serializable) value));
         }
     }
 

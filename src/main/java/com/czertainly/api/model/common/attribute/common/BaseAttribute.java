@@ -1,0 +1,22 @@
+package com.czertainly.api.model.common.attribute.common;
+
+
+import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
+import com.czertainly.api.config.serializer.BaseAttributeSerializer;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@Schema(implementation = BaseAttributeDto.class)
+@JsonDeserialize(using = BaseAttributeDeserializer.class)
+@JsonSerialize(using = BaseAttributeSerializer.class)
+public abstract class BaseAttribute extends AbstractBaseAttribute implements BaseAttributeDto {
+
+}

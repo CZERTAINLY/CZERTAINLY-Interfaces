@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.cryptography.key;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
@@ -55,13 +55,13 @@ public class KeyDetailDto extends NameAndUuidDto {
             description = "Custom Attributes for the Cryptographic Key",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(
             description = "Attributes for the Cryptographic Key",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttribute> attributes;
 
     @Schema(
             description = "Owner of the Key",

@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.protocol;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +21,7 @@ public class ProtocolCertificateAssociationsRequestDto implements Serializable {
     private List<UUID> groupUuids = new ArrayList<>();
 
     @Schema(description = "Custom Attributes to be associated with certificate by protocol",  requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> customAttributes = new ArrayList<>();
+    private List<RequestAttribute> customAttributes = new ArrayList<>();
 
     @Hidden
     @JsonIgnore

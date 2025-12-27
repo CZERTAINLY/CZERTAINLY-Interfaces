@@ -1,9 +1,9 @@
 package com.czertainly.api.model.client.attribute;
 
-import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
-import com.czertainly.api.model.common.attribute.v2.constraint.DateTimeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RangeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.AttributeConstraintType;
+import com.czertainly.api.model.common.attribute.common.constraint.DateTimeAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.RangeAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 

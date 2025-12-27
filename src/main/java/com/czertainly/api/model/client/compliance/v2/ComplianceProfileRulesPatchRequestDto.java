@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.compliance.v2;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
@@ -32,7 +32,7 @@ public class ComplianceProfileRulesPatchRequestDto {
     private String kind;
 
     @Schema(description = "Attributes for the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttribute> attributes;
 
     @JsonIgnore
     @AssertTrue(message = "If connector UUID is specified, kind is also required and vice versa")

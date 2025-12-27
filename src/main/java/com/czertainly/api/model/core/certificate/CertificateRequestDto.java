@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.certificate;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -77,19 +77,19 @@ public class CertificateRequestDto {
             description = "CSR Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> attributes;
+    private List<ResponseAttribute> attributes;
 
     @Schema(
             description = "Signature Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> signatureAttributes;
+    private List<ResponseAttribute> signatureAttributes;
 
     @Schema(
             description = "Alternative Signature Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<ResponseAttributeDto> altSignatureAttributes;
+    private List<ResponseAttribute> altSignatureAttributes;
 
     @Schema(
             description = "UUID of the Key",

@@ -3,8 +3,8 @@ package com.czertainly.api.clients.v2;
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.v2.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -31,7 +31,7 @@ public class CertificateApiClient extends BaseApiClient {
     private static final String CERTIFICATE_REVOKE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/revoke";
     private static final String CERTIFICATE_IDENTIFY_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/identify";
 
-    private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
+    private static final ParameterizedTypeReference<List<RequestAttribute>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
     public CertificateApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
@@ -51,7 +51,7 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateIssueCertificateAttributes(ConnectorDto connector, String authorityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateIssueCertificateAttributes(ConnectorDto connector, String authorityUuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -102,7 +102,7 @@ public class CertificateApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Boolean validateRevokeCertificateAttributes(ConnectorDto connector, String authorityUuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateRevokeCertificateAttributes(ConnectorDto connector, String authorityUuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r

@@ -1,33 +1,87 @@
 package com.czertainly.api.model.client.metadata;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-/**
- * This class contains set of properties to represent
- * an Attribute definition including its value for the
- * detail API responses
- */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Schema(description = "Response metadata attribute instance with content")
-public class ResponseMetadataDto extends ResponseAttributeDto {
+@Schema(description = "Request attribute to send attribute content for object",
+        type = "object",
+        discriminatorProperty = "version",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = "2", schema = ResponseMetadataV2.class),
+                @DiscriminatorMapping(value = "3", schema = ResponseMetadataV3.class),
+        },
+        oneOf = {
+                ResponseMetadataV3.class,
+                ResponseMetadataV2.class
+        })
+public interface ResponseMetadataDto {
 
     @Schema(description = "Source Objects", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<NameAndUuidDto> sourceObjects = new ArrayList<>();
+    List<NameAndUuidDto> getSourceObjects();
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("sourceObjectUuids", sourceObjects)
-                .toString();
-    }
+    /**
+     * UUID of the Attribute
+     **/
+    @Schema(
+            description = "UUID of the Attribute",
+            example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7"
+    )
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    UUID getUuid();
+
+    /**
+     * Name of the Attribute, can be used as key for form field label text
+     **/
+    @Schema(
+            description = "Name of the Attribute",
+            examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    String getName();
+
+    /**
+     * Label of the Attribute, Can be used to display the field name in the User Interface
+     **/
+    @Schema(
+            description = "Label of the the Attribute",
+            examples = {"Attribute Name"},
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    String getLabel();
+
+    /**
+     * Type of the Attribute, base types are defined in {@link AttributeType}
+     **/
+    @Schema(
+            description = "Type of the Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    AttributeType getType();
+
+    /**
+     * Content Type of the Attribute
+     **/
+    @Schema(
+            description = "Content Type of the Attribute",
+            examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    AttributeContentType getContentType();
+
+
+    @Schema(
+            description = "Version of the Attribute",
+            examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    String getVersion();
+
+
 }

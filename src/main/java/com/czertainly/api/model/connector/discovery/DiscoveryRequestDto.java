@@ -1,12 +1,16 @@
 package com.czertainly.api.model.connector.discovery;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Setter
+@Getter
 public class DiscoveryRequestDto {
 
     @Schema(description = "Name of the Discovery",
@@ -19,31 +23,7 @@ public class DiscoveryRequestDto {
 
     @Schema(description = "Discovery Provider Attributes. Mandatory for creating new Discovery"
     )
-    private List<RequestAttributeDto> attributes;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<RequestAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<RequestAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
+    private List<RequestAttribute> attributes;
 
     @Override
     public String toString() {

@@ -1,13 +1,17 @@
 package com.czertainly.api.model.core.certificate.group;
 
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
+@Setter
+@Getter
 public class GroupRequestDto {
 
     @Schema(description = "Name of the Group",
@@ -21,39 +25,7 @@ public class GroupRequestDto {
     private String email;
 
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto> customAttributes;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<RequestAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<RequestAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
+    private List<RequestAttribute> customAttributes;
 
     @Override
     public String toString() {

@@ -2,11 +2,10 @@ package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.AbstractBaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.common.callback.RequestAttributeCallback;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.core.ParameterizedTypeReference;
@@ -28,7 +27,7 @@ public class AttributeApiClient extends BaseApiClient {
     private static final String ATTRIBUTE_BASE_CONTEXT = "/v1/{functionGroup}/{kind}/attributes";
     private static final String ATTRIBUTE_VALIDATION_CONTEXT = ATTRIBUTE_BASE_CONTEXT + "/validate";
 
-    private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
+    private static final ParameterizedTypeReference<List<RequestAttribute>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
     public AttributeApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
@@ -48,19 +47,7 @@ public class AttributeApiClient extends BaseApiClient {
                 connector);
     }
 
-    public List<AbstractBaseAttribute> listAttributeDefinitions1(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
-        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
-
-        return processRequest(r -> r
-                        .uri(connector.getUrl() + ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind)
-                        .retrieve()
-                        .toEntityList(AbstractBaseAttribute.class)
-                        .block().getBody(),
-                request,
-                connector);
-    }
-
-    public Void validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttributeDto> attributes, String functionGroupType) throws ValidationException, ConnectorException {
+    public Void validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttribute> attributes, String functionGroupType) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
