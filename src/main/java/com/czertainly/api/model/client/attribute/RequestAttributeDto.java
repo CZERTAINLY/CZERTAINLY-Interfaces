@@ -1,23 +1,31 @@
 package com.czertainly.api.model.client.attribute;
 
-import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.UUID;
 
 /**
  * This class contains set of properties to represent
  * an Attribute definition provided by the client
  */
-@Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Request attribute to send attribute content for object")
-public class RequestAttributeDto implements Serializable {
+
+@Schema(description = "Request attribute to send attribute content for object",
+        type = "object",
+        discriminatorProperty = "version",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = AttributeVersion.Codes.V2, schema = RequestAttributeV2.class),
+                @DiscriminatorMapping(value = AttributeVersion.Codes.V3, schema = RequestAttributeV3.class),
+        },
+        oneOf = {
+                RequestAttributeV3.class,
+                RequestAttributeV2.class
+        })
+public interface RequestAttributeDto extends Serializable {
+
 
     /**
      * UUID of the Attribute
@@ -27,7 +35,7 @@ public class RequestAttributeDto implements Serializable {
             example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String uuid;
+    UUID getUuid();
 
     /**
      * Name of the Attribute
@@ -37,7 +45,7 @@ public class RequestAttributeDto implements Serializable {
             examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private String name;
+   String getName();
 
     /**
      * Content Type of the Attribute
@@ -47,42 +55,14 @@ public class RequestAttributeDto implements Serializable {
             examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private AttributeContentType contentType;
+    AttributeContentType getContentType();
 
-    /**
-     * Content of the Attribute
-     **/
+
     @Schema(
-            description = "Content of the Attribute",
+            description = "Version of the Attribute",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<BaseAttributeContent> content;
+    AttributeVersion getVersion();
 
-    public void setContent(List<BaseAttributeContent> content) {
-        this.content = content;
-        if (contentType == null && content != null && !content.isEmpty()) {
-            contentType = AttributeContentType.fromClass(content.get(0).getClass());
-        }
-    }
 
-    public RequestAttributeDto() {
-        super();
-    }
-
-    public RequestAttributeDto(RequestAttributeDto original) {
-        this.uuid = original.uuid;
-        this.name = original.name;
-        this.content = original.content;
-        this.contentType = original.contentType;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("uuid", uuid)
-                .append("name", name)
-                .append("contentType", contentType)
-                .append("content", content)
-                .toString();
-    }
 }

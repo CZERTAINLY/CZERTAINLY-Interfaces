@@ -1,9 +1,9 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.*;
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
-import com.czertainly.api.model.common.attribute.v2.content.FileAttributeContent;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.core.util.AttributeDefinitionUtils;
@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public abstract class BaseApiClient {
     private static final Logger logger = LoggerFactory.getLogger(BaseApiClient.class);
@@ -55,7 +54,7 @@ public abstract class BaseApiClient {
     protected TrustManager[] defaultTrustManagers;
 
     public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, Boolean validateConnectorStatus) {
-        if (validateConnectorStatus) {
+        if (validateConnectorStatus.equals(Boolean.TRUE)) {
             validateConnectorStatus(connector.getStatus());
         }
         WebClient.RequestBodySpec request;
@@ -66,15 +65,17 @@ public abstract class BaseApiClient {
             return (WebClient.RequestBodyUriSpec) request;
         }
 
-        List<ResponseAttributeDto> authAttributes = connector.getAuthAttributes();
+        List<ResponseAttribute> authAttributes = connector.getAuthAttributes();
 
         switch (connector.getAuthType()) {
             case NONE:
                 request = webClient.method(method);
                 break;
             case BASIC:
-                BaseAttributeContent<String> username = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes, false);
-                BaseAttributeContent<String> password = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes, false);
+                AttributeContent username = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes, false);
+                AttributeContent password = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes, false);
+
+                if (username == null || password == null) throw new IllegalArgumentException("Missing username or password in authentication");
 
                 request = webClient
                         .method(method)
@@ -88,8 +89,10 @@ public abstract class BaseApiClient {
                 request = webClient.method(method);
                 break;
             case API_KEY:
-                BaseAttributeContent<String> apiKeyHeader = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes, false);
-                BaseAttributeContent<String> apiKey = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes, false);
+                AttributeContent apiKeyHeader = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes, false);
+                AttributeContent apiKey = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes, false);
+
+                if (apiKeyHeader == null || apiKey == null) throw new IllegalArgumentException("Missing API Key or API Key header in authentication");
 
                 request = webClient
                         .method(method)
@@ -110,32 +113,32 @@ public abstract class BaseApiClient {
         }
     }
 
-    private SslContext createSslContext(List<ResponseAttributeDto> attributes) {
+    private SslContext createSslContext(List<ResponseAttribute> attributes) {
         try {
             SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
 
             KeyManager km = null;
-            FileAttributeContent keyStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE, attributes, false);
+            FileAttributeContentV2 keyStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE, attributes, false);
             if (keyStoreData != null && !keyStoreData.getData().getContent().isEmpty()) {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                BaseAttributeContent<String> keyStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes, false);
-                BaseAttributeContent<String> keyStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes, false);
+                AttributeContent keyStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_TYPE, attributes, false);
+                AttributeContent keyStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_KEYSTORE_PASSWORD, attributes, false);
                 byte[] keyStoreBytes = Base64.getDecoder().decode(keyStoreData.getData().getContent());
 
-                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword.getData(), keyStoreType.getData()), keyStorePassword.getData().toCharArray());
+                kmf.init(KeyStoreUtils.bytes2KeyStore(keyStoreBytes, keyStorePassword.getData(), keyStoreType.getData()), ((String) keyStorePassword.getData()).toCharArray());
                 km = kmf.getKeyManagers()[0];
             }
 
             sslContextBuilder.keyManager(km);
 
             TrustManager tm;
-            FileAttributeContent trustStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE, attributes, false);
+            FileAttributeContentV2 trustStoreData = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE, attributes, false);
             if (trustStoreData != null && !trustStoreData.getData().getContent().isEmpty()) {
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); //"SunX509"
 
-                BaseAttributeContent<String> trustStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes, false);
-                BaseAttributeContent<String> trustStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes, false);
+                AttributeContent trustStoreType = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_TYPE, attributes, false);
+                AttributeContent trustStorePassword = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_TRUSTSTORE_PASSWORD, attributes, false);
                 byte[] trustStoreBytes = Base64.getDecoder().decode(trustStoreData.getData().getContent());
 
                 tmf.init(KeyStoreUtils.bytes2KeyStore(trustStoreBytes, trustStorePassword.getData(), trustStoreType.getData()));
@@ -172,7 +175,7 @@ public abstract class BaseApiClient {
             return clientResponse.bodyToMono(ERROR_LIST_TYPE_REF).flatMap(body ->
                     Mono.error(new ValidationException(body.stream()
                                     .map(ValidationError::create)
-                                    .collect(Collectors.toList())
+                                    .toList()
                             )
                     )
             );

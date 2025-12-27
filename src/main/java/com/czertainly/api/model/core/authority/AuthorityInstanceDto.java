@@ -1,23 +1,27 @@
 package com.czertainly.api.model.core.authority;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class AuthorityInstanceDto extends NameAndUuidDto {
 
     @Schema(description = "List of Authority instance Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(description = "Status of Authority instance",
             requiredMode = Schema.RequiredMode.REQUIRED)
@@ -35,50 +39,6 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             examples = {"LegacyEjbca, ADCS, etc."},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
-
-    public List<ResponseAttributeDto> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<ResponseAttributeDto> attributes) {
-        this.attributes = attributes;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getConnectorUuid() {
-        return connectorUuid;
-    }
-
-    public void setConnectorUuid(String connectorUuid) {
-        this.connectorUuid = connectorUuid;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    public String getConnectorName() { return connectorName; }
-
-    public void setConnectorName(String connectorName) { this.connectorName = connectorName; }
-
-    public List<ResponseAttributeDto> getCustomAttributes() {
-        return customAttributes;
-    }
-
-    public void setCustomAttributes(List<ResponseAttributeDto> customAttributes) {
-        this.customAttributes = customAttributes;
-    }
 
     @Override
     public String toString() {

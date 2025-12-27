@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.discovery;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.metadata.MetadataResponseDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
@@ -82,10 +82,10 @@ public class DiscoveryHistoryDetailDto extends NameAndUuidDto {
             description = "List of Discovery Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 
     @Schema(
             description = "Metadata of the Discovery"

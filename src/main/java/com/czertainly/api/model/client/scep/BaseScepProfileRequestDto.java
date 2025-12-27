@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.scep;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ public class BaseScepProfileRequestDto {
             description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> issueCertificateAttributes;
+    private List<RequestAttribute> issueCertificateAttributes;
 
     @Schema(
             description = "UUID of the Certificate to be used as CA Certificate for SCEP Requests",
@@ -37,12 +37,11 @@ public class BaseScepProfileRequestDto {
     @Schema(
             description = "List of Custom Attributes"
     )
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttribute> customAttributes;
 
     @Schema(
             description = "Minimum expiry days to allow renewal of certificate. Empty or the value '0' will be " +
-                    "considered as null and half life of the certificate validity will be considered for the protocol",
-            defaultValue = "Half of certificate validity"
+                    "considered as null and half life of the certificate validity will be considered for the protocol. Default value is half of certificate validity."
     )
     private Integer renewalThreshold;
 

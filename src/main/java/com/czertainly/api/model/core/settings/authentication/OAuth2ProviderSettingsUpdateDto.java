@@ -59,7 +59,7 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "The allowed time skew, in seconds, for token validation. This accounts for clock differences between systems. Default value is 30 seconds.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private int skew = 30;
 
-    @Schema(description = "Duration in seconds after which will inactive user's session be terminated.", defaultValue = "15m", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Duration, in seconds, after which an inactive user's session will be terminated. Default value is 900 seconds.", defaultValue = "900", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private int sessionMaxInactiveInterval = 15 * 60;
 
 }

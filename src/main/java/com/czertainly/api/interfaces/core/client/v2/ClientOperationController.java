@@ -2,10 +2,11 @@ package com.czertainly.api.interfaces.core.client.v2;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.ErrorMessageDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.v2.*;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +65,7 @@ public interface ClientOperationController extends AuthProtectedController {
 	void validateIssueCertificateAttributes(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
-			@RequestBody List<RequestAttributeDto> attributes) throws NotFoundException, ConnectorException, ValidationException;
+			@RequestBody List<RequestAttribute>attributes) throws NotFoundException, ConnectorException, ValidationException;
 
 	@Operation(summary = "Issue existing certificate with status Requested")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate issued"),
@@ -129,7 +131,7 @@ public interface ClientOperationController extends AuthProtectedController {
 	void validateRevokeCertificateAttributes(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
-			@RequestBody List<RequestAttributeDto> attributes) throws ConnectorException, ValidationException, NotFoundException;
+			@RequestBody List<RequestAttribute>attributes) throws ConnectorException, ValidationException, NotFoundException;
 
 	@Operation(summary = "Revoke Certificate")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Certificate revoked")})

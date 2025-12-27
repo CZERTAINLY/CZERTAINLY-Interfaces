@@ -1,7 +1,6 @@
 package com.czertainly.api.model.connector.v2;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -20,7 +19,7 @@ public class CertificateIdentificationRequestDto {
 
     @Schema(description = "List of RA Profiles attributes",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttributeDto> raProfileAttributes;
+    private List<RequestAttribute>raProfileAttributes;
 
     @Override
     public String toString() {

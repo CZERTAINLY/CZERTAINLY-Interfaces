@@ -1,31 +1,32 @@
 package com.czertainly.util;
 
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttributeV2;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.v2.AttributeType;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.DataAttribute;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeCallbackMapping;
-import com.czertainly.api.model.common.attribute.v2.callback.AttributeValueTarget;
-import com.czertainly.api.model.common.attribute.v2.callback.RequestAttributeCallback;
-import com.czertainly.api.model.common.attribute.v2.constraint.AttributeConstraintType;
-import com.czertainly.api.model.common.attribute.v2.constraint.DateTimeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RangeAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.RegexpAttributeConstraint;
-import com.czertainly.api.model.common.attribute.v2.constraint.data.DateTimeAttributeConstraintData;
-import com.czertainly.api.model.common.attribute.v2.constraint.data.RangeAttributeConstraintData;
+import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeCallbackMapping;
+import com.czertainly.api.model.common.attribute.common.callback.AttributeValueTarget;
+import com.czertainly.api.model.common.attribute.common.callback.RequestAttributeCallback;
+import com.czertainly.api.model.common.attribute.common.constraint.DateTimeAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.RangeAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
+import com.czertainly.api.model.common.attribute.common.constraint.data.DateTimeAttributeConstraintData;
+import com.czertainly.api.model.common.attribute.common.constraint.data.RangeAttributeConstraintData;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
+import com.czertainly.api.model.common.attribute.common.properties.DataAttributeProperties;
+import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
+import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
+import com.czertainly.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
-import com.czertainly.api.model.common.attribute.v2.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.common.attribute.v2.properties.DataAttributeProperties;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,33 +36,34 @@ import java.util.*;
 
 import static com.czertainly.core.util.AttributeDefinitionUtils.*;
 
-public class AttributeDefinitionUtilsTest {
+class AttributeDefinitionUtilsTest {
 
     @Test
-    public void testGetAttribute() {
+    void testGetAttribute() {
         String attributeName = "testAttribute";
-        List<RequestAttributeDto> attributes = createAttributes(attributeName, List.of(new IntegerAttributeContent(1234)));
-
-        RequestAttributeDto attribute = getRequestAttributes(attributeName, attributes);
+        List<RequestAttribute> attributes = List.of(new RequestAttributeV2(UUID.randomUUID(), attributeName, AttributeContentType.INTEGER, List.of(new IntegerAttributeContentV2(1234))));
+        RequestAttributeV2 attribute = getRequestAttributes(attributeName, attributes);
         Assertions.assertNotNull(attribute);
         Assertions.assertTrue(containsRequestAttributes(attributeName, attributes));
         Assertions.assertEquals(attributes.get(0), attribute);
     }
 
+
+
     @Test
-    public void testGetAttributeContent() {
+    void testGetAttributeContent() {
         String attribute1Name = "testAttribute1";
         String attribute2Name = "testAttribute2";
 
-        DataAttribute attribute1 = new DataAttribute();
+        DataAttributeV2 attribute1 = new DataAttributeV2();
         attribute1.setName(attribute1Name);
-        attribute1.setContent(List.of(new IntegerAttributeContent(1234)));
+        attribute1.setContent(List.of(new IntegerAttributeContentV2(1234)));
 
-        DataAttribute attribute2 = new DataAttribute();
+        DataAttributeV2 attribute2 = new DataAttributeV2();
         attribute2.setName(attribute2Name);
-        attribute2.setContent(List.of(new StringAttributeContent("value")));
+        attribute2.setContent(List.of(new StringAttributeContentV2("value")));
 
-        List<BaseAttribute> attributes = List.of(attribute1, attribute2);
+        List<BaseAttributeV2> attributes = List.of(attribute1, attribute2);
 
         Object value1 = AttributeDefinitionUtils.getAttributeContent(attribute1Name, attributes, false);
         Assertions.assertNotNull(value1);
@@ -79,14 +81,15 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeNameAndUuidContent() {
+    void testGetAttributeNameAndUuidContent() {
         String attribute1Name = "testAttribute1";
 
         HashMap<String, Object> attribute2Value = new HashMap<>();
         attribute2Value.put("uuid", UUID.randomUUID().toString());
         attribute2Value.put("name", "testName");
 
-        List<RequestAttributeDto> attributes = AttributeDefinitionUtils.createAttributes(attribute1Name, List.of(new ObjectAttributeContent(attribute1Name, attribute2Value)));
+        List<RequestAttribute> attributes = List.of(new RequestAttributeV2(UUID.randomUUID(), attribute1Name, AttributeContentType.OBJECT, List.of(new ObjectAttributeContentV2(attribute1Name, attribute2Value))));
+
         NameAndUuidDto dto = getNameAndUuidData(attribute1Name, attributes);
 
         Assertions.assertNotNull(dto);
@@ -95,17 +98,21 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeCredentialContent() {
+    void testGetAttributeCredentialContent() {
         String attribute1Name = "testAttribute1";
-        List<RequestAttributeDto> credentialAttributes = createAttributes("credAttr", List.of(new IntegerAttributeContent(987)));
+        List<RequestAttribute> credentialAttributes = List.of(new RequestAttributeV2(UUID.randomUUID(), "credAttr", AttributeContentType.INTEGER, List.of(new IntegerAttributeContentV2(987))));
+
 
         CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
         credentialDto.setUuid(UUID.randomUUID().toString());
         credentialDto.setName("testName");
-        credentialDto.setAttributes(AttributeDefinitionUtils.clientAttributeConverter(credentialAttributes));
+        DataAttributeV2 atr = new DataAttributeV2();
+        atr.setContent(credentialAttributes.get(0).getContent());
+        atr.setName(credentialAttributes.get(0).getName());
+        atr.setUuid(String.valueOf(credentialAttributes.get(0).getUuid()));
+        credentialDto.setAttributes(List.of(atr));
 
-        List<RequestAttributeDto> attributes = AttributeDefinitionUtils.createAttributes(attribute1Name, List.of(new CredentialAttributeContent("testName", credentialDto)));
-
+        List<RequestAttribute> attributes = List.of(new RequestAttributeV2(UUID.randomUUID(), attribute1Name, AttributeContentType.CREDENTIAL, List.of(new CredentialAttributeContentV2("testName", credentialDto))));
         CredentialAttributeContentData dto = getCredentialContent(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(credentialDto.getUuid(), dto.getUuid());
@@ -114,16 +121,18 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testAttributeSerialization() {
-        String attrData = "[{\"name\": \"tokenType\", \"content\": [{\"reference\": \"PEM\", \"data\": \"PEM\"}]}, " +
-                "{\"name\": \"description\", \"content\": [{\"reference\": \"DEMO RA Profile\", \"data\": \"DEMO RA Profile\"}]}, " +
-                "{\"name\": \"endEntityProfile\", \"content\": [{\"reference\": \"DemoTLSServerEndEntityProfile\", \"data\": {\"id\": 0, \"name\": \"DemoTLSServerEndEntityProfile\"}}]}, " +
-                "{\"name\": \"certificateProfile\", \"content\": [{\"reference\": \"DemoTLSServerEECertificateProfile\", \"data\": {\"id\": 0, \"name\": \"DemoTLSServerEECertificateProfile\"}}]}, " +
-                "{\"name\": \"certificationAuthority\", \"content\": [{\"reference\": \"DemoServerSubCA\", \"data\": {\"id\": 0, \"name\": \"DemoServerSubCA\"}}]}, " +
-                "{\"name\": \"sendNotifications\", \"content\": [{\"reference\": \"\", \"data\": false}]}, " +
-                "{\"name\": \"keyRecoverable\", \"content\": [{\"reference\": \"\", \"data\": true}]}]";
+    void testAttributeSerialization() {
+        String attrData = """
+                [{"name": "tokenType", "content": [{"reference": "PEM", "data": "PEM", "contentType": "string"}]},
+                {"name": "description", "content": [{"reference": "DEMO RA Profile", "data": "DEMO RA Profile", "contentType": "string"}]},
+                {"name": "endEntityProfile", "content": [{"reference": "DemoTLSServerEndEntityProfile", "data": {"id": 0, "name": "DemoTLSServerEndEntityProfile"}, "contentType": "object"}]},
+                {"name": "certificateProfile", "content": [{"reference": "DemoTLSServerEECertificateProfile", "data": {"id": 0, "name": "DemoTLSServerEECertificateProfile"}, "contentType": "object"}]},
+                {"name": "certificationAuthority", "content": [{"reference": "DemoServerSubCA", "data": {"id": 0, "name": "DemoServerSubCA"}, "contentType": "object"}]},
+                {"name": "sendNotifications", "content": [{"reference": "", "data": false, "contentType": "boolean"}]},
+                {"name": "keyRecoverable", "content": [{"reference": "", "data": true, "contentType": "boolean"}]}]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
         Assertions.assertNotNull(attrs);
         Assertions.assertEquals(7, attrs.size());
 
@@ -138,12 +147,12 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_success() {
+    void testValidateAttributes_success() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        StringAttributeContent attributeContent = new StringAttributeContent("1234");
+        StringAttributeContentV2 attributeContent = new StringAttributeContentV2("1234");
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -153,20 +162,20 @@ public class AttributeDefinitionUtilsTest {
         properties.setRequired(true);
         definition.setProperties(properties);
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
 
         validateAttributes(List.of(definition), List.of(attribute));
     }
 
     @Test
-    public void testValidateAttributes_failNoAttribute() {
+    void testValidateAttributes_failNoAttribute() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -184,11 +193,11 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_failNoValue() {
+    void testValidateAttributes_failNoValue() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -198,9 +207,9 @@ public class AttributeDefinitionUtilsTest {
         properties.setRequired(true);
         definition.setProperties(properties);
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(null); // cause or failure
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
@@ -212,17 +221,17 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_regex() {
+    void testValidateAttributes_regex() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        StringAttributeContent attributeContent = new StringAttributeContent("1234");
+        StringAttributeContentV2 attributeContent = new StringAttributeContentV2("1234");
         String validationRegex = "^\\d{4}$";
 
         //TODO Validation
 
         Assertions.assertTrue(attributeContent.getData().matches(validationRegex));
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -232,19 +241,19 @@ public class AttributeDefinitionUtilsTest {
         properties.setRequired(true);
         definition.setProperties(properties);
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
 
         validateAttributes(List.of(definition), List.of(attribute));
     }
 
     @Test
-    public void testValidateAttributes_regexFail() {
+    void testValidateAttributes_regexFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        StringAttributeContent attributeContent = new StringAttributeContent("12345");
+        StringAttributeContentV2 attributeContent = new StringAttributeContentV2("12345");
         String validationRegex = "^\\d{4}$";
 
         RegexpAttributeConstraint constraint = new RegexpAttributeConstraint();
@@ -252,7 +261,7 @@ public class AttributeDefinitionUtilsTest {
 
         Assertions.assertFalse(attributeContent.getData().matches(validationRegex));
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -263,9 +272,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
@@ -277,10 +286,10 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_regexPass() {
+    void testValidateAttributes_regexPass() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        StringAttributeContent attributeContent = new StringAttributeContent("1234");
+        StringAttributeContentV2 attributeContent = new StringAttributeContentV2("1234");
         String validationRegex = "^\\d{4}$";
 
         RegexpAttributeConstraint constraint = new RegexpAttributeConstraint();
@@ -288,7 +297,7 @@ public class AttributeDefinitionUtilsTest {
 
         Assertions.assertTrue(attributeContent.getData().matches(validationRegex));
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -299,18 +308,18 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         validateAttributes(List.of(definition), List.of(attribute));
     }
 
     @Test
-    public void testValidateAttributes_IntegerRange() {
+    void testValidateAttributes_IntegerRange() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        IntegerAttributeContent attributeContent = new IntegerAttributeContent(1234);
+        IntegerAttributeContentV2 attributeContent = new IntegerAttributeContentV2(1234);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
 
@@ -319,7 +328,7 @@ public class AttributeDefinitionUtilsTest {
         data.setTo(2000);
         constraint.setData(data);
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -330,18 +339,18 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         validateAttributes(List.of(definition), List.of(attribute));
     }
 
     @Test
-    public void testValidateAttributes_IntegerRangeFail() {
+    void testValidateAttributes_IntegerRangeFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        IntegerAttributeContent attributeContent = new IntegerAttributeContent(2001);
+        IntegerAttributeContentV2 attributeContent = new IntegerAttributeContentV2(2001);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
 
@@ -350,7 +359,7 @@ public class AttributeDefinitionUtilsTest {
         data.setTo(2000);
         constraint.setData(data);
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -361,9 +370,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method
@@ -374,10 +383,10 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_IntegerRangeTypeFail() {
+    void testValidateAttributes_IntegerRangeTypeFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        StringAttributeContent attributeContent = new StringAttributeContent("2001");
+        StringAttributeContentV2 attributeContent = new StringAttributeContentV2("2001");
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
 
@@ -386,7 +395,7 @@ public class AttributeDefinitionUtilsTest {
         data.setTo(2000);
         constraint.setData(data);
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -397,9 +406,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method
@@ -410,10 +419,10 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_FloatRange() {
+    void testValidateAttributes_FloatRange() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        FloatAttributeContent attributeContent = new FloatAttributeContent(121.34f);
+        FloatAttributeContentV2 attributeContent = new FloatAttributeContentV2(121.34f);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
 
@@ -422,29 +431,29 @@ public class AttributeDefinitionUtilsTest {
         data.setTo(2000);
         constraint.setData(data);
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
-        definition.setContentType(AttributeContentType.INTEGER);
+        definition.setContentType(AttributeContentType.FLOAT);
 
         DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         validateAttributes(List.of(definition), List.of(attribute));
     }
 
     @Test
-    public void testValidateAttributes_FloatRangeFail() {
+    void testValidateAttributes_FloatRangeFail() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        FloatAttributeContent attributeContent = new FloatAttributeContent(20.01f);
+        FloatAttributeContentV2 attributeContent = new FloatAttributeContentV2(20.01f);
 
         RangeAttributeConstraint constraint = new RangeAttributeConstraint();
 
@@ -453,7 +462,7 @@ public class AttributeDefinitionUtilsTest {
         data.setTo(2000);
         constraint.setData(data);
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -464,9 +473,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method
@@ -477,10 +486,10 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_DateTime() {
+    void testValidateAttributes_DateTime() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
+        DateTimeAttributeContentV2 attributeContent = new DateTimeAttributeContentV2(ZonedDateTime.now());
 
         DateTimeAttributeConstraint constraint = new DateTimeAttributeConstraint();
 
@@ -489,7 +498,7 @@ public class AttributeDefinitionUtilsTest {
         data.setTo(LocalDateTime.now().plusMinutes(10));
         constraint.setData(data);
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -500,18 +509,18 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         validateAttributes(List.of(definition), List.of(attribute));
     }
 
     @Test
-    public void testValidateAttributes_DateTimeFailure() {
+    void testValidateAttributes_DateTimeFailure() {
         String attributeName = "testAttribute1";
         String attributeId = "9379ca2c-aa51-42c8-8afd-2a2d16c99c57";
-        DateTimeAttributeContent attributeContent = new DateTimeAttributeContent(ZonedDateTime.now());
+        DateTimeAttributeContentV2 attributeContent = new DateTimeAttributeContentV2(ZonedDateTime.now());
 
         DateTimeAttributeConstraint constraint = new DateTimeAttributeConstraint();
 
@@ -520,7 +529,7 @@ public class AttributeDefinitionUtilsTest {
         data.setTo(LocalDateTime.now().plusMinutes(10));
         constraint.setData(data);
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
@@ -531,9 +540,9 @@ public class AttributeDefinitionUtilsTest {
         definition.setProperties(properties);
         definition.setConstraints(List.of(constraint));
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setUuid(attributeId);
+        attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method
@@ -545,22 +554,22 @@ public class AttributeDefinitionUtilsTest {
 
 
     @Test
-    public void testValidateAttributes_credentialMap() {
+    void testValidateAttributes_credentialMap() {
         String attributeName = "testAttribute1";
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.CREDENTIAL);
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
 
         CredentialAttributeContentData credential = new CredentialAttributeContentData();
         credential.setName("testName");
         credential.setUuid("testUuid");
 
-        CredentialAttributeContent credentialContent = new CredentialAttributeContent("Test Credential", credential);
+        CredentialAttributeContentV2 credentialContent = new CredentialAttributeContentV2("Test Credential", credential);
 
         attribute.setContent(List.of(credentialContent));
 
@@ -568,17 +577,17 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_credentialDto() {
+    void testValidateAttributes_credentialDto() {
         String attributeName = "testAttribute1";
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.CREDENTIAL);
 
-        CredentialAttributeContent credentialContent = new CredentialAttributeContent(attributeName, new CredentialAttributeContentData());
+        CredentialAttributeContentV2 credentialContent = new CredentialAttributeContentV2(attributeName, new CredentialAttributeContentData());
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
         attribute.setContent(List.of(credentialContent));
 
@@ -586,17 +595,17 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributes_credentialFail() {
+    void testValidateAttributes_credentialFail() {
         String attributeName = "testAttribute1";
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.CREDENTIAL);
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
-        attribute.setContent(List.of(new IntegerAttributeContent(123))); // cause or failure
+        attribute.setContent(List.of(new IntegerAttributeContentV2(123))); // cause or failure
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method
                 validateAttributes(List.of(definition), List.of(attribute))
@@ -606,18 +615,17 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    @Disabled
-    public void testValidateAttributes_unknownAttribute() {
+    void testValidateAttributes_unknownAttribute() {
         String attributeName = "testAttribute1";
 
-        DataAttribute definition = new DataAttribute();
+        DataAttributeV2 definition = new DataAttributeV2();
         definition.setName(attributeName);
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.STRING);
 
-        RequestAttributeDto attribute = new RequestAttributeDto();
+        RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName("unknown-attribute");  // cause or failure
-        attribute.setContent(List.of(new StringAttributeContent("123")));
+        attribute.setContent(List.of(new StringAttributeContentV2("123")));
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
                 // tested method
@@ -628,7 +636,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributeCallback_success() {
+    void testValidateAttributeCallback_success() {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
         mappings.add(new AttributeCallbackMapping(
                 "credentialKind",
@@ -647,7 +655,7 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testValidateAttributeCallback_fail() {
+    void testValidateAttributeCallback_fail() {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
         mappings.add(new AttributeCallbackMapping(
                 "credentialKind",
@@ -682,78 +690,90 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeJsonContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"reference\": \"Item\",\n" +
-                "      \"data\": {\n" +
-                "        \"customField\": 1234,\n" +
-                "        \"exists\": true,\n" +
-                "        \"name\": \"testingName\"\n" +
-                "      }\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeJsonContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "reference": "Item",
+                      "data": {
+                        "customField": 1234,
+                        "exists": true,
+                        "name": "testingName"
+                      },
+                      "contentType": "object"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        ObjectAttributeContent data = getAttributeContent("testJsonAttribute", attrs, ObjectAttributeContent.class).get(0);
+        ObjectAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, ObjectAttributeContentV2.class).get(0);
 
         Assertions.assertEquals("Item", data.getReference());
     }
 
     @Test
-    public void testGetAttributeStringContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"Item\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeStringContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "Item",
+                      "contentType": "string"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        StringAttributeContent data = getAttributeContent("testJsonAttribute", attrs, StringAttributeContent.class).get(0);
+        StringAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, StringAttributeContentV2.class).get(0);
 
         Assertions.assertEquals("Item", data.getData());
     }
 
     @Test
-    public void testGetAttributeInetegerContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": 1234\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeIntegerContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": 1234,
+                      "contentType": "integer"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        IntegerAttributeContent data = getAttributeContent("testJsonAttribute", attrs, IntegerAttributeContent.class).get(0);
+        IntegerAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, IntegerAttributeContentV2.class).get(0);
 
         Assertions.assertEquals(1234, data.getData());
     }
 
     @Test
-    public void testGetAttributeDateTimeContent_success() throws ParseException {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"2011-12-03T10:15:30+01:00\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeDateTimeContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "2011-12-03T10:15:30+01:00",
+                      "contentType": "datetime"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        DateTimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContent.class).get(0);
+        DateTimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContentV2.class).get(0);
 
         String dateInString = "2011-12-03T10:15:30+01:00";
         ZonedDateTime date = ZonedDateTime.parse(dateInString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
@@ -762,19 +782,22 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeDateContent_success() throws ParseException {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"2001-07-04\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeDateContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "2001-07-04",
+                      "contentType": "date"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        DateAttributeContent data = getAttributeContent("testJsonAttribute", attrs, DateAttributeContent.class).get(0);
+        DateAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateAttributeContentV2.class).get(0);
 
         String dateInString = "2001-07-04";
         LocalDate localDate = LocalDate.parse(dateInString);
@@ -783,21 +806,22 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeTimeContent_success() throws ParseException {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testJsonAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"12:14:25\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeTimeContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testJsonAttribute",
+                    "content": [{
+                      "data": "12:14:25",
+                      "contentType": "time"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        TimeAttributeContent data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContent.class).get(0);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        TimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContentV2.class).get(0);
 
         String dateInString = "12:14:25";
         LocalTime localTime = LocalTime.parse(dateInString);
@@ -806,59 +830,68 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetStringAttributeContentValue_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testStringAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": \"Test String Value\"\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetStringAttributeContentValue_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testStringAttribute",
+                    "content": [{
+                      "data": "Test String Value",
+                      "contentType": "string"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        String value = getAttributeContentValue("testStringAttribute", attrs, StringAttributeContent.class).get(0).getData();
+        String value = getAttributeContentValue("testStringAttribute", attrs, StringAttributeContentV2.class).get(0).getData();
 
         Assertions.assertNotNull(value);
         Assertions.assertEquals("Test String Value", value);
     }
 
     @Test
-    public void testGetFileAttributeContentValue_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testFileAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"data\": {\"content\":\"Test File Value\"}\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetFileAttributeContentValue_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testFileAttribute",
+                    "content": [{
+                      "data": {"content":"Test File Value"},
+                      "contentType": "file"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContent.class).get(0).getData().getContent();
+        String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContentV2.class).get(0).getData().getContent();
 
         Assertions.assertNotNull(value);
         Assertions.assertEquals("Test File Value", value);
     }
 
     @Test
-    public void testGetCredentialAttributeContent_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testCredentialAttribute\",\n" +
-                "    \"content\": [{\n" +
-                "      \"reference\": \"Test Credential Value\",\n" +
-                "      \"data\": {\n" +
-                "        \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
-                "        \"name\": \"Test Credential\"\n" +
-                "      }\n" +
-                "    }]\n" +
-                "  }\n" +
-                "]";
+    void testGetCredentialAttributeContent_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testCredentialAttribute",
+                    "content": [{
+                      "reference": "Test Credential Value",
+                      "data": {
+                        "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
+                        "name": "Test Credential"
+                      },
+                      "contentType": "object"
+                    }]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
         NameAndUuidDto data = getObjectAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class).get(0);
 
@@ -867,57 +900,66 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetAttributeContentAsListOfString_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testAttributeListString\",\n" +
-                "    \"content\": [\n" +
-                "      {\n" +
-                "        \"data\": \"string1\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"data\": \"string2\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"data\": \"string3\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "]";
+    void testGetAttributeContentAsListOfString_success() {
+        String attrData = """
+                [
+                  {
+                    "name": "testAttributeListString",
+                    "content": [
+                      {
+                        "data": "string1",
+                        "contentType": "string"
+                      },
+                      {
+                        "data": "string2",
+                        "contentType": "string"
+                      },
+                      {
+                        "data": "string3",
+                        "contentType": "string"
+                      }
+                    ]
+                  }
+                ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
-        List<String> listString = getAttributeContentValueList("testAttributeListString", attrs, BaseAttributeContent.class);
+        List<String> listString = getAttributeContentValueList("testAttributeListString", attrs, BaseAttributeContentV2.class);
 
         Assertions.assertNotNull(listString);
         Assertions.assertEquals(3, listString.size());
     }
 
     @Test
-    public void testGetJsonAttributeContentAsListOfUuidAndName_success() {
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"name\": \"testCredentialAttribute\",\n" +
-                "    \"content\": [\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 1\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
-                "          \"name\": \"Test Credential 1\"\n" +
-                "        }\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 2\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
-                "          \"name\": \"Test Credential 2\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "]";
+    void testGetJsonAttributeContentAsListOfUuidAndName_success() {
+        String attrData = """
+                 [
+                   {
+                     "name": "testCredentialAttribute",
+                     "content": [
+                       {
+                         "reference": "Test Credential Value 1",
+                         "data": {
+                           "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
+                           "name": "Test Credential 1"
+                         },
+                         "contentType": "object"
+                       },
+                       {
+                         "reference": "Test Credential Value 2",
+                         "data": {
+                           "uuid": "696a354f-55d2-4507-b454-a5a7475a7932",
+                           "name": "Test Credential 2"
+                         },
+                        "contentType": "object"
+                       }
+                     ]
+                   }
+                 ]
+                """;
 
-        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
 
         List<String> listData = getObjectAttributeContentDataList("testCredentialAttribute", attrs, NameAndUuidDto.class);
 
@@ -926,46 +968,50 @@ public class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    public void testGetJsonAttributeConstraints_success() {
+    void testGetJsonAttributeConstraints_success() {
         String regExp = "^((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])|(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\\\-]*[a-zA-Z0-9])\\\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\\\-]*[A-Za-z0-9]))$";
 
-        String attrData = "[\n" +
-                "  {\n" +
-                "    \"uuid\": \"93ca0ba2-3863-4ffa-a469-fd14ab3992bf\",\n" +
-                "    \"name\": \"address\",\n" +
-                "    \"type\": \"data\",\n" +
-                "    \"contentType\": \"string\",\n" +
-                "    \"properties\": {\n" +
-                "       \"label\": \"Test Credential Value 1\",\n" +
-                "       \"visible\": true,\n" +
-                "       \"required\": true\n" +
-                "    },\n" +
-                "    \"constraints\": [\n" +
-                "      {\n" +
-                "       \"type\": \"regExp\",\n" +
-                "       \"data\": \"" + regExp + "\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"content\": [\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 1\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"9379ca2c-aa51-42c8-8afd-2a2d16c99c57\",\n" +
-                "          \"name\": \"Test Credential 1\"\n" +
-                "        }\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"reference\": \"Test Credential Value 2\",\n" +
-                "        \"data\": {\n" +
-                "          \"uuid\": \"696a354f-55d2-4507-b454-a5a7475a7932\",\n" +
-                "          \"name\": \"Test Credential 2\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "]";
+        String attrData = """
+                [
+                  {
+                    "uuid": "93ca0ba2-3863-4ffa-a469-fd14ab3992bf",
+                    "name": "address",
+                    "type": "data",
+                    "contentType": "string",
+                    "properties": {
+                       "label": "Test Credential Value 1",
+                       "visible": true,
+                       "required": true
+                    },
+                    "constraints": [
+                      {
+                       "type": "regExp",
+                       "data": "%s"
+                      }
+                    ],
+                    "content": [
+                      {
+                        "reference": "Test Credential Value 1",
+                        "data": {
+                          "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
+                          "name": "Test Credential 1"
+                        },
+                        "contentType": "object"
+                      },
+                      {
+                        "reference": "Test Credential Value 2",
+                        "data": {
+                          "uuid": "696a354f-55d2-4507-b454-a5a7475a7932",
+                          "name": "Test Credential 2"
+                        },
+                        "contentType": "object"
+                      }
+                    ]
+                  }
+                ]
+                """.formatted(regExp);
 
-        List<DataAttribute> attrs = deserialize(attrData, DataAttribute.class);
+        List<DataAttributeV2> attrs = deserialize(attrData, DataAttributeV2.class);
         Assertions.assertEquals(1, attrs.size());
         Assertions.assertEquals(1, attrs.get(0).getConstraints().size());
         Assertions.assertEquals(AttributeConstraintType.REGEXP, attrs.get(0).getConstraints().get(0).getType());

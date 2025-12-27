@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.v2;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -33,13 +33,13 @@ public class CertificateSignRequestDto {
             description = "List of RA Profiles attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> raProfileAttributes;
+    private List<RequestAttribute> raProfileAttributes;
 
     @Schema(
             description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> attributes;
+    private List<RequestAttribute> attributes;
 
     @Override
     public String toString() {

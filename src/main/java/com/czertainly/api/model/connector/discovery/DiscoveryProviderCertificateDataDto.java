@@ -1,13 +1,18 @@
 package com.czertainly.api.model.connector.discovery;
 
-import com.czertainly.api.model.common.attribute.v2.MetadataAttribute;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class DiscoveryProviderCertificateDataDto {
 	
 	@Schema(
@@ -26,31 +31,8 @@ public class DiscoveryProviderCertificateDataDto {
 			description = "Metadata for the Certificate",
 			requiredMode = Schema.RequiredMode.REQUIRED
 	)
-	private List<MetadataAttribute> meta;
+	private List<MetadataAttribute<? extends AttributeContent>> meta;
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
-	public String getBase64Content() {
-		return base64Content;
-	}
-
-	public void setBase64Content(String base64Content) {
-		this.base64Content = base64Content;
-	}
-
-	public List<MetadataAttribute> getMeta() {
-		return meta;
-	}
-
-	public void setMeta(List<MetadataAttribute> meta) {
-		this.meta = meta;
-	}
 
 	@Override
 	public String toString() {

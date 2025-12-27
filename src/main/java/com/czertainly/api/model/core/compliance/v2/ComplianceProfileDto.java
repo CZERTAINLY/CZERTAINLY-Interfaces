@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.compliance.v2;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,5 +31,5 @@ public class ComplianceProfileDto {
     private List<ProviderComplianceRulesDto> providerRules = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
-    private List<ResponseAttributeDto> customAttributes = new ArrayList<>();
+    private List<ResponseAttribute> customAttributes = new ArrayList<>();
 }

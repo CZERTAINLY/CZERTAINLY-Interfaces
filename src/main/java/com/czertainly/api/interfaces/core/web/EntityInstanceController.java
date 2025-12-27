@@ -5,14 +5,14 @@ import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.client.certificate.EntityInstanceResponseDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceRequestDto;
 import com.czertainly.api.model.client.entity.EntityInstanceUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.entity.EntityInstanceDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -200,6 +200,6 @@ public interface EntityInstanceController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
-            @RequestBody List<RequestAttributeDto> attributes
+            @RequestBody List<RequestAttribute> attributes
     ) throws ConnectorException, NotFoundException;
 }

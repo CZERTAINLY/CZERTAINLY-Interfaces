@@ -1,6 +1,6 @@
 package com.czertainly.api.model.client.acme;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -73,12 +73,12 @@ public class AcmeProfileEditRequestDto {
             description = "List of Attributes to issue Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> issueCertificateAttributes;
+    private List<RequestAttribute> issueCertificateAttributes;
     @Schema(
             description = "List of Attributes to revoke Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> revokeCertificateAttributes;
+    private List<RequestAttribute> revokeCertificateAttributes;
     @Schema(
             description = "Require contact information for new Account",
             defaultValue = "false",
@@ -92,7 +92,7 @@ public class AcmeProfileEditRequestDto {
     )
     private Boolean requireTermsOfService;
     @Schema(description = "List of Custom Attributes")
-    private List<RequestAttributeDto> customAttributes;
+    private List<RequestAttribute> customAttributes;
 
     @Valid
     @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

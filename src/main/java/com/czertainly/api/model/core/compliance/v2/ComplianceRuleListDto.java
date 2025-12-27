@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.compliance.v2;
 
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.workflows.ConditionItemDto;
 import io.swagger.v3.oas.annotations.media.Schema;

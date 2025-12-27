@@ -1,6 +1,6 @@
 package com.czertainly.api.model.core.notification;
 
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class NotificationInstanceDto extends NameAndUuidDto {
     private String kind;
 
     @Schema(description = "List of Notification instance Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ResponseAttributeDto> attributes = new ArrayList<>();
+    private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of attribute mappings between mapping attributes and (recipient) custom attributes")
     private List<AttributeMappingDto> attributeMappings;

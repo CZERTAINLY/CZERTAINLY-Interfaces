@@ -1,6 +1,6 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,30 +13,30 @@ public class GenerateCsrRequestDto {
             description = "List of Location Attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> locationAttributes;
+    private List<RequestAttribute>locationAttributes;
 
     @Schema(
             description = "List of Attributes to generate CSR",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttributeDto> csrAttributes;
+    private List<RequestAttribute>csrAttributes;
 
     @Schema(description = "Is the request for renewal of Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean renewal;
 
-    public List<RequestAttributeDto> getLocationAttributes() {
+    public List<RequestAttribute>getLocationAttributes() {
         return locationAttributes;
     }
 
-    public void setLocationAttributes(List<RequestAttributeDto> locationAttributes) {
+    public void setLocationAttributes(List<RequestAttribute>locationAttributes) {
         this.locationAttributes = locationAttributes;
     }
 
-    public List<RequestAttributeDto> getCsrAttributes() {
+    public List<RequestAttribute>getCsrAttributes() {
         return csrAttributes;
     }
 
-    public void setCsrAttributes(List<RequestAttributeDto> csrAttributes) {
+    public void setCsrAttributes(List<RequestAttribute>csrAttributes) {
         this.csrAttributes = csrAttributes;
     }
 

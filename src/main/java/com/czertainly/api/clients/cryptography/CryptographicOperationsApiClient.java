@@ -3,8 +3,8 @@ package com.czertainly.api.clients.cryptography;
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.operations.*;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,7 +26,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
     private static final String CRYPTOP_RANDOM_ATTRS_CONTEXT = CRYPTOP_RANDOM_CONTEXT + "/attributes";
     private static final String CRYPTOP_RANDOM_ATTRS_VALIDATE_CONTEXT = CRYPTOP_RANDOM_ATTRS_CONTEXT + "/validate";
 
-    private static final ParameterizedTypeReference<List<RequestAttributeDto>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
+    private static final ParameterizedTypeReference<List<RequestAttribute>> ATTRIBUTE_LIST_TYPE_REF = new ParameterizedTypeReference<>() {
     };
 
     public CryptographicOperationsApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
@@ -99,7 +99,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient {
                 connector);
     }
 
-    public void validateRandomAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
+    public void validateRandomAttributes(ConnectorDto connector, String uuid, List<RequestAttribute>attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r

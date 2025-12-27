@@ -4,8 +4,8 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
-import com.czertainly.api.model.client.attribute.RequestAttributeDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
+import com.czertainly.api.model.client.attribute.RequestAttribute;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.authority.CertificateRevocationListRequestDto;
@@ -133,7 +133,7 @@ public interface AuthorityInstanceController extends AuthProtectedConnectorContr
     @PostMapping(path = "/{uuid}/raProfile/attributes/validate", consumes = {"application/json"}, produces = {"application/json"})
     void validateRAProfileAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
-            @RequestBody List<RequestAttributeDto> attributes) throws ValidationException, NotFoundException;
+            @RequestBody List<RequestAttribute>attributes) throws ValidationException, NotFoundException;
 
     @Operation(
             summary = "Get the latest CRL for the Authority Instance",

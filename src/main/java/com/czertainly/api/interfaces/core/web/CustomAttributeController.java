@@ -4,17 +4,16 @@ import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.attribute.ResponseAttributeDto;
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeCreateRequestDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitionDetailDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeDefinitionDto;
 import com.czertainly.api.model.client.attribute.custom.CustomAttributeUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
-import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.CustomAttribute;
-import com.czertainly.api.model.common.attribute.v2.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.v2.content.BaseAttributeContent;
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.CustomAttribute;
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -116,7 +115,7 @@ public interface CustomAttributeController extends AuthProtectedController {
     @Operation(summary = "Get Custom Attributes for a resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CustomAttribute.class))))})
     @GetMapping(path = "/resources/{resource}", produces = {"application/json"})
-    List<BaseAttribute> getResourceCustomAttributes(@Parameter(description = "Resource Name", schema = @Schema(implementation = Resource.class)) @PathVariable Resource resource);
+    List<CustomAttribute<?>> getResourceCustomAttributes(@Parameter(description = "Resource Name", schema = @Schema(implementation = Resource.class)) @PathVariable Resource resource);
 
     @Operation(summary = "Get available resources for Custom Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute retrieved")})
@@ -129,20 +128,19 @@ public interface CustomAttributeController extends AuthProtectedController {
             path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<ResponseAttributeDto> updateAttributeContentForResource(
+    List<ResponseAttribute> updateAttributeContentForResource(
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid,
-            @RequestBody List<BaseAttributeContent> request
+            @RequestBody List<AttributeContent> request
             ) throws NotFoundException, AttributeException;
-
     @Operation(summary = "Delete Value of a Custom Attribute for a Resource")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom Attribute value deleted"), @ApiResponse(responseCode = "404", description = "Custom attribute not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(
             path = "/resources/{resourceName}/objects/{objectUuid}/{attributeUuid}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    List<ResponseAttributeDto> deleteAttributeContentForResource(
+    List<ResponseAttribute> deleteAttributeContentForResource(
             @Parameter(description = "Resource Type") @PathVariable Resource resourceName,
             @Parameter(description = "Object UUID") @PathVariable String objectUuid,
             @Parameter(description = "Custom Attribute UUID") @PathVariable String attributeUuid
