@@ -2,7 +2,10 @@ package com.czertainly.api.interfaces.connector.common.v2;
 
 import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.connector.v2.InfoResponse;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +36,11 @@ public interface InfoController extends AuthProtectedConnectorController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Connector info retrieved successfully"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Connector info failed to retrieve",
+                            content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                     )
     })
     InfoResponse getConnectorInfo();
