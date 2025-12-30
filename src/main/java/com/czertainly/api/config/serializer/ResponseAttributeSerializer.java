@@ -2,7 +2,6 @@ package com.czertainly.api.config.serializer;
 
 import com.czertainly.api.model.client.attribute.ResponseAttributeV2;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
-import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.content.*;
@@ -75,8 +74,7 @@ public class ResponseAttributeSerializer extends StdSerializer<List<BaseAttribut
     }
 
     private static void addCredentialAttributes(ObjectMapper objectMapper, CredentialAttributeContentData credentialDto, List<DataAttributeV2> credentialAttributes) {
-        for (DataAttribute<?> credentialAttribute : credentialDto.getAttributes()) {
-            DataAttributeV2 dataAttributeV2 = (DataAttributeV2) credentialAttribute;
+        for (DataAttributeV2 dataAttributeV2 : credentialDto.getAttributes()) {
             List<BaseAttributeContentV2<?>> credentialAttributeContents = new ArrayList<>();
             if (dataAttributeV2.getContentType().equals(AttributeContentType.SECRET)) {
                 for (BaseAttributeContentV2<?> baseAttributeContent : dataAttributeV2.getContent()) {
