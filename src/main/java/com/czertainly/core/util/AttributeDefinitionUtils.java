@@ -317,7 +317,7 @@ public class AttributeDefinitionUtils {
         int version = definition.getVersion();
 
         if (definition.getType().equals(AttributeType.DATA)) {
-            DataAttribute<?> dataAttribute = (DataAttributeV2) definition;
+            DataAttribute<?> dataAttribute = (DataAttribute<?>) definition;
             contentType = dataAttribute.getContentType();
             if (dataAttribute.getProperties() != null) {
                 isRequired = dataAttribute.getProperties().isRequired();
