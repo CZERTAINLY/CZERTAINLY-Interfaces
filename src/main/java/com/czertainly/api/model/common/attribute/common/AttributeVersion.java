@@ -14,11 +14,11 @@ public enum AttributeVersion implements IPlatformEnum {
     private final String code;
 
     @Getter
-    private final int anInt;
+    private final int version;
 
-    AttributeVersion(String code, int anInt) {
+    AttributeVersion(String code, int version) {
         this.code = code;
-        this.anInt = anInt;
+        this.version = version;
     }
 
     @Override
