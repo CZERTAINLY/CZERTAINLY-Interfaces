@@ -37,7 +37,7 @@ public class BaseAttributeSerializer
 
         switch (value.getType()) {
             case DATA -> {
-                DataAttribute<?> attribute = (DataAttribute<?>) value;
+                DataAttribute attribute = (DataAttribute) value;
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);

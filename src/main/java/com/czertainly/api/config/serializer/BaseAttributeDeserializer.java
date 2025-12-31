@@ -20,7 +20,7 @@ public class BaseAttributeDeserializer extends JsonDeserializer<BaseAttribute> {
         String attributeTypeCode = node.has("type") ? node.get("type").asText() : null;
 
         if (attributeTypeCode == null || version == null) {
-            throw new IllegalArgumentException("Missing required fields: attributeType or version");
+            throw new IllegalArgumentException("Missing required fields: type or version");
         }
 
         AttributeType attributeType = AttributeType.fromCode(attributeTypeCode);

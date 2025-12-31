@@ -1,5 +1,6 @@
 package com.czertainly.core.util;
 
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v1.AttributeDefinition;
 import com.czertainly.api.model.common.attribute.v1.AttributeType;
@@ -54,7 +55,7 @@ public class V2AttributeMigrationUtils {
             } else {
                 logger.debug("Migrating record with is: {}", rows.getString(rowIdentifier));
             }
-            List<BaseAttributeV2<?>> attributeDefinitions = new ArrayList<>();
+            List<BaseAttribute> attributeDefinitions = new ArrayList<>();
             List<AttributeDefinition> oldAttributeValue = AttributeDefinitionUtils.deserialize(rows.getString(columnName));
             if (oldAttributeValue == null) {
                 continue;
@@ -74,7 +75,7 @@ public class V2AttributeMigrationUtils {
         return migrationCommands;
     }
 
-    public static <T extends BaseAttributeV2> T getNewAttributes(AttributeDefinition oldAttribute) {
+    public static DataAttributeV2 getNewAttributes(AttributeDefinition oldAttribute) {
 
         //Old Attribute Value to new attribute properties
 
@@ -98,7 +99,7 @@ public class V2AttributeMigrationUtils {
         attribute.setProperties(properties);
         attribute.setAttributeCallback(getAttributeCallback(oldAttribute.getAttributeCallback()));
         attribute.setConstraints(getAttributeConstraint(oldAttribute.getValidationRegex()));
-        return (T) attribute;
+        return attribute;
     }
 
     private static List<BaseAttributeConstraint<?>> getAttributeConstraint(String regex) {

@@ -38,7 +38,7 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@Operation(summary = "Get basic auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@GetMapping(path = "/attributes/basic", produces = {"application/json"})
-	List<DataAttribute<?>> getBasicAuthAttributes();
+	List<DataAttribute> getBasicAuthAttributes();
 
 	@Operation(summary = "Validate basic auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated") })
@@ -49,7 +49,7 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@Operation(summary = "Get Attributes for certificate auth")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@GetMapping(path = "/attributes/certificate", produces = {"application/json"})
-    List<DataAttribute<?>> getCertificateAttributes();
+    List<DataAttribute> getCertificateAttributes();
 
 	@Operation(summary = "Validate certificate auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
@@ -60,7 +60,7 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@Operation(summary = "Get API Key auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@GetMapping(path = "/attributes/apiKey", produces = {"application/json"})
-	List<DataAttribute<?>> getApiKeyAuthAttributes();
+	List<DataAttribute> getApiKeyAuthAttributes();
 
 	@Operation(summary = "Validate API Key Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})
@@ -71,7 +71,7 @@ public interface ConnectorAuthController extends AuthProtectedController {
 	@Operation(summary = "Get JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes retrieved")})
 	@GetMapping(path = "/attributes/jwt", produces = {"application/json"})
-	List<DataAttribute<?>> getJWTAuthAttributes();
+	List<DataAttribute> getJWTAuthAttributes();
 
 	@Operation(summary = "Validate JWT auth Attributes")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Attributes validated")})

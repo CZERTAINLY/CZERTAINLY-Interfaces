@@ -19,18 +19,14 @@ import java.util.List;
         }
 
 )
-public interface DataAttribute<T> extends Attribute {
+public abstract class DataAttribute extends BaseAttribute implements DataAttributeDto {
 
-    List<T> getContent();
-    void setContent(List<T> content);
-    AttributeContentType getContentType();
+    public abstract void setContent(List<? extends AttributeContent> content);
+    public abstract AttributeContentType getContentType();
+    public abstract DataAttributeProperties getProperties();
 
-    DataAttributeProperties getProperties();
+    public abstract List<BaseAttributeConstraint<?>> getConstraints();
 
-    List<BaseAttributeConstraint<?>> getConstraints();
-
-    AttributeCallback getAttributeCallback();
-
-
+    public abstract AttributeCallback getAttributeCallback();
 
 }
