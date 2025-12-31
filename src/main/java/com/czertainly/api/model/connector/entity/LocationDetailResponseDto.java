@@ -1,6 +1,5 @@
 package com.czertainly.api.model.connector.entity;
 
-import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -21,10 +20,10 @@ public class LocationDetailResponseDto {
     private List<CertificateLocationDto> certificates;
 
     @Schema(
-            description = "Location metadata",
+            description = "Location metadata CHANGE",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<MetadataAttribute<? extends AttributeContent>> metadata;
+    private List<MetadataAttribute> metadata;
 
     @Schema(
             description = "Support for multiple Certificates in the Location",

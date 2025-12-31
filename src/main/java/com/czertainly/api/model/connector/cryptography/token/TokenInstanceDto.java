@@ -20,6 +20,6 @@ public class TokenInstanceDto extends NameAndUuidDto {
     @Schema(
             description = "Token instance Metadata"
     )
-    private List<MetadataAttribute<? extends AttributeContent>> metadata;
+    private List<MetadataAttribute> metadata;
 
 }

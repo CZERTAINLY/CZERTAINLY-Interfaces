@@ -63,6 +63,6 @@ public class KeyData {
     @Schema(
             description = "Metadata for the Key, specific data that can be technology specific"
     )
-    private List<MetadataAttribute<? extends AttributeContent>> metadata;
+    private List<MetadataAttribute> metadata;
 
 }

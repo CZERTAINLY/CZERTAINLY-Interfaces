@@ -72,7 +72,7 @@ public class BaseAttributeSerializer
                 }
             }
             case META -> {
-                MetadataAttribute<?> attribute = (MetadataAttribute<?>) value;
+                MetadataAttribute attribute = (MetadataAttribute) value;
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
