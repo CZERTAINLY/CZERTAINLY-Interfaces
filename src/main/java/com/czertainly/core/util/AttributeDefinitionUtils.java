@@ -325,7 +325,7 @@ public class AttributeDefinitionUtils {
                 label = dataAttribute.getProperties().getLabel();
             }
         } else if (definition.getType().equals(AttributeType.CUSTOM)) {
-            CustomAttribute<?> customAttribute = (CustomAttribute<?>) definition;
+            CustomAttribute customAttribute = (CustomAttribute) definition;
             contentType = customAttribute.getContentType();
             if (customAttribute.getProperties() != null) {
                 isRequired = customAttribute.getProperties().isRequired();
@@ -546,7 +546,7 @@ public class AttributeDefinitionUtils {
 
         // TODO: checking all items in the list for the type
 
-        AttributeContentType contentType = definition.getType() == AttributeType.DATA ? ((DataAttribute<?>) definition).getContentType() : ((CustomAttribute<?>) definition).getContentType();
+        AttributeContentType contentType = definition.getType() == AttributeType.DATA ? ((DataAttribute<?>) definition).getContentType() : ((CustomAttribute) definition).getContentType();
         String label = getLabel(definition);
         try {
             for (AttributeContent baseAttributeContent : (List<AttributeContent>) attributeContent.getContent()) {
@@ -568,7 +568,7 @@ public class AttributeDefinitionUtils {
             DataAttribute<?> dataAttribute = (DataAttribute<?>) definition;
             if (dataAttribute.getProperties() != null) label = dataAttribute.getProperties().getLabel();
         } else {
-            CustomAttribute<?> customAttribute = (CustomAttribute<?>) definition;
+            CustomAttribute customAttribute = (CustomAttribute) definition;
             if (customAttribute.getProperties() != null) label = customAttribute.getProperties().getLabel();
         }
         return label;

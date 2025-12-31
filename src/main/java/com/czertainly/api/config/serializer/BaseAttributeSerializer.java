@@ -79,7 +79,7 @@ public class BaseAttributeSerializer
                 gen.writeEndObject();
             }
             case CUSTOM -> {
-                CustomAttribute<?> attribute = (CustomAttribute<?>) value;
+                CustomAttribute attribute = (CustomAttribute) value;
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
