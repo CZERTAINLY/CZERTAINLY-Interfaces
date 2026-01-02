@@ -24,7 +24,6 @@ import com.czertainly.api.model.common.attribute.common.constraint.AttributeCons
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -120,7 +119,7 @@ class AttributeDefinitionUtilsTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     void testAttributeSerialization() {
         String attrData = """
                 [
@@ -855,7 +854,6 @@ class AttributeDefinitionUtilsTest {
         Assertions.assertEquals(1234, data.getData());
     }
 
-    @Disabled
     @Test
     void testGetAttributeDateTimeContent_success() {
         String attrData = """
@@ -873,6 +871,7 @@ class AttributeDefinitionUtilsTest {
                 """;
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+
 
         DateTimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContentV2.class).get(0);
 

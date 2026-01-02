@@ -1,5 +1,6 @@
 package com.czertainly.core.util;
 
+import com.czertainly.api.config.serializer.AttributeContentDeserializer;
 import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
@@ -8,6 +9,7 @@ import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.*;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeDeserializer;
 import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.*;
 import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
@@ -28,6 +30,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -50,8 +53,11 @@ public class AttributeDefinitionUtils {
             .addModule(new JavaTimeModule())
             .addModule(new SimpleModule()
                     .addDeserializer(BaseAttribute.class, new BaseAttributeDeserializer())
+                    .addDeserializer(AttributeContent.class, new AttributeContentDeserializer())
+                    .addDeserializer(ZonedDateTime.class, new ZonedDateTimeDeserializer())
             )
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .build();
 
     private static final Logger logger = LoggerFactory.getLogger(AttributeDefinitionUtils.class);
@@ -125,7 +131,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends Object> List<T> getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
+    public static <T> List<T> getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
         if (attributes == null || attributes.size() == 0) {
             return null;
         }
