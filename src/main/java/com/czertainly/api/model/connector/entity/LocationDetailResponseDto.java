@@ -20,7 +20,7 @@ public class LocationDetailResponseDto {
     private List<CertificateLocationDto> certificates;
 
     @Schema(
-            description = "Location metadata CHANGE",
+            description = "Location metadata",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private List<MetadataAttribute> metadata;
