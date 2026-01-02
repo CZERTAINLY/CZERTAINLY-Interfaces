@@ -2,7 +2,6 @@ package com.czertainly.api.model.common.attribute.common;
 
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
-import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(

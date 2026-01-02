@@ -136,7 +136,6 @@ public class DataAttributeV3 extends DataAttribute {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DataAttributeV3 that)) return false;
-        if (!super.equals(o)) return false;
 
         return Objects.equals(content, that.content)
                 && contentType == that.contentType

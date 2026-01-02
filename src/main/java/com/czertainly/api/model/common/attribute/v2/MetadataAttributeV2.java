@@ -83,7 +83,6 @@ public class MetadataAttributeV2 extends MetadataAttribute {
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof MetadataAttributeV2 that)) return false;
-        if (!super.equals(object)) return false;
         return Objects.equals(content, that.content) && contentType == that.contentType && Objects.equals(properties, that.properties);
     }
 

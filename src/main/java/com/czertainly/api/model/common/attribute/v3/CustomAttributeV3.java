@@ -103,7 +103,6 @@ public class CustomAttributeV3 extends CustomAttribute {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CustomAttributeV3 that)) return false;
-        if (!super.equals(o)) return false;
 
         return Objects.equals(content, that.content)
                 && contentType == that.contentType
