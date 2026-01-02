@@ -49,8 +49,7 @@ public interface BaseAttributeDto extends Serializable {
          */
         @Schema(
                 description = "Type of the Attribute",
-                requiredMode = Schema.RequiredMode.REQUIRED,
-                defaultValue = AttributeType.Codes.DATA
+                requiredMode = Schema.RequiredMode.REQUIRED
         )
         AttributeType getType();
 
