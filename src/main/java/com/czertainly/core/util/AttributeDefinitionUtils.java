@@ -54,6 +54,7 @@ public class AttributeDefinitionUtils {
                     .addDeserializer(AttributeContent.class, new AttributeContentDeserializer())
                     .addDeserializer(ZonedDateTime.class, new ZonedDateTimeDeserializer())
             )
+            .findAndAddModules()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .build();
@@ -721,7 +722,7 @@ public class AttributeDefinitionUtils {
                 convertedDefinition.add(atr);
             }
             if (clt.getVersion() == AttributeVersion.V3) {
-                DataAttributeV2 atr = new DataAttributeV2();
+                DataAttributeV3 atr = new DataAttributeV3();
                 atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(String.valueOf(clt.getUuid()));
