@@ -99,7 +99,7 @@ public class DataAttributeV3 extends DataAttribute {
     private AttributeCallback attributeCallback;
 
     @Schema
-    private AttributeVersion schemaVersion = AttributeVersion.V2;
+    private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     public DataAttributeV3() {
         this.type = AttributeType.DATA;
