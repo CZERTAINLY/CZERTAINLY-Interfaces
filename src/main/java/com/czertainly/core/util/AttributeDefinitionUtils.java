@@ -25,10 +25,7 @@ import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.content.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -158,21 +155,19 @@ public class AttributeDefinitionUtils {
     }
 
     public static NameAndIdDto getNameAndIdData(String name, List<RequestAttribute> attributes) {
-        if (attributes.size() == 0) {
+        if (attributes.isEmpty()) {
             return null;
         }
 
-        NameAndIdDto converted = getObjectAttributeContentData(name, attributes, NameAndIdDto.class).get(0);
-        return converted;
+        return getObjectAttributeContentData(name, attributes, NameAndIdDto.class).get(0);
     }
 
     public static NameAndUuidDto getNameAndUuidData(String name, List<RequestAttribute> attributes) {
-        if (attributes.size() == 0) {
+        if (attributes.isEmpty()) {
             return null;
         }
 
-        NameAndUuidDto converted = getObjectAttributeContentData(name, attributes, NameAndUuidDto.class).get(0);
-        return converted;
+        return getObjectAttributeContentData(name, attributes, NameAndUuidDto.class).get(0);
     }
 
     public static CredentialAttributeContentData getCredentialContent(String name, List<RequestAttribute> attributes) {
@@ -435,45 +430,40 @@ public class AttributeDefinitionUtils {
     }
 
     private static void validateFloatRangeConstraint(List<? extends AttributeContent> contents, List<ValidationError> errors, String label, RangeAttributeConstraintData constraintData) {
-        List<FloatAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, FloatAttributeContentV2.class));
-        for (FloatAttributeContentV2 value : content) {
-            if (constraintData.getFrom() != null) {
-                if (value.getData() < constraintData.getFrom()) {
+        for (AttributeContent value : contents) {
+            if (constraintData.getFrom() != null && (Float) value.getData() < constraintData.getFrom()) {
                     errors.add(ValidationError.create(
                             "Value {} of attribute {} should be higher than {}",
                             value.getData(),
                             label,
                             constraintData.getFrom()));
                 }
-            }
-            if (constraintData.getTo() != null) {
-                if (value.getData() > constraintData.getTo()) {
+
+            if (constraintData.getTo() != null && (Float) value.getData() > constraintData.getTo()) {
                     errors.add(ValidationError.create(
                             "Value {} of attribute {} should be lower than {}",
                             value.getData(),
                             label,
                             constraintData.getTo()));
                 }
-            }
+
         }
     }
 
     private static void validateIntegerRangeConstraint(List<? extends AttributeContent> contents, List<ValidationError> errors, String label, RangeAttributeConstraintData constraintData) {
-        List<IntegerAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, IntegerAttributeContentV2.class));
-        for (IntegerAttributeContentV2 value : content) {
-            if (constraintData.getFrom() != null) {
-                if (value.getData() < constraintData.getFrom()) {
+        for (AttributeContent value : contents) {
+            if (constraintData.getFrom() != null && (Integer) value.getData() < constraintData.getFrom()) {
                     errors.add(ValidationError.create(
                             "Value {} of attribute {} should be higher than {}",
-                            value.getData(),
+                            value,
                             label,
                             constraintData.getFrom()));
                 }
-            }
-            if (constraintData.getTo() != null && value.getData() > constraintData.getTo()) {
+
+            if (constraintData.getTo() != null && (Integer) value.getData() > constraintData.getTo()) {
                 errors.add(ValidationError.create(
                         "Value {} of attribute {} should be lower than {}",
-                        value.getData(),
+                        value,
                         label,
                         constraintData.getTo()));
             }
@@ -485,27 +475,25 @@ public class AttributeDefinitionUtils {
             errors.add(ValidationError.create("Invalid Attribute Constraint Type and Attribute Content Type. DateTime can be associated for DATETIME type only"));
         }
         try {
-            List<DateTimeAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, DateTimeAttributeContentV2.class));
             DateTimeAttributeConstraintData constraintData = (DateTimeAttributeConstraintData) constraint.getData();
-            for (DateTimeAttributeContentV2 value : content) {
-                if (constraintData.getFrom() != null) {
-                    if (value.getData().isBefore(ZonedDateTime.from(constraintData.getFrom().atZone(ZoneId.systemDefault())))) {
+            for (AttributeContent value : contents) {
+                ZonedDateTime data = value.getData();
+                if (constraintData.getFrom() != null && data.isBefore(constraintData.getFrom().atZone(ZoneId.systemDefault()))) {
                         errors.add(ValidationError.create(
                                 "Value {} of attribute {} should be after {}",
-                                value.getData(),
+                                data,
                                 label,
                                 constraintData.getFrom()));
                     }
-                }
-                if (constraintData.getTo() != null) {
-                    if (value.getData().isAfter(ZonedDateTime.from(constraintData.getTo().atZone(ZoneId.systemDefault())))) {
+
+                if (constraintData.getTo() != null && data.isAfter(constraintData.getTo().atZone(ZoneId.systemDefault()))) {
                         errors.add(ValidationError.create(
                                 "Value {} of attribute {} should be before {}",
-                                value.getData(),
+                                data,
                                 label,
                                 constraintData.getTo()));
                     }
-                }
+
             }
         } catch (Exception e) {
             errors.add(ValidationError.create(
@@ -522,9 +510,7 @@ public class AttributeDefinitionUtils {
         Pattern pattern;
         try {
             pattern = Pattern.compile((String) constraint.getData());
-            ATTRIBUTES_OBJECT_MAPPER.disable(MapperFeature.USE_ANNOTATIONS);
-            List<StringAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, StringAttributeContentV2.class));
-            for (StringAttributeContentV2 value : content) {
+            for (AttributeContent value : contents) {
                 Matcher matcher = pattern.matcher(value.getData());
                 if (!matcher.matches()) {
                     errors.add(ValidationError.create(
@@ -534,6 +520,7 @@ public class AttributeDefinitionUtils {
                             constraint.getData()));
                 }
             }
+
         } catch (Exception e) {
             errors.add(ValidationError.create(
                     "Could not validate value of field {} due to error {}",
@@ -789,7 +776,7 @@ public class AttributeDefinitionUtils {
             RequestAttributeV3 atr = new RequestAttributeV3();
             atr.setName(clt.getName());
             if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
-            atr.setContent((List<BaseAttributeContentV3<?>>) clt.getContent());
+            atr.setContent(clt.getContent());
             convertedDefinition.add(atr);
         }
     }
@@ -882,7 +869,7 @@ public class AttributeDefinitionUtils {
             }
             return response;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public static <T> List<T> getAttributeContentValueList(String attributeName, List<?> attributes, Class<?> clazz) {
@@ -922,17 +909,27 @@ public class AttributeDefinitionUtils {
      */
     public static boolean checkAttributeEquality(List<RequestAttribute> requestAttributes, List<DataAttribute> attributes) {
         for (RequestAttributeDto requestAttribute : requestAttributes) {
-            DataAttributeV2 attribute = (DataAttributeV2) attributes.stream().filter(x -> x.getName().equals(requestAttribute.getName())).findFirst().orElse(null);
+            DataAttribute attribute = attributes.stream().filter(x -> x.getName().equals(requestAttribute.getName())).findFirst().orElse(null);
             if (attribute == null) return false;
+            if (requestAttribute.getVersion() == AttributeVersion.V2 && compareV2Equality(requestAttributes, attributes, requestAttribute, attribute)) return false;
 
-            var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentV2Class());
-            if (attributeContent == null) return false;
+            if (requestAttribute.getVersion() == AttributeVersion.V3 && compareV3Equality(requestAttributes, attributes, requestAttribute, attribute)) return false;
 
-            if (!attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentV2Class()))) {
-                return false;
-            }
+
         }
         return true;
+    }
+
+    private static boolean compareV3Equality(List<RequestAttribute> requestAttributes, List<DataAttribute> attributes, RequestAttributeDto requestAttribute, DataAttribute attribute) {
+        var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentV3Class());
+        if (attributeContent == null) return true;
+        return !attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentV3Class()));
+    }
+
+    private static boolean compareV2Equality(List<RequestAttribute> requestAttributes, List<DataAttribute> attributes, RequestAttributeDto requestAttribute, DataAttribute attribute) {
+        var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentV2Class());
+        if (attributeContent == null) return true;
+        return !attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentV2Class()));
     }
 
 }

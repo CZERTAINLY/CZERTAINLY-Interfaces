@@ -553,7 +553,7 @@ class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
-        definition.setContentType(AttributeContentType.INTEGER);
+        definition.setContentType(AttributeContentType.FLOAT);
 
         DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
