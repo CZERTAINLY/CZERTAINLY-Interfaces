@@ -5,7 +5,7 @@ import com.czertainly.api.model.common.attribute.v3.MetadataAttributeV3;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
-        description = "Base Attribute definition",
+        description = "Metadata Attribute definition",
         type = "object",
         oneOf = {
                 MetadataAttributeV2.class,
