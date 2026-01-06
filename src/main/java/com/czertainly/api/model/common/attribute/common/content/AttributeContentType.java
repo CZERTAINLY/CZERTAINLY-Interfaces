@@ -6,6 +6,7 @@ import com.czertainly.api.model.common.attribute.common.content.data.FileAttribu
 import com.czertainly.api.model.common.attribute.common.content.data.SecretAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v3.content.*;
+import com.czertainly.api.model.common.attribute.v3.content.data.ResourceObjectContentData;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -35,7 +36,8 @@ public enum AttributeContentType implements IPlatformEnum {
     FILE(Codes.FILE, "File", FileAttributeContentV2.class, FileAttributeContentV3.class, FileAttributeContentData.class, false),
     CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContentV2.class, null, CredentialAttributeContentData.class, false),
     CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContentV2.class, CodeBlockAttributeContentV3.class, CodeBlockAttributeContentData.class, false),
-    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContentV2.class, ObjectAttributeContentV3.class, Object.class, false)
+    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContentV2.class, ObjectAttributeContentV3.class, Object.class, false),
+    RESOURCE(Codes.RESOURCE, "Resource Object", null, ResourceObjectContent.class, ResourceObjectContentData.class, false)
     ;
 
 
@@ -116,6 +118,7 @@ public enum AttributeContentType implements IPlatformEnum {
 
     public static class Codes {
 
+
         private Codes() {
 
         }
@@ -184,5 +187,8 @@ public enum AttributeContentType implements IPlatformEnum {
          * Attribute type representing code block
          **/
         public static final String CODEBLOCK = "codeblock";
+
+        public static final String RESOURCE = "resource";
+
     }
 }
