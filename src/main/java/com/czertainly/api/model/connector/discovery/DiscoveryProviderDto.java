@@ -1,7 +1,6 @@
 package com.czertainly.api.model.connector.discovery;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.core.discovery.DiscoveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +29,7 @@ public class DiscoveryProviderDto extends NameAndUuidDto {
 	
 	@Schema(description = "Certificate Metadata",
 			requiredMode = Schema.RequiredMode.REQUIRED)
-	private List<MetadataAttribute<? extends AttributeContent>> meta;
+	private List<MetadataAttribute> meta;
 
 
 	@Override

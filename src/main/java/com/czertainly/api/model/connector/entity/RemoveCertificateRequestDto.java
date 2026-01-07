@@ -17,7 +17,7 @@ public class RemoveCertificateRequestDto {
             description = "Metadata of the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<MetadataAttribute<? extends AttributeContent>> certificateMetadata;
+    private List<MetadataAttribute> certificateMetadata;
 
     @Schema(
             description = "List of Location Attributes",

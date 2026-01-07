@@ -1,11 +1,12 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
-import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.common.properties.MetadataAttributeProperties;
+import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -27,7 +28,18 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2<?>>> implements MetadataAttribute<BaseAttributeContentV2<?>> {
+public class MetadataAttributeV2 extends MetadataAttribute {
+
+    private String uuid;
+
+    private String name;
+
+    private String description;
+
+    @Schema(description = "Version of the attribute", requiredMode = Schema.RequiredMode.REQUIRED)
+    private int version = 2;
+
+    private AttributeType type;
 
     /**
      * Content of the Attribute
@@ -56,15 +68,7 @@ public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeConte
     private MetadataAttributeProperties properties;
 
     public MetadataAttributeV2() {
-        super(AttributeType.META);
-    }
-
-    public MetadataAttributeV2(AttributeType type) {
-        super(type);
-    }
-
-    public MetadataAttributeV2(String type) {
-        super(AttributeType.fromCode(type));
+        type = AttributeType.META;
     }
 
     @Override
@@ -79,7 +83,6 @@ public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeConte
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof MetadataAttributeV2 that)) return false;
-        if (!super.equals(object)) return false;
         return Objects.equals(content, that.content) && contentType == that.contentType && Objects.equals(properties, that.properties);
     }
 
@@ -88,4 +91,8 @@ public class MetadataAttributeV2 extends BaseAttributeV2<List<BaseAttributeConte
         return Objects.hash(super.hashCode(), content, contentType, properties);
     }
 
+    @Override
+    public void setContent(List<? extends AttributeContent> content) {
+        this.content = (List<BaseAttributeContentV2<?>>) content;
+    }
 }

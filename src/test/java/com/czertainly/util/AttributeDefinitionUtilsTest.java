@@ -6,6 +6,7 @@ import com.czertainly.api.model.client.attribute.RequestAttributeV2;
 import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallbackMapping;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeValueTarget;
@@ -18,13 +19,11 @@ import com.czertainly.api.model.common.attribute.common.constraint.data.RangeAtt
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
 import com.czertainly.api.model.common.attribute.common.properties.DataAttributeProperties;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.v2.DataAttributeV2;
 import com.czertainly.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -49,7 +48,6 @@ class AttributeDefinitionUtilsTest {
     }
 
 
-
     @Test
     void testGetAttributeContent() {
         String attribute1Name = "testAttribute1";
@@ -63,7 +61,7 @@ class AttributeDefinitionUtilsTest {
         attribute2.setName(attribute2Name);
         attribute2.setContent(List.of(new StringAttributeContentV2("value")));
 
-        List<BaseAttributeV2> attributes = List.of(attribute1, attribute2);
+        List<DataAttributeV2> attributes = List.of(attribute1, attribute2);
 
         Object value1 = AttributeDefinitionUtils.getAttributeContent(attribute1Name, attributes, false);
         Assertions.assertNotNull(value1);
@@ -121,18 +119,107 @@ class AttributeDefinitionUtilsTest {
     }
 
     @Test
+//    @Disabled
     void testAttributeSerialization() {
         String attrData = """
-                [{"name": "tokenType", "content": [{"reference": "PEM", "data": "PEM", "contentType": "string"}]},
-                {"name": "description", "content": [{"reference": "DEMO RA Profile", "data": "DEMO RA Profile", "contentType": "string"}]},
-                {"name": "endEntityProfile", "content": [{"reference": "DemoTLSServerEndEntityProfile", "data": {"id": 0, "name": "DemoTLSServerEndEntityProfile"}, "contentType": "object"}]},
-                {"name": "certificateProfile", "content": [{"reference": "DemoTLSServerEECertificateProfile", "data": {"id": 0, "name": "DemoTLSServerEECertificateProfile"}, "contentType": "object"}]},
-                {"name": "certificationAuthority", "content": [{"reference": "DemoServerSubCA", "data": {"id": 0, "name": "DemoServerSubCA"}, "contentType": "object"}]},
-                {"name": "sendNotifications", "content": [{"reference": "", "data": false, "contentType": "boolean"}]},
-                {"name": "keyRecoverable", "content": [{"reference": "", "data": true, "contentType": "boolean"}]}]
+                [
+                   {
+                     "name": "tokenType",
+                     "content": [
+                       {
+                         "reference": "PEM",
+                         "data": "PEM",
+                         "contentType": "string"
+                       }
+                     ],
+                     "type": "data",
+                     "version": 3
+                   },
+                   {
+                     "name": "description",
+                     "content": [
+                       {
+                         "reference": "DEMO RA Profile",
+                         "data": "DEMO RA Profile",
+                         "contentType": "string"
+                       }
+                     ],
+                     "type": "data",
+                     "version": 3
+                   },
+                   {
+                     "name": "endEntityProfile",
+                     "content": [
+                       {
+                         "reference": "DemoTLSServerEndEntityProfile",
+                         "data": {
+                           "id": 0,
+                           "name": "DemoTLSServerEndEntityProfile"
+                         },
+                         "contentType": "object"
+                       }
+                     ],
+                     "type": "data",
+                     "version": 3
+                   },
+                   {
+                     "name": "certificateProfile",
+                     "content": [
+                       {
+                         "reference": "DemoTLSServerEECertificateProfile",
+                         "data": {
+                           "id": 0,
+                           "name": "DemoTLSServerEECertificateProfile"
+                         },
+                         "contentType": "object"
+                       }
+                     ],
+                     "type": "data",
+                     "version": 3
+                   },
+                   {
+                     "name": "certificationAuthority",
+                     "content": [
+                       {
+                         "reference": "DemoServerSubCA",
+                         "data": {
+                           "id": 0,
+                           "name": "DemoServerSubCA"
+                         },
+                         "contentType": "object"
+                       }
+                     ],
+                     "type": "data",
+                     "version": 3
+                   },
+                   {
+                     "name": "sendNotifications",
+                     "content": [
+                       {
+                         "reference": "",
+                         "data": false,
+                         "contentType": "boolean"
+                       }
+                     ],
+                     "type": "data",
+                     "version": 3
+                   },
+                   {
+                     "name": "keyRecoverable",
+                     "content": [
+                       {
+                         "reference": "",
+                         "data": true,
+                         "contentType": "boolean"
+                       }
+                     ],
+                     "type": "data",
+                     "version": 3
+                   }
+                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
         Assertions.assertNotNull(attrs);
         Assertions.assertEquals(7, attrs.size());
 
@@ -466,7 +553,7 @@ class AttributeDefinitionUtilsTest {
         definition.setName(attributeName);
         definition.setUuid(attributeId);
         definition.setType(AttributeType.DATA);
-        definition.setContentType(AttributeContentType.INTEGER);
+        definition.setContentType(AttributeContentType.FLOAT);
 
         DataAttributeProperties properties = new DataAttributeProperties();
         properties.setRequired(true);
@@ -695,20 +782,24 @@ class AttributeDefinitionUtilsTest {
                 [
                   {
                     "name": "testJsonAttribute",
-                    "content": [{
-                      "reference": "Item",
-                      "data": {
-                        "customField": 1234,
-                        "exists": true,
-                        "name": "testingName"
-                      },
-                      "contentType": "object"
-                    }]
+                    "content": [
+                      {
+                        "reference": "Item",
+                        "data": {
+                          "customField": 1234,
+                          "exists": true,
+                          "name": "testingName"
+                        },
+                        "contentType": "object"
+                      }
+                    ],
+                    "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         ObjectAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, ObjectAttributeContentV2.class).get(0);
 
@@ -721,15 +812,19 @@ class AttributeDefinitionUtilsTest {
                 [
                   {
                     "name": "testJsonAttribute",
-                    "content": [{
-                      "data": "Item",
-                      "contentType": "string"
-                    }]
+                    "content": [
+                      {
+                        "data": "Item",
+                        "contentType": "string"
+                      }
+                    ],
+                    "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         StringAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, StringAttributeContentV2.class).get(0);
 
@@ -745,12 +840,14 @@ class AttributeDefinitionUtilsTest {
                     "content": [{
                       "data": 1234,
                       "contentType": "integer"
-                    }]
+                    }],
+                     "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         IntegerAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, IntegerAttributeContentV2.class).get(0);
 
@@ -766,12 +863,15 @@ class AttributeDefinitionUtilsTest {
                     "content": [{
                       "data": "2011-12-03T10:15:30+01:00",
                       "contentType": "datetime"
-                    }]
+                    }],
+                     "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
+
 
         DateTimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContentV2.class).get(0);
 
@@ -790,12 +890,14 @@ class AttributeDefinitionUtilsTest {
                     "content": [{
                       "data": "2001-07-04",
                       "contentType": "date"
-                    }]
+                    }],
+                     "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         DateAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateAttributeContentV2.class).get(0);
 
@@ -814,12 +916,14 @@ class AttributeDefinitionUtilsTest {
                     "content": [{
                       "data": "12:14:25",
                       "contentType": "time"
-                    }]
+                    }],
+                    "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         TimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContentV2.class).get(0);
 
@@ -838,12 +942,14 @@ class AttributeDefinitionUtilsTest {
                     "content": [{
                       "data": "Test String Value",
                       "contentType": "string"
-                    }]
+                    }],
+                     "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         String value = getAttributeContentValue("testStringAttribute", attrs, StringAttributeContentV2.class).get(0).getData();
 
@@ -860,12 +966,14 @@ class AttributeDefinitionUtilsTest {
                     "content": [{
                       "data": {"content":"Test File Value"},
                       "contentType": "file"
-                    }]
+                    }],
+                     "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContentV2.class).get(0).getData().getContent();
 
@@ -879,19 +987,23 @@ class AttributeDefinitionUtilsTest {
                 [
                   {
                     "name": "testCredentialAttribute",
-                    "content": [{
-                      "reference": "Test Credential Value",
-                      "data": {
-                        "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
-                        "name": "Test Credential"
-                      },
-                      "contentType": "object"
-                    }]
+                    "content": [
+                      {
+                        "reference": "Test Credential Value",
+                        "data": {
+                          "uuid": "9379ca2c-aa51-42c8-8afd-2a2d16c99c57",
+                          "name": "Test Credential"
+                        },
+                        "contentType": "object"
+                      }
+                    ],
+                    "type": "data",
+                    "version": 2
                   }
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         NameAndUuidDto data = getObjectAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class).get(0);
 
@@ -905,6 +1017,8 @@ class AttributeDefinitionUtilsTest {
                 [
                   {
                     "name": "testAttributeListString",
+                    "type": "data",
+                    "version": 2,
                     "content": [
                       {
                         "data": "string1",
@@ -923,7 +1037,7 @@ class AttributeDefinitionUtilsTest {
                 ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         List<String> listString = getAttributeContentValueList("testAttributeListString", attrs, BaseAttributeContentV2.class);
 
@@ -954,12 +1068,14 @@ class AttributeDefinitionUtilsTest {
                          },
                         "contentType": "object"
                        }
-                     ]
+                     ],
+                      "type": "data",
+                    "version": 2
                    }
                  ]
                 """;
 
-        List<BaseAttributeV2> attrs = deserialize(attrData, BaseAttributeV2.class);
+        List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
         List<String> listData = getObjectAttributeContentDataList("testCredentialAttribute", attrs, NameAndUuidDto.class);
 

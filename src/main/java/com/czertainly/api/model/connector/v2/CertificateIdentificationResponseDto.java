@@ -18,7 +18,7 @@ public class CertificateIdentificationResponseDto {
             description = "Metadata for identified certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<MetadataAttribute<? extends AttributeContent>> meta;
+    private List<MetadataAttribute> meta;
 
     @Override
     public String toString() {

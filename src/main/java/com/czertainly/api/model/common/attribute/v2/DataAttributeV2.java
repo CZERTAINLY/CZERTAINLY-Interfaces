@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v2;
 
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
@@ -34,7 +35,18 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2<?>>> implements DataAttribute<BaseAttributeContentV2<?>> {
+public class DataAttributeV2 extends DataAttribute {
+
+    private String uuid;
+
+    private String name;
+
+    private String description;
+
+    @Schema(description = "Version of the attribute", requiredMode = Schema.RequiredMode.REQUIRED)
+    private int version = 2;
+
+    private AttributeType type;
 
     /**
      * Content of the Attribute
@@ -84,19 +96,13 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
     )
     private AttributeCallback attributeCallback;
 
-    @Schema
-    private int version = 2;
 
     public DataAttributeV2() {
-        super(AttributeType.DATA);
-    }
-
-    public DataAttributeV2(String type) {
-        super(AttributeType.fromCode(type));
+        this.type = AttributeType.DATA;
     }
 
     public DataAttributeV2(DataAttributeV2 original) {
-        super(AttributeType.DATA);
+        this.type = AttributeType.DATA;
         setUuid(original.getUuid());
         setName(original.getName());
         this.content = original.content;
@@ -121,15 +127,14 @@ public class DataAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
     }
 
     @Override
-    public void setContent(List<BaseAttributeContentV2<?>> content) {
-        this.content = content;
+    public void setContent(List<? extends AttributeContent> content) {
+        this.content = (List<BaseAttributeContentV2<?>>) content;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DataAttributeV2 that)) return false;
-        if (!super.equals(o)) return false;
 
         return Objects.equals(content, that.content)
                 && contentType == that.contentType
