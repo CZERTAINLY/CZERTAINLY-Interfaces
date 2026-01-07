@@ -74,7 +74,6 @@ public class CustomAttributeV3 extends CustomAttribute {
 
     public CustomAttributeV3() {
         this.type = AttributeType.CUSTOM;
-
     }
 
 
@@ -121,6 +120,8 @@ public class CustomAttributeV3 extends CustomAttribute {
 
     @Override
     public void setContent(List<? extends AttributeContent> content) {
-        this.content = (List<BaseAttributeContentV3<?>>) content;
+        this.content = content.stream()
+                .<BaseAttributeContentV3<?>>map(c -> (BaseAttributeContentV3<?>) c)
+                .toList();
     }
 }

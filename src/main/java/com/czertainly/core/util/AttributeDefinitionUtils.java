@@ -455,7 +455,7 @@ public class AttributeDefinitionUtils {
             if (constraintData.getFrom() != null && (Integer) value.getData() < constraintData.getFrom()) {
                     errors.add(ValidationError.create(
                             "Value {} of attribute {} should be higher than {}",
-                            value,
+                            value.getData(),
                             label,
                             constraintData.getFrom()));
                 }
@@ -463,7 +463,7 @@ public class AttributeDefinitionUtils {
             if (constraintData.getTo() != null && (Integer) value.getData() > constraintData.getTo()) {
                 errors.add(ValidationError.create(
                         "Value {} of attribute {} should be lower than {}",
-                        value,
+                        value.getData(),
                         label,
                         constraintData.getTo()));
             }

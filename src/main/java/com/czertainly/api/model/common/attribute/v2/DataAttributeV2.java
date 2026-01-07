@@ -128,7 +128,9 @@ public class DataAttributeV2 extends DataAttribute {
 
     @Override
     public void setContent(List<? extends AttributeContent> content) {
-        this.content = (List<BaseAttributeContentV2<?>>) content;
+        this.content = content.stream()
+                .<BaseAttributeContentV2<?>>map(c -> (BaseAttributeContentV2<?>) c)
+                .toList();
     }
 
     @Override

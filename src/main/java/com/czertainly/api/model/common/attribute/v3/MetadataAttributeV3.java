@@ -101,6 +101,8 @@ public class MetadataAttributeV3 extends MetadataAttribute {
 
     @Override
     public void setContent(List<? extends AttributeContent> content) {
-        this.content = (List<BaseAttributeContentV3<?>>) content;
+        this.content = content.stream()
+                .<BaseAttributeContentV3<?>>map(c -> (BaseAttributeContentV3<?>) c)
+                .toList();
     }
 }

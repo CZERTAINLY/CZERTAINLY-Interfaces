@@ -29,7 +29,6 @@ public class FileAttributeContentV3 extends BaseAttributeContentV3<FileAttribute
 
     @Override
     public FileAttributeContentData getData() {
-        setContentType(AttributeContentType.FILE);
         return data;
     }
 
