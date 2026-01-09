@@ -1,5 +1,6 @@
 package com.czertainly.core.util;
 
+import com.czertainly.api.config.serializer.AttributeContentDeserializer;
 import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
@@ -8,9 +9,9 @@ import com.czertainly.api.model.common.NameAndIdDto;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.*;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeDeserializer;
 import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.czertainly.api.model.common.attribute.v2.*;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallbackMapping;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeValueTarget;
@@ -20,15 +21,11 @@ import com.czertainly.api.model.common.attribute.common.constraint.data.DateTime
 import com.czertainly.api.model.common.attribute.common.constraint.data.RangeAttributeConstraintData;
 import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
-import com.czertainly.api.model.common.attribute.v3.BaseAttributeV3;
-import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
 import com.czertainly.api.model.common.attribute.v3.content.*;
 import com.czertainly.api.model.core.credential.CredentialDto;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -51,8 +48,12 @@ public class AttributeDefinitionUtils {
             .addModule(new JavaTimeModule())
             .addModule(new SimpleModule()
                     .addDeserializer(BaseAttribute.class, new BaseAttributeDeserializer())
+                    .addDeserializer(AttributeContent.class, new AttributeContentDeserializer())
+                    .addDeserializer(ZonedDateTime.class, new ZonedDateTimeDeserializer())
             )
+            .findAndAddModules()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .build();
 
     private static final Logger logger = LoggerFactory.getLogger(AttributeDefinitionUtils.class);
@@ -75,8 +76,8 @@ public class AttributeDefinitionUtils {
         if (attributes.get(0) instanceof RequestAttribute) {
             List<RequestAttribute> reloadedAttributes = (List<RequestAttribute>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
-        } else if (attributes.get(0) instanceof BaseAttributeV2) {
-            List<BaseAttributeV2<?>> reloadedAttributes = (List<BaseAttributeV2<?>>) attributes;
+        } else if (attributes.get(0) instanceof BaseAttribute) {
+            List<BaseAttribute> reloadedAttributes = (List<BaseAttribute>) attributes;
             return (T) reloadedAttributes.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
         } else if (attributes.get(0) instanceof ResponseAttribute) {
             List<ResponseAttribute> reloadedAttributes = (List<ResponseAttribute>) attributes;
@@ -101,8 +102,8 @@ public class AttributeDefinitionUtils {
             } else {
                 return ((List<T>) definition.getContent()).get(0);
             }
-        } else if (attributes.get(0) instanceof BaseAttributeV2) {
-            BaseAttributeV2<?> definition = getRequestAttributes(name, attributes);
+        } else if (attributes.get(0) instanceof BaseAttribute) {
+            BaseAttribute definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
@@ -126,7 +127,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends Object> List<T> getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
+    public static <T> List<T> getAttributeContent(String name, List<?> attributes, Class<T> clazz) {
         if (attributes == null || attributes.size() == 0) {
             return null;
         }
@@ -136,8 +137,8 @@ public class AttributeDefinitionUtils {
                 return null;
             }
             return ATTRIBUTES_OBJECT_MAPPER.convertValue(definition.getContent(), ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, clazz));
-        } else if (attributes.get(0) instanceof BaseAttributeV2) {
-            BaseAttributeV2<?> definition = getRequestAttributes(name, attributes);
+        } else if (attributes.get(0) instanceof BaseAttribute) {
+            BaseAttribute definition = getRequestAttributes(name, attributes);
             if (definition == null || definition.getContent() == null) {
                 return null;
             }
@@ -154,21 +155,19 @@ public class AttributeDefinitionUtils {
     }
 
     public static NameAndIdDto getNameAndIdData(String name, List<RequestAttribute> attributes) {
-        if (attributes.size() == 0) {
+        if (attributes.isEmpty()) {
             return null;
         }
 
-        NameAndIdDto converted = getObjectAttributeContentData(name, attributes, NameAndIdDto.class).get(0);
-        return converted;
+        return getObjectAttributeContentData(name, attributes, NameAndIdDto.class).get(0);
     }
 
     public static NameAndUuidDto getNameAndUuidData(String name, List<RequestAttribute> attributes) {
-        if (attributes.size() == 0) {
+        if (attributes.isEmpty()) {
             return null;
         }
 
-        NameAndUuidDto converted = getObjectAttributeContentData(name, attributes, NameAndUuidDto.class).get(0);
-        return converted;
+        return getObjectAttributeContentData(name, attributes, NameAndUuidDto.class).get(0);
     }
 
     public static CredentialAttributeContentData getCredentialContent(String name, List<RequestAttribute> attributes) {
@@ -190,7 +189,7 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static <T extends DataAttribute<?>> String serializeData(List<T> attributes) {
+    public static <T extends DataAttribute> String serializeData(List<T> attributes) {
         if (attributes == null) {
             return null;
         }
@@ -317,7 +316,7 @@ public class AttributeDefinitionUtils {
         int version = definition.getVersion();
 
         if (definition.getType().equals(AttributeType.DATA)) {
-            DataAttribute<?> dataAttribute = (DataAttribute<?>) definition;
+            DataAttribute dataAttribute = (DataAttribute) definition;
             contentType = dataAttribute.getContentType();
             if (dataAttribute.getProperties() != null) {
                 isRequired = dataAttribute.getProperties().isRequired();
@@ -325,7 +324,7 @@ public class AttributeDefinitionUtils {
                 label = dataAttribute.getProperties().getLabel();
             }
         } else if (definition.getType().equals(AttributeType.CUSTOM)) {
-            CustomAttribute<?> customAttribute = (CustomAttribute<?>) definition;
+            CustomAttribute customAttribute = (CustomAttribute) definition;
             contentType = customAttribute.getContentType();
             if (customAttribute.getProperties() != null) {
                 isRequired = customAttribute.getProperties().isRequired();
@@ -399,7 +398,7 @@ public class AttributeDefinitionUtils {
         String label = null;
 
         if (attribute.getType().equals(AttributeType.DATA)) {
-            DataAttribute<?> dataAttribute = (DataAttribute<?>) attribute;
+            DataAttribute dataAttribute = (DataAttribute) attribute;
             constraints = dataAttribute.getConstraints();
             contentType = dataAttribute.getContentType();
             if (dataAttribute.getProperties() != null) label = dataAttribute.getProperties().getLabel();
@@ -431,42 +430,37 @@ public class AttributeDefinitionUtils {
     }
 
     private static void validateFloatRangeConstraint(List<? extends AttributeContent> contents, List<ValidationError> errors, String label, RangeAttributeConstraintData constraintData) {
-        List<FloatAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, FloatAttributeContentV2.class));
-        for (FloatAttributeContentV2 value : content) {
-            if (constraintData.getFrom() != null) {
-                if (value.getData() < constraintData.getFrom()) {
+        for (AttributeContent value : contents) {
+            if (constraintData.getFrom() != null && (Float) value.getData() < constraintData.getFrom()) {
                     errors.add(ValidationError.create(
                             "Value {} of attribute {} should be higher than {}",
                             value.getData(),
                             label,
                             constraintData.getFrom()));
                 }
-            }
-            if (constraintData.getTo() != null) {
-                if (value.getData() > constraintData.getTo()) {
+
+            if (constraintData.getTo() != null && (Float) value.getData() > constraintData.getTo()) {
                     errors.add(ValidationError.create(
                             "Value {} of attribute {} should be lower than {}",
                             value.getData(),
                             label,
                             constraintData.getTo()));
                 }
-            }
+
         }
     }
 
     private static void validateIntegerRangeConstraint(List<? extends AttributeContent> contents, List<ValidationError> errors, String label, RangeAttributeConstraintData constraintData) {
-        List<IntegerAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, IntegerAttributeContentV2.class));
-        for (IntegerAttributeContentV2 value : content) {
-            if (constraintData.getFrom() != null) {
-                if (value.getData() < constraintData.getFrom()) {
+        for (AttributeContent value : contents) {
+            if (constraintData.getFrom() != null && (Integer) value.getData() < constraintData.getFrom()) {
                     errors.add(ValidationError.create(
                             "Value {} of attribute {} should be higher than {}",
                             value.getData(),
                             label,
                             constraintData.getFrom()));
                 }
-            }
-            if (constraintData.getTo() != null && value.getData() > constraintData.getTo()) {
+
+            if (constraintData.getTo() != null && (Integer) value.getData() > constraintData.getTo()) {
                 errors.add(ValidationError.create(
                         "Value {} of attribute {} should be lower than {}",
                         value.getData(),
@@ -481,27 +475,25 @@ public class AttributeDefinitionUtils {
             errors.add(ValidationError.create("Invalid Attribute Constraint Type and Attribute Content Type. DateTime can be associated for DATETIME type only"));
         }
         try {
-            List<DateTimeAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, DateTimeAttributeContentV2.class));
             DateTimeAttributeConstraintData constraintData = (DateTimeAttributeConstraintData) constraint.getData();
-            for (DateTimeAttributeContentV2 value : content) {
-                if (constraintData.getFrom() != null) {
-                    if (value.getData().isBefore(ZonedDateTime.from(constraintData.getFrom().atZone(ZoneId.systemDefault())))) {
+            for (AttributeContent value : contents) {
+                ZonedDateTime data = value.getData();
+                if (constraintData.getFrom() != null && data.isBefore(constraintData.getFrom().atZone(ZoneId.systemDefault()))) {
                         errors.add(ValidationError.create(
                                 "Value {} of attribute {} should be after {}",
-                                value.getData(),
+                                data,
                                 label,
                                 constraintData.getFrom()));
                     }
-                }
-                if (constraintData.getTo() != null) {
-                    if (value.getData().isAfter(ZonedDateTime.from(constraintData.getTo().atZone(ZoneId.systemDefault())))) {
+
+                if (constraintData.getTo() != null && data.isAfter(constraintData.getTo().atZone(ZoneId.systemDefault()))) {
                         errors.add(ValidationError.create(
                                 "Value {} of attribute {} should be before {}",
-                                value.getData(),
+                                data,
                                 label,
                                 constraintData.getTo()));
                     }
-                }
+
             }
         } catch (Exception e) {
             errors.add(ValidationError.create(
@@ -518,9 +510,7 @@ public class AttributeDefinitionUtils {
         Pattern pattern;
         try {
             pattern = Pattern.compile((String) constraint.getData());
-            ATTRIBUTES_OBJECT_MAPPER.disable(MapperFeature.USE_ANNOTATIONS);
-            List<StringAttributeContentV2> content = ATTRIBUTES_OBJECT_MAPPER.convertValue(contents, ATTRIBUTES_OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, StringAttributeContentV2.class));
-            for (StringAttributeContentV2 value : content) {
+            for (AttributeContent value : contents) {
                 Matcher matcher = pattern.matcher(value.getData());
                 if (!matcher.matches()) {
                     errors.add(ValidationError.create(
@@ -530,6 +520,7 @@ public class AttributeDefinitionUtils {
                             constraint.getData()));
                 }
             }
+
         } catch (Exception e) {
             errors.add(ValidationError.create(
                     "Could not validate value of field {} due to error {}",
@@ -546,7 +537,7 @@ public class AttributeDefinitionUtils {
 
         // TODO: checking all items in the list for the type
 
-        AttributeContentType contentType = definition.getType() == AttributeType.DATA ? ((DataAttribute<?>) definition).getContentType() : ((CustomAttribute<?>) definition).getContentType();
+        AttributeContentType contentType = definition.getType() == AttributeType.DATA ? ((DataAttribute) definition).getContentType() : ((CustomAttribute) definition).getContentType();
         String label = getLabel(definition);
         try {
             for (AttributeContent baseAttributeContent : (List<AttributeContent>) attributeContent.getContent()) {
@@ -565,10 +556,10 @@ public class AttributeDefinitionUtils {
     private static String getLabel(BaseAttribute definition) {
         String label = null;
         if (definition.getType().equals(AttributeType.DATA)) {
-            DataAttribute<?> dataAttribute = (DataAttribute<?>) definition;
+            DataAttribute dataAttribute = (DataAttribute) definition;
             if (dataAttribute.getProperties() != null) label = dataAttribute.getProperties().getLabel();
         } else {
-            CustomAttribute<?> customAttribute = (CustomAttribute<?>) definition;
+            CustomAttribute customAttribute = (CustomAttribute) definition;
             if (customAttribute.getProperties() != null) label = customAttribute.getProperties().getLabel();
         }
         return label;
@@ -718,7 +709,7 @@ public class AttributeDefinitionUtils {
                 convertedDefinition.add(atr);
             }
             if (clt.getVersion() == AttributeVersion.V3) {
-                DataAttributeV2 atr = new DataAttributeV2();
+                DataAttributeV3 atr = new DataAttributeV3();
                 atr.setContent(clt.getContent());
                 atr.setName(clt.getName());
                 atr.setUuid(String.valueOf(clt.getUuid()));
@@ -733,13 +724,13 @@ public class AttributeDefinitionUtils {
             return new ArrayList<>();
         }
         List<RequestAttribute> convertedDefinition = new ArrayList<>();
-        if (attributes.get(0) instanceof BaseAttribute baseAttribute) {
+        if (attributes.get(0) instanceof DataAttribute baseAttribute) {
 
             if (baseAttribute.getVersion() == 2) {
-                convertBaseAttributesV2ToRequestAttributes((List<BaseAttributeV2<?>>) attributes, convertedDefinition);
+                convertBaseAttributesV2ToRequestAttributes((List<DataAttributeV2>) attributes, convertedDefinition);
             }
             if (baseAttribute.getVersion() == 3) {
-                convertBaseAttributesV3ToRequestAttributes((List<BaseAttributeV3<?>>) attributes, convertedDefinition);
+                convertBaseAttributesV3ToRequestAttributes((List<DataAttributeV3>) attributes, convertedDefinition);
             }
         } else if (attributes.get(0) instanceof ResponseAttribute) {
             convertResponseToRequestAttribute((List<ResponseAttribute>) attributes);
@@ -777,28 +768,28 @@ public class AttributeDefinitionUtils {
         atr.setContent(clt.getContent());
     }
 
-    private static void convertBaseAttributesV3ToRequestAttributes(List<BaseAttributeV3<?>> attributes, List<RequestAttribute> convertedDefinition) {
-        for (BaseAttributeV3<?> clt : attributes) {
+    private static void convertBaseAttributesV3ToRequestAttributes(List<DataAttributeV3> attributes, List<RequestAttribute> convertedDefinition) {
+        for (DataAttributeV3 clt : attributes) {
             if (clt.getType() != AttributeType.DATA) {
                 continue;
             }
             RequestAttributeV3 atr = new RequestAttributeV3();
             atr.setName(clt.getName());
             if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
-            atr.setContent((List<BaseAttributeContentV3<?>>) clt.getContent());
+            atr.setContent(clt.getContent());
             convertedDefinition.add(atr);
         }
     }
 
-    private static void convertBaseAttributesV2ToRequestAttributes(List<BaseAttributeV2<?>> attributes, List<RequestAttribute> convertedDefinition) {
-        for (BaseAttributeV2<?> clt : attributes) {
+    private static void convertBaseAttributesV2ToRequestAttributes(List<DataAttributeV2> attributes, List<RequestAttribute> convertedDefinition) {
+        for (DataAttributeV2 clt : attributes) {
             if (clt.getType() != AttributeType.DATA) {
                 continue;
             }
             RequestAttributeV2 atr = new RequestAttributeV2();
             atr.setName(clt.getName());
             if (clt.getUuid() != null) atr.setUuid(UUID.fromString(clt.getUuid()));
-            atr.setContent((List<BaseAttributeContentV2<?>>) clt.getContent());
+            atr.setContent(clt.getContent());
             convertedDefinition.add(atr);
         }
     }
@@ -878,7 +869,7 @@ public class AttributeDefinitionUtils {
             }
             return response;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public static <T> List<T> getAttributeContentValueList(String attributeName, List<?> attributes, Class<?> clazz) {
@@ -916,19 +907,29 @@ public class AttributeDefinitionUtils {
      * @param attributes        List of attribute definitions
      * @return True if attribute is equal and false if attribute is not equal
      */
-    public static boolean checkAttributeEquality(List<RequestAttribute> requestAttributes, List<DataAttribute<?>> attributes) {
+    public static boolean checkAttributeEquality(List<RequestAttribute> requestAttributes, List<DataAttribute> attributes) {
         for (RequestAttributeDto requestAttribute : requestAttributes) {
-            DataAttributeV2 attribute = (DataAttributeV2) attributes.stream().filter(x -> x.getName().equals(requestAttribute.getName())).findFirst().orElse(null);
+            DataAttribute attribute = attributes.stream().filter(x -> x.getName().equals(requestAttribute.getName())).findFirst().orElse(null);
             if (attribute == null) return false;
+            if (requestAttribute.getVersion() == AttributeVersion.V2 && compareV2Equality(requestAttributes, attributes, requestAttribute, attribute)) return false;
 
-            var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentV2Class());
-            if (attributeContent == null) return false;
+            if (requestAttribute.getVersion() == AttributeVersion.V3 && compareV3Equality(requestAttributes, attributes, requestAttribute, attribute)) return false;
 
-            if (!attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentV2Class()))) {
-                return false;
-            }
+
         }
         return true;
+    }
+
+    private static boolean compareV3Equality(List<RequestAttribute> requestAttributes, List<DataAttribute> attributes, RequestAttributeDto requestAttribute, DataAttribute attribute) {
+        var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentV3Class());
+        if (attributeContent == null) return true;
+        return !attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentV3Class()));
+    }
+
+    private static boolean compareV2Equality(List<RequestAttribute> requestAttributes, List<DataAttribute> attributes, RequestAttributeDto requestAttribute, DataAttribute attribute) {
+        var attributeContent = getAttributeContent(requestAttribute.getName(), requestAttributes, attribute.getContentType().getContentV2Class());
+        if (attributeContent == null) return true;
+        return !attributeContent.equals(getAttributeContent(requestAttribute.getName(), attributes, attribute.getContentType().getContentV2Class()));
     }
 
 }

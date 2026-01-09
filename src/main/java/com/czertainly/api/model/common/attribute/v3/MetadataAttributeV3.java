@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v3;
 
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
@@ -26,7 +27,18 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class MetadataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3<?>>> implements MetadataAttribute<BaseAttributeContentV3<?>> {
+public class MetadataAttributeV3 extends MetadataAttribute {
+
+    private String uuid;
+
+    private String name;
+
+    private String description;
+
+    @Schema(description = "Version of the attribute", requiredMode = Schema.RequiredMode.REQUIRED)
+    private int version = 3;
+
+    private AttributeType type;
 
     /**
      * Content of the Attribute
@@ -55,15 +67,7 @@ public class MetadataAttributeV3 extends BaseAttributeV3<List<BaseAttributeConte
     private MetadataAttributeProperties properties;
 
     public MetadataAttributeV3() {
-        super(AttributeType.META);
-    }
-
-    public MetadataAttributeV3(AttributeType type) {
-        super(type);
-    }
-
-    public MetadataAttributeV3(String type) {
-        super(AttributeType.fromCode(type));
+        type = AttributeType.META;
     }
 
     @Override
@@ -79,7 +83,6 @@ public class MetadataAttributeV3 extends BaseAttributeV3<List<BaseAttributeConte
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof MetadataAttributeV3 that)) return false;
-        if (!super.equals(o)) return false;
 
         return Objects.equals(content, that.content)
                 && contentType == that.contentType
@@ -94,5 +97,10 @@ public class MetadataAttributeV3 extends BaseAttributeV3<List<BaseAttributeConte
                 contentType,
                 properties
         );
+    }
+
+    @Override
+    public void setContent(List<? extends AttributeContent> content) {
+        this.content = (List<BaseAttributeContentV3<?>>) content;
     }
 }

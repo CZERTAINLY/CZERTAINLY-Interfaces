@@ -90,7 +90,7 @@ public interface NotificationInstanceController extends AuthProtectedController 
             @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
     })
     @GetMapping(path = "/attributes/mapping/{connectorUuid}/{kind}", produces = {"application/json"})
-    List<DataAttribute<?>> listMappingAttributes(
+    List<DataAttribute> listMappingAttributes(
             @Parameter(description = "Connector UUID") @PathVariable String connectorUuid,
             @Parameter(description = "Kind") @PathVariable String kind) throws ConnectorException, NotFoundException;
 }

@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v3;
 
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
@@ -35,7 +36,19 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3<?>>> implements DataAttribute<BaseAttributeContentV3<?>> {
+public class DataAttributeV3 extends DataAttribute {
+
+    private String uuid;
+
+    private String name;
+
+    private String description;
+
+    @Schema(description = "Version of the attribute", requiredMode = Schema.RequiredMode.REQUIRED)
+    private int version = 3;
+
+    private AttributeType type;
+
 
     /**
      * Content of the Attribute
@@ -86,18 +99,15 @@ public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3
     private AttributeCallback attributeCallback;
 
     @Schema
-    private AttributeVersion schemaVersion = AttributeVersion.V2;
+    private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     public DataAttributeV3() {
-        super(AttributeType.DATA);
+        this.type = AttributeType.DATA;
     }
 
-    public DataAttributeV3(String type) {
-        super(AttributeType.fromCode(type));
-    }
 
     public DataAttributeV3(DataAttributeV3 original) {
-        super(AttributeType.DATA);
+        this.type = AttributeType.DATA;
         setUuid(original.getUuid());
         setName(original.getName());
         this.content = original.content;
@@ -126,7 +136,6 @@ public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DataAttributeV3 that)) return false;
-        if (!super.equals(o)) return false;
 
         return Objects.equals(content, that.content)
                 && contentType == that.contentType
@@ -145,5 +154,10 @@ public class DataAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3
                 constraints,
                 attributeCallback
         );
+    }
+
+    @Override
+    public void setContent(List<? extends AttributeContent> content) {
+        this.content = (List<BaseAttributeContentV3<?>>) content;
     }
 }

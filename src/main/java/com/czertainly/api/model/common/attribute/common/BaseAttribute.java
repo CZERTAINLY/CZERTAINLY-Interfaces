@@ -17,6 +17,8 @@ import lombok.Setter;
 @Schema(implementation = BaseAttributeDto.class)
 @JsonDeserialize(using = BaseAttributeDeserializer.class)
 @JsonSerialize(using = BaseAttributeSerializer.class)
-public abstract class BaseAttribute extends AbstractBaseAttribute implements BaseAttributeDto {
+public abstract class BaseAttribute implements BaseAttributeDto {
+    public abstract <T> T getContent();
+    public abstract int getVersion();
 
 }

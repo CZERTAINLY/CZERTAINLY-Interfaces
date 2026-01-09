@@ -100,6 +100,6 @@ public interface NotificationInstanceController extends AuthProtectedConnectorCo
     @Operation(summary = "List of mapping attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of mapping attributes")})
     @GetMapping(path = "/{kind}/attributes/mapping", produces = {"application/json"})
-    List<DataAttribute<?>> listMappingAttributes(@Parameter(description = "Kind") @PathVariable String kind);
+    List<DataAttribute> listMappingAttributes(@Parameter(description = "Kind") @PathVariable String kind);
 
 }

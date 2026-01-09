@@ -28,7 +28,7 @@ public class CertificateDataResponseDto {
             description = "Metadata for the Certificate",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private List<MetadataAttribute<? extends AttributeContent>> meta;
+    private List<MetadataAttribute> meta;
 
     @Schema(description = "Type of the Certificate",
             defaultValue = "X509",
