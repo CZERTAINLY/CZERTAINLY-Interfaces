@@ -1,5 +1,6 @@
 package com.czertainly.api.clients;
 
+import com.czertainly.api.interfaces.client.ConnectorSyncApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.client.connector.InfoResponse;
 import com.czertainly.api.model.core.connector.ConnectorDto;
@@ -10,7 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import javax.net.ssl.TrustManager;
 import java.util.List;
 
-public class ConnectorApiClient extends BaseApiClient {
+public class ConnectorApiClient extends BaseApiClient implements ConnectorSyncApiClient {
 
     private static final String CONNECTOR_BASE_CONTEXT = "/v1";
 
