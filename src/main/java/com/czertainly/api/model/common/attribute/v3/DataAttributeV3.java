@@ -98,7 +98,10 @@ public class DataAttributeV3 extends DataAttribute {
     )
     private AttributeCallback attributeCallback;
 
-    @Schema
+    @Schema(
+            description = "Schema version of the Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     public DataAttributeV3() {

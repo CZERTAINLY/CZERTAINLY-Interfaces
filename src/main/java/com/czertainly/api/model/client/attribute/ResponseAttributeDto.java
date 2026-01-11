@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Schema(
+        name = "ResponseAttribute",
         description = "Response attribute to send attribute content for object",
         type = "object",
         discriminatorProperty = "schemaVersion",
