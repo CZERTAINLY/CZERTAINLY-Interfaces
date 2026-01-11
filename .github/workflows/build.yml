@@ -64,6 +64,9 @@ jobs:
         with:
           app-id: ${{ vars.INTERFACES_DOCS_APP_ID }}
           private-key: ${{ secrets.INTERFACES_DOCS_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: |
+            CZERTAINLY-Interface-Documentation
       - name: Trigger build OpenAPI
         uses: actions/github-script@v8
         with:
