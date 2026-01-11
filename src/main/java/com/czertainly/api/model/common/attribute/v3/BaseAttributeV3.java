@@ -1,6 +1,5 @@
 package com.czertainly.api.model.common.attribute.v3;
 
-import com.czertainly.api.config.serializer.BaseAttributeDeserializer;
 import com.czertainly.api.model.client.attribute.BaseAttributeDtoV3;
 import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
@@ -8,7 +7,6 @@ import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -32,6 +30,10 @@ import java.util.Objects;
 @Schema(implementation = BaseAttributeDtoV3.class)
 public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDtoV3 {
 
+    @Schema(
+            description = "Schema version of the Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
     private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     private String uuid;

@@ -13,7 +13,9 @@ import java.util.UUID;
  * an Attribute definition provided by the client
  */
 
-@Schema(description = "Request attribute to send attribute content for object",
+@Schema(
+        name = "RequestAttribute",
+        description = "Request attribute to send attribute content for object",
         type = "object",
         discriminatorProperty = "version",
         discriminatorMapping = {

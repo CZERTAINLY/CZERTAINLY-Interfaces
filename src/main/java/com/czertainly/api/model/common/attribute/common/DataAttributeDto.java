@@ -5,6 +5,7 @@ import com.czertainly.api.model.common.attribute.v3.DataAttributeV3;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
+        name = "DataAttribute",
         description = "Data Attribute",
         type = "object",
         oneOf = {

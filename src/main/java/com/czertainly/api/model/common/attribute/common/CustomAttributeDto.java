@@ -5,6 +5,7 @@ import com.czertainly.api.model.common.attribute.v3.CustomAttributeV3;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
+        name = "CustomAttribute",
         description = "Custom Attribute",
         type = "object",
         oneOf = {
