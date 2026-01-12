@@ -39,7 +39,7 @@ public class RequestAttributeCallback {
     private Map<String, Serializable> body;
 
     @Schema(
-            description = "Request body for the callback method"
+            description = "Filter "
     )
     private Map<String, Serializable> filter;
 
