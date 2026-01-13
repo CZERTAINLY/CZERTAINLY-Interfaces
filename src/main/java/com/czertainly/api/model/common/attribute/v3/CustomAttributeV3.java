@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v3;
 
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.CustomAttribute;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.properties.CustomAttributeProperties;
@@ -71,6 +72,12 @@ public class CustomAttributeV3 extends CustomAttribute {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private CustomAttributeProperties properties;
+
+    @Schema(
+            description = "Schema version of the Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     public CustomAttributeV3() {
         this.type = AttributeType.CUSTOM;

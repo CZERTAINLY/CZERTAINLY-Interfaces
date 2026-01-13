@@ -1,6 +1,7 @@
 package com.czertainly.api.model.common.attribute.v3;
 
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
@@ -65,6 +66,12 @@ public class MetadataAttributeV3 extends MetadataAttribute {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private MetadataAttributeProperties properties;
+
+    @Schema(
+            description = "Schema version of the Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     public MetadataAttributeV3() {
         type = AttributeType.META;
