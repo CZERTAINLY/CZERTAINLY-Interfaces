@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
+import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,10 +19,12 @@ public class FileAttributeContentV3 extends BaseAttributeContentV3<FileAttribute
     public FileAttributeContentV3(String reference, FileAttributeContentData data) {
         super(reference, data);
         this.data = data;
+        setContentType(AttributeContentType.FILE);
     }
 
     public FileAttributeContentV3() {
         super();
+        setContentType(AttributeContentType.FILE);
     }
 
     @Override

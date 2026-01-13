@@ -93,12 +93,12 @@ public class NotificationInstanceApiClient extends BaseApiClient {
                 .getBody(), request, connector);
     }
 
-    public List<DataAttribute<?>> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
+    public List<DataAttribute> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> Objects.requireNonNull(r.uri(connector.getUrl() + NOTIFICATION_INSTANCE_MAPPING_ATTRIBUTES_CONTEXT, kind)
                         .retrieve()
-                        .toEntity(new ParameterizedTypeReference<List<DataAttribute<?>>>() {
+                        .toEntity(new ParameterizedTypeReference<List<DataAttribute>>() {
                         })
                         .block())
                 .getBody(), request, connector);

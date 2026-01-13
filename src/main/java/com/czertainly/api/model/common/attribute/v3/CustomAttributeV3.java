@@ -1,6 +1,8 @@
 package com.czertainly.api.model.common.attribute.v3;
 
+import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.CustomAttribute;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.properties.CustomAttributeProperties;
@@ -31,7 +33,18 @@ import java.util.Objects;
 )
 @JsonDeserialize
 @JsonSerialize
-public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContentV3<?>>> implements CustomAttribute<BaseAttributeContentV3<?>> {
+public class CustomAttributeV3 extends CustomAttribute {
+
+    private String uuid;
+
+    private String name;
+
+    private String description;
+
+    @Schema(description = "Version of the attribute", requiredMode = Schema.RequiredMode.REQUIRED)
+    private int version = 3;
+
+    private AttributeType type;
 
     /**
      * Content of the Attribute
@@ -60,16 +73,19 @@ public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContent
     )
     private CustomAttributeProperties properties;
 
+    @Schema(
+            description = "Schema version of the Attribute",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private AttributeVersion schemaVersion = AttributeVersion.V3;
+
     public CustomAttributeV3() {
-        super(AttributeType.CUSTOM);
+        this.type = AttributeType.CUSTOM;
     }
 
-    public CustomAttributeV3(String type) {
-        super(AttributeType.fromCode(type));
-    }
 
     public CustomAttributeV3(CustomAttributeV3 original) {
-        super(AttributeType.CUSTOM);
+        this.type = AttributeType.CUSTOM;
         setUuid(original.getUuid());
         setName(original.getName());
         this.content = original.content;
@@ -93,7 +109,6 @@ public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContent
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CustomAttributeV3 that)) return false;
-        if (!super.equals(o)) return false;
 
         return Objects.equals(content, that.content)
                 && contentType == that.contentType
@@ -108,5 +123,10 @@ public class CustomAttributeV3 extends BaseAttributeV3<List<BaseAttributeContent
                 contentType,
                 properties
         );
+    }
+
+    @Override
+    public void setContent(List<? extends AttributeContent> content) {
+        this.content = (List<BaseAttributeContentV3<?>>) content;
     }
 }

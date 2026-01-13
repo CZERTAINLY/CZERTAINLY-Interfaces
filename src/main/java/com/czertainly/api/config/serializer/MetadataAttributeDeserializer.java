@@ -10,14 +10,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 
-public class MetadataAttributeDeserializer extends JsonDeserializer<MetadataAttribute<?>> {
+public class MetadataAttributeDeserializer extends JsonDeserializer<MetadataAttribute> {
     @Override
-    public MetadataAttribute<?> deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
+    public MetadataAttribute deserialize(JsonParser jp, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
 
         String version = node.has("version") ? node.get("version").asText() : "2";
 
-        Class<? extends MetadataAttribute<?>> valueType = null;
+        Class<? extends MetadataAttribute> valueType = null;
         if (version.equals("2")) {
             valueType = MetadataAttributeV2.class;
         }

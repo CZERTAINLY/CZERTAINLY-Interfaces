@@ -37,7 +37,7 @@ public class BaseAttributeSerializer
 
         switch (value.getType()) {
             case DATA -> {
-                DataAttribute<?> attribute = (DataAttribute<?>) value;
+                DataAttribute attribute = (DataAttribute) value;
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
@@ -72,14 +72,14 @@ public class BaseAttributeSerializer
                 }
             }
             case META -> {
-                MetadataAttribute<?> attribute = (MetadataAttribute<?>) value;
+                MetadataAttribute attribute = (MetadataAttribute) value;
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
                 gen.writeEndObject();
             }
             case CUSTOM -> {
-                CustomAttribute<?> attribute = (CustomAttribute<?>) value;
+                CustomAttribute attribute = (CustomAttribute) value;
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);

@@ -15,7 +15,7 @@ public class PushCertificateResponseDto {
     @Schema(
             description = "Certificate metadata"
     )
-    private List<MetadataAttribute<? extends AttributeContent>> certificateMetadata;
+    private List<MetadataAttribute> certificateMetadata;
 
     @Schema(description = "Is private key available for the certificate in location")
     private Boolean withKey;

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping("/v1/groups")
-@Tag(name = "Certificate & Key Group", description = "Group API")
+@Tag(name = "Group management", description = "Group management API")
 public interface GroupController extends AuthProtectedController {
 	@Operation(summary = "List Groups")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "list of available Group")})

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(
+        name = "BaseAttributeConstraint",
         description = "Base Attribute Constraint definition",
         type = "object",
         discriminatorProperty = "type",
@@ -21,11 +22,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 RangeAttributeConstraint.class,
                 DateTimeAttributeConstraint.class
         }
-//        subTypes = {
-//                RegexpAttributeConstraint.class,
-//                RangeAttributeConstraint.class,
-//                DateTimeAttributeConstraint.class
-//        }
 )
 public interface BaseAttributeConstraintDto {
     @Schema(description = "Description of the constraint")
