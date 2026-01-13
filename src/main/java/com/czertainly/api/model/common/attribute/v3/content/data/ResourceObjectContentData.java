@@ -1,9 +1,10 @@
 package com.czertainly.api.model.common.attribute.v3.content.data;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.core.auth.AttributeResource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@AllArgsConstructor
 public class ResourceObjectContentData extends NameAndUuidDto {
 
     @Schema(description = "Resource contained in data", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -20,5 +22,5 @@ public class ResourceObjectContentData extends NameAndUuidDto {
     private String base64Content;
 
     @Schema(description = "Attributes of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<BaseAttribute> attributes;
+    private List<DataAttribute> attributes;
 }

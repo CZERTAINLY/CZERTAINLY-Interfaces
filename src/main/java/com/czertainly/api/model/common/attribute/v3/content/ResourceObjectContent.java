@@ -22,7 +22,9 @@ public class ResourceObjectContent extends BaseAttributeContentV3<ResourceObject
         this.data = data;
     }
 
-    public ResourceObjectContent() {
+    public ResourceObjectContent(String reference, ResourceObjectContentData data) {
         setContentType(AttributeContentType.RESOURCE);
+        this.data = data;
+        this.setReference(reference);
     }
 }
