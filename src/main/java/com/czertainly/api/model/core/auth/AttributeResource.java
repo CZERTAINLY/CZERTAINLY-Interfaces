@@ -10,7 +10,9 @@ public enum AttributeResource implements IPlatformEnum {
     CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate"),
     CERTIFICATE_REQUEST(Resource.Codes.CERTIFICATE_REQUEST, "Certificate Request"),
     CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential"),
-    AUTHORITY(Resource.Codes.AUTHORITY, "Authority")
+    AUTHORITY(Resource.Codes.AUTHORITY, "Authority"),
+    ENTITY(Resource.Codes.ENTITY, "Entity Instance"),
+    LOCATION(Resource.Codes.LOCATION, "Location")
     ;
 
     private final String code;
