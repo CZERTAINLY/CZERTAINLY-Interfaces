@@ -15,6 +15,6 @@ public class ConnectorInterfaceInfo {
     private String version;
 
     @Schema(description = "Features supported by the connector interface", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<String> features;
+    private List<FeatureFlag> features;
 
 }

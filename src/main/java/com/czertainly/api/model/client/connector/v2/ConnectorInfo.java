@@ -21,7 +21,4 @@ public class ConnectorInfo {
     @Schema(description = "Metadata of the connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ConnectorMetadata metadata;
 
-    @Schema(description = "Interfaces supported and implemented by the connector", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ConnectorInterfaceInfo> interfaces = new ArrayList<>();
-
 }

@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/v2")
+@RequestMapping("/v2/info")
 @Tag(
         name = "Connector Info v2",
         description = "Connector Information API. " +

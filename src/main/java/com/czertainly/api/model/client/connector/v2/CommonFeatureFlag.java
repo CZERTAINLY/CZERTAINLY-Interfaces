@@ -11,20 +11,11 @@ import java.util.Arrays;
 
 
 @Schema(enumAsRef = true)
-public enum ConnectorInterface implements IPlatformEnum {
+public enum CommonFeatureFlag implements FeatureFlag {
 
-    INFO("info", "Info"),
-    HEALTH("health", "Health"),
-    CREDENTIAL_PROVIDER("credentialProvider", "Credential Provider"),
-    AUTHORITY_PROVIDER("authorityProvider", "Authority Provider"),
-    DISCOVERY_PROVIDER("discoveryProvider", "Discovery Provider"),
-    ENTITY_PROVIDER("entityProvider", "Entity Provider"),
-    COMPLIANCE_PROVIDER("complianceProvider", "Compliance Provider"),
-    CRYPTOGRAPHY_PROVIDER("cryptographyProvider", "Cryptography Provider"),
-    NOTIFICATION_PROVIDER("notificationProvider", "Notification Provider"),
-    SECRET_PROVIDER("secretProvider", "Secret Provider");
+    STATELESS("stateless", "Stateless Connector", "A stateless connector does not require persistence layer (e.g. database)");
 
-    private static final ConnectorInterface[] VALUES;
+    private static final CommonFeatureFlag[] VALUES;
 
     static {
         VALUES = values();
@@ -36,11 +27,11 @@ public enum ConnectorInterface implements IPlatformEnum {
     private final String label;
     private final String description;
 
-    ConnectorInterface(String code, String label) {
+    CommonFeatureFlag(String code, String label) {
         this(code, label,null);
     }
 
-    ConnectorInterface(String code, String label, String description) {
+    CommonFeatureFlag(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -63,11 +54,16 @@ public enum ConnectorInterface implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static ConnectorInterface findByCode(String code) {
+    public static CommonFeatureFlag findByCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
                         new ValidationException(ValidationError.create("Unknown connector interface code {}", code)));
+    }
+
+    @Override
+    public String toString() {
+        return this.code;
     }
 }
