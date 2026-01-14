@@ -1,5 +1,7 @@
 package com.czertainly.api.model.common.attribute.common.callback;
 
+import com.czertainly.api.model.common.attribute.common.DataAttribute;
+import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -39,9 +41,12 @@ public class RequestAttributeCallback {
     private Map<String, Serializable> body;
 
     @Schema(
-            description = "Filter "
+            description = "Filter for the resource callback method", requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Map<String, Serializable> filter;
+
+    @Schema(description = "Pagination of the callback response", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private PaginationRequestDto pagination;
 
 
     @Override
