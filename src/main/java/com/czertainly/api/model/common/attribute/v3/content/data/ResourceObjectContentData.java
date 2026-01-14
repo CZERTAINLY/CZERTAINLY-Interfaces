@@ -8,12 +8,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ResourceObjectContentData extends NameAndUuidDto {
 
     @Schema(description = "Resource contained in data", requiredMode = Schema.RequiredMode.REQUIRED)

@@ -3,24 +3,28 @@ package com.czertainly.api.model.core.auth;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
 
 @Schema(enumAsRef = true)
 public enum AttributeResource implements IPlatformEnum {
 
-    CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate"),
-    CERTIFICATE_REQUEST(Resource.Codes.CERTIFICATE_REQUEST, "Certificate Request"),
-    CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential"),
-    AUTHORITY(Resource.Codes.AUTHORITY, "Authority"),
-    ENTITY(Resource.Codes.ENTITY, "Entity Instance"),
-    LOCATION(Resource.Codes.LOCATION, "Location")
+    CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate", true),
+    CERTIFICATE_REQUEST(Resource.Codes.CERTIFICATE_REQUEST, "Certificate Request", true),
+    CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", true),
+    AUTHORITY(Resource.Codes.AUTHORITY, "Authority", false),
+    ENTITY(Resource.Codes.ENTITY, "Entity Instance", false),
+    LOCATION(Resource.Codes.LOCATION, "Location", false)
     ;
 
     private final String code;
     private final String label;
+    @Getter
+    private final boolean hasContent;
 
-    AttributeResource(String code, String label) {
+    AttributeResource(String code, String label, boolean hasContent) {
         this.code = code;
         this.label = label;
+        this.hasContent = hasContent;
     }
 
     @Override
@@ -38,4 +42,5 @@ public enum AttributeResource implements IPlatformEnum {
     public String getDescription() {
         return null;
     }
+
 }
