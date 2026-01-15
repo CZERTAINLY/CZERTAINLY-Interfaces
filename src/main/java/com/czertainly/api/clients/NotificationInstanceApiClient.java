@@ -1,6 +1,7 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.interfaces.client.NotificationInstanceSyncApiClient;
 import com.czertainly.api.model.common.attribute.v2.DataAttribute;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceDto;
 import com.czertainly.api.model.connector.notification.NotificationProviderInstanceRequestDto;
@@ -13,7 +14,7 @@ import reactor.core.publisher.Mono;
 import javax.net.ssl.TrustManager;
 import java.util.List;
 
-public class NotificationInstanceApiClient extends BaseApiClient {
+public class NotificationInstanceApiClient extends BaseApiClient implements NotificationInstanceSyncApiClient {
 
     private static final String NOTIFICATION_INSTANCE_BASE_CONTEXT = "/v1/notificationProvider/notifications";
     private static final String NOTIFICATION_INSTANCE_IDENTIFIED_CONTEXT = NOTIFICATION_INSTANCE_BASE_CONTEXT + "/{uuid}";
@@ -26,6 +27,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
         this.defaultTrustManagers = defaultTrustManagers;
     }
 
+    @Override
     public List<NotificationProviderInstanceDto> listNotificationInstances(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -36,6 +38,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
                 .getBody(), request, connector);
     }
 
+    @Override
     public NotificationProviderInstanceDto getNotificationInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -46,6 +49,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
                 .getBody(), request, connector);
     }
 
+    @Override
     public NotificationProviderInstanceDto createNotificationInstance(ConnectorDto connector, NotificationProviderInstanceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -58,6 +62,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public NotificationProviderInstanceDto updateNotificationInstance(ConnectorDto connector, String uuid, NotificationProviderInstanceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PUT, connector, true);
 
@@ -69,6 +74,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
                 .getBody(), request, connector);
     }
 
+    @Override
     public void removeNotificationInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
 
@@ -80,6 +86,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public void sendNotification(ConnectorDto connector, String uuid, NotificationProviderNotifyRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -91,6 +98,7 @@ public class NotificationInstanceApiClient extends BaseApiClient {
                 .getBody(), request, connector);
     }
 
+    @Override
     public List<DataAttribute> listMappingAttributes(ConnectorDto connector, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 

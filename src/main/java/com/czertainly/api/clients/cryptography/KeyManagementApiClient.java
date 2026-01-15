@@ -3,6 +3,7 @@ package com.czertainly.api.clients.cryptography;
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.interfaces.client.KeyManagementSyncApiClient;
 import com.czertainly.api.model.client.attribute.RequestAttributeDto;
 import com.czertainly.api.model.common.attribute.v2.BaseAttribute;
 import com.czertainly.api.model.connector.cryptography.key.CreateKeyRequestDto;
@@ -17,7 +18,7 @@ import reactor.core.publisher.Mono;
 import javax.net.ssl.TrustManager;
 import java.util.List;
 
-public class KeyManagementApiClient extends BaseApiClient {
+public class KeyManagementApiClient extends BaseApiClient implements KeyManagementSyncApiClient {
 
     private static final String KEY_BASE_CONTEXT = "/v1/cryptographyProvider/tokens/{uuid}/keys";
     private static final String KEY_CREATE_SECRET_KEY_CONTEXT = KEY_BASE_CONTEXT + "/secret";
@@ -37,6 +38,7 @@ public class KeyManagementApiClient extends BaseApiClient {
         this.defaultTrustManagers = defaultTrustManagers;
     }
 
+    @Override
     public List<BaseAttribute> listCreateSecretKeyAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -49,6 +51,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public void validateCreateSecretKeyAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -62,6 +65,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public KeyDataResponseDto createSecretKey(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -75,6 +79,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public List<BaseAttribute> listCreateKeyPairAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -87,6 +92,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public void validateCreateKeyPairAttributes(ConnectorDto connector, String uuid, List<RequestAttributeDto> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -100,6 +106,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public KeyPairDataResponseDto createKeyPair(ConnectorDto connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -113,6 +120,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public List<KeyDataResponseDto> listKeys(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -125,6 +133,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public KeyDataResponseDto getKey(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -137,6 +146,7 @@ public class KeyManagementApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public void destroyKey(ConnectorDto connector, String uuid, String keyUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
 
