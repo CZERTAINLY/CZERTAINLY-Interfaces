@@ -9,7 +9,6 @@ import lombok.Getter;
 public enum AttributeResource implements IPlatformEnum {
 
     CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate", true),
-    CERTIFICATE_REQUEST(Resource.Codes.CERTIFICATE_REQUEST, "Certificate Request", true),
     CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", true),
     AUTHORITY(Resource.Codes.AUTHORITY, "Authority", false),
     ENTITY(Resource.Codes.ENTITY, "Entity Instance", false),
@@ -19,12 +18,12 @@ public enum AttributeResource implements IPlatformEnum {
     private final String code;
     private final String label;
     @Getter
-    private final boolean hasContent;
+    private final boolean withContent;
 
-    AttributeResource(String code, String label, boolean hasContent) {
+    AttributeResource(String code, String label, boolean withContent) {
         this.code = code;
         this.label = label;
-        this.hasContent = hasContent;
+        this.withContent = withContent;
     }
 
     @Override
