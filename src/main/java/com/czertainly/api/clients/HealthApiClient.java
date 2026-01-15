@@ -1,5 +1,6 @@
 package com.czertainly.api.clients;
 
+import com.czertainly.api.interfaces.client.HealthSyncApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.common.HealthDto;
 import com.czertainly.api.model.core.connector.ConnectorDto;
@@ -8,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.net.ssl.TrustManager;
 
-public class HealthApiClient extends BaseApiClient {
+public class HealthApiClient extends BaseApiClient implements HealthSyncApiClient {
 
     private static final String HEALTH_BASE_CONTEXT = "/v1/health";
 
