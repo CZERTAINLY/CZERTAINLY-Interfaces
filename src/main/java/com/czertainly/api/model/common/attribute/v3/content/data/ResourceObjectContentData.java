@@ -10,13 +10,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResourceObjectContentData extends NameAndUuidDto {
+public class ResourceObjectContentData extends NameAndUuidDto implements Serializable {
 
     @Schema(description = "Resource contained in data", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeResource resource;
