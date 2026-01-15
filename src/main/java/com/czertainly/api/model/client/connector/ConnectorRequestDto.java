@@ -28,12 +28,6 @@ public class ConnectorRequestDto implements Named {
     private List<RequestAttributeDto> authAttributes;
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
-    @Schema(description = "Proxy instance ID for message queue routing. " +
-            "When set, connector communicates via message queue proxy. " +
-            "When null, connector uses direct REST communication.",
-            examples = {"proxy1", "proxy-eu-west"},
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String proxyId;
 
     public String getName() {
         return name;
@@ -75,14 +69,6 @@ public class ConnectorRequestDto implements Named {
         this.customAttributes = customAttributes;
     }
 
-    public String getProxyId() {
-        return proxyId;
-    }
-
-    public void setProxyId(String proxyId) {
-        this.proxyId = proxyId;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -91,7 +77,6 @@ public class ConnectorRequestDto implements Named {
                 .append("authType", authType)
                 .append("authAttributes", authAttributes)
                 .append("customAttributes", customAttributes)
-                .append("proxyId", proxyId)
                 .toString();
     }
 }

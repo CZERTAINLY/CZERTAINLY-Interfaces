@@ -20,11 +20,6 @@ public class ConnectorUpdateRequestDto {
     private List<RequestAttributeDto> authAttributes;
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttributeDto> customAttributes;
-    @Schema(description = "Proxy instance ID for message queue routing. " +
-            "When set, connector communicates via message queue proxy. " +
-            "When null, connector uses direct REST communication.",
-            examples = {"proxy1", "proxy-eu-west"})
-    private String proxyId;
 
     public String getUrl() {
         return url;
@@ -58,14 +53,6 @@ public class ConnectorUpdateRequestDto {
         this.customAttributes = customAttributes;
     }
 
-    public String getProxyId() {
-        return proxyId;
-    }
-
-    public void setProxyId(String proxyId) {
-        this.proxyId = proxyId;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -73,7 +60,6 @@ public class ConnectorUpdateRequestDto {
                 .append("authType", authType)
                 .append("authAttributes", authAttributes)
                 .append("customAttributes", customAttributes)
-                .append("proxyId", proxyId)
                 .toString();
     }
 }
