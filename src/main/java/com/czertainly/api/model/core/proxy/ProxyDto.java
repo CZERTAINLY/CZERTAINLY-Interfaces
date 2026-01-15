@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Setter
@@ -21,7 +22,7 @@ public class ProxyDto extends NameAndUuidDto implements Serializable {
     private String description;
 
     @Schema(description = "Code of the Proxy",
-        examples = {"myproxy123"},
+        examples = {"my-proxy-123"},
         requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
@@ -29,6 +30,11 @@ public class ProxyDto extends NameAndUuidDto implements Serializable {
         examples = {"CONNECTED"},
         requiredMode = Schema.RequiredMode.REQUIRED)
     private ProxyStatus status;
+
+    @Schema(description = "Timestamp of the last activity from the Proxy",
+        examples = {"2024-01-15T10:15:30+01:00"},
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private OffsetDateTime lastActivity;
 
     @Schema(description = "List of Connectors associated with the Proxy")
     private List<ConnectorDto> connectors;
@@ -41,6 +47,7 @@ public class ProxyDto extends NameAndUuidDto implements Serializable {
             .append("description", description)
             .append("code", code)
             .append("status", status)
+            .append("lastActivity", lastActivity)
             .append("connectors", connectors)
             .toString();
     }
