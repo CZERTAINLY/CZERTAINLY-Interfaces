@@ -24,6 +24,7 @@ public enum Resource implements IPlatformEnum {
     CONNECTOR(Codes.CONNECTOR, "Connector", true, true),
     ATTRIBUTE(Codes.ATTRIBUTE, "Attribute", true),
     SCHEDULED_JOB("jobs", "Scheduled job"),
+    PROXY(Codes.PROXY, "Proxy", true),
 
     // AUTH
     USER(Codes.USER, "User", false, true, true, false),
@@ -217,6 +218,7 @@ public enum Resource implements IPlatformEnum {
         public static final String USER = "users";
         public static final String OID = "oids";
         public static final String ACME_ACCOUNT = "acmeAccounts";
+        public static final String PROXY = "proxies";
 
         private Codes() {
 
