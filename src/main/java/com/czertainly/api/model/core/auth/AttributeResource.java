@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum AttributeResource implements IPlatformEnum {
 
     CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate", true),
-    CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", true),
+    CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", false),
     AUTHORITY(Resource.Codes.AUTHORITY, "Authority", false),
     ENTITY(Resource.Codes.ENTITY, "Entity Instance", false),
     LOCATION(Resource.Codes.LOCATION, "Location", false)
