@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/v1/cbom")
+@RequestMapping("/v1/cboms")
 @Tag(name = "Cbom management", description = "Cbom management API")
 public interface CbomController extends AuthProtectedController {
 
