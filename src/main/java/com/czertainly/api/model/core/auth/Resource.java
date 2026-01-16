@@ -93,19 +93,20 @@ public enum Resource implements IPlatformEnum {
     ACME_CHALLENGE("acmeChallenges", "ACME Challenge"),
     CMP_TRANSACTION("cmpTransactions", "CMP Transaction"),
     END_ENTITY_PROFILE("endEntityProfiles", "End entity profile"),
-    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider");
+    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider")
+    ;
 
     private static final Resource[] VALUES;
-    private static final EnumSet<Resource> complianceSubjects = EnumSet.of(Resource.CERTIFICATE,
-            Resource.CERTIFICATE_REQUEST, Resource.CRYPTOGRAPHIC_KEY);
-    private static final EnumSet<Resource> complianceProfilesAssignable = EnumSet.of(Resource.RA_PROFILE,
-            Resource.TOKEN_PROFILE);
+    private static final EnumSet<Resource> complianceSubjects = EnumSet.of(Resource.CERTIFICATE, Resource.CERTIFICATE_REQUEST, Resource.CRYPTOGRAPHIC_KEY);
+    private static final EnumSet<Resource> complianceProfilesAssignable = EnumSet.of(Resource.RA_PROFILE, Resource.TOKEN_PROFILE);
 
     static {
         VALUES = values();
     }
 
-    @Schema(description = "Resource Name", examples = { "certificates" }, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Resource Name",
+            examples = { "certificates" },
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
@@ -128,13 +129,11 @@ public enum Resource implements IPlatformEnum {
 
     }
 
-    Resource(String code, String label, boolean objectAccess, boolean hasCustomAttributes, boolean hasGroups,
-            boolean hasOwner) {
+    Resource(String code, String label, boolean objectAccess, boolean hasCustomAttributes, boolean hasGroups, boolean hasOwner) {
         this(code, label, null, objectAccess, hasCustomAttributes, hasGroups, hasOwner);
     }
 
-    Resource(String code, String label, String description, boolean objectAccess, boolean hasCustomAttributes,
-            boolean hasGroups, boolean hasOwner) {
+    Resource(String code, String label, String description, boolean objectAccess, boolean hasCustomAttributes, boolean hasGroups, boolean hasOwner) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -189,7 +188,8 @@ public enum Resource implements IPlatformEnum {
         return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new ValidationException(ValidationError.create("Unknown Resource Name {}", code)));
+                .orElseThrow(() ->
+                        new ValidationException(ValidationError.create("Unknown Resource Name {}", code)));
     }
 
     public static List<Resource> getCustomAttributesResources() {
