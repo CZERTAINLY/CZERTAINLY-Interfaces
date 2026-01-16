@@ -10,12 +10,18 @@ import java.io.Serializable;
 public class UtilsSettingsDto implements Serializable {
 
     @URL
-    @Schema(description = "URL of the Util Service", examples = {
-            "http://util-service:8080" }, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(
+            description = "URL of the Util Service",
+            examples = {"http://util-service:8080"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
     private String utilsServiceUrl;
 
     @URL
-    @Schema(description = "URL of the CBOM Repository", examples = {
-            "http://sbom-repository:8080" }, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(
+            description = "URL of the CBOM Repository",
+            examples = {"http://cbom-repository:8080"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
     private String cbomRepositoryUrl;
 }
