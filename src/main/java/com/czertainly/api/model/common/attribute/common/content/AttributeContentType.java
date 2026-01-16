@@ -120,7 +120,6 @@ public enum AttributeContentType implements IPlatformEnum {
 
 
         private Codes() {
-
         }
 
         /**
