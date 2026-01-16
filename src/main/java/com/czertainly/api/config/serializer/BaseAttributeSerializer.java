@@ -41,6 +41,8 @@ public class BaseAttributeSerializer
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
+                gen.writeFieldName("attributeCallback");
+                serializers.defaultSerializeValue(attribute.getAttributeCallback(), gen);
                 gen.writeEndObject();
             }
             case GROUP -> {

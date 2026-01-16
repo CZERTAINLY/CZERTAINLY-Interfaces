@@ -29,7 +29,8 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = ObjectAttributeContentV3.class, name = AttributeContentType.Codes.OBJECT),
         @JsonSubTypes.Type(value = StringAttributeContentV3.class, name = AttributeContentType.Codes.STRING),
         @JsonSubTypes.Type(value = TextAttributeContentV3.class, name = AttributeContentType.Codes.TEXT),
-        @JsonSubTypes.Type(value = TimeAttributeContentV3.class, name = AttributeContentType.Codes.TIME)
+        @JsonSubTypes.Type(value = TimeAttributeContentV3.class, name = AttributeContentType.Codes.TIME),
+        @JsonSubTypes.Type(value = ResourceObjectContent.class, name = AttributeContentType.Codes.RESOURCE)
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeContentDtoV3.class)
