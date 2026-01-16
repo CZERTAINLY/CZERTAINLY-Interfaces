@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 public class CbomUploadRequestDto {
 
-	@Schema(description = "Raw JSON content of Cbom document", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "Raw JSON content of CBOM document", requiredMode = Schema.RequiredMode.REQUIRED)
 	private Map<String, Object> content;
 
 	@Schema(description = "Custom attributes")

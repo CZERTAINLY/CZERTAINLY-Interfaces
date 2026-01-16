@@ -20,7 +20,7 @@ public class CbomListDto {
 	@Schema(description = "CBOM timestamp", requiredMode = Schema.RequiredMode.REQUIRED)
 	private OffsetDateTime timestamp;
 
-	@Schema(description = "CBOM source (e.g.: Cbom-Lens)", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "CBOM source (e.g.: CBOM-Lens)", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String source;
 
 	@Schema(description = "Number of algorithms", requiredMode = Schema.RequiredMode.REQUIRED)

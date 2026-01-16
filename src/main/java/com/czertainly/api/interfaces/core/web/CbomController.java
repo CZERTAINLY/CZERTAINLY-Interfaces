@@ -21,39 +21,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping("/v1/cboms")
-@Tag(name = "Cbom management", description = "Cbom management API")
+@Tag(name = "CBOM management", description = "CBOM management API")
 public interface CbomController extends AuthProtectedController {
 
-	@Operation(summary = "List Cboms")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available Cboms") })
+	@Operation(summary = "List CBOMs")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available CBOMs") })
 	@PostMapping(consumes = { "application/json" }, produces = { "application/json" })
 	List<CbomListDto> listCboms(@RequestBody SearchRequestDto request);
 
-	@Operation(summary = "Cbom detail")
+	@Operation(summary = "CBOM detail")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Cbom details retrieved"),
-			@ApiResponse(responseCode = "404", description = "Cbom not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			@ApiResponse(responseCode = "200", description = "CBOM details retrieved"),
+			@ApiResponse(responseCode = "404", description = "CBOM not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
 	@GetMapping(path = "/{urn}", produces = { "application/json" })
 	CbomDetailDto getCbomDetail(
-			@Parameter(description = "Cbom URN") @PathVariable String urn,
-			@Parameter(description = "Cbom version") @RequestParam(required = false) String version)
+			@Parameter(description = "CBOM URN") @PathVariable String urn,
+			@Parameter(description = "CBOM version") @RequestParam(required = false) String version)
 			throws NotFoundException;
 
-	@Operation(summary = "List Cbom versions")
+	@Operation(summary = "List CBOM versions")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "List of Cbom versions retrieved"),
-			@ApiResponse(responseCode = "404", description = "Cbom not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			@ApiResponse(responseCode = "200", description = "List of CBOM versions retrieved"),
+			@ApiResponse(responseCode = "404", description = "CBOM not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
 	@GetMapping(path = "/{urn}/versions", produces = { "application/json" })
 	List<CbomListDto> listCbomVersions(
-			@Parameter(description = "Cbom URN") @PathVariable String urn)
+			@Parameter(description = "CBOM URN") @PathVariable String urn)
 			throws NotFoundException;
 
-	@Operation(summary = "Upload Cbom")
+	@Operation(summary = "Upload CBOM")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "201", description = "Cbom uploaded"),
-			@ApiResponse(responseCode = "400", description = "Invalid Cbom content", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			@ApiResponse(responseCode = "201", description = "CBOM uploaded"),
+			@ApiResponse(responseCode = "400", description = "Invalid CBOM content", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
 	@PostMapping(path = "/upload", consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.CREATED)
