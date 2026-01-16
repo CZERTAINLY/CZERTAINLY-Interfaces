@@ -33,6 +33,8 @@ public enum Resource implements IPlatformEnum {
     ACME_ACCOUNT(Codes.ACME_ACCOUNT, "ACME Account"),
     ACME_PROFILE(Codes.ACME_PROFILE, "ACME Profile", true, true),
 
+    CBOM(Codes.CBOM, "CBOM", false, true),
+
     // SCEP
     SCEP_PROFILE(Codes.SCEP_PROFILE, "SCEP Profile", true, true),
 
@@ -103,7 +105,7 @@ public enum Resource implements IPlatformEnum {
     }
 
     @Schema(description = "Resource Name",
-            examples = {"certificates"},
+            examples = { "certificates" },
             requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
@@ -217,6 +219,8 @@ public enum Resource implements IPlatformEnum {
         public static final String USER = "users";
         public static final String OID = "oids";
         public static final String ACME_ACCOUNT = "acmeAccounts";
+
+        public static final String CBOM = "cboms";
 
         private Codes() {
 
