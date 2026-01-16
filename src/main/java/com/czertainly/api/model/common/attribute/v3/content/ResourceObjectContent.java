@@ -4,6 +4,8 @@ import com.czertainly.api.model.common.attribute.common.content.AttributeContent
 import com.czertainly.api.model.common.attribute.v3.content.data.ResourceObjectContentData;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Objects;
+
 @Schema(
         description = "Resource object attribute content carrying resource object data",
         type = "object")
@@ -26,5 +28,17 @@ public class ResourceObjectContent extends BaseAttributeContentV3<ResourceObject
         setContentType(AttributeContentType.RESOURCE);
         this.data = data;
         this.setReference(reference);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ResourceObjectContent that)) return false;
+        return Objects.equals(data, that.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), data);
     }
 }
