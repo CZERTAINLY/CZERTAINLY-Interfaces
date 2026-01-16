@@ -2,7 +2,6 @@ package com.czertainly.api.model.common.attribute.v3.content.data;
 
 import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.common.DataAttribute;
 import com.czertainly.api.model.core.auth.AttributeResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
