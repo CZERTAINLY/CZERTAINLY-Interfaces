@@ -5,12 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class CbomUploadRequestDto {
 
 	@Schema(description = "Raw JSON content of Cbom document", requiredMode = Schema.RequiredMode.REQUIRED)
-	private String content;
+	private Map<String, Object> content;
 
 	@Schema(description = "Custom attributes")
 	private List<RequestAttributeDto> customAttributes;
