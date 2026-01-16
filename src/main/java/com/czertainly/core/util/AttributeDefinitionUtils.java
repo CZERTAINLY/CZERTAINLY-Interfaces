@@ -602,14 +602,6 @@ public class AttributeDefinitionUtils {
     public static void validateCallback(AttributeCallback callback, RequestAttributeCallback request) {
         List<ValidationError> errors = new ArrayList<>();
 
-        if (StringUtils.isBlank(callback.getCallbackContext())) {
-            errors.add(ValidationError.create("Callback context not set"));
-        }
-
-        if (StringUtils.isBlank(callback.getCallbackMethod())) {
-            errors.add(ValidationError.create("Callback method not set"));
-        }
-
         try {
             RequestMethod.valueOf(callback.getCallbackMethod());
         } catch (IllegalArgumentException e) {
