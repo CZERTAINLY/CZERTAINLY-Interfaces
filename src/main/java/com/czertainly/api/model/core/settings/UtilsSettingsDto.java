@@ -16,4 +16,12 @@ public class UtilsSettingsDto implements Serializable {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String utilsServiceUrl;
+
+    @URL
+    @Schema(
+            description = "URL of the CBOM Repository",
+            examples = {"http://cbom-repository:8080"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private String cbomRepositoryUrl;
 }
