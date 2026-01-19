@@ -2,6 +2,7 @@ package com.czertainly.api.model.client.metadata;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
@@ -14,8 +15,8 @@ import java.util.UUID;
         type = "object",
         discriminatorProperty = "version",
         discriminatorMapping = {
-                @DiscriminatorMapping(value = "2", schema = ResponseMetadataV2.class),
-                @DiscriminatorMapping(value = "3", schema = ResponseMetadataV3.class),
+                @DiscriminatorMapping(value = "v2", schema = ResponseMetadataV2.class),
+                @DiscriminatorMapping(value = "v3", schema = ResponseMetadataV3.class),
         },
         oneOf = {
                 ResponseMetadataV3.class,
@@ -81,7 +82,7 @@ public interface ResponseMetadataDto {
             examples = {"Attribute"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    String getVersion();
+    AttributeVersion getVersion();
 
 
 }
