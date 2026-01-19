@@ -59,14 +59,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: mvn -B verify
-      - name: Trigger build OpenAPI
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.GH_ACTIONS_PERSONAL_ACCESS_TOKEN }}
-          script: |
-            github.rest.actions.createWorkflowDispatch({
-              owner: 'CZERTAINLY',
-              repo: 'CZERTAINLY-Interface-Documentation',
-              workflow_id: 'publish.yml',
-              ref: 'main',
-            })
