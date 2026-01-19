@@ -1,9 +1,14 @@
 package com.czertainly.api.model.common.attribute.common.properties;
 
+import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Setter
+@Getter
 public class DataAttributeProperties extends BaseAttributeProperties {
 
     /**
@@ -47,37 +52,12 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     )
     private boolean multiSelect = false;
 
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public boolean isReadOnly() {
-        return readOnly;
-    }
-
-    public void setReadOnly(boolean readOnly) {
-        this.readOnly = readOnly;
-    }
-
-    public boolean isList() {
-        return list;
-    }
-
-    public void setList(boolean list) {
-        this.list = list;
-    }
-
-    public boolean isMultiSelect() {
-        return multiSelect;
-    }
-
-    public void setMultiSelect(boolean multiSelect) {
-        this.multiSelect = multiSelect;
-    }
+    @Schema(
+            description = "Protection level of the attribute content",
+            defaultValue = "noProtection",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ProtectionLevel protectionLevel = ProtectionLevel.NO_PROTECTION;
 
     @Override
     public String toString() {
