@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class contains set of properties to represent
@@ -96,6 +97,32 @@ public class DataAttribute extends BaseAttribute<List<BaseAttributeContent>> {
         setDescription(original.getDescription());
         setType(original.getType());
         setContentType(original.contentType);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataAttribute that)) return false;
+
+        return  Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getName(), that.getName())
+                && Objects.equals(getDescription(), that.getDescription())
+                && Objects.equals(content, that.content)
+                && contentType == that.contentType
+                && Objects.equals(properties, that.properties)
+                && Objects.equals(constraints, that.constraints)
+                && Objects.equals(attributeCallback, that.attributeCallback);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                super.hashCode(),
+                content,
+                contentType,
+                properties,
+                attributeCallback,
+                constraints
+        );
     }
 
     @Override

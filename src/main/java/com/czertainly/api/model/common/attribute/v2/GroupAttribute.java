@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class contains set of properties to represent
@@ -52,6 +53,25 @@ public class GroupAttribute extends BaseAttribute<List<BaseAttribute>> {
 
     public GroupAttribute(String type) {
         super(AttributeType.fromCode(type));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GroupAttribute that)) return false;
+
+        return  Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getName(), that.getName()) && Objects.equals(getDescription(), that.getDescription()) &&
+                Objects.equals(content, that.content)
+                && Objects.equals(attributeCallback, that.attributeCallback);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                super.hashCode(),
+                content,
+                attributeCallback
+        );
     }
 
     @Override
