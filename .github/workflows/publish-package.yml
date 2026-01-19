@@ -1,4 +1,4 @@
-name: Build and Publish to JitPack
+name: Build and Publish to JitPack Repository
 
 on:
   push:
@@ -29,11 +29,8 @@ jobs:
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
             echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           else
-            # Get version from pom.xml, remove -SNAPSHOT suffix, add short SHA
-            POM_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-            BASE_VERSION=$(echo "$POM_VERSION" | sed 's/-SNAPSHOT//' | sed 's/\.SAAS/-SAAS/')
-            SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-8)
-            echo "version=${BASE_VERSION}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+            # JitPack uses 10-char short commit hash
+            echo "version=$(echo ${{ github.sha }} | cut -c1-10)" >> $GITHUB_OUTPUT
           fi
 
       - name: Trigger JitPack build
