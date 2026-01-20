@@ -599,13 +599,23 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    public static void validateCallback(AttributeCallback callback, RequestAttributeCallback request) {
+    public static void validateCallback(AttributeCallback callback, RequestAttributeCallback request, boolean isResourceObjectCallback) {
         List<ValidationError> errors = new ArrayList<>();
 
-        try {
-            RequestMethod.valueOf(callback.getCallbackMethod());
-        } catch (IllegalArgumentException e) {
-            errors.add(ValidationError.create("Callback method invalid, because of {}", e.getMessage()));
+        if (!isResourceObjectCallback) {
+            if (StringUtils.isBlank(callback.getCallbackContext())) {
+                errors.add(ValidationError.create("Callback context not set"));
+            }
+
+            if (StringUtils.isBlank(callback.getCallbackMethod())) {
+                errors.add(ValidationError.create("Callback method not set"));
+            }
+
+            try {
+                RequestMethod.valueOf(callback.getCallbackMethod());
+            } catch (IllegalArgumentException e) {
+                errors.add(ValidationError.create("Callback method invalid, because of {}", e.getMessage()));
+            }
         }
 
         if (callback.getMappings() != null) {

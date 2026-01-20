@@ -119,8 +119,7 @@ public enum AttributeContentType implements IPlatformEnum {
     public static class Codes {
 
 
-        private Codes() {
-        }
+        private Codes() {}
 
         /**
          * Simple text Attribute
@@ -187,6 +186,9 @@ public enum AttributeContentType implements IPlatformEnum {
          **/
         public static final String CODEBLOCK = "codeblock";
 
+        /**
+         * Attribute type representing resource object
+         **/
         public static final String RESOURCE = "resource";
 
     }
