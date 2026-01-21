@@ -2,6 +2,8 @@ package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeDeserializer;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -57,4 +59,10 @@ public class DateTimeAttributeContentV3 extends BaseAttributeContentV3<ZonedDate
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
+
+    @Override
+    public ZonedDateTime getDataFromDecrypted(String decrypted) {
+        return ZonedDateTime.parse(decrypted);
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,5 +46,10 @@ import java.util.Objects;
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
+    }
+
+    @Override
+    public Serializable getDataFromDecrypted(String decrypted) {
+        return decrypted;
     }
 }

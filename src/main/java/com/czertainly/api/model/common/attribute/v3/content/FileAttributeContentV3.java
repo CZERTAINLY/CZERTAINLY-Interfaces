@@ -1,7 +1,9 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
 import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -49,5 +51,10 @@ public class FileAttributeContentV3 extends BaseAttributeContentV3<FileAttribute
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
+    }
+
+    @Override
+    public FileAttributeContentData getDataFromDecrypted(String decrypted) {
+        return (FileAttributeContentData) AttributeDefinitionUtils.deserializeContentData(decrypted, FileAttributeContentData.class);
     }
 }

@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
@@ -47,5 +48,10 @@ public class CodeBlockAttributeContentV3 extends BaseAttributeContentV3<CodeBloc
                 super.hashCode(),
                 data
         );
+    }
+
+    @Override
+    public CodeBlockAttributeContentData getDataFromDecrypted(String decrypted) {
+        return (CodeBlockAttributeContentData) AttributeDefinitionUtils.deserializeContentData(decrypted, CodeBlockAttributeContentData.class);
     }
 }

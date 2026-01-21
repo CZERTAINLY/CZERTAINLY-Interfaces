@@ -1,6 +1,8 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -8,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -53,5 +56,10 @@ public class TimeAttributeContentV3 extends BaseAttributeContentV3<LocalTime> {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
+    }
+
+    @Override
+    public LocalTime getDataFromDecrypted(String decrypted) {
+        return LocalTime.parse(decrypted);
     }
 }
