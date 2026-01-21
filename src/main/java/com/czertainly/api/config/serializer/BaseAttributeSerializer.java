@@ -17,6 +17,7 @@ public class BaseAttributeSerializer
     public static final String CONTENT_TYPE = "contentType";
     public static final String ATTR_PROPERTIES = "properties";
     public static final String ATTRIBUTE_CALLBACK = "attributeCallback";
+    public static final String CONSTRAINTS = "constraints";
 
     @Override
     public void serialize(BaseAttribute value,
@@ -44,7 +45,7 @@ public class BaseAttributeSerializer
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
                 gen.writeFieldName(ATTRIBUTE_CALLBACK);
                 serializers.defaultSerializeValue(attribute.getAttributeCallback(), gen);
-                gen.writeFieldName("constraints");
+                gen.writeFieldName(CONSTRAINTS);
                 serializers.defaultSerializeValue(attribute.getConstraints(), gen);
                 gen.writeEndObject();
             }
