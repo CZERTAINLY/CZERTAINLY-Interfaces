@@ -62,4 +62,7 @@ public class OAuth2ProviderSettingsUpdateDto implements Serializable {
     @Schema(description = "Duration in seconds after which will inactive user's session be terminated.", defaultValue = "15m", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private int sessionMaxInactiveInterval = 15 * 60;
 
+    @Schema(description = "The claim name used to extract the username from the token.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String usernameClaim;
+
 }
