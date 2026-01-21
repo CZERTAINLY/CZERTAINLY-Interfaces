@@ -36,6 +36,11 @@ public class ProxyDto extends NameAndUuidDto implements Serializable {
         requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private OffsetDateTime lastActivity;
 
+    @Schema(description = "Installation instructions for the Proxy",
+        examples = {"helm install my-proxy ./czertainly-proxy --set proxy.code=my-proxy-123"},
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String installationInstructions;
+
     @Schema(description = "List of Connectors associated with the Proxy")
     private List<ConnectorDto> connectors;
 

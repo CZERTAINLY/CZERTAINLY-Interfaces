@@ -71,4 +71,9 @@ public interface ProxyController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     void deleteProxy(@Parameter(description = "Proxy UUID") @PathVariable String uuid) throws NotFoundException;
+
+    @Operation(summary = "Get instructions to install a Proxy")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Proxy installation instructions retrieved")})
+    @GetMapping(path = "/{uuid}/instructions", produces = {"application/json"})
+    ProxyDto getInstallationInstructions(@Parameter(description = "Proxy UUID") @PathVariable String uuid) throws NotFoundException;
 }
