@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -29,6 +30,18 @@ public class CodeBlockAttributeContentData implements AttributeContentData, Seri
     }
 
     public CodeBlockAttributeContentData() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CodeBlockAttributeContentData that)) return false;
+        return Objects.equals(code, that.code) && Objects.equals(language, that.language);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, language);
     }
 
     @Override
