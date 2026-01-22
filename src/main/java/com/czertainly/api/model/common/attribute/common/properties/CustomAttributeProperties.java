@@ -57,7 +57,7 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
             defaultValue = "noProtection",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
-    private ProtectionLevel protectionLevel = ProtectionLevel.NO_PROTECTION;
+    private ProtectionLevel protectionLevel = ProtectionLevel.NONE;
 
     @Override
     public String toString() {

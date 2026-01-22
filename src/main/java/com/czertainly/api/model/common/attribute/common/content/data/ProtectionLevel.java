@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
 public enum ProtectionLevel implements IPlatformEnum {
-    NO_PROTECTION("noProtection", "No Protection", "Attribute content is in plain text"),
+    NONE("none", "No Protection", "Attribute content is in plain text"),
     ENCRYPTED("encrypted", "Encrypted", "Attribute content is encrypted by a PBE cipher")
     ;
 
