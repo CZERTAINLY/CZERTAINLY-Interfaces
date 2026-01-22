@@ -3,6 +3,7 @@ package com.czertainly.api.model.common.attribute.v3.content;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.EventListener;
 import java.util.Objects;
 
 @Schema(
@@ -29,10 +30,12 @@ public class StringAttributeContentV3 extends BaseAttributeContentV3<String> {
         setContentType(AttributeContentType.STRING);
     }
 
+    @Override
     public String getData() {
         return data;
     }
 
+    @Override
     public void setData(String data) {
         this.data = data;
     }
@@ -45,8 +48,15 @@ public class StringAttributeContentV3 extends BaseAttributeContentV3<String> {
         return Objects.equals(data, that.data);
     }
 
+
     @Override
     public int hashCode() {
         return Objects.hash(data);
     }
+
+    @Override
+    public String getDataFromDecrypted(String decrypted) {
+        return decrypted;
+    }
+
 }

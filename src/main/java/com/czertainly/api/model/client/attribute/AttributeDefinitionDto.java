@@ -2,8 +2,11 @@ package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,6 +14,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class AttributeDefinitionDto implements Loggable {
 
     /**
@@ -45,45 +50,9 @@ public class AttributeDefinitionDto implements Loggable {
     )
     private Boolean enabled;
 
-    public String getUuid() {
-        return uuid;
-    }
+    @Schema(description = "Protection level of attribute content")
+    private ProtectionLevel protectionLevel;
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public AttributeContentType getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(AttributeContentType contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
 
     @Override
     public String toString() {
@@ -109,5 +78,9 @@ public class AttributeDefinitionDto implements Loggable {
     @Override
     public List<UUID> toLogResourceObjectsUuids() {
         return List.of(UUID.fromString(uuid));
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }
