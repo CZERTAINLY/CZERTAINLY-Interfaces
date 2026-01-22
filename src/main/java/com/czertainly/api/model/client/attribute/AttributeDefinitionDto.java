@@ -79,4 +79,8 @@ public class AttributeDefinitionDto implements Loggable {
     public List<UUID> toLogResourceObjectsUuids() {
         return List.of(UUID.fromString(uuid));
     }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 }
