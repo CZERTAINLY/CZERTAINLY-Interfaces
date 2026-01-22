@@ -3,6 +3,7 @@ package com.czertainly.api.model.common.attribute.v3.content;
 import com.czertainly.api.model.client.attribute.BaseAttributeContentDtoV3;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.core.attribute.engine.EncryptedAttributeContent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -29,7 +30,8 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = ObjectAttributeContentV3.class, name = AttributeContentType.Codes.OBJECT),
         @JsonSubTypes.Type(value = StringAttributeContentV3.class, name = AttributeContentType.Codes.STRING),
         @JsonSubTypes.Type(value = TextAttributeContentV3.class, name = AttributeContentType.Codes.TEXT),
-        @JsonSubTypes.Type(value = TimeAttributeContentV3.class, name = AttributeContentType.Codes.TIME)
+        @JsonSubTypes.Type(value = TimeAttributeContentV3.class, name = AttributeContentType.Codes.TIME),
+        @JsonSubTypes.Type(value = EncryptedAttributeContent.class, name = AttributeContentType.Codes.ENCRYPTED)
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeContentDtoV3.class)
