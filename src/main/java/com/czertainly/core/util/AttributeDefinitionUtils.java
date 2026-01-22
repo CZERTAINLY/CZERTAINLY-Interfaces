@@ -602,6 +602,99 @@ public class AttributeDefinitionUtils {
     public static void validateCallback(AttributeCallback callback, RequestAttributeCallback request, boolean isResourceObjectCallback) {
         List<ValidationError> errors = new ArrayList<>();
 
+        validateContextAndMethod(callback, isResourceObjectCallback, errors);
+
+        if (callback.getMappings() != null) {
+            for (AttributeCallbackMapping mapping : callback.getMappings()) {
+                validateCallbackMapping(request, mapping, errors);
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            throw new ValidationException("Attribute callback validation failed.", errors);
+        }
+    }
+
+    private static void validateCallbackMapping(RequestAttributeCallback request, AttributeCallbackMapping mapping, List<ValidationError> errors) {
+        if (StringUtils.isBlank(mapping.getFrom()) && mapping.getValue() == null) {
+            errors.add(ValidationError.create(
+                    "Callback mapping invalid - 'from' not set and value in null"));
+        }
+
+        if (StringUtils.isBlank(mapping.getTo())) {
+            errors.add(ValidationError.create("Callback mapping invalid - 'to' not set"));
+        }
+
+        if (mapping.getTargets() == null || mapping.getTargets().isEmpty()) {
+            errors.add(ValidationError.create("Callback mapping invalid - 'targets' not set"));
+        }
+
+        if (mapping.getTargets() != null) {
+            for (AttributeValueTarget target : mapping.getTargets()) {
+                validateAttributeTarget(request, mapping, target, errors);
+            }
+        }
+    }
+
+    private static void validateAttributeTarget(RequestAttributeCallback request, AttributeCallbackMapping mapping, AttributeValueTarget target, List<ValidationError> errors) {
+        switch (target) {
+            case PATH_VARIABLE:
+                validatePathVariableTarget(request, mapping, errors);
+                break;
+            case REQUEST_PARAMETER:
+                if (request.getRequestParameter() == null || request.getRequestParameter().isEmpty()) {
+                    errors.add(ValidationError.create(
+                            "Callback query parameters not set, but mapping require it {}", mapping));
+                    break;
+                }
+
+                if (request.getRequestParameter().get(mapping.getTo()) == null) {
+                    errors.add(ValidationError.create(
+                            "Callback query parameters {} not set, but mapping require it {}", mapping.getTo(), mapping));
+                    break;
+                }
+                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
+                    errors.add(ValidationError.create(
+                            "Callback mapping {} invalid. Type {} not allowed for query parameter", mapping, mapping.getAttributeType()));
+                    break;
+                }
+                break;
+            case BODY:
+                if (request.getBody() == null || request.getBody().isEmpty()) {
+                    errors.add(ValidationError.create(
+                            "Callback request body not set, but mapping require it {}", mapping));
+                    break;
+                }
+
+                if (request.getBody().get(mapping.getTo()) == null) {
+                    errors.add(ValidationError.create(
+                            "Callback request body key {} not set, but mapping require it {}", mapping.getTo(), mapping));
+                    break;
+                }
+        }
+    }
+
+    private static void validatePathVariableTarget(RequestAttributeCallback request, AttributeCallbackMapping mapping, List<ValidationError> errors) {
+        if (request.getPathVariable() == null || request.getPathVariable().isEmpty()) {
+            errors.add(ValidationError.create(
+                    "Callback path variables not set, but mapping require it {}", mapping));
+            return;
+        }
+
+        if (request.getPathVariable().get(mapping.getTo()) == null) {
+            errors.add(ValidationError.create(
+                    "Callback path variable {} not set, but mapping require it {}", mapping.getTo(), mapping));
+            return;
+        }
+        if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
+            errors.add(ValidationError.create(
+                    "Callback mapping {} invalid. Type {} not allowed for path variable", mapping, mapping.getAttributeType()));
+            return;
+        }
+        return;
+    }
+
+    private static void validateContextAndMethod(AttributeCallback callback, boolean isResourceObjectCallback, List<ValidationError> errors) {
         if (!isResourceObjectCallback) {
             if (StringUtils.isBlank(callback.getCallbackContext())) {
                 errors.add(ValidationError.create("Callback context not set"));
@@ -616,83 +709,6 @@ public class AttributeDefinitionUtils {
             } catch (IllegalArgumentException e) {
                 errors.add(ValidationError.create("Callback method invalid, because of {}", e.getMessage()));
             }
-        }
-
-        if (callback.getMappings() != null) {
-            for (AttributeCallbackMapping mapping : callback.getMappings()) {
-
-                if (StringUtils.isBlank(mapping.getFrom()) && mapping.getValue() == null) {
-                    errors.add(ValidationError.create(
-                            "Callback mapping invalid - 'from' not set and value in null"));
-                }
-
-                if (StringUtils.isBlank(mapping.getTo())) {
-                    errors.add(ValidationError.create("Callback mapping invalid - 'to' not set"));
-                }
-
-                if (mapping.getTargets() == null || mapping.getTargets().isEmpty()) {
-                    errors.add(ValidationError.create("Callback mapping invalid - 'targets' not set"));
-                }
-
-                if (mapping.getTargets() != null) {
-                    for (AttributeValueTarget target : mapping.getTargets()) {
-                        switch (target) {
-                            case PATH_VARIABLE:
-                                if (request.getPathVariable() == null || request.getPathVariable().isEmpty()) {
-                                    errors.add(ValidationError.create(
-                                            "Callback path variables not set, but mapping require it {}", mapping));
-                                    break;
-                                }
-
-                                if (request.getPathVariable().get(mapping.getTo()) == null) {
-                                    errors.add(ValidationError.create(
-                                            "Callback path variable {} not set, but mapping require it {}", mapping.getTo(), mapping));
-                                    break;
-                                }
-                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
-                                    errors.add(ValidationError.create(
-                                            "Callback mapping {} invalid. Type {} not allowed for path variable", mapping, mapping.getAttributeType()));
-                                    break;
-                                }
-                                break;
-                            case REQUEST_PARAMETER:
-                                if (request.getRequestParameter() == null || request.getRequestParameter().isEmpty()) {
-                                    errors.add(ValidationError.create(
-                                            "Callback query parameters not set, but mapping require it {}", mapping));
-                                    break;
-                                }
-
-                                if (request.getRequestParameter().get(mapping.getTo()) == null) {
-                                    errors.add(ValidationError.create(
-                                            "Callback query parameters {} not set, but mapping require it {}", mapping.getTo(), mapping));
-                                    break;
-                                }
-                                if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
-                                    errors.add(ValidationError.create(
-                                            "Callback mapping {} invalid. Type {} not allowed for query parameter", mapping, mapping.getAttributeType()));
-                                    break;
-                                }
-                                break;
-                            case BODY:
-                                if (request.getBody() == null || request.getBody().isEmpty()) {
-                                    errors.add(ValidationError.create(
-                                            "Callback request body not set, but mapping require it {}", mapping));
-                                    break;
-                                }
-
-                                if (request.getBody().get(mapping.getTo()) == null) {
-                                    errors.add(ValidationError.create(
-                                            "Callback request body key {} not set, but mapping require it {}", mapping.getTo(), mapping));
-                                    break;
-                                }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!errors.isEmpty()) {
-            throw new ValidationException("Attribute callback validation failed.", errors);
         }
     }
 
