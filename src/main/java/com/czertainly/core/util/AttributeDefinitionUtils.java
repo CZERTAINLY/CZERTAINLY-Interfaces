@@ -689,9 +689,7 @@ public class AttributeDefinitionUtils {
         if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
             errors.add(ValidationError.create(
                     "Callback mapping {} invalid. Type {} not allowed for path variable", mapping, mapping.getAttributeType()));
-            return;
         }
-        return;
     }
 
     private static void validateContextAndMethod(AttributeCallback callback, boolean isResourceObjectCallback, List<ValidationError> errors) {
