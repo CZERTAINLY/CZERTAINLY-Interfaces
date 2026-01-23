@@ -92,7 +92,10 @@ public enum Resource implements IPlatformEnum {
     ACME_CHALLENGE("acmeChallenges", "ACME Challenge"),
     CMP_TRANSACTION("cmpTransactions", "CMP Transaction"),
     END_ENTITY_PROFILE("endEntityProfiles", "End entity profile"),
-    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider")
+    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider"),
+
+    // SAAS
+    TRUSTED_CERTIFICATE("trustedCertificates", "Trusted Certificate")
     ;
 
     private static final Resource[] VALUES;
@@ -219,6 +222,7 @@ public enum Resource implements IPlatformEnum {
         public static final String OID = "oids";
         public static final String ACME_ACCOUNT = "acmeAccounts";
         public static final String PROXY = "proxies";
+        public static final String TRUSTED_CERTIFICATE = "trustedCertificates";
 
         private Codes() {
 
