@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
@@ -55,7 +56,7 @@ public interface CallbackController extends AuthProtectedController {
 	public Object callback(@Parameter(description = "Connector UUID") @PathVariable String uuid,
 						   @Parameter(description = "Function Group") @PathVariable String functionGroup,
 						   @Parameter(description = "Kind") @PathVariable String kind,
-						   @RequestBody RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException;
+						   @RequestBody RequestAttributeCallback callback) throws NotFoundException, ConnectorException, ValidationException, AttributeException;
 
     @Operation(summary = "Resource Callback API", description = "API to trigger the Callback for resource.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Callback executed")})
@@ -65,6 +66,6 @@ public interface CallbackController extends AuthProtectedController {
 			@Parameter(description = "Name of the resource") @PathVariable Resource resource,
 			@Parameter(description = "Parent Object UUID") @PathVariable String parentObjectUuid,
 			@RequestBody RequestAttributeCallback callback)
-			throws NotFoundException, ConnectorException, ValidationException;
+            throws NotFoundException, ConnectorException, ValidationException, AttributeException;
 
 	}
