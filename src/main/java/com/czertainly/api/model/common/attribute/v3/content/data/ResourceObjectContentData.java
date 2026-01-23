@@ -21,8 +21,8 @@ public class ResourceObjectContentData extends NameAndUuidDto implements Seriali
     @Schema(description = "Resource contained in data", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeResource resource;
 
-    @Schema(description = "Content of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String base64Content;
+    @Schema(description = "Base64 encoded content of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String content;
 
     @Schema(description = "Attributes of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> attributes;
