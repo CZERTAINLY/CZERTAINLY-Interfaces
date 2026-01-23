@@ -743,7 +743,11 @@ public class AttributeDefinitionUtils {
         }
         List<RequestAttribute> convertedDefinition = new ArrayList<>();
         if (attributes.get(0) instanceof DataAttribute) {
-            for (DataAttribute attribute : (List<DataAttribute>) attributes) {
+            List<DataAttribute> dataAttributes = attributes.stream()
+                    .filter(DataAttribute.class::isInstance)
+                    .map(DataAttribute.class::cast)
+                    .toList();
+            for (DataAttribute attribute : dataAttributes) {
                 if (attribute.getVersion() == 2) {
                     convertBaseAttributesV2ToRequestAttributes((DataAttributeV2) attribute, convertedDefinition);
                 }
@@ -752,7 +756,11 @@ public class AttributeDefinitionUtils {
                 }
             }
         } else if (attributes.get(0) instanceof ResponseAttribute) {
-            convertResponseToRequestAttribute((List<ResponseAttribute>) attributes);
+            List<ResponseAttribute> responseAttributes = attributes.stream()
+                    .filter(ResponseAttribute.class::isInstance)
+                    .map(ResponseAttribute.class::cast)
+                    .toList();
+            convertResponseToRequestAttribute(responseAttributes);
         } else {
             throw new IllegalArgumentException("Invalid argument provided to get Attributes");
         }
