@@ -638,10 +638,8 @@ public class AttributeDefinitionUtils {
 
     private static void validateAttributeTarget(RequestAttributeCallback request, AttributeCallbackMapping mapping, AttributeValueTarget target, List<ValidationError> errors) {
         switch (target) {
-            case PATH_VARIABLE:
-                validatePathVariableTarget(request, mapping, errors);
-                break;
-            case REQUEST_PARAMETER:
+            case PATH_VARIABLE -> validatePathVariableTarget(request, mapping, errors);
+            case REQUEST_PARAMETER -> {
                 if (request.getRequestParameter() == null || request.getRequestParameter().isEmpty()) {
                     errors.add(ValidationError.create(
                             "Callback query parameters not set, but mapping require it {}", mapping));
@@ -656,10 +654,9 @@ public class AttributeDefinitionUtils {
                 if (AttributeContentType.CREDENTIAL.equals(mapping.getAttributeContentType())) {
                     errors.add(ValidationError.create(
                             "Callback mapping {} invalid. Type {} not allowed for query parameter", mapping, mapping.getAttributeType()));
-                    break;
                 }
-                break;
-            case BODY:
+            }
+            case BODY -> {
                 if (request.getBody() == null || request.getBody().isEmpty()) {
                     errors.add(ValidationError.create(
                             "Callback request body not set, but mapping require it {}", mapping));
@@ -669,8 +666,11 @@ public class AttributeDefinitionUtils {
                 if (request.getBody().get(mapping.getTo()) == null) {
                     errors.add(ValidationError.create(
                             "Callback request body key {} not set, but mapping require it {}", mapping.getTo(), mapping));
-                    break;
                 }
+            }
+            default -> {
+                // no validation for other types
+            }
         }
     }
 
