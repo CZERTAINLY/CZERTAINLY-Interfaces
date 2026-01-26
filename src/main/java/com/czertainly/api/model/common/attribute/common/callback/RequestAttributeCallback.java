@@ -1,7 +1,10 @@
 package com.czertainly.api.model.common.attribute.common.callback;
 
+import com.czertainly.api.model.core.scheduler.PaginationRequestDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -9,6 +12,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
 public class RequestAttributeCallback {
 
     @Schema(description = "UUID of the Attribute")
@@ -33,45 +38,14 @@ public class RequestAttributeCallback {
     )
     private Map<String, Serializable> body;
 
-    public String getName() {
-        return name;
-    }
+    @Schema(
+            description = "Filter for the resource callback method", requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private Map<String, Serializable> filter;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Schema(description = "Pagination of the callback response", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private PaginationRequestDto pagination;
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public Map<String, Serializable> getPathVariable() {
-        return pathVariable;
-    }
-
-    public void setPathVariable(Map<String, Serializable> pathVariable) {
-        this.pathVariable = pathVariable;
-    }
-
-    public Map<String, Serializable> getRequestParameter() {
-        return requestParameter;
-    }
-
-    public void setRequestParameter(Map<String, Serializable> requestParameter) {
-        this.requestParameter = requestParameter;
-    }
-
-    public Map<String, Serializable> getBody() {
-        return body;
-    }
-
-    public void setBody(Map<String, Serializable> body) {
-        this.body = body;
-    }
 
     @Override
     public String toString() {

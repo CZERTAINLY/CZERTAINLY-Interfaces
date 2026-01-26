@@ -15,7 +15,7 @@ public class AttributeCallback implements Serializable {
 
     @Schema(
             description = "Context part of callback URL",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String callbackContext;
 

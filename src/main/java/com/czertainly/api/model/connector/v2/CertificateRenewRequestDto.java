@@ -35,7 +35,7 @@ public class CertificateRenewRequestDto {
             description = "List of RA Profiles attributes",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private List<RequestAttribute>raProfileAttributes;
+    private List<RequestAttribute> raProfileAttributes;
 
     @Schema(
             description = "Base64 Certificate content. (Certificate to be renewed)",

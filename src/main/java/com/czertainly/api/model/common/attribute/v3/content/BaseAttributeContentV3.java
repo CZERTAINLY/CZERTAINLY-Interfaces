@@ -31,7 +31,7 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = StringAttributeContentV3.class, name = AttributeContentType.Codes.STRING),
         @JsonSubTypes.Type(value = TextAttributeContentV3.class, name = AttributeContentType.Codes.TEXT),
         @JsonSubTypes.Type(value = TimeAttributeContentV3.class, name = AttributeContentType.Codes.TIME),
-        @JsonSubTypes.Type(value = EncryptedAttributeContent.class, name = AttributeContentType.Codes.ENCRYPTED)
+        @JsonSubTypes.Type(value = ResourceObjectContent.class, name = AttributeContentType.Codes.RESOURCE)
 })
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeContentDtoV3.class)

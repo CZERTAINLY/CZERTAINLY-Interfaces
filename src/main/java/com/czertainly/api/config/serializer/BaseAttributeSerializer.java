@@ -16,6 +16,8 @@ public class BaseAttributeSerializer
 
     public static final String CONTENT_TYPE = "contentType";
     public static final String ATTR_PROPERTIES = "properties";
+    public static final String ATTRIBUTE_CALLBACK = "attributeCallback";
+    public static final String CONSTRAINTS = "constraints";
 
     @Override
     public void serialize(BaseAttribute value,
@@ -41,16 +43,22 @@ public class BaseAttributeSerializer
                 gen.writeStringField(CONTENT_TYPE, attribute.getContentType().getCode());
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
+                gen.writeFieldName(ATTRIBUTE_CALLBACK);
+                serializers.defaultSerializeValue(attribute.getAttributeCallback(), gen);
+                gen.writeFieldName(CONSTRAINTS);
+                serializers.defaultSerializeValue(attribute.getConstraints(), gen);
                 gen.writeEndObject();
             }
             case GROUP -> {
                 if (value.getVersion() == 2) {
                     GroupAttributeV2 attribute = (GroupAttributeV2) value;
+                    gen.writeFieldName(ATTRIBUTE_CALLBACK);
                     serializers.defaultSerializeValue(attribute.getAttributeCallback(), gen);
                     gen.writeEndObject();
                 }
                 if (value.getVersion() == 3) {
                     GroupAttributeV3 attribute = (GroupAttributeV3) value;
+                    gen.writeFieldName(ATTRIBUTE_CALLBACK);
                     serializers.defaultSerializeValue(attribute.getAttributeCallback(), gen);
                     gen.writeEndObject();
                 }
@@ -84,7 +92,7 @@ public class BaseAttributeSerializer
                 gen.writeFieldName(ATTR_PROPERTIES);
                 serializers.defaultSerializeValue(attribute.getProperties(), gen);
                 gen.writeEndObject();
-        }
+            }
         }
     }
 

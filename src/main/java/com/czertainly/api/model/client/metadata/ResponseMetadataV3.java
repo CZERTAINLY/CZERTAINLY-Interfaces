@@ -2,6 +2,7 @@ package com.czertainly.api.model.client.metadata;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.AttributeType;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +29,7 @@ public class ResponseMetadataV3 extends ResponseMetadata {
 
 
     @Override
-    public String getVersion() {
-        return "3";
+    public AttributeVersion getVersion() {
+        return AttributeVersion.V3;
     }
 }
