@@ -58,4 +58,9 @@ public class BaseAttributeContentV2<T extends Serializable> extends AttributeCon
     public AttributeContentType getContentType() {
         return null;
     }
+
+    @Override
+    public <T> T getDataFromDecrypted(String decrypted) {
+        return null;
+    }
 }
