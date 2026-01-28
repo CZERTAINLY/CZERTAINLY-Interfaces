@@ -1,7 +1,6 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
-import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
 import com.czertainly.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -42,9 +41,8 @@ public class FileAttributeContentV3 extends BaseAttributeContentV3<FileAttribute
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FileAttributeContentV3)) return false;
+        if (!(o instanceof FileAttributeContentV3 that)) return false;
         if (!super.equals(o)) return false;
-        FileAttributeContentV3 that = (FileAttributeContentV3) o;
         return Objects.equals(data, that.data);
     }
 

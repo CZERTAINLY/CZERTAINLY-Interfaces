@@ -48,4 +48,9 @@ public class BooleanAttributeContentV2 extends BaseAttributeContentV2<Boolean> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
+
+    @Override
+    public <T> T getDataFromDecrypted(String decrypted) {
+        return null;
+    }
 }

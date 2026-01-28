@@ -8,6 +8,7 @@ import com.czertainly.api.model.common.attribute.v2.content.*;
 import com.czertainly.api.model.common.attribute.v3.content.*;
 import com.czertainly.api.model.common.attribute.v3.content.data.ResourceObjectContentData;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * This class defines Attribute Content types.
@@ -37,8 +40,7 @@ public enum AttributeContentType implements IPlatformEnum {
     CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContentV2.class, null, CredentialAttributeContentData.class, false),
     CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContentV2.class, CodeBlockAttributeContentV3.class, CodeBlockAttributeContentData.class, false),
     OBJECT(Codes.OBJECT, "Object", ObjectAttributeContentV2.class, ObjectAttributeContentV3.class, Object.class, false),
-    RESOURCE(Codes.RESOURCE, "Resource Object", null, ResourceObjectContent.class, ResourceObjectContentData.class, false)
-    ;
+    RESOURCE(Codes.RESOURCE, "Resource Object", null, ResourceObjectContent.class, ResourceObjectContentData.class, false);
 
 
     private static final AttributeContentType[] VALUES;
@@ -51,13 +53,17 @@ public enum AttributeContentType implements IPlatformEnum {
     private final String label;
     private final String description;
 
+    @Getter
     private final Class<?> contentV2Class;
 
     @Getter
     private final Class<?> contentV3Class;
+    @Getter
     private final Class<?> contentDataClass;
 
+    @Getter
     private final boolean filterByData;
+
 
     AttributeContentType(String code, String label, Class<?> contentV2Class, Class<?> contentV3Class, Class<?> dataJavaClass, boolean filterByData) {
         this(code, label, null, contentV2Class, contentV3Class, dataJavaClass, filterByData);
@@ -88,14 +94,6 @@ public enum AttributeContentType implements IPlatformEnum {
                 .findFirst().orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
     }
 
-    public boolean isFilterByData() {
-        return filterByData;
-    }
-
-    public Class<?> getContentV2Class() {
-        return contentV2Class;
-    }
-
     @Override
     @JsonValue
     public String getCode() {
@@ -112,9 +110,21 @@ public enum AttributeContentType implements IPlatformEnum {
         return this.description;
     }
 
-    public Class<?> getContentDataClass() {
-        return contentDataClass;
-    }
+    public static final Map<AttributeContentType, Function<String, Object>> DATA_FROM_DECRYPTED_MAP = Map.ofEntries(
+            Map.entry(STRING, decrypted -> decrypted),
+            Map.entry(TEXT, decrypted -> decrypted),
+            Map.entry(INTEGER, decrypted -> decrypted == null ? null : Integer.valueOf(decrypted)),
+            Map.entry(BOOLEAN, decrypted -> decrypted == null ? null : Boolean.valueOf(decrypted)),
+            Map.entry(FLOAT, decrypted -> decrypted == null ? null : Float.valueOf(decrypted)),
+            Map.entry(DATE, decrypted -> decrypted == null ? null : LocalDate.parse(decrypted)),
+            Map.entry(TIME, decrypted -> decrypted == null ? null : LocalTime.parse(decrypted)),
+            Map.entry(DATETIME, decrypted -> decrypted == null ? null : ZonedDateTime.parse(decrypted)),
+            Map.entry(SECRET, decrypted -> null),
+            Map.entry(FILE, decrypted -> AttributeDefinitionUtils.deserializeContentData(decrypted, FileAttributeContentData.class)),
+            Map.entry(CREDENTIAL, decrypted -> AttributeDefinitionUtils.deserializeContentData(decrypted, CredentialAttributeContentData.class)),
+            Map.entry(CODEBLOCK, decrypted -> AttributeDefinitionUtils.deserializeContentData(decrypted, CodeBlockAttributeContentData.class)),
+            Map.entry(OBJECT, decrypted -> decrypted)
+    );
 
     public static class Codes {
 
@@ -191,6 +201,6 @@ public enum AttributeContentType implements IPlatformEnum {
          * Attribute type representing resource object
          **/
         public static final String RESOURCE = "resource";
-
     }
+    
 }
