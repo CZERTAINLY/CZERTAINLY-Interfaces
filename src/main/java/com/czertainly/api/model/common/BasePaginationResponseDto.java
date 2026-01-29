@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 public class BasePaginationResponseDto {
     @Schema(description = "Number of entries per page", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer itemsPerPage;
+    private int itemsPerPage;
 
     @Schema(description = "Page number for the request", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer pageNumber;
+    private int pageNumber;
 
     @Schema(description = "Number of pages available", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Integer totalPages;
+    private int totalPages;
 
     @Schema(description = "Number of items available", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long totalItems;
