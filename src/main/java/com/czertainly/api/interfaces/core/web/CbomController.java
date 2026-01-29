@@ -5,7 +5,8 @@ import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.cbom.CbomDetailDto;
-import com.czertainly.api.model.core.cbom.CbomListDto;
+import com.czertainly.api.model.core.cbom.CbomItemDto;
+import com.czertainly.api.model.core.cbom.CbomListResponseDto;
 import com.czertainly.api.model.core.cbom.CbomUploadRequestDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +28,7 @@ public interface CbomController extends AuthProtectedController {
 	@Operation(summary = "List CBOMs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available CBOMs") })
 	@PostMapping(consumes = { "application/json" }, produces = { "application/json" })
-	List<CbomListDto> listCboms(@RequestBody SearchRequestDto request);
+	CbomListResponseDto listCboms(@RequestBody SearchRequestDto request);
 
 	@Operation(summary = "CBOM detail")
 	@ApiResponses(value = {
@@ -46,7 +47,7 @@ public interface CbomController extends AuthProtectedController {
 			@ApiResponse(responseCode = "404", description = "CBOM not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
 	@GetMapping(path = "/{urn}/versions", produces = { "application/json" })
-	List<CbomListDto> listCbomVersions(
+	List<CbomItemDto> listCbomVersions(
 			@Parameter(description = "CBOM URN") @PathVariable String urn)
 			throws NotFoundException;
 
@@ -57,6 +58,6 @@ public interface CbomController extends AuthProtectedController {
 	})
 	@PostMapping(path = "/upload", consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.CREATED)
-	CbomListDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws AttributeException;
+	CbomItemDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws AttributeException;
 
 }

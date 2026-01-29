@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class CbomDetailDto extends CbomListDto {
+public class CbomDetailDto extends CbomItemDto {
 
 	@Schema(description = "Raw JSON content of CBOM document", requiredMode = Schema.RequiredMode.REQUIRED)
 	private Map<String, Object> content;
