@@ -15,5 +15,5 @@ public class BasePaginationResponseDto {
     private int totalPages;
 
     @Schema(description = "Number of items available", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Long totalItems;
+    private long totalItems;
 }
