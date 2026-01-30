@@ -27,5 +27,4 @@ public abstract class AttributeContent implements Serializable {
 
     public abstract AttributeContentType getContentType();
 
-    public abstract  <T> T getDataFromDecrypted(String decrypted);
 }
