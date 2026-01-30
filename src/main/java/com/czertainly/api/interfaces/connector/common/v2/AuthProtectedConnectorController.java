@@ -27,7 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
         @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_TLS_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.CONNECTOR_API_KEY_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.NO_SECURITY_SCHEME_NAME),
-})@ApiResponses(
+})
+@ApiResponses(
         value = {
                 @ApiResponse(
                         responseCode = "401",
@@ -39,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
                 ),
                 @ApiResponse(
                         responseCode = "500",
-                        description = "Unauthorized",
+                        description = "Internal Server Error",
                         content = @Content(
                                 mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                                 schema = @Schema(implementation = ProblemDetailExtended.class)

@@ -48,7 +48,7 @@ public class ProblemDetailExtended extends ProblemDetail {
     @Schema(description = "URI reference identifying the occurrence (e.g., request path or operation ID).",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             format = "uri",
-            example = "One or more fields failed validation.")
+            example = "/v1/certificates/123e4567-e89b-12d3-a456-426614174000")
     @Override
     @Nullable
     public URI getInstance() { return super.getInstance(); }

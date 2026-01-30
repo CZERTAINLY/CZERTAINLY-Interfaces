@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum CommonFeatureFlag implements FeatureFlag {
 
-    STATELESS("stateless", "Stateless Connector", "A stateless connector does not require persistence layer (e.g. database)");
+    STATELESS("stateless", "Stateless", "A stateless connector does not require persistence layer (e.g. database)");
 
     private static final CommonFeatureFlag[] VALUES;
 
@@ -25,10 +25,6 @@ public enum CommonFeatureFlag implements FeatureFlag {
     private final String code;
     private final String label;
     private final String description;
-
-    CommonFeatureFlag(String code, String label) {
-        this(code, label,null);
-    }
 
     CommonFeatureFlag(String code, String label, String description) {
         this.code = code;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
         value = {
                 @ApiResponse(
                         responseCode = "500",
-                        description = "Unauthorized",
+                        description = "Internal Server Error",
                         content = @Content(
                                 mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                                 schema = @Schema(implementation = ProblemDetailExtended.class)

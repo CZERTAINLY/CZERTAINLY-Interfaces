@@ -16,6 +16,6 @@ public class HealthInfo {
     private String description;
 
     @Schema(description = "Health status of connector components", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private Map<String, HealthInfo> components;
+    private Map<String, HealthInfoComponent> components;
 
 }

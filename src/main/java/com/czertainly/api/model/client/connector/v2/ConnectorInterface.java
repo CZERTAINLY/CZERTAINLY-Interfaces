@@ -37,7 +37,7 @@ public enum ConnectorInterface implements IPlatformEnum {
     private final String description;
 
     ConnectorInterface(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     ConnectorInterface(String code, String label, String description) {
