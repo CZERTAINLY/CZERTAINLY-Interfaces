@@ -59,8 +59,4 @@ public class BaseAttributeContentV2<T extends Serializable> extends AttributeCon
         return null;
     }
 
-    @Override
-    public <T> T getDataFromDecrypted(String decrypted) {
-        return null;
-    }
 }

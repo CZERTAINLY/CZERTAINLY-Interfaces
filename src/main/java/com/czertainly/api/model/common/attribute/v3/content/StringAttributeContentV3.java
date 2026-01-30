@@ -54,9 +54,4 @@ public class StringAttributeContentV3 extends BaseAttributeContentV3<String> {
         return Objects.hash(data);
     }
 
-    @Override
-    public String getDataFromDecrypted(String decrypted) {
-        return decrypted;
-    }
-
 }

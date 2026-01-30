@@ -52,8 +52,4 @@ public class IntegerAttributeContentV3 extends BaseAttributeContentV3<Integer> {
         return Objects.hash(super.hashCode(), data);
     }
 
-    @Override
-    public Integer getDataFromDecrypted(String decrypted) {
-        return Integer.valueOf(decrypted);
-    }
 }

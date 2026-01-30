@@ -57,9 +57,4 @@ public class TimeAttributeContentV3 extends BaseAttributeContentV3<LocalTime> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
-    @Override
-    public LocalTime getDataFromDecrypted(String decrypted) {
-        return LocalTime.parse(decrypted);
-    }
 }

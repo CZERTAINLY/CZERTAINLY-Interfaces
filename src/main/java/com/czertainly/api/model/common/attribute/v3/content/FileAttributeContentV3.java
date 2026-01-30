@@ -50,9 +50,4 @@ public class FileAttributeContentV3 extends BaseAttributeContentV3<FileAttribute
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
-    @Override
-    public FileAttributeContentData getDataFromDecrypted(String decrypted) {
-        return (FileAttributeContentData) AttributeDefinitionUtils.deserializeContentData(decrypted, FileAttributeContentData.class);
-    }
 }

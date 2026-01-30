@@ -49,9 +49,4 @@ public class CodeBlockAttributeContentV3 extends BaseAttributeContentV3<CodeBloc
                 data
         );
     }
-
-    @Override
-    public CodeBlockAttributeContentData getDataFromDecrypted(String decrypted) {
-        return (CodeBlockAttributeContentData) AttributeDefinitionUtils.deserializeContentData(decrypted, CodeBlockAttributeContentData.class);
-    }
 }

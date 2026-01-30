@@ -58,8 +58,4 @@ public class BooleanAttributeContentV3 extends BaseAttributeContentV3<Boolean> {
         return Objects.hash(super.hashCode(), data);
     }
 
-    @Override
-    public Boolean getDataFromDecrypted(String decrypted) {
-        return Boolean.valueOf(decrypted);
-    }
 }

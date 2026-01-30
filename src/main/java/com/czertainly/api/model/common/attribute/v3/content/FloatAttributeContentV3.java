@@ -53,8 +53,4 @@ public class FloatAttributeContentV3 extends BaseAttributeContentV3<Float> {
         return Objects.hash(super.hashCode(), data);
     }
 
-    @Override
-    public Float getDataFromDecrypted(String decrypted) {
-        return Float.valueOf(decrypted);
-    }
 }

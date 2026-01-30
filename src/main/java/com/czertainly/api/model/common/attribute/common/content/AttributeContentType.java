@@ -123,7 +123,8 @@ public enum AttributeContentType implements IPlatformEnum {
             Map.entry(FILE, decrypted -> AttributeDefinitionUtils.deserializeContentData(decrypted, FileAttributeContentData.class)),
             Map.entry(CREDENTIAL, decrypted -> AttributeDefinitionUtils.deserializeContentData(decrypted, CredentialAttributeContentData.class)),
             Map.entry(CODEBLOCK, decrypted -> AttributeDefinitionUtils.deserializeContentData(decrypted, CodeBlockAttributeContentData.class)),
-            Map.entry(OBJECT, decrypted -> decrypted)
+            Map.entry(OBJECT, decrypted -> decrypted),
+            Map.entry(RESOURCE, decrypted -> AttributeDefinitionUtils.deserializeContentData(decrypted, ResourceObjectContentData.class))
     );
 
     public static class Codes {

@@ -47,9 +47,4 @@ import java.util.Objects;
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
-    @Override
-    public Serializable getDataFromDecrypted(String decrypted) {
-        return decrypted;
-    }
 }

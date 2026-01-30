@@ -60,9 +60,4 @@ public class DateTimeAttributeContentV3 extends BaseAttributeContentV3<ZonedDate
         return Objects.hash(super.hashCode(), data);
     }
 
-    @Override
-    public ZonedDateTime getDataFromDecrypted(String decrypted) {
-        return ZonedDateTime.parse(decrypted);
-    }
-
 }
