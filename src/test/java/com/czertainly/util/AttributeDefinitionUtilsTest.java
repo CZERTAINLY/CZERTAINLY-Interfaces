@@ -738,7 +738,7 @@ class AttributeDefinitionUtilsTest {
         RequestAttributeCallback callbackRequest = new RequestAttributeCallback();
         callbackRequest.setPathVariable(Map.ofEntries(Map.entry("credentialKind", "softKeyStore")));
 
-        validateCallback(callback, callbackRequest); // should not throw exception
+        validateCallback(callback, callbackRequest, false); // should not throw exception
     }
 
     @Test
@@ -769,7 +769,7 @@ class AttributeDefinitionUtilsTest {
         callbackRequest.setRequestParameter(Map.ofEntries(Map.entry("toQueryParam", 1234)));
 
 
-        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> validateCallback(callback, callbackRequest));
+        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> validateCallback(callback, callbackRequest, false));
 
         Assertions.assertNotNull(exception.getErrors());
         Assertions.assertFalse(exception.getErrors().isEmpty());

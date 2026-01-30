@@ -1,9 +1,14 @@
 package com.czertainly.api.model.common.attribute.common.properties;
 
+import com.czertainly.api.model.core.auth.AttributeResource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Getter
+@Setter
 public class DataAttributeProperties extends BaseAttributeProperties {
 
     /**
@@ -47,37 +52,8 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     )
     private boolean multiSelect = false;
 
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public boolean isReadOnly() {
-        return readOnly;
-    }
-
-    public void setReadOnly(boolean readOnly) {
-        this.readOnly = readOnly;
-    }
-
-    public boolean isList() {
-        return list;
-    }
-
-    public void setList(boolean list) {
-        this.list = list;
-    }
-
-    public boolean isMultiSelect() {
-        return multiSelect;
-    }
-
-    public void setMultiSelect(boolean multiSelect) {
-        this.multiSelect = multiSelect;
-    }
+    @Schema(description = "Resource of the attribute, relevant if the attribute has Resource content type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private AttributeResource resource;
 
     @Override
     public String toString() {

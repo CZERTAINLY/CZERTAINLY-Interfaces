@@ -20,7 +20,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 @DiscriminatorMapping(value = AttributeContentType.Codes.OBJECT, schema = ObjectAttributeContentV3.class),
                 @DiscriminatorMapping(value = AttributeContentType.Codes.STRING, schema = StringAttributeContentV3.class),
                 @DiscriminatorMapping(value = AttributeContentType.Codes.TEXT, schema = TextAttributeContentV3.class),
-                @DiscriminatorMapping(value = AttributeContentType.Codes.TIME, schema = TimeAttributeContentV3.class)
+                @DiscriminatorMapping(value = AttributeContentType.Codes.TIME, schema = TimeAttributeContentV3.class),
+                @DiscriminatorMapping(value = AttributeContentType.Codes.RESOURCE, schema = ResourceObjectContent.class)
         },
         oneOf = {
                 BooleanAttributeContentV3.class,
@@ -33,7 +34,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 ObjectAttributeContentV3.class,
                 StringAttributeContentV3.class,
                 TextAttributeContentV3.class,
-                TimeAttributeContentV3.class
+                TimeAttributeContentV3.class,
+                ResourceObjectContent.class
         }
 )
 public interface BaseAttributeContentDtoV3 {
