@@ -15,6 +15,7 @@ public enum ConnectorInterface implements IPlatformEnum {
 
     INFO("info", "Info"),
     HEALTH("health", "Health"),
+    METRICS("metrics", "Metrics"),
     AUTHORITY_PROVIDER("authorityProvider", "Authority Provider"),
     DISCOVERY_PROVIDER("discoveryProvider", "Discovery Provider"),
     ENTITY_PROVIDER("entityProvider", "Entity Provider"),

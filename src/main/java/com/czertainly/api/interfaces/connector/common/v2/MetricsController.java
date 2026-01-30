@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.connector.common.v2;
 
+import com.czertainly.api.model.common.error.ProblemDetailExtended;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -45,6 +47,14 @@ public interface MetricsController extends AuthProtectedConnectorController {
                                             examples = {@ExampleObject("# HELP http_requests_total Total requests\n# TYPE http_requests_total counter\nhttp_requests_total{method=\"GET\"} 42")}
                                     )
                             }
+                    ),
+                    @ApiResponse(
+                            responseCode = "501",
+                            description = "Not Implemented",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                                    schema = @Schema(implementation = ProblemDetailExtended.class)
+                            )
                     )
             })
     String getMetrics();

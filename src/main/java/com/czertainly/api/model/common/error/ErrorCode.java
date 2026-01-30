@@ -9,7 +9,13 @@ import java.net.URI;
 @Getter
 @Schema(enumAsRef = true)
 public enum ErrorCode {
-    VALIDATION_FAILED(ProblemTypeCategory.COMMON, "Validation failed", HttpStatus.UNPROCESSABLE_ENTITY, true);
+    VALIDATION_FAILED(ProblemTypeCategory.COMMON, "Validation failed", HttpStatus.UNPROCESSABLE_ENTITY, true),
+    RESOURCE_NOT_FOUND(ProblemTypeCategory.COMMON, "Resource not found", HttpStatus.NOT_FOUND, true),
+    RESOURCE_ALREADY_EXISTS(ProblemTypeCategory.COMMON, "Resource already exists", HttpStatus.BAD_REQUEST, true),
+    REQUEST_TIMEOUT(ProblemTypeCategory.COMMON, "Request timeout", HttpStatus.REQUEST_TIMEOUT, true),
+    OPERATION_NOT_SUPPORTED(ProblemTypeCategory.COMMON, "Operation not supported", HttpStatus.NOT_IMPLEMENTED, true),
+    ATTRIBUTES_ERROR(ProblemTypeCategory.COMMON, "Attributes handling error", HttpStatus.BAD_REQUEST, true)
+    ;
 
     private final ProblemTypeCategory category;
     private final String title;
