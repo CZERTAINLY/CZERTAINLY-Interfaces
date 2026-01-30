@@ -1,14 +1,11 @@
 package com.czertainly.api.interfaces.connector.common.v2;
 
-import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.connector.v2.InfoResponse;
-import com.czertainly.api.model.common.ErrorMessageDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
                 "You can also implement helper end points that are used for callbacks and other relevant operations " +
                 "specific to implementation."
 )
-public interface InfoController extends AuthProtectedConnectorController {
+public interface InfoController extends NoAuthConnectorController {
 
     @GetMapping(
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Get Connector Info",
@@ -36,11 +33,6 @@ public interface InfoController extends AuthProtectedConnectorController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Connector info retrieved successfully"
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Connector info failed to retrieve",
-                            content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
                     )
     })
     InfoResponse getConnectorInfo();

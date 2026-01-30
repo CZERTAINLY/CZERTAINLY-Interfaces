@@ -2,7 +2,6 @@ package com.czertainly.api.model.client.connector.v2;
 
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,8 +20,8 @@ public enum CommonFeatureFlag implements FeatureFlag {
         VALUES = values();
     }
 
-    @Schema(description = "Function Group code of the Connector",
-            examples = {"credentialProvider"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Feature flag code",
+            examples = {"stateless"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
@@ -59,7 +58,7 @@ public enum CommonFeatureFlag implements FeatureFlag {
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown connector interface code {}", code)));
+                        new ValidationException(ValidationError.create("Unknown common feature flag code {}", code)));
     }
 
     @Override

@@ -1,8 +1,7 @@
 package com.czertainly.api.interfaces.connector.common.v2;
 
 import com.czertainly.api.config.OpenApiConfig;
-import com.czertainly.api.model.common.AuthenticationServiceExceptionDto;
-import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.error.ProblemDetailExtended;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.http.MediaType;
-import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.RestController;
 
 @OpenAPIDefinition(
@@ -36,7 +34,15 @@ import org.springframework.web.bind.annotation.RestController;
                         description = "Unauthorized",
                         content = @Content(
                                 mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
-                                schema = @Schema(implementation = ProblemDetail.class)
+                                schema = @Schema(implementation = ProblemDetailExtended.class)
+                        )
+                ),
+                @ApiResponse(
+                        responseCode = "500",
+                        description = "Unauthorized",
+                        content = @Content(
+                                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                                schema = @Schema(implementation = ProblemDetailExtended.class)
                         )
                 )
         })

@@ -1,11 +1,11 @@
 package com.czertainly.api.interfaces.connector.common.v2;
 
-import com.czertainly.api.interfaces.AuthProtectedConnectorController;
 import com.czertainly.api.model.client.connector.v2.HealthInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
                 "Connector returns own status and in some cases " +
                 "can return status of components on which it depends like database, HSM and so on."
 )
-public interface HealthController extends AuthProtectedConnectorController {
+public interface HealthController extends NoAuthConnectorController {
 
     @GetMapping(
-            produces = {"application/json"}
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     @Operation(
             summary = "Health check"
@@ -30,7 +30,7 @@ public interface HealthController extends AuthProtectedConnectorController {
                             responseCode = "200",
                             description = "Health check retrieved successfully"
                     )
-    })
+            })
     HealthInfo checkHealth();
 
 }
