@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.OffsetDateTime;
 
 @Data
-public class CbomItemDto {
+public class CbomDto {
 
 	@Schema(description = "CBOM serial number (URN)", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String serialNumber;

@@ -13,6 +13,6 @@ import java.util.List;
 public class CbomListResponseDto extends BasePaginationResponseDto {
 
     @Schema(description = "CBOM items returned", requiredMode = Schema.RequiredMode.REQUIRED)
-	private List<CbomItemDto> items;
+	private List<CbomDto> items;
 }
 
