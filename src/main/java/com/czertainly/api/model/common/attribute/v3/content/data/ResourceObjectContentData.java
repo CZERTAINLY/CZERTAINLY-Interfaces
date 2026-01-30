@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.common.attribute.common.content.data.AttributeContentData;
-import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
 import com.czertainly.api.model.core.auth.AttributeResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
