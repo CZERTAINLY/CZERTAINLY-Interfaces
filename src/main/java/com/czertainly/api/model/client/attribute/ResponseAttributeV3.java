@@ -6,13 +6,12 @@ import com.czertainly.api.model.common.attribute.common.content.AttributeContent
 import com.czertainly.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,4 +33,17 @@ public class ResponseAttributeV3 extends ResponseAttribute {
     public AttributeVersion getSchemaVersion() {
         return AttributeVersion.V3;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ResponseAttributeV3 that)) return false;
+        return Objects.equals(uuid, that.uuid) && Objects.equals(content, that.content) && Objects.equals(name, that.name) && Objects.equals(label, that.label) && type == that.type && contentType == that.contentType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, content, name, label, type, contentType);
+    }
+
 }

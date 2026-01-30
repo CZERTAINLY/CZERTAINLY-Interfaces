@@ -32,8 +32,7 @@ public class FileAttributeContentData implements AttributeContentData {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FileAttributeContentData)) return false;
-        FileAttributeContentData that = (FileAttributeContentData) o;
+        if (!(o instanceof FileAttributeContentData that)) return false;
         return Objects.equals(content, that.content) && Objects.equals(fileName, that.fileName);
     }
 

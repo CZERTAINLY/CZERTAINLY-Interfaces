@@ -1,6 +1,8 @@
 package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
+import com.czertainly.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
+import com.czertainly.core.util.AttributeDefinitionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
@@ -49,4 +51,5 @@ public class IntegerAttributeContentV3 extends BaseAttributeContentV3<Integer> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
+
 }

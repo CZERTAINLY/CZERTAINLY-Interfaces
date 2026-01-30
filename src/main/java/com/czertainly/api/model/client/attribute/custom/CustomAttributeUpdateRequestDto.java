@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.attribute.custom;
 
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
+import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import com.czertainly.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -85,6 +86,11 @@ public class CustomAttributeUpdateRequestDto {
             defaultValue = "false"
     )
     private boolean multiSelect = false;
+
+
+    @Schema(description = "Protection level of the attribute", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProtectionLevel protectionLevel = ProtectionLevel.NONE;
+
 
     /**
      * Attribute Content

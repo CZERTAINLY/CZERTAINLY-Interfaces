@@ -19,6 +19,7 @@ public class CodeBlockAttributeContentV3 extends BaseAttributeContentV3<CodeBloc
 
     public CodeBlockAttributeContentV3(String reference, CodeBlockAttributeContentData data) {
         super(reference, data);
+        this.data = data;
         setContentType(AttributeContentType.CODEBLOCK);
     }
 
@@ -37,7 +38,6 @@ public class CodeBlockAttributeContentV3 extends BaseAttributeContentV3<CodeBloc
         if (this == o) return true;
         if (!(o instanceof CodeBlockAttributeContentV3 that)) return false;
         if (!super.equals(o)) return false;
-
         return Objects.equals(data, that.data);
     }
 

@@ -52,4 +52,6 @@ public class DateAttributeContentV3 extends BaseAttributeContentV3<LocalDate> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
+
+
 }
