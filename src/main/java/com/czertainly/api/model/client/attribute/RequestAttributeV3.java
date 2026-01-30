@@ -17,11 +17,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RequestAttributeV3 extends RequestAttribute {
 
-    @Override
-    public AttributeVersion getVersion() {
-        return AttributeVersion.V3;
-    }
-
     private UUID uuid;
 
     private String name;
@@ -29,6 +24,12 @@ public class RequestAttributeV3 extends RequestAttribute {
     private AttributeContentType contentType;
 
     private List<BaseAttributeContentV3<?>> content;
+
+    private AttributeVersion version = AttributeVersion.V3;
+
+    public RequestAttributeV3(UUID uuid, String name, AttributeContentType contentType, List<BaseAttributeContentV3<?>> content) {
+        this(uuid, name, contentType, content, AttributeVersion.V3);
+    }
 
 
 }
