@@ -768,10 +768,10 @@ public class AttributeDefinitionUtils {
     private static void convertResponseToRequestAttribute(List<ResponseAttribute> attributes) {
         List<ResponseAttribute> itrAttributes = attributes;
         for (ResponseAttribute clt : itrAttributes) {
-            if (clt.getSchemaVersion() == AttributeVersion.V2) {
+            if (clt.getVersion() == AttributeVersion.V2) {
                 convertResponseAttributeV2ToResponseAttribute(clt);
             }
-            if (clt.getSchemaVersion() == AttributeVersion.V3) {
+            if (clt.getVersion() == AttributeVersion.V3) {
                 convertResponseAttributeV3ToResponseAttribute(clt);
             }
         }

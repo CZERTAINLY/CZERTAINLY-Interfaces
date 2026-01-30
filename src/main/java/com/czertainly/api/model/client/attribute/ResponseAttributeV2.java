@@ -33,8 +33,6 @@ public class ResponseAttributeV2 extends ResponseAttribute {
 
     private AttributeContentType contentType;
 
-    @Override
-    public AttributeVersion getSchemaVersion() {
-        return AttributeVersion.V2;
-    }
+    private AttributeVersion version = AttributeVersion.V2;
+
 }

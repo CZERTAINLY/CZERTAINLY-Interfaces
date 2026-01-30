@@ -78,5 +78,5 @@ public interface ResponseAttributeDto extends Serializable {
                 description = "Version of the Attribute",
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
-        AttributeVersion getSchemaVersion();
+        AttributeVersion getVersion();
 }
