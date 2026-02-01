@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(
         name = "Connector Info v2",
         description = "Connector Information API. " +
-                "Each connector may have multiple functions represented by FunctionGroupCode. " +
-                "For each FunctionGroupCode there is a list of implemented end points. " +
+                "Each connector may have multiple functions represented by its connector interfaces. " +
+                "For each connector interface there is a list of implemented endpoints. " +
                 "These endpoints must be according the specified interface, this is validated by the core. " +
                 "You can also implement helper end points that are used for callbacks and other relevant operations " +
                 "specific to implementation."

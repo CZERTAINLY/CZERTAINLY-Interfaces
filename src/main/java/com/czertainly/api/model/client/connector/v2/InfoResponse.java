@@ -9,7 +9,7 @@ import java.util.List;
 public class InfoResponse {
 
     @Schema(description = "Connector Information", requiredMode = Schema.RequiredMode.REQUIRED)
-    private ConnectorInfo connectorInfo;
+    private ConnectorInfo connector;
 
     @Schema(description = "Interfaces supported and implemented by the connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ConnectorInterfaceInfo> interfaces;

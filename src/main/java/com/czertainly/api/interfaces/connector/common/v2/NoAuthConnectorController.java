@@ -20,6 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
                                 mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                                 schema = @Schema(implementation = ProblemDetailExtended.class)
                         )
+                ),
+                @ApiResponse(
+                        responseCode = "502",
+                        description = "Bad Gateway"
+                ),
+                @ApiResponse(
+                        responseCode = "503",
+                        description = "Service Unavailable"
+                ),
+                @ApiResponse(
+                        responseCode = "504",
+                        description = "Gateway Timeout"
                 )
         })
 public interface NoAuthConnectorController {

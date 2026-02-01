@@ -12,6 +12,6 @@ public class HealthInfoComponent {
     private HealthStatus status;
 
     @Schema(description = "Additional details about the component status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private Map<String, String> details;
+    private Map<String, Object> details;
 
 }

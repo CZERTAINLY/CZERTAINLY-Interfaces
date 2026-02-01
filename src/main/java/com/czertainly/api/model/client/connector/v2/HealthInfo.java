@@ -12,10 +12,9 @@ public class HealthInfo {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private HealthStatus status;
 
-    @Schema(description = "Detailed status description", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String description;
-
-    @Schema(description = "Health status of connector components", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Health status of connector components", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+        requiredProperties = {"liveness", "readiness"}
+    )
     private Map<String, HealthInfoComponent> components;
 
 }

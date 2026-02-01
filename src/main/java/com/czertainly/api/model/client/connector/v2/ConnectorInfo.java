@@ -3,6 +3,8 @@ package com.czertainly.api.model.client.connector.v2;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class ConnectorInfo {
 
@@ -15,7 +17,10 @@ public class ConnectorInfo {
     @Schema(description = "Version of the connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private String version;
 
+    @Schema(description = "Description of the connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String description;
+
     @Schema(description = "Metadata of the connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private ConnectorMetadata metadata;
+    private Map<String, Object> metadata;
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1/metrics")
 @Tag(
+
         name = "Metrics API",
         description = "Connector metrics API. " +
                 "Connector metrics API is exposing standard Prometheus/OpenMetrics metrics that can be scraped by observability solutions and collectors."

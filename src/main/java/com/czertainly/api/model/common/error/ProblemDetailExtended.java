@@ -64,7 +64,7 @@ public class ProblemDetailExtended extends ProblemDetail {
     @Schema(description = "Application specific error code", requiredMode = Schema.RequiredMode.REQUIRED)
     private ErrorCode errorCode;
 
-    @Schema(description = "Timestamp of when the error occurred", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Timestamp of when the error occurred (RFC 3339 format)", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"2026-01-22T15:10:20.123Z", "2026-01-22T15:10:20.123+02:00"})
     private OffsetDateTime timestamp;
 
     @Schema(description = "Correlation ID for tracking the request. Trace value from X-Request-Id or W3C Trace Context.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
