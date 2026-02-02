@@ -49,5 +49,4 @@ public class IntegerAttributeContentV3 extends BaseAttributeContentV3<Integer> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
 }

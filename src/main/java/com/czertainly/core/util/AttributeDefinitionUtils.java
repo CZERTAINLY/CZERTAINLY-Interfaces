@@ -233,7 +233,7 @@ public class AttributeDefinitionUtils {
             throw new IllegalStateException(e);
         }
     }
-    
+
     public static <T extends BaseAttributeContentV2<?>> List<T> deserializeAttributeContent(String attributeContentJson, Class<T> clazz) {
         if (attributeContentJson == null) {
             return null;
