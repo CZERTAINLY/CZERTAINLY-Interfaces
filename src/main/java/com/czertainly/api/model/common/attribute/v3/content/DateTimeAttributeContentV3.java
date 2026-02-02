@@ -57,5 +57,4 @@ public class DateTimeAttributeContentV3 extends BaseAttributeContentV3<ZonedDate
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
 }

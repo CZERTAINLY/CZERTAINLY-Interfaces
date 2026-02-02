@@ -72,4 +72,5 @@ public class BaseAttributeContentV3<T extends Serializable> extends AttributeCon
     public int hashCode() {
         return Objects.hash(reference, data);
     }
+
 }

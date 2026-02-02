@@ -233,18 +233,7 @@ public class AttributeDefinitionUtils {
             throw new IllegalStateException(e);
         }
     }
-
-    public static Object deserializeContentData(String json, Class<?> clazz) {
-        if (json == null) {
-            return null;
-        }
-        try {
-            return ATTRIBUTES_OBJECT_MAPPER.readValue(json, clazz);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
+    
     public static <T extends BaseAttributeContentV2<?>> List<T> deserializeAttributeContent(String attributeContentJson, Class<T> clazz) {
         if (attributeContentJson == null) {
             return null;

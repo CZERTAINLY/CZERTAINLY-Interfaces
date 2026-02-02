@@ -49,5 +49,4 @@ public class TextAttributeContentV3 extends BaseAttributeContentV3<String> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
 }

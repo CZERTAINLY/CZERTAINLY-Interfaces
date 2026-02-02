@@ -57,5 +57,4 @@ public class BooleanAttributeContentV3 extends BaseAttributeContentV3<Boolean> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
 }

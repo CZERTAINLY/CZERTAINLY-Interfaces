@@ -50,5 +50,4 @@ public class FloatAttributeContentV3 extends BaseAttributeContentV3<Float> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
-
 }
