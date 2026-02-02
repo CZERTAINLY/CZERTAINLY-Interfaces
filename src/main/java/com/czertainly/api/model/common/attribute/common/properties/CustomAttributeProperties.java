@@ -54,7 +54,7 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
 
     @Schema(
             description = "Protection level of the attribute content",
-            defaultValue = "noProtection",
+            defaultValue = "none",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private ProtectionLevel protectionLevel = ProtectionLevel.NONE;
