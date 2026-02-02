@@ -3,7 +3,6 @@ package com.czertainly.api.model.common.attribute.v3.content;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.EventListener;
 import java.util.Objects;
 
 @Schema(
