@@ -11,10 +11,11 @@ import java.net.URI;
 public enum ErrorCode {
     VALIDATION_FAILED(ProblemTypeCategory.COMMON, "Validation failed", HttpStatus.UNPROCESSABLE_ENTITY, true),
     RESOURCE_NOT_FOUND(ProblemTypeCategory.COMMON, "Resource not found", HttpStatus.NOT_FOUND, true),
-    RESOURCE_ALREADY_EXISTS(ProblemTypeCategory.COMMON, "Resource already exists", HttpStatus.BAD_REQUEST, true),
+    RESOURCE_ALREADY_EXISTS(ProblemTypeCategory.COMMON, "Resource already exists", HttpStatus.CONFLICT, true),
     REQUEST_TIMEOUT(ProblemTypeCategory.COMMON, "Request timeout", HttpStatus.REQUEST_TIMEOUT, true),
     OPERATION_NOT_SUPPORTED(ProblemTypeCategory.COMMON, "Operation not supported", HttpStatus.NOT_IMPLEMENTED, true),
-    ATTRIBUTES_ERROR(ProblemTypeCategory.COMMON, "Attributes handling error", HttpStatus.BAD_REQUEST, true)
+    ATTRIBUTES_ERROR(ProblemTypeCategory.COMMON, "Attributes handling error", HttpStatus.BAD_REQUEST, true),
+    SERVICE_UNAVAILABLE(ProblemTypeCategory.COMMON, "Service unavailable", HttpStatus.SERVICE_UNAVAILABLE, true),
     ;
 
     private final ProblemTypeCategory category;
