@@ -32,10 +32,8 @@ public class ResponseAttributeV2 extends ResponseAttribute {
 
     private AttributeContentType contentType;
 
-    @Override
-    public AttributeVersion getSchemaVersion() {
-        return AttributeVersion.V2;
-    }
+    private AttributeVersion version = AttributeVersion.V2;
+
 
     @Override
     public boolean equals(Object o) {
@@ -48,4 +46,5 @@ public class ResponseAttributeV2 extends ResponseAttribute {
     public int hashCode() {
         return Objects.hash(uuid, content, name, label, type, contentType);
     }
+
 }
