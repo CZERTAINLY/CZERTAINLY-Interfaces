@@ -40,9 +40,8 @@ public class FileAttributeContentV3 extends BaseAttributeContentV3<FileAttribute
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FileAttributeContentV3)) return false;
+        if (!(o instanceof FileAttributeContentV3 that)) return false;
         if (!super.equals(o)) return false;
-        FileAttributeContentV3 that = (FileAttributeContentV3) o;
         return Objects.equals(data, that.data);
     }
 

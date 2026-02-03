@@ -19,6 +19,9 @@ public class ResourceObjectContent extends BaseAttributeContentV3<ResourceObject
         return data;
     }
 
+    public ResourceObjectContent() {
+    }
+
     @Override
     public void setData(ResourceObjectContentData data) {
         this.data = data;
