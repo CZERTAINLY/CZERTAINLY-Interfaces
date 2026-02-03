@@ -6,15 +6,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class KeyValueSecretRequestDto extends SecretContentRequestDto {
+@Schema(
+        title = "ApiKeySecretContent",
+        description = "Secret representing an API Key"
+)
+public class ApiKeySecretContent extends SecretContent {
 
-    @Schema(description = "Key-Value pairs stored as the secret value, represented by JSON object", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Serializable value;
+    @Schema(description = "API Key content encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String content;
 
 }

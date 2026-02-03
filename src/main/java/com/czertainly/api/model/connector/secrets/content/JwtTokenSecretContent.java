@@ -10,9 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class GenericSecretRequestDto extends SecretContentRequestDto {
+@Schema(
+        title = "JwtTokenSecretContent",
+        description = "Secret representing JWT Token"
+)
+public class JwtTokenSecretContent extends SecretContent {
 
-    @Schema(description = "Generic secret value encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String value;
+    @Schema(description = "JWT Token content encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String content;
 
 }

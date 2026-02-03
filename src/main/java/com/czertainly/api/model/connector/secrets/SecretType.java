@@ -12,8 +12,11 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum SecretType implements IPlatformEnum {
     BASIC_AUTH(Codes.BASIC_AUTH, "Basic Authentication"),
-    TOKEN(Codes.TOKEN, "Token/API Key"),
+    API_KEY(Codes.API_KEY, "API Key"),
+    JWT_TOKEN(Codes.JWT_TOKEN, "JWT Token"),
     PRIVATE_KEY(Codes.PRIVATE_KEY, "Private Key"),
+    SECRET_KEY(Codes.SECRET_KEY, "Secret Key"),
+    KEY_STORE(Codes.KEY_STORE, "Key Store"),
     KEY_VALUE(Codes.KEY_VALUE, "Key-Value Pairs"),
     GENERIC(Codes.GENERIC, "Other type of secret");
 
@@ -65,8 +68,11 @@ public enum SecretType implements IPlatformEnum {
     public static class Codes {
 
         public static final String BASIC_AUTH = "basicAuth";
-        public static final String TOKEN = "token";
+        public static final String API_KEY = "apiKey";
+        public static final String JWT_TOKEN = "jwtToken";
         public static final String PRIVATE_KEY = "privateKey";
+        public static final String SECRET_KEY = "secretKey";
+        public static final String KEY_STORE = "keyStore";
         public static final String KEY_VALUE = "keyValue";
         public static final String GENERIC = "generic";
 

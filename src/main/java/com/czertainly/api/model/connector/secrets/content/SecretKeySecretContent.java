@@ -10,9 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class TokenSecretRequestDto extends SecretContentRequestDto {
+@Schema(
+        title = "SecretKeySecretContent",
+        description = "Secret representing secret key"
+)
+public class SecretKeySecretContent extends SecretContent {
 
-    @Schema(description = "Token value encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
-    private String value;
+    @Schema(description = "BASE64 encoded binary (raw) content of key", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String content;
 
 }

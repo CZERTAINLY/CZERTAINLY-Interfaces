@@ -1,7 +1,6 @@
 package com.czertainly.api.model.connector.secrets;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
-import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -22,5 +21,5 @@ public class SecretRequestDto {
     private List<RequestAttribute> secretAttributes = new ArrayList<>();
 
     @Schema(description = "Metadata for the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<MetadataAttribute<? extends AttributeContent>> meta = new ArrayList<>();
+    private List<MetadataAttribute> metadata = new ArrayList<>();
 }

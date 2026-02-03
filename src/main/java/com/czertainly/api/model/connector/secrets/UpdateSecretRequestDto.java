@@ -1,7 +1,6 @@
 package com.czertainly.api.model.connector.secrets;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
-import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.common.MetadataAttribute;
 import com.czertainly.api.model.connector.secrets.content.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,7 +16,7 @@ public class UpdateSecretRequestDto {
     private String name;
 
     @Schema(description = "Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
-    private SecretContentRequestDto secret;
+    private SecretContent secret;
 
     @Schema(description = "Vault attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> vaultAttributes = new ArrayList<>();
@@ -26,5 +25,5 @@ public class UpdateSecretRequestDto {
     private List<RequestAttribute> secretAttributes = new ArrayList<>();
 
     @Schema(description = "Metadata for the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<MetadataAttribute<? extends AttributeContent>> meta = new ArrayList<>();
+    private List<MetadataAttribute> metadata = new ArrayList<>();
 }

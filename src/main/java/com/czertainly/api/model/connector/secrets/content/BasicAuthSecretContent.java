@@ -10,7 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class BasicAuthSecretRequestDto extends SecretContentRequestDto {
+@Schema(
+        title = "BasicAuthSecretContent",
+        description = "Secret representing Basic Authentication credentials"
+)
+public class BasicAuthSecretContent extends SecretContent {
 
     @Schema(description = "Username for Basic Authentication", example = "admin", requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
