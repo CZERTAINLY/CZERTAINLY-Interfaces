@@ -19,6 +19,7 @@ public class CodeBlockAttributeContentV3 extends BaseAttributeContentV3<CodeBloc
 
     public CodeBlockAttributeContentV3(String reference, CodeBlockAttributeContentData data) {
         super(reference, data);
+        this.data = data;
         setContentType(AttributeContentType.CODEBLOCK);
     }
 
@@ -31,5 +32,4 @@ public class CodeBlockAttributeContentV3 extends BaseAttributeContentV3<CodeBloc
     public void setData(CodeBlockAttributeContentData data) {
         this.data = data;
     }
-
 }

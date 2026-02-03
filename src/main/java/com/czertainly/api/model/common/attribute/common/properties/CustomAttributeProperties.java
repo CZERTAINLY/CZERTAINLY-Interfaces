@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.common.properties;
 
+import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -62,6 +63,13 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
     )
     private boolean strictList = false;
 
+    @Schema(
+            description = "Protection level of the attribute content",
+            defaultValue = "none",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ProtectionLevel protectionLevel = ProtectionLevel.NONE;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -72,6 +80,8 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
                 .append("label", getLabel())
                 .append("group", getGroup())
                 .append("visible", isVisible())
+                .append("protectionLevel", protectionLevel)
+                .append("strictList", strictList)
                 .toString();
     }
 }

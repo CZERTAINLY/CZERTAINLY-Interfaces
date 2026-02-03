@@ -12,13 +12,17 @@ import java.io.IOException;
 
 public class AttributeContentDeserializer extends JsonDeserializer<AttributeContent> {
 
+    private static final String CONTENT_TYPE = "contentType";
+
     @Override
     public AttributeContent deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
-        boolean hasContentType = node.has("contentType");
+        boolean hasContentType = node.has(CONTENT_TYPE);
 
-        if (hasContentType && !node.get("contentType").isNull()) return jsonParser.getCodec().treeToValue(node, BaseAttributeContentV3.class);
+        if (hasContentType && !node.get(CONTENT_TYPE).isNull()) {
+            return jsonParser.getCodec().treeToValue(node, BaseAttributeContentV3.class);
+        }
         else return jsonParser.getCodec().treeToValue(node, BaseAttributeContentV2.class);
     }
 }

@@ -32,4 +32,16 @@ public class StringAttributeContentV3 extends BaseAttributeContentV3<String> {
         this.data = data;
         setContentType(AttributeContentType.STRING);
     }
+
+    @Override
+    public String getData() {
+        return data;
+    }
+
+    @Override
+    public void setData(String data) {
+        this.data = data;
+    }
+
+
 }

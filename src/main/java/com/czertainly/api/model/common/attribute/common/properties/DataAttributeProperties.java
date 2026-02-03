@@ -1,5 +1,6 @@
 package com.czertainly.api.model.common.attribute.common.properties;
 
+import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import com.czertainly.api.model.core.auth.AttributeResource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -52,6 +53,13 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     )
     private boolean multiSelect = false;
 
+    @Schema(
+            description = "Protection level of the attribute content",
+            defaultValue = "none",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ProtectionLevel protectionLevel = ProtectionLevel.NONE;
+
     @Schema(description = "Resource of the attribute, relevant if the attribute has Resource content type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private AttributeResource resource;
 
@@ -65,6 +73,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     )
     private boolean strictList = false;
 
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -75,6 +84,9 @@ public class DataAttributeProperties extends BaseAttributeProperties {
                 .append("label", getLabel())
                 .append("group", getGroup())
                 .append("visible", isVisible())
+                .append("protectionLevel", protectionLevel)
+                .append("resource", resource)
+                .append("strictList", strictList)
                 .toString();
     }
 }
