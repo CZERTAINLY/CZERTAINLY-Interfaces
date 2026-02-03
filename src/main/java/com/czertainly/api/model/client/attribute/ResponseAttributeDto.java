@@ -13,7 +13,7 @@ import java.util.UUID;
         name = "ResponseAttribute",
         description = "Response attribute to send attribute content for object",
         type = "object",
-        discriminatorProperty = "schemaVersion",
+        discriminatorProperty = "version",
         discriminatorMapping = {
                 @DiscriminatorMapping(value = AttributeVersion.Codes.V2, schema = ResponseAttributeV2.class),
                 @DiscriminatorMapping(value = AttributeVersion.Codes.V3, schema = ResponseAttributeV3.class),
@@ -78,5 +78,5 @@ public interface ResponseAttributeDto extends Serializable {
                 description = "Version of the Attribute",
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
-        AttributeVersion getSchemaVersion();
+        AttributeVersion getVersion();
 }

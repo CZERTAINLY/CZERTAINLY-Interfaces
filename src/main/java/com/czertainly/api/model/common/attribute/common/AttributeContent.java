@@ -26,4 +26,5 @@ public abstract class AttributeContent implements Serializable {
     public abstract String getReference();
 
     public abstract AttributeContentType getContentType();
+
 }

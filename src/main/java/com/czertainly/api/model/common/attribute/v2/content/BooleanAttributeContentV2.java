@@ -48,4 +48,5 @@ public class BooleanAttributeContentV2 extends BaseAttributeContentV2<Boolean> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), data);
     }
+
 }

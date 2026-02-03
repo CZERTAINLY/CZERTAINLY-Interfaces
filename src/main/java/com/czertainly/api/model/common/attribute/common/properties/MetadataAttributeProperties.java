@@ -1,9 +1,14 @@
 package com.czertainly.api.model.common.attribute.common.properties;
 
+import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Setter
+@Getter
 public class MetadataAttributeProperties extends BaseAttributeProperties {
 
     /**
@@ -21,21 +26,12 @@ public class MetadataAttributeProperties extends BaseAttributeProperties {
     )
     private boolean overwrite = false;
 
-    public boolean isGlobal() {
-        return global;
-    }
-
-    public void setGlobal(boolean global) {
-        this.global = global;
-    }
-
-    public boolean isOverwrite() {
-        return overwrite;
-    }
-
-    public void setOverwrite(boolean overwrite) {
-        this.overwrite = overwrite;
-    }
+    @Schema(
+            description = "Protection level of the attribute content",
+            defaultValue = "none",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ProtectionLevel protectionLevel = ProtectionLevel.NONE;
 
     @Override
     public String toString() {

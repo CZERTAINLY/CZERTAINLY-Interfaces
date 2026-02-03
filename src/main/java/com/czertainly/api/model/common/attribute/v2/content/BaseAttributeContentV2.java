@@ -58,4 +58,5 @@ public class BaseAttributeContentV2<T extends Serializable> extends AttributeCon
     public AttributeContentType getContentType() {
         return null;
     }
+
 }
