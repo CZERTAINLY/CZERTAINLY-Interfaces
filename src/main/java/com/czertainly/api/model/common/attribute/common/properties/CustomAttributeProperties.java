@@ -1,14 +1,19 @@
 package com.czertainly.api.model.common.attribute.common.properties;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Getter
+@Setter
 public class CustomAttributeProperties extends BaseAttributeProperties {
 
     /**
      * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
      **/
+    @Getter
     @Schema(
             description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
             defaultValue = "false",
@@ -47,37 +52,15 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
     )
     private boolean multiSelect = false;
 
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public boolean isReadOnly() {
-        return readOnly;
-    }
-
-    public void setReadOnly(boolean readOnly) {
-        this.readOnly = readOnly;
-    }
-
-    public boolean isList() {
-        return list;
-    }
-
-    public void setList(boolean list) {
-        this.list = list;
-    }
-
-    public boolean isMultiSelect() {
-        return multiSelect;
-    }
-
-    public void setMultiSelect(boolean multiSelect) {
-        this.multiSelect = multiSelect;
-    }
+    /**
+     * Boolean determining if a list Attribute can have values other than predefined options
+     **/
+    @Schema(
+            description = "Boolean determining if a list Attribute can have values other than predefined options",
+            defaultValue = "false",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private boolean strictList = false;
 
     @Override
     public String toString() {
