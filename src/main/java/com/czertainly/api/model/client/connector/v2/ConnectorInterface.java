@@ -16,13 +16,13 @@ public enum ConnectorInterface implements IPlatformEnum {
     INFO("info", "Info"),
     HEALTH("health", "Health"),
     METRICS("metrics", "Metrics"),
-    AUTHORITY_PROVIDER("authorityProvider", "Authority Provider"),
-    DISCOVERY_PROVIDER("discoveryProvider", "Discovery Provider"),
-    ENTITY_PROVIDER("entityProvider", "Entity Provider"),
-    COMPLIANCE_PROVIDER("complianceProvider", "Compliance Provider"),
-    CRYPTOGRAPHY_PROVIDER("cryptographyProvider", "Cryptography Provider"),
-    NOTIFICATION_PROVIDER("notificationProvider", "Notification Provider"),
-    SECRET_PROVIDER("secretProvider", "Secret Provider");
+    AUTHORITY("authority", "Authority"),
+    DISCOVERY("discovery", "Discovery"),
+    ENTITY("entity", "Entity"),
+    COMPLIANCE("compliance", "Compliance"),
+    CRYPTOGRAPHY("cryptography", "Cryptography"),
+    NOTIFICATION("notification", "Notification"),
+    SECRET("secret", "Secret");
 
     private static final ConnectorInterface[] VALUES;
 
@@ -30,7 +30,7 @@ public enum ConnectorInterface implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Function Group code of the Connector",
+    @Schema(description = "Connector interface code",
             examples = {"credentialProvider"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;

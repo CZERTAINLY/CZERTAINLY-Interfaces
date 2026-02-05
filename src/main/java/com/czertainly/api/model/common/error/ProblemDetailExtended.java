@@ -76,7 +76,4 @@ public class ProblemDetailExtended extends ProblemDetail {
     @Schema(description = "Backoff hint, number of seconds after which the client can retry the operation. Aligns with Retry-After header.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private int retryAfterSeconds;
 
-    @Schema(description = "List of causes that led to this error", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ProblemDetailCause> causes;
-
 }
