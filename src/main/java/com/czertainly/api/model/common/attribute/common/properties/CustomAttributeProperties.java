@@ -14,7 +14,6 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
     /**
      * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
      **/
-    @Getter
     @Schema(
             description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
             defaultValue = "false",
