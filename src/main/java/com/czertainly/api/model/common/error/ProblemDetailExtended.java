@@ -9,7 +9,6 @@ import org.springframework.lang.Nullable;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 @Data
