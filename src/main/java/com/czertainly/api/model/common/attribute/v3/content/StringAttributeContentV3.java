@@ -42,6 +42,4 @@ public class StringAttributeContentV3 extends BaseAttributeContentV3<String> {
     public void setData(String data) {
         this.data = data;
     }
-
-
 }
