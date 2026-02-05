@@ -26,7 +26,14 @@ public interface MetricsController extends AuthProtectedConnectorController {
 
     Map<String, Object> METRICS_CONFIG = Map.of(
             "version", 1,
-            ,
+            "histograms", Map.of(
+                    "http_server_latency_buckets_seconds", List.of(
+                            0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
+                    ),
+                    "http_client_latency_buckets_seconds", List.of(
+                            0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
+                    )
+            ),
             "required", List.of(
                     Map.of(
                             "name", "app_build_info",
@@ -89,14 +96,6 @@ public interface MetricsController extends AuthProtectedConnectorController {
                             "type", "counter",
                             "unit", "events",
                             "labels", List.of("event", "outcome")
-                    )
-            ),
-            "histograms", Map.of(
-                    "http_server_latency_buckets_seconds", List.of(
-                            0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
-                    ),
-                    "http_client_latency_buckets_seconds", List.of(
-                            0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0
                     )
             )
     );
