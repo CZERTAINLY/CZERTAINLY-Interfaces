@@ -5,13 +5,14 @@ import com.czertainly.api.model.common.attribute.common.content.ZonedDateTimeDes
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
 
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
 @Schema(
         description = "DateTime attribute content in predefined format with timezone",
         type = "object")
+@EqualsAndHashCode(callSuper = true)
 public class DateTimeAttributeContentV3 extends BaseAttributeContentV3<ZonedDateTime> {
 
     // ISO_OFFSET_DATE_TIME	Date Time with Offset	2011-12-03T10:15:30+01:00'
@@ -44,17 +45,4 @@ public class DateTimeAttributeContentV3 extends BaseAttributeContentV3<ZonedDate
         this.data = data;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DateTimeAttributeContentV3)) return false;
-        if (!super.equals(o)) return false;
-        DateTimeAttributeContentV3 that = (DateTimeAttributeContentV3) o;
-        return Objects.equals(data, that.data);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), data);
-    }
 }

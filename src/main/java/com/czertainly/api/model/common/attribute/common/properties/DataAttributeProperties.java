@@ -63,6 +63,16 @@ public class DataAttributeProperties extends BaseAttributeProperties {
     @Schema(description = "Resource of the attribute, relevant if the attribute has Resource content type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private AttributeResource resource;
 
+    /**
+     * Boolean determining if a list Attribute can have values other than predefined options
+     **/
+    @Schema(
+            description = "Boolean determining if a list Attribute can have values other than predefined options",
+            defaultValue = "false",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private boolean strictList = false;
+
 
     @Override
     public String toString() {
@@ -76,6 +86,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
                 .append("visible", isVisible())
                 .append("protectionLevel", protectionLevel)
                 .append("resource", resource)
+                .append("strictList", strictList)
                 .toString();
     }
 }

@@ -2,6 +2,7 @@ package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,8 @@ import java.util.Objects;
 @Schema(
         description = "Object attribute content for data with custom structure",
         type = "object")
-    public class ObjectAttributeContentV3 extends BaseAttributeContentV3<Serializable> {
+@EqualsAndHashCode(callSuper = true)
+public class ObjectAttributeContentV3 extends BaseAttributeContentV3<Serializable> {
 
     @Schema(description = "Object attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)
     private Serializable data;
@@ -31,18 +33,5 @@ import java.util.Objects;
         super(reference);
         this.data = data;
         setContentType(AttributeContentType.OBJECT);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ObjectAttributeContentV3 that)) return false;
-        if (!super.equals(o)) return false;
-        return Objects.equals(data, that.data);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), data);
     }
 }

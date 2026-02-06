@@ -7,8 +7,8 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@Setter
 @Getter
+@Setter
 public class CustomAttributeProperties extends BaseAttributeProperties {
 
     /**
@@ -52,6 +52,16 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
     )
     private boolean multiSelect = false;
 
+    /**
+     * Boolean determining if a list Attribute can have values other than predefined options
+     **/
+    @Schema(
+            description = "Boolean determining if a list Attribute can have values other than predefined options",
+            defaultValue = "false",
+            requiredMode = Schema.RequiredMode.REQUIRED
+    )
+    private boolean strictList = false;
+
     @Schema(
             description = "Protection level of the attribute content",
             defaultValue = "none",
@@ -69,6 +79,8 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
                 .append("label", getLabel())
                 .append("group", getGroup())
                 .append("visible", isVisible())
+                .append("protectionLevel", protectionLevel)
+                .append("strictList", strictList)
                 .toString();
     }
 }
