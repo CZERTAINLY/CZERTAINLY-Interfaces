@@ -1,7 +1,10 @@
 package com.czertainly.api.exception;
 
-import lombok.Getter;
+import java.util.Objects;
+
 import org.springframework.http.ProblemDetail;
+
+import lombok.Getter;
 
 @Getter
 public class CbomRepositoryException extends Exception {
@@ -13,7 +16,7 @@ public class CbomRepositoryException extends Exception {
     }
 
     public CbomRepositoryException(ProblemDetail problemDetail) {
-        super(problemDetail.getDetail());
+        super(Objects.requireNonNull(problemDetail, "problemDetail must not be null").getDetail());
         this.problemDetail = problemDetail;
     }
 
