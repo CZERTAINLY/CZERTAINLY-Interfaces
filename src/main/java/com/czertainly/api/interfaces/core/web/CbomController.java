@@ -1,7 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AttributeException;
+import com.czertainly.api.exception.AlreadyExistException;
+import com.czertainly.api.exception.CbomRepositoryException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.cbom.CbomDetailDto;
@@ -39,7 +41,7 @@ public interface CbomController extends AuthProtectedController {
 	CbomDetailDto getCbomDetail(
 			@Parameter(description = "CBOM URN") @PathVariable String urn,
 			@Parameter(description = "CBOM version") @RequestParam(required = false) String version)
-			throws NotFoundException;
+			throws NotFoundException, CbomRepositoryException;
 
 	@Operation(summary = "List CBOM versions")
 	@ApiResponses(value = {
@@ -58,6 +60,6 @@ public interface CbomController extends AuthProtectedController {
 	})
 	@PostMapping(path = "/upload", consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.CREATED)
-	CbomDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws AttributeException;
+	CbomDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws ValidationException, AlreadyExistException, CbomRepositoryException;
 
 }
