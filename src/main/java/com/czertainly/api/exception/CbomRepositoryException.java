@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.springframework.http.ProblemDetail;
 
 @Getter
-public class CbomRepositoryException extends RuntimeException {
+public class CbomRepositoryException extends Exception {
     private final ProblemDetail problemDetail;
 
     public CbomRepositoryException(String message) {
