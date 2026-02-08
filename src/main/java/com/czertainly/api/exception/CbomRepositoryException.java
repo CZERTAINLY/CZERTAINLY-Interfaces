@@ -15,8 +15,18 @@ public class CbomRepositoryException extends Exception {
         this.problemDetail = null;
     }
 
+    public CbomRepositoryException(String message, Throwable cause) {
+        super(message, cause);
+        this.problemDetail = null;
+    }
+
     public CbomRepositoryException(ProblemDetail problemDetail) {
-        super(Objects.requireNonNull(problemDetail, "problemDetail must not be null").getDetail());
+        super(problemDetail.getDetail());
+        this.problemDetail = problemDetail;
+    }
+
+    public CbomRepositoryException(ProblemDetail problemDetail, Throwable cause) {
+        super(problemDetail != null ? problemDetail.getDetail() : null, cause);
         this.problemDetail = problemDetail;
     }
 
@@ -24,6 +34,13 @@ public class CbomRepositoryException extends Exception {
         super(problemDetail != null
                 ? message + ": " + problemDetail.getDetail()
                 : message);
+        this.problemDetail = problemDetail;
+    }
+
+    public CbomRepositoryException(String message, ProblemDetail problemDetail, Throwable cause) {
+        super(problemDetail != null
+                ? message + ": " + problemDetail.getDetail()
+                : message, cause);
         this.problemDetail = problemDetail;
     }
 }
