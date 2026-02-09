@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import java.util.Map;
 
+// Suppressing `Define a constant instead of duplicating this literal` rule.
+// All the string literals in this class are related to metrics definition and examples, and defining constants for them would reduce readability and maintainability of the code.
+@SuppressWarnings("java:S1192")
 @RequestMapping("/v1/metrics")
 @Tag(
 
