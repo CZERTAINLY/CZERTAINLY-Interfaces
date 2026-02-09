@@ -71,7 +71,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
             defaultValue = "false",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private boolean strictList = false;
+    private boolean extensibleList = false;
 
 
     @Override
@@ -86,7 +86,7 @@ public class DataAttributeProperties extends BaseAttributeProperties {
                 .append("visible", isVisible())
                 .append("protectionLevel", protectionLevel)
                 .append("resource", resource)
-                .append("strictList", strictList)
+                .append("extensibleList", extensibleList)
                 .toString();
     }
 }
