@@ -46,5 +46,5 @@ public interface SecretContentDto {
     
     @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
     SecretType getSecretType();
-
+    
 }
