@@ -11,55 +11,59 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ResourceAction implements IPlatformEnum {
-    NONE("NONE"),
-    ANY("ANY"), // Action that is evaluated as any action
-    MEMBERS("members"), // action that is evaluated to allow action for resource lower in hierarchy, e.g. access to certificates through RA profile members action
+    NONE("NONE", "None"),
+    ANY("ANY", "Any"), // Action that is evaluated as any action
+    MEMBERS("members", "Members"), // action that is evaluated to allow action for resource lower in hierarchy, e.g. access to certificates through RA profile members action
 
     // Default (CRUD) Actions
-    LIST("list"),
-    DETAIL("detail"),
-    CREATE("create"),
-    UPDATE("update"),
-    DELETE("delete"),
+    LIST("list", "List"),
+    DETAIL("detail", "Detail"),
+    CREATE("create", "Create"),
+    UPDATE("update", "Update"),
+    DELETE("delete", "Delete"),
 
     // Default change state actions that allows also reverse action (disable/deactivate)
-    ENABLE("enable"),
-    ACTIVATE("activate"),
+    ENABLE("enable", "Enable"),
+    ACTIVATE("activate", "Activate"),
 
     //Connector actions
-    APPROVE("approve"),
-    CONNECT("connect"), // allows also reconnect action
+    APPROVE("approve", "Approve"),
+    CONNECT("connect", "Connect"), // allows also reconnect action
 
     //Certificate actions
-    ISSUE("issue"),
-    RENEW("renew"),
-    REKEY("rekey"),
-    REVOKE("revoke"),
-    ARCHIVE("archive"),
+    ISSUE("issue", "Issue"),
+    RENEW("renew", "Renew"),
+    REKEY("rekey", "Rekey"),
+    REVOKE("revoke", "Revoke"),
+    ARCHIVE("archive", "Archive"),
 
     // Audit Log export
-    EXPORT("export"),
+    EXPORT("export", "Export"),
 
     //Certificate, RA Profile and Compliance Profile
-    CHECK_COMPLIANCE("checkCompliance"),
-
-    // RA Profile actions
-    ACTIVATE_ACME("activateAcme"),
+    CHECK_COMPLIANCE("checkCompliance", "Check compliance"),
 
     //CRYPTOGRAPHY OPERATION
-    ENCRYPT("encrypt"),
-    DECRYPT("decrypt"),
-    VERIFY("verify"),
-    SIGN("sign");
+    ENCRYPT("encrypt", "Encrypt"),
+    DECRYPT("decrypt", "Decrypt"),
+    VERIFY("verify", "Verify"),
+    SIGN("sign", "Sign");
 
     @Schema(description = "Resource Action Name",
             example = "create",
             requiredMode = Schema.RequiredMode.REQUIRED)
-            
+
     private final String code;
 
-    ResourceAction(String code) {
+    @Schema(description = "Resource Action label",
+            example = "create",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+
+    private final String label;
+
+    ResourceAction(String code, String label) {
         this.code = code;
+        this.label = label;
     }
 
     @JsonValue
@@ -69,12 +73,12 @@ public enum ResourceAction implements IPlatformEnum {
 
     @Override
     public String getLabel() {
-        return "";
+        return this.label;
     }
 
     @Override
     public String getDescription() {
-        return "";
+        return null;
     }
 
     @JsonCreator
