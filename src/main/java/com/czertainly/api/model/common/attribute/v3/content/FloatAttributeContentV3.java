@@ -2,12 +2,16 @@ package com.czertainly.api.model.common.attribute.v3.content;
 
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
-
+@Setter
+@Getter
 @Schema(
         description = "Float attribute content for decimal numbers",
         type = "object")
+@EqualsAndHashCode(callSuper = true)
 public class FloatAttributeContentV3 extends BaseAttributeContentV3<Float> {
 
     @Schema(description = "Float attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -29,25 +33,4 @@ public class FloatAttributeContentV3 extends BaseAttributeContentV3<Float> {
         setContentType(AttributeContentType.FLOAT);
     }
 
-    public Float getData() {
-        return data;
-    }
-
-    public void setData(Float data) {
-        this.data = data;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FloatAttributeContentV3)) return false;
-        if (!super.equals(o)) return false;
-        FloatAttributeContentV3 that = (FloatAttributeContentV3) o;
-        return Objects.equals(data, that.data);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), data);
-    }
 }

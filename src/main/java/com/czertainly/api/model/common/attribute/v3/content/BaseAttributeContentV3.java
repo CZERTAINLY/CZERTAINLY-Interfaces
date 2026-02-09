@@ -65,7 +65,7 @@ public class BaseAttributeContentV3<T extends Serializable> extends AttributeCon
         if (!(o instanceof BaseAttributeContentV3<?> that)) return false;
 
         // content is considered equal when reference and data are equal
-        return Objects.equals(this.reference, that.getReference()) && Objects.equals(this.getData(), that.getData());
+        return Objects.equals(this.reference, that.getReference()) && Objects.equals(this.getData(), that.getData()) && Objects.equals(this.contentType, that.getContentType());
     }
 
     @Override

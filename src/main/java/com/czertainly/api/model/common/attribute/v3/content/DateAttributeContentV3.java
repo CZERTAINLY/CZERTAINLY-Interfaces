@@ -7,13 +7,18 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
+@Setter
+@Getter
 @Schema(
         description = "Date attribute content in predefined format",
         type = "object")
+@EqualsAndHashCode(callSuper = true)
 public class DateAttributeContentV3 extends BaseAttributeContentV3<LocalDate> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -31,25 +36,4 @@ public class DateAttributeContentV3 extends BaseAttributeContentV3<LocalDate> {
         setContentType(AttributeContentType.DATE);
     }
 
-    public LocalDate getData() {
-        return data;
-    }
-
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DateAttributeContentV3)) return false;
-        if (!super.equals(o)) return false;
-        DateAttributeContentV3 that = (DateAttributeContentV3) o;
-        return Objects.equals(data, that.data);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), data);
-    }
 }
