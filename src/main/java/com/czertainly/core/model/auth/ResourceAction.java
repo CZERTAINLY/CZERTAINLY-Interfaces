@@ -56,7 +56,7 @@ public enum ResourceAction implements IPlatformEnum {
     private final String code;
 
     @Schema(description = "Resource Action label",
-            example = "create",
+            example = "Create",
             requiredMode = Schema.RequiredMode.REQUIRED)
 
     private final String label;
