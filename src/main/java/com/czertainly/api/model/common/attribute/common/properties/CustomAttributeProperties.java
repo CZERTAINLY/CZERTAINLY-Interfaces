@@ -60,7 +60,7 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
             defaultValue = "false",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    private boolean strictList = false;
+    private boolean extensibleList = false;
 
     @Schema(
             description = "Protection level of the attribute content",
@@ -80,7 +80,7 @@ public class CustomAttributeProperties extends BaseAttributeProperties {
                 .append("group", getGroup())
                 .append("visible", isVisible())
                 .append("protectionLevel", protectionLevel)
-                .append("strictList", strictList)
+                .append("extensibleList", extensibleList)
                 .toString();
     }
 }
