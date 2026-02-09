@@ -5,12 +5,13 @@ import com.czertainly.api.exception.CbomRepositoryException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedController;
+import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.core.cbom.CbomDetailDto;
 import com.czertainly.api.model.core.cbom.CbomDto;
 import com.czertainly.api.model.core.cbom.CbomListResponseDto;
 import com.czertainly.api.model.core.cbom.CbomUploadRequestDto;
-import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -62,4 +63,9 @@ public interface CbomController extends AuthProtectedController {
 	@ResponseStatus(HttpStatus.CREATED)
 	CbomDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws ValidationException, AlreadyExistException, CbomRepositoryException;
 
+
+    @Operation(summary = "Get Cbom searchable fields information")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cbom searchable field information retrieved")})
+    @GetMapping(path = "/search", produces = {"application/json"})
+    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 }
