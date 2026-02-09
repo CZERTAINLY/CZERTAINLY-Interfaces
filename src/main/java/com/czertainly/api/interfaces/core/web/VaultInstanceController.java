@@ -2,6 +2,7 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
+import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RequestMapping("/v1/vaults")
 @Tag(name = "Vault Instance Management", description = "Vault Instance Management API")
-public interface VaultInstanceController {
+public interface VaultInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Instance Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
