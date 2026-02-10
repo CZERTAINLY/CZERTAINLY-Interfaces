@@ -6,8 +6,11 @@ import lombok.Data;
 @Data
 public class CoreInfoResponseDto {
 
-    @Schema(description = "CZERTAINLY Application information", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "ILM Application information", requiredMode = Schema.RequiredMode.REQUIRED)
     private AppInfoDto app;
+
+    @Schema(description = "ILM Application build information. Present only in SNAPSHOT (dev) versions", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private BuildInfoDto build;
 
     @Schema(description = "Database information", requiredMode = Schema.RequiredMode.REQUIRED)
     private DatabaseInfoDto db;
