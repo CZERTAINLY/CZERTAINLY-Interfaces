@@ -2,7 +2,10 @@ package com.czertainly.api.model.client.raprofile;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -11,8 +14,9 @@ import java.util.UUID;
 /**
  * Class representing RA profile
  */
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @NoArgsConstructor
 public class SimplifiedRaProfileDto extends NameAndUuidDto {
 
@@ -24,8 +28,7 @@ public class SimplifiedRaProfileDto extends NameAndUuidDto {
     private String authorityInstanceUuid;
 
     public SimplifiedRaProfileDto(UUID uuid, String name, Boolean enabled, UUID authorityInstanceUuid) {
-        this.uuid = uuid != null ? uuid.toString() : null;
-        this.name = name;
+        super(uuid != null ? uuid.toString() : null, name);
         this.enabled = enabled;
         this.authorityInstanceUuid = authorityInstanceUuid != null ? authorityInstanceUuid.toString() : null;
     }

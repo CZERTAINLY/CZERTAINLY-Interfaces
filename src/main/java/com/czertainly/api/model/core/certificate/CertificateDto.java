@@ -7,14 +7,17 @@ import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class CertificateDto implements Loggable {
     @Schema(
@@ -196,10 +199,11 @@ public class CertificateDto implements Loggable {
                           String subjectDn, Date notBefore, Date notAfter, String publicKeyAlgorithm, String altPublicKeyAlgorithm,
                           String signatureAlgorithm, String altSignatureAlgorithm, boolean hybridCertificate,
                           Integer keySize, Integer altKeySize, CertificateState state, CertificateValidationStatus validationStatus,
-                          SimplifiedRaProfileDto raProfile, String fingerprint, String owner, UUID ownerUuid,
-                          CertificateType certificateType, String issuerSerialNumber, ComplianceStatus complianceStatus,
-                          UUID issuerCertificateUuid, boolean privateKeyAvailability, Boolean trustedCa, boolean archived) {
-        this.uuid = uuid.toString();
+                          UUID raProfileUuid, String raProfileName, Boolean raProfileEnabled, UUID raProfileAuthorityInstanceUuid,
+                          String fingerprint, String owner, UUID ownerUuid, CertificateType certificateType,
+                          String issuerSerialNumber, ComplianceStatus complianceStatus, UUID issuerCertificateUuid,
+                          boolean privateKeyAvailability, Boolean trustedCa, boolean archived) {
+        this.uuid = uuid != null ? uuid.toString() : null;
         this.commonName = commonName;
         this.serialNumber = serialNumber;
         this.issuerCommonName = issuerCommonName;
@@ -216,7 +220,9 @@ public class CertificateDto implements Loggable {
         this.altKeySize = altKeySize;
         this.state = state;
         this.validationStatus = validationStatus;
-        this.raProfile = raProfile;
+        if (raProfileUuid != null) {
+            this.raProfile = new SimplifiedRaProfileDto(raProfileUuid, raProfileName, raProfileEnabled, raProfileAuthorityInstanceUuid);
+        }
         this.fingerprint = fingerprint;
         this.owner = owner;
         this.ownerUuid = ownerUuid != null ? ownerUuid.toString() : null;
