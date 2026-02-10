@@ -8,6 +8,8 @@ import com.czertainly.api.model.client.proxy.ProxyUpdateRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.proxy.ProxyDto;
+import com.czertainly.api.model.core.proxy.ProxyInstallInstructionsDto;
+import com.czertainly.api.model.core.proxy.ProxyListDto;
 import com.czertainly.api.model.core.proxy.ProxyStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,7 +41,7 @@ public interface ProxyController extends AuthProtectedController {
     @Operation(summary = "List Proxies by Function Group and Kind")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List all Proxies")})
     @GetMapping(produces = {"application/json"})
-    List<ProxyDto> listProxys(@RequestParam(required = false) ProxyStatus status) throws NotFoundException;
+    List<ProxyListDto> listProxys(@RequestParam(required = false) ProxyStatus status) throws NotFoundException;
 
     @Operation(summary = "Get details of a Proxy")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Proxy details retrieved")})
@@ -75,5 +77,5 @@ public interface ProxyController extends AuthProtectedController {
     @Operation(summary = "Get instructions to install a Proxy")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Proxy installation instructions retrieved")})
     @GetMapping(path = "/{uuid}/instructions", produces = {"application/json"})
-    ProxyDto getInstallationInstructions(@Parameter(description = "Proxy UUID") @PathVariable String uuid) throws NotFoundException;
+    ProxyInstallInstructionsDto getInstallationInstructions(@Parameter(description = "Proxy UUID") @PathVariable String uuid) throws NotFoundException;
 }

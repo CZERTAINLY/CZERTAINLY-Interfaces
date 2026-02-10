@@ -50,7 +50,10 @@ public enum ResourceAction implements IPlatformEnum {
     ENCRYPT("encrypt"),
     DECRYPT("decrypt"),
     VERIFY("verify"),
-    SIGN("sign");
+    SIGN("sign"),
+
+    // PROXY
+    GET_PROXY_INSTALLATION("getProxyInstallation");
 
     @Schema(description = "Resource Action Name",
             example = "create",

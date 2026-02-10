@@ -103,6 +103,7 @@ public enum Operation implements IPlatformEnum {
     ARCHIVE("archive", "Archive certificate"),
     UNARCHIVE("unarchive", "Unarchive certificate"),
     GET_ASSOCIATIONS("getAssociations", "Get associations"),
+    GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation instructions"),
 
     // legacy
     LIST_CERTIFICATE_PROFILES("listCertificateProfiles", "List Certificate profiles"),
