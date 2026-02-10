@@ -41,7 +41,7 @@ public interface ProxyController extends AuthProtectedController {
     @Operation(summary = "List Proxies by Function Group and Kind")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List all Proxies")})
     @GetMapping(produces = {"application/json"})
-    List<ProxyListDto> listProxys(@RequestParam(required = false) ProxyStatus status) throws NotFoundException;
+    List<ProxyListDto> listProxys(@RequestParam(required = false) ProxyStatus status);
 
     @Operation(summary = "Get details of a Proxy")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Proxy details retrieved")})
