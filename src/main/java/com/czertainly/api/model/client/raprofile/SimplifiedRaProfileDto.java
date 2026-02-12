@@ -2,12 +2,20 @@ package com.czertainly.api.model.client.raprofile;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.UUID;
 
 /**
  * Class representing RA profile
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class SimplifiedRaProfileDto extends NameAndUuidDto {
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled",
@@ -17,20 +25,10 @@ public class SimplifiedRaProfileDto extends NameAndUuidDto {
     @Schema(description = "Authority Instance UUID")
     private String authorityInstanceUuid;
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
+    public SimplifiedRaProfileDto(UUID uuid, String name, Boolean enabled, UUID authorityInstanceUuid) {
+        super(uuid != null ? uuid.toString() : null, name);
         this.enabled = enabled;
-    }
-
-    public String getAuthorityInstanceUuid() {
-        return authorityInstanceUuid;
-    }
-
-    public void setAuthorityInstanceUuid(String authorityInstanceUuid) {
-        this.authorityInstanceUuid = authorityInstanceUuid;
+        this.authorityInstanceUuid = authorityInstanceUuid != null ? authorityInstanceUuid.toString() : null;
     }
 
     @Override
