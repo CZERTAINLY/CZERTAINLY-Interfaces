@@ -69,7 +69,6 @@ public class ProblemDetailExtended extends ProblemDetail {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     @Override
-    @Nullable
     public Map<String, Object> getProperties() {
         return super.getProperties();
     }

@@ -55,11 +55,11 @@ public abstract class BaseApiClient {
 
     protected TrustManager[] defaultTrustManagers;
 
-    public BaseApiClient() {
+    protected BaseApiClient() {
 
     }
 
-    public BaseApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
+    protected BaseApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         this.webClient = webClient;
         this.defaultTrustManagers = defaultTrustManagers;
     }
