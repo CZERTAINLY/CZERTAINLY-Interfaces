@@ -4,6 +4,7 @@ import com.czertainly.api.exception.*;
 import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.attribute.common.AttributeContent;
 import com.czertainly.api.model.common.attribute.v2.content.FileAttributeContentV2;
+import com.czertainly.api.model.common.error.ProblemDetailExtended;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 import com.czertainly.core.util.AttributeDefinitionUtils;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.*;
 import reactor.core.Exceptions;
@@ -53,8 +55,17 @@ public abstract class BaseApiClient {
 
     protected TrustManager[] defaultTrustManagers;
 
-    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, Boolean validateConnectorStatus) {
-        if (validateConnectorStatus.equals(Boolean.TRUE)) {
+    public BaseApiClient() {
+
+    }
+
+    public BaseApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
+        this.webClient = webClient;
+        this.defaultTrustManagers = defaultTrustManagers;
+    }
+
+    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, boolean validateConnectorStatus) {
+        if (validateConnectorStatus) {
             validateConnectorStatus(connector.getStatus());
         }
         WebClient.RequestBodySpec request;
@@ -75,7 +86,8 @@ public abstract class BaseApiClient {
                 AttributeContent username = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_USERNAME, authAttributes, false);
                 AttributeContent password = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_PASSWORD, authAttributes, false);
 
-                if (username == null || password == null) throw new IllegalArgumentException("Missing username or password in authentication");
+                if (username == null || password == null)
+                    throw new IllegalArgumentException("Missing username or password in authentication");
 
                 request = webClient
                         .method(method)
@@ -92,7 +104,8 @@ public abstract class BaseApiClient {
                 AttributeContent apiKeyHeader = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY_HEADER, authAttributes, false);
                 AttributeContent apiKey = AttributeDefinitionUtils.getAttributeContent(ATTRIBUTE_API_KEY, authAttributes, false);
 
-                if (apiKeyHeader == null || apiKey == null) throw new IllegalArgumentException("Missing API Key or API Key header in authentication");
+                if (apiKeyHeader == null || apiKey == null)
+                    throw new IllegalArgumentException("Missing API Key or API Key header in authentication");
 
                 request = webClient
                         .method(method)
@@ -108,8 +121,8 @@ public abstract class BaseApiClient {
     }
 
     public void validateConnectorStatus(ConnectorStatus connectorStatus) throws ValidationException {
-        if (connectorStatus.equals(ConnectorStatus.WAITING_FOR_APPROVAL)) {
-            throw new ValidationException(ValidationError.create("Connector has invalid status: Waiting For Approval"));
+        if (connectorStatus == ConnectorStatus.WAITING_FOR_APPROVAL) {
+            throw new ValidationException(ValidationError.create("Connector has invalid status: " + connectorStatus.getLabel()));
         }
     }
 
@@ -170,7 +183,51 @@ public abstract class BaseApiClient {
                 .build();
     }
 
+    public static <T, R> R processRequest(Function<T, R> func, T request, ConnectorDto connector) throws ConnectorException {
+        try {
+            return func.apply(request);
+        } catch (Exception e) {
+            Throwable unwrapped = Exceptions.unwrap(e);
+            if (unwrapped instanceof ConnectorProblemException pde) {
+                pde.setConnector(connector);
+                throw pde;
+            } else if (unwrapped instanceof IOException || unwrapped instanceof WebClientRequestException) {
+                logger.error(unwrapped.getMessage());
+                throw new ConnectorCommunicationException("Error in connector %s communication. URL: %s".formatted(connector.getName(), connector.getUrl()), unwrapped, connector);
+            } else if (unwrapped instanceof ConnectorException ce) {
+                ce.setConnector(connector);
+                throw ce;
+            } else {
+                logger.error(unwrapped.getMessage(), unwrapped);
+                throw e;
+            }
+        }
+    }
+
     private static Mono<ClientResponse> handleHttpExceptions(ClientResponse clientResponse) {
+        if (clientResponse.statusCode().is2xxSuccessful()) {
+            return Mono.just(clientResponse);
+        }
+
+        // Check if response is RFC 9457 problem+json format
+        String contentType = clientResponse.headers().contentType()
+                .map(mediaType -> mediaType.toString().toLowerCase())
+                .orElse("");
+
+        if (contentType.contains(MediaType.APPLICATION_PROBLEM_JSON_VALUE)) {
+            return handleProblemDetailResponse(clientResponse);
+        }
+        if (contentType.contains(MediaType.TEXT_HTML_VALUE)) {
+            // Attempt to parse legacy error format
+            return clientResponse.bodyToMono(String.class)
+                    .flatMap(body -> Mono.error(new ConnectorCommunicationException("Received response with unexpected content type '%s'.".formatted(contentType), null)));
+        }
+
+        // Legacy error handling
+        return handleLegacyErrorResponse(clientResponse);
+    }
+
+    private static Mono<ClientResponse> handleLegacyErrorResponse(ClientResponse clientResponse) {
         if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {
             return clientResponse.bodyToMono(ERROR_LIST_TYPE_REF).flatMap(body ->
                     Mono.error(new ValidationException(body.stream()
@@ -195,21 +252,8 @@ public abstract class BaseApiClient {
         return Mono.just(clientResponse);
     }
 
-    public static <T, R> R processRequest(Function<T, R> func, T request, ConnectorDto connector) throws ConnectorException {
-        try {
-            return func.apply(request);
-        } catch (Exception e) {
-            Throwable unwrapped = Exceptions.unwrap(e);
-            logger.error(unwrapped.getMessage(), unwrapped);
-
-            if (unwrapped instanceof IOException || unwrapped instanceof WebClientRequestException) {
-                throw new ConnectorCommunicationException(unwrapped.getMessage(), unwrapped, connector);
-            } else if (unwrapped instanceof ConnectorException ce) {
-                ce.setConnector(connector);
-                throw ce;
-            } else {
-                throw e;
-            }
-        }
+    private static Mono<ClientResponse> handleProblemDetailResponse(ClientResponse clientResponse) {
+        return clientResponse.bodyToMono(ProblemDetailExtended.class)
+                .flatMap(problemDetail -> Mono.error(new ConnectorProblemException(problemDetail)));
     }
 }
