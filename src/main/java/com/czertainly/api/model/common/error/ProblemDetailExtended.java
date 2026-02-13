@@ -69,6 +69,8 @@ public class ProblemDetailExtended extends ProblemDetail {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     @Override
+    @Nullable
+    @SuppressWarnings("java:S2638") // it is intended to be nullable as is in parent class
     public Map<String, Object> getProperties() {
         return super.getProperties();
     }
