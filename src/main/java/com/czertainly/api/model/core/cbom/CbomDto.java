@@ -17,8 +17,11 @@ public class CbomDto {
 	@Schema(description = "CBOM spec version", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String specVersion;
 
-	@Schema(description = "CBOM timestamp", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "A timestamp from CBOM metadata", requiredMode = Schema.RequiredMode.REQUIRED)
 	private OffsetDateTime timestamp;
+
+	@Schema(description = "Creation timestamp in Core", requiredMode = Schema.RequiredMode.REQUIRED)
+	private OffsetDateTime createdAt;
 
 	@Schema(description = "CBOM source (e.g.: CBOM-Lens)", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String source;
