@@ -30,8 +30,4 @@ public enum ErrorCode {
         this.retryable = retryable;
     }
 
-    public URI getType() {
-        return URI.create("https://docs.czertainly.com/problems/%s/%s".formatted(this.category.getCode(), this.name()));
-    }
-
 }
