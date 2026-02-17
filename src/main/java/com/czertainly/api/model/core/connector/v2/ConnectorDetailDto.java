@@ -1,8 +1,8 @@
 package com.czertainly.api.model.core.connector.v2;
 
+import com.czertainly.api.clients.ApiClientConnectorInfo;
 import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.client.connector.v2.ConnectorInterfaceInfo;
-import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.connector.AuthType;
 import com.czertainly.api.model.core.connector.FunctionGroupDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "ConnectorDetailDtoV2")
-public class ConnectorDetailDto extends NameAndUuidDto {
+public class ConnectorDetailDto extends ConnectorDto implements ApiClientConnectorInfo {
 
     @Schema(description = "List of Function Groups implemented by the Connector",
             requiredMode = Schema.RequiredMode.REQUIRED)

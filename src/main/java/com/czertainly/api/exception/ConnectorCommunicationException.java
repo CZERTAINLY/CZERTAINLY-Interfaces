@@ -1,5 +1,6 @@
 package com.czertainly.api.exception;
 
+import com.czertainly.api.clients.ApiClientConnectorInfo;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 
 public class ConnectorCommunicationException extends ConnectorException {
@@ -12,7 +13,7 @@ public class ConnectorCommunicationException extends ConnectorException {
         super(message, connector);
     }
 
-    public ConnectorCommunicationException(String message, Throwable cause, ConnectorDto connector) {
+    public ConnectorCommunicationException(String message, Throwable cause, ApiClientConnectorInfo connector) {
         super(message, cause, connector);
     }
 

@@ -1,10 +1,14 @@
 package com.czertainly.api.exception;
 
-import com.czertainly.api.model.core.connector.ConnectorDto;
+import com.czertainly.api.clients.ApiClientConnectorInfo;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ConnectorException extends Exception {
 
-    protected ConnectorDto connector;
+    protected ApiClientConnectorInfo connector;
 
     public ConnectorException() {
         super();
@@ -22,32 +26,23 @@ public class ConnectorException extends Exception {
         super(cause);
     }
 
-    public ConnectorException(ConnectorDto connector) {
+    public ConnectorException(ApiClientConnectorInfo connector) {
         super();
         this.connector = connector;
     }
 
-    public ConnectorException(String message, ConnectorDto connector) {
+    public ConnectorException(String message, ApiClientConnectorInfo connector) {
         super(message);
         this.connector = connector;
     }
 
-    public ConnectorException(String message, Throwable cause, ConnectorDto connector) {
+    public ConnectorException(String message, Throwable cause, ApiClientConnectorInfo connector) {
         super(message, cause);
         this.connector = connector;
     }
 
-    public ConnectorException(Throwable cause, ConnectorDto connector) {
+    public ConnectorException(Throwable cause, ApiClientConnectorInfo connector) {
         super(cause);
-        this.connector = connector;
-    }
-
-
-    public ConnectorDto getConnector() {
-        return connector;
-    }
-
-    public void setConnector(ConnectorDto connector) {
         this.connector = connector;
     }
 }
