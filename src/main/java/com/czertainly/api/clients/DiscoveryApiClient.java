@@ -1,6 +1,7 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.interfaces.client.v1.DiscoverySyncApiClient;
 import com.czertainly.api.model.connector.discovery.DiscoveryDataRequestDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryProviderDto;
 import com.czertainly.api.model.connector.discovery.DiscoveryRequestDto;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 import javax.net.ssl.TrustManager;
 
-public class DiscoveryApiClient extends BaseApiClient {
+public class DiscoveryApiClient extends BaseApiClient implements DiscoverySyncApiClient {
 
     private static final String DISCOVERY_BASE_CONTEXT = "/v1/discoveryProvider/discover";
     private static final String DISCOVERY_GET_CONTEXT = DISCOVERY_BASE_CONTEXT + "/{uuid}";
@@ -22,6 +23,7 @@ public class DiscoveryApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public DiscoveryProviderDto discoverCertificates(ConnectorDto connector, DiscoveryRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -35,6 +37,7 @@ public class DiscoveryApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public DiscoveryProviderDto getDiscoveryData(ConnectorDto connector, DiscoveryDataRequestDto requestDto, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -48,6 +51,7 @@ public class DiscoveryApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public void removeDiscovery(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
 

@@ -1,6 +1,7 @@
 package com.czertainly.api.clients;
 
 import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.interfaces.client.v1.ComplianceSyncApiClient;
 import com.czertainly.api.model.connector.compliance.ComplianceGroupsResponseDto;
 import com.czertainly.api.model.connector.compliance.ComplianceRequestDto;
 import com.czertainly.api.model.connector.compliance.ComplianceResponseDto;
@@ -16,7 +17,7 @@ import javax.net.ssl.TrustManager;
 import java.net.URI;
 import java.util.List;
 
-public class ComplianceApiClient extends BaseApiClient {
+public class ComplianceApiClient extends BaseApiClient implements ComplianceSyncApiClient {
 
     private static final String COMPLIANCE_BASE_CONTEXT = "/v1/complianceProvider/{kind}";
     private static final String COMPLIANCE_RULE_GET_CONTEXT = COMPLIANCE_BASE_CONTEXT + "/rules";
@@ -32,6 +33,7 @@ public class ComplianceApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public List<ComplianceRulesResponseDto> getComplianceRules(ConnectorDto connector, String kind, List<String> certificateType) throws ConnectorException {
         URI uri;
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
@@ -54,6 +56,7 @@ public class ComplianceApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public List<ComplianceGroupsResponseDto> getComplianceGroups(ConnectorDto connector, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -67,6 +70,7 @@ public class ComplianceApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public List<ComplianceRulesResponseDto> getComplianceGroupRules(ConnectorDto connector, String kind, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -79,6 +83,7 @@ public class ComplianceApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public ComplianceResponseDto checkCompliance(ConnectorDto connector, String kind, ComplianceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 

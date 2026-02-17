@@ -4,7 +4,6 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
-import com.czertainly.api.model.common.attribute.v2.BaseAttributeV2;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceDto;
 import com.czertainly.api.model.connector.authority.AuthorityProviderInstanceRequestDto;
 import com.czertainly.api.model.connector.authority.CertificateRevocationListRequestDto;
@@ -17,11 +16,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import com.czertainly.api.interfaces.client.v1.AuthorityInstanceSyncApiClient;
+
 import javax.net.ssl.TrustManager;
 import java.util.List;
 import java.util.Objects;
 
-public class AuthorityInstanceApiClient extends BaseApiClient {
+public class AuthorityInstanceApiClient extends BaseApiClient implements AuthorityInstanceSyncApiClient {
 
     private static final String AUTHORITY_INSTANCE_BASE_CONTEXT = "/v1/authorityProvider/authorities";
     private static final String AUTHORITY_INSTANCE_IDENTIFIED_CONTEXT = AUTHORITY_INSTANCE_BASE_CONTEXT + "/{uuid}";
@@ -38,6 +39,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
         this.defaultTrustManagers = defaultTrustManagers;
     }
 
+    @Override
     public List<AuthorityProviderInstanceDto> listAuthorityInstances(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -50,6 +52,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public AuthorityProviderInstanceDto getAuthorityInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -62,6 +65,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public AuthorityProviderInstanceDto createAuthorityInstance(ConnectorDto connector, AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -76,6 +80,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public AuthorityProviderInstanceDto updateAuthorityInstance(ConnectorDto connector, String uuid, AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -89,6 +94,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public void removeAuthorityInstance(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE, connector, true);
 
@@ -102,6 +108,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
     }
 
 
+    @Override
     public List<BaseAttribute> listRAProfileAttributes(ConnectorDto connector, String uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
@@ -114,6 +121,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public Boolean validateRAProfileAttributes(ConnectorDto connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -127,6 +135,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public CertificateRevocationListResponseDto getCrl(ConnectorDto connector, String uuid, CertificateRevocationListRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
@@ -140,6 +149,7 @@ public class AuthorityInstanceApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public CaCertificatesResponseDto getCaCertificates(ConnectorDto connector, String uuid, CaCertificatesRequestDto requestDto) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
