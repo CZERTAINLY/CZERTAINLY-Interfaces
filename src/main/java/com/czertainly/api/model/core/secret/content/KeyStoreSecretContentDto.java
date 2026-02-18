@@ -16,6 +16,9 @@ public class KeyStoreSecretContentDto implements SecretContentDto {
     @Schema(description = "Type of the Key Store (e.g., JKS, PKCS12)", requiredMode = Schema.RequiredMode.REQUIRED)
     private KeyStoreType keyStoreType;
 
+    @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
+    private SecretType secretType;
+
     @Override
     public SecretType getSecretType() {
         return SecretType.KEY_STORE;

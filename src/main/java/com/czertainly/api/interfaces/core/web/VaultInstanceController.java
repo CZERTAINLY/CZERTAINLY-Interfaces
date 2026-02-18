@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/v1/vaults")
 @Tag(name = "Vault Instance Management", description = "Vault Instance Management API")
@@ -22,13 +24,13 @@ public interface VaultInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Instance Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
-    @GetMapping(path = "/attributes", produces = {"application/json"})
-    List<BaseAttribute> listVaultInstanceAttributes();
+    @GetMapping(path = "/attributes/{connectorUuid}", produces = {"application/json"}) // Connector UUID???
+    List<BaseAttribute> listVaultInstanceAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid);
 
     @Operation(summary = "Details of a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Vault instance details retrieved")})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
-    VaultInstanceDetailDto getVaultInstanceDetails(@Parameter(description = "Vault instance UUID") @PathVariable String uuid);
+    VaultInstanceDetailDto getVaultInstanceDetails(@Parameter(description = "Vault instance UUID") @PathVariable UUID uuid) throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "List Vault instances")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Vault instances retrieved")})
@@ -38,17 +40,17 @@ public interface VaultInstanceController extends AuthProtectedController {
     @Operation(summary = "Delete a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault instance deleted")})
     @DeleteMapping(path = "/{uuid}")
-    void deleteVaultInstance(@Parameter(description = "Vault instance UUID") @PathVariable String uuid);
+    void deleteVaultInstance(@Parameter(description = "Vault instance UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Create a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Vault instance created")})
     @PostMapping(produces = {"application/json"})
-    VaultInstanceDetailDto createVaultInstance(@RequestBody VaultInstanceRequestDto vaultInstanceRequest);
+    VaultInstanceDetailDto createVaultInstance(@RequestBody VaultInstanceRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "Update a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Vault instance updated")})
     @PutMapping(path = "/{uuid}", produces = {"application/json"})
-    VaultInstanceDetailDto updateVaultInstance(@Parameter(description = "Vault instance UUID") @PathVariable String uuid, @RequestBody VaultInstanceUpdateRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException;
+    VaultInstanceDetailDto updateVaultInstance(@Parameter(description = "Vault instance UUID") @PathVariable UUID uuid, @RequestBody VaultInstanceUpdateRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "List search filters for Vault instances")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of search filters retrieved")})

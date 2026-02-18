@@ -16,12 +16,12 @@ public class VaultInstanceDetailDto extends VaultInstanceDto {
                     description = "List of attributes of the Vault instance",
                     requiredMode = Schema.RequiredMode.REQUIRED
             )
-    List<ResponseAttribute> attributes;
+    private List<ResponseAttribute> attributes;
 
     @Schema
             (
                     description = "List of custom attributes of the Vault instance",
                     requiredMode = Schema.RequiredMode.NOT_REQUIRED
             )
-    List<ResponseAttribute> customAttributes;
+    private List<ResponseAttribute> customAttributes;
 }

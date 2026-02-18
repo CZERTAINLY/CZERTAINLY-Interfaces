@@ -10,6 +10,9 @@ public class SecretKeySecretContentDto implements SecretContentDto {
     @Schema(description = "Base64 encoded binary (raw) content of the Secret Key", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
+    @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
+    private SecretType secretType;
+
     @Override
     public SecretType getSecretType() {
         return SecretType.SECRET_KEY;

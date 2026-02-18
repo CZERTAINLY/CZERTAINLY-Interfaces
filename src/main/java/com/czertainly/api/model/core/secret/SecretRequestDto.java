@@ -21,7 +21,7 @@ public class SecretRequestDto {
     private UUID sourceVaultProfileUuid;
 
     @Schema(description = "Content of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
-    SecretContentDto secret;
+    private SecretContentDto secret;
 
     @Schema(description = "List of attributes associated with the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;

@@ -10,6 +10,9 @@ public class PrivateKeySecretContentDto implements SecretContentDto {
     @Schema(description = "Base64 encoded content of the Private Key in PEM format", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
+    @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
+    private SecretType secretType;
+
     @Override
     public SecretType getSecretType() {
         return SecretType.PRIVATE_KEY;

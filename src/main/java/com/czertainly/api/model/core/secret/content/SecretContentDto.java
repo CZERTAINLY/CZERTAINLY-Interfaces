@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 )
 @Schema(
         description = "Base interface for Secret content. The actual content structure depends on the SecretType.",
+        type = "object",
         discriminatorProperty = "secretType",
         discriminatorMapping = {
                 @DiscriminatorMapping(value = SecretType.Codes.KEY_STORE, schema = KeyStoreSecretContentDto.class),

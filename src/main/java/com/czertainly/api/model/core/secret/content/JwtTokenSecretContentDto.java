@@ -10,6 +10,9 @@ public class JwtTokenSecretContentDto implements SecretContentDto {
     @Schema(description = "Base64 encoded JWT token", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
+    @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
+    private SecretType secretType;
+
     @Override
     public SecretType getSecretType() {
         return SecretType.JWT_TOKEN;

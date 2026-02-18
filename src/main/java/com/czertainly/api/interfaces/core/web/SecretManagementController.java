@@ -47,8 +47,8 @@ public interface SecretManagementController extends AuthProtectedController {
 
     @Operation(summary = "Create a new secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Secret created successfully")})
-    @PostMapping(path = "/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretDetailDto createSecret(@RequestBody SecretRequestDto secretRequest);
+    @PostMapping(path = "vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    SecretDetailDto createSecret(@RequestBody SecretRequestDto secretRequest, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @Parameter(description = "UUID of vault instance") @PathVariable UUID vaultUuid);
 
     @Operation(summary = "Update an existing secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret updated successfully")})

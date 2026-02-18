@@ -10,6 +10,9 @@ public class ApiKeySecretContentDto implements SecretContentDto {
     @Schema(description = "Base64 encoded content of the API Key", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
+    @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
+    private SecretType secretType;
+
     @Override
     public SecretType getSecretType() {
         return SecretType.API_KEY;

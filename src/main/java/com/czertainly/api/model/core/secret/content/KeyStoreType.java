@@ -1,7 +1,10 @@
 package com.czertainly.api.model.core.secret.content;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(enumAsRef = true)
 public enum KeyStoreType implements IPlatformEnum {
 
     JKS("JKS", "Java Key Store", "A proprietary keystore format used by Java applications."),
@@ -19,6 +22,7 @@ public enum KeyStoreType implements IPlatformEnum {
     }
 
     @Override
+    @JsonValue
     public String getCode() {
         return code;
     }

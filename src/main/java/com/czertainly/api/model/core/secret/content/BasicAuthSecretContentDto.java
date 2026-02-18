@@ -13,6 +13,9 @@ public class BasicAuthSecretContentDto implements SecretContentDto {
     @Schema(description = "Password for Basic Authentication", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
+    @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
+    private SecretType secretType;
+
     @Override
     public SecretType getSecretType() {
         return SecretType.BASIC_AUTH;

@@ -1,7 +1,10 @@
 package com.czertainly.api.model.core.secret;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(enumAsRef = true)
 public enum SecretType implements IPlatformEnum {
 
     BASIC_AUTH(Codes.BASIC_AUTH, "Basic Authentication", "A secret type for basic authentication, typically consisting of a username and password."),
@@ -25,6 +28,7 @@ public enum SecretType implements IPlatformEnum {
     }
 
     @Override
+    @JsonValue
     public String getCode() {
         return code;
     }
@@ -39,7 +43,7 @@ public enum SecretType implements IPlatformEnum {
         return description;
     }
 
-    public class Codes {
+    public static class Codes {
         public static final String BASIC_AUTH = "basicAuth";
         public static final String API_KEY = "apiKey";
         public static final String JWT_TOKEN = "jwtToken";
