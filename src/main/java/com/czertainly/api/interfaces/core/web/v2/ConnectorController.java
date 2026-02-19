@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +67,7 @@ public interface ConnectorController extends AuthProtectedController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PostMapping(consumes = { "application/json" }, produces = { "application/json" })
-    ConnectorDetailDto createConnector(@RequestBody ConnectorRequestDto request)
+    ConnectorDetailDto createConnector(@RequestBody @Valid ConnectorRequestDto request)
             throws AlreadyExistException, ConnectorException, AttributeException, NotFoundException;
 
     @Operation(summary = "Edit a Connector")
@@ -75,7 +76,7 @@ public interface ConnectorController extends AuthProtectedController {
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(path = "/{uuid}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { "application/json" })
-    ConnectorDetailDto editConnector(@Parameter(description = "Connector UUID") @PathVariable UUID uuid, @RequestBody ConnectorUpdateRequestDto request)
+    ConnectorDetailDto editConnector(@Parameter(description = "Connector UUID") @PathVariable UUID uuid, @RequestBody @Valid ConnectorUpdateRequestDto request)
             throws ConnectorException, AttributeException, NotFoundException;
 
     @Operation(summary = "Delete a Connector")
@@ -90,7 +91,7 @@ public interface ConnectorController extends AuthProtectedController {
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/connect", consumes = {"application/json"}, produces = {
             "application/json"})
-    List<ConnectInfo> connect(@RequestBody ConnectRequestDto request) throws ValidationException, ConnectException, ConnectorException;
+    List<ConnectInfo> connect(@RequestBody @Valid ConnectRequestDto request) throws ValidationException, ConnectException, ConnectorException;
 
     @Operation(summary = "Reconnect Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Reconnect to a Connector"),
