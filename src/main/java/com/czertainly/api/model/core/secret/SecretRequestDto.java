@@ -28,4 +28,6 @@ public class SecretRequestDto {
 
     @Schema(description = "List of custom attributes associated with the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> customAttributes;
+
+    // Groups??
 }

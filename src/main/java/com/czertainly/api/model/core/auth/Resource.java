@@ -97,8 +97,8 @@ public enum Resource implements IPlatformEnum {
 
     // Secrets
     VAULT(Codes.VAULT, "Vault", true, true),
-    VAULT_PROFILE(Codes.VAULT_PROFILE, "Vault Profile", true, true)
-
+    VAULT_PROFILE(Codes.VAULT_PROFILE, "Vault Profile", true, true),
+    SECRET(Codes.SECRET, "Secret", false, true)
     ;
 
     private static final Resource[] VALUES;
@@ -226,6 +226,7 @@ public enum Resource implements IPlatformEnum {
         public static final String ACME_ACCOUNT = "acmeAccounts";
         public static final String VAULT = "vaults";
         public static final String VAULT_PROFILE = "vaultProfiles";
+        public static final String SECRET = "secrets";
 
         public static final String CBOM = "cboms";
 

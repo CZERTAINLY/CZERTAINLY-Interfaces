@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "secretType", visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = KeyStoreSecretContentDto.class, name = SecretType.Codes.KEY_STORE),
@@ -43,7 +45,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 ApiKeySecretContentDto.class
         }
 )
-public interface SecretContentDto {
+public interface SecretContentDto extends Serializable {
     
     @Schema(description = "Type of the Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
     SecretType getSecretType();

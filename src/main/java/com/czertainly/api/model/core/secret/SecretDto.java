@@ -23,7 +23,7 @@ public class SecretDto extends NameAndUuidDto {
     @Schema(description = "State of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private SecretState state;
 
-    @Schema(description = "Version of the secret", requiredMode = Schema.RequiredMode.REQUIRED) //TODO: Or should this be in SecretVersionDto?
+    @Schema(description = "Version of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private int version;
 
     @Schema(description = "Indicates if the secret is currently enabled", requiredMode = Schema.RequiredMode.REQUIRED)

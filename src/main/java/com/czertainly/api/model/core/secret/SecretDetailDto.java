@@ -15,7 +15,7 @@ import java.util.List;
 public class SecretDetailDto extends SecretDto {
 
     @Schema(description = "List of vault profiles where the secret is stored", requiredMode = Schema.RequiredMode.REQUIRED)
-    List<NameAndUuidDto> syncVaultProfiles;
+    private List<NameAndUuidDto> syncVaultProfiles;
 
     @Schema(description = "Date and time when the secret was created", requiredMode = Schema.RequiredMode.REQUIRED)
     private OffsetDateTime createdAt;
