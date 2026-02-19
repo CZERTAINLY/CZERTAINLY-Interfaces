@@ -6,11 +6,12 @@ import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Schema(description = "Metadata response attributes with their source connector")
-public class MetadataResponseDto {
+public class MetadataResponseDto implements Serializable {
     @Schema(description = "UUID of the Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorUuid;
 
