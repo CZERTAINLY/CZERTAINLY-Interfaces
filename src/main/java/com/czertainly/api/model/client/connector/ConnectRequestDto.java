@@ -2,6 +2,7 @@ package com.czertainly.api.model.client.connector;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.connector.AuthType;
+import com.czertainly.api.model.core.proxy.ProxyDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -20,7 +21,12 @@ public class ConnectRequestDto {
     private AuthType authType;
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttribute>authAttributes;
+    private List<RequestAttribute> authAttributes;
+    @Schema(description = "Proxy for message queue routing. " +
+        "When set, connector communicates via message queue proxy. " +
+        "When null, connector uses direct REST communication.",
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private ProxyDto proxy;
 
     public String getUrl() {
         return url;
@@ -52,5 +58,13 @@ public class ConnectRequestDto {
 
     public void setAuthAttributes(List<RequestAttribute>authAttributes) {
         this.authAttributes = authAttributes;
+    }
+
+    public ProxyDto getProxy() {
+        return proxy;
+    }
+
+    public void setProxy(ProxyDto proxy) {
+        this.proxy = proxy;
     }
 }

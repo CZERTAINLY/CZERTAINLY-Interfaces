@@ -2,6 +2,7 @@ package com.czertainly.api.clients.v2;
 
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
+import com.czertainly.api.interfaces.client.v2.HealthSyncApiClient;
 import com.czertainly.api.model.client.connector.v2.HealthInfo;
 import com.czertainly.api.model.core.connector.ConnectorDto;
 import org.springframework.http.HttpMethod;
@@ -9,12 +10,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.net.ssl.TrustManager;
 
-public class HealthApiClient extends BaseApiClient {
+public class HealthApiClient extends BaseApiClient implements HealthSyncApiClient {
 
     public HealthApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         super(webClient, defaultTrustManagers);
     }
 
+    @Override
     public HealthInfo checkHealth(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
         return processRequest(r -> r
@@ -26,6 +28,7 @@ public class HealthApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public HealthInfo checkHealthLiveness(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
         return processRequest(r -> r
@@ -37,6 +40,7 @@ public class HealthApiClient extends BaseApiClient {
                 connector);
     }
 
+    @Override
     public HealthInfo checkHealthReadiness(ConnectorDto connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
         return processRequest(r -> r

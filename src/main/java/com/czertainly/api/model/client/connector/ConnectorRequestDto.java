@@ -33,6 +33,10 @@ public class ConnectorRequestDto implements Named {
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
+    @Schema(description = "UUID of the Proxy",
+        requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String proxyUuid;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -41,6 +45,7 @@ public class ConnectorRequestDto implements Named {
                 .append("authType", authType)
                 .append("authAttributes", authAttributes)
                 .append("customAttributes", customAttributes)
+                .append("proxyUuid", proxyUuid)
                 .toString();
     }
 }
