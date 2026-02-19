@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.secret;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
-import com.czertainly.api.model.core.secret.content.SecretContentDto;
+import com.czertainly.api.model.core.secret.content.SecretContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -18,7 +18,7 @@ public class SecretUpdateRequestDto {
     private UUID sourceVaultProfileUuid;
 
     @Schema(description = "Content of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
-    SecretContentDto secret;
+    SecretContent secret;
 
     @Schema(description = "List of attributes associated with the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;

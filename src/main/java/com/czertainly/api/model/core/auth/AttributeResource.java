@@ -12,7 +12,9 @@ public enum AttributeResource implements IPlatformEnum {
     CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", false),
     AUTHORITY(Resource.Codes.AUTHORITY, "Authority", false),
     ENTITY(Resource.Codes.ENTITY, "Entity Instance", false),
-    LOCATION(Resource.Codes.LOCATION, "Location", false)
+    LOCATION(Resource.Codes.LOCATION, "Location", false),
+    SECRET(Resource.Codes.SECRET, "Secret", true),
+
     ;
 
     private final String code;

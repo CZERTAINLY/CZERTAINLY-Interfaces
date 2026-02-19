@@ -6,7 +6,7 @@ import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.secret.*;
-import com.czertainly.api.model.core.secret.content.SecretContentDto;
+import com.czertainly.api.model.core.secret.content.SecretContent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,7 +45,7 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "Get secret content")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret content retrieved")})
     @GetMapping(path = "/secrets/{uuid}/content", produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretContentDto getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid);
+    SecretContent getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid);
 
     @Operation(summary = "Create a new secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Secret created successfully")})
