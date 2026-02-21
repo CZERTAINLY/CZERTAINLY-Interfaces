@@ -23,11 +23,6 @@ import java.util.List;
 public class ConnectorUpdateRequestDto {
 
     @NotNull
-    @Schema(description = "Version of the Connector.",
-            requiredMode = Schema.RequiredMode.REQUIRED, example = "v2")
-    private ConnectorVersion version;
-
-    @NotNull
     @URL
     @Schema(description = "URL of the Connector to connect",
             requiredMode = Schema.RequiredMode.REQUIRED,

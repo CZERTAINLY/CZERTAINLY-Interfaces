@@ -110,14 +110,14 @@ public interface ConnectorController extends AuthProtectedController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Approve multiple Connectors")})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping(path = "/approve", consumes = { "application/json" }, produces = { "application/json" })
-    void bulkApprove(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException;
+    List<BulkActionMessageDto> bulkApprove(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Reconnect multiple Connectors")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Reconnect multiple Connectors initiated")})
     @PostMapping(path = "/reconnect", consumes = {
             "application/json" }, produces = { "application/json" })
-    void bulkReconnect(@RequestBody List<UUID> uuids) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
+    List<BulkActionMessageDto> bulkReconnect(@RequestBody List<UUID> uuids) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
 
     @Operation(summary = "Delete multiple Connectors")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Connectors deleted"),
