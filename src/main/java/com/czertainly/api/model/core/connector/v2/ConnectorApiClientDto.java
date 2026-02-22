@@ -18,7 +18,7 @@ public class ConnectorApiClientDto implements ApiClientConnectorInfo {
     @Schema(description = "Connector UUID",
             examples = {"7b55ge1c-844f-11dc-a8a3-0242ac120002"},
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    protected UUID uuid;
+    protected String uuid;
 
     @Schema(description = "Connector Name",
             examples = {"Name"},
