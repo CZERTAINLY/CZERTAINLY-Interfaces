@@ -1,10 +1,13 @@
 package com.czertainly.api.model.core.connector;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BaseFunctionGroupDto {
+@Data
+public class BaseFunctionGroupDto implements Serializable {
 
     @Schema(description = "Enumerated code of functional group",
             requiredMode = Schema.RequiredMode.REQUIRED)
@@ -27,30 +30,6 @@ public class BaseFunctionGroupDto {
         super();
         this.kinds = kinds;
         this.functionGroupCode = functionGroupCode;
-        this.endPoints = endPoints;
-    }
-
-    public List<String> getKinds() {
-        return kinds;
-    }
-
-    public void setKinds(List<String> kinds) {
-        this.kinds = kinds;
-    }
-
-    public FunctionGroupCode getFunctionGroupCode() {
-        return functionGroupCode;
-    }
-
-    public void setFunctionGroupCode(FunctionGroupCode functionGroupCode) {
-        this.functionGroupCode = functionGroupCode;
-    }
-
-    public List<EndpointDto> getEndPoints() {
-        return endPoints;
-    }
-
-    public void setEndPoints(List<EndpointDto> endPoints) {
         this.endPoints = endPoints;
     }
 }
