@@ -35,7 +35,7 @@ public class ConnectorRequestDto implements Named {
 
     @NotNull
     @URL
-    @Schema(description = "URL of the Connector to connect", examples = {"http://network-discovery-provicer:8080"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL of the Connector to connect", examples = {"http://network-discovery-provider:8080"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
 
     @NotNull

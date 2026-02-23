@@ -24,7 +24,7 @@ public class ConnectorUpdateRequestDto {
     @URL
     @Schema(description = "URL of the Connector to connect",
             requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"http://network-discovery-provicer:8080"})
+            examples = {"http://network-discovery-provider:8080"})
     private String url;
 
     @NotNull
