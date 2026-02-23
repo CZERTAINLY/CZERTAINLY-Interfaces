@@ -29,11 +29,11 @@ public interface SecretController extends AuthProtectedConnectorController {
     @GetMapping(path = "/{secretType}/attributes", produces = {"application/json"})
     List<BaseAttribute> getSecretAttributes(@Parameter(description = "Secret type") @PathVariable SecretType secretType);
 
-    @Operation(summary = "Get Secret Value")
+    @Operation(summary = "Get Secret Content")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Secret value retrieved"
+                    description = "Secret content retrieved"
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -51,8 +51,8 @@ public interface SecretController extends AuthProtectedConnectorController {
                             schema = @Schema(implementation = ProblemDetailExtended.class)
                     )
             )})
-    @PostMapping(path = "/value", consumes = {"application/json"}, produces = {"application/json"})
-    SecretContent getSecretValue(@Parameter(description = "Secret request") @RequestBody SecretRequestDto request, @RequestParam(required = false, name = "version") Integer version) throws NotFoundException;
+    @PostMapping(path = "/content", consumes = {"application/json"}, produces = {"application/json"})
+    SecretContent getSecretContent(@Parameter(description = "Secret request") @RequestBody SecretRequestDto request, @RequestParam(required = false, name = "version") Integer version) throws NotFoundException;
 
     @Operation(summary = "Create Secret")
     @ApiResponses(value = {
