@@ -10,6 +10,7 @@ import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.core.connector.v2.*;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -55,6 +56,11 @@ public interface ConnectorController extends AuthProtectedController {
     @PostMapping(path = "/list", produces = {"application/json"})
     PaginationResponseDto<ConnectorDto> listConnectors(@RequestBody SearchRequestDto request)
             throws NotFoundException;
+
+    @Operation(summary = "Get Connectors searchable fields information", operationId = "getConnectorSearchableFieldInformation")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector searchable field information retrieved")})
+    @GetMapping(path = "/search", produces = {"application/json"})
+    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(summary = "Get details of a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector details retrieved")})
