@@ -20,7 +20,7 @@ public class ConnectorRequestDto implements Named {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
     @Schema(description = "URL of the Connector to connect",
-            examples = {"http://network-discovery-provicer:8080"},
+            examples = {"http://network-discovery-provider:8080"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
     @Schema(description = "Type of authentication for the Connector",

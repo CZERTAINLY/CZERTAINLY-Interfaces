@@ -76,6 +76,7 @@ public enum Operation implements IPlatformEnum {
     CONNECT("connect", "Connect"),
     RECONNECT("reconnect", "Reconnect"),
     CHECK_HEALTH("checkHealth", "Check health"),
+    GET_CONNECTOR_INFO("getConnectorInfo", "Get Connector info"),
     STATISTICS("statistics", "Statistics"),
     APPROVE("approve", "Approve"),
     APPROVE_OVERRIDE("approveOverride", "Approve override"),
