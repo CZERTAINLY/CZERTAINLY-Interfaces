@@ -1,12 +1,10 @@
 package com.czertainly.api.model.core.connector.v2;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
-import com.czertainly.api.model.client.connector.v2.ConnectorVersion;
 import com.czertainly.api.model.core.connector.AuthType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +34,7 @@ public class ConnectorUpdateRequestDto {
     private AuthType authType;
 
     @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttribute> authAttributes;
+    private List<RequestAttribute> authAttributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> customAttributes = new ArrayList<>();

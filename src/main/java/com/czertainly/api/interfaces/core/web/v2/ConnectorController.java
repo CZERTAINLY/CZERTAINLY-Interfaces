@@ -9,7 +9,6 @@ import com.czertainly.api.model.client.connector.v2.HealthInfo;
 import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.PaginationResponseDto;
-import com.czertainly.api.model.common.UuidDto;
 import com.czertainly.api.model.core.connector.v2.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -124,12 +123,12 @@ public interface ConnectorController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connectors deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(produces = {"application/json"})
+    @PostMapping(path = "/delete", produces = {"application/json"})
     List<BulkActionMessageDto> bulkDeleteConnector(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException, ConnectorException;
 
     @Operation(summary = "Force Delete multiple Connectors")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connectors deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/forceDelete", produces = {"application/json"})
     List<BulkActionMessageDto> bulkForceDeleteConnector(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException;
@@ -142,6 +141,6 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(summary = "Get Info about Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector info retrieved")})
     @GetMapping(path = "/{uuid}/info", produces = {MediaType.APPLICATION_JSON_VALUE})
-    ConnectorInfo getInfo(@Parameter(description = "Connector UUID") UUID uuid) throws NotFoundException, ConnectorException;
+    ConnectorInfo getInfo(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
 
 }

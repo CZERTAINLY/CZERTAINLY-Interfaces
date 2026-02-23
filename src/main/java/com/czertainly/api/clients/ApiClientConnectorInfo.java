@@ -4,9 +4,10 @@ import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.core.connector.AuthType;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface ApiClientConnectorInfo {
+public interface ApiClientConnectorInfo extends Serializable {
 
     String getUuid();
 
