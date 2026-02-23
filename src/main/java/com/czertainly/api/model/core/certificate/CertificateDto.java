@@ -6,16 +6,19 @@ import com.czertainly.api.model.core.certificate.group.GroupDto;
 import com.czertainly.api.model.core.compliance.ComplianceStatus;
 import com.czertainly.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class CertificateDto implements Loggable {
-
     @Schema(
             description = "UUID of the Certificate",
             requiredMode = Schema.RequiredMode.REQUIRED
@@ -190,6 +193,46 @@ public class CertificateDto implements Loggable {
             defaultValue = "false"
     )
     private boolean archived;
+
+    public CertificateDto(UUID uuid, String commonName, String serialNumber, String issuerCommonName, String issuerDn,
+                          String subjectDn, Date notBefore, Date notAfter, String publicKeyAlgorithm, String altPublicKeyAlgorithm,
+                          String signatureAlgorithm, String altSignatureAlgorithm, boolean hybridCertificate,
+                          Integer keySize, Integer altKeySize, CertificateState state, CertificateValidationStatus validationStatus,
+                          UUID raProfileUuid, String raProfileName, Boolean raProfileEnabled, UUID raProfileAuthorityInstanceUuid,
+                          String fingerprint, String owner, UUID ownerUuid, CertificateType certificateType,
+                          String issuerSerialNumber, ComplianceStatus complianceStatus, UUID issuerCertificateUuid,
+                          boolean privateKeyAvailability, Boolean trustedCa, boolean archived) {
+        this.uuid = uuid != null ? uuid.toString() : null;
+        this.commonName = commonName;
+        this.serialNumber = serialNumber;
+        this.issuerCommonName = issuerCommonName;
+        this.issuerDn = issuerDn;
+        this.subjectDn = subjectDn;
+        this.notBefore = notBefore;
+        this.notAfter = notAfter;
+        this.publicKeyAlgorithm = publicKeyAlgorithm;
+        this.altPublicKeyAlgorithm = altPublicKeyAlgorithm;
+        this.signatureAlgorithm = signatureAlgorithm;
+        this.altSignatureAlgorithm = altSignatureAlgorithm;
+        this.hybridCertificate = hybridCertificate;
+        this.keySize = keySize;
+        this.altKeySize = altKeySize;
+        this.state = state;
+        this.validationStatus = validationStatus;
+        if (raProfileUuid != null) {
+            this.raProfile = new SimplifiedRaProfileDto(raProfileUuid, raProfileName, raProfileEnabled, raProfileAuthorityInstanceUuid);
+        }
+        this.fingerprint = fingerprint;
+        this.owner = owner;
+        this.ownerUuid = ownerUuid != null ? ownerUuid.toString() : null;
+        this.certificateType = certificateType;
+        this.issuerSerialNumber = issuerSerialNumber;
+        this.complianceStatus = complianceStatus;
+        this.issuerCertificateUuid = issuerCertificateUuid != null ? issuerCertificateUuid.toString() : null;
+        this.privateKeyAvailability = privateKeyAvailability;
+        this.trustedCa = trustedCa;
+        this.archived = archived;
+    }
 
     @Override
     public Serializable toLogData() {

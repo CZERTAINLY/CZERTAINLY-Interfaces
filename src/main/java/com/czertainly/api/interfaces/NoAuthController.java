@@ -1,13 +1,23 @@
 package com.czertainly.api.interfaces;
 
 import com.czertainly.api.model.common.ErrorMessageDto;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.web.bind.annotation.RestController;
 
+@OpenAPIDefinition(
+        servers = {
+                @Server(
+                        url = "https://demo.czertainly.online/api",
+                        description = "CZERTAINLY Demo server"
+                )
+        }
+)
 @RestController
 @SecurityRequirements
 @ApiResponses(

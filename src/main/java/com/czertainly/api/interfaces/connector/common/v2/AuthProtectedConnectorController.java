@@ -3,12 +3,16 @@ package com.czertainly.api.interfaces.connector.common.v2;
 import com.czertainly.api.config.OpenApiConfig;
 import com.czertainly.api.model.common.error.ProblemDetailExtended;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +26,31 @@ import org.springframework.web.bind.annotation.RestController;
         }
 )
 @RestController
+@SecuritySchemes(value = {
+        @SecurityScheme(
+                name = OpenApiConfig.BASIC_SECURITY_SCHEME_NAME,
+                type = SecuritySchemeType.HTTP,
+                scheme = "Basic"
+        ),
+        @SecurityScheme(
+                name = OpenApiConfig.CERTIFICATE_TLS_SECURITY_SCHEME_NAME,
+                type = SecuritySchemeType.MUTUALTLS,
+                description = "Client certificate authentication"
+        ),
+        @SecurityScheme(
+                name = OpenApiConfig.CONNECTOR_API_KEY_SECURITY_SCHEME_NAME,
+                type = SecuritySchemeType.APIKEY,
+                in = SecuritySchemeIn.HEADER,
+                paramName = "X-API-KEY",
+                description = "API Key in header configured for connector"
+        ),
+        @SecurityScheme(
+                name = OpenApiConfig.NO_SECURITY_SCHEME_NAME,
+                type = SecuritySchemeType.HTTP,
+                scheme = "none",
+                description = "No authentication"
+        )
+})
 @SecurityRequirements(value = {
         @SecurityRequirement(name = OpenApiConfig.BASIC_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_TLS_SECURITY_SCHEME_NAME),

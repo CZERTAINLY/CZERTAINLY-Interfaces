@@ -15,6 +15,7 @@ import java.util.List;
 public enum FeatureFlag implements IPlatformEnum {
 
     STATELESS("stateless", "Stateless", "A stateless connector does not require persistence layer (e.g. database)"),
+    OPEN_METRICS("openMetrics", "OpenMetrics", "Metrics are exposed in OpenMetrics format", List.of(ConnectorInterface.METRICS)),
     SECRET_VERSIONING("secretVersioning", "Secret Versioning", "Supports versioning of secrets, allowing to keep track of history of secrets.", List.of(ConnectorInterface.SECRET)),
     SECRET_ROTATION("secretRotation", "Secret Rotation", "Supports triggering rotation of secrets", List.of(ConnectorInterface.SECRET));
 
