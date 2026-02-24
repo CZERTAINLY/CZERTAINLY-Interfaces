@@ -40,7 +40,7 @@ public interface CbomController extends AuthProtectedController {
 	})
 	@GetMapping(path = "/{uuid}", produces = { "application/json" })
 	CbomDetailDto getCbomDetail(
-			@Parameter(description = "CBOM entry uuid") @PathVariable String uuid)
+			@Parameter(description = "CBOM entry UUID") @PathVariable String uuid)
 			throws NotFoundException, CbomRepositoryException;
 
 	@Operation(summary = "List CBOM versions")
