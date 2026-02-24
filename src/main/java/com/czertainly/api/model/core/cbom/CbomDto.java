@@ -8,8 +8,8 @@ import java.util.UUID;
 
 @Data
 public class CbomDto {
-	@Schema(description = "ID of a CBOM database record", requiredMode = Schema.RequiredMode.REQUIRED)
-	private UUID id;
+	@Schema(description = "UUID of a CBOM record", requiredMode = Schema.RequiredMode.REQUIRED)
+	private UUID uuid;
 
 	@Schema(description = "Creation timestamp of CBOM database record", requiredMode = Schema.RequiredMode.REQUIRED)
 	private OffsetDateTime createdAt;
