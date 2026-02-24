@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Data
 public class CbomDto {
-	@Schema(description = "CBOM entry ID", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "ID of a CBOM database record", requiredMode = Schema.RequiredMode.REQUIRED)
 	private UUID id;
 
-	@Schema(description = "CBOM entry creation time", requiredMode = Schema.RequiredMode.REQUIRED)
+	@Schema(description = "Creation timestamp of CBOM database record", requiredMode = Schema.RequiredMode.REQUIRED)
 	private OffsetDateTime createdAt;
 
 	@Schema(description = "CBOM serial number (URN)", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -25,9 +25,6 @@ public class CbomDto {
 
 	@Schema(description = "A timestamp from CBOM metadata", requiredMode = Schema.RequiredMode.REQUIRED)
 	private OffsetDateTime timestamp;
-
-	@Schema(description = "Creation timestamp of CBOM database record", requiredMode = Schema.RequiredMode.REQUIRED)
-	private OffsetDateTime createdAt;
 
 	@Schema(description = "CBOM source (e.g.: CBOM-Lens)", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String source;
