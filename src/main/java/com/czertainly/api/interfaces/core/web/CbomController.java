@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/v1/cboms")
 @Tag(name = "CBOM management", description = "CBOM management API")
@@ -40,7 +41,7 @@ public interface CbomController extends AuthProtectedController {
 	})
 	@GetMapping(path = "/{uuid}", produces = { "application/json" })
 	CbomDetailDto getCbomDetail(
-			@Parameter(description = "CBOM entry UUID") @PathVariable String uuid)
+			@Parameter(description = "CBOM entry UUID") @PathVariable UUID uuid)
 			throws NotFoundException, CbomRepositoryException;
 
 	@Operation(summary = "List CBOM versions")
@@ -50,7 +51,7 @@ public interface CbomController extends AuthProtectedController {
 	})
 	@GetMapping(path = "/{uuid}/versions", produces = { "application/json" })
 	List<CbomDto> listCbomVersions(
-			@Parameter(description = "CBOM entry UUID") @PathVariable String uuid)
+			@Parameter(description = "CBOM entry UUID") @PathVariable UUID uuid)
 			throws NotFoundException;
 
 	@Operation(summary = "Upload CBOM")
