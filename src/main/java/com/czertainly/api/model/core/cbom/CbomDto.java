@@ -4,9 +4,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Data
 public class CbomDto {
+	@Schema(description = "CBOM entry ID", requiredMode = Schema.RequiredMode.REQUIRED)
+	private UUID id;
+
+	@Schema(description = "CBOM entry creation time", requiredMode = Schema.RequiredMode.REQUIRED)
+	private OffsetDateTime createdAt;
 
 	@Schema(description = "CBOM serial number (URN)", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String serialNumber;
