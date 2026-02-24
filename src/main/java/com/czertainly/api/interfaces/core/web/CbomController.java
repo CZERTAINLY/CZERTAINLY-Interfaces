@@ -7,6 +7,7 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.core.cbom.CbomDetailDto;
 import com.czertainly.api.model.core.cbom.CbomDto;
 import com.czertainly.api.model.core.cbom.CbomListResponseDto;
@@ -32,7 +33,7 @@ public interface CbomController extends AuthProtectedController {
 	@Operation(summary = "List CBOMs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available CBOMs") })
 	@PostMapping(consumes = { "application/json" }, produces = { "application/json" })
-	CbomListResponseDto listCboms(@RequestBody SearchRequestDto request);
+	PaginationResponseDto<CbomDto> listCboms(@RequestBody SearchRequestDto request);
 
 	@Operation(summary = "CBOM detail")
 	@ApiResponses(value = {
