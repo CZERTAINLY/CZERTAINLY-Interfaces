@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Schema(enumAsRef = true)
 public enum AttributeVersion implements IPlatformEnum {
 
@@ -19,6 +21,13 @@ public enum AttributeVersion implements IPlatformEnum {
     AttributeVersion(String code, int version) {
         this.code = code;
         this.version = version;
+    }
+
+    public static AttributeVersion fromIntVersion(int version) {
+        return Arrays.stream(values())
+                .filter(e -> e.version == version)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown AttributeVersion: " + version));
     }
 
     @Override

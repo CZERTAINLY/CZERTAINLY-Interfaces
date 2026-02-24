@@ -108,6 +108,9 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(description = "List of resources which are allowed to use the Custom Attribute")
     private List<Resource> resources;
 
+    @Schema(description = "Boolean determining if the Attribute can have multiple values")
+    private boolean extensibleList;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -121,6 +124,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
                 .append("content", content)
                 .append("resources", resources)
                 .append("required", required)
+                .append("extensibleList", extensibleList)
                 .toString();
     }
 }
