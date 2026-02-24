@@ -85,7 +85,7 @@ public interface SecretController extends AuthProtectedConnectorController {
     @Operation(summary = "Update Secret")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "204",
+                    responseCode = "200",
                     description = "Secret updated"),
             @ApiResponse(
                     responseCode = "404",
@@ -147,7 +147,7 @@ public interface SecretController extends AuthProtectedConnectorController {
     @Operation(summary = "Rotate Secret")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "204",
+                    responseCode = "200",
                     description = "Secret rotated"),
             @ApiResponse(
                     responseCode = "404",
