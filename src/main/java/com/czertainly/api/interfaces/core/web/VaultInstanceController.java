@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
@@ -45,7 +46,7 @@ public interface VaultInstanceController extends AuthProtectedController {
     @Operation(summary = "Create a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Vault instance created")})
     @PostMapping(produces = {"application/json"})
-    VaultInstanceDetailDto createVaultInstance(@RequestBody VaultInstanceRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException;
+    VaultInstanceDetailDto createVaultInstance(@RequestBody VaultInstanceRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException, AlreadyExistException;
 
     @Operation(summary = "Update a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Vault instance updated")})

@@ -3,6 +3,8 @@ package com.czertainly.api.model.core.secret;
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.core.secret.content.SecretContent;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -12,15 +14,18 @@ import java.util.UUID;
 public class SecretRequestDto {
 
     @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank
     private String name;
 
     @Schema(description = "Description of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
     @Schema(description = "UUID of the vault profile where the secret is stored", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull
     private UUID sourceVaultProfileUuid;
 
     @Schema(description = "Content of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull
     private SecretContent secret;
 
     @Schema(description = "List of attributes associated with the secret", requiredMode = Schema.RequiredMode.REQUIRED)

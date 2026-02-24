@@ -4,6 +4,7 @@ import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,5 +14,5 @@ public class VaultProfileUpdateRequestDto {
     private String description;
 
     @Schema(description = "List of custom attributes of the Vault profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttribute> customAttributes;
+    private List<RequestAttribute> customAttributes = new ArrayList<>();
 }

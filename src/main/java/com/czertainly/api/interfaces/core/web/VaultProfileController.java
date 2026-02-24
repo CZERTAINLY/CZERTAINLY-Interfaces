@@ -1,10 +1,12 @@
 package com.czertainly.api.interfaces.core.web;
 
+import com.czertainly.api.exception.AlreadyExistException;
 import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
+import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.secret.SecretType;
 import com.czertainly.api.model.core.vaultprofile.VaultProfileDetailDto;
 import com.czertainly.api.model.core.vaultprofile.VaultProfileListResponseDto;
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +50,7 @@ public interface VaultProfileController extends AuthProtectedController {
     @Operation(summary = "Create a Vault Profile")
     @ApiResponse(responseCode = "201", description = "Vault Profile created")
     @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles", consumes = {"application/json"}, produces = {"application/json"})
-    VaultProfileDetailDto createVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @RequestBody VaultProfileRequestDto vaultProfileDetail) throws NotFoundException, AttributeException;
+    VaultProfileDetailDto createVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @RequestBody VaultProfileRequestDto vaultProfileDetail) throws NotFoundException, AttributeException, AlreadyExistException;
 
     @Operation(summary = "Enable a Vault Profile")
     @ApiResponse(responseCode = "204", description = "Vault Profile enabled")
@@ -63,5 +66,10 @@ public interface VaultProfileController extends AuthProtectedController {
     @ApiResponse(responseCode = "200", description = "List of attributes for creating a secret in a Vault Profile retrieved")
     @GetMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets/{secretType}/attributes", produces = {"application/json"})
     List<BaseAttribute> getAttributesForCreatingSecret(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @Parameter(description = "Type of the secret") @PathVariable SecretType secretType);
+
+    @Operation(summary = "List search filters for Vault Profiles")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of search filters retrieved")})
+    @GetMapping(path = "/search", produces = {"application/json"})
+    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
 }

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,22 +36,22 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "Get secret details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret details retrieved")})
     @GetMapping(path = "/secrets/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretDetailDto getSecretDetails(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid);
+    SecretDetailDto getSecretDetails(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Get secret versions")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret versions retrieved")})
     @GetMapping(path = "/secrets/{uuid}/versions", produces = {MediaType.APPLICATION_JSON_VALUE})
-    List<SecretVersionDto> getSecretVersions(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid);
+    List<SecretVersionDto> getSecretVersions(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Get secret content")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret content retrieved")})
     @GetMapping(path = "/secrets/{uuid}/content", produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretContent getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid);
+    SecretContent getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Create a new secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Secret created successfully")})
     @PostMapping(path = "vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretDetailDto createSecret(@RequestBody SecretRequestDto secretRequest, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @Parameter(description = "UUID of vault instance") @PathVariable UUID vaultUuid) throws NotFoundException, AttributeException;
+    SecretDetailDto createSecret(@RequestBody @Valid SecretRequestDto secretRequest, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @Parameter(description = "UUID of vault instance") @PathVariable UUID vaultUuid) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Update an existing secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret updated successfully")})
@@ -80,6 +81,6 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "Remove vault profile from secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault profile removed from secret successfully")})
     @DeleteMapping(path = "/secrets/{uuid}/syncVaultProfiles/{vaultProfileUuid}")
-    void removeVaultProfileFromSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid);
+    void removeVaultProfileFromSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid) throws NotFoundException;
 
 }

@@ -36,6 +36,7 @@ import com.czertainly.api.model.core.logging.enums.Module;
 import com.czertainly.api.model.core.notification.RecipientType;
 import com.czertainly.api.model.core.oid.OidCategory;
 import com.czertainly.api.model.core.other.ResourceEvent;
+import com.czertainly.api.model.core.secret.SecretState;
 import com.czertainly.api.model.core.secret.SecretType;
 import com.czertainly.api.model.core.secret.content.KeyStoreType;
 import com.czertainly.api.model.core.workflows.ConditionType;
@@ -144,7 +145,8 @@ public enum PlatformEnum implements IPlatformEnum {
 
     // Secrets
     SECRET_TYPE(SecretType.class, "Secret Type"),
-    KEY_STORE_TYPE(KeyStoreType.class, "Key Store Type")
+    KEY_STORE_TYPE(KeyStoreType.class, "Key Store Type"),
+    SECRET_STATE(SecretState.class, "Secret State"),
 
     ;
 

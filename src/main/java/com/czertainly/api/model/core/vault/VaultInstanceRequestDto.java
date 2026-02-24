@@ -4,6 +4,7 @@ import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,8 +24,8 @@ public class VaultInstanceRequestDto {
     private String description;
 
     @Schema(description = "List of attributes of the Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttribute> attributes;
+    private List<RequestAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of custom attributes of the Vault instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<RequestAttribute> customAttributes;
+    private List<RequestAttribute> customAttributes = new ArrayList<>();
 }
