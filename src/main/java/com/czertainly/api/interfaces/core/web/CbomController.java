@@ -38,10 +38,9 @@ public interface CbomController extends AuthProtectedController {
 			@ApiResponse(responseCode = "200", description = "CBOM details retrieved"),
 			@ApiResponse(responseCode = "404", description = "CBOM not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
-	@GetMapping(path = "/{urn}", produces = { "application/json" })
+	@GetMapping(path = "/{uuid}", produces = { "application/json" })
 	CbomDetailDto getCbomDetail(
-			@Parameter(description = "CBOM URN") @PathVariable String urn,
-			@Parameter(description = "CBOM version") @RequestParam(required = false) String version)
+			@Parameter(description = "CBOM entry uuid") @PathVariable String uuid)
 			throws NotFoundException, CbomRepositoryException;
 
 	@Operation(summary = "List CBOM versions")
@@ -49,9 +48,9 @@ public interface CbomController extends AuthProtectedController {
 			@ApiResponse(responseCode = "200", description = "List of CBOM versions retrieved"),
 			@ApiResponse(responseCode = "404", description = "CBOM not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
-	@GetMapping(path = "/{urn}/versions", produces = { "application/json" })
+	@GetMapping(path = "/{uuid}/versions", produces = { "application/json" })
 	List<CbomDto> listCbomVersions(
-			@Parameter(description = "CBOM URN") @PathVariable String urn)
+			@Parameter(description = "CBOM entry UUID") @PathVariable String uuid)
 			throws NotFoundException;
 
 	@Operation(summary = "Upload CBOM")
@@ -63,9 +62,8 @@ public interface CbomController extends AuthProtectedController {
 	@ResponseStatus(HttpStatus.CREATED)
 	CbomDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws ValidationException, AlreadyExistException, CbomRepositoryException;
 
-
-    @Operation(summary = "Get Cbom searchable fields information")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cbom searchable field information retrieved")})
-    @GetMapping(path = "/search", produces = {"application/json"})
-    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
+	@Operation(summary = "Get Cbom searchable fields information")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cbom searchable field information retrieved")})
+	@GetMapping(path = "/search", produces = {"application/json"})
+	List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 }
