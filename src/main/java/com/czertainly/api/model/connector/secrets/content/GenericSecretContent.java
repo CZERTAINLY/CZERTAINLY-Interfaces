@@ -1,0 +1,24 @@
+package com.czertainly.api.model.connector.secrets.content;
+
+import com.czertainly.api.model.connector.secrets.SecretType;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+
+@Data
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@Schema(
+        title = "GenericSecretContent",
+        description = "Secret representing generic content encoded as Base64 string"
+)
+public class GenericSecretContent extends SecretContent {
+
+    @ToString.Exclude
+    @Schema(description = "Generic secret content encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String content;
+
+    public GenericSecretContent() {
+        super(SecretType.GENERIC);
+    }
+
+}
