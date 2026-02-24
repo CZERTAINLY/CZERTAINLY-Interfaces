@@ -1,5 +1,6 @@
 package com.czertainly.api.clients.v2;
 
+import com.czertainly.api.clients.ApiClientConnectorInfo;
 import com.czertainly.api.clients.BaseApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.model.client.connector.v2.HealthInfo;
@@ -15,7 +16,7 @@ public class HealthApiClient extends BaseApiClient {
         super(webClient, defaultTrustManagers);
     }
 
-    public HealthInfo checkHealth(ConnectorDto connector) throws ConnectorException {
+    public HealthInfo checkHealth(ApiClientConnectorInfo connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
         return processRequest(r -> r
                         .uri(connector.getUrl() + "/v2/health")

@@ -64,7 +64,7 @@ public abstract class BaseApiClient {
         this.defaultTrustManagers = defaultTrustManagers;
     }
 
-    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ConnectorDto connector, boolean validateConnectorStatus) {
+    public WebClient.RequestBodyUriSpec prepareRequest(HttpMethod method, ApiClientConnectorInfo connector, boolean validateConnectorStatus) {
         if (validateConnectorStatus) {
             validateConnectorStatus(connector.getStatus());
         }
@@ -183,7 +183,7 @@ public abstract class BaseApiClient {
                 .build();
     }
 
-    public static <T, R> R processRequest(Function<T, R> func, T request, ConnectorDto connector) throws ConnectorException {
+    public static <T, R> R processRequest(Function<T, R> func, T request, ApiClientConnectorInfo connector) throws ConnectorException {
         try {
             return func.apply(request);
         } catch (Exception e) {

@@ -1,9 +1,13 @@
 package com.czertainly.api.model.core.connector;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class FunctionGroupDto extends BaseFunctionGroupDto {
 
     @Schema(description = "UUID of the Function Group",
@@ -13,22 +17,6 @@ public class FunctionGroupDto extends BaseFunctionGroupDto {
     @Schema(description = "Function Group Name",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public String toString() {
