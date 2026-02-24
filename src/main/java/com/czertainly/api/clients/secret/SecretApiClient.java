@@ -81,10 +81,10 @@ public class SecretApiClient extends BaseApiClient {
         );
     }
 
-    public void deleteSecret(ApiClientConnectorInfo connector, SecretRequestDto request, String uuid) throws ConnectorException {
+    public void deleteSecret(ApiClientConnectorInfo connector, SecretRequestDto request) throws ConnectorException {
         processRequest(
-                req -> prepareRequest(HttpMethod.POST, connector, true)
-                        .uri(connector.getUrl() + SECRET_BASE_PATH + "/" + uuid + "/delete")
+                req -> prepareRequest(HttpMethod.DELETE, connector, true)
+                        .uri(connector.getUrl() + SECRET_BASE_PATH)
                         .bodyValue(req)
                         .retrieve()
                         .toBodilessEntity()
@@ -107,10 +107,10 @@ public class SecretApiClient extends BaseApiClient {
         );
     }
 
-    public SecretResponseDto rotateSecret(ApiClientConnectorInfo connector, SecretRequestDto request, String uuid) throws ConnectorException {
+    public SecretResponseDto rotateSecret(ApiClientConnectorInfo connector, SecretRequestDto request) throws ConnectorException {
         return processRequest(
                 req -> prepareRequest(HttpMethod.POST, connector, true)
-                        .uri(connector.getUrl() + SECRET_BASE_PATH + "/" + uuid + "/rotate")
+                        .uri(connector.getUrl() + SECRET_BASE_PATH + "/rotate")
                         .bodyValue(req)
                         .retrieve()
                         .bodyToMono(SecretResponseDto.class)
