@@ -31,7 +31,7 @@ public enum SecretType implements IPlatformEnum {
     private final String description;
 
     SecretType(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     SecretType(String code, String label, String description) {

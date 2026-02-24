@@ -25,7 +25,7 @@ public enum KeyStoreType implements IPlatformEnum {
     private final String description;
 
     KeyStoreType(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     KeyStoreType(String code, String label, String description) {

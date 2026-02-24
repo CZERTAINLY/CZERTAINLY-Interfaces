@@ -135,7 +135,7 @@ public interface SecretController extends AuthProtectedConnectorController {
                             schema = @Schema(implementation = ProblemDetailExtended.class)
                     )
             )})
-    @PostMapping(path = "/{uuid}/delete")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteSecret(@Parameter(description = "Secret request") @RequestBody SecretRequestDto request) throws NotFoundException;
 
@@ -173,7 +173,7 @@ public interface SecretController extends AuthProtectedConnectorController {
                             schema = @Schema(implementation = ProblemDetailExtended.class)
                     )
             )})
-    @PostMapping(path = "/{uuid}/rotate")
+    @PostMapping(path = "/rotate")
     SecretResponseDto rotateSecret(@Parameter(description = "Secret request") @RequestBody SecretRequestDto request) throws NotFoundException;
 
 }
