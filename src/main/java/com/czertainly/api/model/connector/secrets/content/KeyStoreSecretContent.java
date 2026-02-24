@@ -1,14 +1,11 @@
 package com.czertainly.api.model.connector.secrets.content;
 
+import com.czertainly.api.model.connector.secrets.SecretType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "KeyStoreSecretContent",
@@ -19,10 +16,16 @@ public class KeyStoreSecretContent extends SecretContent {
     @Schema(description = "Key Store type", requiredMode = Schema.RequiredMode.REQUIRED)
     private KeyStoreType keyStoreType;
 
+    @ToString.Exclude
     @Schema(description = "BASE64 encoded content of key store", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
+    @ToString.Exclude
     @Schema(description = "Password for key store", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
+
+    public KeyStoreSecretContent() {
+        super(SecretType.KEY_STORE);
+    }
 
 }

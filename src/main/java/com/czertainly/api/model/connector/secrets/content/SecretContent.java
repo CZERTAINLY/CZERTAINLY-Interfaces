@@ -22,5 +22,13 @@ import lombok.Data;
 public abstract class SecretContent implements SecretContentDto {
 
     @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {SecretType.Codes.API_KEY})
-    private SecretType type;
+    private final SecretType type;
+
+    public SecretContent() {
+        this.type = null; // Type will be set by subclasses
+    }
+
+    protected SecretContent(SecretType type) {
+        this.type = type;
+    }
 }
