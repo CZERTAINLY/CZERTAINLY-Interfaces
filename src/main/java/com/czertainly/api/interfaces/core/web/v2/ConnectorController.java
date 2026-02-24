@@ -51,7 +51,7 @@ import java.util.UUID;
         })
 public interface ConnectorController extends AuthProtectedController {
 
-    @Operation(summary = "List Connectors")
+    @Operation(operationId = "listConnectorsV2", summary = "List Connectors")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List all Connectors")})
     @PostMapping(path = "/list", produces = {"application/json"})
     PaginationResponseDto<ConnectorDto> listConnectors(@RequestBody SearchRequestDto request)
@@ -62,12 +62,12 @@ public interface ConnectorController extends AuthProtectedController {
     @GetMapping(path = "/search", produces = {"application/json"})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
-    @Operation(summary = "Get details of a Connector")
+    @Operation(operationId = "getConnectorV2", summary = "Get details of a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector details retrieved")})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
     ConnectorDetailDto getConnector(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
 
-    @Operation(summary = "Create a new Connector")
+    @Operation(operationId = "createConnectorV2", summary = "Create a new Connector")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "New Connector created"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -76,7 +76,7 @@ public interface ConnectorController extends AuthProtectedController {
     ConnectorDetailDto createConnector(@RequestBody @Valid ConnectorRequestDto request)
             throws AlreadyExistException, ConnectorException, AttributeException, NotFoundException;
 
-    @Operation(summary = "Edit a Connector")
+    @Operation(operationId = "editConnectorV2", summary = "Edit a Connector")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connector updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -85,13 +85,13 @@ public interface ConnectorController extends AuthProtectedController {
     ConnectorDetailDto editConnector(@Parameter(description = "Connector UUID") @PathVariable UUID uuid, @RequestBody @Valid ConnectorUpdateRequestDto request)
             throws ConnectorException, AttributeException, NotFoundException;
 
-    @Operation(summary = "Delete a Connector")
+    @Operation(operationId = "deleteConnectorV2", summary = "Delete a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Connector deleted")})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     void deleteConnector(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws NotFoundException;
 
-    @Operation(summary = "Connect to a Connector")
+    @Operation(operationId = "connectV2", summary = "Connect to a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector connected"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
@@ -99,52 +99,52 @@ public interface ConnectorController extends AuthProtectedController {
             "application/json"})
     List<ConnectInfo> connect(@RequestBody @Valid ConnectRequestDto request) throws ValidationException, ConnectException, ConnectorException;
 
-    @Operation(summary = "Reconnect Connector")
+    @Operation(operationId = "reconnectV2", summary = "Reconnect Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Reconnect to a Connector"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{uuid}/reconnect", produces = {"application/json"})
     ConnectInfo reconnect(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
 
-    @Operation(summary = "Approve a Connector")
+    @Operation(operationId = "approveV2", summary = "Approve a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector Approved")})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(path = "/{uuid}/approve", produces = {"application/json"})
     void approve(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws NotFoundException, ValidationException;
 
-    @Operation(summary = "Approve multiple Connector")
+    @Operation(operationId = "bulkApproveV2", summary = "Approve multiple Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approve multiple Connectors")})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PostMapping(path = "/approve", consumes = {"application/json"}, produces = {"application/json"})
     List<BulkActionMessageDto> bulkApprove(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException;
 
-    @Operation(summary = "Reconnect multiple Connectors")
+    @Operation(operationId = "bulkReconnectV2", summary = "Reconnect multiple Connectors")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Reconnect multiple Connectors initiated")})
     @PostMapping(path = "/reconnect", consumes = {
             "application/json"}, produces = {"application/json"})
     List<BulkActionMessageDto> bulkReconnect(@RequestBody List<UUID> uuids) throws ValidationException, NotFoundException, ConnectException, ConnectorException;
 
-    @Operation(summary = "Delete multiple Connectors")
+    @Operation(operationId = "bulkDeleteConnectorV2", summary = "Delete multiple Connectors")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connectors deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/delete", produces = {"application/json"})
     List<BulkActionMessageDto> bulkDeleteConnector(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException, ConnectorException;
 
-    @Operation(summary = "Force Delete multiple Connectors")
+    @Operation(operationId = "bulkForceDeleteConnectorV2", summary = "Force Delete multiple Connectors")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connectors deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/forceDelete", produces = {"application/json"})
     List<BulkActionMessageDto> bulkForceDeleteConnector(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException;
 
-    @Operation(summary = "Check Health of a Connector")
+    @Operation(operationId = "checkHealthV2", summary = "Check Health of a Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Health check completed")})
     @GetMapping(path = "/{uuid}/health", produces = {MediaType.APPLICATION_JSON_VALUE})
     HealthInfo checkHealth(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
 
-    @Operation(summary = "Get Info about Connector")
+    @Operation(operationId = "getInfoV2", summary = "Get Info about Connector")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connector info retrieved")})
     @GetMapping(path = "/{uuid}/info", produces = {MediaType.APPLICATION_JSON_VALUE})
     ConnectorInfo getInfo(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
