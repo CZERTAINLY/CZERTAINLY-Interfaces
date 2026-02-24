@@ -7,9 +7,9 @@ import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
+import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.core.cbom.CbomDetailDto;
 import com.czertainly.api.model.core.cbom.CbomDto;
-import com.czertainly.api.model.core.cbom.CbomListResponseDto;
 import com.czertainly.api.model.core.cbom.CbomUploadRequestDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/v1/cboms")
 @Tag(name = "CBOM management", description = "CBOM management API")
@@ -31,17 +32,16 @@ public interface CbomController extends AuthProtectedController {
 	@Operation(summary = "List CBOMs")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "List of available CBOMs") })
 	@PostMapping(consumes = { "application/json" }, produces = { "application/json" })
-	CbomListResponseDto listCboms(@RequestBody SearchRequestDto request);
+	PaginationResponseDto<CbomDto> listCboms(@RequestBody SearchRequestDto request);
 
 	@Operation(summary = "CBOM detail")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "CBOM details retrieved"),
 			@ApiResponse(responseCode = "404", description = "CBOM not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
-	@GetMapping(path = "/{urn}", produces = { "application/json" })
+	@GetMapping(path = "/{uuid}", produces = { "application/json" })
 	CbomDetailDto getCbomDetail(
-			@Parameter(description = "CBOM URN") @PathVariable String urn,
-			@Parameter(description = "CBOM version") @RequestParam(required = false) String version)
+			@Parameter(description = "CBOM entry UUID") @PathVariable UUID uuid)
 			throws NotFoundException, CbomRepositoryException;
 
 	@Operation(summary = "List CBOM versions")
@@ -49,9 +49,9 @@ public interface CbomController extends AuthProtectedController {
 			@ApiResponse(responseCode = "200", description = "List of CBOM versions retrieved"),
 			@ApiResponse(responseCode = "404", description = "CBOM not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
-	@GetMapping(path = "/{urn}/versions", produces = { "application/json" })
+	@GetMapping(path = "/{uuid}/versions", produces = { "application/json" })
 	List<CbomDto> listCbomVersions(
-			@Parameter(description = "CBOM URN") @PathVariable String urn)
+			@Parameter(description = "CBOM entry UUID") @PathVariable UUID uuid)
 			throws NotFoundException;
 
 	@Operation(summary = "Upload CBOM")
@@ -63,9 +63,8 @@ public interface CbomController extends AuthProtectedController {
 	@ResponseStatus(HttpStatus.CREATED)
 	CbomDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws ValidationException, AlreadyExistException, CbomRepositoryException;
 
-
-    @Operation(summary = "Get Cbom searchable fields information")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cbom searchable field information retrieved")})
-    @GetMapping(path = "/search", produces = {"application/json"})
-    List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
+	@Operation(summary = "Get Cbom searchable fields information")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cbom searchable field information retrieved")})
+	@GetMapping(path = "/search", produces = {"application/json"})
+	List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 }
