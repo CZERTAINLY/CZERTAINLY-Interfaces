@@ -34,7 +34,7 @@ public class SecretApiClient extends BaseApiClient {
         );
     }
 
-    public SecretContent getSecretContent(ApiClientConnectorInfo connector, SecretRequestDto request, Integer version) throws ConnectorException {
+    public SecretContentResponseDto getSecretContent(ApiClientConnectorInfo connector, SecretRequestDto request, String version) throws ConnectorException {
         return processRequest(
                 req -> {
                     UriComponentsBuilder uriBuilder = UriComponentsBuilder
@@ -47,7 +47,7 @@ public class SecretApiClient extends BaseApiClient {
                             .uri(uriBuilder.build().toUri())
                             .bodyValue(req)
                             .retrieve()
-                            .bodyToMono(SecretContent.class)
+                            .bodyToMono(SecretContentResponseDto.class)
                             .block();
                 },
                 request,

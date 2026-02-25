@@ -6,7 +6,6 @@ import com.czertainly.api.interfaces.connector.common.v2.AuthProtectedConnectorC
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.error.ProblemDetailExtended;
 import com.czertainly.api.model.connector.secrets.*;
-import com.czertainly.api.model.connector.secrets.content.SecretContent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,7 +51,7 @@ public interface SecretController extends AuthProtectedConnectorController {
                     )
             )})
     @PostMapping(path = "/content", consumes = {"application/json"}, produces = {"application/json"})
-    SecretContent getSecretContent(@Parameter(description = "Secret request") @RequestBody SecretRequestDto request, @RequestParam(required = false, name = "version") Integer version) throws NotFoundException;
+    SecretContentResponseDto getSecretContent(@Parameter(description = "Secret request") @RequestBody SecretRequestDto request, @RequestParam(required = false, name = "version") String version) throws NotFoundException;
 
     @Operation(summary = "Create Secret")
     @ApiResponses(value = {

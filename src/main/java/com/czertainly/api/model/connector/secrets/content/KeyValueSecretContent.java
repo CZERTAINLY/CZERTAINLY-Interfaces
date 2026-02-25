@@ -7,6 +7,7 @@ import lombok.*;
 import java.util.Map;
 
 @Data
+@Builder
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(

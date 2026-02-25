@@ -17,8 +17,8 @@ public class SecretResponseDto {
     @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {SecretType.Codes.API_KEY})
     private SecretType type;
 
-    @Schema(description = "List of Secret Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<BaseAttribute> attributes = new ArrayList<>();
+    @Schema(description = "Secret version, if versioning is supported", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String version;
 
     @Schema(description = "Metadata for the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> metadata = new ArrayList<>();

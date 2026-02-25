@@ -20,7 +20,7 @@ public class ProblemDetailExtended extends ProblemDetail {
     @Schema(description = "RFC 9457 type URI identifying the problem type",
             requiredMode = Schema.RequiredMode.REQUIRED,
             format = "uri",
-            example = "https://docs.czertainly.com/problems/common/validation-failed")
+            example = "https://docs.otilm.com/problems/common/validation-failed")
     @Override
     @NonNull
     public URI getType() {
@@ -57,7 +57,7 @@ public class ProblemDetailExtended extends ProblemDetail {
     @Schema(description = "URI reference identifying the occurrence (e.g., request path or operation ID).",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             format = "uri",
-            example = "/v1/certificates/123e4567-e89b-12d3-a456-426614174000")
+            example = "https://api.example.org/foo/bar/123")
     @Override
     @Nullable
     public URI getInstance() {
@@ -92,7 +92,7 @@ public class ProblemDetailExtended extends ProblemDetail {
 
     public static ProblemDetailExtended fromErrorCode(ErrorCode errorCode, String detail, URI instance, String correlationId) {
         ProblemDetailExtended problemDetail = new ProblemDetailExtended();
-        problemDetail.setType(URI.create("https://docs.czertainly.com/problems/%s/%s".formatted(errorCode.getCategory().getCode(), errorCode.name())));
+        problemDetail.setType(URI.create("https://docs.otilm.com/problems/%s/%s".formatted(errorCode.getCategory().getCode(), errorCode.name())));
         problemDetail.setTitle(errorCode.getTitle());
         problemDetail.setStatus(errorCode.getStatus().value());
         problemDetail.setDetail(detail);
