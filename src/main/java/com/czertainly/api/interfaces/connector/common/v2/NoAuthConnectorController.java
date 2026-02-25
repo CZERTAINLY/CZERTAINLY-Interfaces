@@ -33,7 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
                 ),
                 @ApiResponse(
                         responseCode = "404",
-                        description = "Not Found. Endpoint not found or not implemented"
+                        description = "Not Found. Endpoint not found or not implemented",
+                        content = @Content(
+                                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                                schema = @Schema(implementation = ProblemDetailExtended.class)
+                        )
                 )
         })
 public interface NoAuthConnectorController {
