@@ -21,7 +21,7 @@ public class AttributeCallback implements Serializable {
 
     @Schema(
             description = "HTTP method of the callback",
-            requiredMode = Schema.RequiredMode.REQUIRED
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String callbackMethod;
 
