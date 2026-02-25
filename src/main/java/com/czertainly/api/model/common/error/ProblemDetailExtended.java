@@ -92,7 +92,7 @@ public class ProblemDetailExtended extends ProblemDetail {
 
     public static ProblemDetailExtended fromErrorCode(ErrorCode errorCode, String detail, URI instance, String correlationId) {
         ProblemDetailExtended problemDetail = new ProblemDetailExtended();
-        problemDetail.setType(URI.create("https://docs.czertainly.com/problems/%s/%s".formatted(errorCode.getCategory().getCode(), errorCode.name())));
+        problemDetail.setType(URI.create("https://docs.otilm.com/problems/%s/%s".formatted(errorCode.getCategory().getCode(), errorCode.name())));
         problemDetail.setTitle(errorCode.getTitle());
         problemDetail.setStatus(errorCode.getStatus().value());
         problemDetail.setDetail(detail);
