@@ -1,6 +1,7 @@
 package com.czertainly.api.model.client.attribute;
 
 import com.czertainly.api.model.common.NameAndUuidDto;
+import com.czertainly.api.model.common.attribute.common.AttributeVersion;
 import com.czertainly.api.model.common.attribute.common.content.AttributeContentType;
 import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import com.czertainly.api.model.core.logging.Loggable;
@@ -43,7 +44,7 @@ public class AttributeDefinitionDto implements Loggable {
     private String description;
 
     /**
-     * Boolean determining if the Attribute is enabled..
+     * Boolean determining if the Attribute is enabled.
      **/
     @Schema(
             description = "Boolean determining if the Attribute is enabled. Required only for Custom Attribute"
@@ -52,6 +53,9 @@ public class AttributeDefinitionDto implements Loggable {
 
     @Schema(description = "Protection level of attribute content")
     private ProtectionLevel protectionLevel;
+
+    @Schema(description = "Version of the attribute")
+    private AttributeVersion version;
 
 
     @Override
