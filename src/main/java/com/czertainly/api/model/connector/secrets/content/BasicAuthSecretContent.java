@@ -6,7 +6,6 @@ import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "BasicAuthSecretContent",
@@ -23,5 +22,11 @@ public class BasicAuthSecretContent extends SecretContent {
 
     protected BasicAuthSecretContent() {
         super(SecretType.BASIC_AUTH);
+    }
+
+    public BasicAuthSecretContent(String username, String password) {
+        this();
+        this.username = username;
+        this.password = password;
     }
 }

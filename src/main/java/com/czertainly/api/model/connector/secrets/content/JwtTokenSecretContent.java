@@ -6,7 +6,6 @@ import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "JwtTokenSecretContent",
@@ -22,4 +21,8 @@ public class JwtTokenSecretContent extends SecretContent {
         super(SecretType.JWT_TOKEN);
     }
 
+    public JwtTokenSecretContent(String content) {
+        this();
+        this.content = content;
+    }
 }

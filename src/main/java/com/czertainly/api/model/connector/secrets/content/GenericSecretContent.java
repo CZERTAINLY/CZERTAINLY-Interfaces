@@ -6,7 +6,6 @@ import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "GenericSecretContent",
@@ -22,4 +21,8 @@ public class GenericSecretContent extends SecretContent {
         super(SecretType.GENERIC);
     }
 
+    public GenericSecretContent(String content) {
+        this();
+        this.content = content;
+    }
 }

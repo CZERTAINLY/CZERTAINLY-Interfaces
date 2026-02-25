@@ -6,7 +6,6 @@ import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "ApiKeySecretContent",
@@ -18,8 +17,12 @@ public class ApiKeySecretContent extends SecretContent {
     @Schema(description = "API Key content encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
-    public ApiKeySecretContent() {
+    protected ApiKeySecretContent() {
         super(SecretType.API_KEY);
     }
 
+    public ApiKeySecretContent(String content) {
+        this();
+        this.content = content;
+    }
 }
