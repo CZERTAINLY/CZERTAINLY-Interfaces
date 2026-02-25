@@ -100,6 +100,12 @@ public class CustomAttributeCreateRequestDto {
     )
     private boolean multiSelect = false;
 
+    @Schema(
+            description = "Boolean determining if a list Attribute can have values other than predefined options",
+            defaultValue = "false"
+    )
+    private boolean extensibleList = false;
+
     /**
      * Attribute Content
      */

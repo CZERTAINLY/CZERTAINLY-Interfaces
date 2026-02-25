@@ -107,4 +107,10 @@ public class CustomAttributeUpdateRequestDto {
             description = "List of resource to be associated with the custom attribute"
     )
     private List<Resource> resources;
+
+    @Schema(
+            description = "Boolean determining if a list Attribute can have values other than predefined options",
+            defaultValue = "false"
+    )
+    private boolean extensibleList = false;
 }
