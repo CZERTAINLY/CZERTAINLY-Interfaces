@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.secret.content;
 
+import com.czertainly.api.model.core.secret.SecretType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,5 +22,10 @@ public class BasicAuthSecretContent extends SecretContent {
 
     @Schema(description = "Password for Basic Authentication", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
+
+    @Override
+    public SecretType getType() {
+        return SecretType.BASIC_AUTH;
+    }
 
 }

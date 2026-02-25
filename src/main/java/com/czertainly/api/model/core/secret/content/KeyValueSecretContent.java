@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.secret.content;
 
+import com.czertainly.api.model.core.secret.SecretType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,10 @@ public class KeyValueSecretContent extends SecretContent {
 
     @Schema(description = "Key-Value pairs stored as the secret content, represented by JSON object", requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<String, Object> content;
+
+    @Override
+    public SecretType getType() {
+        return SecretType.KEY_VALUE;
+    }
 
 }
