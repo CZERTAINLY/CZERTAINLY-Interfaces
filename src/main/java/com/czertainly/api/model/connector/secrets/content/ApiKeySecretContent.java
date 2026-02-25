@@ -5,8 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Data
-@Builder
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "ApiKeySecretContent",
@@ -22,4 +20,8 @@ public class ApiKeySecretContent extends SecretContent {
         super(SecretType.API_KEY);
     }
 
+    public ApiKeySecretContent(String content) {
+        this();
+        this.content = content;
+    }
 }

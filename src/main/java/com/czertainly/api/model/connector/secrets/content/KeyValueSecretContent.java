@@ -7,8 +7,6 @@ import lombok.*;
 import java.util.Map;
 
 @Data
-@Builder
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "KeyValueSecretContent",
@@ -24,4 +22,8 @@ public class KeyValueSecretContent extends SecretContent {
         super(SecretType.KEY_VALUE);
     }
 
+    public KeyValueSecretContent(Map<String, Object> content) {
+        this();
+        this.content = content;
+    }
 }
