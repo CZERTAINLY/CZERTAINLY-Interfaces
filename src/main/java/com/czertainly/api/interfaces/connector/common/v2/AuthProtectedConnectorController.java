@@ -68,6 +68,10 @@ import org.springframework.web.bind.annotation.RestController;
                         )
                 ),
                 @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found. Endpoint not found or not implemented"
+                ),
+                @ApiResponse(
                         responseCode = "500",
                         description = "Internal Server Error",
                         content = @Content(
