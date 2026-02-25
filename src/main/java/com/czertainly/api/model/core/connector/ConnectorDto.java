@@ -1,5 +1,6 @@
 package com.czertainly.api.model.core.connector;
 
+import com.czertainly.api.clients.ApiClientConnectorInfo;
 import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Setter
 @Getter
-public class ConnectorDto extends NameAndUuidDto implements Serializable {
+public class ConnectorDto extends NameAndUuidDto implements ApiClientConnectorInfo {
 
     @Schema(description = "List of Function Groups implemented by the Connector",
             requiredMode = Schema.RequiredMode.REQUIRED)

@@ -3,6 +3,9 @@ package com.czertainly.api.model.common.enums;
 import com.czertainly.api.exception.ValidationError;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.approval.ApprovalStatusEnum;
+import com.czertainly.api.model.client.connector.v2.ConnectorInterface;
+import com.czertainly.api.model.client.connector.v2.ConnectorVersion;
+import com.czertainly.api.model.client.connector.v2.FeatureFlag;
 import com.czertainly.api.model.client.cryptography.key.KeyCompromiseReason;
 import com.czertainly.api.model.client.cryptography.key.KeyRequestType;
 import com.czertainly.api.model.common.HealthStatus;
@@ -68,7 +71,10 @@ public enum PlatformEnum implements IPlatformEnum {
     AUTH_TYPE(AuthType.class, "Authentication type"),
     HEALTH_STATUS(HealthStatus.class, "Health status"),
     CONNECTOR_STATUS(ConnectorStatus.class, "Connector status"),
-    CONNECTOR_FUNCTION_GROUP(FunctionGroupCode.class, "Connector function group"),  // TODO: rename to ConnectorFunctionGroup
+    CONNECTOR_FUNCTION_GROUP(FunctionGroupCode.class, "Connector function group"),
+    CONNECTOR_VERSION(ConnectorVersion.class, "Connector version"),
+    CONNECTOR_INTERFACE(ConnectorInterface.class, "Connector interface"),
+    CONNECTOR_INTERFACE_FEATURE_FLAG(FeatureFlag.class, "Connector interface feature flag"),
 
     // certificates
     CERTIFICATE_TYPE(CertificateType.class, "Certificate type"),

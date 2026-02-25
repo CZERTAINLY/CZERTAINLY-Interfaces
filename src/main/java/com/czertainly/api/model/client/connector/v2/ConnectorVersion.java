@@ -1,33 +1,24 @@
-package com.czertainly.api.model.common.attribute.common;
+package com.czertainly.api.model.client.connector.v2;
 
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
-import java.util.Arrays;
-
 @Schema(enumAsRef = true)
-public enum AttributeVersion implements IPlatformEnum {
+public enum ConnectorVersion implements IPlatformEnum {
 
-    V2(Codes.V2, 2),
-    V3(Codes.V3, 3);
+    V1(Codes.V1, 1),
+    V2(Codes.V2, 2);
 
     private final String code;
 
     @Getter
     private final int version;
 
-    AttributeVersion(String code, int version) {
+    ConnectorVersion(String code, int version) {
         this.code = code;
         this.version = version;
-    }
-
-    public static AttributeVersion fromIntVersion(int version) {
-        return Arrays.stream(values())
-                .filter(e -> e.version == version)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown AttributeVersion: " + version));
     }
 
     @Override
@@ -48,7 +39,7 @@ public enum AttributeVersion implements IPlatformEnum {
 
     public static class Codes {
         private Codes(){}
+        public static final String V1 = "v1";
         public static final String V2 = "v2";
-        public static final String V3 = "v3";
     }
 }

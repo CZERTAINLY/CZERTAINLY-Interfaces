@@ -3,8 +3,15 @@ package com.czertainly.api.model.common;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
-public class BasePaginationResponseDto {
+public class PaginationResponseDto<T> {
+
+    @Schema(description = "Items returned", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<T> items = new ArrayList<>();
+
     @Schema(description = "Number of entries per page", requiredMode = Schema.RequiredMode.REQUIRED)
     private int itemsPerPage;
 
