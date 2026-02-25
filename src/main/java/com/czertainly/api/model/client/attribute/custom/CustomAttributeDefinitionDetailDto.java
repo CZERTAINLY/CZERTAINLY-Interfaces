@@ -108,7 +108,7 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(description = "List of resources which are allowed to use the Custom Attribute")
     private List<Resource> resources;
 
-    @Schema(description = "Boolean determining if the Attribute can have multiple values")
+    @Schema(description = "Boolean determining if a list Attribute can have values other than predefined options")
     private boolean extensibleList;
 
     @Override
