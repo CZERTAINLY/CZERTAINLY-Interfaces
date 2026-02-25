@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Data
-@Builder
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "SecretKeySecretContent",

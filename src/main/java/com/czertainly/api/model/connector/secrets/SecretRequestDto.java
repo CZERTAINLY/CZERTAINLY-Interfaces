@@ -23,12 +23,15 @@ public class SecretRequestDto {
     @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {SecretType.Codes.API_KEY})
     private SecretType type;
 
+    @Builder.Default
     @Schema(description = "Vault attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> vaultAttributes = new ArrayList<>();
 
+    @Builder.Default
     @Schema(description = "Secret attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> secretAttributes = new ArrayList<>();
 
+    @Builder.Default
     @Schema(description = "Metadata for the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> metadata = new ArrayList<>();
 }

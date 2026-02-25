@@ -24,12 +24,15 @@ public class UpdateSecretRequestDto {
     @Schema(description = "Secret content", requiredMode = Schema.RequiredMode.REQUIRED)
     private SecretContent secret;
 
+    @Builder.Default
     @Schema(description = "Vault attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> vaultAttributes = new ArrayList<>();
 
+    @Builder.Default
     @Schema(description = "Secret attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> secretAttributes = new ArrayList<>();
 
+    @Builder.Default
     @Schema(description = "Metadata for the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> metadata = new ArrayList<>();
 }

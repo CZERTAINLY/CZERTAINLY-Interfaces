@@ -7,7 +7,6 @@ import lombok.*;
 import java.util.Map;
 
 @Data
-@Builder
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "KeyValueSecretContent",

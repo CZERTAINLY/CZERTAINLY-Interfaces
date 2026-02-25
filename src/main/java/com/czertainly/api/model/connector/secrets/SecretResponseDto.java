@@ -25,6 +25,7 @@ public class SecretResponseDto {
     @Schema(description = "Secret version, if versioning is supported", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String version;
 
+    @Builder.Default
     @Schema(description = "Metadata for the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> metadata = new ArrayList<>();
 }
