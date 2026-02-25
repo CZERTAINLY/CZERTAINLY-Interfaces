@@ -20,7 +20,7 @@ public class AttributeCallback implements Serializable {
     private String callbackContext;
 
     @Schema(
-            description = "HTTP method of the callback",
+            description = "HTTP method of the callback. This value is required for regular callbacks and optional only for callbacks defined on resource objects.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String callbackMethod;
