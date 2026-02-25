@@ -17,7 +17,7 @@ public class ApiKeySecretContent extends SecretContent {
     @Schema(description = "API Key content encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
-    protected ApiKeySecretContent() {
+    public ApiKeySecretContent() {
         super(SecretType.API_KEY);
     }
 

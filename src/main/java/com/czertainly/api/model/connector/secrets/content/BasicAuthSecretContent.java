@@ -20,7 +20,7 @@ public class BasicAuthSecretContent extends SecretContent {
     @Schema(description = "Password for Basic Authentication", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
-    protected BasicAuthSecretContent() {
+    public BasicAuthSecretContent() {
         super(SecretType.BASIC_AUTH);
     }
 
