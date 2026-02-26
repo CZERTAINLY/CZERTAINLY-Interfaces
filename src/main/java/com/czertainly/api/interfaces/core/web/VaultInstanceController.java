@@ -6,6 +6,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.vault.*;
@@ -36,7 +37,7 @@ public interface VaultInstanceController extends AuthProtectedController {
     @Operation(summary = "List Vault instances")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Vault instances retrieved")})
     @PostMapping(path = "/list", produces = {"application/json"})
-    VaultInstanceListResponseDto listVaultInstances(@RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<VaultInstanceDto> listVaultInstances(@RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Delete a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault instance deleted")})

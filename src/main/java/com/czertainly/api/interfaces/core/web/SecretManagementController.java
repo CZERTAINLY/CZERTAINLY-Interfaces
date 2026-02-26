@@ -4,6 +4,7 @@ import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.CertificateUpdateObjectsDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.secret.*;
 import com.czertainly.api.model.core.secret.content.SecretContent;
@@ -32,7 +33,7 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "List secrets")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of secrets retrieved")})
     @PostMapping(path = "/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretListResponseDto listSecrets(@RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<SecretDto> listSecrets(@RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Get secret details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret details retrieved")})

@@ -5,13 +5,11 @@ import com.czertainly.api.exception.AttributeException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.secret.SecretType;
-import com.czertainly.api.model.core.vaultprofile.VaultProfileDetailDto;
-import com.czertainly.api.model.core.vaultprofile.VaultProfileListResponseDto;
-import com.czertainly.api.model.core.vaultprofile.VaultProfileRequestDto;
-import com.czertainly.api.model.core.vaultprofile.VaultProfileUpdateRequestDto;
+import com.czertainly.api.model.core.vaultprofile.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -30,7 +28,7 @@ public interface VaultProfileController extends AuthProtectedController {
     @Operation(summary = "List Vault Profiles")
     @ApiResponse(responseCode = "200", description = "List of Vault Profiles retrieved")
     @PostMapping(path = "/vaultProfiles/list", consumes = {"application/json"}, produces = {"application/json"})
-    VaultProfileListResponseDto listVaultProfiles(@RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<VaultProfileDto> listVaultProfiles(@RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Get details of a Vault Profile")
     @ApiResponse(responseCode = "200", description = "Vault Profile details retrieved")
