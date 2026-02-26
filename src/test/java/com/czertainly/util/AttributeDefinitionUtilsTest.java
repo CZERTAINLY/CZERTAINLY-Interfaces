@@ -739,6 +739,12 @@ class AttributeDefinitionUtilsTest {
         callbackRequest.setPathVariable(Map.ofEntries(Map.entry("credentialKind", "softKeyStore")));
 
         validateCallback(callback, callbackRequest, false); // should not throw exception
+
+        callback.setCallbackContext(null);
+        callback.setCallbackMethod(null);
+
+        Assertions.assertThrows(ValidationException.class, () -> validateCallback(callback, callbackRequest, false));
+        validateCallback(callback, callbackRequest, true);
     }
 
     @Test

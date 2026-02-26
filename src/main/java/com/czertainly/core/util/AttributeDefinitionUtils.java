@@ -700,6 +700,7 @@ public class AttributeDefinitionUtils {
 
             if (StringUtils.isBlank(callback.getCallbackMethod())) {
                 errors.add(ValidationError.create("Callback method not set"));
+                return;
             }
 
             try {

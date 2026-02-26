@@ -18,7 +18,7 @@ public class CbomDto {
 	private String serialNumber;
 
 	@Schema(description = "CBOM version", requiredMode = Schema.RequiredMode.REQUIRED)
-	private String version;
+	private int version;
 
 	@Schema(description = "CBOM spec version", requiredMode = Schema.RequiredMode.REQUIRED)
 	private String specVersion;
@@ -30,17 +30,17 @@ public class CbomDto {
 	private String source;
 
 	@Schema(description = "Number of algorithms", requiredMode = Schema.RequiredMode.REQUIRED)
-	private Integer algorithms;
+	private int algorithms;
 
 	@Schema(description = "Number of certificates", requiredMode = Schema.RequiredMode.REQUIRED)
-	private Integer certificates;
+	private int certificates;
 
 	@Schema(description = "Number of protocols", requiredMode = Schema.RequiredMode.REQUIRED)
-	private Integer protocols;
+	private int protocols;
 
 	@Schema(description = "Number of crypto material items", requiredMode = Schema.RequiredMode.REQUIRED)
-	private Integer cryptoMaterial;
+	private int cryptoMaterial;
 
 	@Schema(description = "Total number of assets", requiredMode = Schema.RequiredMode.REQUIRED)
-	private Integer totalAssets;
+	private int totalAssets;
 }
