@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public interface VaultProfileController extends AuthProtectedController {
     @Operation(summary = "Create a Vault Profile")
     @ApiResponse(responseCode = "201", description = "Vault Profile created")
     @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles", consumes = {"application/json"}, produces = {"application/json"})
-    VaultProfileDetailDto createVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @RequestBody VaultProfileRequestDto vaultProfileDetail) throws NotFoundException, AttributeException, AlreadyExistException;
+    VaultProfileDetailDto createVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @RequestBody @Valid VaultProfileRequestDto vaultProfileDetail) throws NotFoundException, AttributeException, AlreadyExistException;
 
     @Operation(summary = "Enable a Vault Profile")
     @ApiResponse(responseCode = "204", description = "Vault Profile enabled")

@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +27,8 @@ public interface VaultInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Instance Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
-    @GetMapping(path = "/attributes/{connectorUuid}", produces = {"application/json"}) // Connector UUID???
-    List<BaseAttribute> listVaultInstanceAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid);
+    @GetMapping(path = "/attributes/{connectorUuid}", produces = {"application/json"})
+    List<BaseAttribute> listVaultInstanceAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Details of a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Vault instance details retrieved")})
@@ -47,7 +48,7 @@ public interface VaultInstanceController extends AuthProtectedController {
     @Operation(summary = "Create a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Vault instance created")})
     @PostMapping(produces = {"application/json"})
-    VaultInstanceDetailDto createVaultInstance(@RequestBody VaultInstanceRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException, AlreadyExistException;
+    VaultInstanceDetailDto createVaultInstance(@RequestBody @Valid VaultInstanceRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException, AlreadyExistException;
 
     @Operation(summary = "Update a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Vault instance updated")})
