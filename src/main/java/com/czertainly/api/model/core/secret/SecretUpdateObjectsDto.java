@@ -1,9 +1,11 @@
 package com.czertainly.api.model.core.secret;
 
+import com.czertainly.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -11,8 +13,10 @@ import java.util.UUID;
 public class SecretUpdateObjectsDto {
 
     @Schema(description = "UUID of the vault profile where the secret is stored")
-    @NotNull
     private UUID sourceVaultProfileUuid;
+
+    @Schema(description = "Secret attributes, to be provided if new source vault profile is assigned to a different vault then the original source vault profile")
+    private List<RequestAttribute> secretAttributes = new ArrayList<>();
 
     @Schema(description = "Secret Groups UUIDs (set to empty list to remove secrets from all groups)")
     private Set<UUID> groupUuids;
