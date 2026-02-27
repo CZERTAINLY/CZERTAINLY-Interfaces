@@ -4,6 +4,8 @@ import com.czertainly.api.model.connector.secrets.SecretType;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
+
 @Schema(
         name = "SecretContent",
         description = "Secret content dependent on secret type",
@@ -29,7 +31,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 KeyValueSecretContent.class,
                 GenericSecretContent.class
         })
-public interface SecretContentDto {
+public interface SecretContentDto extends Serializable {
 
     @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {SecretType.Codes.API_KEY})
     SecretType getType();

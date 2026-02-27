@@ -1,7 +1,7 @@
 package com.czertainly.api.model.core.secret;
 
 import com.czertainly.api.model.client.attribute.RequestAttribute;
-import com.czertainly.api.model.core.secret.content.SecretContent;
+import com.czertainly.api.model.connector.secrets.content.SecretContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

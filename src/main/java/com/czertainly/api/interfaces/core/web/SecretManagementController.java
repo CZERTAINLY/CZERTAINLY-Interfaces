@@ -2,12 +2,11 @@ package com.czertainly.api.interfaces.core.web;
 
 import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
-import com.czertainly.api.model.client.certificate.CertificateUpdateObjectsDto;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
 import com.czertainly.api.model.common.PaginationResponseDto;
+import com.czertainly.api.model.connector.secrets.content.SecretContent;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.secret.*;
-import com.czertainly.api.model.core.secret.content.SecretContent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,22 +47,22 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "Get secret content")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret content retrieved")})
     @GetMapping(path = "/secrets/{uuid}/content", produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretContent getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
+    SecretContent getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Create a new secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Secret created successfully")})
     @PostMapping(path = "vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretDetailDto createSecret(@RequestBody @Valid SecretRequestDto secretRequest, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @Parameter(description = "UUID of vault instance") @PathVariable UUID vaultUuid) throws NotFoundException, AttributeException, AlreadyExistException;
+    SecretDetailDto createSecret(@RequestBody @Valid SecretRequestDto secretRequest, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @Parameter(description = "UUID of vault instance") @PathVariable UUID vaultUuid) throws NotFoundException, AttributeException, AlreadyExistException, ConnectorException;
 
     @Operation(summary = "Update an existing secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret updated successfully")})
     @PutMapping(path = "/secrets/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretDetailDto updateSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @RequestBody SecretUpdateRequestDto secretRequest) throws NotFoundException, AttributeException;
+    SecretDetailDto updateSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @RequestBody SecretUpdateRequestDto secretRequest) throws NotFoundException, AttributeException, ConnectorException;
 
     @Operation(summary = "Delete a secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Secret deleted successfully")})
     @DeleteMapping(path = "/secrets/{uuid}")
-    void deleteSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
+    void deleteSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Enable a secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Secret enabled successfully")})
