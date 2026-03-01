@@ -1,12 +1,12 @@
 package com.czertainly.api.clients;
 
+import com.czertainly.api.interfaces.client.v1.AttributeSyncApiClient;
 import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.common.attribute.common.callback.AttributeCallback;
 import com.czertainly.api.model.common.attribute.common.callback.RequestAttributeCallback;
-import com.czertainly.api.model.core.connector.ConnectorDto;
 import com.czertainly.api.model.core.connector.FunctionGroupCode;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AttributeApiClient extends BaseApiClient {
+public class AttributeApiClient extends BaseApiClient implements AttributeSyncApiClient {
 
     private static final String ATTRIBUTE_BASE_CONTEXT = "/v1/{functionGroup}/{kind}/attributes";
     private static final String ATTRIBUTE_VALIDATION_CONTEXT = ATTRIBUTE_BASE_CONTEXT + "/validate";
@@ -35,7 +35,7 @@ public class AttributeApiClient extends BaseApiClient {
         this.defaultTrustManagers = defaultTrustManagers;
     }
 
-    public List<BaseAttribute> listAttributeDefinitions(ConnectorDto connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
+    public List<BaseAttribute> listAttributeDefinitions(ApiClientConnectorInfo connector, FunctionGroupCode functionGroupCode, String kind) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
@@ -47,7 +47,7 @@ public class AttributeApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Void validateAttributes(ConnectorDto connector, FunctionGroupCode functionGroupCode, List<RequestAttribute> attributes, String functionGroupType) throws ValidationException, ConnectorException {
+    public Void validateAttributes(ApiClientConnectorInfo connector, FunctionGroupCode functionGroupCode, List<RequestAttribute> attributes, String functionGroupType) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -60,7 +60,7 @@ public class AttributeApiClient extends BaseApiClient {
                 connector);
     }
 
-    public Object attributeCallback(ConnectorDto connector, AttributeCallback callback, RequestAttributeCallback callbackRequest) throws ConnectorException {
+    public Object attributeCallback(ApiClientConnectorInfo connector, AttributeCallback callback, RequestAttributeCallback callbackRequest) throws ConnectorException {
         HttpMethod method = HttpMethod.valueOf(callback.getCallbackMethod());
 
         URI uri;
