@@ -17,7 +17,7 @@ public class TrustedCertificateDto {
     private String uuid;
 
     @Schema(
-            description = "Base64 encoded Certificate content",
+            description = "Raw certificate content serialized as Base64 String in JSON",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private byte[] certificateContent;
