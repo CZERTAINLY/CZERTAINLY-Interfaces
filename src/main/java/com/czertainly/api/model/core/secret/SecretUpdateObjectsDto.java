@@ -18,9 +18,9 @@ public class SecretUpdateObjectsDto {
     @Schema(description = "Secret attributes, to be provided if new source vault profile is assigned to a different vault then the original source vault profile")
     private List<RequestAttribute> secretAttributes = new ArrayList<>();
 
-    @Schema(description = "Secret Groups UUIDs (set to empty list to remove secrets from all groups)")
+    @Schema(description = "Secret Groups UUIDs (set to empty array [] to remove secrets from all groups)")
     private Set<UUID> groupUuids;
 
     @Schema(description = "Secret owner user UUID (set to empty string to remove owner of the secret)")
-    private UUID ownerUuid;
+    private String ownerUuid;
 }

@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,27 +61,31 @@ public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "Update a Vault Profile")
     @ApiResponse(responseCode = "200", description = "Vault Profile updated")
-    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}", consumes = {"application/json"}, produces = {"application/json"})
+    @PutMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}", consumes = {"application/json"}, produces = {"application/json"})
     VaultProfileDetailDto updateVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @RequestBody VaultProfileUpdateRequestDto vaultProfileUpdateRequest) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete a Vault Profile")
     @ApiResponse(responseCode = "204", description = "Vault Profile deleted")
     @DeleteMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Create a Vault Profile")
     @ApiResponse(responseCode = "201", description = "Vault Profile created")
     @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles", consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseStatus(HttpStatus.CREATED)
     VaultProfileDetailDto createVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @RequestBody @Valid VaultProfileRequestDto vaultProfileDetail) throws NotFoundException, AttributeException, AlreadyExistException;
 
     @Operation(summary = "Enable a Vault Profile")
     @ApiResponse(responseCode = "204", description = "Vault Profile enabled")
     @PatchMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/enable")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid) throws NotFoundException;
 
     @Operation(summary = "Disable a Vault Profile")
     @ApiResponse(responseCode = "204", description = "Vault Profile disabled")
     @PatchMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/disable")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid) throws NotFoundException;
 
     @Operation(summary = "List attributes for creating a secret in a Vault Profile")
@@ -90,7 +95,7 @@ public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "List search filters for Vault Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of search filters retrieved")})
-    @GetMapping(path = "/search", produces = {"application/json"})
+    @GetMapping(path = "/vaultProfiles/search", produces = {"application/json"})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
 }

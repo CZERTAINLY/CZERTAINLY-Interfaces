@@ -5,8 +5,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.UUID;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class VaultInstanceDto extends NameAndUuidDto {
@@ -14,7 +12,7 @@ public class VaultInstanceDto extends NameAndUuidDto {
     @Schema(description = "Description of the Vault instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "UUID of the Connector associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
-    private UUID connectorUuid;
+    @Schema(description = "Connector associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
+    private NameAndUuidDto connector;
 
 }

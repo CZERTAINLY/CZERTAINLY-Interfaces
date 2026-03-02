@@ -15,7 +15,7 @@ public class SecretUpdateRequestDto {
     private String description;
 
     @Schema(description = "Content of the secret. If not provided, the secret content will not be updated", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    SecretContent secret;
+    private SecretContent secret;
 
     @Schema(description = "List of attributes associated with the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes = new ArrayList<>();

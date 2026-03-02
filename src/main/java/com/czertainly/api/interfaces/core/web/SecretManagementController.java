@@ -74,7 +74,8 @@ public interface SecretManagementController extends AuthProtectedController {
 
     @Operation(summary = "Create a new secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Secret created successfully")})
-    @PostMapping(path = "vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(HttpStatus.CREATED)
     SecretDetailDto createSecret(@RequestBody @Valid SecretRequestDto secretRequest, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @Parameter(description = "UUID of vault instance") @PathVariable UUID vaultUuid) throws NotFoundException, AttributeException, AlreadyExistException, ConnectorException;
 
     @Operation(summary = "Update an existing secret")
@@ -85,31 +86,36 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "Delete a secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Secret deleted successfully")})
     @DeleteMapping(path = "/secrets/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Enable a secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Secret enabled successfully")})
-    @PostMapping(path = "/secrets/{uuid}/enable")
+    @PatchMapping(path = "/secrets/{uuid}/enable")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Disable a secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Secret disabled successfully")})
-    @PostMapping(path = "/secrets/{uuid}/disable")
+    @PatchMapping(path = "/secrets/{uuid}/disable")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Add vault profile to secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault profile added to secret successfully")})
     @PatchMapping(path = "/secrets/{uuid}/syncVaultProfiles/{vaultProfileUuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void addVaultProfileToSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid, @RequestBody List<RequestAttribute> createSecretAttributes) throws NotFoundException, ConnectorException, AttributeException;
 
     @Operation(summary = "Remove vault profile from secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault profile removed from secret successfully")})
     @DeleteMapping(path = "/secrets/{uuid}/syncVaultProfiles/{vaultProfileUuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeVaultProfileFromSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid) throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Update Secret Objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Secret objects updated")})
-    @PatchMapping(path = "secrets/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PatchMapping(path = "/secrets/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateSecretObjects(@Parameter(description = "Secret UUID") @PathVariable UUID uuid, @RequestBody SecretUpdateObjectsDto request) throws NotFoundException, ConnectorException, AttributeException;
 

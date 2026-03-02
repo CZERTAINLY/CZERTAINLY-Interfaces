@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public interface VaultInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Instance Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
-    @GetMapping(path = "/attributes/{connectorUuid}", produces = {"application/json"})
+    @GetMapping(path = "/{connectorUuid}/attributes", produces = {"application/json"})
     List<BaseAttribute> listVaultInstanceAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Details of a Vault instance")
@@ -64,11 +65,13 @@ public interface VaultInstanceController extends AuthProtectedController {
     @Operation(summary = "Delete a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault instance deleted")})
     @DeleteMapping(path = "/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteVaultInstance(@Parameter(description = "Vault instance UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Create a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Vault instance created")})
     @PostMapping(produces = {"application/json"})
+    @ResponseStatus(HttpStatus.CREATED)
     VaultInstanceDetailDto createVaultInstance(@RequestBody @Valid VaultInstanceRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException, AlreadyExistException;
 
     @Operation(summary = "Update a Vault instance")
