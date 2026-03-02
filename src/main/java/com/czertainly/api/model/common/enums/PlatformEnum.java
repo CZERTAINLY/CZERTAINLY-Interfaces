@@ -18,6 +18,8 @@ import com.czertainly.api.model.common.attribute.common.content.data.Programming
 import com.czertainly.api.model.common.attribute.common.content.data.ProtectionLevel;
 import com.czertainly.api.model.common.enums.cryptography.*;
 import com.czertainly.api.model.connector.cryptography.enums.TokenInstanceStatus;
+import com.czertainly.api.model.connector.secrets.SecretType;
+import com.czertainly.api.model.connector.secrets.content.KeyStoreType;
 import com.czertainly.api.model.core.acme.AccountStatus;
 import com.czertainly.api.model.core.auth.Resource;
 import com.czertainly.api.model.core.authority.CertificateRevocationReason;
@@ -39,6 +41,7 @@ import com.czertainly.api.model.core.logging.enums.Module;
 import com.czertainly.api.model.core.notification.RecipientType;
 import com.czertainly.api.model.core.oid.OidCategory;
 import com.czertainly.api.model.core.other.ResourceEvent;
+import com.czertainly.api.model.core.secret.SecretState;
 import com.czertainly.api.model.core.workflows.ConditionType;
 import com.czertainly.api.model.core.workflows.ExecutionType;
 import com.czertainly.api.model.core.workflows.TriggerType;
@@ -144,7 +147,12 @@ public enum PlatformEnum implements IPlatformEnum {
     OPERATION_RESULT(OperationResult.class, "Log operation result"),
 
     // Approval
-    APPROVAL_STATUS(ApprovalStatusEnum.class, "Approval Status")
+    APPROVAL_STATUS(ApprovalStatusEnum.class, "Approval Status"),
+
+    // Secrets
+    SECRET_TYPE(SecretType.class, "Secret Type"),
+    KEY_STORE_TYPE(KeyStoreType.class, "Key Store Type"),
+    SECRET_STATE(SecretState.class, "Secret State"),
 
     ;
 

@@ -96,8 +96,15 @@ public enum Resource implements IPlatformEnum {
     END_ENTITY_PROFILE("endEntityProfiles", "End entity profile"),
     AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider"),
 
+<<<<<<< main-saas-pr
     // SAAS
     TRUSTED_CERTIFICATE("trustedCertificates", "Trusted Certificate")
+=======
+    // Secrets
+    VAULT(Codes.VAULT, "Vault", true, true),
+    VAULT_PROFILE(Codes.VAULT_PROFILE, "Vault Profile", true, true),
+    SECRET(Codes.SECRET, "Secret", false, true)
+>>>>>>> main
     ;
 
     private static final Resource[] VALUES;
@@ -223,8 +230,14 @@ public enum Resource implements IPlatformEnum {
         public static final String USER = "users";
         public static final String OID = "oids";
         public static final String ACME_ACCOUNT = "acmeAccounts";
+<<<<<<< main-saas-pr
         public static final String PROXY = "proxies";
         public static final String TRUSTED_CERTIFICATE = "trustedCertificates";
+=======
+        public static final String VAULT = "vaults";
+        public static final String VAULT_PROFILE = "vaultProfiles";
+        public static final String SECRET = "secrets";
+>>>>>>> main
 
         public static final String CBOM = "cboms";
 

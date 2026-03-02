@@ -26,11 +26,11 @@ public enum ResourceAction implements IPlatformEnum {
     ENABLE("enable", "Enable"),
     ACTIVATE("activate", "Activate"),
 
-    //Connector actions
+    // Connector actions
     APPROVE("approve", "Approve"),
     CONNECT("connect", "Connect"), // allows also reconnect action
 
-    //Certificate actions
+    // Certificate actions
     ISSUE("issue", "Issue"),
     RENEW("renew", "Renew"),
     REKEY("rekey", "Rekey"),
@@ -40,17 +40,24 @@ public enum ResourceAction implements IPlatformEnum {
     // Audit Log export
     EXPORT("export", "Export"),
 
-    //Certificate, RA Profile and Compliance Profile
+    // Certificate, RA Profile and Compliance Profile
     CHECK_COMPLIANCE("checkCompliance", "Check compliance"),
 
-    //CRYPTOGRAPHY OPERATION
+    // Cryptography operation
     ENCRYPT("encrypt", "Encrypt"),
     DECRYPT("decrypt", "Decrypt"),
     VERIFY("verify", "Verify"),
     SIGN("sign", "Sign"),
 
+<<<<<<< main-saas-pr
     // PROXY
     GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation");
+=======
+    // Secret
+    GET_SECRET_CONTENT("getSecretContent", "Get secret content"),
+
+    ;
+>>>>>>> main
 
     @Schema(description = "Resource Action Name",
             example = "create",

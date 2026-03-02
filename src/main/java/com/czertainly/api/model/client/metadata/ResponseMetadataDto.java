@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ import java.util.UUID;
                 ResponseMetadataV3.class,
                 ResponseMetadataV2.class
         })
-public interface ResponseMetadataDto {
+public interface ResponseMetadataDto extends Serializable {
 
     @Schema(description = "Source Objects", requiredMode = Schema.RequiredMode.REQUIRED)
     List<NameAndUuidDto> getSourceObjects();

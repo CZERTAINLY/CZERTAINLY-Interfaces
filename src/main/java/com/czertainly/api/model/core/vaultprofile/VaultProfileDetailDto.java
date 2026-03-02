@@ -1,0 +1,18 @@
+package com.czertainly.api.model.core.vaultprofile;
+
+import com.czertainly.api.model.client.attribute.ResponseAttribute;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class VaultProfileDetailDto extends VaultProfileDto {
+
+    @Schema(
+            description = "List of custom attributes of the Vault profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<ResponseAttribute> customAttributes;
+}
