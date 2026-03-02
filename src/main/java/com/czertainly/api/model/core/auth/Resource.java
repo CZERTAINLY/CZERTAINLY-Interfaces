@@ -93,7 +93,12 @@ public enum Resource implements IPlatformEnum {
     ACME_CHALLENGE("acmeChallenges", "ACME Challenge"),
     CMP_TRANSACTION("cmpTransactions", "CMP Transaction"),
     END_ENTITY_PROFILE("endEntityProfiles", "End entity profile"),
-    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider")
+    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider"),
+
+    // Secrets
+    VAULT(Codes.VAULT, "Vault", true, true),
+    VAULT_PROFILE(Codes.VAULT_PROFILE, "Vault Profile", true, true),
+    SECRET(Codes.SECRET, "Secret", false, true)
     ;
 
     private static final Resource[] VALUES;
@@ -219,6 +224,9 @@ public enum Resource implements IPlatformEnum {
         public static final String USER = "users";
         public static final String OID = "oids";
         public static final String ACME_ACCOUNT = "acmeAccounts";
+        public static final String VAULT = "vaults";
+        public static final String VAULT_PROFILE = "vaultProfiles";
+        public static final String SECRET = "secrets";
 
         public static final String CBOM = "cboms";
 
