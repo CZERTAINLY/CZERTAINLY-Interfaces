@@ -6,12 +6,15 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.vault.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +26,24 @@ import java.util.UUID;
 
 @RequestMapping("/v1/vaults")
 @Tag(name = "Vault Instance Management", description = "Vault Instance Management API")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "502",
+                        description = "Connector Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "503",
+                        description = "Connector Communication Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+        })
 public interface VaultInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Instance Attributes")

@@ -6,6 +6,7 @@ import com.czertainly.api.exception.ConnectorException;
 import com.czertainly.api.exception.NotFoundException;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.common.attribute.common.BaseAttribute;
 import com.czertainly.api.model.connector.secrets.SecretType;
@@ -13,6 +14,8 @@ import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.vaultprofile.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,6 +28,24 @@ import java.util.UUID;
 
 @RequestMapping("/v1")
 @Tag(name = "Vault Profile Management", description = "APIs for managing Vault Profiles")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "502",
+                        description = "Connector Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "503",
+                        description = "Connector Communication Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+        })
 public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Profiles")
@@ -40,7 +61,7 @@ public interface VaultProfileController extends AuthProtectedController {
     @Operation(summary = "Update a Vault Profile")
     @ApiResponse(responseCode = "200", description = "Vault Profile updated")
     @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}", consumes = {"application/json"}, produces = {"application/json"})
-    VaultProfileDetailDto updateVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @RequestBody VaultProfileUpdateRequestDto vaultProfileUpdateRequest) throws NotFoundException;
+    VaultProfileDetailDto updateVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid, @RequestBody VaultProfileUpdateRequestDto vaultProfileUpdateRequest) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete a Vault Profile")
     @ApiResponse(responseCode = "204", description = "Vault Profile deleted")

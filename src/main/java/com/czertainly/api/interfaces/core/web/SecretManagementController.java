@@ -4,12 +4,15 @@ import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.attribute.RequestAttribute;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.connector.secrets.content.SecretContent;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import com.czertainly.api.model.core.secret.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,11 +21,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/v1")
 @Tag(name = "Secret Management", description = "APIs for managing secrets, including creation, retrieval, updating, and deletion of secrets.")
+@ApiResponses(
+        value = {
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Not Found",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "502",
+                        description = "Connector Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+                @ApiResponse(
+                        responseCode = "503",
+                        description = "Connector Communication Error",
+                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
+                ),
+        })
 public interface SecretManagementController extends AuthProtectedController {
 
     @Operation(summary = "List search filters for secrets")
@@ -48,7 +70,7 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "Get secret content")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret content retrieved")})
     @GetMapping(path = "/secrets/{uuid}/content", produces = {MediaType.APPLICATION_JSON_VALUE})
-    SecretContent getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException, ConnectorException;
+    SecretContent getSecretContent(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException, ConnectorException, NoSuchAlgorithmException;
 
     @Operation(summary = "Create a new secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Secret created successfully")})
@@ -78,17 +100,17 @@ public interface SecretManagementController extends AuthProtectedController {
     @Operation(summary = "Add vault profile to secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault profile added to secret successfully")})
     @PatchMapping(path = "/secrets/{uuid}/syncVaultProfiles/{vaultProfileUuid}")
-    void addVaultProfileToSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid, @RequestBody List<RequestAttribute> createSecretAttributes) throws NotFoundException;
+    void addVaultProfileToSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid, @RequestBody List<RequestAttribute> createSecretAttributes) throws NotFoundException, ConnectorException, AttributeException;
 
     @Operation(summary = "Remove vault profile from secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault profile removed from secret successfully")})
     @DeleteMapping(path = "/secrets/{uuid}/syncVaultProfiles/{vaultProfileUuid}")
-    void removeVaultProfileFromSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid) throws NotFoundException;
+    void removeVaultProfileFromSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid, @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid) throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Update Secret Objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Secret objects updated")})
     @PatchMapping(path = "secrets/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateSecretObjects(@Parameter(description = "Secret UUID") @PathVariable UUID uuid, @RequestBody SecretUpdateObjectsDto request) throws NotFoundException;
+    void updateSecretObjects(@Parameter(description = "Secret UUID") @PathVariable UUID uuid, @RequestBody SecretUpdateObjectsDto request) throws NotFoundException, ConnectorException, AttributeException;
 
 }
