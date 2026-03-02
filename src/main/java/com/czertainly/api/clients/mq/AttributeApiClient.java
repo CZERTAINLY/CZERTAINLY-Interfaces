@@ -66,32 +66,6 @@ public class AttributeApiClient implements AttributeSyncApiClient {
     }
 
     /**
-     * List attribute definitions (alternative with BaseAttribute return type).
-     *
-     * @param connector Connector configuration (must have proxyId set)
-     * @param functionGroupCode Function group code
-     * @param kind Connector kind
-     * @return List of abstract base attributes
-     * @throws ConnectorException If request fails
-     */
-    @Override
-    public List<BaseAttribute> listAttributeDefinitions1(
-            ApiClientConnectorInfo connector,
-            FunctionGroupCode functionGroupCode,
-            String kind) throws ConnectorException {
-
-        String path = buildPath(ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind);
-        BaseAttribute[] result = proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                BaseAttribute[].class
-        );
-        return Arrays.asList(result);
-    }
-
-    /**
      * Validate attributes.
      *
      * @param connector Connector configuration (must have proxyId set)
@@ -153,24 +127,6 @@ public class AttributeApiClient implements AttributeSyncApiClient {
      * Async version of listAttributeDefinitions.
      */
     public CompletableFuture<List<BaseAttribute>> listAttributeDefinitionsAsync(
-            ApiClientConnectorInfo connector,
-            FunctionGroupCode functionGroupCode,
-            String kind) {
-
-        String path = buildPath(ATTRIBUTE_BASE_CONTEXT, functionGroupCode.getCode(), kind);
-        return proxyClient.sendRequestAsync(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                BaseAttribute[].class
-        ).thenApply(Arrays::asList);
-    }
-
-    /**
-     * Async version of listAttributeDefinitions1.
-     */
-    public CompletableFuture<List<BaseAttribute>> listAttributeDefinitions1Async(
             ApiClientConnectorInfo connector,
             FunctionGroupCode functionGroupCode,
             String kind) {

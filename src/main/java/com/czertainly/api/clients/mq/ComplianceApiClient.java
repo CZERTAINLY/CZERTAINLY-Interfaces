@@ -8,6 +8,8 @@ import com.czertainly.api.model.connector.compliance.ComplianceRequestDto;
 import com.czertainly.api.model.connector.compliance.ComplianceResponseDto;
 import com.czertainly.api.model.connector.compliance.ComplianceRulesResponseDto;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -34,7 +36,7 @@ public class ComplianceApiClient implements ComplianceSyncApiClient {
         if (certificateType != null && !certificateType.isEmpty()) {
             String queryParams = certificateType.stream()
                     .filter(q -> q != null)
-                    .map(q -> "certificateType=" + q)
+                    .map(q -> "certificateType=" + URLEncoder.encode(q, StandardCharsets.UTF_8))
                     .collect(Collectors.joining("&"));
             if (!queryParams.isEmpty()) {
                 pathBuilder.append("?").append(queryParams);

@@ -7,6 +7,8 @@ import com.czertainly.api.interfaces.client.v2.ComplianceSyncApiClient;
 import com.czertainly.api.model.connector.compliance.v2.*;
 import com.czertainly.api.model.core.auth.Resource;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -32,15 +34,15 @@ public class ComplianceApiClient implements ComplianceSyncApiClient {
         StringBuilder pathBuilder = new StringBuilder(BASE_PATH).append("/").append(kind).append("/rules");
         boolean hasQuery = false;
         if (resource != null) {
-            pathBuilder.append("?resource=").append(resource);
+            pathBuilder.append("?resource=").append(URLEncoder.encode(resource.toString(), StandardCharsets.UTF_8));
             hasQuery = true;
         }
         if (type != null) {
-            pathBuilder.append(hasQuery ? "&" : "?").append("type=").append(type);
+            pathBuilder.append(hasQuery ? "&" : "?").append("type=").append(URLEncoder.encode(type, StandardCharsets.UTF_8));
             hasQuery = true;
         }
         if (format != null) {
-            pathBuilder.append(hasQuery ? "&" : "?").append("format=").append(format);
+            pathBuilder.append(hasQuery ? "&" : "?").append("format=").append(URLEncoder.encode(format, StandardCharsets.UTF_8));
         }
         ComplianceRuleResponseDto[] result = proxyClient.sendRequest(connector, pathBuilder.toString(), HTTP_METHOD_GET, null, ComplianceRuleResponseDto[].class);
         return Arrays.asList(result);
@@ -62,7 +64,7 @@ public class ComplianceApiClient implements ComplianceSyncApiClient {
     public List<ComplianceGroupResponseDto> getComplianceGroups(ApiClientConnectorInfo connector, String kind, Resource resource) throws ConnectorException {
         StringBuilder pathBuilder = new StringBuilder(BASE_PATH).append("/").append(kind).append("/groups");
         if (resource != null) {
-            pathBuilder.append("?resource=").append(resource);
+            pathBuilder.append("?resource=").append(URLEncoder.encode(resource.toString(), StandardCharsets.UTF_8));
         }
         ComplianceGroupResponseDto[] result = proxyClient.sendRequest(connector, pathBuilder.toString(), HTTP_METHOD_GET, null, ComplianceGroupResponseDto[].class);
         return Arrays.asList(result);

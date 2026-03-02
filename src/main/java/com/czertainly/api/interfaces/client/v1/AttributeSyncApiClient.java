@@ -32,22 +32,6 @@ public interface AttributeSyncApiClient {
             String kind) throws ConnectorException;
 
     /**
-     * List attribute definitions with BaseAttribute return type.
-     *
-     * @param connector         Connector configuration
-     * @param functionGroupCode Function group code
-     * @param kind              Connector kind
-     * @return List of base attributes
-     * @throws ConnectorException If request fails
-     */
-    default List<BaseAttribute> listAttributeDefinitions1(
-            ApiClientConnectorInfo connector,
-            FunctionGroupCode functionGroupCode,
-            String kind) throws ConnectorException {
-        return listAttributeDefinitions(connector, functionGroupCode, kind);
-    }
-
-    /**
      * Validate attributes against a connector.
      *
      * @param connector         Connector configuration
