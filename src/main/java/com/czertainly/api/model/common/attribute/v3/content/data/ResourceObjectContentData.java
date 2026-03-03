@@ -1,33 +1,36 @@
 package com.czertainly.api.model.common.attribute.v3.content.data;
 
 import com.czertainly.api.exception.ValidationException;
-import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.common.attribute.common.content.data.AttributeContentData;
+import com.czertainly.api.model.connector.secrets.content.*;
 import com.czertainly.api.model.core.auth.AttributeResource;
+import com.czertainly.api.model.core.auth.Resource;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ResourceObjectContentData extends NameAndUuidDto implements Serializable, AttributeContentData {
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "resource", visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.AUTHORITY),
+        @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.ENTITY),
+        @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.LOCATION),
+        @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.CREDENTIAL),
+        @JsonSubTypes.Type(value = ResourceCertificateContentData.class, name = Resource.Codes.CERTIFICATE),
+        @JsonSubTypes.Type(value = ResourceSecretContentData.class, name = Resource.Codes.SECRET),
+})
+@Schema(implementation = ResourceObjectContentDataDto.class)
+public class ResourceObjectContentData extends NameAndUuidDto implements ResourceObjectContentDataDto {
 
     @Schema(description = "Resource contained in data", requiredMode = Schema.RequiredMode.REQUIRED)
-    private AttributeResource resource;
+    private final AttributeResource resource;
 
-    @Schema(description = "Base64 encoded content of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String content;
-
-    @Schema(description = "Attributes of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<ResponseAttribute> attributes;
+    public ResourceObjectContentData(AttributeResource resource) {
+        this.resource = resource;
+    }
 
     @Override
     public void validate() throws ValidationException {
@@ -44,11 +47,11 @@ public class ResourceObjectContentData extends NameAndUuidDto implements Seriali
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ResourceObjectContentData that)) return false;
-        return Objects.equals(resource, that.resource) && Objects.equals(attributes, that.attributes) && Objects.equals(content, that.content) && Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getName(), that.getName());
+        return Objects.equals(resource, that.resource) && Objects.equals(getUuid(), that.getUuid()) && Objects.equals(getName(), that.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resource, content, attributes, getUuid(), getName());
+        return Objects.hash(resource, getUuid(), getName());
     }
 }
