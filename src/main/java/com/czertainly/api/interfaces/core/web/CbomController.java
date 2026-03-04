@@ -66,6 +66,7 @@ public interface CbomController extends AuthProtectedController {
 	@Operation(summary = "Sync CBOMs")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "204", description = "CBOMs synced"),
+			@ApiResponse(responseCode = "500", description = "Internal problem with repository", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
 	@PostMapping(path = "/sync")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
