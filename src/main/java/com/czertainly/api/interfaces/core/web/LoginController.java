@@ -31,7 +31,7 @@ public interface LoginController {
             @ApiResponse(responseCode = "400", description = "Error during authentication")
     })
     @GetMapping("/oauth2/authorization/{provider}/prepare")
-    void loginWithProvider(@PathVariable String provider, @RequestParam(value = "redirect", required = false) String redirect) throws IOException;
+    void loginWithProvider(@PathVariable String provider, @RequestParam(value = "redirect", required = false) String redirect);
 
     @Operation(summary = "Get JWK Set of a provider")
     @ApiResponses(value = {

@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Data
-@EqualsAndHashCode
 @Schema(description = "Login provider information")
 public class LoginProviderDto {
     @Schema(description = "Provider name", requiredMode = Schema.RequiredMode.REQUIRED)
