@@ -71,7 +71,7 @@ public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "Create a Vault Profile")
     @ApiResponse(responseCode = "201", description = "Vault Profile created")
-    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles", produces = {"application/json"})
+    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     VaultProfileDetailDto createVaultProfile(@Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid, @RequestBody @Valid VaultProfileRequestDto vaultProfileRequest) throws NotFoundException, AttributeException, AlreadyExistException;
 
