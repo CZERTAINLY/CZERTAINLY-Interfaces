@@ -2,6 +2,8 @@ package com.czertainly.api.model.common.attribute.v3.content.data;
 
 import com.czertainly.api.model.client.attribute.ResponseAttribute;
 import com.czertainly.api.model.core.auth.AttributeResource;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Schema(
         title = "ResourceSimpleContentData",
-        description = "Content data for resource object attribute containing secret content"
+        description = "Content data for resource object defined by its attributes"
 )
 public class ResourceSimpleContentData extends ResourceObjectContentData {
 
@@ -23,7 +25,12 @@ public class ResourceSimpleContentData extends ResourceObjectContentData {
         super(resource);
     }
 
-    public ResourceSimpleContentData(AttributeResource resource, String uuid, String name, List<ResponseAttribute> attributes) {
+    @JsonCreator
+    public ResourceSimpleContentData(
+            @JsonProperty("resource") AttributeResource resource,
+            @JsonProperty("uuid") String uuid,
+            @JsonProperty("name") String name,
+            @JsonProperty("attributes") List<ResponseAttribute> attributes) {
         this(resource);
         this.uuid = uuid;
         this.name = name;

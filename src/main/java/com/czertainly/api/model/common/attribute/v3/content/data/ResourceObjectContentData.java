@@ -2,7 +2,6 @@ package com.czertainly.api.model.common.attribute.v3.content.data;
 
 import com.czertainly.api.exception.ValidationException;
 import com.czertainly.api.model.common.NameAndUuidDto;
-import com.czertainly.api.model.connector.secrets.content.*;
 import com.czertainly.api.model.core.auth.AttributeResource;
 import com.czertainly.api.model.core.auth.Resource;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
