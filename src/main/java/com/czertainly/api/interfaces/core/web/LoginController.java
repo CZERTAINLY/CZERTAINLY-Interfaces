@@ -5,14 +5,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -27,8 +23,7 @@ public interface LoginController {
             @ApiResponse(responseCode = "400", description = "Error during authentication")
     })
     @GetMapping(value = "/login", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ResponseBody
-    List<LoginProviderDto> login(HttpServletRequest request, @RequestParam(value = "error", required = false) String error);
+    List<LoginProviderDto> login(@RequestParam(value = "error", required = false) String error);
 
     @Operation(summary = "Login with provider")
     @ApiResponses(value = {
@@ -36,7 +31,7 @@ public interface LoginController {
             @ApiResponse(responseCode = "400", description = "Error during authentication")
     })
     @GetMapping("/oauth2/authorization/{provider}/prepare")
-    void loginWithProvider(@PathVariable String provider, @RequestParam(value = "redirect", required = false) String redirect, HttpServletResponse response, HttpServletRequest request) throws IOException;
+    void loginWithProvider(@PathVariable String provider, @RequestParam(value = "redirect", required = false) String redirect) throws IOException;
 
     @Operation(summary = "Get JWK Set of a provider")
     @ApiResponses(value = {
@@ -44,5 +39,5 @@ public interface LoginController {
             @ApiResponse(responseCode = "422", description = "Unable to retrieve JWK Set for the given provider")
     })
     @GetMapping(value = "/oauth2/{provider}/jwkSet", produces = {MediaType.APPLICATION_JSON_VALUE})
-    ResponseEntity<String> getJwkSet(@PathVariable String provider);
+    String getJwkSet(@PathVariable String provider);
 }
