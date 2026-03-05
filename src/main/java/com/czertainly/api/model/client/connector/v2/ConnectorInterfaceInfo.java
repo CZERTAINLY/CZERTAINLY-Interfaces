@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class ConnectorInterfaceInfo implements Serializable {
@@ -17,5 +18,8 @@ public class ConnectorInterfaceInfo implements Serializable {
 
     @Schema(description = "Features supported by the connector interface", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<FeatureFlag> features;
+
+    @Schema(description = "UUID of connector interfaces", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private UUID uuid;
 
 }
