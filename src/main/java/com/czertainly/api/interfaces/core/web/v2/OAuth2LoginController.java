@@ -1,0 +1,51 @@
+package com.czertainly.api.interfaces.core.web.v2;
+
+import com.czertainly.api.model.core.auth.LoginProviderDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@RequestMapping("/v2")
+@Tag(name = "OAuth2 Login Management v2", description = "OAuth2 Login Management v2 API")
+public interface OAuth2LoginController {
+    @Operation(summary = "Get available OAuth2 authentication providers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved available login providers"),
+            @ApiResponse(responseCode = "400", description = "Error during authentication")
+    })
+    @GetMapping(value = "/oauth2/providers", produces = {MediaType.APPLICATION_JSON_VALUE})
+    List<LoginProviderDto> getOAuth2Providers(@RequestParam(value = "error", required = false) String error);
+
+    @Operation(
+            summary = "Login with OAuth2 provider",
+            description = "Initiates OAuth2 login flow with the specified provider. This endpoint does not return a response body."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "302", description = "Redirect to provider's authentication page"),
+            @ApiResponse(responseCode = "400", description = "Bad request - invalid provider or authentication error")
+    })
+    @GetMapping("/oauth2/providers/{provider}/login")
+    void loginWithProvider(
+            @Parameter(description = "Name of the OAuth2 authentication provider", required = true)
+            @PathVariable String provider,
+            @Parameter(description = "Redirect URL to return to after successful authentication")
+            @RequestParam(value = "redirect", required = false) String redirect
+    );
+
+    @Operation(summary = "Get JWK Set of an OAuth2 provider")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "JWK Set retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unable to retrieve JWK Set for the given provider")
+    })
+    @GetMapping(value = "/oauth2/providers/{provider}/jwkSet", produces = {MediaType.APPLICATION_JSON_VALUE})
+    String getJwkSet(@PathVariable String provider);
+}
