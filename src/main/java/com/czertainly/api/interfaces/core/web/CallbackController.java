@@ -34,7 +34,7 @@ public interface CallbackController extends AuthProtectedController {
     @Operation(operationId = "callbackV2", summary = "Connector Callback API v2", description = "API to trigger the Callback for Connector.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Callback executed")})
     @PostMapping(path = "/v2/connectors/{uuid}/callback", consumes = {"application/json"}, produces = {"application/json"})
-    Object callback(@Parameter(description = "Connector UUID") @PathVariable UUID uuid, @RequestBody RequestAttributeCallback callback) throws ConnectorException, NotFoundException;
+    Object callback(@Parameter(description = "Connector UUID") @PathVariable UUID uuid, @RequestBody RequestAttributeCallback callback) throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "Resource Callback API", description = "API to trigger the Callback for resource.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Callback executed")})
