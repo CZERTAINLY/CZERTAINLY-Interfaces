@@ -70,7 +70,7 @@ public interface VaultInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Create a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Vault instance created")})
-    @PostMapping(produces = {"application/json"})
+    @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     VaultInstanceDetailDto createVaultInstance(@RequestBody @Valid VaultInstanceRequestDto vaultInstanceRequest) throws ConnectorException, NotFoundException, AttributeException, AlreadyExistException;
 
