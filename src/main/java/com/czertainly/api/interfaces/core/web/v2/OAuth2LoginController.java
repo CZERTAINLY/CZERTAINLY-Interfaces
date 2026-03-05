@@ -41,12 +41,4 @@ public interface OAuth2LoginController {
             @Parameter(description = "Redirect URL to return to after successful authentication")
             @RequestParam(value = "redirect", required = false) String redirect
     );
-
-    @Operation(summary = "Get JWK Set of an OAuth2 provider")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "JWK Set retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unable to retrieve JWK Set for the given provider")
-    })
-    @GetMapping(value = "/{provider}/jwkSet", produces = {MediaType.APPLICATION_JSON_VALUE})
-    String getJwkSet(@PathVariable String provider);
 }
