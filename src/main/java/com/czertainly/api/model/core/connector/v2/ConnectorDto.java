@@ -3,9 +3,13 @@ package com.czertainly.api.model.core.connector.v2;
 import com.czertainly.api.model.client.connector.v2.ConnectorVersion;
 import com.czertainly.api.model.common.NameAndUuidDto;
 import com.czertainly.api.model.core.connector.ConnectorStatus;
+import com.czertainly.api.model.core.connector.FunctionGroupDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -25,5 +29,13 @@ public class ConnectorDto extends NameAndUuidDto {
             examples = {"CONNECTED"},
             requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
+
+    @Schema(description = "List of Function Groups implemented by the Connector",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<FunctionGroupDto> functionGroups = new ArrayList<>();
+
+    @Schema(description = "List of connector interfaces implemented by the Connector",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<ConnectorInterfaceDto> interfaces = new ArrayList<>();
 
 }
