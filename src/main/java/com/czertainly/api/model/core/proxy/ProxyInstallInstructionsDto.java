@@ -11,7 +11,7 @@ import lombok.*;
 public class ProxyInstallInstructionsDto {
 
     @Schema(description = "Proxy identifier",
-        examples = {"7b55ge1c-844f-11dc-a8a3-0242ac120002"},
+        examples = {"7b55be1c-844f-11dc-a8a3-0242ac120002"},
         requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
