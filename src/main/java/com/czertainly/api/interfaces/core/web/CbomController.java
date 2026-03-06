@@ -1,11 +1,9 @@
 package com.czertainly.api.interfaces.core.web;
 
-import com.czertainly.api.exception.AlreadyExistException;
-import com.czertainly.api.exception.CbomRepositoryException;
-import com.czertainly.api.exception.NotFoundException;
-import com.czertainly.api.exception.ValidationException;
+import com.czertainly.api.exception.*;
 import com.czertainly.api.interfaces.AuthProtectedController;
 import com.czertainly.api.model.client.certificate.SearchRequestDto;
+import com.czertainly.api.model.common.BulkActionMessageDto;
 import com.czertainly.api.model.common.ErrorMessageDto;
 import com.czertainly.api.model.common.PaginationResponseDto;
 import com.czertainly.api.model.core.cbom.CbomDetailDto;
@@ -14,7 +12,9 @@ import com.czertainly.api.model.core.cbom.CbomUploadRequestDto;
 import com.czertainly.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -62,6 +62,19 @@ public interface CbomController extends AuthProtectedController {
 	@PostMapping(path = "/upload", consumes = { "application/json" }, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.CREATED)
 	CbomDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws ValidationException, AlreadyExistException, CbomRepositoryException;
+
+	@Operation(summary = "Delete CBOM entry")
+	@ApiResponses(value = {@ApiResponse(responseCode = "204", description = "CBOM entry deleted")})
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping(path = "/{uuid}", produces = {"application/json"})
+	void delete(@Parameter(description = "CBOM entry UUID") @PathVariable UUID uuid) throws NotFoundException;
+
+	@Operation(summary = "Delete multiple CBOM entries")
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CBOM entries deleted"),
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+	@PostMapping(path = "/delete", produces = {"application/json"})
+	List<BulkActionMessageDto> bulkDelete(@RequestBody List<UUID> uuids);
 
 	@Operation(summary = "Sync CBOMs")
 	@ApiResponses(value = {
