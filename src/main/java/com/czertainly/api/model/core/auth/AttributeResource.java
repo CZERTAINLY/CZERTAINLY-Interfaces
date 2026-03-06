@@ -1,5 +1,8 @@
 package com.czertainly.api.model.core.auth;
 
+import com.czertainly.api.model.common.attribute.v3.content.data.ResourceCertificateContentData;
+import com.czertainly.api.model.common.attribute.v3.content.data.ResourceSecretContentData;
+import com.czertainly.api.model.common.attribute.v3.content.data.ResourceSimpleContentData;
 import com.czertainly.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,24 +11,23 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum AttributeResource implements IPlatformEnum {
 
-    CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate", true),
-    CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", false),
-    AUTHORITY(Resource.Codes.AUTHORITY, "Authority", false),
-    ENTITY(Resource.Codes.ENTITY, "Entity Instance", false),
-    LOCATION(Resource.Codes.LOCATION, "Location", false),
-    SECRET(Resource.Codes.SECRET, "Secret", true),
-
+    CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate", ResourceCertificateContentData.class),
+    CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", ResourceSimpleContentData.class),
+    AUTHORITY(Resource.Codes.AUTHORITY, "Authority", ResourceSimpleContentData.class),
+    ENTITY(Resource.Codes.ENTITY, "Entity Instance", ResourceSimpleContentData.class),
+    LOCATION(Resource.Codes.LOCATION, "Location", ResourceSimpleContentData.class),
+    SECRET(Resource.Codes.SECRET, "Secret", ResourceSecretContentData.class),
     ;
 
     private final String code;
     private final String label;
     @Getter
-    private final boolean withContent;
+    private final Class<?> contentClass;
 
-    AttributeResource(String code, String label, boolean withContent) {
+    AttributeResource(String code, String label, Class<?> contentClass) {
         this.code = code;
         this.label = label;
-        this.withContent = withContent;
+        this.contentClass = contentClass;
     }
 
     @Override
