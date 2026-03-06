@@ -6,12 +6,19 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class VaultInstanceUpdateRequestDto {
 
     @Schema(description = "Description of the Vault instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
+
+    @Schema(description = "UUID of connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    private UUID connectorUuid;
+
+    @Schema(description = "UUID of interface", requiredMode = Schema.RequiredMode.REQUIRED)
+    private UUID interfaceUuid;
 
     @Schema(description = "List of attributes of the Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes = new ArrayList<>();
