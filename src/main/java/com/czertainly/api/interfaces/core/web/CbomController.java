@@ -63,6 +63,15 @@ public interface CbomController extends AuthProtectedController {
 	@ResponseStatus(HttpStatus.CREATED)
 	CbomDto uploadCbom(@RequestBody CbomUploadRequestDto request) throws ValidationException, AlreadyExistException, CbomRepositoryException;
 
+	@Operation(summary = "Sync CBOMs")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "CBOMs synced"),
+			@ApiResponse(responseCode = "500", description = "Internal problem with repository", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+	})
+	@PostMapping(path = "/sync")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	void sync() throws CbomRepositoryException;
+
 	@Operation(summary = "Get Cbom searchable fields information")
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cbom searchable field information retrieved")})
 	@GetMapping(path = "/search", produces = {"application/json"})
