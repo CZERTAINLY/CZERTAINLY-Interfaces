@@ -86,7 +86,10 @@ public interface ConnectorController extends AuthProtectedController {
             throws ConnectorException, AttributeException, NotFoundException;
 
     @Operation(operationId = "deleteConnectorV2", summary = "Delete a Connector")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Connector deleted")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Connector deleted"),
+            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+    })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     void deleteConnector(@Parameter(description = "Connector UUID") @PathVariable UUID uuid) throws NotFoundException;
@@ -129,7 +132,7 @@ public interface ConnectorController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Connectors deleted"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/delete", produces = {"application/json"})
+    @DeleteMapping(produces = {"application/json"})
     List<BulkActionMessageDto> bulkDeleteConnector(@RequestBody List<UUID> uuids) throws NotFoundException, ValidationException, ConnectorException;
 
     @Operation(operationId = "bulkForceDeleteConnectorV2", summary = "Force Delete multiple Connectors")
