@@ -1,5 +1,6 @@
 package com.czertainly.api.interfaces.core.web.v2;
 
+import com.czertainly.api.interfaces.NoAuthController;
 import com.czertainly.api.model.core.auth.LoginProviderDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RequestMapping("/v2/oauth2/providers")
 @Tag(name = "OAuth2 Login Management v2", description = "OAuth2 Login Management v2 API")
-public interface OAuth2LoginController {
+public interface OAuth2LoginController extends NoAuthController {
     @Operation(summary = "Get available OAuth2 authentication providers")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved available login providers"),
