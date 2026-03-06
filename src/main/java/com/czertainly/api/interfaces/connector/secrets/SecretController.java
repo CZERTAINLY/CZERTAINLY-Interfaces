@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,7 @@ public interface SecretController extends AuthProtectedConnectorController {
                             schema = @Schema(implementation = ProblemDetailExtended.class)
                     )
             )})
-    @PostMapping(path = "/content", consumes = {"application/json"}, produces = {"application/json"})
+    @GetMapping(path = "/content", consumes = {"application/json"}, produces = {"application/json"})
     SecretContentResponseDto getSecretContent(@Parameter(description = "Secret request") @RequestBody SecretRequestDto request, @RequestParam(required = false, name = "version") String version) throws NotFoundException;
 
     @Operation(summary = "Create Secret")
@@ -79,7 +80,7 @@ public interface SecretController extends AuthProtectedConnectorController {
             )})
     @PostMapping(consumes = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    SecretResponseDto createSecret(@Parameter(description = "Create Secret request") @RequestBody CreateSecretRequestDto request) throws AlreadyExistException;
+    SecretResponseDto createSecret(@Parameter(description = "Create Secret request") @RequestBody @Valid CreateSecretRequestDto request) throws AlreadyExistException;
 
     @Operation(summary = "Update Secret")
     @ApiResponses(value = {
