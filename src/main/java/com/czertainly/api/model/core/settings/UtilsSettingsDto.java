@@ -24,4 +24,11 @@ public class UtilsSettingsDto implements Serializable {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private String cbomRepositoryUrl;
+
+    @Schema(
+            description = "Maximum CBOM payload size in bytes",
+            examples = {"10485760"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private Long maxCbomPayloadSize;
 }
