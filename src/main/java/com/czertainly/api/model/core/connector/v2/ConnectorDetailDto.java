@@ -2,15 +2,11 @@ package com.czertainly.api.model.core.connector.v2;
 
 import com.czertainly.api.clients.ApiClientConnectorInfo;
 import com.czertainly.api.model.client.attribute.ResponseAttribute;
-import com.czertainly.api.model.client.connector.v2.ConnectorInterfaceInfo;
 import com.czertainly.api.model.core.connector.AuthType;
-import com.czertainly.api.model.core.connector.FunctionGroupDto;
-import com.czertainly.api.model.core.proxy.ProxyDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -29,11 +25,5 @@ public class ConnectorDetailDto extends ConnectorDto implements ApiClientConnect
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttribute> customAttributes;
-
-    @Schema(description = "Proxy for message queue routing. " +
-            "When set, connector communicates via message queue proxy. " +
-            "When null, connector uses direct REST communication.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private ProxyDto proxy;
 
 }
