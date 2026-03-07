@@ -18,14 +18,6 @@ import java.util.List;
 @Schema(name = "ConnectorDetailDtoV2")
 public class ConnectorDetailDto extends ConnectorDto implements ApiClientConnectorInfo {
 
-    @Schema(description = "List of Function Groups implemented by the Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<FunctionGroupDto> functionGroups = new ArrayList<>();
-
-    @Schema(description = "List of connector interfaces implemented by the Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<ConnectorInterfaceInfo> interfaces = new ArrayList<>();
-
     @Schema(description = "Type of authentication for the Connector",
             examples = {"none"},
             requiredMode = Schema.RequiredMode.REQUIRED)
