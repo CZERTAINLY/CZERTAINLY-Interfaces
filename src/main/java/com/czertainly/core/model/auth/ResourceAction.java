@@ -49,6 +49,9 @@ public enum ResourceAction implements IPlatformEnum {
     VERIFY("verify", "Verify"),
     SIGN("sign", "Sign"),
 
+    // PROXY
+    GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation"),
+
     // Secret
     GET_SECRET_CONTENT("getSecretContent", "Get secret content"),
 
