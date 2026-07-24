@@ -3,11 +3,13 @@ package com.otilm.api.model.common.attribute.common;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.common.properties.MetadataAttributeProperties;
 import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.otilm.api.model.common.attribute.v2.content.BaseAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
 import com.otilm.api.model.common.attribute.v3.MetadataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -101,19 +103,31 @@ class MetadataAttributeCopyTest {
     }
 
     @Test
-    void mutatingCopyContentListInPlace_doesNotAffectOriginal() {
-        // The content list itself is copied, not shared, so in-place mutation of the copy's
-        // list (as opposed to replacing the reference via setContent) must not leak back.
-        MetadataAttributeV2 original = new MetadataAttributeV2();
-        original.setContentType(AttributeContentType.STRING);
-        original.setContent(List.of(new StringAttributeContentV2("value")));
+    void getContent_returnsDefensiveCopy() {
+        // given
+        MetadataAttributeV2 attribute = new MetadataAttributeV2();
+        attribute.setContent(List.of(new StringAttributeContentV2("value")));
 
-        MetadataAttributeV2 copy = original.copy();
-        copy.getContent().clear();
+        // when
+        attribute.getContent().clear();
 
-        assertTrue(copy.getContent().isEmpty());
-        assertEquals(1, original.getContent().size());
-        assertEquals("value", ((StringAttributeContentV2) original.getContent().get(0)).getData());
+        // then
+        assertEquals(1, attribute.getContent().size());
+    }
+
+    @Test
+    void setContent_copiesProvidedList() {
+        // given
+        var callerOwnedContent = new ArrayList<BaseAttributeContentV2<?>>();
+        callerOwnedContent.add(new StringAttributeContentV2("value"));
+        MetadataAttributeV2 attribute = new MetadataAttributeV2();
+        attribute.setContent(callerOwnedContent);
+
+        // when
+        callerOwnedContent.clear();
+
+        // then
+        assertEquals(1, attribute.getContent().size());
     }
 
     @Test

@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -53,6 +54,7 @@ public class MetadataAttributeV2 extends MetadataAttribute {
             description = "Content of the Attribute"
     )
     @NotEmpty(message = "metadata attribute content is required")
+    @Getter(AccessLevel.NONE)
     private List<@NotNull @Valid BaseAttributeContentV2<?>> content;
 
     /**
@@ -117,7 +119,26 @@ public class MetadataAttributeV2 extends MetadataAttribute {
     }
 
     @Override
+    public List<BaseAttributeContentV2<?>> getContent() {
+        return content == null ? null : new ArrayList<>(content);
+    }
+
+    @Override
     public void setContent(List<? extends AttributeContent> content) {
-        this.content = (List<BaseAttributeContentV2<?>>) content;
+        if (content == null) {
+            this.content = null;
+            return;
+        }
+
+        this.content = new ArrayList<>(content.size());
+        for (AttributeContent item : content) {
+            if (item == null) {
+                this.content.add(null);
+            } else if (item instanceof BaseAttributeContentV2<?> itemV2) {
+                this.content.add(itemV2);
+            } else {
+                throw new IllegalArgumentException("MetadataAttributeV2 content must contain V2 elements");
+            }
+        }
     }
 }
