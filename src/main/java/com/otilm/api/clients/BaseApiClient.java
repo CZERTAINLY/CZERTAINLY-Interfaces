@@ -64,33 +64,25 @@ public abstract class BaseApiClient {
 
     private static final int CODEC_MAX_IN_MEMORY = 16 * 1024 * 1024;
 
-    // Pool hygiene, fixed here because it is not deployment-specific. Connector servers typically
-    // drop keep-alive connections around 60s, so idle connections are evicted and capped in age to
-    // avoid reusing a server-closed connection (PrematureCloseException).
+    // Pool hygiene (not deployment-specific): evict idle and age-cap connections so a server-closed
+    // keep-alive is not reused (PrematureCloseException).
     private static final Duration POOL_MAX_IDLE = Duration.ofSeconds(30);
     private static final Duration POOL_MAX_LIFE = Duration.ofMinutes(5);
     private static final Duration POOL_EVICT_INTERVAL = Duration.ofSeconds(30);
     private static final Duration POOL_DISPOSE_INTERVAL = Duration.ofSeconds(120);
     private static final Duration POOL_DISPOSE_AFTER = Duration.ofSeconds(300);
 
-    // Tuning is applied once (first prepareWebClient wins); the tuned HttpClient is the single source
-    // the CERTIFICATE path derives from (via secure()), so per-connector TLS clients inherit the same
-    // pool and timeouts. baseHttpClient is built lazily on first use so a deployment that always
-    // supplies tuning never builds a throwaway default ConnectionProvider — an orphaned provider is
-    // never GC'd (its background eviction task keeps a strong reference to it forever).
+    // Applied once (first prepareWebClient wins). The tuned HttpClient is the single source the
+    // CERTIFICATE path derives from, built lazily so a tuned deployment never leaves an orphaned
+    // default ConnectionProvider (which its background task would pin forever).
     private static volatile ClientTuning appliedTuning;
     private static volatile ConnectionProvider connectionProvider;
     private static volatile HttpClient baseHttpClient;
 
-    // Per-connector CERTIFICATE WebClients, keyed by connector UUID. The stored authMaterialHash
-    // invalidates the entry when credentials rotate. Caching the built WebClient (not just the
-    // SslContext) keeps the Reactor-Netty pool key stable across requests — the pool key hashes the
-    // SslProvider, so a fresh SslContext per request would give CERTIFICATE connectors no connection
-    // reuse and an ever-growing pool map.
-    // The cache is process-wide, so it assumes every BaseApiClient shares one base WebClient (its
-    // filters/codecs) and one defaultTrustManagers set — which holds in core, where both are single
-    // beans injected into all clients. If per-client base configuration ever diverged, that config
-    // would need to be part of the cache key.
+    // Per-connector CERTIFICATE WebClients keyed by UUID; authMaterialHash invalidates on credential
+    // rotation. Caching the built WebClient (not just the SslContext) keeps the Reactor pool key
+    // stable — a fresh SslContext per request means a new SslProvider, hence no connection reuse.
+    // Process-wide: assumes all clients share one base WebClient + defaultTrustManagers (true in core).
     private static final Map<String, CachedCertClient> certClientCache = new ConcurrentHashMap<>();
 
     private record CachedCertClient(String authHash, WebClient webClient) {
@@ -174,26 +166,21 @@ public abstract class BaseApiClient {
     }
 
     /**
-     * Resolve the CERTIFICATE-auth WebClient for a connector, reusing the cached instance while the
-     * connector's auth material is unchanged. Derives from the shared tuned {@link #baseHttpClient}
-     * so the per-connector TLS client inherits the connection pool and timeouts.
+     * CERTIFICATE-auth WebClient for a connector, cached while its auth material is unchanged and
+     * derived from the shared tuned {@link #baseHttpClient} so it inherits the pool and timeouts.
      */
     WebClient certificateWebClient(ApiClientConnectorInfo connector) {
-        // Resolve the shared base client (which may take the class lock) before compute(), so the
-        // map-bin lock held inside the compute lambda never nests the class lock. The reverse order
-        // — resetConnectorClientForTest() takes the class lock then clears the map — would otherwise
-        // be a lock-ordering inversion that could deadlock under parallel execution.
+        // Resolve the base client (may take the class lock) before compute(), so the map-bin lock
+        // never nests the class lock — the reverse of resetConnectorClientForTest, a deadlock risk.
         HttpClient httpClient = baseHttpClient();
         String uuid = connector.getUuid();
         if (uuid == null) {
-            // Not cacheable without a stable key (a ConcurrentHashMap rejects null keys anyway); build
-            // per request without hashing the auth material.
+            // Not cacheable without a stable key; build per request.
             return buildCertificateWebClient(connector, httpClient);
         }
         String authHash = authMaterialHash(connector.getAuthAttributes());
-        // compute() builds at most once per (uuid, authHash): concurrent first-callers for the same
-        // connector serialize on the map bin instead of each building a distinct SslContext, which
-        // would briefly give one host two Reactor pool keys.
+        // compute() builds once per (uuid, authHash); concurrent first-callers serialize on the bin
+        // rather than each building a distinct SslContext (two pool keys for one host).
         return certClientCache.compute(uuid, (key, existing) ->
                 existing != null && existing.authHash().equals(authHash)
                         ? existing
@@ -210,9 +197,8 @@ public abstract class BaseApiClient {
     }
 
     /**
-     * Remove the cached CERTIFICATE {@link WebClient} for a connector. Core calls this when a
-     * connector is deleted or its authentication configuration changes, so the process-wide cache
-     * does not retain a client (and its parsed key material) for a connector that no longer exists.
+     * Drop the cached CERTIFICATE WebClient for a connector. Core calls this on connector delete or
+     * auth change so the process-wide cache does not retain a stale client and its key material.
      */
     public static void evictCertificateClient(String connectorUuid) {
         if (connectorUuid != null) {
@@ -266,15 +252,14 @@ public abstract class BaseApiClient {
     }
 
     /**
-     * Content hash of the keystore/truststore material used to build the SslContext. Used as the
-     * cache-invalidation token for {@link #certClientCache} so rotated credentials rebuild the TLS
-     * client. Hashing (rather than keying on the raw material) keeps secrets out of the cache map.
+     * Content hash of the keystore/truststore material — the cache-invalidation token for
+     * {@link #certClientCache}. Hashing keeps secrets out of the map keys.
      */
     private static String authMaterialHash(List<ResponseAttribute> attributes) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            // Feed each field to the digest directly (no concatenated copy of the keystore blobs) and
-            // length-prefix it, so absent/empty/adjacent values cannot alias one another.
+            // Length-prefix each field fed straight to the digest (no concatenated keystore copy),
+            // so absent/adjacent values cannot alias.
             updateField(digest, getStoreType(attributes, ATTRIBUTE_KEYSTORE_TYPE));
             updateField(digest, storeContent(attributes, ATTRIBUTE_KEYSTORE));
             updateField(digest, getStorePassword(attributes, ATTRIBUTE_KEYSTORE_PASSWORD));
@@ -332,10 +317,9 @@ public abstract class BaseApiClient {
     }
 
     /**
-     * Build the shared connector WebClient with the supplied tuning. The first call wins: a later
-     * call with different tuning is ignored (with a warning) so the live ConnectionProvider is not
-     * orphaned — important under Spring test-context caching, which can invoke the bean factory more
-     * than once per JVM.
+     * Build the shared WebClient with the given tuning. First call wins; a later call with different
+     * tuning is ignored (warned) so the live ConnectionProvider is not orphaned — matters under
+     * Spring test-context caching.
      */
     public static synchronized WebClient prepareWebClient(ClientTuning tuning) {
         Objects.requireNonNull(tuning, "tuning must not be null");
@@ -371,10 +355,8 @@ public abstract class BaseApiClient {
     }
 
     private static HttpClient buildHttpClient(ConnectionProvider provider, ClientTuning tuning) {
-        // responseTimeout is reactor-netty's own per-request read guard (added when the request is
-        // sent, removed when the response is received), so it fails fast on a connector that never
-        // responds without ever firing on an idle pooled connection. A mid-body stall after headers
-        // is bounded by the caller's transaction timeout rather than a persistent channel handler.
+        // responseTimeout is reactor-netty's per-request read guard (idle-safe), failing fast on a
+        // non-responding connector; a mid-body stall is bounded by the caller's transaction timeout.
         return HttpClient.create(provider)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, Math.toIntExact(tuning.connectTimeout().toMillis()))
                 .responseTimeout(tuning.responseTimeout());
@@ -446,12 +428,9 @@ public abstract class BaseApiClient {
                     || unwrapped instanceof io.netty.handler.timeout.TimeoutException
                     || unwrapped instanceof TimeoutException
                     || isPoolAcquireExhausted(unwrapped)) {
-                // Connect, response, and pool-acquire failures land here. Netty timeout exceptions
-                // are not IOExceptions, and the pool pending-acquire-limit exception is a plain
-                // RuntimeException, so they are matched explicitly rather than rethrown raw. We log
-                // the failure type and message. The full cause is preserved on the
-                // ConnectorCommunicationException thrown just below, and toString keeps a
-                // message-less timeout identifiable without spamming netty stacks.
+                // Connect, response, and pool-acquire failures. Netty timeouts aren't IOExceptions and
+                // the pool pending-limit is a plain RuntimeException, so match them explicitly. Log
+                // type+message; the full cause rides on the exception thrown below.
                 logger.error("Connector {} communication failure: {}", connector.getName(), unwrapped.toString());
                 throw new ConnectorCommunicationException("Error in connector %s communication. URL: %s".formatted(connector.getName(), connector.getUrl()), unwrapped, connector);
             } else if (unwrapped instanceof ConnectorException ce) {
@@ -465,12 +444,11 @@ public abstract class BaseApiClient {
     }
 
     /**
-     * Reactor-Netty's {@code PoolAcquireTimeoutException} extends {@link TimeoutException} (already
-     * matched), but {@code PoolAcquirePendingLimitException} — thrown when the pending-acquire queue
-     * is saturated — is a plain {@code RuntimeException}. Match it by simple name to avoid a
-     * compile-time dependency on Reactor-Netty's shaded internal pool package.
+     * The pool pending-limit exception is a plain RuntimeException (unlike PoolAcquireTimeoutException,
+     * a {@link TimeoutException} matched above). Match by name to avoid depending on Reactor-Netty's
+     * shaded internal pool type.
      */
-    @SuppressWarnings("java:S1872") // name match is intentional — see Javadoc; instanceof would couple to the shaded type
+    @SuppressWarnings("java:S1872") // intentional name match — instanceof would couple to the shaded type
     private static boolean isPoolAcquireExhausted(Throwable t) {
         return "PoolAcquirePendingLimitException".equals(t.getClass().getSimpleName());
     }
