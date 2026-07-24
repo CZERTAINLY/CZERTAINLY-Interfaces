@@ -37,7 +37,7 @@ public class RaProfileCertificateRequestAttributesUpdateDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "staticOnly")
     private AttributeSetMergeMode mergeMode = AttributeSetMergeMode.STATIC_ONLY;
 
-    // Hidden until properly supported in following version
+    // Hidden until properly supported in a future version
     @ArraySchema(arraySchema = @Schema(
             description = "Core-side value-source bindings to attach onto connector-supplied (or static) definitions by reference",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED))

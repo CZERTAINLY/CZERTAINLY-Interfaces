@@ -65,7 +65,7 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
     }
 
     @Test
-    void omitsMergeModeIsStaticOnly_whenNull() throws Exception {
+    void serializesDefaultMergeModeAsStaticOnly_whenUnset() throws Exception {
         // given — a DTO whose mergeMode was never set
         var dto = new RaProfileCertificateRequestAttributesUpdateDto();
         dto.setRequestAttributes(List.of());
