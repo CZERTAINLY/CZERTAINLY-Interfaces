@@ -1,6 +1,5 @@
 package com.otilm.api.clients.mq.v2;
 
-import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.clients.mq.ProxyClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.model.client.connector.v2.ConnectorInterface;
@@ -10,15 +9,14 @@ import com.otilm.api.model.client.connector.v2.attribute.AttributeDefinitionsDto
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.common.attribute.v3.InfoAttributeV3;
 import com.otilm.api.model.core.connector.ConnectorDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+
+import static com.otilm.api.clients.mq.v2.RecordingProxyClient.aRecordingProxyClient;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Delegation tests for the MQ-based Attributes v2 client. Verifies each method calls
@@ -39,6 +37,9 @@ import java.util.concurrent.CompletableFuture;
 class AttributesApiClientMqTest {
 
     private static final String ATTRIBUTES_PATH = "/v2/attributes";
+    private static final String CALLBACK_PATH = ATTRIBUTES_PATH + "/callback";
+    private static final String GET = "GET";
+    private static final String POST = "POST";
 
     private RecordingProxyClient proxyClient;
     private AttributesApiClient client;
@@ -46,200 +47,129 @@ class AttributesApiClientMqTest {
 
     @BeforeEach
     void setUp() {
-        proxyClient = new RecordingProxyClient();
+        proxyClient = aRecordingProxyClient();
         client = new AttributesApiClient(proxyClient);
         connector = new ConnectorDto();
-        connector.setUrl("http://localhost");
     }
 
     @Test
-    void listDefinitions_noUuids_delegatesGetFullRegistry() throws ConnectorException {
-        AttributeDefinitionsDto expected = new AttributeDefinitionsDto();
-        proxyClient.syncResponse = expected;
+    void listDefinitions_returnsFullRegistry_whenUuidsAreNull() throws ConnectorException {
+        // given
+        var expectedResponse = new AttributeDefinitionsDto();
+        proxyClient.respondWith(expectedResponse);
 
-        AttributeDefinitionsDto result = client.listDefinitions(connector, null);
+        // when
+        var result = client.listDefinitions(connector, null);
 
-        Assertions.assertSame(expected, result);
-        Assertions.assertSame(connector, proxyClient.connector);
-        Assertions.assertEquals(ATTRIBUTES_PATH, proxyClient.path);
-        Assertions.assertEquals("GET", proxyClient.method);
-        Assertions.assertNull(proxyClient.body);
-        Assertions.assertEquals(AttributeDefinitionsDto.class, proxyClient.responseType);
+        // then
+        assertSame(expectedResponse, result);
+        proxyClient.assertCall(connector, ATTRIBUTES_PATH, GET, null, AttributeDefinitionsDto.class);
     }
 
     @Test
-    void listDefinitions_withUuids_delegatesExplodedPath() throws ConnectorException {
-        UUID a = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        UUID b = UUID.fromString("22222222-2222-2222-2222-222222222222");
-        AttributeDefinitionsDto expected = new AttributeDefinitionsDto();
-        proxyClient.syncResponse = expected;
+    void listDefinitions_usesExplodedUuidQuery_whenUuidsAreProvided() throws ConnectorException {
+        // given
+        var firstUuid = UUID.fromString("11111111-1111-1111-1111-111111111111");
+        var secondUuid = UUID.fromString("22222222-2222-2222-2222-222222222222");
+        var expectedPath = ATTRIBUTES_PATH + "?uuids=" + firstUuid + "&uuids=" + secondUuid;
+        var expectedResponse = new AttributeDefinitionsDto();
+        proxyClient.respondWith(expectedResponse);
 
-        AttributeDefinitionsDto result = client.listDefinitions(connector, List.of(a, b));
+        // when
+        var result = client.listDefinitions(connector, List.of(firstUuid, secondUuid));
 
-        Assertions.assertSame(expected, result);
-        // Exploded form (NOT csv) carried in the path string since the proxy has no query notion.
-        Assertions.assertEquals(ATTRIBUTES_PATH + "?uuids=" + a + "&uuids=" + b, proxyClient.path);
-        Assertions.assertEquals("GET", proxyClient.method);
-        Assertions.assertNull(proxyClient.body);
+        // then
+        assertSame(expectedResponse, result);
+        proxyClient.assertCall(connector, expectedPath, GET, null, AttributeDefinitionsDto.class);
     }
 
     @Test
-    void getDefinition_delegatesGetByUuidPath() throws ConnectorException {
-        UUID uuid = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        BaseAttribute expected = new InfoAttributeV3();
-        proxyClient.syncResponse = expected;
+    void getDefinition_usesDefinitionUuidPath() throws ConnectorException {
+        // given
+        var definitionUuid = UUID.fromString("11111111-1111-1111-1111-111111111111");
+        var expectedPath = ATTRIBUTES_PATH + "/" + definitionUuid;
+        BaseAttribute expectedResponse = new InfoAttributeV3();
+        proxyClient.respondWith(expectedResponse);
 
-        BaseAttribute result = client.getDefinition(connector, uuid);
+        // when
+        var result = client.getDefinition(connector, definitionUuid);
 
-        Assertions.assertSame(expected, result);
-        Assertions.assertEquals(ATTRIBUTES_PATH + "/" + uuid, proxyClient.path);
-        Assertions.assertEquals("GET", proxyClient.method);
-        Assertions.assertNull(proxyClient.body);
-        Assertions.assertEquals(BaseAttribute.class, proxyClient.responseType);
+        // then
+        assertSame(expectedResponse, result);
+        proxyClient.assertCall(connector, expectedPath, GET, null, BaseAttribute.class);
     }
 
     @Test
-    void callback_delegatesPostWithBody() throws ConnectorException {
-        AttributeCallbackRequestDto request = new AttributeCallbackRequestDto();
+    void callback_sendsRequestBody() throws ConnectorException {
+        // given
+        var request = callbackRequest();
+        var expectedResponse = new AttributeCallbackResponseDto();
+        proxyClient.respondWith(expectedResponse);
+
+        // when
+        var result = client.callback(connector, request);
+
+        // then
+        assertSame(expectedResponse, result);
+        proxyClient.assertCall(connector, CALLBACK_PATH, POST, request, AttributeCallbackResponseDto.class);
+    }
+
+    @Test
+    void getDefinitionAsync_usesDefinitionUuidPath() {
+        // given
+        var definitionUuid = UUID.fromString("11111111-1111-1111-1111-111111111111");
+        var expectedPath = ATTRIBUTES_PATH + "/" + definitionUuid;
+        BaseAttribute expectedResponse = new InfoAttributeV3();
+        proxyClient.respondAsyncWith(expectedResponse);
+
+        // when
+        var result = client.getDefinitionAsync(connector, definitionUuid);
+
+        // then
+        assertSame(expectedResponse, result.join());
+        proxyClient.assertCall(connector, expectedPath, GET, null, BaseAttribute.class);
+    }
+
+    @Test
+    void listDefinitionsAsync_usesExplodedUuidQuery_whenUuidsAreProvided() {
+        // given
+        var firstUuid = UUID.fromString("11111111-1111-1111-1111-111111111111");
+        var secondUuid = UUID.fromString("22222222-2222-2222-2222-222222222222");
+        var expectedPath = ATTRIBUTES_PATH + "?uuids=" + firstUuid + "&uuids=" + secondUuid;
+        var expectedResponse = new AttributeDefinitionsDto();
+        proxyClient.respondAsyncWith(expectedResponse);
+
+        // when
+        var result = client.listDefinitionsAsync(connector, List.of(firstUuid, secondUuid));
+
+        // then
+        assertSame(expectedResponse, result.join());
+        proxyClient.assertCall(connector, expectedPath, GET, null, AttributeDefinitionsDto.class);
+    }
+
+    @Test
+    void callbackAsync_sendsRequestBody() {
+        // given
+        var request = callbackRequest();
+        var expectedResponse = new AttributeCallbackResponseDto();
+        proxyClient.respondAsyncWith(expectedResponse);
+
+        // when
+        var result = client.callbackAsync(connector, request);
+
+        // then
+        assertSame(expectedResponse, result.join());
+        proxyClient.assertCall(connector, CALLBACK_PATH, POST, request, AttributeCallbackResponseDto.class);
+    }
+
+    private static AttributeCallbackRequestDto callbackRequest() {
+        var request = new AttributeCallbackRequestDto();
         request.setConnectorInterface(ConnectorInterface.AUTHORITY);
         request.setInterfaceVersion("v3");
         request.setAttributeUuid(UUID.fromString("11111111-1111-1111-1111-111111111111"));
         request.setAttributeName("someAttr");
         request.setContextAttributes(List.of());
         request.setCurrentAttributes(List.of());
-
-        AttributeCallbackResponseDto expected = new AttributeCallbackResponseDto();
-        proxyClient.syncResponse = expected;
-
-        AttributeCallbackResponseDto result = client.callback(connector, request);
-
-        Assertions.assertSame(expected, result);
-        Assertions.assertEquals(ATTRIBUTES_PATH + "/callback", proxyClient.path);
-        Assertions.assertEquals("POST", proxyClient.method);
-        Assertions.assertSame(request, proxyClient.body);
-        Assertions.assertEquals(AttributeCallbackResponseDto.class, proxyClient.responseType);
-    }
-
-    @Test
-    void getDefinitionAsync_delegatesToAsyncProxy() {
-        UUID uuid = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        BaseAttribute expected = new InfoAttributeV3();
-        proxyClient.asyncResponse = CompletableFuture.completedFuture(expected);
-
-        CompletableFuture<BaseAttribute> result = client.getDefinitionAsync(connector, uuid);
-
-        Assertions.assertSame(expected, result.join());
-        Assertions.assertEquals(ATTRIBUTES_PATH + "/" + uuid, proxyClient.path);
-        Assertions.assertEquals("GET", proxyClient.method);
-        Assertions.assertNull(proxyClient.body);
-        Assertions.assertEquals(BaseAttribute.class, proxyClient.responseType);
-    }
-
-    @Test
-    void listDefinitionsAsync_withUuids_delegatesExplodedPath() {
-        UUID a = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        UUID b = UUID.fromString("22222222-2222-2222-2222-222222222222");
-        AttributeDefinitionsDto expected = new AttributeDefinitionsDto();
-        proxyClient.asyncResponse = CompletableFuture.completedFuture(expected);
-
-        CompletableFuture<AttributeDefinitionsDto> result =
-                client.listDefinitionsAsync(connector, List.of(a, b));
-
-        Assertions.assertSame(expected, result.join());
-        // The exploded-uuids path build is the only async logic that differs from the sync path.
-        Assertions.assertEquals(ATTRIBUTES_PATH + "?uuids=" + a + "&uuids=" + b, proxyClient.path);
-        Assertions.assertEquals("GET", proxyClient.method);
-        Assertions.assertNull(proxyClient.body);
-        Assertions.assertEquals(AttributeDefinitionsDto.class, proxyClient.responseType);
-    }
-
-    @Test
-    void callbackAsync_delegatesPostWithBody() {
-        AttributeCallbackRequestDto request = new AttributeCallbackRequestDto();
-        request.setConnectorInterface(ConnectorInterface.AUTHORITY);
-        request.setInterfaceVersion("v3");
-        request.setAttributeUuid(UUID.fromString("11111111-1111-1111-1111-111111111111"));
-        request.setAttributeName("someAttr");
-        request.setContextAttributes(List.of());
-        request.setCurrentAttributes(List.of());
-
-        AttributeCallbackResponseDto expected = new AttributeCallbackResponseDto();
-        proxyClient.asyncResponse = CompletableFuture.completedFuture(expected);
-
-        CompletableFuture<AttributeCallbackResponseDto> result = client.callbackAsync(connector, request);
-
-        Assertions.assertSame(expected, result.join());
-        Assertions.assertEquals(ATTRIBUTES_PATH + "/callback", proxyClient.path);
-        Assertions.assertEquals("POST", proxyClient.method);
-        Assertions.assertSame(request, proxyClient.body);
-        Assertions.assertEquals(AttributeCallbackResponseDto.class, proxyClient.responseType);
-    }
-
-    /**
-     * Records the arguments of the single {@code sendRequest}/{@code sendRequestAsync} call under test and
-     * returns the preset response. Only the two overloads exercised by the client are implemented; the
-     * rest throw to surface any unexpected delegation.
-     */
-    private static final class RecordingProxyClient implements ProxyClient {
-        private ApiClientConnectorInfo connector;
-        private String path;
-        private String method;
-        private Object body;
-        private Class<?> responseType;
-
-        private Object syncResponse;
-        private CompletableFuture<?> asyncResponse;
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType) {
-            this.connector = connector;
-            this.path = path;
-            this.method = method;
-            this.body = body;
-            this.responseType = responseType;
-            return (T) syncResponse;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType) {
-            this.connector = connector;
-            this.path = path;
-            this.method = method;
-            this.body = body;
-            this.responseType = responseType;
-            return (CompletableFuture<T>) asyncResponse;
-        }
-
-        @Override
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType, Duration timeout) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Map<String, String> pathVariables, Object body, Class<T> responseType) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType, Duration timeout) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Map<String, String> pathVariables, Object body, Class<T> responseType, Duration timeout) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void sendFireAndForget(ApiClientConnectorInfo connector, String path, String method, Object body) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void sendFireAndForget(ApiClientConnectorInfo connector, String path, String method, Object body, String messageType) {
-            throw new UnsupportedOperationException();
-        }
+        return request;
     }
 }
