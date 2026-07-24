@@ -179,11 +179,16 @@ public abstract class BaseApiClient {
      * so the per-connector TLS client inherits the connection pool and timeouts.
      */
     WebClient certificateWebClient(ApiClientConnectorInfo connector) {
+        // Resolve the shared base client (which may take the class lock) before compute(), so the
+        // map-bin lock held inside the compute lambda never nests the class lock. The reverse order
+        // — resetConnectorClientForTest() takes the class lock then clears the map — would otherwise
+        // be a lock-ordering inversion that could deadlock under parallel execution.
+        HttpClient httpClient = baseHttpClient();
         String uuid = connector.getUuid();
         if (uuid == null) {
             // Not cacheable without a stable key (a ConcurrentHashMap rejects null keys anyway); build
             // per request without hashing the auth material.
-            return buildCertificateWebClient(connector);
+            return buildCertificateWebClient(connector, httpClient);
         }
         String authHash = authMaterialHash(connector.getAuthAttributes());
         // compute() builds at most once per (uuid, authHash): concurrent first-callers for the same
@@ -192,16 +197,27 @@ public abstract class BaseApiClient {
         return certClientCache.compute(uuid, (key, existing) ->
                 existing != null && existing.authHash().equals(authHash)
                         ? existing
-                        : new CachedCertClient(authHash, buildCertificateWebClient(connector))
+                        : new CachedCertClient(authHash, buildCertificateWebClient(connector, httpClient))
         ).webClient();
     }
 
-    private WebClient buildCertificateWebClient(ApiClientConnectorInfo connector) {
+    private WebClient buildCertificateWebClient(ApiClientConnectorInfo connector, HttpClient httpClient) {
         SslContext sslContext = createSslContext(connector.getAuthAttributes());
-        HttpClient certHttpClient = baseHttpClient().secure(spec -> spec.sslContext(sslContext));
+        HttpClient certHttpClient = httpClient.secure(spec -> spec.sslContext(sslContext));
         return webClient.mutate()
                 .clientConnector(new ReactorClientHttpConnector(certHttpClient))
                 .build();
+    }
+
+    /**
+     * Remove the cached CERTIFICATE {@link WebClient} for a connector. Core calls this when a
+     * connector is deleted or its authentication configuration changes, so the process-wide cache
+     * does not retain a client (and its parsed key material) for a connector that no longer exists.
+     */
+    public static void evictCertificateClient(String connectorUuid) {
+        if (connectorUuid != null) {
+            certClientCache.remove(connectorUuid);
+        }
     }
 
     private SslContext createSslContext(List<ResponseAttribute> attributes) {
@@ -328,7 +344,7 @@ public abstract class BaseApiClient {
             connectionProvider = buildConnectionProvider(tuning);
             baseHttpClient = buildHttpClient(connectionProvider, tuning);
         } else if (!appliedTuning.equals(tuning)) {
-            logger.warn("Connector WebClient already tuned; ignoring differing tuning request");
+            logger.warn("Connector WebClient already tuned with {}; ignoring differing request {}", appliedTuning, tuning);
         }
         return buildWebClient(baseHttpClient);
     }
