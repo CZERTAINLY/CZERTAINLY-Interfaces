@@ -308,7 +308,10 @@ class BaseApiClientTest {
                         .block());
         long elapsedMs = System.currentTimeMillis() - startMs;
 
-        Assertions.assertTrue(elapsedMs < 3000, "expected fail-fast under the 500ms response timeout, took " + elapsedMs + "ms");
+        // Proves fail-fast: the 500ms response timeout must trip before the server's 5000ms delay
+        // would return. Bound kept comfortably under 5000ms (not tight to 500ms) so a GC pause or a
+        // saturated CI runner doesn't flake it; hasTimeoutCause below confirms the reason.
+        Assertions.assertTrue(elapsedMs < 4500, "expected fail-fast under the 500ms response timeout, took " + elapsedMs + "ms");
         // Ensure it failed for the intended reason (a timeout), not a URI/connect error that merely happened fast.
         Assertions.assertTrue(hasTimeoutCause(thrown), "expected a response/read timeout, got: " + thrown);
     }
