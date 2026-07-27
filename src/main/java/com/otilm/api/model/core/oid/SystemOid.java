@@ -35,16 +35,15 @@ public enum SystemOid {
     /**
      * Certificate extensions a requester plausibly places in a CSR. SAN (2.5.29.17) is absent because
      * the parser diverts it into {@code subjectAltNames}, so an extension mapping on it never matches.
-     * The trailing flag marks CA-owned extensions, which must be rejected as mapping targets.
      */
-    EXTENDED_KEY_USAGE_EXTENSION("2.5.29.37", "Extended Key Usage", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER, false),
-    KEY_USAGE("2.5.29.15", "Key Usage", OidCategory.CERTIFICATE_EXTENSION, true, ExtensionValueEncoding.DER, false),
-    BASIC_CONSTRAINTS("2.5.29.19", "Basic Constraints", OidCategory.CERTIFICATE_EXTENSION, true, ExtensionValueEncoding.DER, true),
-    SUBJECT_KEY_IDENTIFIER("2.5.29.14", "Subject Key Identifier", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER, true),
-    SUBJECT_DIRECTORY_ATTRIBUTES("2.5.29.9", "Subject Directory Attributes", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER, false),
-    NAME_CONSTRAINTS("2.5.29.30", "Name Constraints", OidCategory.CERTIFICATE_EXTENSION, true, ExtensionValueEncoding.DER, true),
-    PRIVATE_KEY_USAGE_PERIOD("2.5.29.16", "Private Key Usage Period", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER, false),
-    TLS_FEATURE("1.3.6.1.5.5.7.1.24", "TLS Feature", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER, false),
+    EXTENDED_KEY_USAGE_EXTENSION("2.5.29.37", "Extended Key Usage", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER),
+    KEY_USAGE("2.5.29.15", "Key Usage", OidCategory.CERTIFICATE_EXTENSION, true, ExtensionValueEncoding.DER),
+    BASIC_CONSTRAINTS("2.5.29.19", "Basic Constraints", OidCategory.CERTIFICATE_EXTENSION, true, ExtensionValueEncoding.DER),
+    SUBJECT_KEY_IDENTIFIER("2.5.29.14", "Subject Key Identifier", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER),
+    SUBJECT_DIRECTORY_ATTRIBUTES("2.5.29.9", "Subject Directory Attributes", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER),
+    NAME_CONSTRAINTS("2.5.29.30", "Name Constraints", OidCategory.CERTIFICATE_EXTENSION, true, ExtensionValueEncoding.DER),
+    PRIVATE_KEY_USAGE_PERIOD("2.5.29.16", "Private Key Usage Period", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER),
+    TLS_FEATURE("1.3.6.1.5.5.7.1.24", "TLS Feature", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER),
 
     // Extended Key Usage purposes
     SERVER_AUTH("1.3.6.1.5.5.7.3.1", "TLS Web Server Authentication", OidCategory.EXTENDED_KEY_USAGE),
@@ -69,7 +68,7 @@ public enum SystemOid {
     }
 
     /** Properties only a certificate extension carries; {@code null} for every other category. */
-    private record ExtensionProperties(boolean defaultCritical, ExtensionValueEncoding valueEncoding, boolean caControlled) {}
+    private record ExtensionProperties(boolean defaultCritical, ExtensionValueEncoding valueEncoding) {}
 
     private final String oid;
     private final String displayName;
@@ -89,11 +88,11 @@ public enum SystemOid {
         this(oid, displayName, category, null, List.of(), null);
     }
 
-    /** Certificate extension: projection defaults, plus whether the issuing CA owns the extension. */
+    /** Certificate extension: the criticality and value-encoding defaults applied when projecting. */
     SystemOid(String oid, String displayName, OidCategory category, boolean defaultCritical,
-              ExtensionValueEncoding valueEncoding, boolean caControlled) {
+              ExtensionValueEncoding valueEncoding) {
         this(oid, displayName, category, null, List.of(),
-                new ExtensionProperties(defaultCritical, valueEncoding, caControlled));
+                new ExtensionProperties(defaultCritical, valueEncoding));
     }
 
     SystemOid(String oid, String displayName, OidCategory category, String code, List<String> altCodes,
@@ -116,11 +115,6 @@ public enum SystemOid {
     /** {@code null} unless this is a certificate extension. */
     public ExtensionValueEncoding getValueEncoding() {
         return extensionProperties == null ? null : extensionProperties.valueEncoding();
-    }
-
-    /** Whether the issuing CA owns this extension, making it invalid as a request-attribute mapping target. */
-    public boolean isCaControlled() {
-        return extensionProperties != null && extensionProperties.caControlled();
     }
 
     public static SystemOid fromOID(String oid) {

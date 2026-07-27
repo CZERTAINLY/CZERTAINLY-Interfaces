@@ -39,17 +39,17 @@ class SystemOidTest {
     private static final Set<SystemOid> RDN_CODES_WITHOUT_BC_SYMBOL = Set.of();
 
     /** Expected properties of one seeded certificate extension. */
-    private record ExtensionExpectation(String displayName, boolean defaultCritical, boolean caControlled) {}
+    private record ExtensionExpectation(String displayName, boolean defaultCritical) {}
 
     private static final Map<String, ExtensionExpectation> EXPECTED_EXTENSIONS = Map.of(
-            "2.5.29.37", new ExtensionExpectation("Extended Key Usage", false, false),
-            "2.5.29.15", new ExtensionExpectation("Key Usage", true, false),
-            "2.5.29.19", new ExtensionExpectation("Basic Constraints", true, true),
-            "2.5.29.14", new ExtensionExpectation("Subject Key Identifier", false, true),
-            "2.5.29.9", new ExtensionExpectation("Subject Directory Attributes", false, false),
-            "2.5.29.30", new ExtensionExpectation("Name Constraints", true, true),
-            "2.5.29.16", new ExtensionExpectation("Private Key Usage Period", false, false),
-            "1.3.6.1.5.5.7.1.24", new ExtensionExpectation("TLS Feature", false, false)
+            "2.5.29.37", new ExtensionExpectation("Extended Key Usage", false),
+            "2.5.29.15", new ExtensionExpectation("Key Usage", true),
+            "2.5.29.19", new ExtensionExpectation("Basic Constraints", true),
+            "2.5.29.14", new ExtensionExpectation("Subject Key Identifier", false),
+            "2.5.29.9", new ExtensionExpectation("Subject Directory Attributes", false),
+            "2.5.29.30", new ExtensionExpectation("Name Constraints", true),
+            "2.5.29.16", new ExtensionExpectation("Private Key Usage Period", false),
+            "1.3.6.1.5.5.7.1.24", new ExtensionExpectation("TLS Feature", false)
     );
 
     @Test
@@ -66,20 +66,8 @@ class SystemOidTest {
             // mismatch would silently mint the wrong extension.
             assertEquals(expected.displayName(), entry.getDisplayName(), "wrong displayName for " + entry.getOid());
             assertEquals(expected.defaultCritical(), entry.getDefaultCritical(), "wrong defaultCritical for " + entry.getOid());
-            assertEquals(expected.caControlled(), entry.isCaControlled(), "wrong caControlled for " + entry.getOid());
             assertEquals(ExtensionValueEncoding.DER, entry.getValueEncoding(), "wrong valueEncoding for " + entry.getOid());
         }
-    }
-
-    @Test
-    void marksCaOwnedExtensionsAsIneligibleMappingTargets() {
-        // given — a requester-supplied value must never drive cA/pathLen, a name-constraints tree,
-        // or a key identifier that no longer matches the key
-        // when / then
-        assertTrue(SystemOid.fromOID("2.5.29.19").isCaControlled(), "basicConstraints must be CA-controlled");
-        assertTrue(SystemOid.fromOID("2.5.29.30").isCaControlled(), "nameConstraints must be CA-controlled");
-        assertTrue(SystemOid.fromOID("2.5.29.14").isCaControlled(), "subjectKeyIdentifier must be CA-controlled");
-        assertFalse(SystemOid.fromOID("2.5.29.37").isCaControlled(), "extKeyUsage is requester-mappable");
     }
 
     @Test
@@ -109,7 +97,6 @@ class SystemOidTest {
             }
             assertNull(entry.getDefaultCritical(), "defaultCritical must be null for " + entry.name());
             assertNull(entry.getValueEncoding(), "valueEncoding must be null for " + entry.name());
-            assertFalse(entry.isCaControlled(), "caControlled must be false for " + entry.name());
         }
     }
 
