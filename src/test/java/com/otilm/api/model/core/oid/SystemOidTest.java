@@ -23,10 +23,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 class SystemOidTest {
 
     /**
-     * RDN constants whose code deliberately differs from BouncyCastle's rendered symbol. Each is a
-     * shipped, better-than-BC choice that must stay frozen: renaming one would change how every
-     * already-stored subject DN renders. {@code PSEUDONYM} is absent because it differs from BC only
-     * in case, which the parity comparison ignores.
+     * Codes that deliberately differ from BouncyCastle's symbol. Frozen: renaming one would change how
+     * every stored subject DN renders. {@code PSEUDONYM} differs only in case, which parity ignores.
      */
     private static final Set<SystemOid> FROZEN_BC_SYMBOL_DIVERGENCES = Set.of(
             SystemOid.EMAIL,                          // ours EMAIL, BC E
@@ -35,9 +33,8 @@ class SystemOidTest {
     );
 
     /**
-     * RDN constants knowingly registered for an OID BouncyCastle has no symbol for. Such an OID
-     * currently renders as its dotted form, so giving it a code changes stored DN text and requires a
-     * {@code updateCertificateDNs} migration. Empty by design — an entry here is a decision record.
+     * OIDs BouncyCastle has no symbol for, knowingly given a code. Such an OID renders as its dotted
+     * form today, so a code changes stored DN text and needs an {@code updateCertificateDNs} migration.
      */
     private static final Set<SystemOid> RDN_CODES_WITHOUT_BC_SYMBOL = Set.of();
 
@@ -76,8 +73,8 @@ class SystemOidTest {
 
     @Test
     void marksCaOwnedExtensionsAsIneligibleMappingTargets() {
-        // given — the CA owns these: a requester-supplied value must never drive a cA/pathLen
-        // assertion, a name-constraints tree, or a key identifier that no longer matches the key
+        // given — a requester-supplied value must never drive cA/pathLen, a name-constraints tree,
+        // or a key identifier that no longer matches the key
         // when / then
         assertTrue(SystemOid.fromOID("2.5.29.19").isCaControlled(), "basicConstraints must be CA-controlled");
         assertTrue(SystemOid.fromOID("2.5.29.30").isCaControlled(), "nameConstraints must be CA-controlled");
@@ -96,9 +93,8 @@ class SystemOidTest {
 
     @Test
     void doesNotSeedSmimeCapabilitiesUntilItsCsrPlacementIsConfirmed() {
-        // given — 1.2.840.113549.1.9.15 is dual-natured: in its PKCS#9 CSR-attribute form the request
-        // parser never sees it, so a mapping would be a silent no-op. Shipped constants are costly to
-        // withdraw, so it stays out until a captured CSR proves the extensionRequest placement.
+        // given — dual-natured: in its PKCS#9 CSR-attribute form the parser never sees it, so a
+        // mapping would be a silent no-op. Out until a captured CSR proves the extensionRequest form.
         // when / then
         assertNull(SystemOid.fromOID("1.2.840.113549.1.9.15"),
                 "smimeCapabilities must stay deferred until its extensionRequest placement is verified");
@@ -139,9 +135,8 @@ class SystemOidTest {
 
     @Test
     void givesSerialNumberNoAltCodesSoItCanNeverBeReachedAsSn() {
-        // given — SN is surname (2.5.4.4) in OpenSSL, RFC 4519 and BouncyCastle. The RFC 4519 spelling
-        // of 2.5.4.5 is serialNumber, which differs from the code only in case, and the platform's
-        // code lookup is already case-insensitive.
+        // given — SN is surname (2.5.4.4) everywhere. The RFC 4519 spelling of 2.5.4.5 differs from
+        // the code only in case, and the code lookup is already case-insensitive.
         SystemOid serialNumber = SystemOid.fromOID("2.5.4.5");
 
         // when / then
@@ -199,9 +194,9 @@ class SystemOidTest {
                 if (RDN_CODES_WITHOUT_BC_SYMBOL.contains(entry)) {
                     continue;
                 }
-                fail("BouncyCastle has no symbol for " + entry.name() + " (" + entry.getOid() + "), so giving it "
-                        + "code '" + entry.getCode() + "' changes rendering from the dotted OID and needs an "
-                        + "updateCertificateDNs migration; add it to RDN_CODES_WITHOUT_BC_SYMBOL once that is done");
+                fail("no BouncyCastle symbol for " + entry.name() + " (" + entry.getOid() + "), so code '"
+                        + entry.getCode() + "' changes rendering from the dotted OID and needs an "
+                        + "updateCertificateDNs migration; then add it to RDN_CODES_WITHOUT_BC_SYMBOL");
             }
             assertEquals(bcSymbol.toLowerCase(Locale.ROOT), entry.getCode().toLowerCase(Locale.ROOT),
                     "code for " + entry.name() + " (" + entry.getOid() + ") diverges from BouncyCastle's symbol; "
@@ -223,10 +218,9 @@ class SystemOidTest {
 
     @Test
     void keepsEveryRdnCodeAndAltCodeUniqueAcrossConstants() {
-        // given — OidHandler flattens every code and altCode of every RDN entry into one
-        // case-insensitive map with no collision check, so a duplicate token resolves to an arbitrary
-        // OID. Deduplicate within a constant first: several BC symbols differ from their RFC 4519
-        // spelling only in case.
+        // given — OidHandler flattens codes and altCodes into one case-insensitive map with no
+        // collision check, so a duplicate resolves arbitrarily. Dedupe within a constant first:
+        // several BC symbols differ from their RFC 4519 spelling only in case.
         Map<String, String> owner = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
         // when / then

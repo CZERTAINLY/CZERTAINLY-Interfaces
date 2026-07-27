@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.oid;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -32,16 +33,9 @@ public enum SystemOid {
     USER_ID("0.9.2342.19200300.100.1.1", "User ID", OidCategory.RDN_ATTRIBUTE_TYPE, "UID", List.of()),
 
     /**
-     * Certificate extensions a requester plausibly places in a CSR, so that STRICT request-attribute
-     * validation can admit them without an operator first hand-registering the OID.
-     *
-     * <p>Subject Alternative Name (2.5.29.17) is deliberately absent: the request parser diverts it out
-     * of the extension list into {@code subjectAltNames} and a dedicated SAN mapping target exists, so
-     * an extension mapping on it could never match.
-     *
-     * <p>Entries flagged CA-controlled are selectable for display but must be rejected as
-     * request-attribute mapping targets — a requester-supplied value must never drive a cA/pathLen
-     * assertion, a name-constraints tree, or a key identifier that no longer matches the public key.
+     * Certificate extensions a requester plausibly places in a CSR. SAN (2.5.29.17) is absent because
+     * the parser diverts it into {@code subjectAltNames}, so an extension mapping on it never matches.
+     * The trailing flag marks CA-owned extensions, which must be rejected as mapping targets.
      */
     EXTENDED_KEY_USAGE_EXTENSION("2.5.29.37", "Extended Key Usage", OidCategory.CERTIFICATE_EXTENSION, false, ExtensionValueEncoding.DER, false),
     KEY_USAGE("2.5.29.15", "Key Usage", OidCategory.CERTIFICATE_EXTENSION, true, ExtensionValueEncoding.DER, false),
@@ -74,48 +68,59 @@ public enum SystemOid {
         VALUES = values();
     }
 
+    /** Properties only a certificate extension carries; {@code null} for every other category. */
+    private record ExtensionProperties(boolean defaultCritical, ExtensionValueEncoding valueEncoding, boolean caControlled) {}
+
     private final String oid;
     private final String displayName;
     private final OidCategory category;
     private final String code;
     private final List<String> altCodes;
-    private final Boolean defaultCritical;
-    private final ExtensionValueEncoding valueEncoding;
-    private final boolean caControlled;
+    @Getter(AccessLevel.NONE)
+    private final ExtensionProperties extensionProperties;
 
     /** RDN attribute type: carries the short code, plus any alternative spellings that must also parse. */
     SystemOid(String oid, String displayName, OidCategory category, String code, List<String> altCodes) {
-        this(oid, displayName, category, code, altCodes, null, null, false);
+        this(oid, displayName, category, code, altCodes, null);
     }
 
     /** Entry with no additional properties — an extended-key-usage purpose or a generic identifier. */
     SystemOid(String oid, String displayName, OidCategory category) {
-        this(oid, displayName, category, null, List.of(), null, null, false);
+        this(oid, displayName, category, null, List.of(), null);
     }
 
-    /**
-     * Certificate extension: carries the criticality and value-encoding defaults applied when a mapped
-     * request attribute is projected into a certificate request, and whether the issuing CA owns the
-     * extension and so must reject it as a mapping target.
-     */
+    /** Certificate extension: projection defaults, plus whether the issuing CA owns the extension. */
     SystemOid(String oid, String displayName, OidCategory category, boolean defaultCritical,
               ExtensionValueEncoding valueEncoding, boolean caControlled) {
-        this(oid, displayName, category, null, List.of(), defaultCritical, valueEncoding, caControlled);
+        this(oid, displayName, category, null, List.of(),
+                new ExtensionProperties(defaultCritical, valueEncoding, caControlled));
     }
 
     SystemOid(String oid, String displayName, OidCategory category, String code, List<String> altCodes,
-              Boolean defaultCritical, ExtensionValueEncoding valueEncoding, boolean caControlled) {
+              ExtensionProperties extensionProperties) {
         this.oid = oid;
         this.displayName = displayName;
         this.category = category;
         this.code = code;
-        // Never null so any consumer iterating all values can flatten altCodes without a guard; today
-        // the only unguarded reader is RDN-scoped. Naming the constant matters because a null here
-        // fails class initialisation, which would otherwise surface as a bare NPE.
+        // Never null, so a consumer iterating all values can flatten altCodes without a guard. Named
+        // because a null fails class initialisation, which would otherwise surface as a bare NPE.
         this.altCodes = List.copyOf(Objects.requireNonNull(altCodes, () -> "altCodes must not be null for " + name()));
-        this.defaultCritical = defaultCritical;
-        this.valueEncoding = valueEncoding;
-        this.caControlled = caControlled;
+        this.extensionProperties = extensionProperties;
+    }
+
+    /** {@code null} unless this is a certificate extension. */
+    public Boolean getDefaultCritical() {
+        return extensionProperties == null ? null : extensionProperties.defaultCritical();
+    }
+
+    /** {@code null} unless this is a certificate extension. */
+    public ExtensionValueEncoding getValueEncoding() {
+        return extensionProperties == null ? null : extensionProperties.valueEncoding();
+    }
+
+    /** Whether the issuing CA owns this extension, making it invalid as a request-attribute mapping target. */
+    public boolean isCaControlled() {
+        return extensionProperties != null && extensionProperties.caControlled();
     }
 
     public static SystemOid fromOID(String oid) {
