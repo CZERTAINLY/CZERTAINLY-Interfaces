@@ -27,7 +27,7 @@ public enum SystemOid {
     PSEUDONYM("2.5.4.65", "Pseudonym", OidCategory.RDN_ATTRIBUTE_TYPE, "PSEUDONYM", List.of()),
     GENERATION_QUALIFIER("2.5.4.44", "Generation Qualifier", OidCategory.RDN_ATTRIBUTE_TYPE, "GENERATION", List.of()),
     SERIAL_NUMBER("2.5.4.5", "Serial Number", OidCategory.RDN_ATTRIBUTE_TYPE, "SERIALNUMBER", List.of()),
-    STREET_ADDRESS("2.5.4.9", "Street Address", OidCategory.RDN_ATTRIBUTE_TYPE, "STREET", List.of()),
+    STREET_ADDRESS("2.5.4.9", "Street Address", OidCategory.RDN_ATTRIBUTE_TYPE, "STREET", List.of("streetAddress")),
     POSTAL_CODE("2.5.4.17", "Postal Code", OidCategory.RDN_ATTRIBUTE_TYPE, "PostalCode", List.of()),
     BUSINESS_CATEGORY("2.5.4.15", "Business Category", OidCategory.RDN_ATTRIBUTE_TYPE, "BusinessCategory", List.of()),
     USER_ID("0.9.2342.19200300.100.1.1", "User ID", OidCategory.RDN_ATTRIBUTE_TYPE, "UID", List.of()),

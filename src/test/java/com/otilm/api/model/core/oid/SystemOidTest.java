@@ -101,6 +101,36 @@ class SystemOidTest {
     }
 
     @Test
+    void givesEveryCertificateExtensionItsProjectionDefaults() {
+        // given — the mirror of leavesExtensionPropertiesUnsetForNonExtensionEntries. An extension
+        // declared through the no-properties constructor compiles fine and yields a null
+        // defaultCritical, which is the shape behind emitting a critical extension as non-critical.
+        List<SystemOid> extensions = byCategory(OidCategory.CERTIFICATE_EXTENSION);
+
+        // when / then
+        assertFalse(extensions.isEmpty(), "no certificate extensions are seeded");
+        for (SystemOid entry : extensions) {
+            assertNotNull(entry.getDefaultCritical(), "defaultCritical missing for " + entry.name());
+            assertNotNull(entry.getValueEncoding(), "valueEncoding missing for " + entry.name());
+        }
+    }
+
+    @Test
+    void letsStreetAddressParseUnderItsOpenSslSpelling() {
+        // given — the registry binds STREET and BouncyCastle binds only "street", so the OpenSSL long
+        // name resolves in neither without an alt code
+        SystemOid street = SystemOid.fromOID("2.5.4.9");
+
+        // when
+        Set<String> altCodes = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        altCodes.addAll(street.getAltCodes());
+
+        // then — parse-only, so the rendered token stays STREET and no stored DN changes
+        assertTrue(altCodes.contains("streetAddress"), "2.5.4.9 must accept the OpenSSL long name");
+        assertEquals("STREET", street.getCode());
+    }
+
+    @Test
     void seedsTheRdnTypesNeededWhenAuthoringAMapping() {
         // given — OID, expected code (BouncyCastle's symbol verbatim, including its casing)
         Map<String, String> expected = Map.of(
