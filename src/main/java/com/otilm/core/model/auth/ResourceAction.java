@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum ResourceAction implements IPlatformEnum {
     NONE("NONE", "None", AccessType.NOT_GRANTABLE),
-    ANY("ANY", "Any", AccessType.NOT_GRANTABLE), // Action that is evaluated as any action
+    ANY("ANY", "Any", AccessType.NOT_GRANTABLE),
     MEMBERS("members", "Members", AccessType.READ), // action that is evaluated to allow action for resource lower in hierarchy, e.g. access to certificates through RA profile members action
 
     // Default (CRUD) Actions
@@ -31,6 +31,8 @@ public enum ResourceAction implements IPlatformEnum {
     CONNECT("connect", "Connect", AccessType.WRITE), // allows also reconnect action
 
     // Certificate actions
+    // auth-opa-policies pairs this code with Resource.CONNECTOR in resourcesWithAnonymousAccess, so annotating
+    // it on that resource would leave the endpoint reachable unauthenticated.
     REGISTER("register", "Register", AccessType.WRITE),
     ISSUE("issue", "Issue", AccessType.WRITE),
     RENEW("renew", "Renew", AccessType.WRITE),
@@ -51,7 +53,8 @@ public enum ResourceAction implements IPlatformEnum {
     SIGN("sign", "Sign", AccessType.WRITE),
 
     // PROXY
-    GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation", AccessType.READ),
+    // Instructions embed a client secret, a broker SAS key and a non-expiring configuration token.
+    GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation", AccessType.SENSITIVE_READ),
 
     // Secret
     GET_SECRET_CONTENT("getSecretContent", "Get secret content", AccessType.SENSITIVE_READ),
@@ -62,16 +65,27 @@ public enum ResourceAction implements IPlatformEnum {
     ;
 
     /**
-     * Declares whether invoking an action reads or changes platform state, so that a permission set can be
-     * derived from the action catalogue instead of being maintained by hand. {@code SENSITIVE_READ} is a read
-     * that exposes stored secret material, and is therefore withheld from roles granted plain read access.
-     * {@code NOT_GRANTABLE} marks the sentinels that never appear in a stored permission row.
+     * Whether an action may be granted to a role that must not be able to change anything, so such a
+     * permission set can be derived from the action catalogue rather than maintained by hand.
+     * <p>
+     * {@code WRITE} covers mutation, side effects in a called system, and use of platform key material even
+     * when nothing is persisted ({@code ENCRYPT}, {@code VERIFY}, {@code SIGN}, {@code TIMESTAMP}); when
+     * uncertain, classify {@code WRITE}, since a wrong {@code READ} grants a write silently.
+     * {@code SENSITIVE_READ} discloses stored secret material. {@code NOT_GRANTABLE} marks {@code NONE} and
+     * {@code ANY}, which the auth service rejects as unknown actions — omitting {@code ANY} denies nothing,
+     * as that gate is satisfied by holding any action on the resource.
      */
     public enum AccessType {
         READ,
         WRITE,
         SENSITIVE_READ,
         NOT_GRANTABLE
+    }
+
+    private static final ResourceAction[] VALUES;
+
+    static {
+        VALUES = values();
     }
 
     @Schema(description = "Resource Action Name",
@@ -113,9 +127,17 @@ public enum ResourceAction implements IPlatformEnum {
         return this.accessType;
     }
 
+    /**
+     * Prefer this over comparing {@link AccessType} directly: {@code != WRITE} admits both sensitive reads and
+     * the sentinels that cannot be persisted at all.
+     */
+    public boolean isGrantableToReadOnlyRole() {
+        return this.accessType == AccessType.READ;
+    }
+
     @JsonCreator
     public static ResourceAction findByCode(String code) {
-        return Arrays.stream(ResourceAction.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->

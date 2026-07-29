@@ -2,6 +2,7 @@ package com.otilm.core.model.auth;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -18,11 +19,11 @@ class ResourceActionAccessTypeTest {
             ResourceAction.MEMBERS,
             ResourceAction.LIST,
             ResourceAction.DETAIL,
-            ResourceAction.EXPORT,
-            ResourceAction.GET_PROXY_INSTALLATION);
+            ResourceAction.EXPORT);
 
     private static final Set<ResourceAction> SENSITIVE_READ = EnumSet.of(
-            ResourceAction.GET_SECRET_CONTENT);
+            ResourceAction.GET_SECRET_CONTENT,
+            ResourceAction.GET_PROXY_INSTALLATION);
 
     @Test
     void everyActionDeclaresAnAccessType() {
@@ -46,14 +47,13 @@ class ResourceActionAccessTypeTest {
     }
 
     @Test
-    void secretContentIsClassifiedAsSensitiveRead() {
-        assertEquals(ResourceAction.AccessType.SENSITIVE_READ, ResourceAction.GET_SECRET_CONTENT.getAccessType());
+    void sensitiveReadActionsAreClassifiedAsSensitiveRead() {
+        for (ResourceAction action : SENSITIVE_READ) {
+            assertEquals(ResourceAction.AccessType.SENSITIVE_READ, action.getAccessType(), action.name());
+        }
     }
 
-    /**
-     * Complement of the read and sentinel sets. A newly added action that is mistakenly grouped with the
-     * readable actions fails here rather than silently widening what a read-only role is granted.
-     */
+    /** Complement of the read and sentinel sets, so a new action grouped with the readable ones fails here. */
     @Test
     void everyRemainingActionIsClassifiedAsWrite() {
         Set<ResourceAction> nonWrite = EnumSet.noneOf(ResourceAction.class);
@@ -75,7 +75,27 @@ class ResourceActionAccessTypeTest {
     }
 
     @Test
-    void registerResolvesFromItsCode() {
-        assertEquals(ResourceAction.REGISTER, ResourceAction.findByCode("register"));
+    void onlyPlainReadActionsAreGrantableToAReadOnlyRole() {
+        for (ResourceAction action : ResourceAction.values()) {
+            assertEquals(READ.contains(action), action.isGrantableToReadOnlyRole(), action.name());
+        }
+    }
+
+    @Test
+    void findByCodeRoundTripsAllValues() {
+        for (ResourceAction action : ResourceAction.values()) {
+            assertEquals(action, ResourceAction.findByCode(action.getCode()), action.name());
+        }
+    }
+
+    /** findByCode resolves with findFirst, so a duplicate code would be shadowed rather than rejected. */
+    @Test
+    void actionCodesAreUnique() {
+        long distinctCodes = Arrays.stream(ResourceAction.values())
+                .map(ResourceAction::getCode)
+                .distinct()
+                .count();
+
+        assertEquals(ResourceAction.values().length, distinctCodes);
     }
 }
