@@ -11,54 +11,82 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ResourceAction implements IPlatformEnum {
-    NONE("NONE", "None"),
-    ANY("ANY", "Any"), // Action that is evaluated as any action
-    MEMBERS("members", "Members"), // action that is evaluated to allow action for resource lower in hierarchy, e.g. access to certificates through RA profile members action
+    NONE("NONE", "None", AccessType.NOT_GRANTABLE),
+    ANY("ANY", "Any", AccessType.NOT_GRANTABLE),
+    MEMBERS("members", "Members", AccessType.READ), // action that is evaluated to allow action for resource lower in hierarchy, e.g. access to certificates through RA profile members action
 
     // Default (CRUD) Actions
-    LIST("list", "List"),
-    DETAIL("detail", "Detail"),
-    CREATE("create", "Create"),
-    UPDATE("update", "Update"),
-    DELETE("delete", "Delete"),
+    LIST("list", "List", AccessType.READ),
+    DETAIL("detail", "Detail", AccessType.READ),
+    CREATE("create", "Create", AccessType.WRITE),
+    UPDATE("update", "Update", AccessType.WRITE),
+    DELETE("delete", "Delete", AccessType.WRITE),
 
     // Default change state actions that allows also reverse action (disable/deactivate)
-    ENABLE("enable", "Enable"),
-    ACTIVATE("activate", "Activate"),
+    ENABLE("enable", "Enable", AccessType.WRITE),
+    ACTIVATE("activate", "Activate", AccessType.WRITE),
 
     // Connector actions
-    APPROVE("approve", "Approve"),
-    CONNECT("connect", "Connect"), // allows also reconnect action
+    APPROVE("approve", "Approve", AccessType.WRITE),
+    CONNECT("connect", "Connect", AccessType.WRITE), // allows also reconnect action
 
     // Certificate actions
-    ISSUE("issue", "Issue"),
-    RENEW("renew", "Renew"),
-    REKEY("rekey", "Rekey"),
-    REVOKE("revoke", "Revoke"),
-    ARCHIVE("archive", "Archive"),
+    // auth-opa-policies pairs this code with Resource.CONNECTOR in resourcesWithAnonymousAccess, so annotating
+    // it on that resource would leave the endpoint reachable unauthenticated.
+    REGISTER("register", "Register", AccessType.WRITE),
+    ISSUE("issue", "Issue", AccessType.WRITE),
+    RENEW("renew", "Renew", AccessType.WRITE),
+    REKEY("rekey", "Rekey", AccessType.WRITE),
+    REVOKE("revoke", "Revoke", AccessType.WRITE),
+    ARCHIVE("archive", "Archive", AccessType.WRITE),
 
     // Audit Log export
-    EXPORT("export", "Export"),
+    EXPORT("export", "Export", AccessType.READ),
 
     // Certificate, RA Profile and Compliance Profile
-    CHECK_COMPLIANCE("checkCompliance", "Check compliance"),
+    CHECK_COMPLIANCE("checkCompliance", "Check compliance", AccessType.WRITE),
 
     // Cryptography operation
-    ENCRYPT("encrypt", "Encrypt"),
-    DECRYPT("decrypt", "Decrypt"),
-    VERIFY("verify", "Verify"),
-    SIGN("sign", "Sign"),
+    ENCRYPT("encrypt", "Encrypt", AccessType.WRITE),
+    DECRYPT("decrypt", "Decrypt", AccessType.WRITE),
+    VERIFY("verify", "Verify", AccessType.WRITE),
+    SIGN("sign", "Sign", AccessType.WRITE),
 
     // PROXY
-    GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation"),
+    // Instructions embed a client secret, a broker SAS key and a non-expiring configuration token.
+    GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation", AccessType.SENSITIVE_READ),
 
     // Secret
-    GET_SECRET_CONTENT("getSecretContent", "Get secret content"),
-    UPDATE_SOURCE_VAULT_PROFILE("updateSourceVaultProfile", "Update source vault profile"),
+    GET_SECRET_CONTENT("getSecretContent", "Get secret content", AccessType.SENSITIVE_READ),
+    UPDATE_SOURCE_VAULT_PROFILE("updateSourceVaultProfile", "Update source vault profile", AccessType.WRITE),
 
     // Digital Signing
-    TIMESTAMP("timestamp", "Timestamp"), // RFC 3161 Timestamping
+    TIMESTAMP("timestamp", "Timestamp", AccessType.WRITE), // RFC 3161 Timestamping
     ;
+
+    /**
+     * Whether an action may be granted to a role that must not be able to change anything, so such a
+     * permission set can be derived from the action catalogue rather than maintained by hand.
+     * <p>
+     * {@code WRITE} covers mutation, side effects in a called system, and use of platform key material even
+     * when nothing is persisted ({@code ENCRYPT}, {@code VERIFY}, {@code SIGN}, {@code TIMESTAMP}); when
+     * uncertain, classify {@code WRITE}, since a wrong {@code READ} grants a write silently.
+     * {@code SENSITIVE_READ} discloses stored secret material. {@code NOT_GRANTABLE} marks {@code NONE} and
+     * {@code ANY}, which the auth service rejects as unknown actions — omitting {@code ANY} denies nothing,
+     * as that gate is satisfied by holding any action on the resource.
+     */
+    public enum AccessType {
+        READ,
+        WRITE,
+        SENSITIVE_READ,
+        NOT_GRANTABLE
+    }
+
+    private static final ResourceAction[] VALUES;
+
+    static {
+        VALUES = values();
+    }
 
     @Schema(description = "Resource Action Name",
             example = "create",
@@ -72,9 +100,12 @@ public enum ResourceAction implements IPlatformEnum {
 
     private final String label;
 
-    ResourceAction(String code, String label) {
+    private final AccessType accessType;
+
+    ResourceAction(String code, String label, AccessType accessType) {
         this.code = code;
         this.label = label;
+        this.accessType = accessType;
     }
 
     @JsonValue
@@ -92,9 +123,21 @@ public enum ResourceAction implements IPlatformEnum {
         return null;
     }
 
+    public AccessType getAccessType() {
+        return this.accessType;
+    }
+
+    /**
+     * Prefer this over comparing {@link AccessType} directly: {@code != WRITE} admits both sensitive reads and
+     * the sentinels that cannot be persisted at all.
+     */
+    public boolean isGrantableToReadOnlyRole() {
+        return this.accessType == AccessType.READ;
+    }
+
     @JsonCreator
     public static ResourceAction findByCode(String code) {
-        return Arrays.stream(ResourceAction.values())
+        return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
