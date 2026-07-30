@@ -1,5 +1,6 @@
 package com.otilm.core.model.auth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -85,6 +86,29 @@ class ResourceActionAccessTypeTest {
     void findByCodeRoundTripsAllValues() {
         for (ResourceAction action : ResourceAction.values()) {
             assertEquals(action, ResourceAction.findByCode(action.getCode()), action.name());
+        }
+    }
+
+    /**
+     * The auth service stores action names and the OPA rules match on them, so the wire form is a cross-service
+     * contract: asserting the payload is the bare code also proves the classification cannot leak into it.
+     */
+    @Test
+    void serializesAsItsCodeAlone() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+        for (ResourceAction action : ResourceAction.values()) {
+            assertEquals("\"%s\"".formatted(action.getCode()), mapper.writeValueAsString(action), action.name());
+        }
+    }
+
+    @Test
+    void deserializesFromItsCodeAlone() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+
+        for (ResourceAction action : ResourceAction.values()) {
+            assertEquals(action, mapper.readValue("\"%s\"".formatted(action.getCode()), ResourceAction.class),
+                    action.name());
         }
     }
 
