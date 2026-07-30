@@ -436,6 +436,11 @@ public abstract class BaseApiClient {
             } else if (unwrapped instanceof ConnectorException ce) {
                 ce.setConnector(connector);
                 throw ce;
+            } else if (unwrapped instanceof PlatformException) {
+                // Expected business error (e.g. connector 422); caller handles it. Skip the noisy
+                // Reactor-enhanced stacktrace, keep the message at DEBUG.
+                logger.debug("Connector {} request rejected: {}", connector.getName(), unwrapped.getMessage());
+                throw e;
             } else {
                 logger.error(unwrapped.getMessage(), unwrapped);
                 throw e;
