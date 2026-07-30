@@ -440,6 +440,11 @@ public abstract class BaseApiClient {
                 // Expected business error (e.g. connector 422); caller handles it. Skip the noisy
                 // Reactor-enhanced stacktrace, keep the message at DEBUG.
                 logger.debug("Connector {} request rejected: {}", connector.getName(), unwrapped.getMessage());
+                // Throw the unwrapped exception so callers catch the domain type (e.g. ValidationException)
+                // rather than a Reactor wrapper; fall back to the original when it is not re-throwable.
+                if (unwrapped instanceof RuntimeException re) {
+                    throw re;
+                }
                 throw e;
             } else {
                 logger.error(unwrapped.getMessage(), unwrapped);
