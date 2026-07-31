@@ -19,7 +19,10 @@ import java.util.UUID;
 @Setter
 public class ClientCertificateDataResponseDto implements Loggable {
 
-    @Schema(description = "Base64 encoded Certificate content",
+    @Schema(description = "Base64-encoded signed certificate. Not populated by the client operations that return "
+            + "this response (issue, renew, rekey, register): they complete asynchronously through later issuance, "
+            + "so the field is left empty and never carries the signed certificate. Retrieve the signed certificate "
+            + "from the certificate detail once the certificate reaches the ISSUED state.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String certificateData;
 
