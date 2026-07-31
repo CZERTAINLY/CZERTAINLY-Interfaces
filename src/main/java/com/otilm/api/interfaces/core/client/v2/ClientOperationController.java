@@ -42,6 +42,33 @@ import java.util.List;
  * states, see the certificate lifecycle reference:
  * <a href="https://docs.otilm.com/docs/certificate-key/concept-design/core-components/certificate">
  * Certificate lifecycle</a>.
+ *
+ * <h3>Certificate states driven by this API</h3>
+ * <pre>
+ *   Issuance (issueCertificate, renewCertificate, rekeyCertificate,
+ *             issueExistingCertificate on a REQUESTED cert):
+ *
+ *       REQUESTED --> PENDING_ISSUE --> ISSUED       connector completes (synchronously or via polling);
+ *                          |                         manuallyIssueCertificate finalizes it the same way
+ *                          +-- cancel ------------> FAILED
+ *                          +-- connector failure --> FAILED
+ *
+ *   Registration (registerCertificate, then issueExistingCertificate on a REGISTERED cert):
+ *
+ *       PENDING_REGISTRATION --> REGISTERED --> PENDING_ISSUE --> ISSUED
+ *                |               (connector 2xx or platform-level; then the issuance flow above)
+ *                +-- setup failure --> FAILED
+ *
+ *   Revocation (revokeCertificate):
+ *
+ *       ISSUED --> REVOKED                     authority completes the revocation immediately
+ *       ISSUED --> PENDING_REVOKE --> REVOKED  deferred, then manuallyConfirmRevoke
+ *       PENDING_REVOKE --> ISSUED              cancelPendingCertificateOperation
+ *
+ *   Approvals: issue / renew / rekey / revoke may pass through PENDING_APPROVAL first;
+ *              a rejected issuance ends REJECTED, a rejected revocation restores the prior state.
+ *   Terminal (no further transition via this API): REVOKED, REJECTED, FAILED.
+ * </pre>
  */
 @RequestMapping("/v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}")
 @Tag(name = "Client Operations v2", description = """
