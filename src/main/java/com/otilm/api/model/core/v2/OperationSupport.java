@@ -34,7 +34,10 @@ public class OperationSupport {
     private boolean supported;
 
     @Schema(
-            description = "Whether the operation may complete asynchronously (HTTP 202 + status polling)."
+            description = "Whether the platform provides managed status-polling for this operation's asynchronous "
+                    + "completion (the authority is v3 and advertises status polling). A connector may still "
+                    + "complete asynchronously without this — the certificate is then left in a pending state for "
+                    + "an operator finalize/confirm action."
     )
     private boolean asyncSupported;
 

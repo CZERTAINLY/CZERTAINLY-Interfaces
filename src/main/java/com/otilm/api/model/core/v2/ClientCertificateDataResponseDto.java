@@ -13,13 +13,17 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Response containing signed certificate data
+ * Response for the queued client certificate operations. Carries the certificate UUID; the signed
+ * certificate is not returned here — retrieve it from the certificate detail.
  */
 @Getter
 @Setter
 public class ClientCertificateDataResponseDto implements Loggable {
 
-    @Schema(description = "Base64 encoded Certificate content",
+    @Schema(description = "Base64-encoded signed certificate. The issuance operations complete asynchronously "
+            + "and leave this empty; register leaves it empty too unless the authority returns certificate data "
+            + "synchronously. Retrieve the signed certificate from the certificate detail once the certificate "
+            + "reaches the ISSUED state.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String certificateData;
 
