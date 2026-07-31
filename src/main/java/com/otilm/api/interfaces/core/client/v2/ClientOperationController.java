@@ -321,7 +321,7 @@ public interface ClientOperationController extends AuthProtectedController {
 			summary = "Pre-register a certificate",
 			description = """
 					Pre-register a certificate to be issued later; the response carries the pre-registered
-					certificate's UUID (no signed certificate) and completion runs through the standard issue flow.
+					certificate's UUID and completion runs through the standard issue flow.
 
 					When the authority's connector supports registration (a v3 connector advertising
 					`CERTIFICATE_REGISTRATION`), the registration is made with the upstream CA; otherwise the
