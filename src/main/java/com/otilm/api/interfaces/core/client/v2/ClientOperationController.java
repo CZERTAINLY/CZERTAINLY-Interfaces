@@ -34,10 +34,12 @@ import java.util.List;
  * Client API for certificate lifecycle operations through an RA profile: issue, renew, rekey,
  * register, revoke, finalize, confirm-revoke, and cancel.
  *
- * <p>These operations are asynchronous - a request is validated, persisted, and queued, and the
- * outcome is observed through the certificate's state rather than the HTTP response (see the
- * "Client Operations v2" tag description for the async/state model). For the full certificate
- * state machine, including the registration states, see the certificate lifecycle reference:
+ * <p>The request operations (issue, renew, rekey, register, revoke) are asynchronous - the request
+ * is validated, persisted, and queued, and the outcome is observed through the certificate's state
+ * rather than the HTTP response; finalize, confirm-revoke, and cancel are the synchronous operator
+ * actions that complete or abort a pending operation. See the "Client Operations v2" tag description
+ * for the async/state model. For the full certificate state machine, including the registration
+ * states, see the certificate lifecycle reference:
  * <a href="https://docs.otilm.com/docs/certificate-key/concept-design/core-components/certificate">
  * Certificate lifecycle</a>.
  */
@@ -46,8 +48,9 @@ import java.util.List;
 		Certificate lifecycle operations through an RA profile: issue, renew, rekey, register, revoke,
 		finalize, confirm-revoke, and cancel.
 
-		These operations are asynchronous. A mutating request is validated, persisted, and queued; the
-		authority-connector call runs afterwards, and an approval step may first move the certificate to
+		The request operations (issue, renew, rekey, register, revoke) are asynchronous. A request is
+		validated, persisted, and queued; the authority-connector call runs afterwards, and an approval
+		step may first move the certificate to
 		PENDING_APPROVAL. The HTTP response therefore does not carry the outcome — a 2xx means the request
 		was accepted, not that it completed — and the issue/renew/rekey responses never carry the signed
 		certificate. Follow an operation by reading the certificate's state, and retrieve the signed
@@ -116,7 +119,7 @@ public interface ClientOperationController extends AuthProtectedController {
 					"""
 	)
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Certificate issued"),
+			@ApiResponse(responseCode = "200", description = "Issuance request accepted"),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "409", description = "Conflict", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity — validation errors as a string array; request-body validation instead returns an ErrorMessageDto object", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -137,7 +140,7 @@ public interface ClientOperationController extends AuthProtectedController {
 			description = "Submit a new certificate signing request and request issuance through this RA profile. The request is validated, persisted, and queued; issuance runs asynchronously and an approval step may run first. This response returns only the new certificate's UUID — it never carries the signed certificate and does not indicate completion. Track the operation through the certificate's state."
 	)
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Certificate issued"),
+			@ApiResponse(responseCode = "200", description = "Issuance request accepted"),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
@@ -153,7 +156,7 @@ public interface ClientOperationController extends AuthProtectedController {
 			description = "Renew a certificate using its existing key pair. The original certificate stays in state `ISSUED`; a new certificate is created, queued, and issued asynchronously. This response returns only the new certificate's UUID — track the result through its state."
 	)
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Certificate renewed"),
+			@ApiResponse(responseCode = "200", description = "Renewal request accepted"),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})),
@@ -176,7 +179,7 @@ public interface ClientOperationController extends AuthProtectedController {
 					"""
 	)
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Certificate regenerated"),
+			@ApiResponse(responseCode = "200", description = "Rekey request accepted"),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
 					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})),
@@ -224,13 +227,14 @@ public interface ClientOperationController extends AuthProtectedController {
 
 	@Operation(
 			summary = "Revoke certificate",
-			description = "Revoke a certificate currently in state `ISSUED`. The request is accepted and queued; revocation runs asynchronously and an approval step may run first. Because the response is returned before the connector call, it does not indicate completion — the certificate may end in `REVOKED` (synchronous) or `PENDING_REVOKE` (asynchronous, awaiting confirmation). Track the result through its state."
+			description = "Revoke a certificate currently in state `ISSUED`. The request is accepted and queued; revocation runs through the authority and an approval step may run first. This response is returned before the authority call completes, so it does not indicate completion — the certificate ends in `REVOKED` if the authority completes the revocation immediately, or `PENDING_REVOKE` if completion is deferred and later confirmed. Track the result through its state."
 	)
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "204", description = "Revoke request accepted and queued — not yet revoked. The certificate becomes REVOKED (synchronous) or PENDING_REVOKE (asynchronous, awaiting confirmation); observe its state."),
+			@ApiResponse(responseCode = "204", description = "Revoke request accepted and queued — observe the certificate state for the outcome."),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Cannot revoke certificate in state ...\"]")}))})
+					examples = {@ExampleObject(value = "[\"Cannot perform operation revoke on certificate in state ...\"]")})),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 	@PostMapping(path = "/certificates/{certificateUuid}/revoke", consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void revokeCertificate(
@@ -327,10 +331,11 @@ public interface ClientOperationController extends AuthProtectedController {
 					"""
 	)
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Certificate pre-registered"),
+			@ApiResponse(responseCode = "200", description = "Registration request accepted"),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Invalid registration request — validation errors as a string array; request-body validation instead returns an ErrorMessageDto object",
-					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))
+					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
 	})
 	@PostMapping(path = "/certificates/register", consumes = {"application/json"}, produces = {"application/json"})
 	ClientCertificateDataResponseDto registerCertificate(
