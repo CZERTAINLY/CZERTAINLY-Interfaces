@@ -34,9 +34,10 @@ import java.util.List;
  * Client API for certificate lifecycle operations through an RA profile: issue, renew, rekey,
  * register, revoke, finalize, confirm-revoke, and cancel.
  *
- * <p>The request operations (issue, renew, rekey, register, revoke) are asynchronous - the request
- * is validated, persisted, and queued, and the outcome is observed through the certificate's state
- * rather than the HTTP response; finalize, confirm-revoke, and cancel are the synchronous operator
+ * <p>The issue, renew, rekey, and revoke operations are asynchronous - the request is validated,
+ * persisted, and queued, and the outcome is observed through the certificate's state rather than the
+ * HTTP response; register runs inline against the connector; finalize, confirm-revoke, and cancel are
+ * the synchronous operator
  * actions that complete or abort a pending operation. See the "Client Operations v2" tag description
  * for the async/state model. For the full certificate state machine, including the registration
  * states, see the certificate lifecycle reference:
@@ -51,13 +52,16 @@ import java.util.List;
 		Certificate lifecycle operations through an RA profile: issue, renew, rekey, register, revoke,
 		finalize, confirm-revoke, and cancel.
 
-		The request operations (issue, renew, rekey, register, revoke) are asynchronous. A request is
-		validated, persisted, and queued; the authority-connector call runs afterwards, and an approval
-		step may first move the certificate to
+		The issue, renew, rekey, and revoke operations are asynchronous: the request is validated,
+		persisted, and queued; the authority-connector call runs afterwards, and an approval step may
+		first move the certificate to
 		PENDING_APPROVAL. The HTTP response therefore does not carry the outcome — a 2xx means the request
 		was accepted, not that it completed — and the issue/renew/rekey responses never carry the signed
 		certificate. Follow an operation by reading the certificate's state, and retrieve the signed
 		certificate from the certificate detail once it reaches ISSUED.
+
+		register runs inline against the connector: it reaches REGISTERED synchronously (and may return
+		certificate data), or PENDING_REGISTRATION when the connector defers completion.
 
 		A certificate left in PENDING_ISSUE or PENDING_REVOKE is completed either by platform status-polling
 		(when the authority advertises it) or by an operator action — issue/finalize, revoke/confirm, or
@@ -85,7 +89,8 @@ import java.util.List;
 		  PENDING_REVOKE --> ISSUED              cancelPendingCertificateOperation
 
 		Approvals: issue / renew / rekey / revoke may pass through PENDING_APPROVAL first;
-		           a rejected issuance ends REJECTED, a rejected revocation restores the prior state.
+		           a rejected issuance ends REJECTED (a pre-registered certificate is restored to REGISTERED),
+		           a rejected revocation restores the prior state.
 		Terminal (no further transition via this API): REVOKED, REJECTED, FAILED.
 		```
 		""")
@@ -139,8 +144,9 @@ public interface ClientOperationController extends AuthProtectedController {
 					- `REQUESTED` (no body): the certificate already carries a CSR (e.g. from an ACME/SCEP/CMP
 					  protocol layer, or after an approval/compliance cycle); issuance runs against that CSR.
 					- `REGISTERED` (body required): a pre-registered certificate is finalized with the operator's
-					  CSR, sign attributes, and authorization secret; its registered identity (subject DN, SAN,
-					  extensions) and connector metadata are preserved.
+					  CSR (sign attributes as the RA profile requires, and the authorization secret only for
+					  challenge-protected registrations); its registered identity (subject DN, SAN, extensions)
+					  and connector metadata are preserved.
 
 					Queued and issued asynchronously like `issueCertificate` — track the result through the
 					certificate's state.
@@ -148,18 +154,15 @@ public interface ClientOperationController extends AuthProtectedController {
 	)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Issuance request accepted"),
-			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-			@ApiResponse(responseCode = "409", description = "Conflict", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-			@ApiResponse(responseCode = "422", description = "Unprocessable Entity — validation errors as a string array; request-body validation instead returns an ErrorMessageDto object", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+					examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@PostMapping(path = "/certificates/{certificateUuid}/issue", consumes = {"application/json"}, produces = {"application/json"})
 	ClientCertificateDataResponseDto issueExistingCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
 			@Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
 			@Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
 			@io.swagger.v3.oas.annotations.parameters.RequestBody(
-					description = "Issue request body. Required when cert state is REGISTERED (carries the operator's CSR + sign attributes plus the authorization secret); must be omitted when cert state is REQUESTED.",
+					description = "Issue request body. Required when cert state is REGISTERED (carries the operator's CSR, sign attributes as the RA profile requires, and — for challenge-protected registrations — the authorization secret); must be omitted when cert state is REQUESTED.",
 					required = false)
 			@RequestBody(required = false) @Valid ClientCertificateIssueRequestDto request) throws ConnectorException, CertificateException, NoSuchAlgorithmException, AlreadyExistException, CertificateRequestException, NotFoundException, AttributeException;
 
@@ -187,8 +190,7 @@ public interface ClientOperationController extends AuthProtectedController {
 			@ApiResponse(responseCode = "200", description = "Renewal request accepted"),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")})),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+					examples={@ExampleObject(value="[\"Error Message 1\",\"Error Message 2\"]")}))})
 	@PostMapping(path = "/certificates/{certificateUuid}/renew", consumes = {"application/json"}, produces = {"application/json"})
 	ClientCertificateDataResponseDto renewCertificate(
 			@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
@@ -261,8 +263,7 @@ public interface ClientOperationController extends AuthProtectedController {
 			@ApiResponse(responseCode = "204", description = "Revoke request accepted and queued — observe the certificate state for the outcome."),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 			@ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-					examples = {@ExampleObject(value = "[\"Cannot perform operation revoke on certificate in state ...\"]")})),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+					examples = {@ExampleObject(value = "[\"Cannot perform operation revoke on certificate in state ...\"]")}))})
 	@PostMapping(path = "/certificates/{certificateUuid}/revoke", consumes = {"application/json"}, produces = {"application/json"})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	void revokeCertificate(
@@ -361,9 +362,8 @@ public interface ClientOperationController extends AuthProtectedController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Registration request accepted"),
 			@ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-			@ApiResponse(responseCode = "422", description = "Invalid registration request — validation errors as a string array; request-body validation instead returns an ErrorMessageDto object",
-					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))),
-			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))
+			@ApiResponse(responseCode = "422", description = "Invalid registration request",
+					content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))
 	})
 	@PostMapping(path = "/certificates/register", consumes = {"application/json"}, produces = {"application/json"})
 	ClientCertificateDataResponseDto registerCertificate(
@@ -376,7 +376,7 @@ public interface ClientOperationController extends AuthProtectedController {
 			summary = "List operations supported by this authority/RA profile",
 			description = """
 					Returns per-operation support flags (issue/renew/revoke/register) including whether
-					each may complete asynchronously and whether each can be cancelled mid-flight. Operators
+					the platform polls for its asynchronous completion and whether each can be cancelled mid-flight. Operators
 					use this to drive UI affordances and validate flows before invoking them.
 					"""
 	)
