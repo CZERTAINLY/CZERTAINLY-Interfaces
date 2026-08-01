@@ -16,7 +16,7 @@ import java.util.Arrays;
  * {@link com.otilm.api.model.connector.v3.certificate.CertificateOperationStatus} enum.
  *
  * <p>This is the operator-API wire vocabulary. Core's
- * {@code com.czertainly.core.service.handler.authority.CertificateOperation} is the
+ * {@code com.otilm.core.service.handler.authority.CertificateOperation} is the
  * matching domain enum (it additionally carries state-machine mappings) and stays in
  * Core — the contract module holds only the thin value-type.</p>
  */
