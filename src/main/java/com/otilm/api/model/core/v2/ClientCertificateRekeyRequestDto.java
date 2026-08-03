@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 import java.util.UUID;
@@ -94,4 +96,14 @@ public class ClientCertificateRekeyRequestDto {
             accessMode = Schema.AccessMode.WRITE_ONLY
     )
     private String authorizationSecret;
+
+    // Deliberate allowlist — avoid leaking CSR/request or secrets via logs.
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("replaceInLocations", replaceInLocations)
+                .append("format", format)
+                .append("keyUuid", keyUuid)
+                .toString();
+    }
 }
