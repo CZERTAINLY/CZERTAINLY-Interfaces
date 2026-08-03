@@ -109,6 +109,15 @@ public class ClientCertificateRegistrationDto {
     )
     private Set<UUID> groupUuids;
 
+    @Schema(
+            description = "Optional UUID of an existing certificate this registration succeeds. When set, the "
+                    + "registration is a pre-registered successor of the source certificate: renewing the source "
+                    + "certificate is gated by this registration's challenge and completes into the registered "
+                    + "successor. When omitted, the registration is a standalone placeholder completed by issue.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private UUID sourceCertificateUuid;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -117,10 +126,9 @@ public class ClientCertificateRegistrationDto {
     @Schema(
             description = "Authorization secret (challenge) that gates completion of this pre-registered "
                     + "certificate. Write-only and optional — the operator supplies it to opt the registration "
-                    + "into challenge-gated issuance; the platform never generates one. Issuing a pre-registered "
-                    + "certificate is currently the only challenge-verified completion path; renewal and rekey "
-                    + "requests for a certificate with an active registration are rejected (fail-closed) until "
-                    + "challenge-gated successor handling is added.",
+                    + "into challenge-gated issuance; the platform never generates one. Challenge verification "
+                    + "gates issue of this pre-registered certificate, rekey of it after issuance, and — when "
+                    + "registered as a successor (sourceCertificateUuid) — renew of the source certificate.",
             accessMode = Schema.AccessMode.WRITE_ONLY,
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
