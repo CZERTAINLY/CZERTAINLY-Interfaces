@@ -4,10 +4,8 @@ import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -16,6 +14,18 @@ import java.util.List;
  * Synchronous subset of the connector-facing cryptography v2 operations API used by Core.
  */
 public interface CryptographicOperationsSyncApiClient {
+
+    List<BaseAttribute> listEncryptAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto request)
+            throws ConnectorException;
+
+    EncryptDataResponseV2Dto encryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto request)
+            throws ConnectorException;
+
+    List<BaseAttribute> listDecryptAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto request)
+            throws ConnectorException;
+
+    DecryptDataResponseV2Dto decryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto request)
+            throws ConnectorException;
 
     List<BaseAttribute> listSignAttributes(ApiClientConnectorInfo connector,
                                            KeyScopedRequestV2Dto request)
@@ -29,5 +39,17 @@ public interface CryptographicOperationsSyncApiClient {
             throws ConnectorException;
 
     ResponseEntity<Void> cancelSign(ApiClientConnectorInfo connector, SignOperationScopedRequestV2Dto request)
+            throws ConnectorException;
+
+    List<BaseAttribute> listVerifyAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto request)
+            throws ConnectorException;
+
+    VerifyDataResponseV2Dto verifyData(ApiClientConnectorInfo connector, VerifyDataRequestV2Dto request)
+            throws ConnectorException;
+
+    List<BaseAttribute> listRandomAttributes(ApiClientConnectorInfo connector, TokenProfileScopedRequestV2Dto request)
+            throws ConnectorException;
+
+    RandomDataResponseV2Dto randomData(ApiClientConnectorInfo connector, RandomDataRequestV2Dto request)
             throws ConnectorException;
 }

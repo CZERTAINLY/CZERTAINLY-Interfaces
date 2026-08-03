@@ -7,10 +7,8 @@ import com.otilm.api.interfaces.client.v2.CryptographicOperationsSyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -31,19 +29,34 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
     }
 
     @Override
+    public List<BaseAttribute> listEncryptAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto request)
+            throws ConnectorException {
+        return sendAttributes(connector, "/encrypt/attributes", request, "listEncryptAttributes");
+    }
+
+    @Override
+    public EncryptDataResponseV2Dto encryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto request)
+            throws ConnectorException {
+        return send(connector, "/encrypt", request, EncryptDataResponseV2Dto.class);
+    }
+
+    @Override
+    public List<BaseAttribute> listDecryptAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto request)
+            throws ConnectorException {
+        return sendAttributes(connector, "/decrypt/attributes", request, "listDecryptAttributes");
+    }
+
+    @Override
+    public DecryptDataResponseV2Dto decryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto request)
+            throws ConnectorException {
+        return send(connector, "/decrypt", request, DecryptDataResponseV2Dto.class);
+    }
+
+    @Override
     public List<BaseAttribute> listSignAttributes(ApiClientConnectorInfo connector,
                                                   KeyScopedRequestV2Dto request)
             throws ConnectorException {
-        try {
-            BaseAttribute[] response = proxyClient.sendRequest(
-                    connector, BASE_PATH + "/sign/attributes", POST, request, BaseAttribute[].class);
-            if (response == null) {
-                throw new ConnectorException("Connector returned an empty signing-attributes response", connector);
-            }
-            return Arrays.asList(response);
-        } catch (ConnectorException | RuntimeException e) {
-            throw new ConnectorException("Cryptographic operation request failed: listSignAttributes", connector);
-        }
+        return sendAttributes(connector, "/sign/attributes", request, "listSignAttributes");
     }
 
     @Override
@@ -72,6 +85,45 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
             return proxyClient.sendRequestForEntity(connector, BASE_PATH + "/sign/cancel", POST, request, Void.class);
         } catch (ConnectorException | RuntimeException e) {
             throw new ConnectorException("Cryptographic operation request failed: cancelSign", connector);
+        }
+    }
+
+    @Override
+    public List<BaseAttribute> listVerifyAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto request)
+            throws ConnectorException {
+        return sendAttributes(connector, "/verify/attributes", request, "listVerifyAttributes");
+    }
+
+    @Override
+    public VerifyDataResponseV2Dto verifyData(ApiClientConnectorInfo connector, VerifyDataRequestV2Dto request)
+            throws ConnectorException {
+        return send(connector, "/verify", request, VerifyDataResponseV2Dto.class);
+    }
+
+    @Override
+    public List<BaseAttribute> listRandomAttributes(ApiClientConnectorInfo connector,
+                                                    TokenProfileScopedRequestV2Dto request)
+            throws ConnectorException {
+        return sendAttributes(connector, "/random/attributes", request, "listRandomAttributes");
+    }
+
+    @Override
+    public RandomDataResponseV2Dto randomData(ApiClientConnectorInfo connector, RandomDataRequestV2Dto request)
+            throws ConnectorException {
+        return send(connector, "/random", request, RandomDataResponseV2Dto.class);
+    }
+
+    private List<BaseAttribute> sendAttributes(ApiClientConnectorInfo connector, String path, Object request,
+                                               String operation) throws ConnectorException {
+        try {
+            BaseAttribute[] response = proxyClient.sendRequest(
+                    connector, BASE_PATH + path, POST, request, BaseAttribute[].class);
+            if (response == null) {
+                throw new ConnectorException("Connector returned an empty attributes response", connector);
+            }
+            return Arrays.asList(response);
+        } catch (ConnectorException | RuntimeException e) {
+            throw new ConnectorException("Cryptographic operation request failed: " + operation, connector);
         }
     }
 

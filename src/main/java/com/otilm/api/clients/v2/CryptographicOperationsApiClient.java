@@ -7,10 +7,8 @@ import com.otilm.api.interfaces.client.v2.CryptographicOperationsSyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -29,6 +27,30 @@ public class CryptographicOperationsApiClient extends BaseApiClient
 
     public CryptographicOperationsApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
         super(webClient, defaultTrustManagers);
+    }
+
+    @Override
+    public List<BaseAttribute> listEncryptAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto body)
+            throws ConnectorException {
+        return postAttributes(connector, "/encrypt/attributes", body, "listEncryptAttributes");
+    }
+
+    @Override
+    public EncryptDataResponseV2Dto encryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto body)
+            throws ConnectorException {
+        return postBody(connector, "/encrypt", body, EncryptDataResponseV2Dto.class, "encryptData");
+    }
+
+    @Override
+    public List<BaseAttribute> listDecryptAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto body)
+            throws ConnectorException {
+        return postAttributes(connector, "/decrypt/attributes", body, "listDecryptAttributes");
+    }
+
+    @Override
+    public DecryptDataResponseV2Dto decryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto body)
+            throws ConnectorException {
+        return postBody(connector, "/decrypt", body, DecryptDataResponseV2Dto.class, "decryptData");
     }
 
     @Override
@@ -82,6 +104,44 @@ public class CryptographicOperationsApiClient extends BaseApiClient
                                 .retrieve()
                                 .toBodilessEntity(),
                         "cancelSign"),
+                request,
+                connector);
+    }
+
+    @Override
+    public List<BaseAttribute> listVerifyAttributes(ApiClientConnectorInfo connector, KeyScopedRequestV2Dto body)
+            throws ConnectorException {
+        return postAttributes(connector, "/verify/attributes", body, "listVerifyAttributes");
+    }
+
+    @Override
+    public VerifyDataResponseV2Dto verifyData(ApiClientConnectorInfo connector, VerifyDataRequestV2Dto body)
+            throws ConnectorException {
+        return postBody(connector, "/verify", body, VerifyDataResponseV2Dto.class, "verifyData");
+    }
+
+    @Override
+    public List<BaseAttribute> listRandomAttributes(ApiClientConnectorInfo connector,
+                                                    TokenProfileScopedRequestV2Dto body)
+            throws ConnectorException {
+        return postAttributes(connector, "/random/attributes", body, "listRandomAttributes");
+    }
+
+    @Override
+    public RandomDataResponseV2Dto randomData(ApiClientConnectorInfo connector, RandomDataRequestV2Dto body)
+            throws ConnectorException {
+        return postBody(connector, "/random", body, RandomDataResponseV2Dto.class, "randomData");
+    }
+
+    private List<BaseAttribute> postAttributes(ApiClientConnectorInfo connector, String path, Object body,
+                                               String operation) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+        return processRequest(r -> requireBody(
+                        r.uri(connector.getUrl() + BASE_PATH + path)
+                                .bodyValue(body)
+                                .retrieve()
+                                .toEntityList(BaseAttribute.class),
+                        operation),
                 request,
                 connector);
     }
