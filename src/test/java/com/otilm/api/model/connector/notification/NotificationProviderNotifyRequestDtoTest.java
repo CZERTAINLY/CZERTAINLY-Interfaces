@@ -34,7 +34,7 @@ class NotificationProviderNotifyRequestDtoTest {
         // regardless of the serializer's default null handling.
         NotificationProviderNotifyRequestDto request = new NotificationProviderNotifyRequestDto();
         request.setRecipients(java.util.List.of());
-        assertFalse(mapper.writeValueAsString(request).contains("objectData"));
+        assertFalse(mapper.readTree(mapper.writeValueAsString(request)).has("objectData"));
     }
 
     @Test
