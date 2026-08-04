@@ -29,6 +29,15 @@ class NotificationProviderNotifyRequestDtoTest {
     }
 
     @Test
+    void nullObjectDataIsOmittedFromJson() throws Exception {
+        // A payload without enrichment must stay byte-identical to the pre-enrichment wire format
+        // regardless of the serializer's default null handling.
+        NotificationProviderNotifyRequestDto request = new NotificationProviderNotifyRequestDto();
+        request.setRecipients(java.util.List.of());
+        assertFalse(mapper.writeValueAsString(request).contains("objectData"));
+    }
+
+    @Test
     void deserializationToleratesAbsentObjectData() throws Exception {
         NotificationProviderNotifyRequestDto request = mapper.readValue(
                 "{\"recipients\":[],\"eventType\":\"other\"}", NotificationProviderNotifyRequestDto.class);
