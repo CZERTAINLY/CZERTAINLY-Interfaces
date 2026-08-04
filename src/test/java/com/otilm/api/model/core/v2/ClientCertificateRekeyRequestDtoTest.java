@@ -23,11 +23,27 @@ class ClientCertificateRekeyRequestDtoTest {
     }
 
     @Test
-    void toStringOmitsAuthorizationSecret() {
+    void toStringOmitsAuthorizationSecretAndCsr() {
         ClientCertificateRekeyRequestDto dto = new ClientCertificateRekeyRequestDto();
         dto.setAuthorizationSecret("s3cret");
-        assertFalse(dto.toString().contains("s3cret"),
-                "authorizationSecret is @ToString.Exclude and must not appear in the generated toString");
+        dto.setRequest("csr-payload-sentinel");
+        String rendered = dto.toString();
+        assertFalse(rendered.contains("s3cret"),
+                "authorizationSecret must not appear in toString");
+        assertFalse(rendered.contains("csr-payload-sentinel"),
+                "the CSR payload must not appear in toString — the allowlist, not the field exclude, is what hides it");
+    }
+
+    @Test
+    void builderToStringOmitsAuthorizationSecretAndCsr() {
+        String rendered = ClientCertificateRekeyRequestDto.builder()
+                .authorizationSecret("s3cret")
+                .request("csr-payload-sentinel")
+                .toString();
+        assertFalse(rendered.contains("s3cret"),
+                "the Lombok-generated builder has its own toString; it must not print the secret");
+        assertFalse(rendered.contains("csr-payload-sentinel"),
+                "the builder toString must not print the CSR payload either");
     }
 
     @Test

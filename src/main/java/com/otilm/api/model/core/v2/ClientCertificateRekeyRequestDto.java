@@ -106,4 +106,20 @@ public class ClientCertificateRekeyRequestDto {
                 .append("keyUuid", keyUuid)
                 .toString();
     }
+
+    /**
+     * Partial builder declaration; Lombok fills in the rest. Declared only to replace the generated builder
+     * {@code toString()}, which would otherwise print every builder field — including the write-only
+     * {@code authorizationSecret} and the CSR payload, which the DTO's own allowlisted {@code toString()}
+     * deliberately omits.
+     */
+    public static class ClientCertificateRekeyRequestDtoBuilder {
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                    .append("replaceInLocations", replaceInLocations)
+                    .append("keyUuid", keyUuid)
+                    .toString();
+        }
+    }
 }
