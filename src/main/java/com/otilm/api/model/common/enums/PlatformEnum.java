@@ -38,6 +38,7 @@ import com.otilm.api.model.core.enums.CertificateRequestFormat;
 import com.otilm.api.model.core.enums.CertificateProtocol;
 import com.otilm.api.model.core.logging.enums.*;
 import com.otilm.api.model.core.logging.enums.Module;
+import com.otilm.api.model.core.notification.NotificationDataCategory;
 import com.otilm.api.model.core.notification.RecipientType;
 import com.otilm.api.model.core.oid.OidCategory;
 import com.otilm.api.model.core.other.ResourceEvent;
@@ -138,6 +139,7 @@ public enum PlatformEnum implements IPlatformEnum {
 
     // notifications
     RECIPIENT_TYPE(RecipientType.class, "Recipient type"),
+    NOTIFICATION_DATA_CATEGORY(NotificationDataCategory.class, "Notification data category"),
 
     // workflows
     TRIGGER_TYPE(TriggerType.class, "Trigger Type"),

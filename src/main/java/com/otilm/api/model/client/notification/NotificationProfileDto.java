@@ -1,5 +1,6 @@
 package com.otilm.api.model.client.notification;
 
+import com.otilm.api.model.core.notification.NotificationDataCategory;
 import com.otilm.api.model.core.notification.RecipientType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -46,5 +47,9 @@ public class NotificationProfileDto {
     @Schema(description = "Is notification profile sending internal notifications",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean internalNotification;
+
+    @Schema(description = "Notification data categories included in external notifications sent by this profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<NotificationDataCategory> eventDataCategories;
 
 }

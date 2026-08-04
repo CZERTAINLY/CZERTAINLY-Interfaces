@@ -1,6 +1,7 @@
 package com.otilm.api.model.client.notification;
 
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.core.notification.NotificationDataCategory;
 import com.otilm.api.model.core.notification.RecipientType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,4 +44,8 @@ public class NotificationProfileDetailDto {
 
     @Schema(description = "Maximum number of repetitions of same notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer repetitions;
+
+    @Schema(description = "Notification data categories included in external notifications sent by this profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<NotificationDataCategory> eventDataCategories;
 }
