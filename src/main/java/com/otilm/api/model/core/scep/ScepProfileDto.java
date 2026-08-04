@@ -32,4 +32,7 @@ public class ScepProfileDto extends NameAndUuidDto {
             + "itself is write-only and never returned; this flag lets clients reflect the current state.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enableChallengePassword;
+
+    @Schema(description = "Source of the enrolment challenge", requiredMode = Schema.RequiredMode.REQUIRED)
+    private ScepChallengeSource challengeSource;
 }
