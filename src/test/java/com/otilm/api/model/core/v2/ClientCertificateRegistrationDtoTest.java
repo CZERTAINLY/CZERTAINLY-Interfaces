@@ -13,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -170,6 +171,16 @@ class ClientCertificateRegistrationDtoTest {
         ClientCertificateRegistrationDto back =
                 mapper.readValue(mapper.writeValueAsString(dto), ClientCertificateRegistrationDto.class);
         assertEquals(dto.getExpiresAt(), back.getExpiresAt());
+    }
+
+    @Test
+    void sourceCertificateUuidRoundTrips() throws Exception {
+        ClientCertificateRegistrationDto dto = new ClientCertificateRegistrationDto();
+        dto.setSubjectDn("CN=x");
+        dto.setSourceCertificateUuid(UUID.fromString("f2bfe4a1-b834-4f0c-9bd6-e0b323f8a5f8"));
+        ClientCertificateRegistrationDto back =
+                mapper.readValue(mapper.writeValueAsString(dto), ClientCertificateRegistrationDto.class);
+        assertEquals(dto.getSourceCertificateUuid(), back.getSourceCertificateUuid());
     }
 
     @Test
