@@ -1,6 +1,7 @@
 package com.otilm.api.model.client.notification;
 
 import com.otilm.api.model.client.notification.validation.ValidFrequency;
+import com.otilm.api.model.core.notification.NotificationDataCategory;
 import com.otilm.api.model.core.notification.RecipientType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,6 +47,11 @@ public class NotificationProfileUpdateRequestDto {
     @Positive
     @Schema(description = "Maximum number of repetitions of same notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer repetitions;
+
+    @Schema(description = "Notification data categories included in external notifications sent by this profile. "
+            + "Presence-aware on update: absent keeps the current value, an empty list disables enrichment",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<@NotNull NotificationDataCategory> eventDataCategories;
 
     @AssertTrue(message = "Recipient UUID is required when recipient type is not Owner, None, Default or Object")
     private boolean isRecipientValid() {
