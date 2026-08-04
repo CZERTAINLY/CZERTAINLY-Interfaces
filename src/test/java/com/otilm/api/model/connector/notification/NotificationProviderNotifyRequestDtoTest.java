@@ -12,16 +12,20 @@ class NotificationProviderNotifyRequestDtoTest {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    void objectDataIsExcludedFromToString() {
+    void payloadFieldsAreExcludedFromToString() {
         NotificationProviderNotifyRequestDto request = new NotificationProviderNotifyRequestDto();
         NotificationEventObjectDataDto objectData = new NotificationEventObjectDataDto();
         NotificationAssociationDto subject = new NotificationAssociationDto();
         subject.setName("marker-subject-name");
         objectData.setSubject(subject);
         request.setObjectData(objectData);
+        request.setNotificationData(java.util.Map.of("credential", "marker-credential-value"));
 
-        assertFalse(request.toString().contains("marker-subject-name"), request.toString());
-        assertFalse(request.toString().contains("objectData"), request.toString());
+        String printed = request.toString();
+        assertFalse(printed.contains("marker-subject-name"), printed);
+        assertFalse(printed.contains("objectData"), printed);
+        assertFalse(printed.contains("marker-credential-value"), printed);
+        assertFalse(printed.contains("notificationData"), printed);
     }
 
     @Test

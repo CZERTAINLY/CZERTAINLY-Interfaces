@@ -5,8 +5,10 @@ import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Data
 @Schema(description = "Reference to an object associated with the notification subject")
 public class NotificationAssociationDto extends NameAndUuidDto {

@@ -26,6 +26,9 @@ public class NotificationProviderNotifyRequestDto {
     @Schema(description = "Resource which is represented by data", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"certificate"})
     private Resource resource;
 
+    // Excluded from toString: the untyped payload can carry sensitive values (e.g. a registration
+    // credential) that a typed event class would exclude from its own toString.
+    @ToString.Exclude
     @Schema(description = "Data associated with notification event and resource", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Object notificationData;
 

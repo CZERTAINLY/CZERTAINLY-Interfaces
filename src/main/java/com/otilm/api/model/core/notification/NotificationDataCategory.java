@@ -13,6 +13,10 @@ import java.util.Arrays;
  * Category of event object data a notification profile can include in external
  * notifications. Categories are opt-in per profile and resource-neutral: a category
  * that the event's subject object does not support simply yields no data.
+ *
+ * <p>Deserialization is strict, matching every platform enum: an unrecognized code fails
+ * with a validation error rather than being skipped. A client on an older version of this
+ * artifact must upgrade before it can read profiles that enable categories added later.
  */
 @Schema(enumAsRef = true)
 public enum NotificationDataCategory implements IPlatformEnum {
@@ -32,9 +36,6 @@ public enum NotificationDataCategory implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Notification data category code",
-            examples = {"customAttributes", "metadata", "associations", "objectContent"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
