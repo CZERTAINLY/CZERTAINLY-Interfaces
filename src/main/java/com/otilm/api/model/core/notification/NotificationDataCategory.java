@@ -26,7 +26,7 @@ public enum NotificationDataCategory implements IPlatformEnum {
     METADATA("metadata", "Metadata",
             "Include connector-provided metadata, grouped by connector and source object"),
     ASSOCIATIONS("associations", "Associations",
-            "Include owner, group, and RA profile references"),
+            "Include owner, groups, and RA profile references"),
     OBJECT_CONTENT("objectContent", "Object content",
             "Include the object's content when its type provides one, e.g. certificates as Base64 DER");
 
