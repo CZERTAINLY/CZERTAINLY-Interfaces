@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.notification;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.other.ResourceEvent;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,8 +33,11 @@ public class NotificationProviderNotifyRequestDto {
     @Schema(description = "Data associated with notification event and resource", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Object notificationData;
 
-    // Excluded from toString: bulk object data must not leak into logs or tracing spans on accidental dumps.
+    // Excluded from toString: bulk object data must not leak into logs or tracing spans on accidental
+    // dumps. Omitted from JSON when null so payloads without enrichment stay byte-identical to the
+    // pre-enrichment wire format.
     @ToString.Exclude
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "Additional object data enabled on the notification profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private NotificationEventObjectDataDto objectData;
 }

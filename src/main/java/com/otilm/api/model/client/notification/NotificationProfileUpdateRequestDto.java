@@ -49,7 +49,7 @@ public class NotificationProfileUpdateRequestDto {
     private Integer repetitions;
 
     @Schema(description = "Notification data categories included in external notifications sent by this profile. "
-            + "Presence-aware on update: absent keeps the current value, an empty list disables enrichment",
+            + "When updating, an absent field keeps the current value and an empty list disables enrichment",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<@NotNull NotificationDataCategory> eventDataCategories;
 
