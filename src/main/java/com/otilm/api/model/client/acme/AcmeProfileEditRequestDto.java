@@ -2,6 +2,7 @@ package com.otilm.api.model.client.acme;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -130,4 +131,14 @@ public class AcmeProfileEditRequestDto {
                 .append("customAttributes", customAttributes)
                 .toString();
     }
+
+    @Schema(
+            description = "Source of the enrolment authorization ('protocolDefault' or 'certificateRegistration'). "
+                    + "'protocolDefault' uses ACME's standard order authorizations (domain validation); "
+                    + "'certificateRegistration' binds accounts to a pre-registered certificate via external account "
+                    + "binding and orders complete it. Omit to keep the stored value on edit; on create, omit to "
+                    + "default to 'protocolDefault'.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ProtocolChallengeSource challengeSource;
 }

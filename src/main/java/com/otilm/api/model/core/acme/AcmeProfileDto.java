@@ -4,6 +4,7 @@ import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsDto;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -77,4 +78,8 @@ public class AcmeProfileDto extends NameAndUuidDto {
                 .append("customAttributes", customAttributes)
                 .toString();
     }
+
+    @Schema(description = "Source of the enrolment authorization",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private ProtocolChallengeSource challengeSource;
 }
