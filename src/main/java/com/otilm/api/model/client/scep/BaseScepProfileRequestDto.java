@@ -88,10 +88,10 @@ public class BaseScepProfileRequestDto {
     private Boolean enableChallengePassword;
 
     @Schema(
-            description = "Source of the enrolment challenge. PROFILE_CHALLENGE_PASSWORD authenticates against "
-                    + "the shared challenge password; CERTIFICATE_REGISTRATION requires every initial enrolment "
-                    + "to match a pre-registered certificate and forbids a profile challenge password. Omit to "
-                    + "keep the stored value on edit, or for PROFILE_CHALLENGE_PASSWORD on create.",
+            description = "Source of the enrolment challenge ('profileChallengePassword' or 'certificateRegistration'). "
+                    + "'profileChallengePassword' authenticates against the shared challenge password; "
+                    + "'certificateRegistration' requires every initial enrolment to match a pre-registered certificate and "
+                    + "forbids a profile challenge password. Omit to keep the stored value on edit; on create, omit to default to 'profileChallengePassword'.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private ScepChallengeSource challengeSource;
