@@ -160,10 +160,8 @@ class DiscoveredItemDtoTest {
 
     @Test
     void handWrittenLiteralWithRfc3339TimestampRoundTrips() throws Exception {
-        // Not this test class's own serializer output: pins the input shape connectors actually
-        // send (Go/Python emit RFC-3339 strings for discoveredAt, not the numeric timestamp form
-        // our own mapper happens to write). resource lives inside payload, per the discriminator's
-        // new home.
+        // A hand-written literal, not this class's own serializer output: Go and Python connectors
+        // emit discoveredAt as an RFC-3339 string, not the numeric timestamp form Jackson writes.
         String json = "{\"sequence\":1,\"uniqueRef\":\"r\","
                 + "\"payload\":{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"},"
                 + "\"discoveredAt\":\"2026-08-01T00:00:00Z\"}";
@@ -180,12 +178,10 @@ class DiscoveredItemDtoTest {
 
     @Test
     void unregisteredOrUnknownResourceCodeFailsTypeResolution() {
-        // Stock Jackson type-id resolution matches the raw wire string directly against the
-        // registered @JsonSubTypes names on DiscoveredItemPayloadDto — it never separately checks
-        // it against Resource's own valid codes the way the deleted hand-rolled deserializer did.
-        // "groups" (a real Resource, but never registered as a discovered-item payload) and
-        // "widgets" (not a Resource at all) therefore fail identically: both are simply absent from
-        // the registered subtype names.
+        // Jackson matches the wire string against the @JsonSubTypes names registered on
+        // DiscoveredItemPayloadDto, never against Resource's own codes. So "groups" (a real
+        // Resource, but not a registered payload) and "widgets" (not a Resource at all) fail
+        // identically — both are simply absent from the registered subtype names.
         String groupsJson = "{\"sequence\":1,\"uniqueRef\":\"r\",\"payload\":{\"resource\":\"groups\"}}";
         String widgetsJson = "{\"sequence\":1,\"uniqueRef\":\"r\",\"payload\":{\"resource\":\"widgets\"}}";
 
@@ -211,13 +207,11 @@ class DiscoveredItemDtoTest {
 
     @Test
     void mismatchedPayloadShapeFailsValidationNotDeserialization() throws Exception {
-        // resource says "keys" but the payload body carries the certificate shape instead.
-        // DiscoveredKeyDto tolerates unknown properties (@JsonIgnoreProperties(ignoreUnknown =
-        // true), added so connectors can add a genuinely new field without a lock-step release),
-        // so Jackson can no longer tell this apart from a new field on the right shape: it
-        // deserializes to a DiscoveredKeyDto (type/algorithm null, resource defaulted from the
-        // discriminator) instead of throwing. That DTO then fails its own @NotNull constraints —
-        // the mismatch is now a validation problem, not a deserialization one.
+        // resource says "keys" but the body carries the certificate shape. Because
+        // DiscoveredKeyDto tolerates unknown properties — so connectors can add a field without a
+        // lock-step release — Jackson cannot distinguish this from a new field on the right shape
+        // and deserializes it rather than throwing. The @NotNull constraints catch it instead,
+        // which makes a shape mismatch a validation failure, not a deserialization one.
         String json = "{\"sequence\":1,\"uniqueRef\":\"r\","
                 + "\"payload\":{\"resource\":\"keys\",\"certificateData\":\"x\"}}";
 

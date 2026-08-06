@@ -39,9 +39,8 @@ class DiscoveryEventTest {
 
     @Test
     void progressLineParsesAndRoundTripsVerbatim() throws Exception {
-        // A progress event exactly as a connector would emit it on the NDJSON stream: irregular
-        // whitespace between fields, to prove parsing does not depend on our own serializer's
-        // formatting.
+        // A progress event as a connector emits it on the NDJSON stream. The irregular whitespace
+        // is deliberate: parsing must not depend on this module's own serializer formatting.
         String json = "{\"type\": \"progress\",     \"processed\": 1200, \"totalEstimate\": 5000, "
                 + "\"phase\": \"scan\", \"byResource\": {\"certificates\": {\"processed\": 900}}}";
 
@@ -59,18 +58,17 @@ class DiscoveryEventTest {
         assertFalse(reSerialized.contains("\r"), "an NDJSON line must not contain an embedded carriage return");
         assertEquals(1, StringUtils.countMatches(reSerialized, "\"type\""));
         assertTrue(reSerialized.contains("\"type\":\"progress\""));
-        // The nested byResource entry is the plain (non-event) DiscoveryProgressDto shape: it must
-        // never carry its own type, or it would no longer match the wire example in the design.
+        // A nested byResource entry is the plain (non-event) DiscoveryProgressDto shape, so it
+        // must never carry a type of its own — only the enclosing event is discriminated.
         assertFalse(reSerialized.contains("\"certificates\":{\"type\""),
                 "a nested byResource entry must not carry a type field of its own");
     }
 
     @Test
     void resultBatchLineParsesAndRoundTripsVerbatim() throws Exception {
-        // A resultBatch event carrying one real DiscoveredItemDto (same item shape
-        // DiscoveredItemDtoTest proves independently — resource now lives inside the item's own
-        // payload), again with irregular whitespace to prove parsing does not depend on our own
-        // serializer's formatting.
+        // A resultBatch event carrying one real DiscoveredItemDto, whose shape
+        // DiscoveredItemDtoTest covers independently. Irregular whitespace again, for the same
+        // reason as above.
         String json = "{\"type\": \"resultBatch\",  \"items\": ["
                 + "{\"sequence\": 1, \"uniqueRef\": \"cert-ref-1\", "
                 + "\"payload\": {\"resource\": \"certificates\", \"certificateData\": \"Y2VydC1kYXRh\"}}]}";
@@ -151,9 +149,8 @@ class DiscoveryEventTest {
 
     @Test
     void heartbeatLineParsesAndRoundTripsVerbatim() throws Exception {
-        // sentAt makes the heartbeat event shape-distinct from an empty/all-optional progress
-        // event on the wire (both used to serialize identically as {}), and is independently
-        // useful for liveness measurement.
+        // sentAt keeps a heartbeat shape-distinct from an all-optional progress event, which would
+        // otherwise serialize identically, and doubles as a liveness measurement.
         String json = "{\"type\": \"heartbeat\",    \"sentAt\": \"2026-08-01T00:00:00Z\"}";
 
         DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
@@ -221,13 +218,11 @@ class DiscoveryEventTest {
 
     @Test
     void unregisteredOrUnknownEventTypeCodeFailsTypeResolution() {
-        // Stock Jackson type-id resolution matches the raw wire string directly against the
-        // registered @JsonSubTypes names — it never separately checks it against
-        // DiscoveryEventType's own valid codes the way the deleted hand-rolled deserializer did.
-        // A syntactically-unregistered code therefore fails identically whether or not it happens
-        // to also be a real DiscoveryEventType member; both collapse to the same Jackson failure
-        // mode (classified into a PlatformException at the BaseApiClient boundary —
-        // BaseApiClientTest — rather than here, where callers use the mapper directly).
+        // Jackson matches the wire string against the registered @JsonSubTypes names, never
+        // against DiscoveryEventType's own codes, so an unregistered code fails the same way
+        // whether or not it is also a real enum member. BaseApiClient turns this failure into a
+        // PlatformException at the client boundary (see BaseApiClientTest); here the mapper is
+        // called directly, so the raw Jackson exception surfaces.
         assertThrows(InvalidTypeIdException.class,
                 () -> mapper.readValue("{\"type\":\"widgets\",\"code\":\"x\",\"message\":\"y\"}", DiscoveryEvent.class));
     }
@@ -267,12 +262,11 @@ class DiscoveryEventTest {
 
     @Test
     void mismatchedShapeFailsValidationNotDeserialization() throws Exception {
-        // type says "stateChanged" but the object carries the error fields instead.
-        // DiscoveryStateChangedEvent tolerates unknown properties (@JsonIgnoreProperties
-        // (ignoreUnknown = true), so connectors can add a genuinely new field without a lock-step
-        // release), so this no longer throws during deserialization: it deserializes to a
-        // DiscoveryStateChangedEvent with a null state, which then fails state's own @NotNull
-        // constraint — the mismatch is a validation problem, not a deserialization one.
+        // type says "stateChanged" but the object carries the error fields. Because
+        // DiscoveryStateChangedEvent tolerates unknown properties — so connectors can add a field
+        // without a lock-step release — this deserializes with a null state rather than throwing,
+        // and the @NotNull on state catches it. A shape mismatch is a validation failure here,
+        // not a deserialization one.
         String json = "{\"type\":\"stateChanged\",\"code\":\"x\",\"message\":\"y\"}";
 
         DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);

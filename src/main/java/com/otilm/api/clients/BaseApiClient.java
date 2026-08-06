@@ -425,29 +425,10 @@ public abstract class BaseApiClient {
                 pde.setConnector(connector);
                 throw pde;
             } else if (isJsonTypeResolutionFailure(unwrapped)) {
-                // Jackson's own @JsonTypeInfo/@JsonSubTypes machinery raises a different,
-                // unclassified exception per failure mode when it cannot resolve (or bind) a
-                // polymorphic discriminator while decoding a connector response body: a missing
-                // type id throws MismatchedInputException, an unregistered-but-present one throws
-                // InvalidTypeIdException, and a creator/enum failure throws ValueInstantiationException
-                // or InvalidFormatException — all four extend JsonProcessingException. None of them
-                // is a PlatformException the platform's error mapping recognizes, so left unclassified
-                // this would surface as an unhandled 500 instead of a mappable 4xx: the same
-                // classification gap B1 closed per hand-rolled discovery deserializer, now paid once
-                // here for every client in the library instead of per polymorphic DTO. Checked before
-                // the IOException branch below because JsonProcessingException extends IOException and
-                // would otherwise be misclassified as a transport failure.
-                //
-                // ValidationException, not a new ConnectorException subtype: this is not the connector
-                // failing to answer (that is ConnectorCommunicationException/ConnectorServerException's
-                // territory) but the connector's response failing to conform to the expected shape —
-                // the same category handleLegacyErrorResponse's 422 case already maps to
-                // ValidationException, and the same exception type B1 chose for the identical
-                // discriminator-resolution problem inside the (now-deleted) hand-rolled deserializers.
-                // Full failure type + detail stays server-side for diagnostics; unwrapped.getMessage()
-                // (Jackson's own message) frequently echoes connector response content — a subtype
-                // value, an enum's accepted values, or other body fragments — and ValidationException
-                // is part of the platform's outward error surface, so it must never carry that message.
+                // Must precede the IOException branch: JsonProcessingException extends IOException
+                // and would otherwise be misclassified as a transport failure. The thrown message
+                // must stay generic — Jackson's own message echoes connector response fragments,
+                // and ValidationException is part of the platform's outward error surface.
                 logger.debug("Connector {} response failed type resolution ({}): {}",
                         connector.getName(), unwrapped.getClass().getSimpleName(), unwrapped.getMessage());
                 ValidationException validationException = new ValidationException(ValidationError.create(
@@ -496,14 +477,11 @@ public abstract class BaseApiClient {
     }
 
     /**
-     * True for a bare Jackson {@link JsonProcessingException} (covers {@code MismatchedInputException},
-     * {@code InvalidTypeIdException}, {@code ValueInstantiationException}, and enum/creator failures
-     * like {@code InvalidFormatException} — all of them subtypes) or one wrapped as the cause of
-     * another exception. Spring WebFlux's {@code Jackson2JsonDecoder} always wraps a body-decode
-     * failure in {@code org.springframework.core.codec.DecodingException} (confirmed empirically
-     * against a real WebClient decode failure, not assumed), so the wrapped form is the one this
-     * codebase actually exercises today; the bare form is matched too in case some other codepath
-     * (a client calling an ObjectMapper directly) surfaces one unwrapped.
+     * True for a bare Jackson {@link JsonProcessingException} — covering {@code MismatchedInputException},
+     * {@code InvalidTypeIdException}, {@code ValueInstantiationException} and {@code InvalidFormatException}
+     * — or one wrapped as the cause of another exception. Spring WebFlux's {@code Jackson2JsonDecoder}
+     * wraps body-decode failures in {@code org.springframework.core.codec.DecodingException}, so both
+     * forms have to match.
      */
     private static boolean isJsonTypeResolutionFailure(Throwable t) {
         return t instanceof JsonProcessingException || t.getCause() instanceof JsonProcessingException;

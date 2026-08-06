@@ -8,24 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Shared OpenAPI-prose guard for connector doc tests: the banned Core-internal jargon list and
- * the word-boundary matcher that checks for it.
- *
- * <p>Before this was extracted, the same list and matcher existed as three separate,
- * near-identical copies across the discovery and attributes doc tests, and one of the three used
- * a plain substring match with its own, narrower word list — so whether a given internal term was
- * actually caught depended on which doc test happened to exercise the controller. Every doc test
- * that asserts published OpenAPI prose is free of Core-internal design vocabulary should use this
- * class instead of declaring its own copy.
+ * the word-boundary matcher that checks for it. Doc tests must use this class rather than declare
+ * their own list — per-test copies drift, and coverage then depends on which test happens to
+ * exercise a given controller.
  */
 public final class OpenApiProseAssertions {
 
     /**
      * Core-internal vocabulary that must never reach the published OpenAPI document — connector
-     * authors in Java, Go and Python only ever read the generated document, not the internal
-     * design or planning docs. Matched on word boundaries so, for example, "tick" does not
-     * false-positive inside "ticket" or "sticky". This is the union of every term any connector
-     * doc test has banned to date; extend it when a new internal term needs banning, and don't
-     * narrow it for the sake of one controller's prose.
+     * authors in Java, Go and Python read only the generated document, never the internal design
+     * docs. Matched on word boundaries so "tick" does not false-positive inside "ticket". Extend
+     * the list when a new internal term needs banning; never narrow it for one controller's prose.
      */
     public static final List<String> BANNED_JARGON = List.of(
             "tick", "tick engine", "sweeper", "agenda table", "drain tick", "ingestor",

@@ -35,11 +35,9 @@ class DiscoveryV2EnumsTest {
 
     /**
      * {@code DiscoveryEventType.Codes} exists only because {@code @JsonSubTypes.Type(name = ...)}
-     * on {@link DiscoveryEvent} needs a compile-time constant it can reference. If the enum's own
-     * {@code code} ever drifted from the {@code Codes} constant the annotation uses, the wire
-     * discriminator would silently stop matching the enum — with no other test necessarily
-     * catching it, since Jackson would still successfully resolve a subtype, just under a code
-     * string this enum no longer recognizes as its own.
+     * on {@link DiscoveryEvent} needs a compile-time constant. Should the enum's {@code code} drift
+     * from the {@code Codes} constant, the drift would be silent: Jackson would still resolve a
+     * subtype, only under a code the enum itself does not recognize.
      */
     @Test
     void eventTypeCodeMatchesJsonSubTypesConstant() {

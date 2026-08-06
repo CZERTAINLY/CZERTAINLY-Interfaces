@@ -12,13 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * D5: verifies, by actually generating the OpenAPI schema (via swagger-core's {@code
- * ModelConverters} — the same annotation-driven resolver springdoc itself uses at runtime; this
- * module has no OpenAPI build plugin to invoke separately), that moving the discriminator inside
- * the payload/event (D1/D2) produces a real {@code discriminator} stanza with a {@code mapping}
- * on each union base, and that the discriminator property is present in every {@code oneOf}
- * subschema — the exact thing a container-level discriminator could never produce, and the reason
- * for this whole rework (see {@code DiscoveredItemPayloadDto} and {@code DiscoveryEvent} javadoc).
+ * Generates the OpenAPI schema and asserts each union base carries a {@code discriminator} stanza
+ * with a {@code mapping}, and that the discriminator property appears in every {@code oneOf}
+ * subschema — the condition client generators require, and the reason the discriminator sits
+ * inside the payload rather than on its container (see {@code DiscoveredItemPayloadDto} and
+ * {@code DiscoveryEvent}). Generation goes through swagger-core's {@code ModelConverters}, the
+ * resolver springdoc uses at runtime, because this module has no OpenAPI build plugin to invoke.
  */
 class DiscoveryV2SchemaGenerationTest {
 
