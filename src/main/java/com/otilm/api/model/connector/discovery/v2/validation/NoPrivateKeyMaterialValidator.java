@@ -33,14 +33,26 @@ public class NoPrivateKeyMaterialValidator implements ConstraintValidator<NoPriv
             valid = false;
         }
 
-        if (value.getType() != null && TYPES_WITHOUT_A_PUBLIC_PART.contains(value.getType())
-                && (value.getPublicKey() != null || value.getPublicKeyFormat() != null)) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
-                            "publicKey and publicKeyFormat must both be absent when type is Private, Secret, or Split")
-                    .addPropertyNode("publicKey")
-                    .addConstraintViolation();
-            valid = false;
+        if (value.getType() != null && TYPES_WITHOUT_A_PUBLIC_PART.contains(value.getType())) {
+            // Emit one violation per offending field, each on its own property node, so a caller
+            // sees precisely which field is at fault instead of always being pointed at publicKey.
+            if (value.getPublicKey() != null) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(
+                                "publicKey must be absent when type is Private, Secret, or Split")
+                        .addPropertyNode("publicKey")
+                        .addConstraintViolation();
+                valid = false;
+            }
+
+            if (value.getPublicKeyFormat() != null) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(
+                                "publicKeyFormat must be absent when type is Private, Secret, or Split")
+                        .addPropertyNode("publicKeyFormat")
+                        .addConstraintViolation();
+                valid = false;
+            }
         }
 
         return valid;

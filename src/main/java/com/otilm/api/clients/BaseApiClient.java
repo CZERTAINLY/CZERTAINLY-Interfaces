@@ -444,10 +444,17 @@ public abstract class BaseApiClient {
                 // the same category handleLegacyErrorResponse's 422 case already maps to
                 // ValidationException, and the same exception type B1 chose for the identical
                 // discriminator-resolution problem inside the (now-deleted) hand-rolled deserializers.
-                logger.debug("Connector {} response failed type resolution: {}", connector.getName(), unwrapped.toString());
-                throw new ValidationException(ValidationError.create(
-                        "Connector %s response could not be parsed into the expected type: %s"
-                                .formatted(connector.getName(), unwrapped.getMessage())));
+                // Full failure type + detail stays server-side for diagnostics; unwrapped.getMessage()
+                // (Jackson's own message) frequently echoes connector response content — a subtype
+                // value, an enum's accepted values, or other body fragments — and ValidationException
+                // is part of the platform's outward error surface, so it must never carry that message.
+                logger.debug("Connector {} response failed type resolution ({}): {}",
+                        connector.getName(), unwrapped.getClass().getSimpleName(), unwrapped.getMessage());
+                ValidationException validationException = new ValidationException(ValidationError.create(
+                        "Connector %s response could not be parsed against the expected type"
+                                .formatted(connector.getName())));
+                validationException.initCause(unwrapped);
+                throw validationException;
             } else if (unwrapped instanceof IOException
                     || unwrapped instanceof WebClientRequestException
                     || unwrapped instanceof io.netty.handler.timeout.TimeoutException

@@ -388,7 +388,7 @@ class BaseApiClientTest {
                 .withBody("{\"version\":\"v99\",\"uuid\":\"" + UUID.randomUUID() + "\",\"name\":\"x\"}")));
         TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
 
-        Assertions.assertThrows(ValidationException.class, () ->
+        ValidationException thrown = Assertions.assertThrows(ValidationException.class, () ->
                 BaseApiClient.processRequest(
                         req -> client.prepareRequest(HttpMethod.GET, connector, false)
                                 .uri("http://localhost:" + mockServer.port() + "/badtype")
@@ -397,6 +397,14 @@ class BaseApiClientTest {
                                 .block(),
                         null,
                         connector));
+
+        // The caller-visible message must name the problem without echoing the connector's
+        // response body (here, the unregistered "v99" discriminator value).
+        Assertions.assertFalse(thrown.getMessage().contains("v99"),
+                "caller-visible message must not echo connector payload content: " + thrown.getMessage());
+        // The original failure must still be available internally for diagnostics.
+        Assertions.assertTrue(causeChainContains(thrown, JsonProcessingException.class),
+                "expected the original Jackson failure to be preserved as the cause, got: " + thrown);
     }
 
     /**
@@ -411,10 +419,29 @@ class BaseApiClientTest {
         JsonProcessingException jacksonFailure = captureRealJacksonTypeResolutionFailure();
         TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
 
-        Assertions.assertThrows(ValidationException.class, () ->
+        ValidationException thrown = Assertions.assertThrows(ValidationException.class, () ->
                 BaseApiClient.processRequest(req -> {
                     throw new DecodingException("Could not read document", jacksonFailure);
                 }, null, connector));
+
+        // Same guarantee as the real end-to-end case: no fragment of the underlying Jackson
+        // failure's message (which itself carries the "v99" payload value) reaches the caller.
+        Assertions.assertFalse(thrown.getMessage().contains("v99"),
+                "caller-visible message must not echo connector payload content: " + thrown.getMessage());
+        Assertions.assertTrue(causeChainContains(thrown, JsonProcessingException.class),
+                "expected the original Jackson failure to be preserved as the cause, got: " + thrown);
+    }
+
+    private static boolean causeChainContains(Throwable thrown, Class<?> type) {
+        for (Throwable t = thrown; t != null; t = t.getCause()) {
+            if (type.isInstance(t)) {
+                return true;
+            }
+            if (t == t.getCause()) {
+                break;
+            }
+        }
+        return false;
     }
 
     private JsonProcessingException captureRealJacksonTypeResolutionFailure() {
