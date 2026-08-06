@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.discovery.v2;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
@@ -48,10 +49,13 @@ class DiscoveredItemDtoTest {
 
         String json = mapper.writeValueAsString(dto);
         // resourceKeyAppearsExactlyOnce already proves "resource" appears once (inside payload);
-        // this proves specifically that the container's own derived getResource() contributes no
-        // second, top-level "resource" key of its own.
-        assertFalse(json.matches("(?s)\\{\"sequence\".*?\"resource\":\"certificates\".*?\"payload\":.*"),
+        // this proves specifically that the container's own derived resource accessor contributes
+        // no second, top-level "resource" key of its own — checked structurally (parsed JSON tree)
+        // rather than with a regex over the raw string.
+        JsonNode root = mapper.readTree(json);
+        assertFalse(root.has("resource"),
                 "resource must not appear as a sibling of payload; it must live inside payload only");
+        assertTrue(root.path("payload").has("resource"), "resource must live inside payload");
 
         DiscoveredItemDto withoutPayload = new DiscoveredItemDto();
         assertNull(withoutPayload.getResource(), "getResource must be null-safe when payload is absent");

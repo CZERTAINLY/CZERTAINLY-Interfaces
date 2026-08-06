@@ -67,7 +67,8 @@ class DiscoveredKeyDtoValidationTest {
 
     @Test
     void privateKeyTypeCarryingPublicKeyBytesIsRejected() {
-        // The exact payload the finding calls out: {"type":"Private","publicKeyFormat":"PrivateKeyInfo","publicKey":"..."}
+        // This is the exact shape the finding calls out: a Private-type item that still carries
+        // a PrivateKeyInfo publicKeyFormat and public key bytes.
         DiscoveredKeyDto dto = new DiscoveredKeyDto();
         dto.setType(KeyType.PRIVATE_KEY);
         dto.setAlgorithm(KeyAlgorithm.RSA);

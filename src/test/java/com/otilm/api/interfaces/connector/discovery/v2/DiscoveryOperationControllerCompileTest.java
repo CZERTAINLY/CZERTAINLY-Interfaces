@@ -24,7 +24,9 @@ class DiscoveryOperationControllerCompileTest {
         @Override public Flux<DiscoveryEvent> stream(DiscoveryStreamRequestDto request) { return Flux.empty(); }
         @Override public DiscoveryStopResponseDto stop(DiscoveryRunRequestDto request) { return new DiscoveryStopResponseDto(); }
         @Override public DiscoveryInitiateResponseDto resume(DiscoveryRunRequestDto request) { return new DiscoveryInitiateResponseDto(); }
-        @Override public void cancel(DiscoveryRunRequestDto request) { }
+        @Override public void cancel(DiscoveryRunRequestDto request) {
+            throw new UnsupportedOperationException("compile-time contract check only");
+        }
     }
 
     @Test

@@ -33,6 +33,23 @@ class DiscoveryV2EnumsTest {
         assertEquals("\"resultBatch\"", mapper.writeValueAsString(DiscoveryEventType.RESULT_BATCH));
     }
 
+    /**
+     * {@code DiscoveryEventType.Codes} exists only because {@code @JsonSubTypes.Type(name = ...)}
+     * on {@link DiscoveryEvent} needs a compile-time constant it can reference. If the enum's own
+     * {@code code} ever drifted from the {@code Codes} constant the annotation uses, the wire
+     * discriminator would silently stop matching the enum — with no other test necessarily
+     * catching it, since Jackson would still successfully resolve a subtype, just under a code
+     * string this enum no longer recognizes as its own.
+     */
+    @Test
+    void eventTypeCodeMatchesJsonSubTypesConstant() {
+        assertEquals(DiscoveryEventType.Codes.PROGRESS, DiscoveryEventType.PROGRESS.getCode());
+        assertEquals(DiscoveryEventType.Codes.RESULT_BATCH, DiscoveryEventType.RESULT_BATCH.getCode());
+        assertEquals(DiscoveryEventType.Codes.STATE_CHANGED, DiscoveryEventType.STATE_CHANGED.getCode());
+        assertEquals(DiscoveryEventType.Codes.HEARTBEAT, DiscoveryEventType.HEARTBEAT.getCode());
+        assertEquals(DiscoveryEventType.Codes.ERROR, DiscoveryEventType.ERROR.getCode());
+    }
+
     @Test
     void resourceCapabilitySerializesToCode() throws Exception {
         assertEquals("\"stopResume\"", mapper.writeValueAsString(DiscoveryResourceCapability.STOP_RESUME));
