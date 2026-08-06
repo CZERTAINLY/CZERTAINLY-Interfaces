@@ -1,0 +1,317 @@
+package com.otilm.api.model.connector.discovery.v2;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.otilm.api.model.connector.discovery.v2.event.DiscoveryErrorEvent;
+import com.otilm.api.model.connector.discovery.v2.event.DiscoveryHeartbeatEvent;
+import com.otilm.api.model.connector.discovery.v2.event.DiscoveryProgressEvent;
+import com.otilm.api.model.connector.discovery.v2.event.DiscoveryResultBatchEvent;
+import com.otilm.api.model.connector.discovery.v2.event.DiscoveryStateChangedEvent;
+import com.otilm.api.model.core.auth.Resource;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Test;
+
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * {@link DiscoveryEvent} is now flat: {@code type} is a field of the event object itself, not a
+ * wrapper around a nested payload (see {@link DiscoveryEvent}'s javadoc for why the wrapper was
+ * removed). Every fixture below is therefore a single flat JSON object — no {@code payload} key.
+ */
+class DiscoveryEventTest {
+
+    private final ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
+
+    @Test
+    void progressLineParsesAndRoundTripsVerbatim() throws Exception {
+        // A progress event exactly as a connector would emit it on the NDJSON stream: irregular
+        // whitespace between fields, to prove parsing does not depend on our own serializer's
+        // formatting.
+        String json = "{\"type\": \"progress\",     \"processed\": 1200, \"totalEstimate\": 5000, "
+                + "\"phase\": \"scan\", \"byResource\": {\"certificates\": {\"processed\": 900}}}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+
+        assertEquals(DiscoveryEventType.PROGRESS, event.getType());
+        DiscoveryProgressEvent progress = assertInstanceOf(DiscoveryProgressEvent.class, event);
+        assertEquals(1200L, progress.getProcessed());
+        assertEquals(5000L, progress.getTotalEstimate());
+        assertEquals("scan", progress.getPhase());
+        assertEquals(900L, progress.getByResource().get(Resource.CERTIFICATE).getProcessed());
+
+        String reSerialized = mapper.writeValueAsString(event);
+        assertFalse(reSerialized.contains("\n"), "an NDJSON line must not contain an embedded newline");
+        assertFalse(reSerialized.contains("\r"), "an NDJSON line must not contain an embedded carriage return");
+        assertEquals(1, StringUtils.countMatches(reSerialized, "\"type\""));
+        assertTrue(reSerialized.contains("\"type\":\"progress\""));
+        // The nested byResource entry is the plain (non-event) DiscoveryProgressDto shape: it must
+        // never carry its own type, or it would no longer match the wire example in the design.
+        assertFalse(reSerialized.contains("\"certificates\":{\"type\""),
+                "a nested byResource entry must not carry a type field of its own");
+    }
+
+    @Test
+    void resultBatchLineParsesAndRoundTripsVerbatim() throws Exception {
+        // A resultBatch event carrying one real DiscoveredItemDto (same item shape
+        // DiscoveredItemDtoTest proves independently — resource now lives inside the item's own
+        // payload), again with irregular whitespace to prove parsing does not depend on our own
+        // serializer's formatting.
+        String json = "{\"type\": \"resultBatch\",  \"items\": ["
+                + "{\"sequence\": 1, \"uniqueRef\": \"cert-ref-1\", "
+                + "\"payload\": {\"resource\": \"certificates\", \"certificateData\": \"Y2VydC1kYXRh\"}}]}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+
+        assertEquals(DiscoveryEventType.RESULT_BATCH, event.getType());
+        DiscoveryResultBatchEvent batch = assertInstanceOf(DiscoveryResultBatchEvent.class, event);
+        assertEquals(1, batch.getItems().size());
+        DiscoveredItemDto item = batch.getItems().get(0);
+        assertEquals(1L, item.getSequence());
+        assertEquals(Resource.CERTIFICATE, item.getResource());
+        assertEquals("cert-ref-1", item.getUniqueRef());
+        DiscoveredCertificateDto itemPayload = assertInstanceOf(DiscoveredCertificateDto.class, item.getPayload());
+        assertEquals("Y2VydC1kYXRh", itemPayload.getCertificateData());
+
+        String reSerialized = mapper.writeValueAsString(event);
+        assertFalse(reSerialized.contains("\n"), "an NDJSON line must not contain an embedded newline");
+        assertEquals(1, StringUtils.countMatches(reSerialized, "\"type\""));
+        assertTrue(reSerialized.contains("\"type\":\"resultBatch\""));
+    }
+
+    @Test
+    void resultBatchDefaultsItemsToEmptyList() {
+        // An empty batch is a first-class case, not an omission: it must default to [] rather
+        // than null (which JsonInclude.NON_NULL would then omit).
+        assertTrue(new DiscoveryResultBatchEvent().getItems().isEmpty(),
+                "items must default to an empty list, not null");
+    }
+
+    @Test
+    void resultBatchEmptyBatchSerializesItemsAsEmptyArray() throws Exception {
+        DiscoveryResultBatchEvent batch = new DiscoveryResultBatchEvent();
+        // items left at its default (empty list): this is an empty batch, not an omission.
+
+        String reSerialized = mapper.writeValueAsString(batch);
+        assertTrue(reSerialized.contains("\"items\":[]"), "an empty batch must serialize items as [], not omit it");
+    }
+
+    @Test
+    void resultBatchMissingItemsFailsNotNullValidation() {
+        DiscoveryResultBatchEvent batch = new DiscoveryResultBatchEvent();
+        batch.setItems(null);
+
+        Set<ConstraintViolation<DiscoveryResultBatchEvent>> violations = VALIDATOR.validate(batch);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items")),
+                "a null items list must fail the @NotNull constraint");
+    }
+
+    @Test
+    void resultBatchItemConstraintsCascadeViaValid() {
+        DiscoveryResultBatchEvent batch = new DiscoveryResultBatchEvent();
+        batch.setItems(List.of(new DiscoveredItemDto())); // fields all unset
+
+        Set<ConstraintViolation<DiscoveryResultBatchEvent>> violations = VALIDATOR.validate(batch);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items[0].uniqueRef")),
+                "@Valid must cascade into items so each DiscoveredItemDto's own constraints are evaluated");
+    }
+
+    @Test
+    void stateChangedLineParsesAndRoundTripsVerbatim() throws Exception {
+        String json = "{\"type\": \"stateChanged\", \"state\": \"completed\"}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+
+        assertEquals(DiscoveryEventType.STATE_CHANGED, event.getType());
+        DiscoveryStateChangedEvent stateChanged = assertInstanceOf(DiscoveryStateChangedEvent.class, event);
+        assertEquals(DiscoveryRunState.COMPLETED, stateChanged.getState());
+
+        String reSerialized = mapper.writeValueAsString(event);
+        assertFalse(reSerialized.contains("\n"), "an NDJSON line must not contain an embedded newline");
+        assertEquals(1, StringUtils.countMatches(reSerialized, "\"type\""));
+        assertTrue(reSerialized.contains("\"type\":\"stateChanged\""));
+        // Platform wire codes are not upper-snake — pin the real code, not the enum's own name().
+        assertTrue(reSerialized.contains("\"state\":\"completed\""),
+                "state must serialize using the wire code, not COMPLETED");
+    }
+
+    @Test
+    void heartbeatLineParsesAndRoundTripsVerbatim() throws Exception {
+        // sentAt makes the heartbeat event shape-distinct from an empty/all-optional progress
+        // event on the wire (both used to serialize identically as {}), and is independently
+        // useful for liveness measurement.
+        String json = "{\"type\": \"heartbeat\",    \"sentAt\": \"2026-08-01T00:00:00Z\"}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+
+        assertEquals(DiscoveryEventType.HEARTBEAT, event.getType());
+        DiscoveryHeartbeatEvent heartbeat = assertInstanceOf(DiscoveryHeartbeatEvent.class, event);
+        assertEquals(OffsetDateTime.parse("2026-08-01T00:00:00Z"), heartbeat.getSentAt());
+
+        String reSerialized = mapper.writeValueAsString(event);
+        assertFalse(reSerialized.contains("\n"), "an NDJSON line must not contain an embedded newline");
+        assertEquals(1, StringUtils.countMatches(reSerialized, "\"type\""));
+        assertTrue(reSerialized.contains("\"type\":\"heartbeat\""));
+        assertTrue(reSerialized.contains("\"sentAt\""), "sentAt is heartbeat's one required field");
+    }
+
+    @Test
+    void heartbeatMissingSentAtFailsNotNullValidation() {
+        DiscoveryHeartbeatEvent heartbeat = new DiscoveryHeartbeatEvent();
+        // sentAt intentionally left unset.
+
+        Set<ConstraintViolation<DiscoveryHeartbeatEvent>> violations = VALIDATOR.validate(heartbeat);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("sentAt")),
+                "a null sentAt must fail the @NotNull constraint");
+    }
+
+    @Test
+    void errorLineParsesAndRoundTripsVerbatim() throws Exception {
+        String json = "{\"type\": \"error\",        \"code\": \"CONN_TIMEOUT\", "
+                + "\"message\": \"upstream connection timed out\"}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+
+        assertEquals(DiscoveryEventType.ERROR, event.getType());
+        DiscoveryErrorEvent error = assertInstanceOf(DiscoveryErrorEvent.class, event);
+        assertEquals("CONN_TIMEOUT", error.getCode());
+        assertEquals("upstream connection timed out", error.getMessage());
+
+        String reSerialized = mapper.writeValueAsString(event);
+        assertFalse(reSerialized.contains("\n"), "an NDJSON line must not contain an embedded newline");
+        assertEquals(1, StringUtils.countMatches(reSerialized, "\"type\""));
+        assertTrue(reSerialized.contains("\"type\":\"error\""));
+    }
+
+    @Test
+    void errorMissingCodeFailsNotNullValidation() {
+        DiscoveryErrorEvent error = new DiscoveryErrorEvent();
+        error.setMessage("upstream connection timed out");
+        // code intentionally left unset.
+
+        Set<ConstraintViolation<DiscoveryErrorEvent>> violations = VALIDATOR.validate(error);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("code")),
+                "a null code must fail the @NotNull constraint");
+    }
+
+    @Test
+    void errorMissingMessageFailsNotNullValidation() {
+        DiscoveryErrorEvent error = new DiscoveryErrorEvent();
+        error.setCode("CONN_TIMEOUT");
+        // message intentionally left unset.
+
+        Set<ConstraintViolation<DiscoveryErrorEvent>> violations = VALIDATOR.validate(error);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("message")),
+                "a null message must fail the @NotNull constraint");
+    }
+
+    @Test
+    void unregisteredOrUnknownEventTypeCodeFailsTypeResolution() {
+        // Stock Jackson type-id resolution matches the raw wire string directly against the
+        // registered @JsonSubTypes names — it never separately checks it against
+        // DiscoveryEventType's own valid codes the way the deleted hand-rolled deserializer did.
+        // A syntactically-unregistered code therefore fails identically whether or not it happens
+        // to also be a real DiscoveryEventType member; both collapse to the same Jackson failure
+        // mode (classified into a PlatformException at the BaseApiClient boundary —
+        // BaseApiClientTest — rather than here, where callers use the mapper directly).
+        assertThrows(InvalidTypeIdException.class,
+                () -> mapper.readValue("{\"type\":\"widgets\",\"code\":\"x\",\"message\":\"y\"}", DiscoveryEvent.class));
+    }
+
+    @Test
+    void missingTypeFieldFailsTypeResolution() {
+        // No "type" key anywhere in the object: Jackson has no discriminator to resolve a subtype
+        // from at all, distinct from a syntactically-present-but-unregistered code above.
+        assertThrows(MismatchedInputException.class,
+                () -> mapper.readValue("{\"code\":\"x\",\"message\":\"y\"}", DiscoveryEvent.class));
+    }
+
+    @Test
+    void nullTypeFieldFailsTypeResolution() {
+        assertThrows(MismatchedInputException.class,
+                () -> mapper.readValue("{\"type\":null,\"code\":\"x\",\"message\":\"y\"}", DiscoveryEvent.class));
+    }
+
+    @Test
+    void nullTypeFieldOnConcreteInstanceFailsNotNullValidation() {
+        // Below the discriminator layer (a concrete event built directly, not deserialized), type
+        // is a plain @NotNull field like any other — this is the validation-cascade guarantee
+        // DiscoveryOperationController's @Valid @RequestBody relies on.
+        DiscoveryHeartbeatEvent heartbeat = new DiscoveryHeartbeatEvent();
+        heartbeat.setType(null);
+        heartbeat.setSentAt(OffsetDateTime.parse("2026-08-01T00:00:00Z"));
+
+        Set<ConstraintViolation<DiscoveryHeartbeatEvent>> violations = VALIDATOR.validate(heartbeat);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("type")),
+                "a null type must fail the @NotNull constraint");
+    }
+
+    @Test
+    void nonObjectTopLevelInputIsRejected() {
+        assertThrows(MismatchedInputException.class, () -> mapper.readValue("\"just-a-string\"", DiscoveryEvent.class));
+    }
+
+    @Test
+    void mismatchedShapeFailsValidationNotDeserialization() throws Exception {
+        // type says "stateChanged" but the object carries the error fields instead.
+        // DiscoveryStateChangedEvent tolerates unknown properties (@JsonIgnoreProperties
+        // (ignoreUnknown = true), so connectors can add a genuinely new field without a lock-step
+        // release), so this no longer throws during deserialization: it deserializes to a
+        // DiscoveryStateChangedEvent with a null state, which then fails state's own @NotNull
+        // constraint — the mismatch is a validation problem, not a deserialization one.
+        String json = "{\"type\":\"stateChanged\",\"code\":\"x\",\"message\":\"y\"}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+        DiscoveryStateChangedEvent stateChanged = assertInstanceOf(DiscoveryStateChangedEvent.class, event);
+        assertNull(stateChanged.getState());
+
+        Set<ConstraintViolation<DiscoveryStateChangedEvent>> violations = VALIDATOR.validate(stateChanged);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("state")),
+                "an error-shaped object under type: stateChanged must fail validation on the required state");
+    }
+
+    @Test
+    void unknownAdditionalPropertyOnCorrectlyShapedEventIsTolerated() throws Exception {
+        // This is the case @JsonIgnoreProperties(ignoreUnknown = true) exists for: a connector
+        // adds a genuinely new field to an otherwise-correctly-shaped event, and Core must not
+        // choke on it (that is what keeps Go/Java/Python connectors free of a lock-step release).
+        String json = "{\"type\":\"error\",\"code\":\"CONN_TIMEOUT\","
+                + "\"message\":\"upstream connection timed out\",\"retryable\":true}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+        DiscoveryErrorEvent error = assertInstanceOf(DiscoveryErrorEvent.class, event);
+        assertEquals("CONN_TIMEOUT", error.getCode());
+        assertEquals("upstream connection timed out", error.getMessage());
+
+        Set<ConstraintViolation<DiscoveryErrorEvent>> violations = VALIDATOR.validate(error);
+        assertTrue(violations.isEmpty(),
+                "an unknown but additional field on an otherwise-correct event must not fail validation");
+    }
+
+    @Test
+    void unknownAdditionalPropertyOnProgressEventIsTolerated() throws Exception {
+        String json = "{\"type\":\"progress\",\"processed\":10,\"etaSeconds\":42}";
+
+        DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
+        DiscoveryProgressEvent progress = assertInstanceOf(DiscoveryProgressEvent.class, event);
+        assertEquals(10L, progress.getProcessed());
+
+        Set<ConstraintViolation<DiscoveryProgressEvent>> violations = VALIDATOR.validate(progress);
+        assertTrue(violations.isEmpty(),
+                "an unknown but additional field on an otherwise-correct progress event must not fail validation");
+    }
+}

@@ -1,0 +1,26 @@
+package com.otilm.api.model.connector.discovery.v2;
+
+import com.otilm.api.model.common.attribute.common.MetadataAttribute;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
+/**
+ * Body returned by the discovery v2 /initiate call.
+ */
+@Getter
+@Setter
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class DiscoveryInitiateResponseDto {
+
+    @Schema(description = "Connector-defined metadata for this run, replayed by Core on subsequent "
+                  + "status/stop/resume/cancel calls so the stateless connector can resolve its run state. "
+                  + "Serialized size is capped at 64 KB; Core fails the run outright if this exceeds the cap.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<MetadataAttribute> meta;
+}
