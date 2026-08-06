@@ -78,8 +78,4 @@ public class AcmeProfileDto extends NameAndUuidDto {
                 .append("customAttributes", customAttributes)
                 .toString();
     }
-
-    @Schema(description = "Source of the enrolment authorization",
-            requiredMode = Schema.RequiredMode.REQUIRED)
-    private ProtocolChallengeSource challengeSource;
 }
