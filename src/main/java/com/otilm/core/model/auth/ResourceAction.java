@@ -26,6 +26,11 @@ public enum ResourceAction implements IPlatformEnum {
     ENABLE("enable", "Enable", AccessType.WRITE),
     ACTIVATE("activate", "Activate", AccessType.WRITE),
 
+    // Lifecycle control actions for long-running operations (e.g. discovery runs)
+    STOP("stop", "Stop", AccessType.WRITE),
+    RESUME("resume", "Resume", AccessType.WRITE),
+    CANCEL("cancel", "Cancel", AccessType.WRITE),
+
     // Connector actions
     APPROVE("approve", "Approve", AccessType.WRITE),
     CONNECT("connect", "Connect", AccessType.WRITE), // allows also reconnect action
