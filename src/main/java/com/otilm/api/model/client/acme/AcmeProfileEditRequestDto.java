@@ -2,6 +2,7 @@ package com.otilm.api.model.client.acme;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.Data;

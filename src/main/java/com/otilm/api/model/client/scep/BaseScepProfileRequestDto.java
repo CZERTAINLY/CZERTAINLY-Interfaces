@@ -3,6 +3,7 @@ package com.otilm.api.model.client.scep;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -85,6 +86,15 @@ public class BaseScepProfileRequestDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED
     )
     private Boolean enableChallengePassword;
+
+    @Schema(
+            description = "Source of the enrolment challenge ('protocolDefault' or 'certificateRegistration'). "
+                    + "'protocolDefault' authenticates against the shared challenge password; "
+                    + "'certificateRegistration' requires every initial enrolment to match a pre-registered certificate and "
+                    + "forbids a profile challenge password. Omit to keep the stored value on edit; on create, omit to default to 'protocolDefault'.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ProtocolChallengeSource challengeSource;
 
     @Schema(description = "Status of Intune")
     private Boolean enableIntune;

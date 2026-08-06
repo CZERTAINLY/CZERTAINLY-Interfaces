@@ -2,6 +2,7 @@ package com.otilm.api.model.core.scep;
 
 import com.otilm.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,4 +33,7 @@ public class ScepProfileDto extends NameAndUuidDto {
             + "itself is write-only and never returned; this flag lets clients reflect the current state.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enableChallengePassword;
+
+    @Schema(description = "Source of the enrolment challenge", requiredMode = Schema.RequiredMode.REQUIRED)
+    private ProtocolChallengeSource challengeSource;
 }

@@ -5,6 +5,7 @@ import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.cmp.validation.ValidUuid;
 import com.otilm.api.model.core.cmp.ProtectionMethod;
 import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -72,6 +73,16 @@ public class BaseCmpProfileRequestDto {
             description = "UUID of the Certificate to be used as signing certificate for CMP responses. Required when Protection Method is Signature"
     )
     private String signingCertificateUuid;
+
+    @Schema(
+            description = "Source of the credential for MAC-protected requests ('protocolDefault' or 'certificateRegistration'). "
+                    + "'protocolDefault' verifies against the profile shared secret; 'certificateRegistration' requires the "
+                    + "senderKID to reference a pre-registered certificate whose challenge is the MAC secret, and forbids a "
+                    + "profile shared secret. Signature protection is independent of this setting. Omit to keep the stored "
+                    + "value on edit; on create, omit to default to 'protocolDefault'.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED
+    )
+    private ProtocolChallengeSource challengeSource;
 
     @Valid
     @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

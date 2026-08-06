@@ -2,6 +2,7 @@ package com.otilm.api.model.core.cmp;
 
 import com.otilm.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,4 +39,8 @@ public class CmpProfileDto extends NameAndUuidDto {
             examples = {"https://your-domain.com/api/v1/protocols/cmp/cmpProfile"}
     )
     private String cmpUrl;
+
+    @Schema(description = "Source of the credential for MAC-protected requests",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private ProtocolChallengeSource challengeSource;
 }
