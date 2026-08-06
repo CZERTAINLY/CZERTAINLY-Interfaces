@@ -3,6 +3,7 @@ package com.otilm.api.clients;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.client.attribute.ResponseAttributeV2;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
@@ -12,13 +13,17 @@ import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
 import com.otilm.api.exception.ConnectorCommunicationException;
+import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.core.connector.AuthType;
 import com.otilm.api.model.core.connector.ConnectorStatus;
 import com.otilm.api.model.core.proxy.ProxyDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.codec.DecodingException;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -364,6 +369,62 @@ class BaseApiClientTest {
     private static class PoolAcquirePendingLimitException extends RuntimeException {
         PoolAcquirePendingLimitException(String message) {
             super(message);
+        }
+    }
+
+    /**
+     * The real end-to-end path: a connector response that decodes successfully as JSON but fails
+     * Jackson's own {@code @JsonTypeInfo} type-id resolution against the target type — here
+     * {@link RequestAttribute} (independent of the discovery DTOs, per the finding), whose
+     * {@code version: "v99"} matches neither {@code RequestAttributeV2} nor {@code
+     * RequestAttributeV3}. Proves the classification survives WebClient's real decode path, not
+     * just a hand-constructed exception.
+     */
+    @Test
+    void processRequest_connectorResponseFailsJacksonTypeResolution_mappedToValidationException() {
+        mockServer.stubFor(get(urlEqualTo("/badtype")).willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json")
+                .withBody("{\"version\":\"v99\",\"uuid\":\"" + UUID.randomUUID() + "\",\"name\":\"x\"}")));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        Assertions.assertThrows(ValidationException.class, () ->
+                BaseApiClient.processRequest(
+                        req -> client.prepareRequest(HttpMethod.GET, connector, false)
+                                .uri("http://localhost:" + mockServer.port() + "/badtype")
+                                .retrieve()
+                                .bodyToMono(RequestAttribute.class)
+                                .block(),
+                        null,
+                        connector));
+    }
+
+    /**
+     * The "wrapped" half of "bare or wrapped": Spring WebFlux's {@code Jackson2JsonDecoder} wraps
+     * a body-decode failure in {@link DecodingException}, carrying the real Jackson exception as
+     * its cause — {@code jacksonFailure} below is captured from an actual failed
+     * {@code ObjectMapper.readValue} call, not hand-constructed, so this proves the classification
+     * against a genuine Jackson exception shape.
+     */
+    @Test
+    void processRequest_wrappedJacksonTypeResolutionFailure_mappedToValidationException() throws Exception {
+        JsonProcessingException jacksonFailure = captureRealJacksonTypeResolutionFailure();
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        Assertions.assertThrows(ValidationException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw new DecodingException("Could not read document", jacksonFailure);
+                }, null, connector));
+    }
+
+    private JsonProcessingException captureRealJacksonTypeResolutionFailure() {
+        try {
+            new ObjectMapper().readValue(
+                    "{\"version\":\"v99\",\"uuid\":\"" + UUID.randomUUID() + "\",\"name\":\"x\"}",
+                    RequestAttribute.class);
+            throw new AssertionError("expected RequestAttribute deserialization to fail for an unregistered version");
+        } catch (JsonProcessingException e) {
+            return e;
         }
     }
 

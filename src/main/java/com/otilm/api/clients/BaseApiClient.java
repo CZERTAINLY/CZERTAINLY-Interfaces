@@ -1,6 +1,7 @@
 package com.otilm.api.clients;
 
 import com.otilm.api.exception.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
@@ -423,6 +424,30 @@ public abstract class BaseApiClient {
             if (unwrapped instanceof ConnectorProblemException pde) {
                 pde.setConnector(connector);
                 throw pde;
+            } else if (isJsonTypeResolutionFailure(unwrapped)) {
+                // Jackson's own @JsonTypeInfo/@JsonSubTypes machinery raises a different,
+                // unclassified exception per failure mode when it cannot resolve (or bind) a
+                // polymorphic discriminator while decoding a connector response body: a missing
+                // type id throws MismatchedInputException, an unregistered-but-present one throws
+                // InvalidTypeIdException, and a creator/enum failure throws ValueInstantiationException
+                // or InvalidFormatException — all four extend JsonProcessingException. None of them
+                // is a PlatformException the platform's error mapping recognizes, so left unclassified
+                // this would surface as an unhandled 500 instead of a mappable 4xx: the same
+                // classification gap B1 closed per hand-rolled discovery deserializer, now paid once
+                // here for every client in the library instead of per polymorphic DTO. Checked before
+                // the IOException branch below because JsonProcessingException extends IOException and
+                // would otherwise be misclassified as a transport failure.
+                //
+                // ValidationException, not a new ConnectorException subtype: this is not the connector
+                // failing to answer (that is ConnectorCommunicationException/ConnectorServerException's
+                // territory) but the connector's response failing to conform to the expected shape —
+                // the same category handleLegacyErrorResponse's 422 case already maps to
+                // ValidationException, and the same exception type B1 chose for the identical
+                // discriminator-resolution problem inside the (now-deleted) hand-rolled deserializers.
+                logger.debug("Connector {} response failed type resolution: {}", connector.getName(), unwrapped.toString());
+                throw new ValidationException(ValidationError.create(
+                        "Connector %s response could not be parsed into the expected type: %s"
+                                .formatted(connector.getName(), unwrapped.getMessage())));
             } else if (unwrapped instanceof IOException
                     || unwrapped instanceof WebClientRequestException
                     || unwrapped instanceof io.netty.handler.timeout.TimeoutException
@@ -461,6 +486,20 @@ public abstract class BaseApiClient {
     @SuppressWarnings("java:S1872") // intentional name match — instanceof would couple to the shaded type
     private static boolean isPoolAcquireExhausted(Throwable t) {
         return "PoolAcquirePendingLimitException".equals(t.getClass().getSimpleName());
+    }
+
+    /**
+     * True for a bare Jackson {@link JsonProcessingException} (covers {@code MismatchedInputException},
+     * {@code InvalidTypeIdException}, {@code ValueInstantiationException}, and enum/creator failures
+     * like {@code InvalidFormatException} — all of them subtypes) or one wrapped as the cause of
+     * another exception. Spring WebFlux's {@code Jackson2JsonDecoder} always wraps a body-decode
+     * failure in {@code org.springframework.core.codec.DecodingException} (confirmed empirically
+     * against a real WebClient decode failure, not assumed), so the wrapped form is the one this
+     * codebase actually exercises today; the bare form is matched too in case some other codepath
+     * (a client calling an ObjectMapper directly) surfaces one unwrapped.
+     */
+    private static boolean isJsonTypeResolutionFailure(Throwable t) {
+        return t instanceof JsonProcessingException || t.getCause() instanceof JsonProcessingException;
     }
 
     private static Mono<ClientResponse> handleHttpExceptions(ClientResponse clientResponse) {
