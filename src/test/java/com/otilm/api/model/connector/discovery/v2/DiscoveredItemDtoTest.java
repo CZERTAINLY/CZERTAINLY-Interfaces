@@ -48,10 +48,10 @@ class DiscoveredItemDtoTest {
         assertEquals(Resource.CERTIFICATE, dto.getResource(), "getResource must delegate to the payload");
 
         String json = mapper.writeValueAsString(dto);
-        // resourceKeyAppearsExactlyOnce already proves "resource" appears once (inside payload);
-        // this proves specifically that the container's own derived resource accessor contributes
-        // no second, top-level "resource" key of its own — checked structurally (parsed JSON tree)
-        // rather than with a regex over the raw string.
+        // The sibling test covering single occurrence already shows the payload carries the only
+        // "resource" key. What matters here is different: the container's derived accessor must
+        // not contribute a second, top-level one. Asserted on the parsed tree rather than the raw
+        // string, so nesting is taken into account.
         JsonNode root = mapper.readTree(json);
         assertFalse(root.has("resource"),
                 "resource must not appear as a sibling of payload; it must live inside payload only");
