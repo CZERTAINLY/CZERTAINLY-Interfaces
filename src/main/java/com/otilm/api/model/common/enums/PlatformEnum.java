@@ -42,6 +42,7 @@ import com.otilm.api.model.core.notification.NotificationDataCategory;
 import com.otilm.api.model.core.notification.RecipientType;
 import com.otilm.api.model.core.oid.OidCategory;
 import com.otilm.api.model.core.other.ResourceEvent;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import com.otilm.api.model.core.secret.SecretState;
 import com.otilm.api.model.client.signing.profile.scheme.ManagedSigningType;
 import com.otilm.api.model.client.signing.profile.scheme.SigningScheme;
@@ -124,6 +125,9 @@ public enum PlatformEnum implements IPlatformEnum {
     // CMP
     CMP_PROTECTION_METHOD(ProtectionMethod.class, "CMP protection method"),
     CMP_PROFILE_VARIANT(CmpProfileVariant.class, "CMP protocol variant"),
+
+    // Protocols
+    PROTOCOL_CHALLENGE_SOURCE(ProtocolChallengeSource.class, "Protocol challenge source"),
 
     // Attributes
     ATTRIBUTE_TYPE(AttributeType.class, "Attribute Type"),

@@ -1,6 +1,7 @@
 package com.otilm.api.model.common.enums;
 
 import com.otilm.api.model.core.notification.NotificationDataCategory;
+import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -19,6 +20,15 @@ class PlatformEnumTest {
         assertNotNull(entry);
         assertEquals(NotificationDataCategory.class, entry.getEnumClass());
         assertEquals("NotificationDataCategory", entry.getCode());
+    }
+
+    @Test
+    void protocolChallengeSourceIsRegistered() {
+        PlatformEnum entry = PlatformEnum.findByClass(ProtocolChallengeSource.class);
+        assertNotNull(entry);
+        assertEquals(PlatformEnum.PROTOCOL_CHALLENGE_SOURCE, entry);
+        assertEquals(ProtocolChallengeSource.class, entry.getEnumClass());
+        assertEquals("ProtocolChallengeSource", entry.getCode());
     }
 
     @Test
