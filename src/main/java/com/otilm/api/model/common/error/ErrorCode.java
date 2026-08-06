@@ -39,7 +39,10 @@ public enum ErrorCode {
     REGISTRATION_NOT_FOUND(ProblemTypeCategory.CONNECTOR, ConnectorInterface.AUTHORITY, "Pre-registration reference not tracked by upstream CA", HttpStatus.UNPROCESSABLE_ENTITY, false),
     RENEWAL_SOURCE_NOT_FOUND(ProblemTypeCategory.CONNECTOR, ConnectorInterface.AUTHORITY, "Source certificate for renewal not found at upstream CA", HttpStatus.NOT_FOUND, false),
     CSR_SUBJECT_MISMATCH(ProblemTypeCategory.CONNECTOR, ConnectorInterface.AUTHORITY, "CSR subject does not match the pre-registration", HttpStatus.UNPROCESSABLE_ENTITY, false),
-    CERTIFICATE_MISMATCH(ProblemTypeCategory.CONNECTOR, ConnectorInterface.AUTHORITY, "Certificate belongs to a different authority than requested", HttpStatus.UNPROCESSABLE_ENTITY, false)
+    CERTIFICATE_MISMATCH(ProblemTypeCategory.CONNECTOR, ConnectorInterface.AUTHORITY, "Certificate belongs to a different authority than requested", HttpStatus.UNPROCESSABLE_ENTITY, false),
+
+    // CONNECTOR + DISCOVERY — interface-specific
+    CHECKPOINT_LOST(ProblemTypeCategory.CONNECTOR, ConnectorInterface.DISCOVERY, "Discovery checkpoint lost — run cannot be resumed", HttpStatus.GONE, false)
     ;
 
     private final ProblemTypeCategory category;

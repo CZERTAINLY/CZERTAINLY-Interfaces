@@ -1,5 +1,6 @@
 package com.otilm.api.interfaces.connector.common.v2;
 
+import com.otilm.api.testsupport.OpenApiProseAssertions;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -8,22 +9,19 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
+import static com.otilm.api.testsupport.OpenApiProseAssertions.assertNoJargon;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Guards the public OpenAPI surface of {@link AttributesController}: every operation is documented,
- * no internal design jargon leaks into the published prose, and the controller extends the NG
- * (common.v2) auth base rather than the legacy one.
+ * no internal design jargon leaks into the published prose (see {@link OpenApiProseAssertions} for
+ * the shared banned-term list), and the controller extends the NG (common.v2) auth base rather
+ * than the legacy one.
  */
 class AttributesControllerDocTest {
-
-    private static final List<String> BANNED_JARGON = List.of(
-            "rung", "dispatch ladder", "expander", "scope chain", "fail closed", "fail-closed",
-            "footgun", "s-1", "dependson", "ladder", "envelope assembly");
 
     @Test
     void everyOperationIsDocumented() {
@@ -57,13 +55,5 @@ class AttributesControllerDocTest {
         assertTrue(supers.contains(
                         "com.otilm.api.interfaces.connector.common.v2.AuthProtectedConnectorController"),
                 "AttributesController must extend the common.v2 auth base, not the legacy one; found " + supers);
-    }
-
-    private static void assertNoJargon(String method, String text) {
-        String lower = text.toLowerCase(Locale.ROOT);
-        for (String banned : BANNED_JARGON) {
-            assertFalse(lower.contains(banned),
-                    "internal jargon \"" + banned + "\" leaked into OpenAPI prose on " + method);
-        }
     }
 }
