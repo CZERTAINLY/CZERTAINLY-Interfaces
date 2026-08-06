@@ -15,7 +15,7 @@ import lombok.ToString;
 
 /**
  * Payload for a discovered {@code keys} item. Location (where the key was found) is not a field
- * here — it belongs on the enclosing {@link DiscoveredItemDto#getMeta()}.
+ * here — it belongs on the enclosing {@link DiscoveredItemDto}'s {@code meta}.
  */
 @Getter
 @Setter

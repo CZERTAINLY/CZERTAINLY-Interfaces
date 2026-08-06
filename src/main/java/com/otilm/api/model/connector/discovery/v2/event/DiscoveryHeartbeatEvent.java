@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 
 /**
  * Flat discovery {@code heartbeat} event: a stream liveness signal with no data of its own beyond
- * {@link #getSentAt()}. Poll-mode consumers never need it.
+ * {@code sentAt}. Poll-mode consumers never need it.
  */
 @Getter
 @Setter

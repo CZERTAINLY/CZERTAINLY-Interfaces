@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 /**
  * A capability a discovery connector may advertise for a specific resource in
- * {@link DiscoverySupportedResourceDto#getCapabilities()}. {@link #getFeatureFlag()} carries the
+ * {@link DiscoverySupportedResourceDto}'s {@code capabilities}. {@link #getFeatureFlag()} carries the
  * invariant that a capability is only valid to advertise if the connector also advertises the
  * interface-level {@link FeatureFlag} it maps to.
  */
