@@ -76,6 +76,41 @@ public interface ProxyClient {
     }
 
     /**
+     * Send a request to the connector and wait for response synchronously with custom timeout,
+     * preserving the upstream HTTP status. Required for callers that distinguish {@code 200 OK}
+     * (synchronous completion) from {@code 202 Accepted} (asynchronous completion) while also
+     * needing an explicit, operation-specific timeout instead of the proxy's default.
+     *
+     * <p>The default implementation falls back to {@link #sendRequest(ApiClientConnectorInfo, String, String, Object, Class, Duration)}
+     * and wraps the result in {@code ResponseEntity.ok(...)}, which collapses every successful upstream status to
+     * {@code 200}. Implementations that need true status fidelity (e.g. for the asynchronous
+     * authority-provider operations contract) <b>must</b> override this method and propagate
+     * the actual upstream status code.</p>
+     *
+     * @param connector    Connector configuration with URL, auth, and proxyId
+     * @param path         Request path (e.g., "/v1/health")
+     * @param method       HTTP method (GET, POST, PUT, DELETE, PATCH)
+     * @param body         Request body (can be null for GET requests)
+     * @param responseType Expected response type class
+     * @param timeout      Custom timeout duration
+     * @param <T>          Response type
+     * @return ResponseEntity carrying the upstream status and deserialized body
+     *         (the body may be {@code null} when the upstream response had no body, e.g. 204)
+     * @throws ConnectorException If request fails or times out
+     */
+    default <T> ResponseEntity<T> sendRequestForEntity(
+            ApiClientConnectorInfo connector,
+            String path,
+            String method,
+            Object body,
+            Class<T> responseType,
+            Duration timeout
+    ) throws ConnectorException {
+        T result = sendRequest(connector, path, method, body, responseType, timeout);
+        return ResponseEntity.ok(result);
+    }
+
+    /**
      * Send a request to the connector and wait for response synchronously with custom timeout.
      *
      * @param connector    Connector configuration with URL, auth, and proxyId
