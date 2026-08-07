@@ -91,6 +91,45 @@ class DiscoveryV2SchemaGenerationTest {
                         + "discriminator to be resolvable against it");
     }
 
+    /**
+     * A component must not be published differently depending on which endpoint's schema graph
+     * reached it, because the assembled document keeps one definition per name and whichever entry
+     * wins is what SDK generators consume.
+     *
+     * <p>Two ways that broke here. A self-referential {@code byResource} made the event path emit a
+     * {@code DiscoveryProgressDto} with {@code byResource} silently missing, and a {@code description}
+     * on a {@code $ref} field was hoisted onto the referenced component, overwriting its own — OpenAPI
+     * 3.0 cannot carry a sibling description, so swagger-core pushes it down. Both would have shipped
+     * a wrong contract to Go and Python connector authors while every Java test stayed green.
+     */
+    @Test
+    void progressComponentsAreIdenticalFromEveryEntryPoint() {
+        Map<String, Schema> viaEvent = ModelConverters.getInstance().readAll(DiscoveryEvent.class);
+        Map<String, Schema> viaStatus = ModelConverters.getInstance().readAll(DiscoveryStatusResponseDto.class);
+
+        // If the event path emits the run-level component at all, it must be the whole thing.
+        Schema<?> progressViaEvent = viaEvent.get("DiscoveryProgressDto");
+        if (progressViaEvent != null) {
+            assertTrue(resolvesProperty(progressViaEvent, "byResource", viaEvent),
+                    "DiscoveryProgressDto reached through DiscoveryEvent must not drop byResource");
+        }
+
+        assertTrue(resolvesProperty(viaStatus.get("DiscoveryProgressDto"), "byResource", viaStatus),
+                "DiscoveryProgressDto must carry byResource on the status path");
+
+        Schema<?> leafViaEvent = viaEvent.get("DiscoveryResourceProgressDto");
+        Schema<?> leafViaStatus = viaStatus.get("DiscoveryResourceProgressDto");
+        assertNotNull(leafViaEvent, "the per-resource leaf component must be emitted on the event path");
+        assertNotNull(leafViaStatus, "the per-resource leaf component must be emitted on the status path");
+        assertEquals(leafViaStatus.getDescription(), leafViaEvent.getDescription(),
+                "the leaf component's description must not depend on which endpoint reached it");
+        assertEquals(leafViaStatus.getProperties().keySet(), leafViaEvent.getProperties().keySet(),
+                "the leaf component's properties must not depend on which endpoint reached it");
+        assertTrue(leafViaEvent.getDescription().startsWith("Progress counters"),
+                "the leaf must keep its own description, not one hoisted from a referencing field; was: "
+                        + leafViaEvent.getDescription());
+    }
+
     @SuppressWarnings("unchecked")
     private boolean resolvesProperty(Schema<?> schema, String property, Map<String, Schema> allSchemas) {
         if (schema == null) {

@@ -13,9 +13,9 @@ import lombok.ToString;
 
 /**
  * Flat discovery {@code progress} event. Extends {@link DiscoveryProgressDto} — rather than
- * duplicating its fields on a separate class — purely to add {@code type} at the top level. Do
- * not add {@code type} directly to {@link DiscoveryProgressDto} itself: every nested
- * {@code byResource} entry, being the same class, would then carry a stray one.
+ * duplicating its fields on a separate class — purely to add {@code type} at the top level. Do not
+ * add {@code type} to {@link DiscoveryProgressDto} itself: only the event is discriminated, and a
+ * nested {@code byResource} entry must never carry one.
  */
 @Getter
 @Setter

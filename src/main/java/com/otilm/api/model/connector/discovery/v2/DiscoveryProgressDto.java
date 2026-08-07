@@ -11,36 +11,32 @@ import lombok.ToString;
 import java.util.Map;
 
 /**
- * Progress detail for a discovery run, reused in two roles: the {@code progress} field of
+ * Run-level progress detail, reused in two roles: the {@code progress} field of
  * {@link DiscoveryStatusResponseDto} (polled), and — via the {@code type}-carrying subclass
  * {@link com.otilm.api.model.connector.discovery.v2.event.DiscoveryProgressEvent} — the flat
- * {@code progress} stream/AMQP event (pushed). Every field here is optional; a connector that
- * cannot estimate progress at all sends an all-null instance.
+ * {@code progress} stream/AMQP event (pushed).
+ *
+ * <p>The run-level counters are inherited from {@link DiscoveryResourceProgressDto}; this class adds
+ * only the optional per-resource breakdown, whose values are the leaf type. That asymmetry is
+ * deliberate and load-bearing in two ways. It states the truth that nesting stops after one level,
+ * and it keeps the generated schema graph finite: when {@code byResource} referred to this same
+ * class, swagger-core emitted a truncated {@code DiscoveryProgressDto} component — missing
+ * {@code byResource} entirely, and carrying the byResource field's description as the component's
+ * own — whenever the graph was entered through {@link DiscoveryEvent}, which is exactly what
+ * resolving the stream endpoint's response does.
  */
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DiscoveryProgressDto {
+public class DiscoveryProgressDto extends DiscoveryResourceProgressDto {
 
-    @Schema(description = "Number of items processed so far; omitted when the connector cannot report it",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private Long processed;
-
-    @Schema(description = "Estimated total number of items for the run; omitted when the connector cannot "
-                  + "produce an estimate",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private Long totalEstimate;
-
-    @Schema(description = "Connector-defined free-text phase label (e.g. \"scanning\", \"enumerating\"); "
-                  + "omitted when the connector has no phase concept",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String phase;
-
-    @Schema(description = "Per-resource breakdown using this same progress shape, keyed by resource code "
-                  + "(e.g. \"certificates\", \"keys\"); omitted when the connector reports only run-level progress",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+    // No description here on purpose. OpenAPI 3.0 cannot carry a description alongside a $ref, so
+    // swagger-core hoists a referencing field's description onto the referenced component — which
+    // would overwrite DiscoveryResourceProgressDto's own description for every other user of it.
+    // The prose lives on that class instead; see its class-level @Schema.
+    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             propertyNames = Resource.class)
-    private Map<Resource, DiscoveryProgressDto> byResource;
+    private Map<Resource, DiscoveryResourceProgressDto> byResource;
 }
