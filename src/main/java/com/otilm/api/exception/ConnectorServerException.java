@@ -12,6 +12,11 @@ public class ConnectorServerException extends ConnectorException {
         this.httpStatus = httpStatus;
     }
 
+    public ConnectorServerException(String message, Throwable cause, HttpStatus httpStatus) {
+        super(message, cause);
+        this.httpStatus = httpStatus;
+    }
+
     public ConnectorServerException(HttpStatus httpStatus, ConnectorDto connector) {
         super(connector);
         this.httpStatus = httpStatus;

@@ -11,7 +11,10 @@ import com.otilm.api.model.common.attribute.common.content.data.SecretAttributeC
 import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
+import com.otilm.api.exception.ConnectorClientException;
 import com.otilm.api.exception.ConnectorCommunicationException;
+import com.otilm.api.exception.ConnectorServerException;
+import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.core.connector.AuthType;
 import com.otilm.api.model.core.connector.ConnectorStatus;
 import com.otilm.api.model.core.proxy.ProxyDto;
@@ -19,7 +22,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.codec.DecodingException;
+import org.springframework.core.io.buffer.DataBufferLimitException;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.ByteArrayInputStream;
@@ -53,6 +59,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class BaseApiClientTest {
 
+    /**
+     * The default in-memory response cap, read from {@link ClientTuning} rather than restated here:
+     * these cases only need "the cap this library ships with", and a literal copy would silently
+     * disagree with the record if the default ever moved.
+     */
+    private static final int DEFAULT_MAX_IN_MEMORY = ClientTuning.defaults().maxInMemorySize();
+
     private WireMockServer mockServer;
     private TestApiClient client;
 
@@ -75,6 +88,29 @@ class BaseApiClientTest {
         } finally {
             BaseApiClient.resetConnectorClientForTest();
         }
+    }
+
+    /**
+     * A zero-length body is the case {@code bodyToMono} completes empty for, so without
+     * {@code defaultIfEmpty} the {@code flatMap} never runs, the filter completes empty, and the
+     * failure escapes as an unmapped {@code IllegalStateException} instead of the mapped connector
+     * exception. Realistic from a reverse proxy that sets {@code text/html} and sends no body.
+     */
+    @Test
+    void unexpectedContentTypeWithEmptyBodyStillMapsToAConnectorException() {
+        mockServer.stubFor(get(urlEqualTo("/html-empty")).willReturn(aResponse()
+                .withStatus(502)
+                .withHeader("Content-Type", "text/html")));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        Assertions.assertThrows(ConnectorCommunicationException.class, () ->
+                BaseApiClient.processRequest(r -> r
+                                .uri("http://localhost:" + mockServer.port() + "/html-empty")
+                                .retrieve()
+                                .toBodilessEntity()
+                                .block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false),
+                        connector));
     }
 
     @Test
@@ -294,7 +330,7 @@ class BaseApiClientTest {
     void prepareRequest_slowResponse_failsFastWithinResponseTimeout() {
         BaseApiClient.resetConnectorClientForTest(); // claim write-once tuning for this test
         WebClient tuned = BaseApiClient.prepareWebClient(
-                new ClientTuning(Duration.ofSeconds(1), Duration.ofMillis(500), 5, Duration.ofSeconds(1)));
+                new ClientTuning(Duration.ofSeconds(1), Duration.ofMillis(500), 5, Duration.ofSeconds(1), DEFAULT_MAX_IN_MEMORY));
         TestApiClient tunedClient = new TestApiClient(tuned);
         mockServer.stubFor(get(urlEqualTo("/slow")).willReturn(aResponse().withStatus(200).withFixedDelay(5000)));
         TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
@@ -334,7 +370,7 @@ class BaseApiClientTest {
     void processRequest_responseTimeout_mappedToConnectorCommunicationException() {
         BaseApiClient.resetConnectorClientForTest(); // claim write-once tuning for this test
         WebClient tuned = BaseApiClient.prepareWebClient(
-                new ClientTuning(Duration.ofSeconds(1), Duration.ofMillis(500), 5, Duration.ofSeconds(1)));
+                new ClientTuning(Duration.ofSeconds(1), Duration.ofMillis(500), 5, Duration.ofSeconds(1), DEFAULT_MAX_IN_MEMORY));
         TestApiClient tunedClient = new TestApiClient(tuned);
         mockServer.stubFor(get(urlEqualTo("/slow")).willReturn(aResponse().withStatus(200).withFixedDelay(5000)));
         TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
@@ -345,6 +381,227 @@ class BaseApiClientTest {
                                 .uri("http://localhost:" + mockServer.port() + "/slow")
                                 .retrieve()
                                 .toBodilessEntity()
+                                .block(),
+                        null,
+                        connector));
+    }
+
+    /**
+     * A response exceeding the codec's {@code maxInMemorySize} (here: {@link ClientTuning}) must
+     * be classified as a connector fault ({@link ConnectorServerException}), not escape unmapped —
+     * {@code WebClient.retrieve()} wraps the codec's {@code DataBufferLimitException} into a
+     * {@link org.springframework.web.reactive.function.client.WebClientResponseException} while
+     * decoding the response body, which callers declaring {@code throws ConnectorException} could
+     * not otherwise catch, and which would never be attributed to a connector. Decoding to
+     * {@code String} (rather than a DTO) keeps this test's stubbed body trivially "valid" for any
+     * size, isolating the size gate from any parse-validity concern.
+     *
+     * <p>The mapped status must be the one the connector actually sent — {@code 200} here — not a
+     * synthesized {@code 413}. Core's {@code ExceptionHandlingAdvice.handleConnectorServerException}
+     * appends "Original response code &lt;status&gt;" to the operator-facing error verbatim, so a
+     * synthesized 413 would assert an upstream status that never existed and send operators looking
+     * for a request-size problem instead of at this client's read cap.
+     */
+    @Test
+    void processRequest_oversizedResponse_mappedToConnectorServerException() {
+        BaseApiClient.resetConnectorClientForTest(); // claim write-once tuning for this test
+        int smallCap = 1024;
+        WebClient tuned = BaseApiClient.prepareWebClient(
+                new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(10), 5, Duration.ofSeconds(1), smallCap));
+        TestApiClient tunedClient = new TestApiClient(tuned);
+        mockServer.stubFor(get(urlEqualTo("/oversized")).willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/plain")
+                .withBody("a".repeat(smallCap * 4))));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(
+                        req -> tunedClient.prepareRequest(HttpMethod.GET, connector, false)
+                                .uri("http://localhost:" + mockServer.port() + "/oversized")
+                                .retrieve()
+                                .toEntity(String.class)
+                                .block(),
+                        null,
+                        connector));
+
+        // The stub answered 200; that is what must be reported, and it must NOT be PAYLOAD_TOO_LARGE.
+        Assertions.assertEquals(HttpStatus.OK, ex.getHttpStatus());
+        Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    /**
+     * A read-limit breach that reaches {@code processRequest} without a
+     * {@link org.springframework.web.reactive.function.client.WebClientResponseException} around it
+     * carries no upstream status at all — there is nothing to report. {@link HttpStatus#BAD_GATEWAY}
+     * is the honest answer (the connector's response was unusable and it sits upstream of us), and
+     * again not a synthesized {@code 413}.
+     */
+    @Test
+    void processRequest_bareOversizedResponse_reportsBadGatewayRatherThanASynthesizedStatus() {
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw new DataBufferLimitException("Exceeded limit on max bytes to buffer : 1024");
+                }, null, connector));
+
+        Assertions.assertEquals(HttpStatus.BAD_GATEWAY, ex.getHttpStatus());
+        Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    /**
+     * The read-limit breach need not sit at the top of the chain or one level under it. Spring's
+     * {@code Jackson2JsonDecoder} raises a {@link DecodingException} around a decode failure — the
+     * same wrapping {@code isJsonTypeResolutionFailure} already has to see through — so a breach can
+     * arrive two or more levels down. Matching only the bare form and the immediate cause of a
+     * {@code WebClientResponseException} let that escape to {@code processRequest}'s catch-all and
+     * surface to the caller as a Spring-internal type, which is precisely the gap the
+     * oversized-response branch exists to close.
+     */
+    @Test
+    void processRequest_deeplyWrappedOversizedResponse_stillMappedToConnectorServerException() {
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+        DataBufferLimitException limitBreach = new DataBufferLimitException("Exceeded limit on max bytes to buffer : 1024");
+        // Two levels of wrapping: the decoder's DecodingException, itself wrapped once more.
+        DecodingException decodingFailure = new DecodingException("Could not read document", limitBreach);
+        IllegalStateException outer = new IllegalStateException("wrapped once more", decodingFailure);
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw outer;
+                }, null, connector));
+
+        Assertions.assertEquals(connector, ex.getConnector());
+        Assertions.assertSame(outer, ex.getCause());
+    }
+
+    /**
+     * The cause-chain walk runs inside an exception handler, so it must terminate on a cyclic chain —
+     * an infinite loop there would be far worse than the misclassification the walk prevents. The two
+     * exceptions below cause each other, which the walk's cheap self-cause check cannot detect: only
+     * its depth bound stops it. Preemptive timeout rather than a plain assertion because the failure
+     * mode being guarded is a hang, which no assertion would ever reach.
+     */
+    @Test
+    void processRequest_cyclicCauseChain_terminatesInsteadOfSpinning() {
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+        CyclicCauseException first = new CyclicCauseException("cycle head");
+        CyclicCauseException second = new CyclicCauseException("cycle tail");
+        first.causedBy(second);
+        second.causedBy(first);
+
+        Assertions.assertTimeoutPreemptively(Duration.ofSeconds(10), () ->
+                Assertions.assertThrows(ValidationException.class, () ->
+                        BaseApiClient.processRequest(req -> {
+                            throw first;
+                        }, null, connector)));
+    }
+
+    /**
+     * A cause cycle of length two. Deliberately not a self-cause: {@code a -> b -> a} is invisible to
+     * an {@code exception == exception.getCause()} check, so only a bounded walk survives it.
+     * {@link ValidationException} is the carrier so {@code processRequest} classifies it as a business
+     * error and logs the message alone — logging the throwable would hand the cycle to the logging
+     * framework's own stack-trace renderer, testing that instead of this class.
+     */
+    private static class CyclicCauseException extends ValidationException {
+        private transient Throwable partner;
+
+        CyclicCauseException(String message) {
+            super(message);
+        }
+
+        void causedBy(Throwable cause) {
+            this.partner = cause;
+        }
+
+        @Override
+        public synchronized Throwable getCause() {
+            return partner;
+        }
+    }
+
+    /**
+     * A connector answering an error status with a zero-length body must still produce the mapped
+     * {@link ConnectorClientException}. {@code bodyToMono(String.class)} completes empty for a bodiless
+     * response and an empty source never runs {@code flatMap}, so without a default the whole response
+     * filter completes empty: {@code requireResponse} then sees a null entity and throws
+     * {@link IllegalStateException}, which {@code processRequest} rethrows unmapped — past every caller
+     * catching {@code ConnectorException}, and losing the status entirely. A Go connector's
+     * {@code w.WriteHeader(400)} sends exactly this shape.
+     */
+    @Test
+    void processRequest_bodilessClientError_stillMappedToConnectorClientException() {
+        mockServer.stubFor(get(urlEqualTo("/bodiless-400")).willReturn(aResponse().withStatus(400)));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorClientException ex = Assertions.assertThrows(ConnectorClientException.class, () ->
+                BaseApiClient.processRequest(
+                        req -> BaseApiClient.requireResponse(client.prepareRequest(HttpMethod.GET, connector, false)
+                                .uri("http://localhost:" + mockServer.port() + "/bodiless-400")
+                                .retrieve()
+                                .toEntity(String.class), "bodiless 400"),
+                        null,
+                        connector));
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, ex.getHttpStatus());
+        Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    /** The 5xx half of the bodiless-error mapping; see the 4xx case above for why it is needed. */
+    @Test
+    void processRequest_bodilessServerError_stillMappedToConnectorServerException() {
+        mockServer.stubFor(get(urlEqualTo("/bodiless-500")).willReturn(aResponse().withStatus(500)));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(
+                        req -> BaseApiClient.requireResponse(client.prepareRequest(HttpMethod.GET, connector, false)
+                                .uri("http://localhost:" + mockServer.port() + "/bodiless-500")
+                                .retrieve()
+                                .toEntity(String.class), "bodiless 500"),
+                        null,
+                        connector));
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ex.getHttpStatus());
+        Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    /**
+     * Write-once tuning has two halves, and only the first was covered. A later caller asking for
+     * different tuning is warned and ignored — but it still receives a {@code WebClient}, and that
+     * client must enforce the tuning that <em>won</em>, not the tuning it asked for. Every other case
+     * in this class claims the tuning first, so the ignored-caller branch never ran: building the
+     * returned client from the caller's own tuning instead of the applied tuning would hand out a
+     * client whose read cap disagrees with the one live {@code HttpClient}, and the suite would stay
+     * green.
+     *
+     * <p>The stubbed body is sized between the two caps — over the cap that won, comfortably under the
+     * one the second caller asked for — so only the winning cap can produce a failure here.
+     */
+    @Test
+    void prepareWebClient_laterDifferingTuning_stillEnforcesTheWinningCap() {
+        BaseApiClient.resetConnectorClientForTest(); // claim write-once tuning for this test
+        int winningCap = 1024;
+        BaseApiClient.prepareWebClient(
+                new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(10), 5, Duration.ofSeconds(1), winningCap));
+        WebClient later = BaseApiClient.prepareWebClient(
+                new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(10), 5, Duration.ofSeconds(1), winningCap * 64));
+        TestApiClient laterClient = new TestApiClient(later);
+
+        mockServer.stubFor(get(urlEqualTo("/between-caps")).willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/plain")
+                .withBody("a".repeat(winningCap * 4))));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(
+                        req -> laterClient.prepareRequest(HttpMethod.GET, connector, false)
+                                .uri("http://localhost:" + mockServer.port() + "/between-caps")
+                                .retrieve()
+                                .toEntity(String.class)
                                 .block(),
                         null,
                         connector));
