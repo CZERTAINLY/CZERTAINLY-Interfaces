@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -92,17 +93,36 @@ class DiscoveryEventTest {
     }
 
     @Test
-    void resultBatchDefaultsItemsToEmptyList() {
-        // An empty batch is a first-class case, not an omission: it must default to [] rather
-        // than null (which JsonInclude.NON_NULL would then omit).
-        assertTrue(new DiscoveryResultBatchEvent().getItems().isEmpty(),
-                "items must default to an empty list, not null");
+    void resultBatchDoesNotDefaultItemsToAnEmptyList() {
+        // An unset items must stay null so @NotNull catches it. A field initializer would make an
+        // event that omits items validate as an empty batch instead of being rejected.
+        DiscoveryResultBatchEvent batch = new DiscoveryResultBatchEvent();
+
+        assertNull(batch.getItems(), "items must not be defaulted to an empty list");
+
+        Set<ConstraintViolation<DiscoveryResultBatchEvent>> violations = VALIDATOR.validate(batch);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items")),
+                "an unset items must fail the @NotNull constraint rather than pass as an empty batch");
+    }
+
+    @Test
+    void resultBatchOmittingItemsOnTheWireFailsValidation() throws Exception {
+        DiscoveryEvent event = mapper.readValue("{\"type\":\"resultBatch\"}", DiscoveryEvent.class);
+
+        DiscoveryResultBatchEvent batch = assertInstanceOf(DiscoveryResultBatchEvent.class, event);
+        assertNull(batch.getItems(), "an omitted items must deserialize to null, not to an empty list");
+
+        Set<ConstraintViolation<DiscoveryResultBatchEvent>> violations = VALIDATOR.validate(batch);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items")),
+                "an event omitting items must be rejected, not read as an empty batch");
     }
 
     @Test
     void resultBatchEmptyBatchSerializesItemsAsEmptyArray() throws Exception {
         DiscoveryResultBatchEvent batch = new DiscoveryResultBatchEvent();
-        // items left at its default (empty list): this is an empty batch, not an omission.
+        batch.setItems(List.of()); // an empty batch: explicit [], which is what the contract requires
+
+        assertTrue(VALIDATOR.validate(batch).isEmpty(), "an explicit empty batch must be valid");
 
         String reSerialized = mapper.writeValueAsString(batch);
         assertTrue(reSerialized.contains("\"items\":[]"), "an empty batch must serialize items as [], not omit it");
@@ -116,6 +136,19 @@ class DiscoveryEventTest {
         Set<ConstraintViolation<DiscoveryResultBatchEvent>> violations = VALIDATOR.validate(batch);
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items")),
                 "a null items list must fail the @NotNull constraint");
+    }
+
+    @Test
+    void resultBatchNullItemElementIsRejected() {
+        DiscoveryResultBatchEvent batch = new DiscoveryResultBatchEvent();
+        batch.setItems(Collections.singletonList(null));
+
+        Set<ConstraintViolation<DiscoveryResultBatchEvent>> violations = VALIDATOR.validate(batch);
+        // A container-element constraint reports the element node, so the path a caller sees for a
+        // null entry is items[0].<list element>, not items[0].
+        assertTrue(violations.stream()
+                        .anyMatch(v -> v.getPropertyPath().toString().equals("items[0].<list element>")),
+                "a null entry inside items must be rejected, not counted as a discovered item");
     }
 
     @Test

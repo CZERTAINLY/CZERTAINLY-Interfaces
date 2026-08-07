@@ -7,11 +7,18 @@ import com.otilm.api.model.common.attribute.common.properties.MetadataAttributeP
 import com.otilm.api.model.common.attribute.v3.MetadataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
 import com.otilm.api.model.core.auth.Resource;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -21,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DiscoveryV2RequestDtoTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
     void resourceAttributesKeysUseWireCodes() throws Exception {
@@ -89,6 +97,74 @@ class DiscoveryV2RequestDtoTest {
         DiscoveryInitiateRequestDto back = mapper.readValue(json, DiscoveryInitiateRequestDto.class);
         assertEquals(runId, back.getRunId());
         assertEquals(List.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY), back.getResources());
+    }
+
+    @Test
+    void initiateRequestNullResourceElementIsRejected() {
+        // @NotEmpty only rejects a missing or empty list, so [null] would otherwise pass while the
+        // initiate contract requires every requested resource to be validated as supported.
+        DiscoveryInitiateRequestDto onlyNull = new DiscoveryInitiateRequestDto();
+        onlyNull.setRunId(UUID.randomUUID());
+        onlyNull.setResources(Collections.singletonList(null));
+
+        DiscoveryInitiateRequestDto trailingNull = new DiscoveryInitiateRequestDto();
+        trailingNull.setRunId(UUID.randomUUID());
+        trailingNull.setResources(Arrays.asList(Resource.CERTIFICATE, null));
+
+        // A container-element constraint reports the element node, so the path a caller sees for a
+        // null entry is resources[i].<list element>, not resources[i].
+        Set<ConstraintViolation<DiscoveryInitiateRequestDto>> onlyNullViolations = VALIDATOR.validate(onlyNull);
+        assertTrue(onlyNullViolations.stream()
+                        .anyMatch(v -> v.getPropertyPath().toString().equals("resources[0].<list element>")),
+                "a resources list holding only null must be rejected");
+
+        Set<ConstraintViolation<DiscoveryInitiateRequestDto>> trailingNullViolations = VALIDATOR.validate(trailingNull);
+        assertTrue(trailingNullViolations.stream()
+                        .anyMatch(v -> v.getPropertyPath().toString().equals("resources[1].<list element>")),
+                "a null alongside a real resource type must still be rejected");
+    }
+
+    @Test
+    void initiateRequestWithRealResourcesIsValid() {
+        DiscoveryInitiateRequestDto dto = new DiscoveryInitiateRequestDto();
+        dto.setRunId(UUID.randomUUID());
+        dto.setResources(List.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY));
+
+        assertTrue(VALIDATOR.validate(dto).isEmpty(), "a fully populated initiate request must be valid");
+    }
+
+    @Test
+    void drainRequestMaxBytesAboveTheTransportCapIsRejected() {
+        // The published schema maximum and the bean-validation bound both come from MAX_BYTES_CAP,
+        // so a value the document forbids is one the validator refuses too.
+        DiscoveryDrainRequestDto atCap = new DiscoveryDrainRequestDto();
+        atCap.setRunId(UUID.randomUUID());
+        atCap.setMaxBytes(DiscoveryDrainRequestDto.MAX_BYTES_CAP);
+
+        DiscoveryDrainRequestDto overCap = new DiscoveryDrainRequestDto();
+        overCap.setRunId(UUID.randomUUID());
+        overCap.setMaxBytes(DiscoveryDrainRequestDto.MAX_BYTES_CAP + 1);
+
+        assertTrue(VALIDATOR.validate(atCap).isEmpty(), "maxBytes exactly at the cap must be accepted");
+        assertTrue(VALIDATOR.validate(overCap).stream()
+                        .anyMatch(v -> v.getPropertyPath().toString().equals("maxBytes")),
+                "maxBytes above the transport cap must be rejected, not merely documented as too large");
+    }
+
+    @Test
+    void drainRequestNegativeCursorAndNonPositiveLimitsAreRejected() {
+        DiscoveryDrainRequestDto dto = new DiscoveryDrainRequestDto();
+        dto.setRunId(UUID.randomUUID());
+        dto.setAfterSequence(-1L);
+        dto.setMaxItems(0);
+        dto.setMaxBytes(0L);
+
+        Set<String> paths = VALIDATOR.validate(dto).stream()
+                .map(v -> v.getPropertyPath().toString())
+                .collect(Collectors.toSet());
+        assertTrue(paths.contains("afterSequence"), "a negative cursor must be rejected");
+        assertTrue(paths.contains("maxItems"), "a non-positive maxItems must be rejected");
+        assertTrue(paths.contains("maxBytes"), "a non-positive maxBytes must be rejected");
     }
 
     @Test

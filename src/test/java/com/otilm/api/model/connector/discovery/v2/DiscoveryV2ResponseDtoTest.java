@@ -14,6 +14,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -83,20 +84,42 @@ class DiscoveryV2ResponseDtoTest {
     }
 
     @Test
-    void resultsResponseDefaultsItemsToEmptyList() {
-        // An empty final page is a first-class case the full-ack rule depends on: it must
-        // default to [] rather than to null (which JsonInclude.NON_NULL would then omit).
+    void resultsResponseDoesNotDefaultItemsToAnEmptyList() {
+        // An unset items must stay null so @NotNull catches it. A field initializer would make an
+        // omitted items validate as "no discoveries" and let Core stop or drain on a malformed
+        // response.
         DiscoveryResultsResponseDto dto = new DiscoveryResultsResponseDto();
+        dto.setHighestSequence(7L);
+        dto.setMore(false);
 
-        assertTrue(dto.getItems().isEmpty(), "items must default to an empty list, not null");
+        assertNull(dto.getItems(), "items must not be defaulted to an empty list");
+
+        Set<ConstraintViolation<DiscoveryResultsResponseDto>> violations = VALIDATOR.validate(dto);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items")),
+                "an unset items must fail the @NotNull constraint rather than pass as an empty page");
+    }
+
+    @Test
+    void resultsResponseOmittingItemsOnTheWireFailsValidation() throws Exception {
+        // The connector-response case: a body that simply has no items key at all.
+        String json = "{\"highestSequence\":7,\"more\":false}";
+
+        DiscoveryResultsResponseDto dto = mapper.readValue(json, DiscoveryResultsResponseDto.class);
+        assertNull(dto.getItems(), "an omitted items must deserialize to null, not to an empty list");
+
+        Set<ConstraintViolation<DiscoveryResultsResponseDto>> violations = VALIDATOR.validate(dto);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items")),
+                "a response omitting items must be rejected, not read as \"no discoveries\"");
     }
 
     @Test
     void resultsResponseEmptyFinalPageSerializesItemsAsEmptyArray() throws Exception {
         DiscoveryResultsResponseDto dto = new DiscoveryResultsResponseDto();
+        dto.setItems(List.of()); // the empty final page: explicit [], which is what the contract requires
         dto.setHighestSequence(7L);
         dto.setMore(false);
-        // items left at its default (empty list): this is the empty final page, not an omission.
+
+        assertTrue(VALIDATOR.validate(dto).isEmpty(), "an explicit empty page must be valid");
 
         String json = mapper.writeValueAsString(dto);
         assertTrue(json.contains("\"items\":[]"), "an empty final page must serialize items as [], not omit it");
@@ -119,6 +142,34 @@ class DiscoveryV2ResponseDtoTest {
         Set<ConstraintViolation<DiscoveryResultsResponseDto>> violations = VALIDATOR.validate(dto);
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items")),
                 "a null items list must fail the @NotNull constraint");
+    }
+
+    @Test
+    void resultsResponseNullItemElementIsRejected() {
+        DiscoveryResultsResponseDto dto = new DiscoveryResultsResponseDto();
+        dto.setItems(Collections.singletonList(null));
+        dto.setHighestSequence(7L);
+        dto.setMore(false);
+
+        Set<ConstraintViolation<DiscoveryResultsResponseDto>> violations = VALIDATOR.validate(dto);
+        // A container-element constraint reports the element node, so the path a caller sees for a
+        // null entry is items[0].<list element>, not items[0].
+        assertTrue(violations.stream()
+                        .anyMatch(v -> v.getPropertyPath().toString().equals("items[0].<list element>")),
+                "a null entry inside items must be rejected, not counted as a discovered item");
+    }
+
+    @Test
+    void resultsResponseNegativeHighestSequenceIsRejected() {
+        DiscoveryResultsResponseDto dto = new DiscoveryResultsResponseDto();
+        dto.setItems(List.of());
+        dto.setHighestSequence(-1L);
+        dto.setMore(false);
+
+        Set<ConstraintViolation<DiscoveryResultsResponseDto>> violations = VALIDATOR.validate(dto);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("highestSequence")),
+                "a negative highestSequence must be rejected: 0 is the empty-run cursor, and item "
+                        + "sequences start at 1");
     }
 
     @Test
@@ -176,6 +227,28 @@ class DiscoveryV2ResponseDtoTest {
         Set<ConstraintViolation<DiscoveryStatusResponseDto>> violations = VALIDATOR.validate(dto);
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("highestSequence")),
                 "an omitted highestSequence must fail the @NotNull constraint rather than silently default to 0");
+    }
+
+    @Test
+    void statusResponseNegativeHighestSequenceIsRejected() {
+        DiscoveryStatusResponseDto dto = new DiscoveryStatusResponseDto();
+        dto.setState(DiscoveryRunState.RUNNING);
+        dto.setHighestSequence(-1L);
+
+        Set<ConstraintViolation<DiscoveryStatusResponseDto>> violations = VALIDATOR.validate(dto);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("highestSequence")),
+                "a negative highestSequence must be rejected: 0 is the empty-run cursor, and item "
+                        + "sequences start at 1");
+    }
+
+    @Test
+    void statusResponseAcceptsZeroHighestSequenceForARunWithNoItemsYet() {
+        DiscoveryStatusResponseDto dto = new DiscoveryStatusResponseDto();
+        dto.setState(DiscoveryRunState.RUNNING);
+        dto.setHighestSequence(0L);
+
+        assertTrue(VALIDATOR.validate(dto).isEmpty(),
+                "0 is the legitimate cursor for a run that has produced no items yet");
     }
 
     @Test
@@ -307,6 +380,37 @@ class DiscoveryV2ResponseDtoTest {
         MetadataAttributeV3 backMeta = assertInstanceOf(MetadataAttributeV3.class, back.getMeta().get(0));
         assertEquals("cursor", backMeta.getName());
         assertEquals("def456", ((StringAttributeContentV3) backMeta.getContent().get(0)).getData());
+    }
+
+    @Test
+    void initiateResponseToStringExcludesMeta() {
+        // The handle is dropped from toString outright, not trusted to render harmlessly:
+        // MetadataAttributeV3's own toString walks content and properties, so every entry's
+        // structure and label reaches the log line, one nested record per attribute.
+        DiscoveryInitiateResponseDto dto = new DiscoveryInitiateResponseDto();
+        dto.setMeta(List.of(metadataAttribute("runHandleCursor", "opaque-run-handle-blob")));
+
+        String str = dto.toString();
+
+        assertFalse(str.contains("meta"),
+                "toString must not mention the opaque run handle, which can reach 64 KB: " + str);
+        assertFalse(str.contains("runHandleCursor"), "toString must not name the handle's entries: " + str);
+        assertFalse(str.contains("opaque-run-handle-blob"), "toString must not write handle content: " + str);
+    }
+
+    @Test
+    void stopResponseToStringExcludesMeta() {
+        DiscoveryStopResponseDto dto = new DiscoveryStopResponseDto();
+        dto.setMeta(List.of(metadataAttribute("resumeCheckpointCursor", "resume-checkpoint-blob")));
+
+        String str = dto.toString();
+
+        assertFalse(str.contains("meta"),
+                "toString must not mention the resume checkpoint, which can reach 64 KB: " + str);
+        assertFalse(str.contains("resumeCheckpointCursor"),
+                "toString must not name the checkpoint's entries: " + str);
+        assertFalse(str.contains("resume-checkpoint-blob"),
+                "toString must not write checkpoint content: " + str);
     }
 
     private MetadataAttribute metadataAttribute(String name, String value) {

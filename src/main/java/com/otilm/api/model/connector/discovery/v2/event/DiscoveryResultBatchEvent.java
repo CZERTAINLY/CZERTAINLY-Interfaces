@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,9 +31,10 @@ public class DiscoveryResultBatchEvent implements DiscoveryEvent {
     @NotNull(message = "type is required")
     private DiscoveryEventType type = DiscoveryEventType.RESULT_BATCH;
 
-    @Schema(description = "Discovered items in this batch, each carrying its own per-run sequence",
+    @Schema(description = "Discovered items in this batch, each carrying its own per-run sequence. A producer "
+                  + "that means \"this batch has no items\" MUST send an explicit empty array; omitting the "
+                  + "field is rejected rather than read as \"no discoveries\".",
             requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "items is required")
-    @Valid
-    private List<DiscoveredItemDto> items = new ArrayList<>();
+    @NotNull(message = "items is required (send an explicit empty array for a batch with no items)")
+    private List<@NotNull(message = "items must not contain a null item") @Valid DiscoveredItemDto> items;
 }

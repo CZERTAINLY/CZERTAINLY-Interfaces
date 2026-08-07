@@ -264,6 +264,43 @@ class DiscoveredItemDtoTest {
     }
 
     @Test
+    void missingSequenceIsRejectedRatherThanDefaultedToZero() throws Exception {
+        // A boxed sequence is what makes this catchable: a primitive long would serialize a
+        // forgotten cursor as 0, which contradicts the published minimum of 1.
+        DiscoveredItemDto fresh = new DiscoveredItemDto();
+        assertNull(fresh.getSequence(), "sequence must not be defaulted to 0");
+
+        DiscoveredItemDto dto = mapper.readValue(
+                "{\"uniqueRef\":\"r\",\"payload\":{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"}}",
+                DiscoveredItemDto.class);
+        assertNull(dto.getSequence(), "an omitted sequence must deserialize to null, not to 0");
+
+        Set<ConstraintViolation<DiscoveredItemDto>> violations = VALIDATOR.validate(dto);
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("sequence")),
+                "an omitted sequence must fail the @NotNull constraint");
+    }
+
+    @Test
+    void zeroAndNegativeSequenceAreRejected() {
+        DiscoveredItemDto zero = new DiscoveredItemDto();
+        zero.setSequence(0L);
+        zero.setUniqueRef("r");
+        zero.setPayload(certificatePayload());
+
+        DiscoveredItemDto negative = new DiscoveredItemDto();
+        negative.setSequence(-1L);
+        negative.setUniqueRef("r");
+        negative.setPayload(certificatePayload());
+
+        assertTrue(VALIDATOR.validate(zero).stream()
+                        .anyMatch(v -> v.getPropertyPath().toString().equals("sequence")),
+                "sequence 0 must be rejected: the published minimum is 1");
+        assertTrue(VALIDATOR.validate(negative).stream()
+                        .anyMatch(v -> v.getPropertyPath().toString().equals("sequence")),
+                "a negative sequence must be rejected");
+    }
+
+    @Test
     void emptyPayloadCascadesIntoPayloadConstraintsViaValid() {
         DiscoveredItemDto dto = new DiscoveredItemDto();
         dto.setSequence(1L);
@@ -275,14 +312,17 @@ class DiscoveredItemDtoTest {
                 "@Valid must cascade into payload so certificateData's @NotBlank is actually evaluated");
     }
 
+    private DiscoveredCertificateDto certificatePayload() {
+        DiscoveredCertificateDto cert = new DiscoveredCertificateDto();
+        cert.setCertificateData("Y2VydC1kYXRh");
+        return cert;
+    }
+
     private DiscoveredItemDto certificateItem() {
         DiscoveredItemDto dto = new DiscoveredItemDto();
         dto.setSequence(1L);
         dto.setUniqueRef("cert-ref-1");
-
-        DiscoveredCertificateDto cert = new DiscoveredCertificateDto();
-        cert.setCertificateData("Y2VydC1kYXRh");
-        dto.setPayload(cert);
+        dto.setPayload(certificatePayload());
 
         MetadataAttributeV3 metaAttribute = new MetadataAttributeV3();
         metaAttribute.setUuid("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");

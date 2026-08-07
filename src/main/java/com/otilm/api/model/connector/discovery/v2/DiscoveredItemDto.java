@@ -34,8 +34,9 @@ public class DiscoveredItemDto {
                   + "value after which the next batch starts",
             requiredMode = Schema.RequiredMode.REQUIRED,
             minimum = "1")
+    @NotNull(message = "sequence is required")
     @Positive(message = "sequence must be positive")
-    private long sequence;
+    private Long sequence;
 
     @Schema(description = "Connector-side natural key that Core uses to dedupe this item across drains and retries",
             requiredMode = Schema.RequiredMode.REQUIRED)
