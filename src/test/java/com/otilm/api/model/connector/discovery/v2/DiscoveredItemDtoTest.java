@@ -13,10 +13,11 @@ import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.common.enums.cryptography.KeyFormat;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.core.auth.Resource;
+import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -33,7 +34,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DiscoveredItemDtoTest {
 
     private final ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
-    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
+    @AutoClose
+    private static final ValidatorFixture VALIDATORS = new ValidatorFixture();
+    private static final Validator VALIDATOR = VALIDATORS.validator();
 
     @Test
     void resourceKeyAppearsExactlyOnce() throws Exception {

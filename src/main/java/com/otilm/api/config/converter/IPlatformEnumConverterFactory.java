@@ -8,16 +8,26 @@ import org.springframework.core.convert.converter.ConverterFactory;
  * Converts a {@code @PathVariable} or {@code @RequestParam} string to any {@link IPlatformEnum}
  * constant by its {@link IPlatformEnum#getCode()} wire code, not its Java constant name.
  *
- * <p>Spring's default enum binding calls {@code Enum.valueOf(String)}, which matches only the
- * Java constant name (e.g. {@code CERTIFICATE}). Every platform enum in this library — including
- * {@code Resource}, used by {@code DiscoveryMetadataController#listResourceAttributes}'s
- * {@code GET /v2/discoveryProvider/{resource}/attributes} — serializes and is addressed on the
- * wire by its {@link IPlatformEnum#getCode()} instead (e.g. {@code "certificates"}), so a
- * connector that does not register a converter for that path variable gets a 400 on every call
- * with a real resource code. Registering this single factory (for example, via
- * {@code WebMvcConfigurer#addFormatters}: {@code registry.addConverterFactory(new
- * IPlatformEnumConverterFactory())}) covers every current and future {@link IPlatformEnum}
- * implementation at once, since none of them need their own converter written by hand.
+ * <p>Spring's default enum binding calls {@code Enum.valueOf(String)}, which matches only the Java
+ * constant name — {@code CERTIFICATE}, say. Every platform enum in this library serializes and is
+ * addressed on the wire by its code instead, so {@code CERTIFICATE} appears as
+ * {@code "certificates"}.
+ *
+ * <p>The two never meet, so a connector that registers no converter gets a 400 on every call that
+ * uses a real wire code. {@code Resource} on
+ * {@code GET /v2/discoveryProvider/{resource}/attributes}, bound by
+ * {@code DiscoveryMetadataController#listResourceAttributes}, is the case this library ships today.
+ *
+ * <p>Registering this one factory covers every current and future {@link IPlatformEnum}
+ * implementation, so none of them needs a converter written by hand. From a
+ * {@code WebMvcConfigurer}:
+ *
+ * <pre>{@code
+ * @Override
+ * public void addFormatters(FormatterRegistry registry) {
+ *     registry.addConverterFactory(new IPlatformEnumConverterFactory());
+ * }
+ * }</pre>
  */
 public class IPlatformEnumConverterFactory implements ConverterFactory<String, IPlatformEnum> {
 

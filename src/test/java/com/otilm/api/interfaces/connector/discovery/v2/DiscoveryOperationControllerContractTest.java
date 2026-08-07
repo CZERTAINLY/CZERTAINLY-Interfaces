@@ -1,5 +1,6 @@
 package com.otilm.api.interfaces.connector.discovery.v2;
 
+import com.otilm.api.model.connector.discovery.v2.DiscoveryStreamRequestDto;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.junit.jupiter.api.Test;
@@ -76,7 +77,7 @@ class DiscoveryOperationControllerContractTest {
     @Test
     void streamProducesNdjson() throws NoSuchMethodException {
         Method stream = DiscoveryOperationController.class.getDeclaredMethod("stream",
-                com.otilm.api.model.connector.discovery.v2.DiscoveryStreamRequestDto.class);
+                DiscoveryStreamRequestDto.class);
         PostMapping pm = stream.getAnnotation(PostMapping.class);
         assertArrayEquals(new String[]{MediaType.APPLICATION_NDJSON_VALUE}, pm.produces(),
                 "stream must produce exactly application/x-ndjson");

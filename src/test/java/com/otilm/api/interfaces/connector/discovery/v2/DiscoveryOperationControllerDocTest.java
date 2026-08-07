@@ -58,6 +58,9 @@ class DiscoveryOperationControllerDocTest {
             }
 
             for (Parameter p : m.getParameters()) {
+                // Fully qualified deliberately: Parameter is already java.lang.reflect.Parameter
+                // here, the reflected method parameter this loop walks. Do not "clean up" into an
+                // import - it would shadow the reflection type this file depends on.
                 io.swagger.v3.oas.annotations.Parameter param =
                         p.getAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
                 if (param != null) {

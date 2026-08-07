@@ -5,6 +5,7 @@ import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -145,7 +146,7 @@ class DiscoveryV2SchemaGenerationTest {
             }
         }
         if (schema.getAllOf() != null) {
-            for (Schema<?> member : (java.util.List<Schema<?>>) (java.util.List<?>) schema.getAllOf()) {
+            for (Schema<?> member : (List<Schema<?>>) (List<?>) schema.getAllOf()) {
                 if (resolvesProperty(member, property, allSchemas)) {
                     return true;
                 }

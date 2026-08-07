@@ -19,12 +19,21 @@ public final class OpenApiProseAssertions {
      * authors in Java, Go and Python read only the generated document, never the internal design
      * docs. Matched on word boundaries so "tick" does not false-positive inside "ticket". Extend
      * the list when a new internal term needs banning; never narrow it for one controller's prose.
+     *
+     * <p>A single word covers every phrase built around it, so only the shortest form is listed:
+     * "tick" already rejects "tick engine" and "drain tick", and "ladder" already rejects "dispatch
+     * ladder". Adding the longer phrase back would ban nothing new while implying this matcher is
+     * phrase-aware, which it is not.
      */
     public static final List<String> BANNED_JARGON = List.of(
-            "tick", "tick engine", "sweeper", "agenda table", "drain tick", "ingestor",
+            "tick", "sweeper", "agenda table", "ingestor",
             "advisory lock", "push slice",
-            "rung", "dispatch ladder", "expander", "scope chain", "fail closed", "fail-closed",
+            "rung", "expander", "scope chain", "fail closed", "fail-closed",
             "footgun", "s-1", "dependson", "ladder", "envelope assembly");
+
+    private static final List<BannedTerm> BANNED_TERMS = BANNED_JARGON.stream()
+            .map(BannedTerm::of)
+            .toList();
 
     private OpenApiProseAssertions() {
     }
@@ -36,10 +45,16 @@ public final class OpenApiProseAssertions {
      */
     public static void assertNoJargon(String context, String text) {
         String lower = text.toLowerCase(Locale.ROOT);
-        for (String banned : BANNED_JARGON) {
-            Pattern pattern = Pattern.compile("\\b" + Pattern.quote(banned) + "\\b");
-            assertFalse(pattern.matcher(lower).find(),
-                    "internal jargon \"" + banned + "\" leaked into OpenAPI prose on " + context);
+        for (BannedTerm banned : BANNED_TERMS) {
+            assertFalse(banned.pattern().matcher(lower).find(),
+                    "internal jargon \"" + banned.term() + "\" leaked into OpenAPI prose on " + context);
+        }
+    }
+
+    private record BannedTerm(String term, Pattern pattern) {
+
+        private static BannedTerm of(String term) {
+            return new BannedTerm(term, Pattern.compile("\\b" + Pattern.quote(term) + "\\b"));
         }
     }
 }

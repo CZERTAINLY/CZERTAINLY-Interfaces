@@ -4,13 +4,11 @@ import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.common.enums.cryptography.KeyFormat;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.connector.discovery.v2.validation.NoPrivateKeyMaterial;
+import com.otilm.api.testsupport.ValidatorFixture;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -26,19 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class DiscoveredKeyDtoValidationTest {
 
-    private static ValidatorFactory factory;
-    private static Validator validator;
-
-    @BeforeAll
-    static void setup() {
-        factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-    }
-
-    @AfterAll
-    static void teardown() {
-        factory.close();
-    }
+    @AutoClose
+    private static final ValidatorFixture VALIDATORS = new ValidatorFixture();
+    private static final Validator VALIDATOR = VALIDATORS.validator();
 
     private DiscoveredKeyDto validBase() {
         DiscoveredKeyDto dto = new DiscoveredKeyDto();
@@ -53,7 +41,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKeyFormat(KeyFormat.PRKI);
         dto.setPublicKey("MIIBOgIBAAJBAK...");
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertFalse(violations.isEmpty(), "PRKI must never be an accepted publicKeyFormat");
     }
 
@@ -63,7 +51,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKeyFormat(KeyFormat.EPRKI);
         dto.setPublicKey("MIIBOgIBAAJBAK...");
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertFalse(violations.isEmpty(), "EPRKI must never be an accepted publicKeyFormat");
     }
 
@@ -77,7 +65,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKeyFormat(KeyFormat.PRKI);
         dto.setPublicKey("MIIBOgIBAAJBAK...");
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertFalse(violations.isEmpty(), "a PRIVATE_KEY item must never carry key bytes");
     }
 
@@ -90,7 +78,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKeyFormat(KeyFormat.SPKI);
         dto.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A");
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertFalse(violations.isEmpty(), "a SECRET_KEY item must never carry publicKey/publicKeyFormat");
     }
 
@@ -102,7 +90,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A");
         // publicKeyFormat left unset: publicKey alone must still be enough to trip the rule.
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertFalse(violations.isEmpty(), "a SPLIT_KEY item must never carry publicKey material");
     }
 
@@ -114,7 +102,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A");
         // publicKeyFormat intentionally left unset.
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertEquals(Set.of("publicKey"), propertyPaths(violations),
                 "only publicKey is populated, so only publicKey should be named");
     }
@@ -129,7 +117,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKeyFormat(KeyFormat.SPKI);
         // publicKey intentionally left unset.
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertEquals(Set.of("publicKeyFormat"), propertyPaths(violations),
                 "only publicKeyFormat is populated, so only publicKeyFormat should be named — "
                         + "not publicKey, which was never set");
@@ -143,7 +131,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKeyFormat(KeyFormat.SPKI);
         dto.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A");
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertEquals(Set.of("publicKey", "publicKeyFormat"), propertyPaths(violations),
                 "both fields are populated, so both should be named");
     }
@@ -190,7 +178,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setFingerprint("9c1a2b3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcde");
         // publicKey and publicKeyFormat intentionally left unset.
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertTrue(violations.isEmpty(), "an existence-only private-key report must pass validation cleanly");
     }
 
@@ -200,7 +188,7 @@ class DiscoveredKeyDtoValidationTest {
         dto.setPublicKeyFormat(KeyFormat.SPKI);
         dto.setPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A");
 
-        Set<ConstraintViolation<DiscoveredKeyDto>> violations = validator.validate(dto);
+        Set<ConstraintViolation<DiscoveredKeyDto>> violations = VALIDATOR.validate(dto);
         assertTrue(violations.isEmpty(), "a PUBLIC_KEY report with SPKI-formatted public key bytes must be valid");
     }
 }

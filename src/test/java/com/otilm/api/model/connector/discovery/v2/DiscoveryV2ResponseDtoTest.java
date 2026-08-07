@@ -9,9 +9,10 @@ import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
 import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.core.auth.Resource;
+import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -28,7 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DiscoveryV2ResponseDtoTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
+    @AutoClose
+    private static final ValidatorFixture VALIDATORS = new ValidatorFixture();
+    private static final Validator VALIDATOR = VALIDATORS.validator();
 
     @Test
     void statusResponseOmitsAbsentProgress() throws Exception {
