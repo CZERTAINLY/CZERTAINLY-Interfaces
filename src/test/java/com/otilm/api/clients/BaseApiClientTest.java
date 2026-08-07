@@ -11,6 +11,7 @@ import com.otilm.api.model.common.attribute.common.content.data.SecretAttributeC
 import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.otilm.api.exception.ConnectorClientException;
 import com.otilm.api.exception.ConnectorCommunicationException;
 import com.otilm.api.exception.ConnectorServerException;
@@ -402,6 +403,59 @@ class BaseApiClientTest {
      * synthesized 413 would assert an upstream status that never existed and send operators looking
      * for a request-size problem instead of at this client's read cap.
      */
+    /**
+     * A connector whose body does not match the expected type is a connector fault, not a transport
+     * failure and not the caller's mistake. It must report 502: Core serves 422 for a caller's own
+     * invalid input, so classifying this as 422 would blame the user and invert the retry signal.
+     *
+     * <p>The secret this pins is the message. Jackson's own message quotes fragments of the response
+     * body, and in discovery a malformed body can carry key material, so the outward exception message
+     * must stay generic while the cause keeps the detail for diagnostics.
+     */
+    @Test
+    void processRequest_unparseableResponse_reportsBadGatewayWithoutEchoingTheBody() {
+        String secret = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A-not-for-logs";
+        JsonProcessingException jackson = new com.fasterxml.jackson.databind.exc.MismatchedInputException(
+                null, "Cannot deserialize value: " + secret) {
+        };
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:1", AuthType.NONE, List.of());
+
+        // Thrown through Reactor's propagate so processRequest's Exceptions.unwrap yields the Jackson
+        // exception itself. That matters: unwrap strips only Reactor wrappers, so if the fixture nested
+        // the Jackson failure inside a DecodingException, the message being interpolated would be the
+        // wrapper's ("decode failed") and this test could not detect the leak it exists to catch.
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw reactor.core.Exceptions.propagate(jackson);
+                }, null, connector));
+
+        Assertions.assertEquals(HttpStatus.BAD_GATEWAY, ex.getHttpStatus(),
+                "an unparseable connector response is a 502 upstream fault, never a 422 blamed on the caller");
+        Assertions.assertEquals(connector, ex.getConnector(), "the fault must name the connector that caused it");
+        Assertions.assertFalse(ex.getMessage().contains(secret),
+                "the outward message must not echo the connector's response body; Jackson's message quotes it");
+        Assertions.assertSame(jackson, ex.getCause(), "the cause must be retained for diagnostics");
+    }
+
+    /**
+     * The branch order matters: {@code JsonProcessingException} extends {@code IOException}, so a bare
+     * Jackson failure reaching the transport branch first would be reported as a communication failure
+     * (503, retryable) rather than a contract violation (502).
+     */
+    @Test
+    void processRequest_bareJacksonFailure_isNotMisreadAsATransportFailure() {
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:1", AuthType.NONE, List.of());
+        JsonProcessingException bare = new com.fasterxml.jackson.core.JsonParseException(null, "bad token") {
+        };
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw new RuntimeException(bare);
+                }, null, connector));
+
+        Assertions.assertEquals(HttpStatus.BAD_GATEWAY, ex.getHttpStatus());
+    }
+
     @Test
     void processRequest_oversizedResponse_mappedToConnectorServerException() {
         BaseApiClient.resetConnectorClientForTest(); // claim write-once tuning for this test

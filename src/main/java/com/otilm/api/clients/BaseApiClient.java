@@ -1,6 +1,7 @@
 package com.otilm.api.clients;
 
 import com.otilm.api.exception.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
@@ -458,6 +459,28 @@ public abstract class BaseApiClient {
             if (unwrapped instanceof ConnectorProblemException pde) {
                 pde.setConnector(connector);
                 throw pde;
+            } else if (isJsonTypeResolutionFailure(unwrapped)) {
+                // Must precede the IOException branch: JsonProcessingException extends IOException, so a
+                // decode failure would otherwise be reported as a transport failure it is not.
+                //
+                // 502, not 422: the connector answered, and its answer does not conform to the contract —
+                // which is what Bad Gateway means. A 422 would be wrong twice over, because Core serves 422
+                // for a caller's own invalid input, so a connector fault would read as the user's mistake
+                // and the retry signal would invert. Checked, so callers declaring throws ConnectorException
+                // still catch it.
+                //
+                // The log carries the failure type and the connector, never the exception's message:
+                // Jackson's message quotes fragments of the response body, which for discovery can include
+                // key material. The full cause rides on the thrown exception for diagnostics.
+                logger.error("Connector {} response failed type resolution: {}",
+                        connector.getName(), unwrapped.getClass().getName());
+                ConnectorServerException typeFailure = new ConnectorServerException(
+                        "Connector %s returned a response that could not be parsed against the expected type. URL: %s"
+                                .formatted(connector.getName(), connector.getUrl()),
+                        unwrapped,
+                        HttpStatus.BAD_GATEWAY);
+                typeFailure.setConnector(connector);
+                throw typeFailure;
             } else if (unwrapped instanceof IOException
                     || unwrapped instanceof WebClientRequestException
                     || unwrapped instanceof io.netty.handler.timeout.TimeoutException
@@ -516,6 +539,17 @@ public abstract class BaseApiClient {
      * {@code processRequest}'s catch-all and surface as a Spring-internal type, which is the exact
      * gap this branch exists to close, so the whole chain is walked.
      */
+    /**
+     * True for a Jackson {@link JsonProcessingException} — covering {@code MismatchedInputException},
+     * {@code InvalidTypeIdException}, {@code ValueInstantiationException} and
+     * {@code InvalidFormatException} — either bare or as the cause of another exception. Spring's
+     * {@code Jackson2JsonDecoder} wraps body-decode failures in {@code DecodingException}, so both forms
+     * have to match.
+     */
+    private static boolean isJsonTypeResolutionFailure(Throwable t) {
+        return t instanceof JsonProcessingException || t.getCause() instanceof JsonProcessingException;
+    }
+
     private static boolean isOversizedResponse(Throwable t) {
         return findInCauseChain(t, DataBufferLimitException.class) != null;
     }
