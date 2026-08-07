@@ -46,6 +46,10 @@ public class DiscoveredKeyDto implements DiscoveredItemPayloadDto {
     // description onto the referenced component — which would give every other API that references
     // Resource this discovery-specific wording. The discriminator is explained on
     // DiscoveredItemPayloadDto instead.
+    // S1170 wants this static because it is final with a constant initializer. It cannot be:
+    // Lombok generates a static getter for a static field, which then no longer implements
+    // DiscoveredItemPayloadDto.getResource(), so the class does not compile. Verified, not assumed.
+    @SuppressWarnings("java:S1170")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private final Resource resource = Resource.CRYPTOGRAPHIC_KEY;
 
