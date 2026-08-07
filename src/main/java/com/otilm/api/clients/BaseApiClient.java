@@ -1,7 +1,6 @@
 package com.otilm.api.clients;
 
 import com.otilm.api.exception.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
@@ -424,18 +423,6 @@ public abstract class BaseApiClient {
             if (unwrapped instanceof ConnectorProblemException pde) {
                 pde.setConnector(connector);
                 throw pde;
-            } else if (isJsonTypeResolutionFailure(unwrapped)) {
-                // Must precede the IOException branch: JsonProcessingException extends IOException
-                // and would otherwise be misclassified as a transport failure. The thrown message
-                // must stay generic — Jackson's own message echoes connector response fragments,
-                // and ValidationException is part of the platform's outward error surface.
-                logger.debug("Connector {} response failed type resolution ({}): {}",
-                        connector.getName(), unwrapped.getClass().getSimpleName(), unwrapped.getMessage());
-                ValidationException validationException = new ValidationException(ValidationError.create(
-                        "Connector %s response could not be parsed against the expected type"
-                                .formatted(connector.getName())));
-                validationException.initCause(unwrapped);
-                throw validationException;
             } else if (unwrapped instanceof IOException
                     || unwrapped instanceof WebClientRequestException
                     || unwrapped instanceof io.netty.handler.timeout.TimeoutException
@@ -474,17 +461,6 @@ public abstract class BaseApiClient {
     @SuppressWarnings("java:S1872") // intentional name match — instanceof would couple to the shaded type
     private static boolean isPoolAcquireExhausted(Throwable t) {
         return "PoolAcquirePendingLimitException".equals(t.getClass().getSimpleName());
-    }
-
-    /**
-     * True for a bare Jackson {@link JsonProcessingException} — covering {@code MismatchedInputException},
-     * {@code InvalidTypeIdException}, {@code ValueInstantiationException} and {@code InvalidFormatException}
-     * — or one wrapped as the cause of another exception. Spring WebFlux's {@code Jackson2JsonDecoder}
-     * wraps body-decode failures in {@code org.springframework.core.codec.DecodingException}, so both
-     * forms have to match.
-     */
-    private static boolean isJsonTypeResolutionFailure(Throwable t) {
-        return t instanceof JsonProcessingException || t.getCause() instanceof JsonProcessingException;
     }
 
     private static Mono<ClientResponse> handleHttpExceptions(ClientResponse clientResponse) {
