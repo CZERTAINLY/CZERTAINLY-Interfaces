@@ -66,10 +66,11 @@ public interface DiscoveryOperationController extends AuthProtectedConnectorCont
                     + "and maxBytes. This call doubles as the acknowledgment mechanism: submitting a given "
                     + "afterSequence is the implicit ack for every item at or below it, and the connector MAY "
                     + "discard those items once it has answered. Draining is legal at any point during a "
-                    + "live run. Draining with afterSequence equal to highestSequence after the run has "
-                    + "reached a terminal state is the full ack, after which the connector MAY discard all "
-                    + "state it holds for the run; short of that, it MUST retain terminal-run state for at "
-                    + "least 24 hours after reaching a terminal state.")
+                    + "live run. A drain with afterSequence equal to highestSequence, made after the run has "
+                    + "reached a terminal state, is the full ack. Until the full ack arrives, the connector "
+                    + "MUST retain terminal-run state for at least 24 hours after the run reached a terminal "
+                    + "state. Once the full ack arrives, the connector MAY discard all state it holds for the "
+                    + "run.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Items retrieved; more indicates whether additional items remain beyond this page"),
             @ApiResponse(responseCode = "404", description = "Run not tracked by the connector (errorCode OPERATION_NOT_TRACKED)",

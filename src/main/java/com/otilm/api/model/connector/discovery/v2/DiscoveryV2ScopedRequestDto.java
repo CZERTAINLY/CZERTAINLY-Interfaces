@@ -33,8 +33,9 @@ public abstract class DiscoveryV2ScopedRequestDto {
     // deliberately left in (the default, not excluded) since it is the one field worth
     // correlating log lines by.
     @Schema(description = "Connector-defined metadata returned in the original discovery initiate/stop/resume "
-                  + "response, replayed here so the stateless connector can resolve its run state. Serialized "
-                  + "size is capped at 64 KB.",
+                  + "response, replayed here so the stateless connector can resolve its run state; absent on "
+                  + "the initiate call itself, which is the call that mints it. Serialized size is capped at "
+                  + "64 KB.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @ToString.Exclude
     private List<MetadataAttribute> meta;

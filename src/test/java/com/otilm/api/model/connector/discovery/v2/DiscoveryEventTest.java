@@ -29,9 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link DiscoveryEvent} is now flat: {@code type} is a field of the event object itself, not a
- * wrapper around a nested payload (see {@link DiscoveryEvent}'s javadoc for why the wrapper was
- * removed). Every fixture below is therefore a single flat JSON object — no {@code payload} key.
+ * {@link DiscoveryEvent} is flat: {@code type} is a field of the event object itself, not a wrapper
+ * around a nested payload. Every fixture below is therefore a single flat JSON object — no
+ * {@code payload} key.
  */
 class DiscoveryEventTest {
 

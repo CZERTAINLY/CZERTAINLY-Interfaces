@@ -24,8 +24,9 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoPrivateKeyMaterial
 @Schema(description = "A connector reports a key's existence, intrinsic metadata, and at most its public "
-              + "part; private and secret key material must never be sent. A PRIVATE_KEY or SECRET_KEY "
-              + "report MUST omit publicKey and publicKeyFormat entirely.")
+              + "part; private, secret and split key material must never be sent. A "
+              + NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART_NAMES
+              + " report MUST omit publicKey and publicKeyFormat entirely.")
 public class DiscoveredKeyDto implements DiscoveredItemPayloadDto {
 
     @Schema(description = "Resource type of this payload; the OpenAPI discriminator selecting this "
@@ -56,8 +57,9 @@ public class DiscoveredKeyDto implements DiscoveredItemPayloadDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private KeyFormat publicKeyFormat;
 
-    @Schema(description = "Base64-encoded public key material. Absent for private- and secret-key "
-                  + "discoveries, where only existence and intrinsic metadata are ever reported",
+    @Schema(description = "Base64-encoded public key material. Absent for "
+                  + NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART_NAMES
+                  + " discoveries, where only existence and intrinsic metadata are ever reported",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String publicKey;
 }

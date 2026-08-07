@@ -3,6 +3,8 @@ package com.otilm.api.model.connector.discovery.v2;
 import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.common.enums.cryptography.KeyFormat;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
+import com.otilm.api.model.connector.discovery.v2.validation.NoPrivateKeyMaterial;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -67,7 +69,7 @@ class DiscoveredKeyDtoValidationTest {
 
     @Test
     void privateKeyTypeCarryingPublicKeyBytesIsRejected() {
-        // This is the exact shape the finding calls out: a Private-type item that still carries
+        // The shape under test: a private-type item that still carries public-key material — here
         // a PrivateKeyInfo publicKeyFormat and public key bytes.
         DiscoveredKeyDto dto = new DiscoveredKeyDto();
         dto.setType(KeyType.PRIVATE_KEY);
@@ -150,6 +152,34 @@ class DiscoveredKeyDtoValidationTest {
         return violations.stream()
                 .map(v -> v.getPropertyPath().toString())
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * A connector author reads only the generated document, so the published prose has to name
+     * every key type the validator actually covers — no more and no fewer. Both descriptions draw
+     * their list from {@link NoPrivateKeyMaterial#TYPES_WITHOUT_A_PUBLIC_PART_NAMES}, and this pins
+     * that single list against {@link NoPrivateKeyMaterial#TYPES_WITHOUT_A_PUBLIC_PART}, the set the
+     * validator applies.
+     */
+    @Test
+    void publishedProseNamesExactlyTheKeyTypesTheRuleCovers() throws NoSuchFieldException {
+        String classProse = DiscoveredKeyDto.class.getAnnotation(Schema.class).description();
+        String publicKeyProse = DiscoveredKeyDto.class.getDeclaredField("publicKey")
+                .getAnnotation(Schema.class).description();
+
+        for (KeyType type : KeyType.values()) {
+            boolean covered = NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART.contains(type);
+            assertEquals(covered, classProse.contains(type.name()),
+                    covered
+                            ? "the class-level rule must name " + type.name() + ": " + classProse
+                            : "the class-level rule must not name " + type.name() + ", which it does not "
+                                    + "cover: " + classProse);
+            assertEquals(covered, publicKeyProse.contains(type.name()),
+                    covered
+                            ? "publicKey's description must name " + type.name() + ": " + publicKeyProse
+                            : "publicKey's description must not name " + type.name() + ", which the rule "
+                                    + "does not cover: " + publicKeyProse);
+        }
     }
 
     @Test

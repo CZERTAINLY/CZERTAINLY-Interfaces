@@ -125,8 +125,8 @@ class DiscoveredItemDtoTest {
 
     @Test
     void privateKeyExistenceOnlyItemRoundTripsAndValidates() throws Exception {
-        // This is the case the redesign exists for: a private key's bytes must never traverse
-        // discovery, only its existence and intrinsic, non-secret metadata.
+        // A private key's bytes never traverse discovery: only its existence and its intrinsic,
+        // non-secret metadata are reported.
         DiscoveredItemDto dto = new DiscoveredItemDto();
         dto.setSequence(3L);
         dto.setUniqueRef("key-ref-2");

@@ -68,10 +68,10 @@ class DiscoveryV2SchemaGenerationTest {
     }
 
     /**
-     * The OpenAPI rule this whole rework exists to satisfy: {@code discriminator.propertyName}
-     * must name a property present in the subschema — springdoc/swagger-core would happily
-     * generate a discriminator that fails this rule (as the earlier container-level design would
-     * have), so this has to be checked against the generated subschema, not assumed.
+     * The OpenAPI rule every generated discriminator must satisfy: {@code discriminator.propertyName}
+     * must name a property present in the subschema. springdoc/swagger-core will happily generate a
+     * discriminator that fails this rule, so it is checked against the generated subschema rather
+     * than assumed.
      *
      * <p>Verified empirically that "present" here means "resolvable across the schema graph": each
      * concrete subtype implements the annotated base interface, so swagger-core emits it as a

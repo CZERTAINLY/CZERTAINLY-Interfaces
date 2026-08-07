@@ -21,9 +21,10 @@ public class DiscoveryInitiateResponseDto {
     // Excluded from toString for the same reason the request side excludes it: meta is an opaque
     // connector-defined handle with no logging value of its own, and up to 64 KB of it. JSON
     // serialization is unaffected.
-    @Schema(description = "Connector-defined metadata for this run, replayed by Core on subsequent "
-                  + "status/stop/resume/cancel calls so the stateless connector can resolve its run state. "
-                  + "Serialized size is capped at 64 KB; Core fails the run outright if this exceeds the cap.",
+    @Schema(description = "Connector-defined metadata for this run, replayed by Core on every subsequent "
+                  + "lifecycle call — status, results, stream, stop, resume and cancel — so the stateless "
+                  + "connector can resolve its run state. Serialized size is capped at 64 KB; Core fails the "
+                  + "run outright if this exceeds the cap.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @ToString.Exclude
     private List<MetadataAttribute> meta;

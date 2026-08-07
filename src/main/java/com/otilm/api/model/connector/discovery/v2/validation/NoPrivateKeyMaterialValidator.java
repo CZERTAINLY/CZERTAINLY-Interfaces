@@ -12,8 +12,10 @@ public class NoPrivateKeyMaterialValidator implements ConstraintValidator<NoPriv
 
     private static final Set<KeyFormat> PRIVATE_KEY_FORMATS = Set.of(KeyFormat.PRKI, KeyFormat.EPRKI);
 
+    // Declared on the constraint annotation, alongside the prose spelling the published contract
+    // uses, so the enforced list and the documented list cannot drift apart.
     private static final Set<KeyType> TYPES_WITHOUT_A_PUBLIC_PART =
-            Set.of(KeyType.PRIVATE_KEY, KeyType.SECRET_KEY, KeyType.SPLIT_KEY);
+            NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART;
 
     @Override
     public boolean isValid(DiscoveredKeyDto value, ConstraintValidatorContext context) {

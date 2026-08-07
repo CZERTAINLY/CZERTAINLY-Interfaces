@@ -3,9 +3,13 @@ package com.otilm.api.interfaces.connector.discovery.v2;
 import com.otilm.api.model.common.error.ErrorCode;
 import com.otilm.api.model.common.error.ProblemDetailExtended;
 import com.otilm.api.model.connector.discovery.v2.DiscoveryEvent;
+import com.otilm.api.model.connector.discovery.v2.DiscoveryInitiateResponseDto;
+import com.otilm.api.model.connector.discovery.v2.DiscoveryStopResponseDto;
+import com.otilm.api.model.connector.discovery.v2.DiscoveryV2ScopedRequestDto;
 import com.otilm.api.testsupport.OpenApiProseAssertions;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -139,6 +143,33 @@ class DiscoveryOperationControllerDocTest {
         assertTrue(declaresNdjsonOfDiscoveryEvent,
                 "stream's 200 must declare application/x-ndjson content of DiscoveryEvent, or springdoc "
                         + "unwraps the Flux<DiscoveryEvent> return type into a JSON array schema instead");
+    }
+
+    /**
+     * {@code meta} is declared on {@link DiscoveryV2ScopedRequestDto}, so every operation whose
+     * request body extends that base replays the handle — including results and stream, where a
+     * stateless connector needs it most because the drain doubles as the acknowledgment. The two
+     * responses that mint the handle must name all of them, initiate excepted: that is the call the
+     * handle comes back from, so there is nothing to replay yet.
+     */
+    @Test
+    void handleMintingResponsesNameEveryOperationThatReplaysMeta() throws NoSuchFieldException {
+        List<String> replayingOps = Arrays.stream(DiscoveryOperationController.class.getDeclaredMethods())
+                .filter(m -> m.getParameterCount() == 1)
+                .filter(m -> DiscoveryV2ScopedRequestDto.class.isAssignableFrom(m.getParameterTypes()[0]))
+                .map(Method::getName)
+                .filter(name -> !name.equals("initiate"))
+                .toList();
+        assertFalse(replayingOps.isEmpty(), "expected at least one operation replaying meta");
+
+        for (Class<?> response : List.of(DiscoveryInitiateResponseDto.class, DiscoveryStopResponseDto.class)) {
+            String description = response.getDeclaredField("meta").getAnnotation(Schema.class).description();
+            for (String op : replayingOps) {
+                assertTrue(description.contains(op),
+                        response.getSimpleName() + "'s meta description must name the " + op
+                                + " operation, which replays the handle; was: " + description);
+            }
+        }
     }
 
     @Test
