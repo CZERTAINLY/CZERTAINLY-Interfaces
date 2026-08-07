@@ -41,9 +41,12 @@ public class DiscoveredKeyDto implements DiscoveredItemPayloadDto {
      * could never fail — {@code requiredMode} alone publishes it as required.
      */
     @Setter(AccessLevel.NONE)
-    @Schema(description = "Resource type of this payload; the OpenAPI discriminator selecting this "
-                  + "concrete payload shape",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    // No description here on purpose. Resource is a platform-wide schema component, and OpenAPI 3.0
+    // cannot carry a description beside a $ref, so swagger-core hoists a referencing field's
+    // description onto the referenced component — which would give every other API that references
+    // Resource this discovery-specific wording. The discriminator is explained on
+    // DiscoveredItemPayloadDto instead.
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private final Resource resource = Resource.CRYPTOGRAPHIC_KEY;
 
     @Schema(description = "Key type: whether this is a public, private, secret, or split key",

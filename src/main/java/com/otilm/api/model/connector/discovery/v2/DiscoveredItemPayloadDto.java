@@ -19,7 +19,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 })
 @Schema(
         name = "DiscoveredItemPayload",
-        description = "Resource-specific payload of a discovered item; resource selects the concrete shape.",
+        description = "Resource-specific payload of a discovered item. The required resource property is "
+                + "the discriminator: it carries the resource's wire code and selects which concrete "
+                + "payload shape this object is. Each concrete shape fixes it to its own value.",
         type = "object",
         discriminatorProperty = "resource",
         discriminatorMapping = {

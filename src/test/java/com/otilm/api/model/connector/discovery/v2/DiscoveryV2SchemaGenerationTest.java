@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.discovery.v2;
 
+import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
@@ -129,6 +130,32 @@ class DiscoveryV2SchemaGenerationTest {
         assertTrue(leafViaEvent.getDescription().startsWith("Progress counters"),
                 "the leaf must keep its own description, not one hoisted from a referencing field; was: "
                         + leafViaEvent.getDescription());
+    }
+
+    /**
+     * Discovery must not rewrite a component it does not own. {@code Resource} is platform-wide, so a
+     * description hoisted onto it from a discovery field would follow it into every other API that
+     * references it — the same {@code $ref} hoisting as above, but with a blast radius outside this
+     * contract entirely. Asserted against the component as generated from {@code Resource} alone,
+     * which is the definition every other API contributes.
+     */
+    @Test
+    void discoveryDoesNotRewriteThePlatformWideResourceComponent() {
+        String ownDescription = ModelConverters.getInstance()
+                .readAll(Resource.class).get("Resource").getDescription();
+
+        for (Class<?> discoveryRoot : new Class<?>[]{
+                DiscoveredItemPayloadDto.class, DiscoveredCertificateDto.class,
+                DiscoveredKeyDto.class, DiscoveredItemDto.class, DiscoveryEvent.class}) {
+            Schema<?> resource = ModelConverters.getInstance().readAll(discoveryRoot).get("Resource");
+            if (resource == null) {
+                continue;
+            }
+            assertEquals(ownDescription, resource.getDescription(),
+                    "Resource is a platform-wide component; reaching it through " + discoveryRoot.getSimpleName()
+                            + " must not change its description. A description on the referencing field gets "
+                            + "hoisted onto it, because OpenAPI 3.0 cannot carry one beside a $ref.");
+        }
     }
 
     @SuppressWarnings("unchecked")
