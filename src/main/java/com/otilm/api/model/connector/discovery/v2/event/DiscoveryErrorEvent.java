@@ -31,7 +31,8 @@ public class DiscoveryErrorEvent implements DiscoveryEvent {
     @NotNull(message = "code is required")
     private String code;
 
-    @Schema(description = "Human-readable error message", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Human-readable error message — curated message text (no raw exception messages)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "message is required")
     private String message;
 }

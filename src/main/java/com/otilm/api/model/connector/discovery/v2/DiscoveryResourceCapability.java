@@ -15,6 +15,11 @@ import java.util.Arrays;
  * {@link DiscoverySupportedResourceDto}'s {@code capabilities}. {@link #getFeatureFlag()} carries the
  * invariant that a capability is only valid to advertise if the connector also advertises the
  * interface-level {@link FeatureFlag} it maps to.
+ *
+ * <p>Only capabilities that can genuinely differ from one resource to another belong here. An
+ * interface-wide property has no member in this enum: {@link FeatureFlag#DISCOVERY_STREAMING}, for
+ * instance, describes the whole discovery interface (a connector either streams or it does not) and
+ * is advertised by the feature flag alone.
  */
 @Schema(enumAsRef = true)
 public enum DiscoveryResourceCapability implements IPlatformEnum {
