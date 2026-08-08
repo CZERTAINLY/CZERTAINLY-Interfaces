@@ -72,8 +72,8 @@ public abstract class BaseApiClient {
     private static final Duration POOL_DISPOSE_INTERVAL = Duration.ofSeconds(120);
     private static final Duration POOL_DISPOSE_AFTER = Duration.ofSeconds(300);
 
-    // Bound for the cause-chain walk in findInCauseChain. Chains this deep do not occur in practice;
-    // the cap is there so a cyclic chain cannot spin forever inside an exception handler.
+    // Bound for the cause-chain walk in findInCauseChain. Chains are never this deep in practice.
+    // The cap exists so a cyclic chain cannot spin forever inside an exception handler.
     private static final int MAX_CAUSE_CHAIN_DEPTH = 32;
 
     // Applied once (first prepareWebClient wins). The tuned HttpClient is the single source the
@@ -539,19 +539,24 @@ public abstract class BaseApiClient {
      * {@code processRequest}'s catch-all and surface as a Spring-internal type, which is the exact
      * gap this branch exists to close, so the whole chain is walked.
      */
-    /**
-     * True for a Jackson {@link JsonProcessingException} — covering {@code MismatchedInputException},
-     * {@code InvalidTypeIdException}, {@code ValueInstantiationException} and
-     * {@code InvalidFormatException} — either bare or as the cause of another exception. Spring's
-     * {@code Jackson2JsonDecoder} wraps body-decode failures in {@code DecodingException}, so both forms
-     * have to match.
-     */
-    private static boolean isJsonTypeResolutionFailure(Throwable t) {
-        return t instanceof JsonProcessingException || t.getCause() instanceof JsonProcessingException;
-    }
-
     private static boolean isOversizedResponse(Throwable t) {
         return findInCauseChain(t, DataBufferLimitException.class) != null;
+    }
+
+    /**
+     * True when a Jackson {@link JsonProcessingException} appears anywhere in {@code t}'s cause chain —
+     * covering {@code MismatchedInputException}, {@code InvalidTypeIdException},
+     * {@code ValueInstantiationException} and {@code InvalidFormatException}, whatever wrapped them.
+     *
+     * <p>The whole chain is walked, not one level, because the wrapping is not always a single layer:
+     * {@code WebClient.retrieve()} can surface a {@code WebClientResponseException} around the
+     * {@code DecodingException} that Spring's {@code Jackson2JsonDecoder} raises around the Jackson
+     * failure. Missing that shape would be worse than a misclassification — it falls through to
+     * {@code processRequest}'s catch-all, which logs the exception's message, and a Jackson message
+     * quotes fragments of the connector's response body.
+     */
+    private static boolean isJsonTypeResolutionFailure(Throwable t) {
+        return findInCauseChain(t, JsonProcessingException.class) != null;
     }
 
     /**

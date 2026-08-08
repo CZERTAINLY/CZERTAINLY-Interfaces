@@ -403,6 +403,34 @@ class BaseApiClientTest {
      * synthesized 413 would assert an upstream status that never existed and send operators looking
      * for a request-size problem instead of at this client's read cap.
      */
+    @Test
+    void processRequest_oversizedResponse_mappedToConnectorServerException() {
+        BaseApiClient.resetConnectorClientForTest(); // claim write-once tuning for this test
+        int smallCap = 1024;
+        WebClient tuned = BaseApiClient.prepareWebClient(
+                new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(10), 5, Duration.ofSeconds(1), smallCap));
+        TestApiClient tunedClient = new TestApiClient(tuned);
+        mockServer.stubFor(get(urlEqualTo("/oversized")).willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "text/plain")
+                .withBody("a".repeat(smallCap * 4))));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(
+                        req -> tunedClient.prepareRequest(HttpMethod.GET, connector, false)
+                                .uri("http://localhost:" + mockServer.port() + "/oversized")
+                                .retrieve()
+                                .toEntity(String.class)
+                                .block(),
+                        null,
+                        connector));
+
+        // The stub answered 200; that is what must be reported, and it must NOT be PAYLOAD_TOO_LARGE.
+        Assertions.assertEquals(HttpStatus.OK, ex.getHttpStatus());
+        Assertions.assertEquals(connector, ex.getConnector());
+    }
+
     /**
      * A connector whose body does not match the expected type is a connector fault, not a transport
      * failure and not the caller's mistake. It must report 502: Core serves 422 for a caller's own
@@ -438,6 +466,32 @@ class BaseApiClientTest {
     }
 
     /**
+     * The wrapping is not always one layer deep: {@code WebClient.retrieve()} can surface a
+     * {@code WebClientResponseException} around the {@code DecodingException} that Jackson's decode
+     * failure arrives in. A one-level check misses that, and the miss is worse than a wrong label —
+     * it reaches {@code processRequest}'s catch-all, which logs the exception message, and a Jackson
+     * message quotes the connector's response body.
+     */
+    @Test
+    void processRequest_deeplyWrappedJacksonFailure_isStillClassifiedAndDoesNotReachTheCatchAll() {
+        String secret = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A-buried-two-levels-down";
+        JsonProcessingException jackson = new com.fasterxml.jackson.databind.exc.MismatchedInputException(
+                null, "Cannot deserialize value: " + secret) {
+        };
+        Throwable twoLevels = new DecodingException("outer", new DecodingException("inner", jackson));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:1", AuthType.NONE, List.of());
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw reactor.core.Exceptions.propagate(twoLevels);
+                }, null, connector));
+
+        Assertions.assertEquals(HttpStatus.BAD_GATEWAY, ex.getHttpStatus());
+        Assertions.assertFalse(ex.getMessage().contains(secret),
+                "the outward message must not echo the body, however deeply the failure was wrapped");
+    }
+
+    /**
      * The branch order matters: {@code JsonProcessingException} extends {@code IOException}, so a bare
      * Jackson failure reaching the transport branch first would be reported as a communication failure
      * (503, retryable) rather than a contract violation (502).
@@ -454,34 +508,6 @@ class BaseApiClientTest {
                 }, null, connector));
 
         Assertions.assertEquals(HttpStatus.BAD_GATEWAY, ex.getHttpStatus());
-    }
-
-    @Test
-    void processRequest_oversizedResponse_mappedToConnectorServerException() {
-        BaseApiClient.resetConnectorClientForTest(); // claim write-once tuning for this test
-        int smallCap = 1024;
-        WebClient tuned = BaseApiClient.prepareWebClient(
-                new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(10), 5, Duration.ofSeconds(1), smallCap));
-        TestApiClient tunedClient = new TestApiClient(tuned);
-        mockServer.stubFor(get(urlEqualTo("/oversized")).willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "text/plain")
-                .withBody("a".repeat(smallCap * 4))));
-        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
-
-        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
-                BaseApiClient.processRequest(
-                        req -> tunedClient.prepareRequest(HttpMethod.GET, connector, false)
-                                .uri("http://localhost:" + mockServer.port() + "/oversized")
-                                .retrieve()
-                                .toEntity(String.class)
-                                .block(),
-                        null,
-                        connector));
-
-        // The stub answered 200; that is what must be reported, and it must NOT be PAYLOAD_TOO_LARGE.
-        Assertions.assertEquals(HttpStatus.OK, ex.getHttpStatus());
-        Assertions.assertEquals(connector, ex.getConnector());
     }
 
     /**
