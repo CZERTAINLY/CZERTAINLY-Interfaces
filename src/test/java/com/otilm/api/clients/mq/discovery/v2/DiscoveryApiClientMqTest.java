@@ -33,28 +33,22 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Delegation tests for the MQ-based Discovery v2 client. Verifies each method reaches
- * {@link ProxyClient} with the right connector, path, HTTP method, body, response type, and — the
- * point of this class — the right per-operation {@code Duration}, and that what comes back is what
- * the connector contract promises the caller.
+ * Delegation tests for the MQ Discovery v2 client: each method must reach {@link ProxyClient} with the
+ * right connector, path, method, body and response type, with the right per-operation {@code Duration},
+ * and must return what the contract promises the caller.
  *
- * <p>No mocking framework is on this project's test classpath — only JUnit Jupiter and WireMock — so
- * the proxy is a hand-written recording fake, matching
- * {@code com.otilm.api.clients.mq.v2.AttributesApiClientMqTest}.
+ * <p>The proxy is a hand-written recording fake because no mocking framework is on this project's test
+ * classpath, matching {@code com.otilm.api.clients.mq.v2.AttributesApiClientMqTest}. It throws
+ * {@link AssertionError} from every {@code ProxyClient} overload lacking a {@code Duration}, which makes
+ * the explicit-timeout rule structural — a future call to one fails at the call site, unasserted.
  *
- * <p>This class asserts against {@link DiscoveryPaths} constants while the REST suite hardcodes the
- * same routes as literals. That split is deliberate: the literals are the independent pin, so a wrong
- * constant fails there, and this class verifies only that both transports resolve the same constant.
- * Do not convert the REST literals to constants — that would leave nothing checking the constants
- * themselves.
+ * <p>The three timeouts (11s/22s/33s) differ from each other and from
+ * {@link DiscoveryMqTimeouts#defaults()}, so a mis-mapped component fails rather than passing by
+ * coincidence.
  *
- * <p>The fake throws {@link AssertionError} from every {@code ProxyClient} overload that takes no
- * {@code Duration}, making the constraint structural: any future call to a timeout-less overload fails
- * at the call site without needing to be asserted anywhere.
- *
- * <p>The three timeouts (11s/22s/33s) are distinguishable from one another and from
- * {@link DiscoveryMqTimeouts#defaults()}, so a mis-mapped component — {@code results} wired to
- * {@code control()} instead of {@code drain()}, say — fails rather than passing by coincidence.
+ * <p>This class asserts against {@link DiscoveryPaths} constants while the REST suite hardcodes the same
+ * routes as literals. Keep it that way: the literals are the independent pin on the constants, and
+ * converting them would leave nothing checking the constants at all.
  */
 class DiscoveryApiClientMqTest {
 

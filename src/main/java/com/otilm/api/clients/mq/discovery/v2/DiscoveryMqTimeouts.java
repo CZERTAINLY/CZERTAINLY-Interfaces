@@ -4,21 +4,19 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Per-operation MQ timeouts for {@link DiscoveryApiClient}. A discovery drain can legitimately
- * take far longer than a status poll or a lifecycle control call, so each is sized independently
- * rather than sharing one proxy-wide default.
+ * Per-operation MQ timeouts for {@link DiscoveryApiClient}, sized independently because a drain can
+ * legitimately run far longer than a status poll or a lifecycle control call.
  *
  * <ul>
  *   <li>{@link #status()} — the {@code status} poll.</li>
- *   <li>{@link #drain()} — the {@code results} drain; deployments raise this when their connectors
- *       return large batches.</li>
- *   <li>{@link #control()} — {@code initiate}, {@code stop}, {@code resume}, {@code cancel}, and the
- *       three metadata list operations.</li>
+ *   <li>{@link #drain()} — the {@code results} drain; raised where connectors return large batches.</li>
+ *   <li>{@link #control()} — {@code initiate}, {@code stop}, {@code resume}, {@code cancel} and the
+ *       three metadata reads.</li>
  * </ul>
  *
- * <p>Every component must be a positive duration, rejected at construction rather than surfacing as
- * an immediate timeout on the first connector call — the same rule
- * {@link com.otilm.api.clients.ClientTuning} applies to its own durations.
+ * <p>Components must be positive, rejected at construction rather than surfacing as an immediate
+ * timeout on the first connector call — the rule {@link com.otilm.api.clients.ClientTuning} applies to
+ * its own durations.
  */
 public record DiscoveryMqTimeouts(Duration status, Duration drain, Duration control) {
 
