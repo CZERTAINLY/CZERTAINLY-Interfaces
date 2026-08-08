@@ -18,9 +18,12 @@ import java.util.Set;
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public final class DiscoveryPaths {
 
+    /** Both the run-level and the per-resource attribute routes end in this segment. */
+    private static final String ATTRIBUTES_SEGMENT = "/attributes";
+
     public static final String BASE = "/v2/discoveryProvider";
     public static final String RESOURCES = BASE + "/resources";
-    public static final String ATTRIBUTES = BASE + "/attributes";
+    public static final String ATTRIBUTES = BASE + ATTRIBUTES_SEGMENT;
 
     public static final String RUNS = BASE + "/discoveries";
     public static final String INITIATE = RUNS + "/initiate";
@@ -29,8 +32,6 @@ public final class DiscoveryPaths {
     public static final String STOP = RUNS + "/stop";
     public static final String RESUME = RUNS + "/resume";
     public static final String CANCEL = RUNS + "/cancel";
-
-    private static final String RESOURCE_ATTRIBUTES_SUFFIX = "/attributes";
 
     /**
      * The resources a discovery run can report, pinned by the {@code @JsonSubTypes} registered on
@@ -58,6 +59,6 @@ public final class DiscoveryPaths {
             throw new IllegalArgumentException(
                     "Resource " + resource + " is not discoverable; expected one of " + DISCOVERABLE);
         }
-        return BASE + "/" + resource.getCode() + RESOURCE_ATTRIBUTES_SUFFIX;
+        return BASE + "/" + resource.getCode() + ATTRIBUTES_SEGMENT;
     }
 }

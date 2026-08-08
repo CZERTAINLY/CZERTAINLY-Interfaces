@@ -487,7 +487,7 @@ class DiscoveryApiClientMqTest {
         @SuppressWarnings("unchecked")
         public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body,
                                  Class<T> responseType, Duration timeout) throws ConnectorException {
-            record(connector, path, method, body, responseType, timeout, false);
+            capture(connector, path, method, body, responseType, timeout, false);
             return (T) syncResponse;
         }
 
@@ -495,11 +495,11 @@ class DiscoveryApiClientMqTest {
         @SuppressWarnings("unchecked")
         public <T> ResponseEntity<T> sendRequestForEntity(ApiClientConnectorInfo connector, String path, String method,
                                                          Object body, Class<T> responseType, Duration timeout) throws ConnectorException {
-            record(connector, path, method, body, responseType, timeout, true);
+            capture(connector, path, method, body, responseType, timeout, true);
             return (ResponseEntity<T>) syncResponse;
         }
 
-        private void record(ApiClientConnectorInfo connector, String path, String method, Object body,
+        private void capture(ApiClientConnectorInfo connector, String path, String method, Object body,
                             Class<?> responseType, Duration timeout, boolean forEntity) throws ConnectorException {
             this.seenConnector = connector;
             this.path = path;
