@@ -26,10 +26,17 @@ class ClientTuningTest {
      */
     @Test
     void canonicalConstructor_rejectsNonPositiveMaxInMemorySize() {
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
-                new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(35), 20, Duration.ofSeconds(10), 0));
+        // Built outside the lambdas so the constructor is the only call inside one: with the Duration
+        // factories in there too, the assertion would also pass if one of those threw, which is not
+        // what is under test.
+        Duration connect = Duration.ofSeconds(3);
+        Duration response = Duration.ofSeconds(35);
+        Duration pendingAcquire = Duration.ofSeconds(10);
 
         Assertions.assertThrows(IllegalArgumentException.class, () ->
-                new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(35), 20, Duration.ofSeconds(10), -1));
+                new ClientTuning(connect, response, 20, pendingAcquire, 0));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+                new ClientTuning(connect, response, 20, pendingAcquire, -1));
     }
 }
