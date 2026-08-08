@@ -509,6 +509,10 @@ public abstract class BaseApiClient {
      * breach can sit several levels deep; anything missed escapes to {@code processRequest}'s
      * catch-all and surfaces as a Spring-internal type.
      */
+    private static boolean isOversizedResponse(Throwable t) {
+        return findInCauseChain(t, DataBufferLimitException.class) != null;
+    }
+
     /**
      * The connector's location with anything secret stripped: scheme, host, port and path only, never
      * user-info and never the query string. Internal topology is fine in a server-side log and is what
@@ -544,10 +548,6 @@ public abstract class BaseApiClient {
         } catch (IllegalArgumentException e) {
             return "<unparseable url>";
         }
-    }
-
-    private static boolean isOversizedResponse(Throwable t) {
-        return findInCauseChain(t, DataBufferLimitException.class) != null;
     }
 
     /**
