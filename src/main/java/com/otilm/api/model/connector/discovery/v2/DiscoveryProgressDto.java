@@ -1,0 +1,42 @@
+package com.otilm.api.model.connector.discovery.v2;
+
+import com.otilm.api.model.core.auth.Resource;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Map;
+
+/**
+ * Run-level progress detail, reused in two roles: the {@code progress} field of
+ * {@link DiscoveryStatusResponseDto} (polled), and — via the {@code type}-carrying subclass
+ * {@link com.otilm.api.model.connector.discovery.v2.event.DiscoveryProgressEvent} — the flat
+ * {@code progress} stream/AMQP event (pushed).
+ *
+ * <p>The run-level counters are inherited from {@link DiscoveryResourceProgressDto}; this class adds
+ * only the optional per-resource breakdown, whose values are the leaf type. That asymmetry is
+ * deliberate and load-bearing in two ways. It states the truth that nesting stops after one level,
+ * and it keeps the generated schema graph finite: when {@code byResource} referred to this same
+ * class, swagger-core emitted a truncated {@code DiscoveryProgressDto} component — missing
+ * {@code byResource} entirely, and carrying the byResource field's description as the component's
+ * own — whenever the graph was entered through {@link DiscoveryEvent}, which is exactly what
+ * resolving the stream endpoint's response does.
+ */
+@Getter
+@Setter
+@ToString(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class DiscoveryProgressDto extends DiscoveryResourceProgressDto {
+
+    // No description here on purpose. OpenAPI 3.0 cannot carry a description alongside a $ref, so
+    // swagger-core hoists a referencing field's description onto the referenced component — which
+    // would overwrite DiscoveryResourceProgressDto's own description for every other user of it.
+    // The prose lives on that class instead; see its class-level @Schema.
+    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            propertyNames = Resource.class)
+    private Map<Resource, DiscoveryResourceProgressDto> byResource;
+}

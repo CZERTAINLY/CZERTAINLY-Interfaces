@@ -67,6 +67,14 @@ class ErrorCodeTest {
     }
 
     @Test
+    void connectorDiscoveryEntries() {
+        assertEquals(ProblemTypeCategory.CONNECTOR, ErrorCode.CHECKPOINT_LOST.getCategory());
+        assertEquals(ConnectorInterface.DISCOVERY, ErrorCode.CHECKPOINT_LOST.getInterfaceCode());
+        assertEquals(HttpStatus.GONE, ErrorCode.CHECKPOINT_LOST.getStatus());
+        assertFalse(ErrorCode.CHECKPOINT_LOST.isRetryable());
+    }
+
+    @Test
     void retryableTrueOnlyForTransientCodes() {
         // Transient infrastructure / rate-limit recovery → retryable
         assertTrue(ErrorCode.REQUEST_TIMEOUT.isRetryable());
@@ -84,5 +92,6 @@ class ErrorCodeTest {
         assertFalse(ErrorCode.BAD_REQUEST.isRetryable());
         assertFalse(ErrorCode.UNAUTHORIZED.isRetryable());
         assertFalse(ErrorCode.FORBIDDEN.isRetryable());
+        assertFalse(ErrorCode.CHECKPOINT_LOST.isRetryable());
     }
 }

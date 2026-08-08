@@ -1,4 +1,4 @@
-package com.otilm.api.model.core.discovery;
+package com.otilm.api.model.connector.discovery.v2;
 
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
@@ -10,34 +10,29 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
-public enum DiscoveryStatus implements IPlatformEnum {
+public enum DiscoveryRunState implements IPlatformEnum {
 
-    IN_PROGRESS("inProgress", "In Progress"),
-    PROCESSING("processing", "Processing"),
-    FAILED("failed", "Failed"),
-    COMPLETED("completed", "Completed"),
-    WARNING("warning", "Warning"),
+    RUNNING("running", "Running"),
     STOPPED("stopped", "Stopped"),
-    CANCELLED("cancelled", "Cancelled")
-    ;
+    COMPLETED("completed", "Completed"),
+    FAILED("failed", "Failed"),
+    CANCELLED("cancelled", "Cancelled");
 
-    private static final DiscoveryStatus[] VALUES;
+    private static final DiscoveryRunState[] VALUES;
 
     static {
         VALUES = values();
     }
 
-    @Schema(description = "Discovery Status",
-            examples = {"completed"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
 
-    DiscoveryStatus(String code, String label) {
-        this(code, label,null);
+    DiscoveryRunState(String code, String label) {
+        this(code, label, null);
     }
 
-    DiscoveryStatus(String code, String label, String description) {
+    DiscoveryRunState(String code, String label, String description) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -60,11 +55,11 @@ public enum DiscoveryStatus implements IPlatformEnum {
     }
 
     @JsonCreator
-    public static DiscoveryStatus findByCode(String code) {
+    public static DiscoveryRunState findByCode(String code) {
         return Arrays.stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
                 .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Discovery status {}", code)));
+                        new ValidationException(ValidationError.create("Unknown Discovery run state {}", code)));
     }
 }
