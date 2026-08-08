@@ -46,8 +46,6 @@ import java.util.Objects;
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class DiscoveryApiClient implements DiscoverySyncApiClient {
 
-
-
     private static final String HTTP_METHOD_GET = "GET";
     private static final String HTTP_METHOD_POST = "POST";
 
@@ -171,7 +169,11 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
         if (ex instanceof ConnectorEntityNotFoundException) {
             return true;
         }
+        // Status gates the code: a not-tracked code is only legitimate on a 404. Cancel's own 422
+        // (past the point of no return) must reach the caller, and REGISTRATION_NOT_FOUND, which the
+        // shared predicate accepts as authority's flavour of not-tracked, is itself declared 422.
         return ex instanceof ConnectorProblemException cpe
+                && HttpStatus.NOT_FOUND.equals(cpe.getHttpStatus())
                 && ConnectorOperationErrorCodes.isOperationNotTracked(cpe.getProblemDetail().getErrorCode());
     }
 

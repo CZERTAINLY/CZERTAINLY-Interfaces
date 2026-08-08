@@ -444,11 +444,11 @@ public abstract class BaseApiClient {
                 //
                 // The log carries the failure type, never the exception's message: Jackson's message
                 // quotes fragments of the response body, which for discovery can include key material.
-                logger.error("Connector {} response failed type resolution: {}",
-                        connector.getName(), unwrapped.getClass().getName());
+                logger.error("Connector {} response failed type resolution at {}: {}",
+                        connector.getName(), connector.getUrl(), unwrapped.getClass().getName());
                 ConnectorServerException typeFailure = new ConnectorServerException(
-                        "Connector %s returned a response that could not be parsed against the expected type. URL: %s"
-                                .formatted(connector.getName(), connector.getUrl()),
+                        "Connector %s returned a response that could not be parsed against the expected type"
+                                .formatted(connector.getName()),
                         unwrapped,
                         HttpStatus.BAD_GATEWAY);
                 typeFailure.setConnector(connector);
@@ -468,9 +468,10 @@ public abstract class BaseApiClient {
                 // connector fault, not a communication failure. Unmapped it would escape as
                 // WebClientResponseException or a bare DataBufferLimitException, which callers declaring
                 // `throws ConnectorException` cannot catch and which carries no connector attribution.
-                logger.error("Connector {} response exceeded the configured read limit: {}", connector.getName(), unwrapped.toString());
+                logger.error("Connector {} response exceeded the configured read limit at {}: {}",
+                        connector.getName(), connector.getUrl(), unwrapped.toString());
                 ConnectorServerException cse = new ConnectorServerException(
-                        "Connector %s response exceeded the configured read limit. URL: %s".formatted(connector.getName(), connector.getUrl()),
+                        "Connector %s response exceeded the configured read limit".formatted(connector.getName()),
                         unwrapped,
                         upstreamStatus(unwrapped));
                 cse.setConnector(connector);
@@ -616,7 +617,9 @@ public abstract class BaseApiClient {
      */
     private static Mono<ClientResponse> handleLegacyErrorResponse(ClientResponse clientResponse) {
         if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {
-            return clientResponse.bodyToMono(ERROR_LIST_TYPE_REF).flatMap(body ->
+            return clientResponse.bodyToMono(ERROR_LIST_TYPE_REF)
+                    .defaultIfEmpty(List.of("Connector returned 422 with an empty body"))
+                    .flatMap(body ->
                     Mono.error(new ValidationException(body.stream()
                                     .map(ValidationError::create)
                                     .toList()
@@ -643,7 +646,29 @@ public abstract class BaseApiClient {
     }
 
     private static Mono<ClientResponse> handleProblemDetailResponse(ClientResponse clientResponse) {
+        HttpStatus status = HttpStatus.valueOf(clientResponse.statusCode().value());
         return clientResponse.bodyToMono(ProblemDetailExtended.class)
-                .flatMap(problemDetail -> Mono.error(new ConnectorProblemException(problemDetail)));
+                .<ClientResponse>flatMap(problemDetail -> Mono.error(new ConnectorProblemException(problemDetail)))
+                .switchIfEmpty(Mono.error(() -> emptyProblemBodyFailure(status)));
+    }
+
+    /**
+     * A response labelled {@code application/problem+json} whose body is empty cannot become a
+     * {@link ConnectorProblemException} — there is no {@code ErrorCode} to carry — so it maps by status
+     * alone, as {@link #handleLegacyErrorResponse} does. Without this it completed empty and the status
+     * vanished into an unmapped {@link IllegalStateException}.
+     *
+     * <p>Derived from the status rather than by re-reading the body: a {@link ClientResponse} body can
+     * be consumed only once, so delegating to the legacy handler here would fail on the second read.
+     */
+    private static ConnectorException emptyProblemBodyFailure(HttpStatus status) {
+        String message = "Connector returned %s with an empty application/problem+json body".formatted(status);
+        if (HttpStatus.NOT_FOUND.equals(status)) {
+            return new ConnectorEntityNotFoundException(message);
+        }
+        if (status.is4xxClientError()) {
+            return new ConnectorClientException(message, status);
+        }
+        return new ConnectorServerException(message, status);
     }
 }

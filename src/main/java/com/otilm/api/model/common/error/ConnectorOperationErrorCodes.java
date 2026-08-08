@@ -4,8 +4,12 @@ package com.otilm.api.model.common.error;
  * Shared classification of connector error codes whose meaning is the same across provider
  * interfaces.
  *
- * <p>Lives beside {@link ErrorCode} so every consumer classifies a code the same way, and a newly
- * introduced code is recognised everywhere at once.
+ * <p>Lives beside {@link ErrorCode} so a consumer classifies a code the same way wherever it runs. It
+ * is not yet the platform's only copy: Core still owns an equivalent in
+ * {@code com.otilm.core.service.handler.authority.ConnectorOperationErrorCodes}, used by its authority
+ * adapter and status-poll listener. Retiring that one in favour of this is tracked in
+ * OmniTrustILM/core#1990; until then a code added here reaches this library's clients, not those two
+ * Core consumers.
  */
 public final class ConnectorOperationErrorCodes {
 

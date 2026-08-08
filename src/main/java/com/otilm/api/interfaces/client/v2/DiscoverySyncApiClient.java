@@ -38,6 +38,15 @@ import java.util.List;
  * unchecked {@code ValidationException}, uncovered by the declared {@code ConnectorException}. Never
  * assume an {@code ErrorCode} is present.
  *
+ * <p>The list-returning operations hand back a mutable list on both transports, so a caller may sort
+ * or filter the result in place.
+ *
+ * <p>A 2xx carrying no body at all is non-conformant and both transports reject it, but not with the
+ * same type: MQ raises a connector-attributed {@code ConnectorException} while REST surfaces the
+ * shared client's {@code IllegalStateException}, which is unchecked and so outside the declared
+ * throws. Making that uniform means retyping {@code BaseApiClient.processRequest}'s functional
+ * parameter, which is public API every connector compiles against, so it is stated here instead.
+ *
  * <p>No {@code stream} method exists here or on the REST client — the contract's
  * {@code POST /v2/discoveryProvider/discoveries/stream} has no client yet. Streaming can only ever be
  * REST: a held-open NDJSON response cannot traverse the AMQP proxy tunnel, which carries one message

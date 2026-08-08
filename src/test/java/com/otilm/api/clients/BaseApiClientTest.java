@@ -423,6 +423,65 @@ class BaseApiClientTest {
     }
 
     /**
+     * A 422 and a problem+json response are read as a typed body rather than a string, so each needed
+     * its own empty-body fallback: an empty source never runs {@code flatMap}, and the status would
+     * otherwise vanish into an unmapped {@code IllegalStateException} instead of the mapped
+     * {@code ConnectorException} the client promises.
+     */
+    @Test
+    void bodilessValidationResponseStillMapsToValidationException() {
+        mockServer.stubFor(get(urlEqualTo("/empty-422")).willReturn(aResponse().withStatus(422)));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        Assertions.assertThrows(ValidationException.class, () ->
+                BaseApiClient.processRequest(r -> r
+                                .uri("http://localhost:" + mockServer.port() + "/empty-422")
+                                .retrieve().toBodilessEntity().block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false), connector));
+    }
+
+    @Test
+    void bodilessProblemJsonResponseMapsByStatusInsteadOfEscaping() {
+        mockServer.stubFor(get(urlEqualTo("/empty-problem")).willReturn(aResponse()
+                .withStatus(502)
+                .withHeader("Content-Type", "application/problem+json")));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(r -> r
+                                .uri("http://localhost:" + mockServer.port() + "/empty-problem")
+                                .retrieve().toBodilessEntity().block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false), connector));
+
+        Assertions.assertEquals(HttpStatus.BAD_GATEWAY, ex.getHttpStatus(),
+                "with no problem body there is no ErrorCode to carry, so the status alone must classify it");
+    }
+
+    /**
+     * Core's {@code handleConnectorServerException} copies the exception message verbatim into its 502
+     * response body, and already appends the connector's name and uuid itself. So the connector URL in
+     * the message bought nothing for attribution while exposing internal topology — and any credentials
+     * carried in user-info or a query string — to whoever called the platform API.
+     */
+    @Test
+    void outwardConnectorFailureMessagesDoNotCarryTheConnectorUrl() {
+        String url = "https://svc-user:s3cret@internal-connector.svc.cluster.local:8443/api";
+        TestConnectorInfo connector = new TestConnectorInfo(url, AuthType.NONE, List.of());
+        JsonProcessingException jackson = new com.fasterxml.jackson.databind.exc.MismatchedInputException(
+                null, "bad shape") {
+        };
+
+        ConnectorServerException ex = Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw reactor.core.Exceptions.propagate(jackson);
+                }, null, connector));
+
+        Assertions.assertFalse(ex.getMessage().contains(url), "the outward message must not carry the URL");
+        Assertions.assertFalse(ex.getMessage().contains("s3cret"), "credentials in the URL must never reach a caller");
+        Assertions.assertEquals(connector, ex.getConnector(), "attribution stays on the exception, not in the message");
+    }
+
+    /**
      * A connector whose body does not match the expected type is a connector fault, not a transport
      * failure and not the caller's mistake. It must report 502: Core serves 422 for a caller's own
      * invalid input, so 422 here would blame the user and invert the retry signal.

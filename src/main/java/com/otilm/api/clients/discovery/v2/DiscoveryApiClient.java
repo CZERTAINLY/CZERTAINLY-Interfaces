@@ -237,7 +237,13 @@ public class DiscoveryApiClient extends BaseApiClient implements DiscoverySyncAp
     private static boolean isRunNotTracked(Throwable error, ApiClientConnectorInfo connector, String cancelUrl) {
         Throwable unwrapped = Exceptions.unwrap(error);
         if (unwrapped instanceof ConnectorProblemException cpe) {
-            return ConnectorOperationErrorCodes.isOperationNotTracked(cpe.getProblemDetail().getErrorCode());
+            // The status gates the code, not the other way round. A not-tracked code is only ever
+            // legitimate on a 404: cancel's own 422 means the run is past the point of no return and
+            // must reach the caller, and REGISTRATION_NOT_FOUND — which the shared predicate accepts,
+            // because it is authority's flavour of not-tracked — is declared 422. Without this guard a
+            // 422 would be answered as a successful cancellation.
+            return HttpStatus.NOT_FOUND.equals(cpe.getHttpStatus())
+                    && ConnectorOperationErrorCodes.isOperationNotTracked(cpe.getProblemDetail().getErrorCode());
         }
         if (unwrapped instanceof ConnectorEntityNotFoundException) {
             logger.warn("Connector {} answered cancel at {} with a 404 carrying no not-tracked error code;"
@@ -249,12 +255,12 @@ public class DiscoveryApiClient extends BaseApiClient implements DiscoverySyncAp
     }
 
     /**
-     * Wrap a decoded response array as the mutable list the interface promises: a fresh
-     * {@link ArrayList} rather than an {@link Arrays#asList} view, with an absent array read as "no
-     * items". Matches the MQ client's helper, so in-place sorting or filtering behaves the same on
-     * both transports.
+     * Wrap an already-required response array in the mutable list {@link DiscoverySyncApiClient}
+     * documents: a fresh {@link ArrayList} rather than an {@link Arrays#asList} view, so a caller may
+     * sort or filter in place. Every caller passes the array through {@code requireBody} first, which
+     * rejects an absent body as non-conformant, so nothing null reaches here.
      */
     private static <T> List<T> toMutableList(T[] result) {
-        return result == null ? new ArrayList<>() : new ArrayList<>(Arrays.asList(result));
+        return new ArrayList<>(Arrays.asList(result));
     }
 }

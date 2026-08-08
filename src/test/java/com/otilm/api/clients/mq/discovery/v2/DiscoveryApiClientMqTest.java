@@ -52,7 +52,6 @@ import java.util.concurrent.CompletableFuture;
  */
 class DiscoveryApiClientMqTest {
 
-
     private static final Duration STATUS_TIMEOUT = Duration.ofSeconds(11);
     private static final Duration DRAIN_TIMEOUT = Duration.ofSeconds(22);
     private static final Duration CONTROL_TIMEOUT = Duration.ofSeconds(33);
@@ -267,6 +266,26 @@ class DiscoveryApiClientMqTest {
                 ProblemDetailExtended.fromErrorCode(code, "simulated " + code, null, "test-corr-mq-cancel"));
     }
 
+    /**
+     * A not-tracked error code is only ever legitimate on a 404. {@code REGISTRATION_NOT_FOUND} is
+     * authority's flavour of not-tracked and is declared 422, and cancel's own 422 means the run is past
+     * the point of no return — so honouring the code without checking the status would answer a refused
+     * cancel, or a non-conformant authority code on a discovery route, as a successful cancellation.
+     */
+    @Test
+    void cancel_notTrackedCodeOnANon404_isNotSwallowedAsSuccess() {
+        ProblemDetailExtended problem = new ProblemDetailExtended();
+        problem.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        problem.setErrorCode(ErrorCode.REGISTRATION_NOT_FOUND);
+        proxyClient.failure = new ConnectorProblemException(problem);
+
+        ConnectorException thrown = Assertions.assertThrows(ConnectorException.class,
+                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+
+        Assertions.assertSame(proxyClient.failure, thrown,
+                "a 422 must reach the caller, whatever error code it carries");
+    }
+
     // ---- Error propagation: this client adds no mapping of its own ----
 
     @Test
@@ -407,7 +426,7 @@ class DiscoveryApiClientMqTest {
         Assertions.assertEquals(Duration.ofSeconds(30), fake.timeout);
     }
 
-    // ---- The ProxyClient default this task added ----
+    // ---- ProxyClient default overload ----
 
     /**
      * {@code sendRequestForEntity(…, Duration)} is a {@code default} method that
