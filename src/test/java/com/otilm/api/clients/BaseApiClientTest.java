@@ -458,6 +458,26 @@ class BaseApiClientTest {
     }
 
     /**
+     * The same rule for the communication failure. Its handler maps to 503 and copies the message the
+     * same way, so a URL here reached callers identically — this one predated the discovery work, which
+     * is the only reason it survived two rounds of cleaning the neighbouring messages.
+     */
+    @Test
+    void communicationFailureMessageDoesNotCarryTheConnectorUrl() {
+        String url = "https://svc-user:s3cret@internal-connector.svc.cluster.local:9999/api";
+        TestConnectorInfo connector = new TestConnectorInfo(url, AuthType.NONE, List.of());
+
+        ConnectorCommunicationException ex = Assertions.assertThrows(ConnectorCommunicationException.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw reactor.core.Exceptions.propagate(new java.net.ConnectException("refused"));
+                }, null, connector));
+
+        Assertions.assertFalse(ex.getMessage().contains(url), "the outward message must not carry the URL");
+        Assertions.assertFalse(ex.getMessage().contains("s3cret"), "credentials in the URL must never reach a caller");
+        Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    /**
      * Core's {@code handleConnectorServerException} copies the exception message verbatim into its 502
      * response body, and already appends the connector's name and uuid itself. So the connector URL in
      * the message bought nothing for attribution while exposing internal topology — and any credentials

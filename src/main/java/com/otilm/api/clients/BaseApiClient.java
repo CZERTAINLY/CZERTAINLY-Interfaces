@@ -461,8 +461,10 @@ public abstract class BaseApiClient {
                 // Connect, response, and pool-acquire failures. Netty timeouts aren't IOExceptions and
                 // the pool pending-limit is a plain RuntimeException, so match them explicitly. Log
                 // type+message; the full cause rides on the exception thrown below.
-                logger.error("Connector {} communication failure: {}", connector.getName(), unwrapped.toString());
-                throw new ConnectorCommunicationException("Error in connector %s communication. URL: %s".formatted(connector.getName(), connector.getUrl()), unwrapped, connector);
+                logger.error("Connector {} communication failure at {}: {}",
+                        connector.getName(), connector.getUrl(), unwrapped.toString());
+                throw new ConnectorCommunicationException(
+                        "Error in connector %s communication".formatted(connector.getName()), unwrapped, connector);
             } else if (isOversizedResponse(unwrapped)) {
                 // The codec's maxInMemorySize (ClientTuning) was exceeded while decoding the body — a
                 // connector fault, not a communication failure. Unmapped it would escape as
