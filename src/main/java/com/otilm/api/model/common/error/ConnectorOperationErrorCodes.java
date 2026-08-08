@@ -4,11 +4,8 @@ package com.otilm.api.model.common.error;
  * Shared classification of connector error codes whose meaning is the same across provider
  * interfaces.
  *
- * <p>Lives beside {@link ErrorCode} so every consumer classifies a code the same way. Core's
- * authority adapter and async poll listener carry an equivalent copy in
- * {@code com.otilm.core.service.handler.authority.ConnectorOperationErrorCodes}; that copy should
- * be retired in favour of this one, so a newly introduced code is recognised everywhere at once
- * instead of in whichever consumer remembered to add it.
+ * <p>Lives beside {@link ErrorCode} so every consumer classifies a code the same way, and a newly
+ * introduced code is recognised everywhere at once.
  */
 public final class ConnectorOperationErrorCodes {
 

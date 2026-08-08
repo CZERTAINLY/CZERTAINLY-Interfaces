@@ -60,11 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class BaseApiClientTest {
 
-    /**
-     * The default in-memory response cap, read from {@link ClientTuning} rather than restated here:
-     * these cases only need "the cap this library ships with", and a literal copy would silently
-     * disagree with the record if the default ever moved.
-     */
+    /** Read from {@link ClientTuning} so a literal copy cannot drift from the record's default. */
     private static final int DEFAULT_MAX_IN_MEMORY = ClientTuning.defaults().maxInMemorySize();
 
     private WireMockServer mockServer;
@@ -92,10 +88,10 @@ class BaseApiClientTest {
     }
 
     /**
-     * A zero-length body is the case {@code bodyToMono} completes empty for, so without
-     * {@code defaultIfEmpty} the {@code flatMap} never runs, the filter completes empty, and the
-     * failure escapes as an unmapped {@code IllegalStateException} instead of the mapped connector
-     * exception. Realistic from a reverse proxy that sets {@code text/html} and sends no body.
+     * {@code bodyToMono} completes empty for a zero-length body, so without {@code defaultIfEmpty} the
+     * {@code flatMap} never runs and the failure escapes as an unmapped
+     * {@code IllegalStateException}. Realistic from a reverse proxy that sets {@code text/html} and
+     * sends no body.
      */
     @Test
     void unexpectedContentTypeWithEmptyBodyStillMapsToAConnectorException() {
@@ -388,20 +384,15 @@ class BaseApiClientTest {
     }
 
     /**
-     * A response exceeding the codec's {@code maxInMemorySize} (here: {@link ClientTuning}) must
-     * be classified as a connector fault ({@link ConnectorServerException}), not escape unmapped —
-     * {@code WebClient.retrieve()} wraps the codec's {@code DataBufferLimitException} into a
-     * {@link org.springframework.web.reactive.function.client.WebClientResponseException} while
-     * decoding the response body, which callers declaring {@code throws ConnectorException} could
-     * not otherwise catch, and which would never be attributed to a connector. Decoding to
-     * {@code String} (rather than a DTO) keeps this test's stubbed body trivially "valid" for any
-     * size, isolating the size gate from any parse-validity concern.
+     * A response exceeding the codec's {@code maxInMemorySize} must be classified as a connector fault
+     * ({@link ConnectorServerException}), not escape unmapped as the
+     * {@link org.springframework.web.reactive.function.client.WebClientResponseException} that
+     * {@code retrieve()} wraps it in. Decoding to {@code String} rather than a DTO keeps the stubbed
+     * body trivially valid at any size, isolating the size gate from parse validity.
      *
-     * <p>The mapped status must be the one the connector actually sent — {@code 200} here — not a
-     * synthesized {@code 413}. Core's {@code ExceptionHandlingAdvice.handleConnectorServerException}
-     * appends "Original response code &lt;status&gt;" to the operator-facing error verbatim, so a
-     * synthesized 413 would assert an upstream status that never existed and send operators looking
-     * for a request-size problem instead of at this client's read cap.
+     * <p>The mapped status must be the one the connector actually sent ({@code 200} here), never a
+     * synthesized {@code 413}: Core's {@code ExceptionHandlingAdvice} appends "Original response code
+     * &lt;status&gt;" to the operator-facing error verbatim.
      */
     @Test
     void processRequest_oversizedResponse_mappedToConnectorServerException() {
@@ -434,11 +425,11 @@ class BaseApiClientTest {
     /**
      * A connector whose body does not match the expected type is a connector fault, not a transport
      * failure and not the caller's mistake. It must report 502: Core serves 422 for a caller's own
-     * invalid input, so classifying this as 422 would blame the user and invert the retry signal.
+     * invalid input, so 422 here would blame the user and invert the retry signal.
      *
-     * <p>The secret this pins is the message. Jackson's own message quotes fragments of the response
-     * body, and in discovery a malformed body can carry key material, so the outward exception message
-     * must stay generic while the cause keeps the detail for diagnostics.
+     * <p>The message is the other half. Jackson's own message quotes fragments of the response body,
+     * and in discovery that can carry key material, so the outward exception message must stay generic
+     * while the cause keeps the detail.
      */
     @Test
     void processRequest_unparseableResponse_reportsBadGatewayWithoutEchoingTheBody() {
@@ -466,11 +457,10 @@ class BaseApiClientTest {
     }
 
     /**
-     * The wrapping is not always one layer deep: {@code WebClient.retrieve()} can surface a
-     * {@code WebClientResponseException} around the {@code DecodingException} that Jackson's decode
-     * failure arrives in. A one-level check misses that, and the miss is worse than a wrong label —
-     * it reaches {@code processRequest}'s catch-all, which logs the exception message, and a Jackson
-     * message quotes the connector's response body.
+     * The wrapping is not always one layer deep: {@code retrieve()} can surface a
+     * {@code WebClientResponseException} around the {@code DecodingException} the Jackson failure
+     * arrives in. A one-level check misses that, and the miss reaches {@code processRequest}'s
+     * catch-all, which logs the exception message — which quotes the connector's response body.
      */
     @Test
     void processRequest_deeplyWrappedJacksonFailure_isStillClassifiedAndDoesNotReachTheCatchAll() {
@@ -511,11 +501,10 @@ class BaseApiClientTest {
     }
 
     /**
-     * A read-limit breach that reaches {@code processRequest} without a
+     * A read-limit breach reaching {@code processRequest} without a
      * {@link org.springframework.web.reactive.function.client.WebClientResponseException} around it
-     * carries no upstream status at all — there is nothing to report. {@link HttpStatus#BAD_GATEWAY}
-     * is the honest answer (the connector's response was unusable and it sits upstream of us), and
-     * again not a synthesized {@code 413}.
+     * carries no upstream status to report, so {@link HttpStatus#BAD_GATEWAY} is the answer — again
+     * not a synthesized {@code 413}.
      */
     @Test
     void processRequest_bareOversizedResponse_reportsBadGatewayRatherThanASynthesizedStatus() {
@@ -531,19 +520,15 @@ class BaseApiClientTest {
     }
 
     /**
-     * The read-limit breach need not sit at the top of the chain or one level under it. Spring's
-     * {@code Jackson2JsonDecoder} raises a {@link DecodingException} around a decode failure — the
-     * same wrapping {@code isJsonTypeResolutionFailure} already has to see through — so a breach can
-     * arrive two or more levels down. Matching only the bare form and the immediate cause of a
-     * {@code WebClientResponseException} let that escape to {@code processRequest}'s catch-all and
-     * surface to the caller as a Spring-internal type, which is precisely the gap the
-     * oversized-response branch exists to close.
+     * The read-limit breach need not sit at the top of the chain or one level under it: Spring's
+     * {@code Jackson2JsonDecoder} raises a {@link DecodingException} around a decode failure, so a
+     * breach can arrive two or more levels down. Matching only the bare form and one level of wrapping
+     * lets that escape to {@code processRequest}'s catch-all and surface as a Spring-internal type.
      */
     @Test
     void processRequest_deeplyWrappedOversizedResponse_stillMappedToConnectorServerException() {
         TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
         DataBufferLimitException limitBreach = new DataBufferLimitException("Exceeded limit on max bytes to buffer : 1024");
-        // Two levels of wrapping: the decoder's DecodingException, itself wrapped once more.
         DecodingException decodingFailure = new DecodingException("Could not read document", limitBreach);
         IllegalStateException outer = new IllegalStateException("wrapped once more", decodingFailure);
 
@@ -557,11 +542,10 @@ class BaseApiClientTest {
     }
 
     /**
-     * The cause-chain walk runs inside an exception handler, so it must terminate on a cyclic chain —
-     * an infinite loop there would be far worse than the misclassification the walk prevents. The two
-     * exceptions below cause each other, which the walk's cheap self-cause check cannot detect: only
-     * its depth bound stops it. Preemptive timeout rather than a plain assertion because the failure
-     * mode being guarded is a hang, which no assertion would ever reach.
+     * The cause-chain walk runs inside an exception handler, so it must terminate on a cyclic chain.
+     * The two exceptions below cause each other, which the walk's cheap self-cause check cannot
+     * detect: only its depth bound stops it. Preemptive timeout because the failure mode guarded
+     * against is a hang, which no assertion would ever reach.
      */
     @Test
     void processRequest_cyclicCauseChain_terminatesInsteadOfSpinning() {
@@ -581,9 +565,9 @@ class BaseApiClientTest {
     /**
      * A cause cycle of length two. Deliberately not a self-cause: {@code a -> b -> a} is invisible to
      * an {@code exception == exception.getCause()} check, so only a bounded walk survives it.
-     * {@link ValidationException} is the carrier so {@code processRequest} classifies it as a business
-     * error and logs the message alone — logging the throwable would hand the cycle to the logging
-     * framework's own stack-trace renderer, testing that instead of this class.
+     * {@link ValidationException} is the carrier so {@code processRequest} logs the message alone —
+     * logging the throwable would hand the cycle to the logging framework's stack-trace renderer,
+     * testing that instead of this class.
      */
     private static class CyclicCauseException extends ValidationException {
         private transient Throwable partner;
@@ -605,11 +589,9 @@ class BaseApiClientTest {
     /**
      * A connector answering an error status with a zero-length body must still produce the mapped
      * {@link ConnectorClientException}. {@code bodyToMono(String.class)} completes empty for a bodiless
-     * response and an empty source never runs {@code flatMap}, so without a default the whole response
-     * filter completes empty: {@code requireResponse} then sees a null entity and throws
-     * {@link IllegalStateException}, which {@code processRequest} rethrows unmapped — past every caller
-     * catching {@code ConnectorException}, and losing the status entirely. A Go connector's
-     * {@code w.WriteHeader(400)} sends exactly this shape.
+     * response and an empty source never runs {@code flatMap}, so without a default the response filter
+     * completes empty, {@code requireResponse} sees a null entity, and the status is lost to an unmapped
+     * {@link IllegalStateException}. A Go connector's {@code w.WriteHeader(400)} sends this shape.
      */
     @Test
     void processRequest_bodilessClientError_stillMappedToConnectorClientException() {
@@ -649,16 +631,13 @@ class BaseApiClientTest {
     }
 
     /**
-     * Write-once tuning has two halves, and only the first was covered. A later caller asking for
-     * different tuning is warned and ignored — but it still receives a {@code WebClient}, and that
-     * client must enforce the tuning that <em>won</em>, not the tuning it asked for. Every other case
-     * in this class claims the tuning first, so the ignored-caller branch never ran: building the
-     * returned client from the caller's own tuning instead of the applied tuning would hand out a
-     * client whose read cap disagrees with the one live {@code HttpClient}, and the suite would stay
-     * green.
+     * A later caller asking for different tuning is warned and ignored, but it still receives a
+     * {@code WebClient}, and that client must enforce the tuning that <em>won</em>, not the tuning it
+     * asked for. Building it from the caller's own tuning would hand out a client whose read cap
+     * disagrees with the one live {@code HttpClient}.
      *
-     * <p>The stubbed body is sized between the two caps — over the cap that won, comfortably under the
-     * one the second caller asked for — so only the winning cap can produce a failure here.
+     * <p>The stubbed body is sized between the two caps — over the winning cap, well under the one the
+     * second caller asked for — so only the winning cap can fail here.
      */
     @Test
     void prepareWebClient_laterDifferingTuning_stillEnforcesTheWinningCap() {

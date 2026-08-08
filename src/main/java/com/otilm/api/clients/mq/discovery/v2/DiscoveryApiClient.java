@@ -29,24 +29,19 @@ import java.util.Objects;
 /**
  * MQ-based implementation of the v2 Discovery API client.
  *
- * <p>Path constants mirror {@link com.otilm.api.clients.discovery.v2.DiscoveryApiClient}
- * character-for-character — both transports must address the same connector contract.
- *
  * <p>No {@code stream} method exists here: NDJSON streaming has no MQ representation (a
  * request/response proxy hop cannot carry a chunked stream). Core selects the REST client when it
  * needs streaming; see {@link DiscoverySyncApiClient}.
  *
  * <p>Every call passes an explicit {@code Duration} sized by {@link DiscoveryMqTimeouts} — this
  * client never invokes a {@link ProxyClient} overload that falls back to the proxy's default
- * timeout, since a discovery drain can legitimately take far longer than a status poll or a
- * lifecycle control call.
+ * timeout, since a discovery drain can legitimately take far longer than a status poll.
  *
  * <p>The proxy hands back {@code null} for a relayed response that carried no body, so every
- * operation guards it and fails naming the operation, rather than passing {@code null} on to Core
- * where it would resurface as a {@link NullPointerException} far from its cause. A list route that
- * answers with no body at all is non-conformant, not empty — REST rejects it the same way, so the
- * two transports report an identical failure. Lists that do arrive are mutable, matching the
- * mutable Jackson list REST returns, so a caller sorting in place behaves the same on both.
+ * operation guards it and fails naming the operation rather than passing {@code null} on to Core,
+ * where it would resurface as a {@link NullPointerException} far from its cause. A list route
+ * answering with no body is non-conformant, not empty. Lists that do arrive are mutable, matching
+ * the Jackson list REST returns.
  */
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class DiscoveryApiClient implements DiscoverySyncApiClient {
@@ -60,19 +55,15 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
     private final DiscoveryMqTimeouts timeouts;
 
     /**
-     * Both collaborators are validated eagerly — as {@link DiscoveryMqTimeouts} and
-     * {@link com.otilm.api.clients.ClientTuning} validate their own arguments — so misconfigured
-     * wiring fails at bean construction instead of on the first connector call.
+     * Both collaborators are validated eagerly, so misconfigured wiring fails at bean construction
+     * instead of on the first connector call.
      */
     public DiscoveryApiClient(ProxyClient proxyClient, DiscoveryMqTimeouts timeouts) {
         this.proxyClient = Objects.requireNonNull(proxyClient, "proxyClient is required");
         this.timeouts = Objects.requireNonNull(timeouts, "timeouts is required");
     }
 
-    /**
-     * Convenience constructor using {@link DiscoveryMqTimeouts#defaults()}, so Core can adopt this
-     * client before it exposes timeout configuration properties.
-     */
+    /** Convenience constructor using {@link DiscoveryMqTimeouts#defaults()}. */
     public DiscoveryApiClient(ProxyClient proxyClient) {
         this(proxyClient, DiscoveryMqTimeouts.defaults());
     }
@@ -138,23 +129,21 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
      * rather than {@code sendRequest} because the caller needs the status, not the (absent) body.
      *
      * <p>A 404 means the connector no longer tracks the run — the terminal state cancel was asking
-     * for, so Core reads it as an already-terminal cancellation rather than an error. The proxy
-     * classifies that 404 into a thrown {@link ConnectorEntityNotFoundException}, and would raise a
+     * for, so it reads as an already-terminal cancellation rather than an error. The proxy classifies
+     * that 404 into a thrown {@link ConnectorEntityNotFoundException}, and would raise a
      * {@link ConnectorProblemException} once it relays {@code application/problem+json}; both shapes
      * are caught here (the problem one by error code, via
      * {@link ConnectorOperationErrorCodes#isOperationNotTracked}) and returned as a {@code 404}
-     * response, exactly as the REST client does. Otherwise the identical call would succeed on REST
-     * and hard-fail on MQ, defeating the sole reason this method returns {@code ResponseEntity<Void>}.
-     * Every other failure — the {@code 422} past-the-point-of-no-return refusal, transport errors,
-     * ... — propagates untouched.
+     * response, exactly as the REST client does — otherwise the identical call would succeed on REST
+     * and hard-fail on MQ. Every other failure, including the {@code 422}
+     * past-the-point-of-no-return refusal, propagates untouched.
      *
      * <p>Any successful status the proxy reports is normalized to {@code 204}, cancel's only contract
      * success status. The {@code Duration} overload of {@code sendRequestForEntity} is a
      * {@code default} method that wraps the body in {@code ResponseEntity.ok}, so without this an MQ
-     * cancel would answer {@code 200} where the controller declares {@code 204} — and a Core adapter
-     * that branches on exact status values would reject it. Normalizing here makes both transports
-     * agree regardless of when (or whether) Core overrides that overload, which is why
-     * {@link ProxyClient} itself is left alone.
+     * cancel would answer {@code 200} where the controller declares {@code 204}, and a Core adapter
+     * branching on exact status values would reject it. Normalizing here keeps both transports in
+     * agreement whether or not Core overrides that overload.
      */
     @Override
     public ResponseEntity<Void> cancel(ApiClientConnectorInfo connector, DiscoveryRunRequestDto request) throws ConnectorException {
@@ -171,8 +160,8 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
         if (response == null) {
             throw new ConnectorException("No response received from connector for cancel", connector);
         }
-        // A non-2xx entity (a proxy that one day relays the 404 instead of throwing it) already
-        // carries the status the caller reads, so it passes through unchanged.
+        // A non-2xx entity (a proxy that relays the 404 instead of throwing it) already carries the
+        // status the caller reads, so it passes through unchanged.
         return response.getStatusCode().is2xxSuccessful()
                 ? ResponseEntity.noContent().build()
                 : response;
@@ -189,13 +178,12 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
     /**
      * An absent body is a non-conformant response, not "no items": a list route must return a JSON
      * array, and reading a missing body as empty would make a broken connector indistinguishable from
-     * one that genuinely reports nothing — for {@code listSupportedResources} that is a distinction
-     * Core acts on. REST rejects it identically via {@code BaseApiClient.requireBody}, and the
-     * single-DTO operations here already throw, so all three agree.
+     * one that genuinely reports nothing — for {@code listSupportedResources} a distinction Core acts
+     * on. REST rejects it identically via {@code BaseApiClient.requireBody}.
      *
      * <p>The list is a fresh {@link ArrayList} rather than an {@link Arrays#asList} view because REST
-     * hands back a mutable Jackson list: a caller that sorts or filters in place must behave the same
-     * on both transports.
+     * hands back a mutable Jackson list, so in-place sorting or filtering behaves the same on both
+     * transports.
      */
     private static <T> List<T> toMutableList(T[] result, String operation, ApiClientConnectorInfo connector)
             throws ConnectorException {
@@ -207,8 +195,7 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
      * must carry a payload, a bodiless response is a connector contract violation, so it fails here
      * naming the operation instead of returning the proxy's {@code null}. Unlike the REST side's
      * {@link IllegalStateException} this uses the declared {@link ConnectorException} channel and
-     * attributes the failure to the connector, so a caller can both catch it and tell which
-     * connector produced it.
+     * attributes the failure to the connector.
      */
     private static <T> T requireBody(T body, String operation, ApiClientConnectorInfo connector) throws ConnectorException {
         if (body == null) {

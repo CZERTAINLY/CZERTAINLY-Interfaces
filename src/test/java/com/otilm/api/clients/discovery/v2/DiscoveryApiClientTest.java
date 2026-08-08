@@ -93,9 +93,8 @@ class DiscoveryApiClientTest {
         Assertions.assertEquals(2, result.size());
         Assertions.assertEquals(Resource.CERTIFICATE, result.get(0).getResource());
         Assertions.assertEquals(Resource.CRYPTOGRAPHIC_KEY, result.get(1).getResource());
-        // Absent (entry 0) vs empty (entry 1) capabilities are contractually distinct — see
-        // DiscoverySupportedResourceDto's javadoc — and a client round-trip is exactly where a
-        // careless deserializer would normalize one into the other.
+        // Absent (entry 0) vs empty (entry 1) capabilities are contractually distinct, and a client
+        // round-trip is where a careless deserializer would normalize one into the other.
         Assertions.assertNull(result.get(0).getCapabilities());
         Assertions.assertNotNull(result.get(1).getCapabilities());
         Assertions.assertTrue(result.get(1).getCapabilities().isEmpty());
@@ -103,9 +102,7 @@ class DiscoveryApiClientTest {
 
     /**
      * The list operations decode an array and wrap it, so the wrapper — not Jackson or Reactor —
-     * decides mutability. Both transports must hand back a list a caller can sort or filter in place;
-     * the MQ client documents the same contract, and a caller that works on one transport must not
-     * break on the other.
+     * decides mutability. Both transports must hand back a list a caller can sort or filter in place.
      */
     @Test
     void listSupportedResources_returnsMutableList() throws ConnectorException {
@@ -166,9 +163,8 @@ class DiscoveryApiClientTest {
     /**
      * Body matchers, not just path and method: without them a client that dropped {@code .body(...)},
      * sent the wrong DTO, or lost {@code runId} would still match the stub and pass. The
-     * {@code resources} entry is pinned to the wire code {@code "certificates"}, never the Java enum
-     * name {@code CERTIFICATE} — the request body is the other half of the wire-code contract already
-     * pinned on the path side by {@code listResourceAttributes_usesResourceWireCodeInPath}.
+     * {@code resources} entry pins the wire code {@code "certificates"} — the request-body half of the
+     * wire-code contract {@code listResourceAttributes_usesResourceWireCodeInPath} pins on the path.
      */
     @Test
     void initiate_returnsMeta() throws ConnectorException {
@@ -283,9 +279,9 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A 404 on cancel means the run is already terminal — Core treats this as success, so the
-     * client MUST surface it via the returned {@code ResponseEntity}'s status, never as a thrown
-     * exception. This is the entire reason {@code cancel} returns {@code ResponseEntity<Void>}.
+     * A 404 on cancel means the run is already terminal, i.e. success, so the client must surface it
+     * via the returned {@code ResponseEntity}'s status, never as a thrown exception. That is the reason
+     * {@code cancel} returns {@code ResponseEntity<Void>}.
      */
     @Test
     void cancel_404IsReturnedAsStatusNotException() throws ConnectorException {
@@ -305,10 +301,9 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A conformant not-tracked 404 needs no operator attention — the connector said in so many words
-     * that it does not track the run — so it must NOT produce the diagnostic WARN reserved for the
-     * ambiguous bare-404 fallback. Without this, the WARN would fire on every routine cancel of an
-     * already-finished run and train operators to ignore it.
+     * A conformant not-tracked 404 needs no operator attention, so it must not produce the diagnostic
+     * WARN reserved for the ambiguous bare-404 fallback — which would otherwise fire on every routine
+     * cancel of an already-finished run and train operators to ignore it.
      */
     @Test
     void cancel_conformantNotTracked404DoesNotWarn() throws ConnectorException {
@@ -336,11 +331,11 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * The not-tracked rule is {@link com.otilm.api.model.common.error.ConnectorOperationErrorCodes},
-     * the single shared definition beside {@code ErrorCode}, not a local one-code comparison — it
-     * recognises {@code REGISTRATION_NOT_FOUND} as well as {@code OPERATION_NOT_TRACKED}. Pinning the
-     * second code keeps this client, the MQ client and Core classifying a connector's answer
-     * identically instead of each remembering a different subset of the codes.
+     * The not-tracked rule is the shared
+     * {@link com.otilm.api.model.common.error.ConnectorOperationErrorCodes}, not a local one-code
+     * comparison, so it recognises {@code REGISTRATION_NOT_FOUND} as well as
+     * {@code OPERATION_NOT_TRACKED}. Pinning the second code keeps every consumer classifying a
+     * connector's answer identically.
      */
     @Test
     void cancel_registrationNotFoundIsSwallowedViaSharedRule() throws ConnectorException {
@@ -360,9 +355,9 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * Regression guard on the 404-swallowing branch added for cancel: a 422 refusal (run past the
-     * point of no return) is a real failure and MUST still throw, proving the special-case only
-     * intercepts a not-tracked answer, not every {@link ConnectorProblemException}.
+     * A 422 refusal (run past the point of no return) is a real failure and must still throw, so the
+     * 404-swallowing branch intercepts only a not-tracked answer, not every
+     * {@link ConnectorProblemException}.
      */
     @Test
     void cancel_422StillThrows() {
@@ -396,11 +391,11 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A terse-but-conformant connector can answer 404 without an {@code application/problem+json}
-     * body (a framework-default error page, for instance). {@code BaseApiClient}'s legacy fallback
-     * maps that shape to {@link com.otilm.api.exception.ConnectorEntityNotFoundException} rather
-     * than {@link ConnectorProblemException} — cancel must still swallow it into a
-     * {@code ResponseEntity} status, or a legitimately-terminal run would be reported as a failure.
+     * A terse-but-conformant connector can answer 404 without an {@code application/problem+json} body.
+     * {@code BaseApiClient}'s legacy fallback maps that shape to
+     * {@link com.otilm.api.exception.ConnectorEntityNotFoundException} rather than
+     * {@link ConnectorProblemException}, and cancel must accept it too, or a legitimately-terminal run
+     * would be reported as a failure.
      */
     @Test
     void cancel_legacyNotFoundIsReturnedAsStatusNotException() throws ConnectorException {
@@ -423,15 +418,12 @@ class DiscoveryApiClientTest {
      * {@code w.WriteHeader(404)} sends exactly that, and cancel is the likeliest place to meet it since
      * the route is declared bodiless even on success.
      *
-     * <p>That shape used to escape the mapping entirely. {@code BaseApiClient}'s legacy 404 branch reads
-     * the body for the exception message with {@code bodyToMono(String.class).flatMap(...)}, which never
-     * runs for a zero-length body — so the response filter completed empty, no connector exception was
-     * ever raised, and an {@link IllegalStateException} escaped instead ("The underlying HTTP client
-     * completed without emitting a response" on this bodiless route, {@code requireResponse}'s own
-     * message on routes that decode a body). {@code processRequest}'s final {@code else} rethrows that
-     * unmapped, so {@code cancel}'s {@code onErrorResume} never saw a
-     * {@code ConnectorEntityNotFoundException} and a legitimately-terminal run reached Core as a hard
-     * failure of an unrelated, uncatchable type.
+     * <p>{@code BaseApiClient}'s legacy 404 branch reads the body for the exception message with
+     * {@code bodyToMono(String.class).flatMap(...)}, which never runs for a zero-length body. Without
+     * a {@code defaultIfEmpty} the response filter completes empty, no connector exception is raised,
+     * and an unmapped {@link IllegalStateException} escapes instead — so {@code cancel}'s
+     * {@code onErrorResume} never sees a {@code ConnectorEntityNotFoundException} and a
+     * legitimately-terminal run reaches Core as a hard failure of an uncatchable type.
      */
     @Test
     void cancel_bodiless404IsReturnedAsStatusNotIllegalState() throws ConnectorException {
@@ -447,13 +439,11 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * The lenient bare-404 fallback above is kept because a terse 404 genuinely is ambiguous, but it
-     * must be diagnosable: the shared connector contract documents 404 as "endpoint not found or not
-     * implemented" too (see {@code AuthProtectedConnectorController}), and the body stubbed here is
-     * exactly Spring's unmapped-route error page. A connector that never implemented
-     * {@code /discoveries/cancel}, or one reached through a stale base URL, is otherwise reported to
-     * Core as an already-terminal cancellation — a silently failed abort. So the swallow must log at
-     * WARN, and the line must name both the connector and the path an operator has to go check.
+     * The lenient bare-404 fallback must stay diagnosable: the shared connector contract also documents
+     * 404 as "endpoint not found or not implemented", and the body stubbed here is Spring's
+     * unmapped-route error page. A connector that never implemented {@code /discoveries/cancel}, or one
+     * reached through a stale base URL, would otherwise be reported as an already-terminal cancellation
+     * — a silently failed abort. So the WARN must name both the connector and the path to go check.
      */
     @Test
     void cancel_bare404IsSwallowedButWarnsNamingConnectorAndPath() throws ConnectorException {
@@ -487,9 +477,8 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * Every other lifecycle call (here: status) keeps the standard mapping — a 404 surfaces as
-     * {@link ConnectorProblemException} with {@code errorCode=OPERATION_NOT_TRACKED} — unlike
-     * cancel, which is special-cased.
+     * Every other lifecycle call keeps the standard mapping — a 404 surfaces as
+     * {@link ConnectorProblemException} with {@code errorCode=OPERATION_NOT_TRACKED} — unlike cancel.
      */
     @Test
     void status_404MapsToOperationNotTracked() {
@@ -586,39 +575,28 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A {@code results} page larger than the configured read cap must fail fast — never buffer
-     * an unbounded/malicious response into memory.
+     * A {@code results} page larger than the configured read cap must fail fast rather than buffer an
+     * unbounded response into memory.
      *
-     * <p>The read cap is {@code ClientTuning.maxInMemorySize} on the shared {@code WebClient} —
-     * see {@code DiscoveryApiClient}'s class javadoc — so it can't be dialed down for just
-     * this test via the shared, process-wide {@code BaseApiClient.prepareWebClient()} singleton
-     * without either being ignored (if another test already claimed the default tuning first) or
-     * permanently shrinking the cap for every other test in the same JVM run. Instead this test
-     * builds its own throwaway {@code WebClient} with a small cap, proving the exact contract this
-     * client depends on: whatever cap the injected {@code WebClient} enforces, {@code results}
-     * surfaces the resulting failure through the standard error path rather than swallowing it.
+     * <p>The cap lives on the shared {@code WebClient}, so it cannot be dialed down through the
+     * process-wide {@code BaseApiClient.prepareWebClient()} singleton without either being ignored
+     * (another test may have claimed the tuning first) or shrinking the cap for every other test in the
+     * JVM run. Hence the throwaway small-cap client.
      *
-     * <p>The stubbed body is genuine, syntactically valid JSON — a real {@code DiscoveryResultsResponseDto}
-     * shape plus one padding field — sized comfortably over the cap, so the failure demonstrably
-     * comes from the size gate tripping before parsing, not from malformed input coincidentally
-     * failing around the same size.
+     * <p>The stubbed body is syntactically valid JSON — a real {@code DiscoveryResultsResponseDto} shape
+     * plus one padding field — so the failure comes from the size gate tripping before parsing, not
+     * from malformed input failing around the same size.
      *
-     * <p>The cap is enforced by the codec while decoding the (2xx) response body, a step that
-     * runs inside {@code WebClient.retrieve()} itself. Spring's {@code retrieve()} wraps any
-     * body-decode failure — including a codec limit breach — into a {@link WebClientResponseException}
-     * so the failure still carries the response's status/headers; the original
-     * {@link DataBufferLimitException} survives as its cause. {@code BaseApiClient.processRequest}
-     * now maps that (either shape) to {@code ConnectorServerException} (see {@code BaseApiClientTest}
-     * for that mapping's own direct coverage) — asserted here via the class this client's caller
-     * actually sees.
+     * <p>The codec enforces the cap while decoding the 2xx body, inside {@code retrieve()}, which wraps
+     * the breach in a {@link WebClientResponseException} carrying the response status and keeping the
+     * original {@link DataBufferLimitException} as its cause. Asserted here through the exception class
+     * this client's caller actually sees.
      */
     @Test
     void results_oversizedResponse_failsInsteadOfBuffering() {
         int smallCap = 8 * 1024;
         DiscoveryApiClient smallCapClient = smallCapClient(smallCap);
 
-        // Genuinely valid JSON — a real DiscoveryResultsResponseDto shape with one oversized
-        // padding string — at 4x the cap (32 KB body against an 8 KB cap).
         String oversizedBody = "{\"items\":[],\"highestSequence\":0,\"more\":false,\"padding\":\""
                 + "a".repeat(smallCap * 4) + "\"}";
         mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/results")
@@ -634,8 +612,7 @@ class DiscoveryApiClientTest {
                 ConnectorServerException.class,
                 () -> smallCapClient.results(connector, request));
 
-        // The status carried is the one the connector really sent (200), not a synthesized 413 — see
-        // BaseApiClient.upstreamStatus and BaseApiClientTest for that mapping's own coverage.
+        // The status is the one the connector really sent (200), not a synthesized 413.
         Assertions.assertEquals(HttpStatus.OK, ex.getHttpStatus());
         Assertions.assertInstanceOf(WebClientResponseException.class, ex.getCause());
         Assertions.assertInstanceOf(DataBufferLimitException.class, ex.getCause().getCause());
@@ -644,23 +621,20 @@ class DiscoveryApiClientTest {
     /**
      * The read cap must bound a whole list response, not each of its elements.
      *
-     * <p>This is the case the cap silently failed to cover: {@code toEntityList(X.class)} streams the
-     * array through Spring's {@code Jackson2Tokenizer}, whose {@code assertInMemorySize} resets its
-     * byte counter every time a top-level element completes, so the cap degrades into a per-element
-     * cap and the {@code collectList} that assembles the result is unbounded. Every element below is
-     * a couple of dozen bytes — far under the cap — while the array as a whole is several times over
-     * it, which is exactly the shape a connector returning a million tiny objects would produce, and
-     * exactly the shape an element-wise cap waves through. Decoding an array type instead routes
-     * through the codec's bounded {@code decodeToMono}, so the whole response is measured and the
-     * call fails rather than assembling.
+     * <p>{@code toEntityList(X.class)} streams the array through Spring's {@code Jackson2Tokenizer},
+     * whose {@code assertInMemorySize} resets its byte counter every time a top-level element
+     * completes, so the cap degrades into a per-element cap and the {@code collectList} assembling the
+     * result is unbounded. Every element below is a couple of dozen bytes while the array as a whole is
+     * several times over the cap — the shape a connector returning a million tiny objects produces, and
+     * the shape an element-wise cap waves through. Decoding an array type instead routes through the
+     * codec's bounded {@code decodeToMono}, so the whole response is measured.
      */
     @Test
     void listSupportedResources_oversizedArrayOfSmallElements_failsInsteadOfAssembling() {
         int smallCap = 8 * 1024;
         DiscoveryApiClient smallCapClient = smallCapClient(smallCap);
 
-        // ~27 bytes per element, 1000 elements: no single element is anywhere near the cap, the array
-        // is roughly 3.5x over it.
+        // ~27 bytes per element, 1000 elements: no element is near the cap, the array is ~3.5x over it.
         String oversizedArray = "[" + String.join(",",
                 Collections.nCopies(1000, "{\"resource\":\"certificates\"}")) + "]";
         Assertions.assertTrue(oversizedArray.length() > smallCap * 3,
@@ -680,10 +654,9 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A throwaway {@code WebClient} with its own small read cap. The shared
+     * A throwaway {@code WebClient} with its own small read cap, because the shared
      * {@code BaseApiClient.prepareWebClient()} singleton cannot be re-tuned per test — see
-     * {@code results_oversizedResponse_failsInsteadOfBuffering} for why — so cap-sensitive cases
-     * build their own.
+     * {@code results_oversizedResponse_failsInsteadOfBuffering}.
      */
     private DiscoveryApiClient smallCapClient(int maxInMemorySize) {
         WebClient smallCapWebClient = WebClient.builder()
@@ -712,7 +685,7 @@ class DiscoveryApiClientTest {
 
     /**
      * Spring's default unmapped-route error page: a 404 with no {@code application/problem+json} body,
-     * which is what a connector that never implemented the endpoint actually returns.
+     * what a connector that never implemented the endpoint returns.
      */
     private static String springDefaultErrorPage() {
         return "{\"timestamp\":\"2026-08-06T10:00:00Z\",\"status\":404,\"error\":\"Not Found\","
@@ -722,11 +695,11 @@ class DiscoveryApiClientTest {
     /**
      * Attach a recorder to this client's own logger so a test can assert on the events it emits.
      *
-     * <p>logback-classic is this module's SLF4J provider (slf4j-simple is on the test classpath too
-     * but loses provider selection), so the SLF4J logger really is a logback one; asserting the type
-     * makes a provider change fail loudly instead of silently skipping the log assertions. The level
-     * is pinned so the assertions do not depend on the ambient root level, and restored to inherited
-     * afterwards — the module ships no logback configuration, so inherited is the original state.
+     * <p>logback-classic is this module's SLF4J provider (slf4j-simple is on the test classpath too but
+     * loses provider selection), so asserting the type makes a provider change fail loudly instead of
+     * silently skipping the log assertions. The level is pinned so the assertions do not depend on the
+     * ambient root level, and restored to inherited — the module ships no logback configuration, so
+     * inherited is the original state.
      */
     private static ListAppender<ILoggingEvent> attachClientLogRecorder() {
         Logger clientLogger = Assertions.assertInstanceOf(Logger.class,

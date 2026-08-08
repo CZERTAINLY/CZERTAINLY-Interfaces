@@ -72,8 +72,7 @@ public abstract class BaseApiClient {
     private static final Duration POOL_DISPOSE_INTERVAL = Duration.ofSeconds(120);
     private static final Duration POOL_DISPOSE_AFTER = Duration.ofSeconds(300);
 
-    // Bound for the cause-chain walk in findInCauseChain. Chains are never this deep in practice.
-    // The cap exists so a cyclic chain cannot spin forever inside an exception handler.
+    // Bounds findInCauseChain so a cyclic cause chain cannot spin forever inside an exception handler.
     private static final int MAX_CAUSE_CHAIN_DEPTH = 32;
 
     // Applied once (first prepareWebClient wins). The tuned HttpClient is the single source the
@@ -334,9 +333,8 @@ public abstract class BaseApiClient {
         } else if (!appliedTuning.equals(tuning)) {
             logger.warn("Connector WebClient already tuned with {}; ignoring differing request {}", appliedTuning, tuning);
         }
-        // appliedTuning (the tuning that won), not the tuning passed to this call, so every knob —
-        // pool sizing and maxInMemorySize alike — stays consistent with the single baseHttpClient
-        // built above, even when a later, differently-tuned caller was warned-and-ignored.
+        // appliedTuning, not the argument: a warned-and-ignored caller must still receive a client
+        // whose knobs match the single live baseHttpClient.
         return buildWebClient(baseHttpClient, appliedTuning);
     }
 
@@ -400,29 +398,11 @@ public abstract class BaseApiClient {
      * would throw an opaque NPE. Surfacing a clear IllegalStateException at the call site makes
      * a misbehaving connector (no response) diagnosable instead of producing a bare NPE.
      *
-     * <p><b>Known discrepancy with the MQ clients, not resolvable here.</b> The MQ discovery client's
-     * equivalent guard throws {@code ConnectorException(message, connector)} — checked, so it travels
-     * the channel every client method already declares, and attributed to the connector that produced
-     * the failure. That is the better shape, and this method (with {@link #requireBody}) deliberately
-     * does not adopt it. The {@link IllegalStateException} thrown here is unchecked, so it escapes
-     * methods declaring {@code throws ConnectorException} and falls through
-     * {@link #processRequest}'s catch-all unmapped and unattributed to any connector.
-     *
-     * <p>Switching to a checked {@code ConnectorException} does not compile. Every call site of these
-     * two methods across this library — 14 in {@code v3.CertificateApiClient}, 9 in
-     * {@code discovery.v2.DiscoveryApiClient}, 5 in {@code v3.AuthorityApiClient}, 3 in
-     * {@code v2.AttributesApiClient} — sits inside the {@link Function} lambda handed to
-     * {@link #processRequest}, and {@code Function.apply} declares no checked exception, so each one
-     * fails with "unreported exception ... must be caught or declared to be thrown". Fixing that means
-     * changing {@code processRequest} to take a checked-exception-throwing functional interface, and
-     * {@code processRequest} is public API of the contract Core and every external connector compile
-     * against: an added overload would make every existing lambda call site ambiguous, and a replaced
-     * parameter type would break any caller that passes a {@code Function} value rather than a lambda.
-     * That is a deliberate, separately-planned contract change, not a cleanup to slip in here.
-     *
-     * <p>Until then a caller that must distinguish a bodiless response has to catch
-     * {@link IllegalStateException} alongside {@code ConnectorException}, and the connector's identity
-     * has to come from the call site rather than from the exception.
+     * <p>The {@link IllegalStateException} is unchecked, so it escapes methods declaring
+     * {@code throws ConnectorException} and is not attributed to a connector. A caller that must
+     * distinguish a bodiless response has to catch it alongside {@code ConnectorException}, and take
+     * the connector's identity from the call site. (The MQ discovery client's equivalent guard throws
+     * a checked, connector-attributed {@code ConnectorException} instead.)
      */
     protected static <T> ResponseEntity<T> requireResponse(Mono<ResponseEntity<T>> mono, String context) {
         ResponseEntity<T> entity = mono.block();
@@ -437,11 +417,6 @@ public abstract class BaseApiClient {
      * response must carry a payload (attribute lists, operation status, identify, CRL, CA certs).
      * An empty body on success is a connector contract violation; fail clearly rather than
      * returning null to the caller (which would NPE later, far from the cause).
-     *
-     * <p>Throws an unchecked, connector-less {@link IllegalStateException} where the MQ discovery
-     * client's counterpart throws a checked, connector-attributed {@code ConnectorException}. The
-     * discrepancy is known and stands for the reason set out on {@link #requireResponse}: the change
-     * cannot compile without first reworking {@link #processRequest}'s public functional interface.
      */
     protected static <T> T requireBody(Mono<ResponseEntity<T>> mono, String context) {
         ResponseEntity<T> entity = requireResponse(mono, context);
@@ -463,15 +438,12 @@ public abstract class BaseApiClient {
                 // Must precede the IOException branch: JsonProcessingException extends IOException, so a
                 // decode failure would otherwise be reported as a transport failure it is not.
                 //
-                // 502, not 422: the connector answered, and its answer does not conform to the contract —
-                // which is what Bad Gateway means. A 422 would be wrong twice over, because Core serves 422
-                // for a caller's own invalid input, so a connector fault would read as the user's mistake
-                // and the retry signal would invert. Checked, so callers declaring throws ConnectorException
-                // still catch it.
+                // 502, not 422: the connector answered and its answer does not conform. Core serves 422
+                // for a caller's own invalid input, so 422 here would blame the user and invert the
+                // retry signal.
                 //
-                // The log carries the failure type and the connector, never the exception's message:
-                // Jackson's message quotes fragments of the response body, which for discovery can include
-                // key material. The full cause rides on the thrown exception for diagnostics.
+                // The log carries the failure type, never the exception's message: Jackson's message
+                // quotes fragments of the response body, which for discovery can include key material.
                 logger.error("Connector {} response failed type resolution: {}",
                         connector.getName(), unwrapped.getClass().getName());
                 ConnectorServerException typeFailure = new ConnectorServerException(
@@ -492,12 +464,10 @@ public abstract class BaseApiClient {
                 logger.error("Connector {} communication failure: {}", connector.getName(), unwrapped.toString());
                 throw new ConnectorCommunicationException("Error in connector %s communication. URL: %s".formatted(connector.getName(), connector.getUrl()), unwrapped, connector);
             } else if (isOversizedResponse(unwrapped)) {
-                // The response existed (2xx or otherwise) but the codec's maxInMemorySize (ClientTuning)
-                // was exceeded while decoding its body — a connector fault (oversized/malicious page),
-                // not a communication failure. Unmapped, this would escape as WebClientResponseException
-                // (or a bare DataBufferLimitException), which callers declaring `throws ConnectorException`
-                // cannot catch, which never gets attributed to a connector via setConnector, and whose
-                // full stack a hostile connector could repeatedly trigger at ERROR level.
+                // The codec's maxInMemorySize (ClientTuning) was exceeded while decoding the body — a
+                // connector fault, not a communication failure. Unmapped it would escape as
+                // WebClientResponseException or a bare DataBufferLimitException, which callers declaring
+                // `throws ConnectorException` cannot catch and which carries no connector attribution.
                 logger.error("Connector {} response exceeded the configured read limit: {}", connector.getName(), unwrapped.toString());
                 ConnectorServerException cse = new ConnectorServerException(
                         "Connector %s response exceeded the configured read limit. URL: %s".formatted(connector.getName(), connector.getUrl()),
@@ -529,15 +499,11 @@ public abstract class BaseApiClient {
      * True when a {@link DataBufferLimitException} appears anywhere in {@code t}'s cause chain — a
      * codec {@code maxInMemorySize} breach, whatever wrapped it.
      *
-     * <p>{@code WebClient.retrieve()} wraps a body-decode failure into a
-     * {@link WebClientResponseException} so the failure still carries the response's status and
-     * headers, and the bare form reaches here when some other codepath surfaces it unwrapped — but
-     * those are not the only two shapes. Spring's {@code Jackson2JsonDecoder} raises a
-     * {@code DecodingException} around a decode failure as well (the reason
-     * {@link #isJsonTypeResolutionFailure} has to look one level down), so a breach can sit two or
-     * more levels deep. Matching only the bare form and one level of wrapping let those escape to
-     * {@code processRequest}'s catch-all and surface as a Spring-internal type, which is the exact
-     * gap this branch exists to close, so the whole chain is walked.
+     * <p>The whole chain is walked, not one or two levels. {@code WebClient.retrieve()} wraps a
+     * body-decode failure into a {@link WebClientResponseException}, and Spring's
+     * {@code Jackson2JsonDecoder} raises a {@code DecodingException} around a decode failure, so a
+     * breach can sit several levels deep; anything missed escapes to {@code processRequest}'s
+     * catch-all and surfaces as a Spring-internal type.
      */
     private static boolean isOversizedResponse(Throwable t) {
         return findInCauseChain(t, DataBufferLimitException.class) != null;
@@ -548,10 +514,10 @@ public abstract class BaseApiClient {
      * covering {@code MismatchedInputException}, {@code InvalidTypeIdException},
      * {@code ValueInstantiationException} and {@code InvalidFormatException}, whatever wrapped them.
      *
-     * <p>The whole chain is walked, not one level, because the wrapping is not always a single layer:
+     * <p>The whole chain is walked because the wrapping is not a single layer:
      * {@code WebClient.retrieve()} can surface a {@code WebClientResponseException} around the
      * {@code DecodingException} that Spring's {@code Jackson2JsonDecoder} raises around the Jackson
-     * failure. Missing that shape would be worse than a misclassification — it falls through to
+     * failure. Missing that shape is worse than a misclassification — it falls through to
      * {@code processRequest}'s catch-all, which logs the exception's message, and a Jackson message
      * quotes fragments of the connector's response body.
      */
@@ -561,19 +527,16 @@ public abstract class BaseApiClient {
 
     /**
      * The status the connector actually answered with, for a failure raised while decoding its
-     * response. Core's {@code ExceptionHandlingAdvice} renders this verbatim as an "Original response
-     * code ..." suffix on the operator-facing error, so it must not be invented: a read-limit breach
-     * is typically hit on a {@code 200}, and reporting {@code 413 PAYLOAD_TOO_LARGE} there would
-     * assert an upstream status that never existed and point operators at a request-size problem
-     * rather than at this client's own read cap — which the exception message already names, so
-     * carrying the real status loses nothing.
+     * response. It must not be invented: Core's {@code ExceptionHandlingAdvice} renders it verbatim
+     * as an "Original response code ..." suffix on the operator-facing error, and a read-limit breach
+     * is typically hit on a {@code 200}, so a synthesized {@code 413 PAYLOAD_TOO_LARGE} would assert
+     * a status that never existed and point operators at a request-size problem rather than at this
+     * client's own read cap.
      *
-     * <p>{@code WebClient.retrieve()} wraps a body-decode failure into a
-     * {@link WebClientResponseException} precisely so the response's status survives, which is where
-     * the real status comes from. {@link HttpStatus#BAD_GATEWAY} is the fallback when no such wrapper
-     * is in the chain (a bare codec failure carries no status) or when the connector answered a
-     * non-standard code {@link HttpStatus} cannot represent: the response was unusable and the
-     * connector is upstream of us, which is what 502 says.
+     * <p>The real status comes from the {@link WebClientResponseException} that
+     * {@code WebClient.retrieve()} wraps a body-decode failure into. {@link HttpStatus#BAD_GATEWAY}
+     * is the fallback when no such wrapper is in the chain (a bare codec failure carries no status)
+     * or when the connector answered a code {@link HttpStatus} cannot represent.
      */
     private static HttpStatus upstreamStatus(Throwable t) {
         WebClientResponseException responseException = findInCauseChain(t, WebClientResponseException.class);
@@ -587,10 +550,8 @@ public abstract class BaseApiClient {
      * The first throwable of the given type in {@code t}'s cause chain, {@code t} itself included, or
      * {@code null} when there is none.
      *
-     * <p>The walk is deliberately bounded. Every caller runs inside an exception handler, where an
-     * infinite loop on a cyclic cause chain would be a far worse failure than the misclassification
-     * the walk prevents — so {@link #MAX_CAUSE_CHAIN_DEPTH} caps a cycle of any length, and the
-     * self-cause check short-circuits the common one-node case.
+     * <p>{@link #MAX_CAUSE_CHAIN_DEPTH} caps a cycle of any length; the self-cause check
+     * short-circuits the common one-node case.
      */
     private static <E extends Throwable> E findInCauseChain(Throwable t, Class<E> type) {
         Throwable current = t;
@@ -631,8 +592,7 @@ public abstract class BaseApiClient {
         }
         if (contentType.contains(MediaType.TEXT_HTML_VALUE)) {
             // defaultIfEmpty for the same reason as the legacy branches below: bodyToMono completes
-            // empty for a zero-length body, so without it flatMap never runs and the failure escapes
-            // unmapped as an IllegalStateException.
+            // empty for a zero-length body, so flatMap never runs and the failure escapes unmapped.
             return clientResponse.bodyToMono(String.class)
                     .defaultIfEmpty("")
                     .flatMap(body -> Mono.error(new ConnectorCommunicationException("Received response with unexpected content type '%s'.".formatted(contentType), null)));
@@ -646,16 +606,13 @@ public abstract class BaseApiClient {
      * Map a non-2xx response with no {@code application/problem+json} body onto the connector
      * exception its status means.
      *
-     * <p>Each branch below reads the body as a {@code String} for the exception message and needs
+     * <p>Each branch reads the body as a {@code String} for the exception message and needs
      * {@code defaultIfEmpty} to do it: {@code bodyToMono(String.class)} completes <em>empty</em> for a
      * zero-length body, and an empty source never runs {@code flatMap}, so without the default the
-     * whole filter completes empty and no exception is ever raised. The error status then vanishes —
-     * {@code requireResponse}/{@code requireBody} see a null entity and throw
-     * {@link IllegalStateException}, which {@code processRequest} rethrows unmapped, past every
-     * caller that catches {@code ConnectorException} and past the discovery client's {@code cancel}
-     * not-tracked handling. A bodiless error status is an ordinary shape, not a curiosity: a Go
-     * connector's {@code w.WriteHeader(404)} sends no body at all, and discovery's {@code cancel} is
-     * declared bodiless even on success.
+     * filter completes empty and no exception is raised — the status then vanishes into an unmapped
+     * {@link IllegalStateException}. Bodiless error statuses are ordinary: a Go connector's
+     * {@code w.WriteHeader(404)} sends no body, and discovery's {@code cancel} is declared bodiless
+     * even on success.
      */
     private static Mono<ClientResponse> handleLegacyErrorResponse(ClientResponse clientResponse) {
         if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {

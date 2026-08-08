@@ -10,7 +10,7 @@ import java.util.Set;
  *
  * <p>The REST and MQ clients address the same connector contract, so a route that differs between
  * them is a defect no test in either suite would catch. Both import these constants rather than
- * declaring their own, which is what makes divergence impossible rather than merely unlikely.
+ * declaring their own.
  *
  * <p>Streaming ({@code POST /v2/discoveryProvider/discoveries/stream}) is deliberately absent: no
  * client implements it yet. See {@link com.otilm.api.interfaces.client.v2.DiscoverySyncApiClient}.
@@ -47,10 +47,10 @@ public final class DiscoveryPaths {
      * The per-resource attribute route, bound by the resource's wire code ({@code "certificates"},
      * {@code "keys"}) rather than its Java enum name.
      *
-     * <p>Rejects a resource that discovery cannot report. Without the check, {@code Resource.DISCOVERY}
-     * (code {@code "discoveries"}) would compose to {@code /v2/discoveryProvider/discoveries/attributes}
-     * — a path inside the run-lifecycle namespace — so a caller mistake would surface as a puzzling 404
-     * from what looks like a lifecycle route instead of as the argument error it is.
+     * <p>Rejects a resource discovery cannot report. Unchecked, {@code Resource.DISCOVERY} (code
+     * {@code "discoveries"}) would compose to {@code /v2/discoveryProvider/discoveries/attributes},
+     * inside the run-lifecycle namespace, so a caller mistake would surface as a 404 from an apparent
+     * lifecycle route rather than as the argument error it is.
      *
      * @throws IllegalArgumentException if {@code resource} is not discoverable
      */

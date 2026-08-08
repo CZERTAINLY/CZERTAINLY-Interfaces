@@ -8,11 +8,8 @@ import java.time.Duration;
 class ClientTuningTest {
 
     /**
-     * Regression guard for the four-argument, source-compatible constructor kept for callers built
-     * against this record before {@code maxInMemorySize} existed (e.g. Core's
-     * {@code ApplicationConfig}). If this overload is ever "tidied away" or its delegation stops
-     * applying the 16 MiB default, this fails — a compile error alone would not catch a wrong
-     * default silently taking its place.
+     * Regression guard for the four-argument, source-compatible constructor. A compile error alone
+     * would not catch a wrong default silently taking the 16 MiB one's place.
      */
     @Test
     void fourArgConstructor_usesDefaultMaxInMemorySize() {
@@ -22,12 +19,10 @@ class ClientTuningTest {
     }
 
     /**
-     * The canonical constructor's {@code maxInMemorySize} guard, which nothing else covered — the
-     * four-argument overload can never reach it, since it always supplies the positive default. A
-     * non-positive cap is not a harmless value to wave through: Spring's codec treats it as the byte
-     * limit, so it would fail every response rather than none, and the failure would surface as an
-     * oversized-response error on every single connector call sharing the WebClient. Without this
-     * case the guard could be deleted outright with the suite still green.
+     * The canonical constructor's {@code maxInMemorySize} guard; the four-argument overload can never
+     * reach it, since it always supplies the positive default. A non-positive cap is not harmless:
+     * Spring's codec treats it as the byte limit, so it would fail every response on every connector
+     * call sharing the WebClient.
      */
     @Test
     void canonicalConstructor_rejectsNonPositiveMaxInMemorySize() {

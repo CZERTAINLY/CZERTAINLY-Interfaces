@@ -49,17 +49,12 @@ import java.util.concurrent.CompletableFuture;
  * themselves.
  *
  * <p>The fake throws {@link AssertionError} from every {@code ProxyClient} overload that takes no
- * {@code Duration}. That makes the constraint structural rather than per-test: any future call to a
- * timeout-less overload fails at the call site, in whichever test provokes it, without needing to be
- * asserted anywhere.
+ * {@code Duration}, making the constraint structural: any future call to a timeout-less overload fails
+ * at the call site without needing to be asserted anywhere.
  *
- * <p>The three timeouts (11s/22s/33s) are deliberately distinguishable from one another and from
+ * <p>The three timeouts (11s/22s/33s) are distinguishable from one another and from
  * {@link DiscoveryMqTimeouts#defaults()}, so a mis-mapped component — {@code results} wired to
  * {@code control()} instead of {@code drain()}, say — fails rather than passing by coincidence.
- *
- * <p>Behavioural cases here never assert "the fake was reached" in place of an outcome: cancel's
- * cases drive the fake into each shape the proxy can produce (a thrown not-tracked failure, a
- * successful entity) and assert the {@code ResponseEntity} the caller actually receives.
  */
 class DiscoveryApiClientMqTest {
 
@@ -216,10 +211,9 @@ class DiscoveryApiClientMqTest {
     }
 
     /**
-     * The composed case, with no override in the way: a proxy that leaves the {@code Duration}
-     * overload of {@code sendRequestForEntity} to the interface default — as {@code ProxyClientImpl}
-     * does today — still yields 204, because the client normalizes what the default wrapped in
-     * {@code ResponseEntity.ok}.
+     * The composed case, with no override in the way: a proxy that leaves the {@code Duration} overload
+     * of {@code sendRequestForEntity} to the interface default still yields 204, because the client
+     * normalizes what the default wrapped in {@code ResponseEntity.ok}.
      */
     @Test
     void cancel_yieldsNoContentEvenWhenTheProxyLeavesTheOverloadToTheInterfaceDefault() throws ConnectorException {
@@ -234,8 +228,8 @@ class DiscoveryApiClientMqTest {
 
     /**
      * The 404 the proxy classifies into {@link ConnectorEntityNotFoundException} is the run being
-     * untracked — already the terminal state cancel asked for. REST reports it as a 404 response, so
-     * MQ must too, or the identical call succeeds on one transport and hard-fails on the other.
+     * untracked — already the terminal state cancel asked for. REST reports it as a 404 response, so MQ
+     * must too, or the identical call succeeds on one transport and hard-fails on the other.
      */
     @Test
     void cancel_reportsANotTrackedRunAsNotFoundInsteadOfThrowing() throws ConnectorException {
@@ -306,10 +300,9 @@ class DiscoveryApiClientMqTest {
 
     /**
      * A list route answering with no body at all is non-conformant, not empty — it must return a JSON
-     * array. Reading it as empty would make a broken connector indistinguishable from one that
-     * genuinely reports nothing, which for {@code listSupportedResources} is a distinction Core acts
-     * on. REST rejects it identically through {@code BaseApiClient.requireBody}, so this is the case
-     * that keeps the two transports from disagreeing.
+     * array. Reading it as empty would make a broken connector indistinguishable from one that genuinely
+     * reports nothing, which for {@code listSupportedResources} is a distinction Core acts on. REST
+     * rejects it identically through {@code BaseApiClient.requireBody}.
      */
     @Test
     void listOperationsFailNamingTheOperationOnABodilessResponse() {
@@ -423,11 +416,10 @@ class DiscoveryApiClientMqTest {
     // ---- The ProxyClient default this task added ----
 
     /**
-     * The new {@code sendRequestForEntity(…, Duration)} is a {@code default} method, so
-     * {@link RecordingProxyClient} overrides it and never exercises it. This covers the default body
-     * itself: it must forward the caller's timeout to {@code sendRequest} rather than drop it. The
-     * status the default produces is deliberately not asserted here — it is not the contract status,
-     * and {@code cancel} normalizes it; see
+     * {@code sendRequestForEntity(…, Duration)} is a {@code default} method that
+     * {@link RecordingProxyClient} overrides, so this covers the default body itself: it must forward
+     * the caller's timeout to {@code sendRequest} rather than drop it. The status it produces is not
+     * asserted — it is not the contract status, and {@code cancel} normalizes it; see
      * {@link #cancel_yieldsNoContentEvenWhenTheProxyLeavesTheOverloadToTheInterfaceDefault()}.
      */
     @Test
@@ -464,12 +456,11 @@ class DiscoveryApiClientMqTest {
     }
 
     /**
-     * Records the one call the client under test makes. Every overload without a {@code Duration}
-     * throws, so the "explicit timeout on every call" rule holds structurally.
+     * Records the one call the client under test makes.
      *
-     * <p>The recorded connector is {@code seenConnector}, not {@code connector}: while it shared the
-     * enclosing test's field name, {@code assertCalled} compared the field with itself and could
-     * never fail, so nothing checked that the client forwards the caller's connector at all.
+     * <p>The recorded connector must stay named {@code seenConnector}, not {@code connector}: sharing
+     * the enclosing test's field name makes {@code assertCalled} compare the field with itself, so it
+     * could never fail and nothing would check that the client forwards the caller's connector.
      */
     private static final class RecordingProxyClient extends UnsupportedProxyClient {
         private ApiClientConnectorInfo seenConnector;
@@ -525,9 +516,8 @@ class DiscoveryApiClientMqTest {
     }
 
     /**
-     * Base fake: every {@link ProxyClient} member the discovery client must not touch. The
-     * timeout-less overloads are the ones that matter — reaching one means an operation silently
-     * readopted the proxy's shared default timeout, which is exactly what this client exists to avoid.
+     * Base fake: every {@link ProxyClient} member the discovery client must not touch. Reaching a
+     * timeout-less overload means an operation silently readopted the proxy's shared default timeout.
      */
     private abstract static class UnsupportedProxyClient implements ProxyClient {
 
@@ -543,8 +533,8 @@ class DiscoveryApiClientMqTest {
             throw new AssertionError(NO_TIMEOUT + " - timeout-less sendRequestForEntity was called for " + path);
         }
 
-        // sendRequest(…, Duration) is deliberately left abstract — it is the one overload the
-        // discovery client is allowed to call, so each concrete fake below supplies it.
+        // sendRequest(…, Duration) is left abstract: it is the one overload the discovery client may
+        // call, so each concrete fake supplies it.
 
         @Override
         public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Map<String, String> pathVariables, Object body, Class<T> responseType) {
