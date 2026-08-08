@@ -33,6 +33,7 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -445,7 +446,7 @@ public abstract class BaseApiClient {
                 // The log carries the failure type, never the exception's message: Jackson's message
                 // quotes fragments of the response body, which for discovery can include key material.
                 logger.error("Connector {} response failed type resolution at {}: {}",
-                        connector.getName(), connector.getUrl(), unwrapped.getClass().getName());
+                        connector.getName(), safeLocation(connector), unwrapped.getClass().getName());
                 ConnectorServerException typeFailure = new ConnectorServerException(
                         "Connector %s returned a response that could not be parsed against the expected type"
                                 .formatted(connector.getName()),
@@ -462,7 +463,7 @@ public abstract class BaseApiClient {
                 // the pool pending-limit is a plain RuntimeException, so match them explicitly. Log
                 // type+message; the full cause rides on the exception thrown below.
                 logger.error("Connector {} communication failure at {}: {}",
-                        connector.getName(), connector.getUrl(), unwrapped.toString());
+                        connector.getName(), safeLocation(connector), unwrapped.toString());
                 throw new ConnectorCommunicationException(
                         "Error in connector %s communication".formatted(connector.getName()), unwrapped, connector);
             } else if (isOversizedResponse(unwrapped)) {
@@ -471,7 +472,7 @@ public abstract class BaseApiClient {
                 // WebClientResponseException or a bare DataBufferLimitException, which callers declaring
                 // `throws ConnectorException` cannot catch and which carries no connector attribution.
                 logger.error("Connector {} response exceeded the configured read limit at {}: {}",
-                        connector.getName(), connector.getUrl(), unwrapped.toString());
+                        connector.getName(), safeLocation(connector), unwrapped.toString());
                 ConnectorServerException cse = new ConnectorServerException(
                         "Connector %s response exceeded the configured read limit".formatted(connector.getName()),
                         unwrapped,
@@ -508,6 +509,43 @@ public abstract class BaseApiClient {
      * breach can sit several levels deep; anything missed escapes to {@code processRequest}'s
      * catch-all and surfaces as a Spring-internal type.
      */
+    /**
+     * The connector's location with anything secret stripped: scheme, host, port and path only, never
+     * user-info and never the query string. Internal topology is fine in a server-side log and is what
+     * an operator needs to place a failure; a credential is not, and a log outlives the request that
+     * wrote it. Nothing stops a configured connector URL carrying {@code user:password@} or a token in
+     * a query parameter, so this never trusts the raw value.
+     *
+     * <p>Package-private so it can be tested directly — the log line itself is not assertable, because
+     * slf4j-simple binds its stream at initialization.
+     */
+    static String safeLocation(ApiClientConnectorInfo connector) {
+        String raw = connector.getUrl();
+        if (raw == null) {
+            return "<no url>";
+        }
+        try {
+            URI uri = URI.create(raw);
+            if (uri.getHost() == null) {
+                return "<unparseable url>";
+            }
+            StringBuilder location = new StringBuilder();
+            if (uri.getScheme() != null) {
+                location.append(uri.getScheme()).append("://");
+            }
+            location.append(uri.getHost());
+            if (uri.getPort() != -1) {
+                location.append(':').append(uri.getPort());
+            }
+            if (uri.getPath() != null) {
+                location.append(uri.getPath());
+            }
+            return location.toString();
+        } catch (IllegalArgumentException e) {
+            return "<unparseable url>";
+        }
+    }
+
     private static boolean isOversizedResponse(Throwable t) {
         return findInCauseChain(t, DataBufferLimitException.class) != null;
     }

@@ -215,7 +215,7 @@ public class DiscoveryApiClient extends BaseApiClient implements DiscoverySyncAp
                     .toBodilessEntity();
 
             return requireResponse(exchange
-                    .onErrorResume(ex -> isRunNotTracked(ex, connector, cancelUrl)
+                    .onErrorResume(ex -> isRunNotTracked(ex, connector)
                             ? Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).<Void>build())
                             : Mono.error(ex)), "cancel");
         }, request, connector);
@@ -234,7 +234,7 @@ public class DiscoveryApiClient extends BaseApiClient implements DiscoverySyncAp
      * {@link ConnectorOperationErrorCodes#isOperationNotTracked}. The terse shape is accepted too but
      * logged — see {@code cancel} for why a bare 404 is ambiguous yet not fatal.
      */
-    private static boolean isRunNotTracked(Throwable error, ApiClientConnectorInfo connector, String cancelUrl) {
+    private static boolean isRunNotTracked(Throwable error, ApiClientConnectorInfo connector) {
         Throwable unwrapped = Exceptions.unwrap(error);
         if (unwrapped instanceof ConnectorProblemException cpe) {
             // The status gates the code, not the other way round. A not-tracked code is only ever
@@ -246,9 +246,11 @@ public class DiscoveryApiClient extends BaseApiClient implements DiscoverySyncAp
                     && ConnectorOperationErrorCodes.isOperationNotTracked(cpe.getProblemDetail().getErrorCode());
         }
         if (unwrapped instanceof ConnectorEntityNotFoundException) {
-            logger.warn("Connector {} answered cancel at {} with a 404 carrying no not-tracked error code;"
+            // The contract path, not the resolved URL: a configured connector URL can carry user-info
+            // or a token in its query string, and this line only needs to say which operation answered.
+            logger.warn("Connector {} answered {} with a 404 carrying no not-tracked error code;"
                             + " treating the run as already terminal on weaker evidence.",
-                    connector.getName(), cancelUrl);
+                    connector.getName(), DiscoveryPaths.CANCEL);
             return true;
         }
         return false;

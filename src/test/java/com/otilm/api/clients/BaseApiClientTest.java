@@ -478,6 +478,29 @@ class BaseApiClientTest {
     }
 
     /**
+     * The URL was moved out of the outward messages and into the logs, which only relocated the risk:
+     * a configured connector URL can carry {@code user:password@} or a token in its query string, and a
+     * log outlives the request that wrote it. Host, port and path stay — internal topology is fine
+     * server-side and is what places a failure — while user-info and query never appear.
+     */
+    @Test
+    void safeLocation_keepsTheEndpointAndDropsAnythingSecret() {
+        Assertions.assertEquals("https://connector.svc:8443/api",
+                BaseApiClient.safeLocation(new TestConnectorInfo(
+                        "https://svc-user:s3cret@connector.svc:8443/api?token=abc123",
+                        AuthType.NONE, List.of())));
+
+        Assertions.assertEquals("http://plain.local",
+                BaseApiClient.safeLocation(new TestConnectorInfo("http://plain.local", AuthType.NONE, List.of())));
+
+        Assertions.assertEquals("<no url>",
+                BaseApiClient.safeLocation(new TestConnectorInfo(null, AuthType.NONE, List.of())));
+
+        Assertions.assertEquals("<unparseable url>",
+                BaseApiClient.safeLocation(new TestConnectorInfo("not a url", AuthType.NONE, List.of())));
+    }
+
+    /**
      * Core's {@code handleConnectorServerException} copies the exception message verbatim into its 502
      * response body, and already appends the connector's name and uuid itself. So the connector URL in
      * the message bought nothing for attribution while exposing internal topology — and any credentials
