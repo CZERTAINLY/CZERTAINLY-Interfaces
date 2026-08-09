@@ -3,9 +3,11 @@ package com.otilm.api.clients.mq.discovery.v2;
 import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.clients.discovery.v2.DiscoveryPaths;
 import com.otilm.api.clients.mq.ProxyClient;
+import com.otilm.api.exception.ConnectorClientException;
 import com.otilm.api.exception.ConnectorEntityNotFoundException;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorProblemException;
+import com.otilm.api.interfaces.client.v2.DiscoverySyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.common.attribute.v3.InfoAttributeV3;
 import com.otilm.api.model.common.error.ErrorCode;
@@ -284,6 +286,35 @@ class DiscoveryApiClientMqTest {
 
         Assertions.assertSame(proxyClient.failure, thrown,
                 "a 422 must reach the caller, whatever error code it carries");
+    }
+
+    /**
+     * {@link DiscoverySyncApiClient} allows exactly two returned outcomes for cancel, 204 and 404, and
+     * requires every other failure to be thrown. A {@code ProxyClient} that preserves the upstream status
+     * hands back an entity rather than throwing, so returning whatever arrived would break that rule from
+     * inside the client — cancel's own 422 most of all, since it means the run is past the point of no
+     * return and must never read as a completed cancellation.
+     */
+    @Test
+    void cancel_relayedNon404IsThrownRatherThanReturned() {
+        proxyClient.syncResponse = ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+
+        ConnectorClientException ex = Assertions.assertThrows(ConnectorClientException.class,
+                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+
+        Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ex.getHttpStatus());
+        Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    @Test
+    void cancel_relayed404IsStillReturnedAsTheContractsTerminalOutcome() {
+        proxyClient.syncResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        ResponseEntity<Void> response = Assertions.assertDoesNotThrow(
+                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(),
+                "a relayed 404 is the one non-2xx the contract lets the caller read");
     }
 
     // ---- Error propagation: this client adds no mapping of its own ----

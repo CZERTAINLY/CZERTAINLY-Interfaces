@@ -686,10 +686,14 @@ public abstract class BaseApiClient {
     }
 
     private static Mono<ClientResponse> handleProblemDetailResponse(ClientResponse clientResponse) {
-        HttpStatus status = HttpStatus.valueOf(clientResponse.statusCode().value());
+        // The status code is captured as an int and only resolved to an HttpStatus on the empty-body
+        // path. HttpStatus.valueOf throws for a code with no enum constant — 499 and 430 both do — so
+        // resolving it eagerly here would reject a perfectly good problem document purely because of the
+        // status it arrived with.
+        int statusCode = clientResponse.statusCode().value();
         return clientResponse.bodyToMono(ProblemDetailExtended.class)
                 .<ClientResponse>flatMap(problemDetail -> Mono.error(new ConnectorProblemException(problemDetail)))
-                .switchIfEmpty(Mono.error(() -> emptyProblemBodyFailure(status)));
+                .switchIfEmpty(Mono.error(() -> emptyProblemBodyFailure(statusCode)));
     }
 
     /**
@@ -701,14 +705,18 @@ public abstract class BaseApiClient {
      * <p>Derived from the status rather than by re-reading the body: a {@link ClientResponse} body can
      * be consumed only once, so delegating to the legacy handler here would fail on the second read.
      */
-    private static ConnectorException emptyProblemBodyFailure(HttpStatus status) {
-        String message = "Connector returned %s with an empty application/problem+json body".formatted(status);
-        if (HttpStatus.NOT_FOUND.equals(status)) {
+    private static ConnectorException emptyProblemBodyFailure(int statusCode) {
+        String label = String.valueOf(statusCode);
+        HttpStatus status = HttpStatus.resolve(statusCode);
+        String message = "Connector returned %s with an empty application/problem+json body".formatted(label);
+        if (statusCode == HttpStatus.NOT_FOUND.value()) {
             return new ConnectorEntityNotFoundException(message);
         }
-        if (status.is4xxClientError()) {
-            return new ConnectorClientException(message, status);
+        // A code outside the enum still has a recognisable class, so classify on the hundreds digit
+        // rather than losing the distinction between a client and a server fault.
+        if (statusCode >= 400 && statusCode < 500) {
+            return new ConnectorClientException(message, status == null ? HttpStatus.BAD_REQUEST : status);
         }
-        return new ConnectorServerException(message, status);
+        return new ConnectorServerException(message, status == null ? HttpStatus.BAD_GATEWAY : status);
     }
 }

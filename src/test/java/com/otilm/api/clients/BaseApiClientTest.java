@@ -13,9 +13,11 @@ import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.otilm.api.exception.ConnectorClientException;
+import com.otilm.api.exception.ConnectorProblemException;
 import com.otilm.api.exception.ConnectorCommunicationException;
 import com.otilm.api.exception.ConnectorServerException;
 import com.otilm.api.exception.ValidationException;
+import com.otilm.api.model.common.error.ErrorCode;
 import com.otilm.api.model.core.connector.AuthType;
 import com.otilm.api.model.core.connector.ConnectorStatus;
 import com.otilm.api.model.core.proxy.ProxyDto;
@@ -420,6 +422,46 @@ class BaseApiClientTest {
         // The stub answered 200; that is what must be reported, and it must NOT be PAYLOAD_TOO_LARGE.
         Assertions.assertEquals(HttpStatus.OK, ex.getHttpStatus());
         Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    /**
+     * {@code HttpStatus.valueOf} throws for a code with no enum constant — 499 and 430 both do — so
+     * resolving the status before reading the body rejected a perfectly good problem document purely
+     * because of the status it arrived with. The status is now resolved only on the empty-body path.
+     */
+    @Test
+    void problemJsonOnANonEnumStatusIsStillClassified() {
+        mockServer.stubFor(get(urlEqualTo("/odd-status")).willReturn(aResponse()
+                .withStatus(499)
+                .withHeader("Content-Type", "application/problem+json")
+                .withBody("{\"status\":499,\"title\":\"Client closed request\",\"errorCode\":\"UPSTREAM_ERROR\"}")));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorProblemException ex = Assertions.assertThrows(ConnectorProblemException.class, () ->
+                BaseApiClient.processRequest(r -> r
+                                .uri("http://localhost:" + mockServer.port() + "/odd-status")
+                                .retrieve().toBodilessEntity().block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false), connector));
+
+        Assertions.assertEquals(ErrorCode.UPSTREAM_ERROR, ex.getProblemDetail().getErrorCode(),
+                "the problem document must survive a status outside Spring's HttpStatus enum");
+    }
+
+    @Test
+    void bodilessProblemJsonOnANonEnumStatusDegradesWithoutThrowingFromValueOf() {
+        mockServer.stubFor(get(urlEqualTo("/odd-empty")).willReturn(aResponse()
+                .withStatus(499)
+                .withHeader("Content-Type", "application/problem+json")));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorClientException ex = Assertions.assertThrows(ConnectorClientException.class, () ->
+                BaseApiClient.processRequest(r -> r
+                                .uri("http://localhost:" + mockServer.port() + "/odd-empty")
+                                .retrieve().toBodilessEntity().block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false), connector));
+
+        Assertions.assertTrue(ex.getMessage().contains("499"),
+                "an unresolvable status must still be reported, classified by its hundreds digit");
     }
 
     /**

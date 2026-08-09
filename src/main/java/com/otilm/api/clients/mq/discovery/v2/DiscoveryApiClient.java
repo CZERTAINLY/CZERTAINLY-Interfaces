@@ -3,9 +3,11 @@ package com.otilm.api.clients.mq.discovery.v2;
 import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.clients.discovery.v2.DiscoveryPaths;
 import com.otilm.api.clients.mq.ProxyClient;
+import com.otilm.api.exception.ConnectorClientException;
 import com.otilm.api.exception.ConnectorEntityNotFoundException;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorProblemException;
+import com.otilm.api.exception.ConnectorServerException;
 import com.otilm.api.interfaces.client.v2.DiscoverySyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.common.error.ConnectorOperationErrorCodes;
@@ -18,6 +20,8 @@ import com.otilm.api.model.connector.discovery.v2.DiscoveryStatusResponseDto;
 import com.otilm.api.model.connector.discovery.v2.DiscoveryStopResponseDto;
 import com.otilm.api.model.connector.discovery.v2.DiscoverySupportedResourceDto;
 import com.otilm.api.model.core.auth.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -45,6 +49,8 @@ import java.util.Objects;
  */
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class DiscoveryApiClient implements DiscoverySyncApiClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(DiscoveryApiClient.class);
 
     private static final String HTTP_METHOD_GET = "GET";
     private static final String HTTP_METHOD_POST = "POST";
@@ -150,7 +156,7 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
             response = proxyClient.sendRequestForEntity(connector, DiscoveryPaths.CANCEL, HTTP_METHOD_POST, request,
                     Void.class, timeouts.control());
         } catch (ConnectorEntityNotFoundException | ConnectorProblemException e) {
-            if (!isRunNotTracked(e)) {
+            if (!isRunNotTracked(e, connector)) {
                 throw e;
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).<Void>build();
@@ -158,15 +164,39 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
         if (response == null) {
             throw new ConnectorException("No response received from connector for cancel", connector);
         }
-        // A non-2xx entity (a proxy that relays the 404 instead of throwing it) already carries the
-        // status the caller reads, so it passes through unchanged.
-        return response.getStatusCode().is2xxSuccessful()
-                ? ResponseEntity.noContent().build()
-                : response;
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.noContent().build();
+        }
+        // DiscoverySyncApiClient allows exactly two returned outcomes, 204 and 404, and requires every
+        // other failure to be thrown. A ProxyClient that preserves the upstream status can hand back a
+        // 422 or 5xx entity rather than throwing, so returning whatever arrived would break that rule
+        // from the inside — including cancel's own 422, which means the run is past the point of no
+        // return and must never read as a completed cancellation.
+        if (HttpStatus.NOT_FOUND.equals(response.getStatusCode())) {
+            return response;
+        }
+        int statusCode = response.getStatusCode().value();
+        String message = "Connector %s answered cancel with %d".formatted(connector.getName(), statusCode);
+        if (statusCode >= 400 && statusCode < 500) {
+            ConnectorClientException clientFailure = new ConnectorClientException(
+                    message, HttpStatus.resolve(statusCode) == null ? HttpStatus.BAD_REQUEST : HttpStatus.resolve(statusCode));
+            clientFailure.setConnector(connector);
+            throw clientFailure;
+        }
+        ConnectorServerException serverFailure = new ConnectorServerException(
+                message, HttpStatus.resolve(statusCode) == null ? HttpStatus.BAD_GATEWAY : HttpStatus.resolve(statusCode));
+        serverFailure.setConnector(connector);
+        throw serverFailure;
     }
 
-    private static boolean isRunNotTracked(ConnectorException ex) {
+    private static boolean isRunNotTracked(ConnectorException ex, ApiClientConnectorInfo connector) {
         if (ex instanceof ConnectorEntityNotFoundException) {
+            // Same ambiguity the REST client warns about, and the same warning: a connector that never
+            // implemented cancel answers 404 too, so trusting a bare 404 as an already-terminal run can
+            // silently report an abort that never happened.
+            logger.warn("Connector {} answered {} with a 404 carrying no not-tracked error code;"
+                            + " treating the run as already terminal on weaker evidence.",
+                    connector.getName(), DiscoveryPaths.CANCEL);
             return true;
         }
         // Status gates the code: a not-tracked code is only legitimate on a 404. Cancel's own 422
