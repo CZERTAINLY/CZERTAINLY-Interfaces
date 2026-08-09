@@ -9,10 +9,15 @@ import com.otilm.api.interfaces.AuthProtectedController;
 import com.otilm.api.model.client.certificate.DiscoveryResponseDto;
 import com.otilm.api.model.client.certificate.SearchRequestDto;
 import com.otilm.api.model.client.discovery.DiscoveryCertificateResponseDto;
+import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
 import com.otilm.api.model.client.discovery.DiscoveryDto;
-import com.otilm.api.model.client.discovery.DiscoveryHistoryDetailDto;
 import com.otilm.api.model.common.ErrorMessageDto;
+import com.otilm.api.model.common.PaginationResponseDto;
 import com.otilm.api.model.common.UuidDto;
+import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import com.otilm.api.model.connector.discovery.v2.DiscoverySupportedResourceDto;
+import com.otilm.api.model.core.auth.Resource;
+import com.otilm.api.model.core.discovery.DiscoveryItemDto;
 import com.otilm.api.model.core.scheduler.ScheduleDiscoveryDto;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +35,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,7 +64,7 @@ public interface DiscoveryController extends AuthProtectedController {
             @ApiResponse(responseCode = "404", description = "Discovery not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
-    DiscoveryHistoryDetailDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
+    DiscoveryDetailDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
             throws NotFoundException;
 
     @Operation(summary = "Discovery Details")
@@ -69,6 +75,51 @@ public interface DiscoveryController extends AuthProtectedController {
     @GetMapping(path = "/{uuid}/certificates", produces = {"application/json"})
     DiscoveryCertificateResponseDto getDiscoveryCertificates(
             @Parameter(description = "Discovery UUID") @PathVariable String uuid,
+            @RequestParam(required = false) Boolean newlyDiscovered,
+            @RequestParam(required = false, defaultValue = "10") int itemsPerPage,
+            @RequestParam(required = false, defaultValue = "0") int pageNumber) throws NotFoundException;
+
+    /**
+     * The resource-agnostic companion to {@link #getDiscoveryCertificates}: it lists everything a run discovered,
+     * whatever its type, while the certificate listing keeps its certificate-specific columns. Both exist on purpose —
+     * this one does not replace it.
+     *
+     * <p>
+     * Pages with {@link PaginationResponseDto}, the envelope eleven other core-web controllers already use, rather than
+     * a listing-specific response DTO. It publishes its paging members under the same names as the certificate listing,
+     * so a caller moving between the two does not meet a second spelling of the same four numbers;
+     * {@code DiscoveryItemPageTest} asserts that rather than leaving it to inspection. The arrays differ —
+     * {@code items} here, {@code certificates} there — so the two are not interchangeable wholesale.
+     *
+     * <p>
+     * Returns {@link DiscoveryItemDto}, Core's own view of a staged item, not the connector's
+     * {@code DiscoveredItemDto}. The difference is what Core knows and a connector cannot: whether the object was
+     * already in inventory ({@code newlyDiscovered}), whether Core ingested the item, and why it failed if it did.
+     * Without those, a key whose ingestion failed would list indistinguishably from one that succeeded, while the
+     * certificate listing has shown exactly that per row since v1.
+     *
+     * <p>
+     * {@code newlyDiscovered} filters the same way it does on {@link #getDiscoveryCertificates}: omit for everything,
+     * {@code true} for only what this run added to inventory, {@code false} for only what it rediscovered.
+     *
+     * <p>
+     * The optional {@code resource} filter binds by resource wire code, never by Java enum member name. Register
+     * {@code com.otilm.api.config.converter.IPlatformEnumConverterFactory} (for example via
+     * {@code WebMvcConfigurer#addFormatters}) so this and every other {@code IPlatformEnum}-typed request parameter
+     * binds by code.
+     */
+    @Operation(summary = "List Discovered Items", description = "Returns one page of the items this Discovery staged, ordered by their run "
+            + "sequence, optionally narrowed to a single resource type. Certificates are included: a run "
+            + "against a v1 Discovery Provider stages certificates only, so its unfiltered listing contains "
+            + "exactly what the certificate listing contains, with sequence and uniqueRef synthesized by the "
+            + "platform (staging order and certificate fingerprint) because a v1 provider never numbered its "
+            + "items.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Discovered items retrieved"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/{uuid}/items", produces = {"application/json"})
+    PaginationResponseDto<DiscoveryItemDto> getDiscoveryItems(
+            @Parameter(description = "Discovery UUID") @PathVariable String uuid,
+            @Parameter(description = "Resource type to list, identified by its wire code (e.g. \"certificates\", \"keys\"); omit to list every resource type this run discovered") @RequestParam(required = false) Resource resource,
             @RequestParam(required = false) Boolean newlyDiscovered,
             @RequestParam(required = false, defaultValue = "10") int itemsPerPage,
             @RequestParam(required = false, defaultValue = "0") int pageNumber) throws NotFoundException;
@@ -127,5 +178,143 @@ public interface DiscoveryController extends AuthProtectedController {
     ResponseEntity<?> scheduleDiscovery(@RequestBody ScheduleDiscoveryDto scheduleDiscoveryDto)
             throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException,
             SchedulerException, AttributeException, NotFoundException;
+
+    /**
+     * The three endpoints below are keyed by <strong>connector</strong> UUID, not by the run UUID every other endpoint
+     * on this controller takes. They answer "what can this Discovery Provider do, and what does it need configured?",
+     * which a caller must know before a run exists to ask about. Core authorizes all three against the
+     * {@code CONNECTOR} resource — object-level, the way {@code listAuthorityInstanceAttributes} is gated — never
+     * against {@code DISCOVERY}, which has no object access and would silently skip per-connector ACLs.
+     * {@code AuthorityInstanceController} splits the same way, with a {@code connectorUuid}-keyed attribute relay
+     * beside its instance-keyed ones; the parameter name is the only thing distinguishing them, so it is deliberate
+     * rather than incidental.
+     *
+     * <p>
+     * They belong here rather than on {@code ConnectorController} because they are specific to one provider interface.
+     * That controller's attribute endpoints are generic across function groups — one resolves by {@code functionGroup}
+     * and {@code kind}, the other returns every function group's attributes in a map — and neither reaches a
+     * Connector's discovery interface or has a resource dimension to express the per-resource schema. These three go to
+     * the discovery interface directly, so they sit with the rest of the discovery API.
+     *
+     * <p>
+     * The {@code resource} path segment binds by resource wire code (e.g. {@code "certificates"}, {@code "keys"}),
+     * never by Java enum member name. Register {@code com.otilm.api.config.converter.IPlatformEnumConverterFactory}
+     * (for example via {@code WebMvcConfigurer#addFormatters}) so this and every other {@code IPlatformEnum}-typed path
+     * variable binds by code.
+     */
+    @Operation(summary = "Get discoverable resources of a Discovery Provider", description = "Returns the resource types this Connector's discovery interface advertises, as "
+            + "synced from the Connector. Empty for a Connector implementing only the v1 discovery "
+            + "interface, which has no resource-type concept and always discovers certificates.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Discoverable resources retrieved"),
+            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/{connectorUuid}/resources", produces = {"application/json"})
+    List<DiscoverySupportedResourceDto> listDiscoveryResources(
+            @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid)
+            throws NotFoundException;
+
+    @Operation(summary = "Get run-level Discovery Attributes from a Discovery Provider", description = "Relays the run-level attribute definitions from the Connector's discovery "
+            + "interface: the schema that configures a discovery run as a whole and applies to "
+            + "every resource type the run targets.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Run-level Discovery Attributes received"),
+            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/{connectorUuid}/attributes", produces = {"application/json"})
+    List<BaseAttribute> getDiscoveryAttributes(
+            @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid)
+            throws NotFoundException, ConnectorException;
+
+    @Operation(summary = "Get per-resource Discovery Attributes from a Discovery Provider", description = "Relays the attribute definitions that refine discovery of one resource type "
+            + "from the Connector's discovery interface.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Per-resource Discovery Attributes received"),
+            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/{connectorUuid}/{resource}/attributes", produces = {"application/json"})
+    List<BaseAttribute> getDiscoveryResourceAttributes(
+            @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid,
+            @Parameter(description = "Resource type, identified by its wire code (e.g. \"certificates\", \"keys\")") @PathVariable Resource resource)
+            throws NotFoundException, ConnectorException;
+
+    /**
+     * Stop, resume and cancel below share one legality matrix, stated once here rather than three times in prose. Read
+     * {@code inProgress} as covering both the scanning and the incremental download phases, which interleave in
+     * discovery v2.
+     *
+     * <table>
+     * <caption>Which operation is legal in which Discovery status</caption>
+     * <tr>
+     * <th>Operation</th>
+     * <th>inProgress</th>
+     * <th>stopped</th>
+     * <th>processing</th>
+     * <th>terminal</th>
+     * </tr>
+     * <tr>
+     * <td>stop</td>
+     * <td>legal</td>
+     * <td>409</td>
+     * <td>409</td>
+     * <td>409</td>
+     * </tr>
+     * <tr>
+     * <td>resume</td>
+     * <td>409</td>
+     * <td>legal</td>
+     * <td>409</td>
+     * <td>409</td>
+     * </tr>
+     * <tr>
+     * <td>cancel</td>
+     * <td>legal</td>
+     * <td>legal</td>
+     * <td>409</td>
+     * <td>409</td>
+     * </tr>
+     * </table>
+     *
+     * <p>
+     * Once a run reaches {@code processing} the Discovery Provider owns nothing and the remaining work is not
+     * abortable, which is why all three are refused there as well as in a terminal status.
+     *
+     * <p>
+     * Every one of them requires a Discovery Provider implementing the v2 discovery interface. A run created against a
+     * v1 Provider answers 422, not 409: the request is not illegal for the run's status, it is unsupported by the
+     * Provider the run belongs to.
+     */
+    @Operation(summary = "Stop Discovery", description = "Asks the Discovery Provider to suspend an in-progress run, keeping everything "
+            + "already staged and the Provider-side checkpoint needed to resume it. Legal only "
+            + "while the run is in progress; see the legality matrix on this interface.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Discovery stopped"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "409", description = "Discovery is not in progress, so it cannot be stopped", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Discovery Provider does not support stopping a run", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @PatchMapping(path = "/{uuid}/stop", produces = {"application/json"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void stopDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
+            throws NotFoundException, ConnectorException;
+
+    @Operation(summary = "Resume Discovery", description = "Asks the Discovery Provider to continue a stopped run from its checkpoint. "
+            + "Legal only from the stopped status; see the legality matrix on this interface. A "
+            + "Provider that has since lost the checkpoint fails the run instead of restarting "
+            + "it, so a resume is never silently a fresh scan.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Discovery resumed"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "409", description = "Discovery is not stopped, so it cannot be resumed", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Discovery Provider does not support resuming a run", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @PatchMapping(path = "/{uuid}/resume", produces = {"application/json"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void resumeDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
+            throws NotFoundException, ConnectorException;
+
+    @Operation(summary = "Cancel Discovery", description = "Abandons a run for good: the Discovery Provider releases it and the items "
+            + "already staged are never processed. Legal while the run is in progress or "
+            + "stopped; see the legality matrix on this interface. This is irreversible - a "
+            + "cancelled run cannot be resumed.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Discovery cancelled"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "409", description = "Discovery is neither in progress nor stopped, so it cannot be cancelled", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Discovery Provider does not support cancelling a run", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @PatchMapping(path = "/{uuid}/cancel", produces = {"application/json"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void cancelDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
+            throws NotFoundException, ConnectorException;
 
 }

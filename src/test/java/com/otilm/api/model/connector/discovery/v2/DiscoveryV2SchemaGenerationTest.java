@@ -1,9 +1,13 @@
 package com.otilm.api.model.connector.discovery.v2;
 
+import com.otilm.api.interfaces.core.web.DiscoveryController;
 import com.otilm.api.model.core.auth.Resource;
+import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -180,5 +184,40 @@ class DiscoveryV2SchemaGenerationTest {
             }
         }
         return false;
+    }
+
+    /**
+     * The discovered-items listing returns {@code PaginationResponseDto<DiscoveryItemDto>} rather than a
+     * listing-specific DTO. Resolved from the controller method's own generic return type, so the assertion tracks the
+     * published signature instead of a restatement of it.
+     *
+     * <p>
+     * Two things are worth pinning. The component name is what client generators turn into a type name, and it is
+     * derived from the type argument, so changing the element type silently renames the generated type. And the item's
+     * payload discriminator has to survive being nested inside an erased generic — nothing else in the platform puts a
+     * polymorphic type inside this envelope, so that combination is unproven anywhere else.
+     */
+    @Test
+    void itemsListingResolvesToAPageComponentKeepingThePayloadDiscriminator() throws Exception {
+        Method listing = DiscoveryController.class
+                .getDeclaredMethod("getDiscoveryItems", String.class, Resource.class, Boolean.class, int.class,
+                        int.class);
+
+        ResolvedSchema resolved = ModelConverters
+                .getInstance()
+                .resolveAsResolvedSchema(new AnnotatedType(listing.getGenericReturnType()).resolveAsRef(true));
+
+        assertEquals("#/components/schemas/PaginationResponseDtoDiscoveryItemDto", resolved.schema.get$ref(),
+                "the generated type name client generators see is derived from the element type");
+
+        Schema<?> page = resolved.referencedSchemas.get("PaginationResponseDtoDiscoveryItemDto");
+        assertNotNull(page, "no page component was generated");
+        assertEquals(List.of("items", "itemsPerPage", "pageNumber", "totalPages", "totalItems"),
+                List.copyOf(page.getProperties().keySet()));
+
+        Schema<?> payload = resolved.referencedSchemas.get("DiscoveredItemPayload");
+        assertNotNull(payload, "the item payload union did not survive into the page's referenced schemas");
+        assertNotNull(payload.getDiscriminator(), "the payload lost its discriminator inside the generic envelope");
+        assertEquals("resource", payload.getDiscriminator().getPropertyName());
     }
 }
