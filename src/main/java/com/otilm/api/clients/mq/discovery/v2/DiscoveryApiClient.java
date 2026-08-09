@@ -173,6 +173,10 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
         // from the inside — including cancel's own 422, which means the run is past the point of no
         // return and must never read as a completed cancellation.
         if (HttpStatus.NOT_FOUND.equals(response.getStatusCode())) {
+            // A relayed 404 entity never passes through isRunNotTracked, so it would otherwise reach the
+            // caller as a terminal cancellation with none of the warning that path emits. Same ambiguity,
+            // same signal: an unimplemented cancel endpoint answers 404 too.
+            warnAmbiguous404(connector);
             return response;
         }
         int statusCode = response.getStatusCode().value();
@@ -189,21 +193,31 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
         throw serverFailure;
     }
 
+    /**
+     * A bare 404 with no not-tracked error code is ambiguous: a connector that never implemented cancel
+     * answers 404 too, so trusting it as an already-terminal run can report an abort that never happened.
+     * Both the thrown and the relayed path emit this, and the REST client emits the same line, so the
+     * signal does not depend on which transport or which shape delivered the 404.
+     */
+    private static void warnAmbiguous404(ApiClientConnectorInfo connector) {
+        logger.warn("Connector {} answered {} with a 404 carrying no not-tracked error code;"
+                        + " treating the run as already terminal on weaker evidence.",
+                connector.getName(), DiscoveryPaths.CANCEL);
+    }
+
     private static boolean isRunNotTracked(ConnectorException ex, ApiClientConnectorInfo connector) {
         if (ex instanceof ConnectorEntityNotFoundException) {
-            // Same ambiguity the REST client warns about, and the same warning: a connector that never
-            // implemented cancel answers 404 too, so trusting a bare 404 as an already-terminal run can
-            // silently report an abort that never happened.
-            logger.warn("Connector {} answered {} with a 404 carrying no not-tracked error code;"
-                            + " treating the run as already terminal on weaker evidence.",
-                    connector.getName(), DiscoveryPaths.CANCEL);
+            warnAmbiguous404(connector);
             return true;
         }
         // Status gates the code: a not-tracked code is only legitimate on a 404. Cancel's own 422
         // (past the point of no return) must reach the caller, and REGISTRATION_NOT_FOUND, which the
         // shared predicate accepts as authority's flavour of not-tracked, is itself declared 422.
+        // The int, not getHttpStatus(): that calls HttpStatus.valueOf, which throws for a valid code
+        // with no enum constant such as 499, so asking it would swap the connector's problem exception
+        // for an IllegalArgumentException.
         return ex instanceof ConnectorProblemException cpe
-                && HttpStatus.NOT_FOUND.equals(cpe.getHttpStatus())
+                && cpe.getProblemDetail().getStatus() == HttpStatus.NOT_FOUND.value()
                 && ConnectorOperationErrorCodes.isOperationNotTracked(cpe.getProblemDetail().getErrorCode());
     }
 

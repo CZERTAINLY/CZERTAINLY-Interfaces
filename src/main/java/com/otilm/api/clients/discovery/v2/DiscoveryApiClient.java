@@ -242,7 +242,11 @@ public class DiscoveryApiClient extends BaseApiClient implements DiscoverySyncAp
             // must reach the caller, and REGISTRATION_NOT_FOUND — which the shared predicate accepts,
             // because it is authority's flavour of not-tracked — is declared 422. Without this guard a
             // 422 would be answered as a successful cancellation.
-            return HttpStatus.NOT_FOUND.equals(cpe.getHttpStatus())
+            // The int, not getHttpStatus(): that calls HttpStatus.valueOf, which throws for a valid
+            // code with no enum constant such as 499 — so asking it here would replace the connector's
+            // own problem exception with an IllegalArgumentException. BaseApiClient has already made
+            // this value the transport's status rather than whatever the body claimed.
+            return cpe.getProblemDetail().getStatus() == HttpStatus.NOT_FOUND.value()
                     && ConnectorOperationErrorCodes.isOperationNotTracked(cpe.getProblemDetail().getErrorCode());
         }
         if (unwrapped instanceof ConnectorEntityNotFoundException) {

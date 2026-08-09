@@ -16,6 +16,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.codec.EncodingException;
 import org.springframework.core.io.buffer.DataBufferLimitException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -463,7 +464,7 @@ public abstract class BaseApiClient {
                 // the pool pending-limit is a plain RuntimeException, so match them explicitly. Log
                 // type+message; the full cause rides on the exception thrown below.
                 logger.error("Connector {} communication failure at {}: {}",
-                        connector.getName(), safeLocation(connector), unwrapped.toString());
+                        connector.getName(), safeLocation(connector), unwrapped.getClass().getName());
                 throw new ConnectorCommunicationException(
                         "Error in connector %s communication".formatted(connector.getName()), unwrapped, connector);
             } else if (isOversizedResponse(unwrapped)) {
@@ -472,7 +473,7 @@ public abstract class BaseApiClient {
                 // WebClientResponseException or a bare DataBufferLimitException, which callers declaring
                 // `throws ConnectorException` cannot catch and which carries no connector attribution.
                 logger.error("Connector {} response exceeded the configured read limit at {}: {}",
-                        connector.getName(), safeLocation(connector), unwrapped.toString());
+                        connector.getName(), safeLocation(connector), unwrapped.getClass().getName());
                 ConnectorServerException cse = new ConnectorServerException(
                         "Connector %s response exceeded the configured read limit".formatted(connector.getName()),
                         unwrapped,
@@ -511,6 +512,34 @@ public abstract class BaseApiClient {
      */
     private static boolean isOversizedResponse(Throwable t) {
         return findInCauseChain(t, DataBufferLimitException.class) != null;
+    }
+
+    /**
+     * {@link HttpStatus#valueOf} throws for a code with no enum constant, and 499 and 430 are both valid
+     * HTTP codes without one. Anywhere a connector's status reaches us it is arbitrary, so it is resolved
+     * with a fallback rather than trusted to be an enum member.
+     */
+    private static HttpStatus resolveOr(int statusCode, HttpStatus fallback) {
+        HttpStatus resolved = HttpStatus.resolve(statusCode);
+        return resolved == null ? fallback : resolved;
+    }
+
+    /**
+     * Makes the transport's status win over the {@code status} member inside the problem document.
+     *
+     * <p>RFC 9457 says the member SHOULD match the HTTP status, which means a connector can disagree —
+     * and callers act on it: the discovery clients treat 404-plus-not-tracked as an already-terminal
+     * cancellation. A connector answering 422 with a body claiming {@code "status": 404} could otherwise
+     * have a refused cancel read as a completed one, so the value a caller reads has to come from the
+     * response rather than from the body describing it.
+     */
+    private static ProblemDetailExtended withTransportStatus(ProblemDetailExtended problemDetail, int statusCode) {
+        if (problemDetail.getStatus() != statusCode) {
+            logger.warn("Connector problem document declares status {} on a {} response; using the response status",
+                    problemDetail.getStatus(), statusCode);
+            problemDetail.setStatus(statusCode);
+        }
+        return problemDetail;
     }
 
     /**
@@ -563,6 +592,12 @@ public abstract class BaseApiClient {
      * quotes fragments of the connector's response body.
      */
     private static boolean isJsonTypeResolutionFailure(Throwable t) {
+        // An EncodingException means Jackson failed while writing OUR request body, so no connector
+        // response exists and the fault is ours — reporting it as a connector 502 would point an
+        // operator at the wrong system. Only decode failures are the connector's.
+        if (findInCauseChain(t, EncodingException.class) != null) {
+            return false;
+        }
         return findInCauseChain(t, JsonProcessingException.class) != null;
     }
 
@@ -675,12 +710,12 @@ public abstract class BaseApiClient {
         if (clientResponse.statusCode().is4xxClientError()) {
             return clientResponse.bodyToMono(String.class)
                     .defaultIfEmpty("")
-                    .flatMap(body -> Mono.error(new ConnectorClientException(body, HttpStatus.valueOf(clientResponse.statusCode().value()))));
+                    .flatMap(body -> Mono.error(new ConnectorClientException(body, resolveOr(clientResponse.statusCode().value(), HttpStatus.BAD_REQUEST))));
         }
         if (clientResponse.statusCode().is5xxServerError()) {
             return clientResponse.bodyToMono(String.class)
                     .defaultIfEmpty("")
-                    .flatMap(body -> Mono.error(new ConnectorServerException(body, HttpStatus.valueOf(clientResponse.statusCode().value()))));
+                    .flatMap(body -> Mono.error(new ConnectorServerException(body, resolveOr(clientResponse.statusCode().value(), HttpStatus.BAD_GATEWAY))));
         }
         return Mono.just(clientResponse);
     }
@@ -692,7 +727,8 @@ public abstract class BaseApiClient {
         // status it arrived with.
         int statusCode = clientResponse.statusCode().value();
         return clientResponse.bodyToMono(ProblemDetailExtended.class)
-                .<ClientResponse>flatMap(problemDetail -> Mono.error(new ConnectorProblemException(problemDetail)))
+                .<ClientResponse>flatMap(problemDetail ->
+                        Mono.error(new ConnectorProblemException(withTransportStatus(problemDetail, statusCode))))
                 .switchIfEmpty(Mono.error(() -> emptyProblemBodyFailure(statusCode)));
     }
 

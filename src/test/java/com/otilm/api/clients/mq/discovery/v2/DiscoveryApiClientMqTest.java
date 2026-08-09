@@ -317,6 +317,26 @@ class DiscoveryApiClientMqTest {
                 "a relayed 404 is the one non-2xx the contract lets the caller read");
     }
 
+    /**
+     * {@code ConnectorProblemException#getHttpStatus()} runs {@code HttpStatus.valueOf} on the problem
+     * document's status, which throws for a valid code with no enum constant such as 499. Asking it while
+     * deciding whether a failure is not-tracked would therefore replace the connector's own problem
+     * exception with an {@code IllegalArgumentException}, so the status is compared as an int.
+     */
+    @Test
+    void cancel_problemOnANonEnumStatusPropagatesUnchanged() {
+        ProblemDetailExtended problem = new ProblemDetailExtended();
+        problem.setStatus(499);
+        problem.setErrorCode(ErrorCode.UPSTREAM_ERROR);
+        proxyClient.failure = new ConnectorProblemException(problem);
+
+        ConnectorException thrown = Assertions.assertThrows(ConnectorException.class,
+                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+
+        Assertions.assertSame(proxyClient.failure, thrown,
+                "the connector's problem must survive a status outside Spring's HttpStatus enum");
+    }
+
     // ---- Error propagation: this client adds no mapping of its own ----
 
     @Test

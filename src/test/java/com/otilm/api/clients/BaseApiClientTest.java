@@ -465,6 +465,75 @@ class BaseApiClientTest {
     }
 
     /**
+     * The {@code status} member inside a problem document is written by the connector, while the response
+     * status is not. Callers act on it — the discovery clients read 404-plus-not-tracked as an
+     * already-terminal cancellation — so a connector answering 422 with a body claiming {@code 404} could
+     * otherwise have a refused cancel read as a completed one. The transport's status wins.
+     */
+    @Test
+    void problemDocumentCannotOverrideTheResponseStatus() {
+        mockServer.stubFor(get(urlEqualTo("/lying-problem")).willReturn(aResponse()
+                .withStatus(422)
+                .withHeader("Content-Type", "application/problem+json")
+                .withBody("{\"status\":404,\"title\":\"gone\",\"errorCode\":\"OPERATION_NOT_TRACKED\"}")));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        ConnectorProblemException ex = Assertions.assertThrows(ConnectorProblemException.class, () ->
+                BaseApiClient.processRequest(r -> r
+                                .uri("http://localhost:" + mockServer.port() + "/lying-problem")
+                                .retrieve().toBodilessEntity().block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false), connector));
+
+        Assertions.assertEquals(422, ex.getProblemDetail().getStatus(),
+                "a body claiming 404 on a 422 response must not be able to pass itself off as not-tracked");
+        Assertions.assertEquals(ErrorCode.OPERATION_NOT_TRACKED, ex.getProblemDetail().getErrorCode(),
+                "the error code itself is still the connector's to state");
+    }
+
+    /**
+     * A bodiless legacy 4xx or 5xx on a code with no {@code HttpStatus} constant must still map. 499 and
+     * 599 are both valid and both absent from the enum, so calling {@code valueOf} on them threw before
+     * the exception could be built.
+     */
+    @Test
+    void bodilessLegacyErrorsMapOnNonEnumStatuses() {
+        mockServer.stubFor(get(urlEqualTo("/legacy-499")).willReturn(aResponse().withStatus(499)));
+        mockServer.stubFor(get(urlEqualTo("/legacy-599")).willReturn(aResponse().withStatus(599)));
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:" + mockServer.port(), AuthType.NONE, List.of());
+
+        Assertions.assertThrows(ConnectorClientException.class, () ->
+                BaseApiClient.processRequest(r -> r.uri("http://localhost:" + mockServer.port() + "/legacy-499")
+                                .retrieve().toBodilessEntity().block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false), connector));
+
+        Assertions.assertThrows(ConnectorServerException.class, () ->
+                BaseApiClient.processRequest(r -> r.uri("http://localhost:" + mockServer.port() + "/legacy-599")
+                                .retrieve().toBodilessEntity().block(),
+                        client.prepareRequest(HttpMethod.GET, connector, false), connector));
+    }
+
+    /**
+     * Jackson failing while writing our own request body is our defect, not the connector's: no response
+     * exists to have been malformed. Reporting it as a connector 502 would send an operator to the wrong
+     * system, so the decode-failure branch must not claim it.
+     */
+    @Test
+    void requestEncodingFailureIsNotBlamedOnTheConnector() {
+        TestConnectorInfo connector = new TestConnectorInfo("http://localhost:1", AuthType.NONE, List.of());
+        JsonProcessingException jackson = new com.fasterxml.jackson.databind.JsonMappingException(null, "no serializer") {
+        };
+        Throwable encoding = new org.springframework.core.codec.EncodingException("write failed", jackson);
+
+        Throwable thrown = Assertions.assertThrows(Throwable.class, () ->
+                BaseApiClient.processRequest(req -> {
+                    throw reactor.core.Exceptions.propagate(encoding);
+                }, null, connector));
+
+        Assertions.assertFalse(thrown instanceof ConnectorServerException,
+                "an outbound encoding failure must not be reported as a connector-side fault");
+    }
+
+    /**
      * A 422 and a problem+json response are read as a typed body rather than a string, so each needed
      * its own empty-body fallback: an empty source never runs {@code flatMap}, and the status would
      * otherwise vanish into an unmapped {@code IllegalStateException} instead of the mapped
