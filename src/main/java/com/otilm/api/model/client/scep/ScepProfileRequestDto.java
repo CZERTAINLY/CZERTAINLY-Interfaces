@@ -8,11 +8,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ScepProfileRequestDto extends BaseScepProfileRequestDto {
 
-    @Schema(
-            description = "Name of the SCEP Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"Profile Name 1"}
-    )
+    @Schema(description = "Name of the SCEP Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "Profile Name 1"})
     private String name;
 
 }

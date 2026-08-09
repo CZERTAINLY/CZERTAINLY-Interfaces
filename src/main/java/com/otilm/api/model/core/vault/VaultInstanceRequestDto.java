@@ -3,11 +3,10 @@ package com.otilm.api.model.core.vault;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 public class VaultInstanceRequestDto {

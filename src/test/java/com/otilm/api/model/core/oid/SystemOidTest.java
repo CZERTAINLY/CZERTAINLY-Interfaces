@@ -1,9 +1,5 @@
 package com.otilm.api.model.core.oid;
 
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +8,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -23,34 +22,35 @@ import static org.junit.jupiter.api.Assertions.fail;
 class SystemOidTest {
 
     /**
-     * Codes that deliberately differ from BouncyCastle's symbol. Frozen: renaming one would change how
-     * every stored subject DN renders. {@code PSEUDONYM} differs only in case, which parity ignores.
+     * Codes that deliberately differ from BouncyCastle's symbol. Frozen: renaming one would change how every stored
+     * subject DN renders. {@code PSEUDONYM} differs only in case, which parity ignores.
      */
-    private static final Set<SystemOid> FROZEN_BC_SYMBOL_DIVERGENCES = Set.of(
-            SystemOid.EMAIL,                          // ours EMAIL, BC E
-            SystemOid.SURNAME,                        // ours SN (OpenSSL / RFC 4519 short name), BC SURNAME
-            SystemOid.DISTINGUISHED_NAME_QUALIFIER    // ours DNQ, BC DN — which universally means distinguished name
-    );
+    private static final Set<SystemOid> FROZEN_BC_SYMBOL_DIVERGENCES = Set
+            .of(SystemOid.EMAIL, // ours EMAIL, BC E
+                    SystemOid.SURNAME, // ours SN (OpenSSL / RFC 4519 short name), BC SURNAME
+                    SystemOid.DISTINGUISHED_NAME_QUALIFIER // ours DNQ, BC DN — which universally means distinguished
+                                                           // name
+            );
 
     /**
-     * OIDs BouncyCastle has no symbol for, knowingly given a code. Such an OID renders as its dotted
-     * form today, so a code changes stored DN text and needs an {@code updateCertificateDNs} migration.
+     * OIDs BouncyCastle has no symbol for, knowingly given a code. Such an OID renders as its dotted form today, so a
+     * code changes stored DN text and needs an {@code updateCertificateDNs} migration.
      */
     private static final Set<SystemOid> RDN_CODES_WITHOUT_BC_SYMBOL = Set.of();
 
     /** Expected properties of one seeded certificate extension. */
-    private record ExtensionExpectation(String displayName, boolean defaultCritical) {}
+    private record ExtensionExpectation(String displayName, boolean defaultCritical) {
+    }
 
-    private static final Map<String, ExtensionExpectation> EXPECTED_EXTENSIONS = Map.of(
-            "2.5.29.37", new ExtensionExpectation("Extended Key Usage", false),
-            "2.5.29.15", new ExtensionExpectation("Key Usage", true),
-            "2.5.29.19", new ExtensionExpectation("Basic Constraints", true),
-            "2.5.29.14", new ExtensionExpectation("Subject Key Identifier", false),
-            "2.5.29.9", new ExtensionExpectation("Subject Directory Attributes", false),
-            "2.5.29.30", new ExtensionExpectation("Name Constraints", true),
-            "2.5.29.16", new ExtensionExpectation("Private Key Usage Period", false),
-            "1.3.6.1.5.5.7.1.24", new ExtensionExpectation("TLS Feature", false)
-    );
+    private static final Map<String, ExtensionExpectation> EXPECTED_EXTENSIONS = Map
+            .of("2.5.29.37", new ExtensionExpectation("Extended Key Usage", false), "2.5.29.15",
+                    new ExtensionExpectation("Key Usage", true), "2.5.29.19",
+                    new ExtensionExpectation("Basic Constraints", true), "2.5.29.14",
+                    new ExtensionExpectation("Subject Key Identifier", false), "2.5.29.9",
+                    new ExtensionExpectation("Subject Directory Attributes", false), "2.5.29.30",
+                    new ExtensionExpectation("Name Constraints", true), "2.5.29.16",
+                    new ExtensionExpectation("Private Key Usage Period", false), "1.3.6.1.5.5.7.1.24",
+                    new ExtensionExpectation("TLS Feature", false));
 
     @Test
     void seedsTheCertificateExtensionsThatRequestersPutInACsr() {
@@ -58,15 +58,18 @@ class SystemOidTest {
         List<SystemOid> extensions = byCategory(OidCategory.CERTIFICATE_EXTENSION);
 
         // then
-        assertEquals(EXPECTED_EXTENSIONS.size(), extensions.size(), "unexpected number of certificate-extension entries");
+        assertEquals(EXPECTED_EXTENSIONS.size(), extensions.size(),
+                "unexpected number of certificate-extension entries");
         for (SystemOid entry : extensions) {
             ExtensionExpectation expected = EXPECTED_EXTENSIONS.get(entry.getOid());
             assertNotNull(expected, "unexpected certificate-extension OID " + entry.getOid());
             // The display name is what an operator picks from in the mapping dropdown, so a name/OID
             // mismatch would silently mint the wrong extension.
             assertEquals(expected.displayName(), entry.getDisplayName(), "wrong displayName for " + entry.getOid());
-            assertEquals(expected.defaultCritical(), entry.getDefaultCritical(), "wrong defaultCritical for " + entry.getOid());
-            assertEquals(ExtensionValueEncoding.DER, entry.getValueEncoding(), "wrong valueEncoding for " + entry.getOid());
+            assertEquals(expected.defaultCritical(), entry.getDefaultCritical(),
+                    "wrong defaultCritical for " + entry.getOid());
+            assertEquals(ExtensionValueEncoding.DER, entry.getValueEncoding(),
+                    "wrong valueEncoding for " + entry.getOid());
         }
     }
 
@@ -133,13 +136,9 @@ class SystemOidTest {
     @Test
     void seedsTheRdnTypesNeededWhenAuthoringAMapping() {
         // given — OID, expected code (BouncyCastle's symbol verbatim, including its casing)
-        Map<String, String> expected = Map.of(
-                "2.5.4.5", "SERIALNUMBER",
-                "2.5.4.9", "STREET",
-                "2.5.4.17", "PostalCode",
-                "2.5.4.15", "BusinessCategory",
-                "0.9.2342.19200300.100.1.1", "UID"
-        );
+        Map<String, String> expected = Map
+                .of("2.5.4.5", "SERIALNUMBER", "2.5.4.9", "STREET", "2.5.4.17", "PostalCode", "2.5.4.15",
+                        "BusinessCategory", "0.9.2342.19200300.100.1.1", "UID");
 
         // when / then
         expected.forEach((oid, code) -> {
@@ -262,8 +261,8 @@ class SystemOidTest {
                 } catch (IllegalArgumentException e) {
                     continue; // BouncyCastle does not know this token, so nothing can be shadowed
                 }
-                assertEquals(entry.getOid(), bcOid.getId(),
-                        "token '" + token + "' on " + entry.name() + " shadows BouncyCastle's binding to " + bcOid.getId());
+                assertEquals(entry.getOid(), bcOid.getId(), "token '" + token + "' on " + entry.name()
+                        + " shadows BouncyCastle's binding to " + bcOid.getId());
             }
         }
     }

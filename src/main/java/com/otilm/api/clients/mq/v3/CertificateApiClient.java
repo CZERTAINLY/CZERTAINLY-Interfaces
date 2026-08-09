@@ -16,17 +16,18 @@ import com.otilm.api.model.connector.v3.certificate.CertificateRegistrationReque
 import com.otilm.api.model.connector.v3.certificate.CertificateRenewRequestDtoV3;
 import com.otilm.api.model.connector.v3.certificate.CertificateRevocationRequestDtoV3;
 import com.otilm.api.model.connector.v3.certificate.CertificateSignRequestDtoV3;
-import org.springframework.http.ResponseEntity;
-
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 /**
- * MQ-based implementation of v3 Certificate API client.
- * Mirror of {@link com.otilm.api.clients.v3.CertificateApiClient}.
+ * MQ-based implementation of v3 Certificate API client. Mirror of
+ * {@link com.otilm.api.clients.v3.CertificateApiClient}.
  *
- * <p>Sync/async endpoints use {@link ProxyClient#sendRequestForEntity} so the upstream HTTP status
- * (200 vs 202) is preserved across the MQ hop.</p>
+ * <p>
+ * Sync/async endpoints use {@link ProxyClient#sendRequestForEntity} so the upstream HTTP status (200 vs 202) is
+ * preserved across the MQ hop.
+ * </p>
  */
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class CertificateApiClient implements CertificateSyncApiClient {
@@ -63,83 +64,118 @@ public class CertificateApiClient implements CertificateSyncApiClient {
     // ---- Issue ----
 
     @Override
-    public List<BaseAttribute> listIssueAttributes(ApiClientConnectorInfo connector, CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
-        BaseAttribute[] result = proxyClient.sendRequest(connector, PATH_ISSUE_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
+    public List<BaseAttribute> listIssueAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_ISSUE_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public ResponseEntity<CertificateDataResponseDto> issue(ApiClientConnectorInfo connector, CertificateSignRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequestForEntity(connector, PATH_ISSUE, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+    public ResponseEntity<CertificateDataResponseDto> issue(ApiClientConnectorInfo connector,
+            CertificateSignRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequestForEntity(connector, PATH_ISSUE, HTTP_METHOD_POST, requestDto,
+                        CertificateDataResponseDto.class);
     }
 
     @Override
-    public CertificateOperationStatusResponseDto getIssueStatus(ApiClientConnectorInfo connector, CertificateOperationStatusRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(connector, PATH_ISSUE_STATUS, HTTP_METHOD_POST, requestDto, CertificateOperationStatusResponseDto.class);
+    public CertificateOperationStatusResponseDto getIssueStatus(ApiClientConnectorInfo connector,
+            CertificateOperationStatusRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, PATH_ISSUE_STATUS, HTTP_METHOD_POST, requestDto,
+                        CertificateOperationStatusResponseDto.class);
     }
 
     @Override
-    public ResponseEntity<Void> cancelIssue(ApiClientConnectorInfo connector, CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException {
+    public ResponseEntity<Void> cancelIssue(ApiClientConnectorInfo connector,
+            CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException {
         return proxyClient.sendRequestForEntity(connector, PATH_ISSUE_CANCEL, HTTP_METHOD_POST, requestDto, Void.class);
     }
 
     // ---- Renew (status/cancel via /issue/*) ----
 
     @Override
-    public ResponseEntity<CertificateDataResponseDto> renew(ApiClientConnectorInfo connector, CertificateRenewRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequestForEntity(connector, PATH_RENEW, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+    public ResponseEntity<CertificateDataResponseDto> renew(ApiClientConnectorInfo connector,
+            CertificateRenewRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequestForEntity(connector, PATH_RENEW, HTTP_METHOD_POST, requestDto,
+                        CertificateDataResponseDto.class);
     }
 
     // ---- Revoke ----
 
     @Override
-    public List<BaseAttribute> listRevokeAttributes(ApiClientConnectorInfo connector, CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
-        BaseAttribute[] result = proxyClient.sendRequest(connector, PATH_REVOKE_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
+    public List<BaseAttribute> listRevokeAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_REVOKE_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public ResponseEntity<CertificateDataResponseDto> revoke(ApiClientConnectorInfo connector, CertificateRevocationRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequestForEntity(connector, PATH_REVOKE, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+    public ResponseEntity<CertificateDataResponseDto> revoke(ApiClientConnectorInfo connector,
+            CertificateRevocationRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequestForEntity(connector, PATH_REVOKE, HTTP_METHOD_POST, requestDto,
+                        CertificateDataResponseDto.class);
     }
 
     @Override
-    public CertificateOperationStatusResponseDto getRevokeStatus(ApiClientConnectorInfo connector, CertificateOperationStatusRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(connector, PATH_REVOKE_STATUS, HTTP_METHOD_POST, requestDto, CertificateOperationStatusResponseDto.class);
+    public CertificateOperationStatusResponseDto getRevokeStatus(ApiClientConnectorInfo connector,
+            CertificateOperationStatusRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, PATH_REVOKE_STATUS, HTTP_METHOD_POST, requestDto,
+                        CertificateOperationStatusResponseDto.class);
     }
 
     @Override
-    public ResponseEntity<Void> cancelRevoke(ApiClientConnectorInfo connector, CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequestForEntity(connector, PATH_REVOKE_CANCEL, HTTP_METHOD_POST, requestDto, Void.class);
+    public ResponseEntity<Void> cancelRevoke(ApiClientConnectorInfo connector,
+            CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequestForEntity(connector, PATH_REVOKE_CANCEL, HTTP_METHOD_POST, requestDto, Void.class);
     }
 
     // ---- Register ----
 
     @Override
-    public List<BaseAttribute> listRegisterAttributes(ApiClientConnectorInfo connector, CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
-        BaseAttribute[] result = proxyClient.sendRequest(connector, PATH_REGISTER_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
+    public List<BaseAttribute> listRegisterAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_REGISTER_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public ResponseEntity<CertificateDataResponseDto> register(ApiClientConnectorInfo connector, CertificateRegistrationRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequestForEntity(connector, PATH_REGISTER, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+    public ResponseEntity<CertificateDataResponseDto> register(ApiClientConnectorInfo connector,
+            CertificateRegistrationRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequestForEntity(connector, PATH_REGISTER, HTTP_METHOD_POST, requestDto,
+                        CertificateDataResponseDto.class);
     }
 
     @Override
-    public CertificateOperationStatusResponseDto getRegisterStatus(ApiClientConnectorInfo connector, CertificateOperationStatusRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(connector, PATH_REGISTER_STATUS, HTTP_METHOD_POST, requestDto, CertificateOperationStatusResponseDto.class);
+    public CertificateOperationStatusResponseDto getRegisterStatus(ApiClientConnectorInfo connector,
+            CertificateOperationStatusRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, PATH_REGISTER_STATUS, HTTP_METHOD_POST, requestDto,
+                        CertificateOperationStatusResponseDto.class);
     }
 
     @Override
-    public ResponseEntity<Void> cancelRegister(ApiClientConnectorInfo connector, CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequestForEntity(connector, PATH_REGISTER_CANCEL, HTTP_METHOD_POST, requestDto, Void.class);
+    public ResponseEntity<Void> cancelRegister(ApiClientConnectorInfo connector,
+            CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequestForEntity(connector, PATH_REGISTER_CANCEL, HTTP_METHOD_POST, requestDto, Void.class);
     }
 
     // ---- Identify ----
 
     @Override
-    public CertificateIdentificationResponseDto identify(ApiClientConnectorInfo connector, CertificateIdentificationRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(connector, PATH_IDENTIFY, HTTP_METHOD_POST, requestDto, CertificateIdentificationResponseDto.class);
+    public CertificateIdentificationResponseDto identify(ApiClientConnectorInfo connector,
+            CertificateIdentificationRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, PATH_IDENTIFY, HTTP_METHOD_POST, requestDto,
+                        CertificateIdentificationResponseDto.class);
     }
 }

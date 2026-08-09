@@ -10,9 +10,6 @@ import org.springdoc.core.annotations.ParameterObject;
 @Data
 @ParameterObject
 public class NotificationRequestDto extends PaginationRequestDto {
-    @Schema(
-            description = "Show only unread notifications",
-            defaultValue = "false"
-    )
+    @Schema(description = "Show only unread notifications", defaultValue = "false")
     private boolean unread;
 }

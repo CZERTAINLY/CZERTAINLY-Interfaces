@@ -28,39 +28,45 @@ public class KeyManagementApiClient implements KeyManagementSyncApiClient {
     }
 
     @Override
-    public List<BaseAttribute> listCreateSecretKeyAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listCreateSecretKeyAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys/secret/attributes";
         BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public void validateCreateSecretKeyAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateCreateSecretKeyAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys/secret/attributes/validate";
         proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     @Override
-    public KeyDataResponseDto createSecretKey(ApiClientConnectorInfo connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
+    public KeyDataResponseDto createSecretKey(ApiClientConnectorInfo connector, String uuid,
+            CreateKeyRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys/secret";
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, KeyDataResponseDto.class);
     }
 
     @Override
-    public List<BaseAttribute> listCreateKeyPairAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listCreateKeyPairAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys/pair/attributes";
         BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public void validateCreateKeyPairAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateCreateKeyPairAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys/pair/attributes/validate";
         proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     @Override
-    public KeyPairDataResponseDto createKeyPair(ApiClientConnectorInfo connector, String uuid, CreateKeyRequestDto requestDto) throws ConnectorException {
+    public KeyPairDataResponseDto createKeyPair(ApiClientConnectorInfo connector, String uuid,
+            CreateKeyRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys/pair";
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, KeyPairDataResponseDto.class);
     }
@@ -68,12 +74,14 @@ public class KeyManagementApiClient implements KeyManagementSyncApiClient {
     @Override
     public List<KeyDataResponseDto> listKeys(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys";
-        KeyDataResponseDto[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, KeyDataResponseDto[].class);
+        KeyDataResponseDto[] result = proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_GET, null, KeyDataResponseDto[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public KeyDataResponseDto getKey(ApiClientConnectorInfo connector, String uuid, String keyUuid) throws ConnectorException {
+    public KeyDataResponseDto getKey(ApiClientConnectorInfo connector, String uuid, String keyUuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/keys/" + keyUuid;
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, KeyDataResponseDto.class);
     }
@@ -87,12 +95,15 @@ public class KeyManagementApiClient implements KeyManagementSyncApiClient {
     // Async variants
     public CompletableFuture<List<KeyDataResponseDto>> listKeysAsync(ApiClientConnectorInfo connector, String uuid) {
         String path = BASE_PATH + "/" + uuid + "/keys";
-        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_GET, null, KeyDataResponseDto[].class)
+        return proxyClient
+                .sendRequestAsync(connector, path, HTTP_METHOD_GET, null, KeyDataResponseDto[].class)
                 .thenApply(Arrays::asList);
     }
 
-    public CompletableFuture<KeyPairDataResponseDto> createKeyPairAsync(ApiClientConnectorInfo connector, String uuid, CreateKeyRequestDto requestDto) {
+    public CompletableFuture<KeyPairDataResponseDto> createKeyPairAsync(ApiClientConnectorInfo connector, String uuid,
+            CreateKeyRequestDto requestDto) {
         String path = BASE_PATH + "/" + uuid + "/keys/pair";
-        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, KeyPairDataResponseDto.class);
+        return proxyClient
+                .sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, KeyPairDataResponseDto.class);
     }
 }

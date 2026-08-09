@@ -1,15 +1,15 @@
 package com.otilm.core.deprecated;
 
-import com.otilm.api.model.common.attribute.v1.AttributeDefinition;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.otilm.api.model.common.attribute.v1.AttributeDefinition;
 import java.util.List;
 
 public class AttributeDefinitionUtils {
 
-    private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public static String serialize(List<AttributeDefinition> attributes) {
         if (attributes == null) {

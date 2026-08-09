@@ -1,10 +1,9 @@
 package com.otilm.api.model.common.attribute.common;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 /**
@@ -13,11 +12,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeType implements IPlatformEnum {
 
-	DATA(Codes.DATA, "Data"),
-    GROUP(Codes.GROUP, "Group"),
-    INFO(Codes.INFO, "Info"),
-    META(Codes.META, "Metadata"),
-    CUSTOM(Codes.CUSTOM, "Custom");
+    DATA(Codes.DATA, "Data"), GROUP(Codes.GROUP, "Group"), INFO(Codes.INFO, "Info"), META(Codes.META,
+            "Metadata"), CUSTOM(Codes.CUSTOM, "Custom");
 
     private static final AttributeType[] VALUES;
 
@@ -32,7 +28,7 @@ public enum AttributeType implements IPlatformEnum {
     private final String description;
 
     AttributeType(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     AttributeType(String code, String label, String description) {
@@ -59,14 +55,15 @@ public enum AttributeType implements IPlatformEnum {
 
     @JsonCreator
     public static AttributeType fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equalsIgnoreCase(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute type %s.", code)));
     }
-    
+
     public static class Codes {
-    	/** Data Attributes **/
+        /** Data Attributes **/
         public static final String DATA = "data";
 
         /** Group Attributes **/

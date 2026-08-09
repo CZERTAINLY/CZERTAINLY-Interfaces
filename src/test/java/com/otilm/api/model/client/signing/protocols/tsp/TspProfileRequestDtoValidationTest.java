@@ -5,13 +5,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,8 +55,13 @@ class TspProfileRequestDtoValidationTest {
 
         Set<ConstraintViolation<TspProfileRequestDto>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty());
-        assertTrue(violations.stream().anyMatch(v ->
-                v.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName()
+        assertTrue(violations
+                .stream()
+                .anyMatch(v -> v
+                        .getConstraintDescriptor()
+                        .getAnnotation()
+                        .annotationType()
+                        .getSimpleName()
                         .equals("VaultProfileRequiredForBasicPassword")));
     }
 

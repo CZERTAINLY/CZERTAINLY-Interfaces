@@ -4,21 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 @Schema(name = "TimeQualityConfigSnapshot", description = "Full snapshot of all NTP-based time quality configurations, sent by Core to Time Quality Monitor")
 public class TimeQualityConfigSnapshot implements Serializable {
 
-    @Schema(description = "Correlation identifier carried from the matching TimeQualityConfigRequest. Null when Core publishes the snapshot proactively.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            example = "550e8400-e29b-41d4-a716-446655440000")
+    @Schema(description = "Correlation identifier carried from the matching TimeQualityConfigRequest. Null when Core publishes the snapshot proactively.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")
     private UUID correlationId;
 
     @NotNull

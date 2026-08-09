@@ -12,15 +12,10 @@ import lombok.EqualsAndHashCode;
 public class AuditLoggingSettingsDto extends ResourceLoggingSettingsDto {
 
     @NotNull
-    @Schema(
-            description = "Type of audit logs output/storage channel",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Type of audit logs output/storage channel", requiredMode = Schema.RequiredMode.REQUIRED)
     private AuditLogOutput output = AuditLogOutput.NONE;
 
-    @Schema(
-            description = "Additional data should be logged"
-    )
+    @Schema(description = "Additional data should be logged")
     private boolean verbose = false;
 
     @Hidden

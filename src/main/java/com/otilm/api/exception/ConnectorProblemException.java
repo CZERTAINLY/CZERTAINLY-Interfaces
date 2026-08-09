@@ -26,14 +26,13 @@ public class ConnectorProblemException extends ConnectorException {
             messageBuilder
                     .append(" ")
                     .append("Error is related to connector '")
-                    .append(this.connector.getName()).append("' (")
+                    .append(this.connector.getName())
+                    .append("' (")
                     .append(this.connector.getUuid())
                     .append(").");
         }
         if (withProblemDetail) {
-            messageBuilder
-                    .append(" ")
-                    .append(problemDetail.toString());
+            messageBuilder.append(" ").append(problemDetail.toString());
         }
         return messageBuilder.toString();
     }

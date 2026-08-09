@@ -1,22 +1,24 @@
 package com.otilm.api.clients.mq;
 
 import com.otilm.api.clients.ApiClientConnectorInfo;
-import com.otilm.api.interfaces.client.v1.HealthSyncApiClient;
 import com.otilm.api.exception.ConnectorException;
+import com.otilm.api.interfaces.client.v1.HealthSyncApiClient;
 import com.otilm.api.model.common.HealthDto;
-
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Message queue based health API client for connectors.
- * Uses ProxyClient to send health check requests via message queue
- * instead of direct REST calls.
+ * Message queue based health API client for connectors. Uses ProxyClient to send health check requests via message
+ * queue instead of direct REST calls.
  *
- * <p>This client maintains the same signature as the REST-based HealthApiClient
- * to ensure compatibility with existing code.</p>
+ * <p>
+ * This client maintains the same signature as the REST-based HealthApiClient to ensure compatibility with existing
+ * code.
+ * </p>
  *
- * <p>Usage: Inject this client when the connector has a proxyId set.
- * For connectors without proxyId, use the REST-based HealthApiClient.</p>
+ * <p>
+ * Usage: Inject this client when the connector has a proxyId set. For connectors without proxyId, use the REST-based
+ * HealthApiClient.
+ * </p>
  */
 public class HealthApiClient implements HealthSyncApiClient {
 
@@ -35,8 +37,7 @@ public class HealthApiClient implements HealthSyncApiClient {
     }
 
     /**
-     * Check health of a connector via proxy message queue.
-     * Maintains same signature as REST-based HealthApiClient.
+     * Check health of a connector via proxy message queue. Maintains same signature as REST-based HealthApiClient.
      *
      * @param connector Connector configuration (must have proxyId set)
      * @return HealthDto containing connector health status
@@ -45,13 +46,9 @@ public class HealthApiClient implements HealthSyncApiClient {
      */
     @Override
     public HealthDto checkHealth(ApiClientConnectorInfo connector) throws ConnectorException {
-        return proxyClient.sendRequest(
-                connector,
-                HEALTH_PATH,
-                HTTP_METHOD_GET,
-                null,  // No request body for GET
-                HealthDto.class
-        );
+        return proxyClient
+                .sendRequest(connector, HEALTH_PATH, HTTP_METHOD_GET, null, // No request body for GET
+                        HealthDto.class);
     }
 
     /**
@@ -61,12 +58,6 @@ public class HealthApiClient implements HealthSyncApiClient {
      * @return CompletableFuture that completes with HealthDto
      */
     public CompletableFuture<HealthDto> checkHealthAsync(ApiClientConnectorInfo connector) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                HEALTH_PATH,
-                HTTP_METHOD_GET,
-                null,
-                HealthDto.class
-        );
+        return proxyClient.sendRequestAsync(connector, HEALTH_PATH, HTTP_METHOD_GET, null, HealthDto.class);
     }
 }

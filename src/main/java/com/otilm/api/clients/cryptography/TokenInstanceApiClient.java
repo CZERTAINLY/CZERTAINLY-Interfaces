@@ -10,22 +10,25 @@ import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.token.TokenInstanceDto;
 import com.otilm.api.model.connector.cryptography.token.TokenInstanceRequestDto;
 import com.otilm.api.model.connector.cryptography.token.TokenInstanceStatusDto;
+import java.util.List;
+import javax.net.ssl.TrustManager;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import javax.net.ssl.TrustManager;
-import java.util.List;
-
 public class TokenInstanceApiClient extends BaseApiClient implements TokenInstanceSyncApiClient {
 
     private static final String TOKEN_INSTANCE_BASE_CONTEXT = "/v1/cryptographyProvider/tokens";
     private static final String TOKEN_INSTANCE_IDENTIFIED_CONTEXT = TOKEN_INSTANCE_BASE_CONTEXT + "/{uuid}";
-    private static final String TOKEN_INSTANCE_PROFILE_ATTRS_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT + "/tokenProfile/attributes";
-    private static final String TOKEN_INSTANCE_PROFILE_ATTRS_VALIDATE_CONTEXT = TOKEN_INSTANCE_PROFILE_ATTRS_CONTEXT + "/validate";
-    private static final String TOKEN_INSTANCE_ACTIVATE_ATTRS_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT + "/activate/attributes";
-    private static final String TOKEN_INSTANCE_ACTIVATE_ATTRS_VALIDATE_CONTEXT = TOKEN_INSTANCE_ACTIVATE_ATTRS_CONTEXT + "/validate";
+    private static final String TOKEN_INSTANCE_PROFILE_ATTRS_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT
+            + "/tokenProfile/attributes";
+    private static final String TOKEN_INSTANCE_PROFILE_ATTRS_VALIDATE_CONTEXT = TOKEN_INSTANCE_PROFILE_ATTRS_CONTEXT
+            + "/validate";
+    private static final String TOKEN_INSTANCE_ACTIVATE_ATTRS_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT
+            + "/activate/attributes";
+    private static final String TOKEN_INSTANCE_ACTIVATE_ATTRS_VALIDATE_CONTEXT = TOKEN_INSTANCE_ACTIVATE_ATTRS_CONTEXT
+            + "/validate";
     private static final String TOKEN_INSTANCE_ACTIVATE_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT + "/activate";
     private static final String TOKEN_INSTANCE_DEACTIVATE_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT + "/deactivate";
     private static final String TOKEN_INSTANCE_STATUS_CONTEXT = TOKEN_INSTANCE_IDENTIFIED_CONTEXT + "/status";
@@ -46,9 +49,8 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .uri(connector.getUrl() + TOKEN_INSTANCE_BASE_CONTEXT)
                 .retrieve()
                 .toEntityList(TokenInstanceDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
@@ -59,13 +61,13 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .uri(connector.getUrl() + TOKEN_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
                 .toEntity(TokenInstanceDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public TokenInstanceDto createTokenInstance(ApiClientConnectorInfo connector, TokenInstanceRequestDto requestDto) throws ConnectorException {
+    public TokenInstanceDto createTokenInstance(ApiClientConnectorInfo connector, TokenInstanceRequestDto requestDto)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -73,14 +75,13 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .body(Mono.just(requestDto), TokenInstanceRequestDto.class)
                 .retrieve()
                 .toEntity(TokenInstanceDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
-
     @Override
-    public TokenInstanceDto updateTokenInstance(ApiClientConnectorInfo connector, String uuid, TokenInstanceRequestDto requestDto) throws ConnectorException {
+    public TokenInstanceDto updateTokenInstance(ApiClientConnectorInfo connector, String uuid,
+            TokenInstanceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -88,9 +89,8 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .body(Mono.just(requestDto), TokenInstanceRequestDto.class)
                 .retrieve()
                 .toEntity(TokenInstanceDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
@@ -101,39 +101,39 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .uri(connector.getUrl() + TOKEN_INSTANCE_IDENTIFIED_CONTEXT, uuid)
                 .retrieve()
                 .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public TokenInstanceStatusDto getTokenInstanceStatus(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public TokenInstanceStatusDto getTokenInstanceStatus(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + TOKEN_INSTANCE_STATUS_CONTEXT, uuid)
                 .retrieve()
                 .toEntity(TokenInstanceStatusDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public List<BaseAttribute> listTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + TOKEN_INSTANCE_PROFILE_ATTRS_CONTEXT, uuid)
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public void validateTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -141,26 +141,26 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public List<BaseAttribute> listTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + TOKEN_INSTANCE_ACTIVATE_ATTRS_CONTEXT, uuid)
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public void validateTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -168,13 +168,13 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public void activateTokenInstance(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ConnectorException {
+    public void activateTokenInstance(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.PATCH, connector, true);
 
         processRequest(r -> r
@@ -182,9 +182,8 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
@@ -195,9 +194,8 @@ public class TokenInstanceApiClient extends BaseApiClient implements TokenInstan
                 .uri(connector.getUrl() + TOKEN_INSTANCE_DEACTIVATE_CONTEXT, uuid)
                 .retrieve()
                 .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
 }

@@ -28,11 +28,8 @@ class ErrorCodeTest {
 
     @Test
     void connectorGeneralEntries() {
-        for (ErrorCode code : new ErrorCode[]{
-                ErrorCode.UPSTREAM_ERROR,
-                ErrorCode.CREDENTIAL_INVALID,
-                ErrorCode.POLICY_VIOLATION,
-                ErrorCode.OPERATION_PAST_POINT_OF_NO_RETURN,
+        for (ErrorCode code : new ErrorCode[]{ErrorCode.UPSTREAM_ERROR, ErrorCode.CREDENTIAL_INVALID,
+                ErrorCode.POLICY_VIOLATION, ErrorCode.OPERATION_PAST_POINT_OF_NO_RETURN,
                 ErrorCode.OPERATION_NOT_TRACKED}) {
             assertEquals(ProblemTypeCategory.CONNECTOR, code.getCategory(), code.name() + " category");
             assertNull(code.getInterfaceCode(), code.name() + " interfaceCode");
@@ -47,12 +44,8 @@ class ErrorCodeTest {
 
     @Test
     void connectorAuthorityEntries() {
-        for (ErrorCode code : new ErrorCode[]{
-                ErrorCode.CSR_MALFORMED,
-                ErrorCode.REVOCATION_NOT_ALLOWED,
-                ErrorCode.REGISTRATION_NOT_FOUND,
-                ErrorCode.RENEWAL_SOURCE_NOT_FOUND,
-                ErrorCode.CSR_SUBJECT_MISMATCH,
+        for (ErrorCode code : new ErrorCode[]{ErrorCode.CSR_MALFORMED, ErrorCode.REVOCATION_NOT_ALLOWED,
+                ErrorCode.REGISTRATION_NOT_FOUND, ErrorCode.RENEWAL_SOURCE_NOT_FOUND, ErrorCode.CSR_SUBJECT_MISMATCH,
                 ErrorCode.CERTIFICATE_MISMATCH}) {
             assertEquals(ProblemTypeCategory.CONNECTOR, code.getCategory(), code.name() + " category");
             assertEquals(ConnectorInterface.AUTHORITY, code.getInterfaceCode(), code.name() + " interfaceCode");

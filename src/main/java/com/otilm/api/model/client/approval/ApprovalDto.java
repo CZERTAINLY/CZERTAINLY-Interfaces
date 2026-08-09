@@ -1,93 +1,52 @@
 package com.otilm.api.model.client.approval;
 
-
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
 public class ApprovalDto {
 
-    @Schema(
-            description = "UUID of the Approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "UUID of the Approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private String approvalUuid;
 
-    @Schema(
-            description = "UUID of the user that requested approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "UUID of the user that requested approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private String creatorUuid;
 
-    @Schema(
-            description = "Username of the user that requested approval",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Username of the user that requested approval", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String creatorUsername;
 
-    @Schema(
-            description = "Version of the Approval profile",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Version of the Approval profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private int version;
 
-    @Schema(
-            description = "Creation date of the Approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Creation date of the Approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private Date createdAt;
 
-    @Schema(
-            description = "Expiry date of the Approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Expiry date of the Approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private Date expiryAt;
 
-    @Schema(
-            description = "Date of resolution of the Approval",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Date of resolution of the Approval", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Date closedAt;
 
-    @Schema(
-            description = "Status of the Approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Status of the Approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private ApprovalStatusEnum status;
 
-    @Schema(
-            description = "Resource of the Approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Resource of the Approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
-    @Schema(
-            description = "Resource action of the Approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Resource action of the Approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private String resourceAction;
 
-    @Schema(
-            description = "UUID of the target object of the Approval",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "UUID of the target object of the Approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private String objectUuid;
 
-    @Schema(
-            description = "Name of the Approval profile",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Name of the Approval profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String approvalProfileName;
 
-    @Schema(
-            description = "UUID of the Approval profile",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "UUID of the Approval profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String approvalProfileUuid;
 
     public ApprovalDto(final ApprovalDto approvalDto) {

@@ -6,15 +6,14 @@ import com.otilm.api.model.client.signing.profile.record.validation.ValidSigning
 import com.otilm.api.model.client.signing.profile.scheme.SigningSchemeRequestDto;
 import com.otilm.api.model.client.signing.profile.validation.ValidManagedSignatureFormattingConnector;
 import com.otilm.api.model.client.signing.profile.workflow.WorkflowRequestDto;
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.otilm.api.model.common.validation.ValidName;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 @Schema(name = "SigningProfileRequestDto", description = "Request to create or update a Signing Profile")
@@ -31,8 +30,7 @@ public class SigningProfileRequestDto {
 
     @NotNull
     @Valid
-    @Schema(description = "Signing scheme configuration (who holds the key and how the cryptographic operation is performed)",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Signing scheme configuration (who holds the key and how the cryptographic operation is performed)", requiredMode = Schema.RequiredMode.REQUIRED)
     private SigningSchemeRequestDto signingScheme;
 
     @NotNull
@@ -44,7 +42,6 @@ public class SigningProfileRequestDto {
     private List<RequestAttribute> customAttributes = new ArrayList<>();
 
     @Valid
-    @Schema(description = "Signing Record policy. When omitted, defaults are used (no signing record).",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Signing Record policy. When omitted, defaults are used (no signing record).", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SigningRecordPolicyRequestDto recordPolicy;
 }

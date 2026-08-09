@@ -1,9 +1,8 @@
 package com.otilm.api.exception;
 
+import java.util.Objects;
 import lombok.Getter;
 import org.springframework.http.ProblemDetail;
-
-import java.util.Objects;
 
 @Getter
 public class CbomRepositoryException extends Exception implements PlatformException {
@@ -30,16 +29,12 @@ public class CbomRepositoryException extends Exception implements PlatformExcept
     }
 
     public CbomRepositoryException(String message, ProblemDetail problemDetail) {
-        super(problemDetail != null
-                ? message + ": " + problemDetail.getDetail()
-                : message);
+        super(problemDetail != null ? message + ": " + problemDetail.getDetail() : message);
         this.problemDetail = problemDetail;
     }
 
     public CbomRepositoryException(String message, ProblemDetail problemDetail, Throwable cause) {
-        super(problemDetail != null
-                ? message + ": " + problemDetail.getDetail()
-                : message, cause);
+        super(problemDetail != null ? message + ": " + problemDetail.getDetail() : message, cause);
         this.problemDetail = problemDetail;
     }
 }

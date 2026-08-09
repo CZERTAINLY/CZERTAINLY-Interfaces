@@ -2,17 +2,17 @@ package com.otilm.api.model.client.compliance;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 @Setter
 @Getter
 public class ComplianceProfileRequestDto {
-    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Profile 1"})
+    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "Profile 1"})
     private String name;
 
     @Schema(description = "Description of the Compliance Profile", examples = {"Profile 1"})

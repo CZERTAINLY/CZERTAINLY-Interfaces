@@ -4,13 +4,13 @@ import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowR
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class DefaultPolicyIdValidator implements ConstraintValidator<ValidDefaultPolicyId, TimestampingWorkflowRequestDto> {
+public class DefaultPolicyIdValidator
+        implements
+            ConstraintValidator<ValidDefaultPolicyId, TimestampingWorkflowRequestDto> {
 
     @Override
     public boolean isValid(TimestampingWorkflowRequestDto workflow, ConstraintValidatorContext context) {
-        if (workflow == null
-                || workflow.getDefaultPolicyId() == null
-                || workflow.getAllowedPolicyIds() == null
+        if (workflow == null || workflow.getDefaultPolicyId() == null || workflow.getAllowedPolicyIds() == null
                 || workflow.getAllowedPolicyIds().isEmpty()) {
             return true;
         }
@@ -18,7 +18,8 @@ public class DefaultPolicyIdValidator implements ConstraintValidator<ValidDefaul
             return true;
         }
         context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+        context
+                .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
                 .addPropertyNode("defaultPolicyId")
                 .addConstraintViolation();
         return false;

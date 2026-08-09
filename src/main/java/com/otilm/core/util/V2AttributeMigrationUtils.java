@@ -1,36 +1,43 @@
 package com.otilm.core.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
-import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
-import com.otilm.api.model.common.attribute.v1.AttributeDefinition;
-import com.otilm.api.model.common.attribute.v1.AttributeType;
-import com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent;
-import com.otilm.api.model.common.attribute.v1.content.FileAttributeContent;
-import com.otilm.api.model.common.attribute.v1.content.JsonAttributeContent;
-import com.otilm.api.model.common.attribute.v2.BaseAttributeV2;
-import com.otilm.api.model.common.attribute.v2.DataAttributeV2;
-import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.otilm.api.model.common.attribute.common.callback.AttributeCallback;
 import com.otilm.api.model.common.attribute.common.callback.AttributeCallbackMapping;
 import com.otilm.api.model.common.attribute.common.callback.AttributeValueTarget;
 import com.otilm.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
-import com.otilm.api.model.common.attribute.v2.content.*;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
 import com.otilm.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
 import com.otilm.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.otilm.api.model.common.attribute.common.content.data.SecretAttributeContentData;
 import com.otilm.api.model.common.attribute.common.properties.DataAttributeProperties;
 import com.otilm.api.model.common.attribute.common.properties.MetadataAttributeProperties;
+import com.otilm.api.model.common.attribute.v1.AttributeDefinition;
+import com.otilm.api.model.common.attribute.v1.AttributeType;
+import com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent;
+import com.otilm.api.model.common.attribute.v1.content.FileAttributeContent;
+import com.otilm.api.model.common.attribute.v1.content.JsonAttributeContent;
+import com.otilm.api.model.common.attribute.v2.DataAttributeV2;
+import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.otilm.api.model.common.attribute.v2.content.BaseAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.BooleanAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.CodeBlockAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.CredentialAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.DateAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.DateTimeAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.FloatAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.IntegerAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.ObjectAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.TextAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.TimeAttributeContentV2;
 import com.otilm.core.deprecated.AttributeDefinitionUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.InvalidMimeTypeException;
-
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,25 +45,38 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.InvalidMimeTypeException;
 
 public class V2AttributeMigrationUtils {
     private static final Logger logger = LoggerFactory.getLogger(V2AttributeMigrationUtils.class);
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName, String rowIdentifier) throws SQLException, JsonProcessingException {
+    public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName,
+            String rowIdentifier) throws SQLException, JsonProcessingException {
         logger.debug("Migrating Table: {}, Column: {}", tableName, columnName);
         List<String> migrationCommands = new ArrayList<>();
         while (rows.next()) {
             // the certificate_location table has composite key
             if (tableName.equals("certificate_location")) {
-                logger.debug("Migrating record with Location id: {}, Certificate id: {}", rows.getString("location_uuid"), rows.getString("certificate_uuid"));
+                logger
+                        .debug("Migrating record with Location id: {}, Certificate id: {}",
+                                rows.getString("location_uuid"), rows.getString("certificate_uuid"));
             } else {
                 logger.debug("Migrating record with is: {}", rows.getString(rowIdentifier));
             }
             List<BaseAttribute> attributeDefinitions = new ArrayList<>();
-            List<AttributeDefinition> oldAttributeValue = AttributeDefinitionUtils.deserialize(rows.getString(columnName));
+            List<AttributeDefinition> oldAttributeValue = AttributeDefinitionUtils
+                    .deserialize(rows.getString(columnName));
             if (oldAttributeValue == null) {
                 continue;
             }
@@ -66,9 +86,14 @@ public class V2AttributeMigrationUtils {
             String updateCommand;
             String serializedAttributes = com.otilm.core.util.AttributeDefinitionUtils.serialize(attributeDefinitions);
             if (tableName.equals("certificate_location")) {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes.replace("'", "") + "' WHERE location_uuid = '" + rows.getString("location_uuid") + "' AND certificate_uuid = '" + rows.getString("certificate_uuid") + "';";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '"
+                        + serializedAttributes.replace("'", "") + "' WHERE location_uuid = '"
+                        + rows.getString("location_uuid") + "' AND certificate_uuid = '"
+                        + rows.getString("certificate_uuid") + "';";
             } else {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes.replace("'", "") + "' WHERE " + rowIdentifier + " = '" + rows.getString(rowIdentifier) + "';";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '"
+                        + serializedAttributes.replace("'", "") + "' WHERE " + rowIdentifier + " = '"
+                        + rows.getString(rowIdentifier) + "';";
             }
             migrationCommands.add(updateCommand);
         }
@@ -77,7 +102,7 @@ public class V2AttributeMigrationUtils {
 
     public static DataAttributeV2 getNewAttributes(AttributeDefinition oldAttribute) {
 
-        //Old Attribute Value to new attribute properties
+        // Old Attribute Value to new attribute properties
 
         DataAttributeV2 attribute = new DataAttributeV2();
 
@@ -95,7 +120,10 @@ public class V2AttributeMigrationUtils {
         attribute.setDescription(oldAttribute.getDescription());
         attribute.setType(com.otilm.api.model.common.attribute.common.AttributeType.DATA);
         attribute.setContentType(getAttributeContentType(oldAttribute.getType()));
-        attribute.setContent(getAttributeContent(oldAttribute.getType() != null ? oldAttribute.getType() : AttributeType.STRING, oldAttribute.getContent()));
+        attribute
+                .setContent(getAttributeContent(
+                        oldAttribute.getType() != null ? oldAttribute.getType() : AttributeType.STRING,
+                        oldAttribute.getContent()));
         attribute.setProperties(properties);
         attribute.setAttributeCallback(getAttributeCallback(oldAttribute.getAttributeCallback()));
         attribute.setConstraints(getAttributeConstraint(oldAttribute.getValidationRegex()));
@@ -109,7 +137,8 @@ public class V2AttributeMigrationUtils {
         return List.of(new RegexpAttributeConstraint("", "", regex));
     }
 
-    private static AttributeCallback getAttributeCallback(com.otilm.api.model.common.attribute.v1.AttributeCallback oldCallback) {
+    private static AttributeCallback getAttributeCallback(
+            com.otilm.api.model.common.attribute.v1.AttributeCallback oldCallback) {
         if (oldCallback == null) {
             return null;
         }
@@ -123,7 +152,12 @@ public class V2AttributeMigrationUtils {
             mapping.setAttributeContentType(getAttributeContentType(oldMapping.getAttributeType()));
             mapping.setFrom(oldMapping.getFrom());
             mapping.setTo(oldMapping.getTo());
-            mapping.setTargets(oldMapping.getTargets().stream().map(e -> AttributeValueTarget.findByCode(e.getCode())).collect(Collectors.toSet()));
+            mapping
+                    .setTargets(oldMapping
+                            .getTargets()
+                            .stream()
+                            .map(e -> AttributeValueTarget.findByCode(e.getCode()))
+                            .collect(Collectors.toSet()));
             mapping.setValue(oldMapping.getValue());
             mappings.add(mapping);
         }
@@ -141,7 +175,8 @@ public class V2AttributeMigrationUtils {
         return AttributeContentType.fromCode(type.getCode());
     }
 
-    private static List<BaseAttributeContentV2<?>> getAttributeContent(AttributeType attributeType, Object oldContentData) {
+    private static List<BaseAttributeContentV2<?>> getAttributeContent(AttributeType attributeType,
+            Object oldContentData) {
         List<BaseAttributeContentV2<?>> attributeContents = new ArrayList<>();
         List<com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent> oldContentListItems = new ArrayList<>();
         if (oldContentData == null) {
@@ -155,10 +190,14 @@ public class V2AttributeMigrationUtils {
         for (com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent oldContent : oldContentListItems) {
             switch (attributeType) {
                 case STRING:
-                    attributeContents.add(new StringAttributeContentV2(oldContent.getValue().toString(), oldContent.getValue().toString()));
+                    attributeContents
+                            .add(new StringAttributeContentV2(oldContent.getValue().toString(),
+                                    oldContent.getValue().toString()));
                     break;
                 case INTEGER:
-                    attributeContents.add(new IntegerAttributeContentV2(oldContent.getValue().toString(), Integer.parseInt(oldContent.getValue().toString())));
+                    attributeContents
+                            .add(new IntegerAttributeContentV2(oldContent.getValue().toString(),
+                                    Integer.parseInt(oldContent.getValue().toString())));
                     break;
                 case BOOLEAN:
                     getBooleanContent(oldContent, attributeContents);
@@ -168,7 +207,8 @@ public class V2AttributeMigrationUtils {
                     break;
                 case DATE:
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    attributeContents.add(new DateAttributeContentV2(LocalDate.parse(oldContent.getValue().toString(), df)));
+                    attributeContents
+                            .add(new DateAttributeContentV2(LocalDate.parse(oldContent.getValue().toString(), df)));
                     break;
                 case DATETIME:
                     DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -176,48 +216,62 @@ public class V2AttributeMigrationUtils {
                     attributeContents.add(new DateTimeAttributeContentV2(z));
                     break;
                 case FLOAT:
-                    attributeContents.add(new FloatAttributeContentV2(oldContent.getValue().toString(), (Float) oldContent.getValue()));
+                    attributeContents
+                            .add(new FloatAttributeContentV2(oldContent.getValue().toString(),
+                                    (Float) oldContent.getValue()));
                     break;
                 case TIME:
                     DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm:ss");
-                    attributeContents.add(new TimeAttributeContentV2(LocalTime.parse(oldContent.getValue().toString(), tf)));
+                    attributeContents
+                            .add(new TimeAttributeContentV2(LocalTime.parse(oldContent.getValue().toString(), tf)));
                     break;
                 case TEXT:
                     attributeContents.add(new TextAttributeContentV2((String) oldContent.getValue()));
                     break;
                 case SECRET:
-                    attributeContents.add(new SecretAttributeContentV2("", new SecretAttributeContentData((String) oldContent.getValue())));
+                    attributeContents
+                            .add(new SecretAttributeContentV2("",
+                                    new SecretAttributeContentData((String) oldContent.getValue())));
                     break;
                 case JSON:
-                    attributeContents.add(new ObjectAttributeContentV2(((JsonAttributeContent) oldContent).getValue(), (Serializable) ((JsonAttributeContent) oldContent).getData()));
+                    attributeContents
+                            .add(new ObjectAttributeContentV2(((JsonAttributeContent) oldContent).getValue(),
+                                    (Serializable) ((JsonAttributeContent) oldContent).getData()));
                     break;
                 case FILE:
                     getFileContent((FileAttributeContent) oldContent, attributeContents);
                     break;
                 case CODEBLOCK:
-                    CodeBlockAttributeContentData codeBlockAttributeContentData = (CodeBlockAttributeContentData) oldContent.getValue();
-                    attributeContents.add(new CodeBlockAttributeContentV2("", new CodeBlockAttributeContentData(codeBlockAttributeContentData.getLanguage(), codeBlockAttributeContentData.getCode())));
+                    CodeBlockAttributeContentData codeBlockAttributeContentData = (CodeBlockAttributeContentData) oldContent
+                            .getValue();
+                    attributeContents
+                            .add(new CodeBlockAttributeContentV2("",
+                                    new CodeBlockAttributeContentData(codeBlockAttributeContentData.getLanguage(),
+                                            codeBlockAttributeContentData.getCode())));
                     break;
             }
         }
         return attributeContents;
     }
 
-    private static void getFileContent(FileAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+    private static void getFileContent(FileAttributeContent oldContent,
+            List<BaseAttributeContentV2<?>> attributeContents) {
         FileAttributeContentData data = new FileAttributeContentData();
         FileAttributeContent oldContentFileData = oldContent;
         data.setContent(oldContentFileData.getValue());
         data.setFileName(oldContentFileData.getFileName());
-        if (oldContentFileData.getContentType() != null && !oldContentFileData.getContentType().isEmpty())
+        if (oldContentFileData.getContentType() != null && !oldContentFileData.getContentType().isEmpty()) {
             try {
                 data.setMimeType(oldContentFileData.getContentType());
             } catch (InvalidMimeTypeException e) {
-                //Do nothing
+                // Do nothing
             }
+        }
         attributeContents.add(new FileAttributeContentV2(oldContentFileData.getFileName(), data));
     }
 
-    private static void getCredentialContent(JsonAttributeContent oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+    private static void getCredentialContent(JsonAttributeContent oldContent,
+            List<BaseAttributeContentV2<?>> attributeContents) {
         CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
         LinkedHashMap<String, Object> credentialData = (LinkedHashMap<String, Object>) oldContent.getData();
         credentialDto.setName((String) credentialData.get("name"));
@@ -226,7 +280,8 @@ public class V2AttributeMigrationUtils {
         List<DataAttributeV2> credentialAttributes = new ArrayList<>();
         List<AttributeDefinition> oldCredentialAttributeValue = new ArrayList<>();
         try {
-            oldCredentialAttributeValue = AttributeDefinitionUtils.deserialize(mapper.writeValueAsString(credentialData.get("attributes")));
+            oldCredentialAttributeValue = AttributeDefinitionUtils
+                    .deserialize(mapper.writeValueAsString(credentialData.get("attributes")));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -240,7 +295,8 @@ public class V2AttributeMigrationUtils {
         attributeContents.add(new CredentialAttributeContentV2(oldContent.getValue(), credentialDto));
     }
 
-    private static void getBooleanContent(BaseAttributeContent<?> oldContent, List<BaseAttributeContentV2<?>> attributeContents) {
+    private static void getBooleanContent(BaseAttributeContent<?> oldContent,
+            List<BaseAttributeContentV2<?>> attributeContents) {
         if (oldContent.getValue() instanceof Boolean) {
             attributeContents.add(new BooleanAttributeContentV2((Boolean) oldContent.getValue()));
         } else {
@@ -253,30 +309,42 @@ public class V2AttributeMigrationUtils {
         }
     }
 
-    private static com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent convertOldContents(AttributeType attributeType, Object oldContentData) {
+    private static com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent convertOldContents(
+            AttributeType attributeType, Object oldContentData) {
         if (oldContentData == null) {
             return null;
         }
         if (attributeType.equals(AttributeType.JSON)) {
-            return mapper.convertValue(oldContentData, com.otilm.api.model.common.attribute.v1.content.JsonAttributeContent.class);
+            return mapper
+                    .convertValue(oldContentData,
+                            com.otilm.api.model.common.attribute.v1.content.JsonAttributeContent.class);
         } else if (attributeType.equals(AttributeType.CREDENTIAL)) {
-            return mapper.convertValue(oldContentData, com.otilm.api.model.common.attribute.v1.content.JsonAttributeContent.class);
+            return mapper
+                    .convertValue(oldContentData,
+                            com.otilm.api.model.common.attribute.v1.content.JsonAttributeContent.class);
         } else if (attributeType.equals(AttributeType.FILE)) {
-            return mapper.convertValue(oldContentData, com.otilm.api.model.common.attribute.v1.content.FileAttributeContent.class);
+            return mapper
+                    .convertValue(oldContentData,
+                            com.otilm.api.model.common.attribute.v1.content.FileAttributeContent.class);
         } else {
-            return mapper.convertValue(oldContentData, com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent.class);
+            return mapper
+                    .convertValue(oldContentData,
+                            com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent.class);
         }
     }
 
     // All the methods defined below will be used fot Metadata mirations
 
-    public static List<String> getMetadataMigrationCommands(ResultSet rows, String tableName, String columnName, String rowIdentifier) throws SQLException, JsonProcessingException {
+    public static List<String> getMetadataMigrationCommands(ResultSet rows, String tableName, String columnName,
+            String rowIdentifier) throws SQLException, JsonProcessingException {
         logger.debug("Metadata - Migrating Table: {}, Column: {}", tableName, columnName);
         List<String> migrationCommands = new ArrayList<>();
         while (rows.next()) {
             // the certificate_location table has composite key
             if (tableName.equals("certificate_location")) {
-                logger.debug("Metadata - Migrating record with Location id: {}, Certificate id: {}", rows.getString("location_uuid"), rows.getString("certificate_uuid"));
+                logger
+                        .debug("Metadata - Migrating record with Location id: {}, Certificate id: {}",
+                                rows.getString("location_uuid"), rows.getString("certificate_uuid"));
             } else {
                 logger.debug("Metadata - Migrating record with is: {}", rows.getString(rowIdentifier));
             }
@@ -296,16 +364,22 @@ public class V2AttributeMigrationUtils {
             String updateCommand;
             String serializedMetadata = com.otilm.core.util.AttributeDefinitionUtils.serialize(metadataDefinitions);
             if (tableName.equals("certificate_location")) {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedMetadata.replace("'", "") + "' WHERE location_uuid = '" + rows.getString("location_uuid") + "' AND certificate_uuid = '" + rows.getString("certificate_uuid") + "';";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '"
+                        + serializedMetadata.replace("'", "") + "' WHERE location_uuid = '"
+                        + rows.getString("location_uuid") + "' AND certificate_uuid = '"
+                        + rows.getString("certificate_uuid") + "';";
             } else {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedMetadata.replace("'", "") + "' WHERE " + rowIdentifier + " = '" + rows.getString(rowIdentifier) + "';";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '"
+                        + serializedMetadata.replace("'", "") + "' WHERE " + rowIdentifier + " = '"
+                        + rows.getString(rowIdentifier) + "';";
             }
             migrationCommands.add(updateCommand);
         }
         return migrationCommands;
     }
 
-    public static List<MetadataAttributeV2> getMetadataMigrationAttributes(String metadata) throws JsonProcessingException {
+    public static List<MetadataAttributeV2> getMetadataMigrationAttributes(String metadata)
+            throws JsonProcessingException {
         List<MetadataAttributeV2> metadataDefinitions = new ArrayList<>();
         if (metadata == null) {
             return null;
@@ -326,7 +400,7 @@ public class V2AttributeMigrationUtils {
         attribute.setUuid(null);
         attribute.setName(oldMetadata.getKey());
 
-        //Attribute Properties
+        // Attribute Properties
         MetadataAttributeProperties attributeProperties = new MetadataAttributeProperties();
         attributeProperties.setLabel(camelToHumanForm(oldMetadata.getKey()));
         attributeProperties.setVisible(true);
@@ -364,20 +438,16 @@ public class V2AttributeMigrationUtils {
             return List.of(new FloatAttributeContentV2(metadataValue.toString(), metadataValue));
         } else if (value instanceof Boolean) {
             Boolean metadataValue = (Boolean) value;
-            return List.of(new BooleanAttributeContentV2(Boolean.TRUE.equals(metadataValue) ? "Yes" : "No", metadataValue));
+            return List
+                    .of(new BooleanAttributeContentV2(Boolean.TRUE.equals(metadataValue) ? "Yes" : "No",
+                            metadataValue));
         } else {
             return List.of(new ObjectAttributeContentV2((Serializable) value));
         }
     }
 
-
     public static String camelToHumanForm(String word) {
-        return StringUtils.capitalize(
-                StringUtils.join(
-                        StringUtils.splitByCharacterTypeCamelCase(word),
-                        ' '
-                )
-        );
+        return StringUtils.capitalize(StringUtils.join(StringUtils.splitByCharacterTypeCamelCase(word), ' '));
     }
 
 }

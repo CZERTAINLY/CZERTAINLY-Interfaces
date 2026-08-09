@@ -1,12 +1,8 @@
 package com.otilm.api.model.core.search;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
-
+import lombok.Data;
 
 @Data
 public class SearchFieldDataByGroupDto {

@@ -25,11 +25,10 @@ public enum EndEntityStatus {
     HISTORICAL(60),
 
     /** The user is should use key recovery functions in next certificate generation. **/
-    KEY_RECOVERY (70),
+    KEY_RECOVERY(70),
 
     /** the operation is waiting to be approved before execution **/
-    WAITING_FOR_ADD_APPROVAL(80),
-    ;
+    WAITING_FOR_ADD_APPROVAL(80),;
 
     private final int code;
 
@@ -42,7 +41,8 @@ public enum EndEntityStatus {
     }
 
     public static EndEntityStatus fromCode(int code) {
-        return Arrays.stream(values())
+        return Arrays
+                .stream(values())
                 .filter(e -> e.code == code)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException(String.format("Unsupported type %s.", code)));

@@ -2,65 +2,52 @@ package com.otilm.api.model.common.attribute.v1;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import java.io.Serializable;
 import java.util.Set;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AttributeCallbackMapping {
 
     /**
-     * Name of the attribute whose value is to be used as value of path variable or request param or body field
-     * defined in {@link AttributeCallbackMapping#to}.
-     * It is optional and must be set only if {@link AttributeCallbackMapping#value} is not set.
+     * Name of the attribute whose value is to be used as value of path variable or request param or body field defined
+     * in {@link AttributeCallbackMapping#to}. It is optional and must be set only if
+     * {@link AttributeCallbackMapping#value} is not set.
      **/
-    @Schema(
-            description = "Name of the attribute whose value is to be used as value of " +
-                    "path variable or request param or body field." +
-                    "It is optional and must be set only if value is not set."
-    )
+    @Schema(description = "Name of the attribute whose value is to be used as value of "
+            + "path variable or request param or body field."
+            + "It is optional and must be set only if value is not set.")
     private String from;
 
     /**
-     * Type of the attribute defined in {@link AttributeCallbackMapping#from}.
-     * It is optional and must be set only if special behaviour is needed.
+     * Type of the attribute defined in {@link AttributeCallbackMapping#from}. It is optional and must be set only if
+     * special behaviour is needed.
      **/
-    @Schema(
-            description = "Type of the attribute. " +
-                    "It is optional and must be set only if special behaviour is needed."
-    )
+    @Schema(description = "Type of the attribute. "
+            + "It is optional and must be set only if special behaviour is needed.")
     private AttributeType attributeType;
 
     /**
-     * Name of the path variable or request param or body field which is to be used to assign value of attribute
-     * defined in {@link AttributeCallbackMapping#from}.
+     * Name of the path variable or request param or body field which is to be used to assign value of attribute defined
+     * in {@link AttributeCallbackMapping#from}.
      **/
-    @Schema(
-            description = "Name of the path variable or request param or body field" +
-                    " which is to be used to assign value of attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Name of the path variable or request param or body field"
+            + " which is to be used to assign value of attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private String to;
 
     /**
      * Set of {@link AttributeValueTarget}s for propagating {@link AttributeCallbackMapping#value}.
      **/
-    @Schema(
-            description = "Set of targets for propagating value.",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Set of targets for propagating value.", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<AttributeValueTarget> targets;
 
     /**
-     * Static value to be propagated to {@link AttributeCallbackMapping#targets}.
-     * It is optional and is set only if the value is known at attribute creation time.
+     * Static value to be propagated to {@link AttributeCallbackMapping#targets}. It is optional and is set only if the
+     * value is known at attribute creation time.
      */
-    @Schema(
-            description = "Static value to be propagated to targets. " +
-                    "It is optional and is set only if the value is known at attribute creation time."
-    )
+    @Schema(description = "Static value to be propagated to targets. "
+            + "It is optional and is set only if the value is known at attribute creation time.")
     private Serializable value;
 
     /**
@@ -124,7 +111,8 @@ public class AttributeCallbackMapping {
      * @param to - {@link AttributeCallbackMapping#to}
      * @param targets - Set of {@link AttributeValueTarget}
      */
-    public AttributeCallbackMapping(String from, AttributeType attributeType, String to, Set<AttributeValueTarget> targets) {
+    public AttributeCallbackMapping(String from, AttributeType attributeType, String to,
+            Set<AttributeValueTarget> targets) {
         this.from = from;
         this.to = to;
         this.attributeType = attributeType;

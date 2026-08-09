@@ -19,7 +19,8 @@ class CertificateOperationStatusResponseDtoTest {
         String json = mapper.writeValueAsString(dto);
         assertTrue(json.contains("\"status\":\"inProgress\""),
                 "expected status code 'inProgress' in JSON, got: " + json);
-        // certificateData/reason are null and should serialize as null (default Jackson) — they're not omitted but explicit nulls are acceptable
+        // certificateData/reason are null and should serialize as null (default Jackson) — they're not omitted but
+        // explicit nulls are acceptable
     }
 
     @Test
@@ -44,9 +45,8 @@ class CertificateOperationStatusResponseDtoTest {
 
     @Test
     void deserializesInProgressFromMinimalJson() throws Exception {
-        CertificateOperationStatusResponseDto dto = mapper.readValue(
-                "{\"status\":\"inProgress\"}",
-                CertificateOperationStatusResponseDto.class);
+        CertificateOperationStatusResponseDto dto = mapper
+                .readValue("{\"status\":\"inProgress\"}", CertificateOperationStatusResponseDto.class);
         assertEquals(CertificateOperationStatus.IN_PROGRESS, dto.getStatus());
         assertNull(dto.getCertificateData());
         assertNull(dto.getReason());
@@ -58,9 +58,7 @@ class CertificateOperationStatusResponseDtoTest {
         dto.setStatus(CertificateOperationStatus.COMPLETED);
         dto.setCertificateData("BASE64DATA==");
         String s = dto.toString();
-        assertTrue(s.contains("<present>"),
-                "toString should not leak cert content; got: " + s);
-        assertFalse(s.contains("BASE64DATA"),
-                "toString should not leak cert content; got: " + s);
+        assertTrue(s.contains("<present>"), "toString should not leak cert content; got: " + s);
+        assertFalse(s.contains("BASE64DATA"), "toString should not leak cert content; got: " + s);
     }
 }

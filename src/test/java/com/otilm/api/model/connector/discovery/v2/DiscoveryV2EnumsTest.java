@@ -5,9 +5,8 @@ import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.client.connector.v2.ConnectorInterface;
 import com.otilm.api.model.client.connector.v2.FeatureFlag;
 import com.otilm.api.model.core.discovery.DiscoveryStatus;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,10 +33,10 @@ class DiscoveryV2EnumsTest {
     }
 
     /**
-     * {@code DiscoveryEventType.Codes} exists only because {@code @JsonSubTypes.Type(name = ...)}
-     * on {@link DiscoveryEvent} needs a compile-time constant. Should the enum's {@code code} drift
-     * from the {@code Codes} constant, the drift would be silent: Jackson would still resolve a
-     * subtype, only under a code the enum itself does not recognize.
+     * {@code DiscoveryEventType.Codes} exists only because {@code @JsonSubTypes.Type(name = ...)} on
+     * {@link DiscoveryEvent} needs a compile-time constant. Should the enum's {@code code} drift from the {@code Codes}
+     * constant, the drift would be silent: Jackson would still resolve a subtype, only under a code the enum itself
+     * does not recognize.
      */
     @Test
     void eventTypeCodeMatchesJsonSubTypesConstant() {
@@ -51,7 +50,8 @@ class DiscoveryV2EnumsTest {
     @Test
     void resourceCapabilitySerializesToCode() throws Exception {
         assertEquals("\"stopResume\"", mapper.writeValueAsString(DiscoveryResourceCapability.STOP_RESUME));
-        assertEquals(DiscoveryResourceCapability.STOP_RESUME, mapper.readValue("\"stopResume\"", DiscoveryResourceCapability.class));
+        assertEquals(DiscoveryResourceCapability.STOP_RESUME,
+                mapper.readValue("\"stopResume\"", DiscoveryResourceCapability.class));
     }
 
     @Test
@@ -89,7 +89,9 @@ class DiscoveryV2EnumsTest {
             assertNotNull(flag, "capability " + capability + " has no mapped FeatureFlag");
             assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, flag.getBehavior(),
                     "capability " + capability + " maps to a non-ENFORCED flag " + flag);
-            assertTrue(flag.getApplicableInterfaces() != null && flag.getApplicableInterfaces().contains(ConnectorInterface.DISCOVERY),
+            assertTrue(
+                    flag.getApplicableInterfaces() != null
+                            && flag.getApplicableInterfaces().contains(ConnectorInterface.DISCOVERY),
                     "capability " + capability + " maps to a flag not scoped to the discovery interface: " + flag);
         }
     }

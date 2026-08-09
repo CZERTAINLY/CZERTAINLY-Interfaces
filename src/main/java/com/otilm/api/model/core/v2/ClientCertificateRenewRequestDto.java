@@ -21,21 +21,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class ClientCertificateRenewRequestDto {
 
-    @Schema(
-            description = "True to replace renewed certificate in the associated locations",
-            defaultValue = "false"
-    )
+    @Schema(description = "True to replace renewed certificate in the associated locations", defaultValue = "false")
     private boolean replaceInLocations;
 
-    @Schema(
-            description = "Certificate signing request encoded as Base64 string. If not provided, Existing CSR will be used"
-    )
+    @Schema(description = "Certificate signing request encoded as Base64 string. If not provided, Existing CSR will be used")
     private String request;
 
-    @Schema(
-            description = "Certificate signing request format",
-            defaultValue = "pkcs10"
-    )
+    @Schema(description = "Certificate signing request format", defaultValue = "pkcs10")
     @Builder.Default
     private CertificateRequestFormat format = CertificateRequestFormat.PKCS10;
 
@@ -44,11 +36,8 @@ public class ClientCertificateRenewRequestDto {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(
-            description = "One-time authorization secret for renewing a certificate that has an active "
-                    + "registration. Write-only; ignored for certificates without one.",
-            accessMode = Schema.AccessMode.WRITE_ONLY
-    )
+    @Schema(description = "One-time authorization secret for renewing a certificate that has an active "
+            + "registration. Write-only; ignored for certificates without one.", accessMode = Schema.AccessMode.WRITE_ONLY)
     private String authorizationSecret;
 
     // Deliberate allowlist — avoid leaking CSR/request or secrets via logs.
@@ -63,8 +52,8 @@ public class ClientCertificateRenewRequestDto {
     /**
      * Partial builder declaration; Lombok fills in the rest. Declared only to replace the generated builder
      * {@code toString()}, which would otherwise print every builder field — including the write-only
-     * {@code authorizationSecret} and the CSR payload, which the DTO's own allowlisted {@code toString()}
-     * deliberately omits.
+     * {@code authorizationSecret} and the CSR payload, which the DTO's own allowlisted {@code toString()} deliberately
+     * omits.
      */
     public static class ClientCertificateRenewRequestDtoBuilder {
         @Override

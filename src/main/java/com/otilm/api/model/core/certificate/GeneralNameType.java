@@ -1,13 +1,12 @@
 package com.otilm.api.model.core.certificate;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Arrays;
 import lombok.Getter;
 import org.bouncycastle.asn1.x509.GeneralName;
-
-import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum GeneralNameType implements IPlatformEnum {
@@ -42,17 +41,24 @@ public enum GeneralNameType implements IPlatformEnum {
 
     @Override
     @JsonValue
-    public String getCode() { return code; }
+    public String getCode() {
+        return code;
+    }
 
     @Override
-    public String getLabel() { return label; }
+    public String getLabel() {
+        return label;
+    }
 
     @Override
-    public String getDescription() { return null; }
+    public String getDescription() {
+        return null;
+    }
 
     @JsonCreator
     public static GeneralNameType fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(v -> v.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unknown GeneralNameType code: " + code));

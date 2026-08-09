@@ -3,9 +3,12 @@ package com.otilm.api.model.client.cryptography.tokenprofile;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.cryptography.key.KeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class representing RA profile registration request
@@ -17,36 +20,21 @@ import java.util.List;
 @ToString
 public class AddTokenProfileRequestDto {
 
-    @Schema(
-            description = "Token Profile name",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Token Profile name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(
-            description = "Token Profile description"
-    )
+    @Schema(description = "Token Profile description")
     private String description;
 
-    @Schema(
-            description = "List of Attributes to create Token Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "List of Attributes to create Token Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
-    @Schema(
-            description = "List of Custom Attributes"
-    )
+    @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
-    @Schema(
-            description = "Enabled flag - true = enabled; false = disabled",
-            defaultValue = "false"
-    )
+    @Schema(description = "Enabled flag - true = enabled; false = disabled", defaultValue = "false")
     private boolean enabled;
 
-    @Schema(
-            description = "Usages for the Key"
-    )
+    @Schema(description = "Usages for the Key")
     private List<KeyUsage> usage;
 }

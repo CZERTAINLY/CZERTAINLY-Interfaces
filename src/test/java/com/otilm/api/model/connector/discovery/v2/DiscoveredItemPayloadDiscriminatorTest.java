@@ -8,10 +8,9 @@ import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -21,13 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * A payload's {@code resource} is its own discriminator, so it must not be independently writable:
- * a settable discriminator lets Java code serialize an object whose declared shape and declared
- * resource contradict each other, and the receiver then only notices by accident, when the subtype
- * the wire value resolved to turns out to be missing its own required fields.
+ * A payload's {@code resource} is its own discriminator, so it must not be independently writable: a settable
+ * discriminator lets Java code serialize an object whose declared shape and declared resource contradict each other,
+ * and the receiver then only notices by accident, when the subtype the wire value resolved to turns out to be missing
+ * its own required fields.
  *
- * <p>Fixing the field to its subtype's constant only works if Jackson can still resolve and emit it
- * without a mutator, so both directions are pinned here rather than assumed.
+ * <p>
+ * Fixing the field to its subtype's constant only works if Jackson can still resolve and emit it without a mutator, so
+ * both directions are pinned here rather than assumed.
  */
 class DiscoveredItemPayloadDiscriminatorTest {
 
@@ -38,8 +38,7 @@ class DiscoveredItemPayloadDiscriminatorTest {
         assertThrows(NoSuchMethodException.class,
                 () -> DiscoveredCertificateDto.class.getMethod("setResource", Resource.class),
                 "a certificate payload must not be able to relabel itself as another resource");
-        assertThrows(NoSuchMethodException.class,
-                () -> DiscoveredKeyDto.class.getMethod("setResource", Resource.class),
+        assertThrows(NoSuchMethodException.class, () -> DiscoveredKeyDto.class.getMethod("setResource", Resource.class),
                 "a key payload must not be able to relabel itself as another resource");
     }
 
@@ -74,16 +73,16 @@ class DiscoveredItemPayloadDiscriminatorTest {
 
     @Test
     void polymorphicDeserializationStillResolvesBothSubtypesFromTheWireValue() throws Exception {
-        DiscoveredItemPayloadDto cert = mapper.readValue(
-                "{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"}",
-                DiscoveredItemPayloadDto.class);
+        DiscoveredItemPayloadDto cert = mapper
+                .readValue("{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"}",
+                        DiscoveredItemPayloadDto.class);
         DiscoveredCertificateDto certPayload = assertInstanceOf(DiscoveredCertificateDto.class, cert);
         assertEquals(Resource.CERTIFICATE, certPayload.getResource());
         assertEquals("Y2VydC1kYXRh", certPayload.getCertificateData());
 
-        DiscoveredItemPayloadDto key = mapper.readValue(
-                "{\"resource\":\"keys\",\"type\":\"Public\",\"algorithm\":\"RSA\"}",
-                DiscoveredItemPayloadDto.class);
+        DiscoveredItemPayloadDto key = mapper
+                .readValue("{\"resource\":\"keys\",\"type\":\"Public\",\"algorithm\":\"RSA\"}",
+                        DiscoveredItemPayloadDto.class);
         DiscoveredKeyDto keyPayload = assertInstanceOf(DiscoveredKeyDto.class, key);
         assertEquals(Resource.CRYPTOGRAPHIC_KEY, keyPayload.getResource());
         assertEquals(KeyType.PUBLIC_KEY, keyPayload.getType());
@@ -94,27 +93,24 @@ class DiscoveredItemPayloadDiscriminatorTest {
         DiscoveredCertificateDto cert = new DiscoveredCertificateDto();
         cert.setCertificateData("Y2VydC1kYXRh");
 
-        DiscoveredItemPayloadDto certBack =
-                mapper.readValue(mapper.writeValueAsString(cert), DiscoveredItemPayloadDto.class);
-        assertEquals(Resource.CERTIFICATE,
-                assertInstanceOf(DiscoveredCertificateDto.class, certBack).getResource());
+        DiscoveredItemPayloadDto certBack = mapper
+                .readValue(mapper.writeValueAsString(cert), DiscoveredItemPayloadDto.class);
+        assertEquals(Resource.CERTIFICATE, assertInstanceOf(DiscoveredCertificateDto.class, certBack).getResource());
 
         DiscoveredKeyDto key = new DiscoveredKeyDto();
         key.setType(KeyType.PUBLIC_KEY);
         key.setAlgorithm(KeyAlgorithm.RSA);
 
-        DiscoveredItemPayloadDto keyBack =
-                mapper.readValue(mapper.writeValueAsString(key), DiscoveredItemPayloadDto.class);
-        assertEquals(Resource.CRYPTOGRAPHIC_KEY,
-                assertInstanceOf(DiscoveredKeyDto.class, keyBack).getResource());
+        DiscoveredItemPayloadDto keyBack = mapper
+                .readValue(mapper.writeValueAsString(key), DiscoveredItemPayloadDto.class);
+        assertEquals(Resource.CRYPTOGRAPHIC_KEY, assertInstanceOf(DiscoveredKeyDto.class, keyBack).getResource());
     }
 
     /**
-     * A property with a getter and no setter is the shape swagger-core publishes as
-     * {@code readOnly}, which would tell every generator the discriminator must not be sent in a
-     * request body. It resolves through the base interface's own accessor here, so it does not - but
-     * that is a fact about the generator, not about this contract, so it is pinned rather than
-     * trusted.
+     * A property with a getter and no setter is the shape swagger-core publishes as {@code readOnly}, which would tell
+     * every generator the discriminator must not be sent in a request body. It resolves through the base interface's
+     * own accessor here, so it does not - but that is a fact about the generator, not about this contract, so it is
+     * pinned rather than trusted.
      */
     @Test
     void theDiscriminatorStaysRequiredAndWritableInTheGeneratedSchema() {
@@ -134,30 +130,31 @@ class DiscoveredItemPayloadDiscriminatorTest {
     }
 
     /**
-     * Reading a concrete subtype still goes through the discriminator the interface declares, so a
-     * wire value naming the other subtype is rejected outright rather than quietly relabeling the
-     * object. The matching value binds normally and leaves the constant intact.
+     * Reading a concrete subtype still goes through the discriminator the interface declares, so a wire value naming
+     * the other subtype is rejected outright rather than quietly relabeling the object. The matching value binds
+     * normally and leaves the constant intact.
      */
     @Test
     void aConcreteSubtypeRejectsAContradictingWireValueAndAcceptsItsOwn() throws Exception {
-        assertThrows(InvalidTypeIdException.class, () -> mapper.readValue(
-                        "{\"resource\":\"keys\",\"certificateData\":\"Y2VydC1kYXRh\"}",
-                        DiscoveredCertificateDto.class),
+        assertThrows(InvalidTypeIdException.class,
+                () -> mapper
+                        .readValue("{\"resource\":\"keys\",\"certificateData\":\"Y2VydC1kYXRh\"}",
+                                DiscoveredCertificateDto.class),
                 "resource: keys cannot resolve to a certificate payload");
-        assertThrows(InvalidTypeIdException.class, () -> mapper.readValue(
-                        "{\"resource\":\"certificates\",\"type\":\"Public\",\"algorithm\":\"RSA\"}",
-                        DiscoveredKeyDto.class),
+        assertThrows(InvalidTypeIdException.class,
+                () -> mapper
+                        .readValue("{\"resource\":\"certificates\",\"type\":\"Public\",\"algorithm\":\"RSA\"}",
+                                DiscoveredKeyDto.class),
                 "resource: certificates cannot resolve to a key payload");
 
-        DiscoveredCertificateDto cert = mapper.readValue(
-                "{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"}",
-                DiscoveredCertificateDto.class);
+        DiscoveredCertificateDto cert = mapper
+                .readValue("{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"}",
+                        DiscoveredCertificateDto.class);
         assertEquals(Resource.CERTIFICATE, cert.getResource());
         assertEquals("Y2VydC1kYXRh", cert.getCertificateData());
 
-        DiscoveredKeyDto key = mapper.readValue(
-                "{\"resource\":\"keys\",\"type\":\"Public\",\"algorithm\":\"RSA\"}",
-                DiscoveredKeyDto.class);
+        DiscoveredKeyDto key = mapper
+                .readValue("{\"resource\":\"keys\",\"type\":\"Public\",\"algorithm\":\"RSA\"}", DiscoveredKeyDto.class);
         assertEquals(Resource.CRYPTOGRAPHIC_KEY, key.getResource());
         assertEquals(KeyType.PUBLIC_KEY, key.getType());
     }

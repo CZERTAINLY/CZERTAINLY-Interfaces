@@ -6,12 +6,11 @@ import com.otilm.api.model.common.attribute.common.AttributeVersion;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.v2.content.BaseAttributeContentV2;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

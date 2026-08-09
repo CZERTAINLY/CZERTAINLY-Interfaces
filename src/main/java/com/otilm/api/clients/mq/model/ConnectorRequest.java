@@ -1,14 +1,18 @@
 package com.otilm.api.clients.mq.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.io.Serializable;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * HTTP request details for proxy to forward to the connector.
- * This structure is passed within CoreMessage to specify the actual HTTP call.
+ * HTTP request details for proxy to forward to the connector. This structure is passed within CoreMessage to specify
+ * the actual HTTP call.
  */
 @Getter
 @Setter
@@ -18,27 +22,23 @@ import java.util.Map;
 @Builder
 public class ConnectorRequest implements Serializable {
 
-    @Schema(description = "Base URL of the connector",
-            examples = {"https://connector.example.com"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base URL of the connector", examples = {
+            "https://connector.example.com"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUrl;
 
-    @Schema(description = "HTTP method",
-            examples = {"GET", "POST", "PUT", "DELETE", "PATCH"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "HTTP method", examples = {"GET", "POST", "PUT", "DELETE",
+            "PATCH"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String method;
 
-    @Schema(description = "Request path (relative to connectorUrl)",
-            examples = {"/v1/health", "/v1/authorityProvider/authorities/{uuid}"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Request path (relative to connectorUrl)", examples = {"/v1/health",
+            "/v1/authorityProvider/authorities/{uuid}"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String path;
 
-    @Schema(description = "Authentication configuration for the connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Authentication configuration for the connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorAuth connectorAuth;
 
-    @Schema(description = "Path variables for URL substitution. " +
-            "Variables in path like {uuid} will be replaced with values from this map")
+    @Schema(description = "Path variables for URL substitution. "
+            + "Variables in path like {uuid} will be replaced with values from this map")
     private Map<String, String> pathVariables;
 
     @Schema(description = "Additional HTTP headers to include in the request")
@@ -48,9 +48,8 @@ public class ConnectorRequest implements Serializable {
     @Schema(description = "Request body (JSON object)")
     private Object body;
 
-    @Schema(description = "Request timeout in Go duration format",
-            examples = {"30s", "1m", "500ms"},
-            defaultValue = "30s")
+    @Schema(description = "Request timeout in Go duration format", examples = {"30s", "1m",
+            "500ms"}, defaultValue = "30s")
     private String timeout;
 
     @Schema(description = "Retry policy configuration")
@@ -77,8 +76,7 @@ public class ConnectorRequest implements Serializable {
         @Schema(description = "Maximum number of retry attempts", defaultValue = "1")
         private int maxRetries;
 
-        @Schema(description = "Conditions that trigger retry",
-                examples = {"5xx", "timeout", "connection_error"})
+        @Schema(description = "Conditions that trigger retry", examples = {"5xx", "timeout", "connection_error"})
         private String[] retryOn;
     }
 

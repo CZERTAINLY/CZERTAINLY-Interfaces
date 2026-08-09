@@ -7,21 +7,29 @@ import com.otilm.api.exception.ValidationException;
 import com.otilm.api.interfaces.client.v2.CertificateSyncApiClient;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
-import com.otilm.api.model.connector.v2.*;
-import org.springframework.http.ResponseEntity;
-
+import com.otilm.api.model.connector.v2.CertRevocationDto;
+import com.otilm.api.model.connector.v2.CertificateDataResponseDto;
+import com.otilm.api.model.connector.v2.CertificateIdentificationRequestDto;
+import com.otilm.api.model.connector.v2.CertificateIdentificationResponseDto;
+import com.otilm.api.model.connector.v2.CertificateOperationCancelRequestDto;
+import com.otilm.api.model.connector.v2.CertificateOperationStatusRequestDto;
+import com.otilm.api.model.connector.v2.CertificateOperationStatusResponseDto;
+import com.otilm.api.model.connector.v2.CertificateRenewRequestDto;
+import com.otilm.api.model.connector.v2.CertificateSignRequestDto;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import org.springframework.http.ResponseEntity;
 
 /**
  * MQ-based implementation of v2 Certificate API client.
  *
- * <p>The path constants below are part of the v2 connector API contract — they describe
- * the routes a connector implementation must expose, not URIs that are configurable per
- * environment. This is the same pattern as the sibling WebClient-based
- * {@link com.otilm.api.clients.v2.CertificateApiClient}, where paths like
- * {@code /v2/authorityProvider/authorities/{uuid}/certificates/issue} are also hardcoded.</p>
+ * <p>
+ * The path constants below are part of the v2 connector API contract — they describe the routes a connector
+ * implementation must expose, not URIs that are configurable per environment. This is the same pattern as the sibling
+ * WebClient-based {@link com.otilm.api.clients.v2.CertificateApiClient}, where paths like
+ * {@code /v2/authorityProvider/authorities/{uuid}/certificates/issue} are also hardcoded.
+ * </p>
  */
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class CertificateApiClient implements CertificateSyncApiClient {
@@ -55,47 +63,56 @@ public class CertificateApiClient implements CertificateSyncApiClient {
     }
 
     @Override
-    public List<BaseAttribute> listIssueCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid) throws ConnectorException {
+    public List<BaseAttribute> listIssueCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid)
+            throws ConnectorException {
         String path = authorityPath(authorityUuid, PATH_ISSUE_ATTRIBUTES);
         BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public Boolean validateIssueCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateIssueCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = authorityPath(authorityUuid, PATH_ISSUE_ATTRIBUTES_VALIDATE);
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Boolean.class);
     }
 
     @Override
-    public ResponseEntity<CertificateDataResponseDto> issueCertificate(ApiClientConnectorInfo connector, String authorityUuid, CertificateSignRequestDto requestDto) throws ConnectorException {
+    public ResponseEntity<CertificateDataResponseDto> issueCertificate(ApiClientConnectorInfo connector,
+            String authorityUuid, CertificateSignRequestDto requestDto) throws ConnectorException {
         String path = authorityPath(authorityUuid, PATH_ISSUE);
         // sendRequestForEntity preserves the upstream HTTP status so 202 Accepted is not
         // collapsed to 200 OK by the proxy hop — required for asynchronous-issuance detection.
-        return proxyClient.sendRequestForEntity(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+        return proxyClient
+                .sendRequestForEntity(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
     }
 
     @Override
-    public ResponseEntity<CertificateDataResponseDto> renewCertificate(ApiClientConnectorInfo connector, String authorityUuid, CertificateRenewRequestDto requestDto) throws ConnectorException {
+    public ResponseEntity<CertificateDataResponseDto> renewCertificate(ApiClientConnectorInfo connector,
+            String authorityUuid, CertificateRenewRequestDto requestDto) throws ConnectorException {
         String path = authorityPath(authorityUuid, PATH_RENEW);
-        return proxyClient.sendRequestForEntity(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+        return proxyClient
+                .sendRequestForEntity(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
     }
 
     @Override
-    public List<BaseAttribute> listRevokeCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid) throws ConnectorException {
+    public List<BaseAttribute> listRevokeCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid)
+            throws ConnectorException {
         String path = authorityPath(authorityUuid, PATH_REVOKE_ATTRIBUTES);
         BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public Boolean validateRevokeCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateRevokeCertificateAttributes(ApiClientConnectorInfo connector, String authorityUuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = authorityPath(authorityUuid, PATH_REVOKE_ATTRIBUTES_VALIDATE);
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Boolean.class);
     }
 
     @Override
-    public ResponseEntity<Void> revokeCertificate(ApiClientConnectorInfo connector, String authorityUuid, CertRevocationDto requestDto) throws ConnectorException {
+    public ResponseEntity<Void> revokeCertificate(ApiClientConnectorInfo connector, String authorityUuid,
+            CertRevocationDto requestDto) throws ConnectorException {
         String path = authorityPath(authorityUuid, PATH_REVOKE);
         // Preserve the upstream HTTP status so 202 Accepted (asynchronous revoke) is not
         // collapsed to 200 OK. The body is empty for revoke regardless of status — only
@@ -104,43 +121,58 @@ public class CertificateApiClient implements CertificateSyncApiClient {
     }
 
     @Override
-    public CertificateIdentificationResponseDto identifyCertificate(ApiClientConnectorInfo connector, String authorityUuid, CertificateIdentificationRequestDto requestDto) throws ValidationException, ConnectorException {
+    public CertificateIdentificationResponseDto identifyCertificate(ApiClientConnectorInfo connector,
+            String authorityUuid, CertificateIdentificationRequestDto requestDto)
+            throws ValidationException, ConnectorException {
         String path = authorityPath(authorityUuid, PATH_IDENTIFY);
-        return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, CertificateIdentificationResponseDto.class);
+        return proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_POST, requestDto, CertificateIdentificationResponseDto.class);
     }
 
     @Override
-    public void cancelIssueCertificate(ApiClientConnectorInfo connector, String authorityUuid, CertificateOperationCancelRequestDto requestDto) throws ValidationException, ConnectorException {
+    public void cancelIssueCertificate(ApiClientConnectorInfo connector, String authorityUuid,
+            CertificateOperationCancelRequestDto requestDto) throws ValidationException, ConnectorException {
         String path = authorityPath(authorityUuid, PATH_ISSUE_CANCEL);
         proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, Void.class);
     }
 
     @Override
-    public void cancelRevokeCertificate(ApiClientConnectorInfo connector, String authorityUuid, CertificateOperationCancelRequestDto requestDto) throws ValidationException, ConnectorException {
+    public void cancelRevokeCertificate(ApiClientConnectorInfo connector, String authorityUuid,
+            CertificateOperationCancelRequestDto requestDto) throws ValidationException, ConnectorException {
         String path = authorityPath(authorityUuid, PATH_REVOKE_CANCEL);
         proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, Void.class);
     }
 
     @Override
-    public CertificateOperationStatusResponseDto getIssueCertificateStatus(ApiClientConnectorInfo connector, String authorityUuid, CertificateOperationStatusRequestDto requestDto) throws ConnectorException {
+    public CertificateOperationStatusResponseDto getIssueCertificateStatus(ApiClientConnectorInfo connector,
+            String authorityUuid, CertificateOperationStatusRequestDto requestDto) throws ConnectorException {
         String path = authorityPath(authorityUuid, PATH_ISSUE_STATUS);
-        return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, CertificateOperationStatusResponseDto.class);
+        return proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_POST, requestDto,
+                        CertificateOperationStatusResponseDto.class);
     }
 
     @Override
-    public CertificateOperationStatusResponseDto getRevokeCertificateStatus(ApiClientConnectorInfo connector, String authorityUuid, CertificateOperationStatusRequestDto requestDto) throws ConnectorException {
+    public CertificateOperationStatusResponseDto getRevokeCertificateStatus(ApiClientConnectorInfo connector,
+            String authorityUuid, CertificateOperationStatusRequestDto requestDto) throws ConnectorException {
         String path = authorityPath(authorityUuid, PATH_REVOKE_STATUS);
-        return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, CertificateOperationStatusResponseDto.class);
+        return proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_POST, requestDto,
+                        CertificateOperationStatusResponseDto.class);
     }
 
     // Async variants
-    public CompletableFuture<CertificateDataResponseDto> issueCertificateAsync(ApiClientConnectorInfo connector, String authorityUuid, CertificateSignRequestDto requestDto) {
+    public CompletableFuture<CertificateDataResponseDto> issueCertificateAsync(ApiClientConnectorInfo connector,
+            String authorityUuid, CertificateSignRequestDto requestDto) {
         String path = authorityPath(authorityUuid, PATH_ISSUE);
-        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+        return proxyClient
+                .sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
     }
 
-    public CompletableFuture<CertificateDataResponseDto> renewCertificateAsync(ApiClientConnectorInfo connector, String authorityUuid, CertificateRenewRequestDto requestDto) {
+    public CompletableFuture<CertificateDataResponseDto> renewCertificateAsync(ApiClientConnectorInfo connector,
+            String authorityUuid, CertificateRenewRequestDto requestDto) {
         String path = authorityPath(authorityUuid, PATH_RENEW);
-        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
+        return proxyClient
+                .sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, CertificateDataResponseDto.class);
     }
 }

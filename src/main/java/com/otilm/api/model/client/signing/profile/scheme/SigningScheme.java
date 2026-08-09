@@ -1,26 +1,23 @@
 package com.otilm.api.model.client.signing.profile.scheme;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 /**
- * Signing Scheme defines the overall approach to signing, which can be either managed by ILM or delegated to an external service.
- * In addition, a managed signing scheme distinguishes between two types of signing:
- * 1. Signing by a static key pair
- * 2. Signing by a one-time key pair
+ * Signing Scheme defines the overall approach to signing, which can be either managed by ILM or delegated to an
+ * external service. In addition, a managed signing scheme distinguishes between two types of signing: 1. Signing by a
+ * static key pair 2. Signing by a one-time key pair
  */
 @Schema(enumAsRef = true)
 public enum SigningScheme implements IPlatformEnum {
 
-    MANAGED(Codes.MANAGED, "Managed Signing", "ILM manages the signing workflow"),
-    DELEGATED(Codes.DELEGATED, "Delegated Signing", "ILM delegates the signing to an external signing service")
-    ;
+    MANAGED(Codes.MANAGED, "Managed Signing", "ILM manages the signing workflow"), DELEGATED(Codes.DELEGATED,
+            "Delegated Signing", "ILM delegates the signing to an external signing service");
 
     private static final SigningScheme[] VALUES;
 
@@ -40,11 +37,11 @@ public enum SigningScheme implements IPlatformEnum {
 
     @JsonCreator
     public static SigningScheme findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown signing scheme {}", code)));
+                .orElseThrow(() -> new ValidationException(ValidationError.create("Unknown signing scheme {}", code)));
     }
 
     @Override

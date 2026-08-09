@@ -8,9 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Setter
-@Schema(
-        description = "RegExp attribute constraint to restrict string value by regular expression",
-        type = "object")
+@Schema(description = "RegExp attribute constraint to restrict string value by regular expression", type = "object")
 public class RegexpAttributeConstraint extends BaseAttributeConstraint<String> {
 
     @Schema(description = "Regular Expression Attribute Constraint Data")
@@ -27,8 +25,6 @@ public class RegexpAttributeConstraint extends BaseAttributeConstraint<String> {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("data", data)
-                .toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("data", data).toString();
     }
 }

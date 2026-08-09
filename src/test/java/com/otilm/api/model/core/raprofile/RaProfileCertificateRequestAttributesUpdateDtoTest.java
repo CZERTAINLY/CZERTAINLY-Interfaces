@@ -1,11 +1,10 @@
 package com.otilm.api.model.core.raprofile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.mapping.ValueSourceType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static com.otilm.util.builders.DataAttributeV3Builder.aDataAttribute;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,14 +23,15 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
         var secondAttributeName = "organization";
         var dto = new RaProfileCertificateRequestAttributesUpdateDto();
         dto.setMergeMode(AttributeSetMergeMode.STATIC_ONLY);
-        dto.setRequestAttributes(List.of(
-                aDataAttribute().withUuid("u1").withName(firstAttributeName).build(),
-                aDataAttribute().withUuid("u2").withName(secondAttributeName).build()));
+        dto
+                .setRequestAttributes(List
+                        .of(aDataAttribute().withUuid("u1").withName(firstAttributeName).build(),
+                                aDataAttribute().withUuid("u2").withName(secondAttributeName).build()));
 
         // when
         var json = mapper.writeValueAsString(dto);
-        RaProfileCertificateRequestAttributesUpdateDto back =
-                mapper.readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
+        RaProfileCertificateRequestAttributesUpdateDto back = mapper
+                .readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
 
         // then
         assertEquals(AttributeSetMergeMode.STATIC_ONLY, back.getMergeMode());
@@ -54,8 +54,8 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
 
         // when
         var json = mapper.writeValueAsString(dto);
-        RaProfileCertificateRequestAttributesUpdateDto back =
-                mapper.readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
+        RaProfileCertificateRequestAttributesUpdateDto back = mapper
+                .readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
 
         // since it is hidden, it should not return it
         // then — valueSourceBindings is hidden from JSON and strictness still round-trips
@@ -82,9 +82,7 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
     void acceptsDistinctBindingTargets() {
         // given — two bindings targeting different attributes
         var dto = new RaProfileCertificateRequestAttributesUpdateDto();
-        dto.setValueSourceBindings(List.of(
-                bindingByUuid("u1"),
-                bindingByName("organization")));
+        dto.setValueSourceBindings(List.of(bindingByUuid("u1"), bindingByName("organization")));
 
         // when / then
         assertTrue(dto.isValueSourceBindingsUnique());
@@ -94,9 +92,7 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
     void rejectsDuplicateBindingTargetByUuid() {
         // given — two bindings targeting the same attribute UUID
         var dto = new RaProfileCertificateRequestAttributesUpdateDto();
-        dto.setValueSourceBindings(List.of(
-                bindingByUuid("u1"),
-                bindingByUuid("u1")));
+        dto.setValueSourceBindings(List.of(bindingByUuid("u1"), bindingByUuid("u1")));
 
         // when / then
         assertFalse(dto.isValueSourceBindingsUnique());
@@ -106,9 +102,7 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
     void rejectsDuplicateBindingTargetByName() {
         // given — two bindings targeting the same attribute name
         var dto = new RaProfileCertificateRequestAttributesUpdateDto();
-        dto.setValueSourceBindings(List.of(
-                bindingByName("server"),
-                bindingByName("server")));
+        dto.setValueSourceBindings(List.of(bindingByName("server"), bindingByName("server")));
 
         // when / then
         assertFalse(dto.isValueSourceBindingsUnique());

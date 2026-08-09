@@ -12,7 +12,8 @@ public class MaxClockDriftValidator implements ConstraintValidator<ValidMaxClock
         }
         if (value.getMaxClockDrift().compareTo(value.getAccuracy()) >= 0) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+            context
+                    .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
                     .addPropertyNode("maxClockDrift")
                     .addConstraintViolation();
             return false;

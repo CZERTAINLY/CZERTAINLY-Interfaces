@@ -4,9 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
-@Schema(
-        description = "Integer attribute content for integer numbers",
-        type = "object")
+@Schema(description = "Integer attribute content for integer numbers", type = "object")
 public class IntegerAttributeContentV2 extends BaseAttributeContentV2<Integer> {
 
     @Schema(description = "Integer attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -36,9 +34,15 @@ public class IntegerAttributeContentV2 extends BaseAttributeContentV2<Integer> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof IntegerAttributeContentV2 that)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof IntegerAttributeContentV2 that)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         return Objects.equals(data, that.data);
     }
 

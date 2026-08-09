@@ -2,12 +2,11 @@ package com.otilm.api.model.core.notification;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,7 +23,8 @@ public class NotificationInstanceUpdateRequestDto {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("attributes", attributes)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("attributes", attributes)
                 .append("attributeMappings", attributeMappings)
                 .toString();
     }

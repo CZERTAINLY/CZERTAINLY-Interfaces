@@ -1,22 +1,45 @@
 package com.otilm.api.model.common.attribute.common.content;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.model.common.attribute.common.content.data.CodeBlockAttributeContentData;
 import com.otilm.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
 import com.otilm.api.model.common.attribute.common.content.data.FileAttributeContentData;
 import com.otilm.api.model.common.attribute.common.content.data.SecretAttributeContentData;
-import com.otilm.api.model.common.attribute.v2.content.*;
-import com.otilm.api.model.common.attribute.v3.content.*;
+import com.otilm.api.model.common.attribute.v2.content.BaseAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.BooleanAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.CodeBlockAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.CredentialAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.DateAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.DateTimeAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.FloatAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.IntegerAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.ObjectAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.TextAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.TimeAttributeContentV2;
+import com.otilm.api.model.common.attribute.v3.content.BooleanAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.CodeBlockAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.DateAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.DateTimeAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.FileAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.FloatAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.IntegerAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.ObjectAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.ResourceObjectContent;
+import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.TextAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.content.TimeAttributeContentV3;
 import com.otilm.api.model.common.attribute.v3.content.data.ResourceObjectContentData;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import lombok.Getter;
 
 /**
  * This class defines Attribute Content types.
@@ -24,21 +47,50 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeContentType implements IPlatformEnum {
 
-    STRING(Codes.STRING, "String", StringAttributeContentV2.class, StringAttributeContentV3.class, String.class, true),
-    TEXT(Codes.TEXT, "Text", TextAttributeContentV2.class, TextAttributeContentV3.class, String.class, true),
-    INTEGER(Codes.INTEGER, "Integer number", IntegerAttributeContentV2.class, IntegerAttributeContentV3.class, Integer.class, true),
-    BOOLEAN(Codes.BOOLEAN, "Boolean", BooleanAttributeContentV2.class, BooleanAttributeContentV3.class, Boolean.class, true),
-    FLOAT(Codes.FLOAT, "Decimal number", FloatAttributeContentV2.class, FloatAttributeContentV3.class, Float.class, true),
-    DATE(Codes.DATE, "Date", DateAttributeContentV2.class, DateAttributeContentV3.class, LocalDate.class, true),
-    TIME(Codes.TIME, "Time", TimeAttributeContentV2.class, TimeAttributeContentV3.class, LocalTime.class, true),
-    DATETIME(Codes.DATETIME, "DateTime", DateTimeAttributeContentV2.class, DateTimeAttributeContentV3.class, ZonedDateTime.class, true),
-    SECRET(Codes.SECRET, "Secret", SecretAttributeContentV2.class, null, SecretAttributeContentData.class, false),
-    FILE(Codes.FILE, "File", FileAttributeContentV2.class, FileAttributeContentV3.class, FileAttributeContentData.class, false),
-    CREDENTIAL(Codes.CREDENTIAL, "Credential", CredentialAttributeContentV2.class, null, CredentialAttributeContentData.class, false),
-    CODEBLOCK(Codes.CODEBLOCK, "Code block", CodeBlockAttributeContentV2.class, CodeBlockAttributeContentV3.class, CodeBlockAttributeContentData.class, false),
-    OBJECT(Codes.OBJECT, "Object", ObjectAttributeContentV2.class, ObjectAttributeContentV3.class, Object.class, false),
-    RESOURCE(Codes.RESOURCE, "Resource Object", null, ResourceObjectContent.class, ResourceObjectContentData.class, false);
-
+    STRING(Codes.STRING, "String", StringAttributeContentV2.class, StringAttributeContentV3.class, String.class,
+            true), TEXT(Codes.TEXT, "Text", TextAttributeContentV2.class, TextAttributeContentV3.class, String.class,
+                    true), INTEGER(Codes.INTEGER, "Integer number", IntegerAttributeContentV2.class,
+                            IntegerAttributeContentV3.class, Integer.class, true), BOOLEAN(Codes.BOOLEAN, "Boolean",
+                                    BooleanAttributeContentV2.class, BooleanAttributeContentV3.class, Boolean.class,
+                                    true), FLOAT(Codes.FLOAT, "Decimal number", FloatAttributeContentV2.class,
+                                            FloatAttributeContentV3.class, Float.class, true), DATE(Codes.DATE, "Date",
+                                                    DateAttributeContentV2.class, DateAttributeContentV3.class,
+                                                    LocalDate.class, true), TIME(Codes.TIME, "Time",
+                                                            TimeAttributeContentV2.class, TimeAttributeContentV3.class,
+                                                            LocalTime.class, true), DATETIME(Codes.DATETIME, "DateTime",
+                                                                    DateTimeAttributeContentV2.class,
+                                                                    DateTimeAttributeContentV3.class,
+                                                                    ZonedDateTime.class, true), SECRET(Codes.SECRET,
+                                                                            "Secret", SecretAttributeContentV2.class,
+                                                                            null, SecretAttributeContentData.class,
+                                                                            false), FILE(Codes.FILE, "File",
+                                                                                    FileAttributeContentV2.class,
+                                                                                    FileAttributeContentV3.class,
+                                                                                    FileAttributeContentData.class,
+                                                                                    false), CREDENTIAL(Codes.CREDENTIAL,
+                                                                                            "Credential",
+                                                                                            CredentialAttributeContentV2.class,
+                                                                                            null,
+                                                                                            CredentialAttributeContentData.class,
+                                                                                            false), CODEBLOCK(
+                                                                                                    Codes.CODEBLOCK,
+                                                                                                    "Code block",
+                                                                                                    CodeBlockAttributeContentV2.class,
+                                                                                                    CodeBlockAttributeContentV3.class,
+                                                                                                    CodeBlockAttributeContentData.class,
+                                                                                                    false), OBJECT(
+                                                                                                            Codes.OBJECT,
+                                                                                                            "Object",
+                                                                                                            ObjectAttributeContentV2.class,
+                                                                                                            ObjectAttributeContentV3.class,
+                                                                                                            Object.class,
+                                                                                                            false), RESOURCE(
+                                                                                                                    Codes.RESOURCE,
+                                                                                                                    "Resource Object",
+                                                                                                                    null,
+                                                                                                                    ResourceObjectContent.class,
+                                                                                                                    ResourceObjectContentData.class,
+                                                                                                                    false);
 
     private static final AttributeContentType[] VALUES;
 
@@ -61,13 +113,13 @@ public enum AttributeContentType implements IPlatformEnum {
     @Getter
     private final boolean filterByData;
 
-
-    AttributeContentType(String code, String label, Class<?> contentV2Class, Class<?> contentV3Class, Class<?> dataJavaClass, boolean filterByData) {
+    AttributeContentType(String code, String label, Class<?> contentV2Class, Class<?> contentV3Class,
+            Class<?> dataJavaClass, boolean filterByData) {
         this(code, label, null, contentV2Class, contentV3Class, dataJavaClass, filterByData);
     }
 
     AttributeContentType(String code, String label, String description, Class<?> contentV2Class,
-                         Class<?> contentV3Class, Class<?> contentDataClass, boolean filterByData) {
+            Class<?> contentV3Class, Class<?> contentDataClass, boolean filterByData) {
         this.code = code;
         this.label = label;
         this.description = description;
@@ -79,16 +131,23 @@ public enum AttributeContentType implements IPlatformEnum {
 
     @JsonCreator
     public static AttributeContentType fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equalsIgnoreCase(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("Unsupported attribute content type %s.", code)));
     }
 
     public static AttributeContentType fromClass(Class<?> clazz) {
-        return clazz.equals(BaseAttributeContentV2.class) ? null
-                : Arrays.stream(VALUES).filter(e -> e.contentV2Class.equals(clazz))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute content type for class %s.", clazz)));
+        return clazz.equals(BaseAttributeContentV2.class)
+                ? null
+                : Arrays
+                        .stream(VALUES)
+                        .filter(e -> e.contentV2Class.equals(clazz))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                String.format("Unsupported attribute content type for class %s.", clazz)));
     }
 
     @Override
@@ -108,7 +167,6 @@ public enum AttributeContentType implements IPlatformEnum {
     }
 
     public static class Codes {
-
 
         private Codes() {
         }
@@ -183,5 +241,5 @@ public enum AttributeContentType implements IPlatformEnum {
          **/
         public static final String RESOURCE = "resource";
     }
-    
+
 }

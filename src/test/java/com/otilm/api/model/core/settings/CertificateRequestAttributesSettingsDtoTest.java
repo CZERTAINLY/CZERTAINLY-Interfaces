@@ -1,10 +1,9 @@
 package com.otilm.api.model.core.settings;
 
-import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
+import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static com.otilm.util.builders.DataAttributeV3Builder.aDataAttribute;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,8 +22,8 @@ class CertificateRequestAttributesSettingsDtoTest {
 
         // when
         var json = mapper.writeValueAsString(dto);
-        CertificateRequestAttributesSettingsDto back =
-                mapper.readValue(json, CertificateRequestAttributesSettingsDto.class);
+        CertificateRequestAttributesSettingsDto back = mapper
+                .readValue(json, CertificateRequestAttributesSettingsDto.class);
 
         // then
         assertEquals(1, back.getRequestAttributes().size());
@@ -37,14 +36,15 @@ class CertificateRequestAttributesSettingsDtoTest {
         // given
         var secondAttributeName = "country";
         var dto = new CertificateRequestAttributesSettingsUpdateDto();
-        dto.setRequestAttributes(List.of(
-                aDataAttribute().withUuid("u1").withName("common_name").build(),
-                aDataAttribute().withUuid("u2").withName(secondAttributeName).build()));
+        dto
+                .setRequestAttributes(List
+                        .of(aDataAttribute().withUuid("u1").withName("common_name").build(),
+                                aDataAttribute().withUuid("u2").withName(secondAttributeName).build()));
 
         // when
         var json = mapper.writeValueAsString(dto);
-        CertificateRequestAttributesSettingsUpdateDto back =
-                mapper.readValue(json, CertificateRequestAttributesSettingsUpdateDto.class);
+        CertificateRequestAttributesSettingsUpdateDto back = mapper
+                .readValue(json, CertificateRequestAttributesSettingsUpdateDto.class);
 
         // then
         assertEquals(2, back.getRequestAttributes().size());
@@ -55,7 +55,8 @@ class CertificateRequestAttributesSettingsDtoTest {
     void foldsIntoCertificateSettings() throws Exception {
         // given
         var requestAttributes = new CertificateRequestAttributesSettingsDto();
-        requestAttributes.setRequestAttributes(List.of(aDataAttribute().withUuid("u1").withName("common_name").build()));
+        requestAttributes
+                .setRequestAttributes(List.of(aDataAttribute().withUuid("u1").withName("common_name").build()));
         var settings = new CertificateSettingsDto();
         settings.setRequestAttributes(requestAttributes);
 

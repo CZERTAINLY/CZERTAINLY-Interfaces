@@ -1,23 +1,21 @@
 package com.otilm.api.model.core.certificate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CertificateValidationCheck implements IPlatformEnum {
-    CERTIFICATE_CHAIN("certificate_chain", "Certificate chain"),
-    SIGNATURE_VERIFICATION("signature", "Signature Verification"),
-    CERTIFICATE_VALIDITY("certificate_validity", "Certificate Validity"),
-    OCSP_VERIFICATION("ocsp_verification", "OCSP Verification"),
-    CRL_VERIFICATION("crl_verification", "CRL Verification"),
-    BASIC_CONSTRAINTS("basic_constraints", "Basic Constraints"),
-    KEY_USAGE("key_usage", "Certificate Key Usage");
+    CERTIFICATE_CHAIN("certificate_chain", "Certificate chain"), SIGNATURE_VERIFICATION("signature",
+            "Signature Verification"), CERTIFICATE_VALIDITY("certificate_validity",
+                    "Certificate Validity"), OCSP_VERIFICATION("ocsp_verification",
+                            "OCSP Verification"), CRL_VERIFICATION("crl_verification",
+                                    "CRL Verification"), BASIC_CONSTRAINTS("basic_constraints",
+                                            "Basic Constraints"), KEY_USAGE("key_usage", "Certificate Key Usage");
 
     private static final CertificateValidationCheck[] VALUES;
 
@@ -29,9 +27,8 @@ public enum CertificateValidationCheck implements IPlatformEnum {
     private final String label;
     private final String description;
 
-
     CertificateValidationCheck(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     CertificateValidationCheck(String code, String label, String description) {
@@ -58,12 +55,12 @@ public enum CertificateValidationCheck implements IPlatformEnum {
 
     @JsonCreator
     public static CertificateValidationCheck findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown certificate validation step {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown certificate validation step {}", code)));
     }
-
 
 }

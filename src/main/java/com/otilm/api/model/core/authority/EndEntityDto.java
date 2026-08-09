@@ -1,19 +1,17 @@
 package com.otilm.api.model.core.authority;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * EndEntityDTO
  */
 public class EndEntityDto {
 
-    @Schema(description = "End Entity subject domain name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity subject domain name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String subjectDN;
 
     @Schema(description = "End Entity email")
@@ -25,12 +23,10 @@ public class EndEntityDto {
     @Schema(description = "End Entity Subject alternative name")
     private String subjectAltName;
 
-    @Schema(description = "End Entity Subject domain name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity Subject domain name", requiredMode = Schema.RequiredMode.REQUIRED)
     private EndEntityStatus status;
 
-    @Schema(description = "End Entity name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     public String getSubjectDN() {

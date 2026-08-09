@@ -25,69 +25,46 @@ public class VaultApiClient implements VaultSyncApiClient {
     }
 
     @Override
-    public void checkVaultConnection(ApiClientConnectorInfo connector, List<RequestAttribute> attributes) throws ConnectorException {
-        proxyClient.sendRequest(
-                connector,
-                VAULT_BASE_PATH,
-                HTTP_METHOD_POST,
-                attributes,
-                Void.class
-        );
+    public void checkVaultConnection(ApiClientConnectorInfo connector, List<RequestAttribute> attributes)
+            throws ConnectorException {
+        proxyClient.sendRequest(connector, VAULT_BASE_PATH, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     @Override
     public List<BaseAttribute> listVaultAttributes(ApiClientConnectorInfo connector) throws ConnectorException {
-        BaseAttribute[] result = proxyClient.sendRequest(
-                connector,
-                VAULT_BASE_PATH + "/attributes",
-                HTTP_METHOD_GET,
-                null,
-                BaseAttribute[].class
-        );
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, VAULT_BASE_PATH + "/attributes", HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public List<BaseAttribute> listVaultProfileAttributes(ApiClientConnectorInfo connector, List<RequestAttribute> attributes) throws ConnectorException {
-        BaseAttribute[] result = proxyClient.sendRequest(
-                connector,
-                VAULT_PROFILE_BASE_PATH + "/attributes",
-                HTTP_METHOD_POST,
-                attributes,
-                BaseAttribute[].class
-        );
+    public List<BaseAttribute> listVaultProfileAttributes(ApiClientConnectorInfo connector,
+            List<RequestAttribute> attributes) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, VAULT_PROFILE_BASE_PATH + "/attributes", HTTP_METHOD_POST, attributes,
+                        BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     // ==================== Async variants ====================
 
-    public CompletableFuture<Void> checkVaultConnectionAsync(ApiClientConnectorInfo connector, List<RequestAttribute> attributes) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                VAULT_BASE_PATH,
-                HTTP_METHOD_POST,
-                attributes,
-                Void.class
-        );
+    public CompletableFuture<Void> checkVaultConnectionAsync(ApiClientConnectorInfo connector,
+            List<RequestAttribute> attributes) {
+        return proxyClient.sendRequestAsync(connector, VAULT_BASE_PATH, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     public CompletableFuture<List<BaseAttribute>> listVaultAttributesAsync(ApiClientConnectorInfo connector) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                VAULT_BASE_PATH + "/attributes",
-                HTTP_METHOD_GET,
-                null,
-                BaseAttribute[].class
-        ).thenApply(Arrays::asList);
+        return proxyClient
+                .sendRequestAsync(connector, VAULT_BASE_PATH + "/attributes", HTTP_METHOD_GET, null,
+                        BaseAttribute[].class)
+                .thenApply(Arrays::asList);
     }
 
-    public CompletableFuture<List<BaseAttribute>> listVaultProfileAttributesAsync(ApiClientConnectorInfo connector, List<RequestAttribute> attributes) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                VAULT_PROFILE_BASE_PATH + "/attributes",
-                HTTP_METHOD_POST,
-                attributes,
-                BaseAttribute[].class
-        ).thenApply(Arrays::asList);
+    public CompletableFuture<List<BaseAttribute>> listVaultProfileAttributesAsync(ApiClientConnectorInfo connector,
+            List<RequestAttribute> attributes) {
+        return proxyClient
+                .sendRequestAsync(connector, VAULT_PROFILE_BASE_PATH + "/attributes", HTTP_METHOD_POST, attributes,
+                        BaseAttribute[].class)
+                .thenApply(Arrays::asList);
     }
 }

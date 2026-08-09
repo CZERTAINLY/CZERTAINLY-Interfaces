@@ -2,18 +2,14 @@ package com.otilm.api.model.common.attribute.v3.content;
 
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 @Setter
 @Getter
-@Schema(
-        description = "Object attribute content for data with custom structure",
-        type = "object")
+@Schema(description = "Object attribute content for data with custom structure", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class ObjectAttributeContentV3 extends BaseAttributeContentV3<Serializable> {
 

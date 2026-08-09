@@ -14,8 +14,7 @@ public class NoPrivateKeyMaterialValidator implements ConstraintValidator<NoPriv
 
     // Declared on the constraint annotation, alongside the prose spelling the published contract
     // uses, so the enforced list and the documented list cannot drift apart.
-    private static final Set<KeyType> TYPES_WITHOUT_A_PUBLIC_PART =
-            NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART;
+    private static final Set<KeyType> TYPES_WITHOUT_A_PUBLIC_PART = NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART;
 
     @Override
     public boolean isValid(DiscoveredKeyDto value, ConstraintValidatorContext context) {
@@ -27,7 +26,8 @@ public class NoPrivateKeyMaterialValidator implements ConstraintValidator<NoPriv
 
         if (value.getPublicKeyFormat() != null && PRIVATE_KEY_FORMATS.contains(value.getPublicKeyFormat())) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(
+            context
+                    .buildConstraintViolationWithTemplate(
                             "publicKeyFormat must never be a private-key format (PRKI/EPRKI); "
                                     + "key material never traverses discovery")
                     .addPropertyNode("publicKeyFormat")
@@ -40,7 +40,8 @@ public class NoPrivateKeyMaterialValidator implements ConstraintValidator<NoPriv
             // sees precisely which field is at fault instead of always being pointed at publicKey.
             if (value.getPublicKey() != null) {
                 context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(
+                context
+                        .buildConstraintViolationWithTemplate(
                                 "publicKey must be absent when type is Private, Secret, or Split")
                         .addPropertyNode("publicKey")
                         .addConstraintViolation();
@@ -49,7 +50,8 @@ public class NoPrivateKeyMaterialValidator implements ConstraintValidator<NoPriv
 
             if (value.getPublicKeyFormat() != null) {
                 context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(
+                context
+                        .buildConstraintViolationWithTemplate(
                                 "publicKeyFormat must be absent when type is Private, Secret, or Split")
                         .addPropertyNode("publicKeyFormat")
                         .addConstraintViolation();

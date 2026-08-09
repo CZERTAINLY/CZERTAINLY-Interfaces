@@ -5,9 +5,9 @@ import com.otilm.api.model.common.attribute.common.properties.DataAttributePrope
 import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 
 /**
- * Builds a minimal, valid {@link DataAttributeV3} for tests. With no overrides {@link #build()}
- * yields a STRING attribute whose properties carry a label equal to the attribute name. Override
- * only the field a scenario is about; the defaults carry the rest.
+ * Builds a minimal, valid {@link DataAttributeV3} for tests. With no overrides {@link #build()} yields a STRING
+ * attribute whose properties carry a label equal to the attribute name. Override only the field a scenario is about;
+ * the defaults carry the rest.
  */
 public final class DataAttributeV3Builder {
 

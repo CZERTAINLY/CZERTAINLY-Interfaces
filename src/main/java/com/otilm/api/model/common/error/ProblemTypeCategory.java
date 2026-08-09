@@ -6,8 +6,7 @@ import lombok.Getter;
 @Getter
 @Schema(enumAsRef = true)
 public enum ProblemTypeCategory {
-    COMMON("common"),
-    CONNECTOR("connector");
+    COMMON("common"), CONNECTOR("connector");
 
     private final String code;
 

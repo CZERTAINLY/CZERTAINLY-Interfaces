@@ -2,13 +2,12 @@ package com.otilm.api.model.connector.compliance.v2;
 
 import com.otilm.api.model.core.compliance.ComplianceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /*
 Contains the list of parameters returned by the Compliance Provider after

@@ -1,23 +1,22 @@
 package com.otilm.api.model.core.certificate;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CertificateType implements IPlatformEnum {
-	
-    X509(Codes.X509, Codes.X509),
-    SSH(Codes.SSH, Codes.SSH);
+
+    X509(Codes.X509, Codes.X509), SSH(Codes.SSH, Codes.SSH);
 
     public static class Codes {
         public static final String X509 = "X.509";
         public static final String SSH = "SSH";
 
-        private Codes() {}
+        private Codes() {
+        }
     }
 
     private static final CertificateType[] VALUES;
@@ -31,7 +30,7 @@ public enum CertificateType implements IPlatformEnum {
     private final String description;
 
     CertificateType(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     CertificateType(String code, String label, String description) {
@@ -58,11 +57,12 @@ public enum CertificateType implements IPlatformEnum {
 
     @JsonCreator
     public static CertificateType fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported certificate type %s.", code)));
+                .orElseThrow(
+                        () -> new IllegalArgumentException(String.format("Unsupported certificate type %s.", code)));
     }
-
 
 }

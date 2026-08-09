@@ -25,15 +25,10 @@ public class CustomOidEntryUpdateRequestDto {
     @NotNull
     private OidCategory category;
 
-    @JsonTypeInfo(
-            use = JsonTypeInfo.Id.NAME,
-            include = JsonTypeInfo.As.EXTERNAL_PROPERTY,
-            property = "category"
-    )
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "category")
     @JsonSubTypes({
             @JsonSubTypes.Type(value = RdnAttributeTypeOidPropertiesDto.class, name = OidCategory.Codes.RDN_ATTRIBUTE_TYPE),
-            @JsonSubTypes.Type(value = CertificateExtensionOidPropertiesDto.class, name = OidCategory.Codes.CERTIFICATE_EXTENSION)
-    })
+            @JsonSubTypes.Type(value = CertificateExtensionOidPropertiesDto.class, name = OidCategory.Codes.CERTIFICATE_EXTENSION)})
     @Schema(description = "Additional properties depending on OID category", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     private AdditionalOidPropertiesDto additionalProperties;

@@ -54,4 +54,3 @@ public class AuthenticationServiceExceptionDto {
         this.message = message;
     }
 }
-

@@ -1,20 +1,19 @@
 package com.otilm.api.model.core.raprofile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * View of an RA Profile's static request-attribute set: the ordered platform-owned definitions and the
- * merge mode that governs a combination with a connector-supplied set.
+ * View of an RA Profile's static request-attribute set: the ordered platform-owned definitions and the merge mode that
+ * governs a combination with a connector-supplied set.
  */
 @Getter
 @Setter
@@ -23,24 +22,18 @@ import java.util.List;
 @Schema(description = "RA Profile static request-attribute definitions and the merge mode.")
 public class RaProfileCertificateRequestAttributesDto {
 
-    @ArraySchema(arraySchema = @Schema(
-            description = "Ordered list of platform-owned request-attribute definitions for this RA Profile",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED))
+    @ArraySchema(arraySchema = @Schema(description = "Ordered list of platform-owned request-attribute definitions for this RA Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     private List<BaseAttribute> requestAttributes = new ArrayList<>();
 
-    @Schema(description = "How the static set combines with a connector-supplied set; always the effective mode. Currently only `staticOnly` is supported.",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "How the static set combines with a connector-supplied set; always the effective mode. Currently only `staticOnly` is supported.", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeSetMergeMode mergeMode = AttributeSetMergeMode.STATIC_ONLY;
 
     // Hidden until properly supported in a future version
-    @ArraySchema(arraySchema = @Schema(
-            description = "Core-side value-source bindings attached onto connector-supplied (or static) definitions by reference",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED))
+    @ArraySchema(arraySchema = @Schema(description = "Core-side value-source bindings attached onto connector-supplied (or static) definitions by reference", requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @JsonIgnore
     @Schema(hidden = true)
     private List<ValueSourceBindingDto> valueSourceBindings = new ArrayList<>();
 
-    @Schema(description = "Whether an external CSR violating the resolved set is rejected (true) or accepted with warnings (false); null inherits the platform default",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Whether an external CSR violating the resolved set is rejected (true) or accepted with warnings (false); null inherits the platform default", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean externalCsrValidationStrict;
 }

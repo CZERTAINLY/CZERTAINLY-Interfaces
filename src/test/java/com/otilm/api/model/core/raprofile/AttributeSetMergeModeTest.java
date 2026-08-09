@@ -24,8 +24,10 @@ class AttributeSetMergeModeTest {
     @Test
     void deserializesEachModeFromItsCode() throws Exception {
         // given / when / then
-        assertEquals(AttributeSetMergeMode.STATIC_ONLY, mapper.readValue("\"staticOnly\"", AttributeSetMergeMode.class));
-        assertEquals(AttributeSetMergeMode.CONNECTOR_ONLY, mapper.readValue("\"connectorOnly\"", AttributeSetMergeMode.class));
+        assertEquals(AttributeSetMergeMode.STATIC_ONLY,
+                mapper.readValue("\"staticOnly\"", AttributeSetMergeMode.class));
+        assertEquals(AttributeSetMergeMode.CONNECTOR_ONLY,
+                mapper.readValue("\"connectorOnly\"", AttributeSetMergeMode.class));
         assertEquals(AttributeSetMergeMode.MERGE, mapper.readValue("\"merge\"", AttributeSetMergeMode.class));
     }
 
@@ -34,7 +36,8 @@ class AttributeSetMergeModeTest {
         // given — a code that maps to no mode
         var unknownCode = "bogus";
 
-        // when / then — Jackson wraps the @JsonCreator rejection; assert both the wrapper type and the originating cause
+        // when / then — Jackson wraps the @JsonCreator rejection; assert both the wrapper type and the originating
+        // cause
         ValueInstantiationException thrown = assertThrows(ValueInstantiationException.class,
                 () -> mapper.readValue("\"" + unknownCode + "\"", AttributeSetMergeMode.class));
         assertInstanceOf(IllegalArgumentException.class, thrown.getCause());

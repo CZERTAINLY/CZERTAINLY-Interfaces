@@ -5,16 +5,17 @@ import org.springframework.lang.Nullable;
 
 /**
  * According to the RFC 8894
- * <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-failinfo-and-failinfotext">failInfo and failInfoText</a>
- * It may contain custom FailInfo codes if required (but out of scope of the standard)
+ * <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-failinfo-and-failinfotext">failInfo and failInfoText</a> It
+ * may contain custom FailInfo codes if required (but out of scope of the standard)
  */
 @Schema(enumAsRef = true)
 public enum FailInfo {
-    BAD_ALG(0, "badAlg", "Unrecognised or unsupported algorithm."),
-    BAD_MESSAGE_CHECK(1, "badMessageCheck", "Integrity check (meaning signature verification of the CMS message) failed."),
-    BAD_REQUEST(2, "badRequest", "Transaction not permitted or supported."),
-    BAD_TIME(3, "badTime", "The signingTime attribute from the CMS authenticatedAttributes was not sufficiently close to the system time."),
-    BAD_CERT_ID(4, "badCertId", "No certificate could be identified matching the provided criteria.");
+    BAD_ALG(0, "badAlg", "Unrecognised or unsupported algorithm."), BAD_MESSAGE_CHECK(1, "badMessageCheck",
+            "Integrity check (meaning signature verification of the CMS message) failed."), BAD_REQUEST(2, "badRequest",
+                    "Transaction not permitted or supported."), BAD_TIME(3, "badTime",
+                            "The signingTime attribute from the CMS authenticatedAttributes was not sufficiently close to the system time."), BAD_CERT_ID(
+                                    4, "badCertId",
+                                    "No certificate could be identified matching the provided criteria.");
 
     private static final FailInfo[] VALUES;
 
@@ -78,6 +79,6 @@ public enum FailInfo {
 
     @Override
     public String toString() {
-        return name + " ("+String.valueOf(value)+")";
+        return name + " (" + String.valueOf(value) + ")";
     }
 }

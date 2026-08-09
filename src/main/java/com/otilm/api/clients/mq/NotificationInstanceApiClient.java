@@ -30,26 +30,33 @@ public class NotificationInstanceApiClient implements NotificationInstanceSyncAp
     }
 
     @Override
-    public List<NotificationProviderInstanceDto> listNotificationInstances(ApiClientConnectorInfo connector) throws ConnectorException {
-        NotificationProviderInstanceDto[] result = proxyClient.sendRequest(connector, BASE_PATH, HTTP_METHOD_GET, null, NotificationProviderInstanceDto[].class);
+    public List<NotificationProviderInstanceDto> listNotificationInstances(ApiClientConnectorInfo connector)
+            throws ConnectorException {
+        NotificationProviderInstanceDto[] result = proxyClient
+                .sendRequest(connector, BASE_PATH, HTTP_METHOD_GET, null, NotificationProviderInstanceDto[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public NotificationProviderInstanceDto getNotificationInstance(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public NotificationProviderInstanceDto getNotificationInstance(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid;
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, NotificationProviderInstanceDto.class);
     }
 
     @Override
-    public NotificationProviderInstanceDto createNotificationInstance(ApiClientConnectorInfo connector, NotificationProviderInstanceRequestDto requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(connector, BASE_PATH, HTTP_METHOD_POST, requestDto, NotificationProviderInstanceDto.class);
+    public NotificationProviderInstanceDto createNotificationInstance(ApiClientConnectorInfo connector,
+            NotificationProviderInstanceRequestDto requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, BASE_PATH, HTTP_METHOD_POST, requestDto, NotificationProviderInstanceDto.class);
     }
 
     @Override
-    public NotificationProviderInstanceDto updateNotificationInstance(ApiClientConnectorInfo connector, String uuid, NotificationProviderInstanceRequestDto requestDto) throws ConnectorException {
+    public NotificationProviderInstanceDto updateNotificationInstance(ApiClientConnectorInfo connector, String uuid,
+            NotificationProviderInstanceRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid;
-        return proxyClient.sendRequest(connector, path, HTTP_METHOD_PUT, requestDto, NotificationProviderInstanceDto.class);
+        return proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_PUT, requestDto, NotificationProviderInstanceDto.class);
     }
 
     @Override
@@ -59,30 +66,37 @@ public class NotificationInstanceApiClient implements NotificationInstanceSyncAp
     }
 
     @Override
-    public void sendNotification(ApiClientConnectorInfo connector, String uuid, NotificationProviderNotifyRequestDto requestDto) throws ConnectorException {
+    public void sendNotification(ApiClientConnectorInfo connector, String uuid,
+            NotificationProviderNotifyRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/notify";
         proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, Void.class);
     }
 
     @Override
-    public List<DataAttribute> listMappingAttributes(ApiClientConnectorInfo connector, String kind) throws ConnectorException {
+    public List<DataAttribute> listMappingAttributes(ApiClientConnectorInfo connector, String kind)
+            throws ConnectorException {
         String path = "/v1/notificationProvider/" + kind + "/attributes/mapping";
         DataAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, DataAttribute[].class);
         return Arrays.asList(result);
     }
 
     // Async variants
-    public CompletableFuture<List<NotificationProviderInstanceDto>> listNotificationInstancesAsync(ApiClientConnectorInfo connector) {
-        return proxyClient.sendRequestAsync(connector, BASE_PATH, HTTP_METHOD_GET, null, NotificationProviderInstanceDto[].class)
+    public CompletableFuture<List<NotificationProviderInstanceDto>> listNotificationInstancesAsync(
+            ApiClientConnectorInfo connector) {
+        return proxyClient
+                .sendRequestAsync(connector, BASE_PATH, HTTP_METHOD_GET, null, NotificationProviderInstanceDto[].class)
                 .thenApply(Arrays::asList);
     }
 
-    public CompletableFuture<NotificationProviderInstanceDto> getNotificationInstanceAsync(ApiClientConnectorInfo connector, String uuid) {
+    public CompletableFuture<NotificationProviderInstanceDto> getNotificationInstanceAsync(
+            ApiClientConnectorInfo connector, String uuid) {
         String path = BASE_PATH + "/" + uuid;
-        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_GET, null, NotificationProviderInstanceDto.class);
+        return proxyClient
+                .sendRequestAsync(connector, path, HTTP_METHOD_GET, null, NotificationProviderInstanceDto.class);
     }
 
-    public CompletableFuture<Void> sendNotificationAsync(ApiClientConnectorInfo connector, String uuid, NotificationProviderNotifyRequestDto requestDto) {
+    public CompletableFuture<Void> sendNotificationAsync(ApiClientConnectorInfo connector, String uuid,
+            NotificationProviderNotifyRequestDto requestDto) {
         String path = BASE_PATH + "/" + uuid + "/notify";
         return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, Void.class);
     }

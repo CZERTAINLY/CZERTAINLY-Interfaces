@@ -36,9 +36,7 @@ public class ValidationException extends RuntimeException implements PlatformExc
     }
 
     private static String errorsToMessage(List<ValidationError> errors) {
-        return errors.stream()
-                .map(ValidationError::getErrorDescription)
-                .collect(Collectors.joining(" \n"));
+        return errors.stream().map(ValidationError::getErrorDescription).collect(Collectors.joining(" \n"));
     }
 
     @Override

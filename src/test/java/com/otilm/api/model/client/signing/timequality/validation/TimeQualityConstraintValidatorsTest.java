@@ -5,6 +5,10 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.time.Duration;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,12 +16,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.Duration;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TimeQualityConstraintValidatorsTest {
 
@@ -47,7 +48,8 @@ class TimeQualityConstraintValidatorsTest {
         return dto;
     }
 
-    private boolean hasViolationOn(Set<ConstraintViolation<TimeQualityConfigurationRequestDto>> violations, String path) {
+    private boolean hasViolationOn(Set<ConstraintViolation<TimeQualityConfigurationRequestDto>> violations,
+            String path) {
         return violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals(path));
     }
 
@@ -59,10 +61,10 @@ class TimeQualityConstraintValidatorsTest {
     // --- MaxClockDriftValidator ---
 
     static Stream<Duration> invalidMaxClockDriftValues() {
-        return Stream.of(
-                Duration.ofSeconds(1),  // equal to accuracy
-                Duration.ofSeconds(2)   // greater than accuracy
-        );
+        return Stream
+                .of(Duration.ofSeconds(1), // equal to accuracy
+                        Duration.ofSeconds(2) // greater than accuracy
+                );
     }
 
     @ParameterizedTest
@@ -76,10 +78,10 @@ class TimeQualityConstraintValidatorsTest {
     // --- NtpCheckIntervalAccuracyValidator ---
 
     static Stream<Duration> invalidNtpCheckIntervalValues() {
-        return Stream.of(
-                Duration.ofSeconds(1),  // equal to accuracy
-                Duration.ofSeconds(2)   // greater than accuracy
-        );
+        return Stream
+                .of(Duration.ofSeconds(1), // equal to accuracy
+                        Duration.ofSeconds(2) // greater than accuracy
+                );
     }
 
     @ParameterizedTest
@@ -93,10 +95,10 @@ class TimeQualityConstraintValidatorsTest {
     // --- NtpCheckTimeoutValidator ---
 
     static Stream<Duration> invalidNtpCheckTimeoutValues() {
-        return Stream.of(
-                Duration.ofSeconds(30), // equal to interval
-                Duration.ofSeconds(60)  // greater than interval
-        );
+        return Stream
+                .of(Duration.ofSeconds(30), // equal to interval
+                        Duration.ofSeconds(60) // greater than interval
+                );
     }
 
     @ParameterizedTest
@@ -110,10 +112,10 @@ class TimeQualityConstraintValidatorsTest {
     // --- NtpMinReachableValidator ---
 
     static Stream<Arguments> ntpServersMinReachableCases() {
-        return Stream.of(
-                Arguments.of(1, false), // equal to server count -> valid
-                Arguments.of(2, true)   // exceeds server count -> invalid
-        );
+        return Stream
+                .of(Arguments.of(1, false), // equal to server count -> valid
+                        Arguments.of(2, true) // exceeds server count -> invalid
+                );
     }
 
     @ParameterizedTest

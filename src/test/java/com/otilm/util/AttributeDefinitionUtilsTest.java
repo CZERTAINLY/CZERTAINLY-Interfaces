@@ -3,6 +3,7 @@ package com.otilm.util;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.attribute.RequestAttributeV2;
+import com.otilm.api.model.client.attribute.ResponseAttributeV2;
 import com.otilm.api.model.common.NameAndIdDto;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.common.attribute.common.AttributeType;
@@ -11,6 +12,7 @@ import com.otilm.api.model.common.attribute.common.callback.AttributeCallback;
 import com.otilm.api.model.common.attribute.common.callback.AttributeCallbackMapping;
 import com.otilm.api.model.common.attribute.common.callback.AttributeValueTarget;
 import com.otilm.api.model.common.attribute.common.callback.RequestAttributeCallback;
+import com.otilm.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.otilm.api.model.common.attribute.common.constraint.DateTimeAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RangeAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
@@ -18,37 +20,65 @@ import com.otilm.api.model.common.attribute.common.constraint.data.DateTimeAttri
 import com.otilm.api.model.common.attribute.common.constraint.data.RangeAttributeConstraintData;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
+import com.otilm.api.model.common.attribute.common.content.data.SecretAttributeContentData;
 import com.otilm.api.model.common.attribute.common.properties.DataAttributeProperties;
 import com.otilm.api.model.common.attribute.v2.DataAttributeV2;
-import com.otilm.api.model.common.attribute.common.constraint.AttributeConstraintType;
-import com.otilm.api.model.client.attribute.ResponseAttributeV2;
-import com.otilm.api.model.common.attribute.common.content.data.SecretAttributeContentData;
-import com.otilm.api.model.common.attribute.v2.content.*;
+import com.otilm.api.model.common.attribute.v2.content.BaseAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.CredentialAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.DateAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.DateTimeAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.FileAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.FloatAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.IntegerAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.ObjectAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
+import com.otilm.api.model.common.attribute.v2.content.TimeAttributeContentV2;
 import com.otilm.core.util.AttributeDefinitionUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import static com.otilm.core.util.AttributeDefinitionUtils.*;
+import static com.otilm.core.util.AttributeDefinitionUtils.containsAttributeDefinition;
+import static com.otilm.core.util.AttributeDefinitionUtils.containsRequestAttributes;
+import static com.otilm.core.util.AttributeDefinitionUtils.deserialize;
+import static com.otilm.core.util.AttributeDefinitionUtils.getAttributeContent;
+import static com.otilm.core.util.AttributeDefinitionUtils.getAttributeContentValue;
+import static com.otilm.core.util.AttributeDefinitionUtils.getAttributeContentValueList;
+import static com.otilm.core.util.AttributeDefinitionUtils.getCredentialContent;
+import static com.otilm.core.util.AttributeDefinitionUtils.getNameAndIdData;
+import static com.otilm.core.util.AttributeDefinitionUtils.getNameAndUuidDataList;
+import static com.otilm.core.util.AttributeDefinitionUtils.getObjectAttributeContentData;
+import static com.otilm.core.util.AttributeDefinitionUtils.getObjectAttributeContentDataList;
+import static com.otilm.core.util.AttributeDefinitionUtils.getRequestAttributes;
+import static com.otilm.core.util.AttributeDefinitionUtils.serialize;
+import static com.otilm.core.util.AttributeDefinitionUtils.validateAttributes;
+import static com.otilm.core.util.AttributeDefinitionUtils.validateCallback;
 
 class AttributeDefinitionUtilsTest {
 
     @Test
     void testGetAttribute() {
         String attributeName = "testAttribute";
-        List<RequestAttribute> attributes = List.of(new RequestAttributeV2(UUID.randomUUID(), attributeName, AttributeContentType.INTEGER, List.of(new IntegerAttributeContentV2(1234))));
+        List<RequestAttribute> attributes = List
+                .of(new RequestAttributeV2(UUID.randomUUID(), attributeName, AttributeContentType.INTEGER,
+                        List.of(new IntegerAttributeContentV2(1234))));
         RequestAttributeV2 attribute = getRequestAttributes(attributeName, attributes);
         Assertions.assertNotNull(attribute);
         Assertions.assertTrue(containsRequestAttributes(attributeName, attributes));
         Assertions.assertEquals(attributes.get(0), attribute);
     }
-
 
     @Test
     void testGetAttributeContent() {
@@ -91,7 +121,11 @@ class AttributeDefinitionUtilsTest {
         HashMap<String, Object> attribute2Value = new HashMap<>();
         attribute2Value.put("uuid", UUID.randomUUID().toString());
         attribute2Value.put("name", "testName2");
-        List<RequestAttribute> attributes = List.of(new RequestAttributeV2(UUID.randomUUID(), attribute1Name, AttributeContentType.OBJECT, List.of(new ObjectAttributeContentV2(attribute1Name, attribute1Value), new ObjectAttributeContentV2(attribute1Name, attribute2Value))));
+        List<RequestAttribute> attributes = List
+                .of(new RequestAttributeV2(UUID.randomUUID(), attribute1Name, AttributeContentType.OBJECT,
+                        List
+                                .of(new ObjectAttributeContentV2(attribute1Name, attribute1Value),
+                                        new ObjectAttributeContentV2(attribute1Name, attribute2Value))));
         List<NameAndUuidDto> dto2 = getNameAndUuidDataList(attribute1Name, attributes);
 
         Assertions.assertNotNull(dto2);
@@ -105,8 +139,9 @@ class AttributeDefinitionUtilsTest {
     @Test
     void testGetAttributeCredentialContent() {
         String attribute1Name = "testAttribute1";
-        List<RequestAttribute> credentialAttributes = List.of(new RequestAttributeV2(UUID.randomUUID(), "credAttr", AttributeContentType.INTEGER, List.of(new IntegerAttributeContentV2(987))));
-
+        List<RequestAttribute> credentialAttributes = List
+                .of(new RequestAttributeV2(UUID.randomUUID(), "credAttr", AttributeContentType.INTEGER,
+                        List.of(new IntegerAttributeContentV2(987))));
 
         CredentialAttributeContentData credentialDto = new CredentialAttributeContentData();
         credentialDto.setUuid(UUID.randomUUID().toString());
@@ -117,7 +152,9 @@ class AttributeDefinitionUtilsTest {
         atr.setUuid(String.valueOf(credentialAttributes.get(0).getUuid()));
         credentialDto.setAttributes(List.of(atr));
 
-        List<RequestAttribute> attributes = List.of(new RequestAttributeV2(UUID.randomUUID(), attribute1Name, AttributeContentType.CREDENTIAL, List.of(new CredentialAttributeContentV2("testName", credentialDto))));
+        List<RequestAttribute> attributes = List
+                .of(new RequestAttributeV2(UUID.randomUUID(), attribute1Name, AttributeContentType.CREDENTIAL,
+                        List.of(new CredentialAttributeContentV2("testName", credentialDto))));
         CredentialAttributeContentData dto = getCredentialContent(attribute1Name, attributes);
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(credentialDto.getUuid(), dto.getUuid());
@@ -126,7 +163,7 @@ class AttributeDefinitionUtilsTest {
     }
 
     @Test
-//    @Disabled
+    // @Disabled
     void testAttributeSerialization() {
         String attrData = """
                 [
@@ -240,7 +277,8 @@ class AttributeDefinitionUtilsTest {
         Assertions.assertEquals(7, clientAttributes.size());
         Assertions.assertTrue(clientAttributes.stream().allMatch(a -> a.getContentType() != null));
 
-        NameAndIdDto endEntityProfile = getNameAndIdData("endEntityProfile", AttributeDefinitionUtils.getClientAttributes(attrs));
+        NameAndIdDto endEntityProfile = getNameAndIdData("endEntityProfile",
+                AttributeDefinitionUtils.getClientAttributes(attrs));
         Assertions.assertNotNull(endEntityProfile);
         Assertions.assertEquals(0, endEntityProfile.getId());
         Assertions.assertEquals("DemoTLSServerEndEntityProfile", endEntityProfile.getName());
@@ -289,9 +327,8 @@ class AttributeDefinitionUtilsTest {
         properties.setRequired(true);
         definition.setProperties(properties);
 
-        ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                validateAttributes(List.of(definition), List.of())
-        );
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class, () -> validateAttributes(List.of(definition), List.of()));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
@@ -317,9 +354,8 @@ class AttributeDefinitionUtilsTest {
         attribute.setContent(null); // cause or failure
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                // tested method
-                validateAttributes(List.of(definition), List.of(attribute))
-        );
+        // tested method
+        validateAttributes(List.of(definition), List.of(attribute)));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
@@ -331,7 +367,7 @@ class AttributeDefinitionUtilsTest {
         StringAttributeContentV2 attributeContent = new StringAttributeContentV2("1234");
         String validationRegex = "^\\d{4}$";
 
-        //TODO Validation
+        // TODO Validation
 
         Assertions.assertTrue(attributeContent.getData().matches(validationRegex));
 
@@ -382,9 +418,8 @@ class AttributeDefinitionUtilsTest {
         attribute.setContent(List.of(attributeContent));
 
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                // tested method
-                validateAttributes(List.of(definition), List.of(attribute))
-        );
+        // tested method
+        validateAttributes(List.of(definition), List.of(attribute)));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
@@ -479,9 +514,8 @@ class AttributeDefinitionUtilsTest {
         attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                // tested method
-                validateAttributes(List.of(definition), List.of(attribute))
-        );
+        // tested method
+        validateAttributes(List.of(definition), List.of(attribute)));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
@@ -515,9 +549,8 @@ class AttributeDefinitionUtilsTest {
         attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                // tested method
-                validateAttributes(List.of(definition), List.of(attribute))
-        );
+        // tested method
+        validateAttributes(List.of(definition), List.of(attribute)));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
@@ -582,9 +615,8 @@ class AttributeDefinitionUtilsTest {
         attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                // tested method
-                validateAttributes(List.of(definition), List.of(attribute))
-        );
+        // tested method
+        validateAttributes(List.of(definition), List.of(attribute)));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
@@ -649,13 +681,11 @@ class AttributeDefinitionUtilsTest {
         attribute.setUuid(UUID.fromString(attributeId));
         attribute.setContent(List.of(attributeContent));
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                // tested method
-                validateAttributes(List.of(definition), List.of(attribute))
-        );
+        // tested method
+        validateAttributes(List.of(definition), List.of(attribute)));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
-
 
     @Test
     void testValidateAttributes_credentialMap() {
@@ -673,7 +703,8 @@ class AttributeDefinitionUtilsTest {
         credential.setName("testName");
         credential.setUuid("testUuid");
 
-        CredentialAttributeContentV2 credentialContent = new CredentialAttributeContentV2("Test Credential", credential);
+        CredentialAttributeContentV2 credentialContent = new CredentialAttributeContentV2("Test Credential",
+                credential);
 
         attribute.setContent(List.of(credentialContent));
 
@@ -689,7 +720,8 @@ class AttributeDefinitionUtilsTest {
         definition.setType(AttributeType.DATA);
         definition.setContentType(AttributeContentType.CREDENTIAL);
 
-        CredentialAttributeContentV2 credentialContent = new CredentialAttributeContentV2(attributeName, new CredentialAttributeContentData());
+        CredentialAttributeContentV2 credentialContent = new CredentialAttributeContentV2(attributeName,
+                new CredentialAttributeContentData());
 
         RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName(attributeName);
@@ -749,9 +781,8 @@ class AttributeDefinitionUtilsTest {
         attribute.setName(attributeName);
         attribute.setContent(List.of(new IntegerAttributeContentV2(123))); // cause or failure
         ValidationException exception = Assertions.assertThrows(ValidationException.class, () ->
-                // tested method
-                validateAttributes(List.of(definition), List.of(attribute))
-        );
+        // tested method
+        validateAttributes(List.of(definition), List.of(attribute)));
 
         Assertions.assertEquals(1, exception.getErrors().size());
     }
@@ -766,7 +797,7 @@ class AttributeDefinitionUtilsTest {
         definition.setContentType(AttributeContentType.STRING);
 
         RequestAttributeV2 attribute = new RequestAttributeV2();
-        attribute.setName("unknown-attribute");  // cause or failure
+        attribute.setName("unknown-attribute"); // cause or failure
         attribute.setContent(List.of(new StringAttributeContentV2("123")));
 
         Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
@@ -775,10 +806,9 @@ class AttributeDefinitionUtilsTest {
     @Test
     void testValidateAttributeCallback_success() {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
-        mappings.add(new AttributeCallbackMapping(
-                "credentialKind",
-                AttributeValueTarget.PATH_VARIABLE,
-                "softKeyStore"));
+        mappings
+                .add(new AttributeCallbackMapping("credentialKind", AttributeValueTarget.PATH_VARIABLE,
+                        "softKeyStore"));
 
         AttributeCallback callback = new AttributeCallback();
         callback.setCallbackContext("v1/test");
@@ -800,20 +830,13 @@ class AttributeDefinitionUtilsTest {
     @Test
     void testValidateAttributeCallback_fail() {
         Set<AttributeCallbackMapping> mappings = new HashSet<>();
-        mappings.add(new AttributeCallbackMapping(
-                "credentialKind",
-                AttributeValueTarget.PATH_VARIABLE,
-                "softKeyStore"));
-        mappings.add(new AttributeCallbackMapping(
-                "fromAttribute",
-                AttributeType.DATA,
-                AttributeContentType.CREDENTIAL,
-                "toQueryParam",
-                Collections.singleton(AttributeValueTarget.REQUEST_PARAMETER)));
-        mappings.add(new AttributeCallbackMapping(
-                "fromAttribute",
-                "toBodyKey",
-                AttributeValueTarget.BODY));
+        mappings
+                .add(new AttributeCallbackMapping("credentialKind", AttributeValueTarget.PATH_VARIABLE,
+                        "softKeyStore"));
+        mappings
+                .add(new AttributeCallbackMapping("fromAttribute", AttributeType.DATA, AttributeContentType.CREDENTIAL,
+                        "toQueryParam", Collections.singleton(AttributeValueTarget.REQUEST_PARAMETER)));
+        mappings.add(new AttributeCallbackMapping("fromAttribute", "toBodyKey", AttributeValueTarget.BODY));
 
         AttributeCallback callback = new AttributeCallback();
         callback.setCallbackContext("core/getCredentials");
@@ -824,8 +847,8 @@ class AttributeDefinitionUtilsTest {
         callbackRequest.setPathVariable(Map.ofEntries(Map.entry("credentialKind", "softKeyStore")));
         callbackRequest.setRequestParameter(Map.ofEntries(Map.entry("toQueryParam", 1234)));
 
-
-        ValidationException exception = Assertions.assertThrows(ValidationException.class, () -> validateCallback(callback, callbackRequest, false));
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class, () -> validateCallback(callback, callbackRequest, false));
 
         Assertions.assertNotNull(exception.getErrors());
         Assertions.assertFalse(exception.getErrors().isEmpty());
@@ -857,7 +880,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        ObjectAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, ObjectAttributeContentV2.class).get(0);
+        ObjectAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, ObjectAttributeContentV2.class)
+                .get(0);
 
         Assertions.assertEquals("Item", data.getReference());
     }
@@ -882,7 +906,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        StringAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, StringAttributeContentV2.class).get(0);
+        StringAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, StringAttributeContentV2.class)
+                .get(0);
 
         Assertions.assertEquals("Item", data.getData());
     }
@@ -905,7 +930,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        IntegerAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, IntegerAttributeContentV2.class).get(0);
+        IntegerAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs,
+                IntegerAttributeContentV2.class).get(0);
 
         Assertions.assertEquals(1234, data.getData());
     }
@@ -928,8 +954,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-
-        DateTimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateTimeAttributeContentV2.class).get(0);
+        DateTimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs,
+                DateTimeAttributeContentV2.class).get(0);
 
         String dateInString = "2011-12-03T10:15:30+01:00";
         ZonedDateTime date = ZonedDateTime.parse(dateInString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
@@ -955,7 +981,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        DateAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateAttributeContentV2.class).get(0);
+        DateAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, DateAttributeContentV2.class)
+                .get(0);
 
         String dateInString = "2001-07-04";
         LocalDate localDate = LocalDate.parse(dateInString);
@@ -981,7 +1008,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        TimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContentV2.class).get(0);
+        TimeAttributeContentV2 data = getAttributeContent("testJsonAttribute", attrs, TimeAttributeContentV2.class)
+                .get(0);
 
         String dateInString = "12:14:25";
         LocalTime localTime = LocalTime.parse(dateInString);
@@ -1007,7 +1035,9 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        String value = getAttributeContentValue("testStringAttribute", attrs, StringAttributeContentV2.class).get(0).getData();
+        String value = getAttributeContentValue("testStringAttribute", attrs, StringAttributeContentV2.class)
+                .get(0)
+                .getData();
 
         Assertions.assertNotNull(value);
         Assertions.assertEquals("Test String Value", value);
@@ -1031,7 +1061,10 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContentV2.class).get(0).getData().getContent();
+        String value = getAttributeContentValue("testFileAttribute", attrs, FileAttributeContentV2.class)
+                .get(0)
+                .getData()
+                .getContent();
 
         Assertions.assertNotNull(value);
         Assertions.assertEquals("Test File Value", value);
@@ -1061,7 +1094,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        NameAndUuidDto data = getObjectAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class).get(0);
+        NameAndUuidDto data = getObjectAttributeContentData("testCredentialAttribute", attrs, NameAndUuidDto.class)
+                .get(0);
 
         Assertions.assertNotNull(data);
         Assertions.assertEquals(data.getClass(), NameAndUuidDto.class);
@@ -1095,7 +1129,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        List<String> listString = getAttributeContentValueList("testAttributeListString", attrs, BaseAttributeContentV2.class);
+        List<String> listString = getAttributeContentValueList("testAttributeListString", attrs,
+                BaseAttributeContentV2.class);
 
         Assertions.assertNotNull(listString);
         Assertions.assertEquals(3, listString.size());
@@ -1133,7 +1168,8 @@ class AttributeDefinitionUtilsTest {
 
         List<BaseAttribute> attrs = deserialize(attrData, BaseAttribute.class);
 
-        List<String> listData = getObjectAttributeContentDataList("testCredentialAttribute", attrs, NameAndUuidDto.class);
+        List<String> listData = getObjectAttributeContentDataList("testCredentialAttribute", attrs,
+                NameAndUuidDto.class);
 
         Assertions.assertNotNull(listData);
         Assertions.assertEquals(2, listData.size());

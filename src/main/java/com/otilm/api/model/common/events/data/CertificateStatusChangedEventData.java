@@ -1,17 +1,15 @@
 package com.otilm.api.model.common.events.data;
 
-import com.otilm.api.model.common.attribute.v1.content.ZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
+import com.otilm.api.model.common.attribute.v1.content.ZonedDateTimeDeserializer;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @NoArgsConstructor
 @Getter

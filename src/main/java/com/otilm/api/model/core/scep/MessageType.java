@@ -4,19 +4,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
 /**
- * According to the RFC 8894
- * <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-messagetype">messageType</a>
- * It may contain custom MessageType codes if required (but out of scope of the standard)
+ * According to the RFC 8894 <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-messagetype">messageType</a> It
+ * may contain custom MessageType codes if required (but out of scope of the standard)
  */
 @Schema(enumAsRef = true)
 public enum MessageType {
-    RESERVED(0, "Reserved", ""),
-    CERT_REP(3, "CertRep", "Response to certificate or CRL request."),
-    RENEWAL_REQ(17, "RenewalReq", "PKCS#10 certificate request authenticated with an existing certificate."),
-    PKCS_REQ(19, "PKCSReq", "PKCS#10 certificate request authenticated with a shared secret."),
-    CERT_POLL(20, "CertPoll", "Certificate polling in manual enrolment."),
-    GET_CERT(21, "GetCert", "Retrieve a certificate."),
-    GET_CRL(22, "GetCRL", "Retrieve a CRL.");
+    RESERVED(0, "Reserved", ""), CERT_REP(3, "CertRep", "Response to certificate or CRL request."), RENEWAL_REQ(17,
+            "RenewalReq", "PKCS#10 certificate request authenticated with an existing certificate."), PKCS_REQ(19,
+                    "PKCSReq", "PKCS#10 certificate request authenticated with a shared secret."), CERT_POLL(20,
+                            "CertPoll", "Certificate polling in manual enrolment."), GET_CERT(21, "GetCert",
+                                    "Retrieve a certificate."), GET_CRL(22, "GetCRL", "Retrieve a CRL.");
 
     private static final MessageType[] VALUES;
 
@@ -80,6 +77,6 @@ public enum MessageType {
 
     @Override
     public String toString() {
-        return name + " ("+String.valueOf(value)+")";
+        return name + " (" + String.valueOf(value) + ")";
     }
 }

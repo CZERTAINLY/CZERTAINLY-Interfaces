@@ -7,14 +7,13 @@ import com.otilm.api.model.connector.v3.certificate.CertificateExtension;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.Test;
-
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -67,8 +66,7 @@ class ClientCertificateRegistrationDtoTest {
     void csrAttributesEmptyList_doesNotProvideIdentity() {
         ClientCertificateRegistrationDto dto = new ClientCertificateRegistrationDto();
         dto.setCsrAttributes(List.of());
-        assertFalse(dto.isSubjectIdentificationProvided(),
-                "an empty csrAttributes list is not an identity source");
+        assertFalse(dto.isSubjectIdentificationProvided(), "an empty csrAttributes list is not an identity source");
     }
 
     @Test
@@ -95,8 +93,7 @@ class ClientCertificateRegistrationDtoTest {
         ClientCertificateRegistrationDto dto = new ClientCertificateRegistrationDto();
         dto.setExtensions(List.of(new CertificateExtension()));
         dto.setCsrAttributes(List.of(new RequestAttributeV2()));
-        assertFalse(dto.isSingleIdentitySource(),
-                "flat extensions alongside csrAttributes is still the mixed form");
+        assertFalse(dto.isSingleIdentitySource(), "flat extensions alongside csrAttributes is still the mixed form");
     }
 
     @Test
@@ -127,7 +124,9 @@ class ClientCertificateRegistrationDtoTest {
 
     private static Set<ConstraintViolation<ClientCertificateRegistrationDto>> mutualExclusionViolations(
             ClientCertificateRegistrationDto dto) {
-        return VALIDATOR.validate(dto).stream()
+        return VALIDATOR
+                .validate(dto)
+                .stream()
                 .filter(v -> v.getPropertyPath().toString().equals("singleIdentitySource"))
                 .collect(Collectors.toSet());
     }
@@ -143,9 +142,9 @@ class ClientCertificateRegistrationDtoTest {
 
     @Test
     void authorizationSecretIsAcceptedOnInputButNeverSerialized() throws Exception {
-        ClientCertificateRegistrationDto dto = mapper.readValue(
-                "{\"subjectDn\":\"CN=x\",\"authorizationSecret\":\"s3cret-value-1234\"}",
-                ClientCertificateRegistrationDto.class);
+        ClientCertificateRegistrationDto dto = mapper
+                .readValue("{\"subjectDn\":\"CN=x\",\"authorizationSecret\":\"s3cret-value-1234\"}",
+                        ClientCertificateRegistrationDto.class);
         assertEquals("s3cret-value-1234", dto.getAuthorizationSecret());
 
         String json = mapper.writeValueAsString(dto);
@@ -168,8 +167,8 @@ class ClientCertificateRegistrationDtoTest {
         ClientCertificateRegistrationDto dto = new ClientCertificateRegistrationDto();
         dto.setSubjectDn("CN=x");
         dto.setExpiresAt(OffsetDateTime.parse("2026-08-01T00:00:00Z"));
-        ClientCertificateRegistrationDto back =
-                mapper.readValue(mapper.writeValueAsString(dto), ClientCertificateRegistrationDto.class);
+        ClientCertificateRegistrationDto back = mapper
+                .readValue(mapper.writeValueAsString(dto), ClientCertificateRegistrationDto.class);
         assertEquals(dto.getExpiresAt(), back.getExpiresAt());
     }
 
@@ -178,8 +177,8 @@ class ClientCertificateRegistrationDtoTest {
         ClientCertificateRegistrationDto dto = new ClientCertificateRegistrationDto();
         dto.setSubjectDn("CN=x");
         dto.setSourceCertificateUuid(UUID.fromString("f2bfe4a1-b834-4f0c-9bd6-e0b323f8a5f8"));
-        ClientCertificateRegistrationDto back =
-                mapper.readValue(mapper.writeValueAsString(dto), ClientCertificateRegistrationDto.class);
+        ClientCertificateRegistrationDto back = mapper
+                .readValue(mapper.writeValueAsString(dto), ClientCertificateRegistrationDto.class);
         assertEquals(dto.getSourceCertificateUuid(), back.getSourceCertificateUuid());
     }
 
@@ -195,7 +194,9 @@ class ClientCertificateRegistrationDtoTest {
         ClientCertificateRegistrationDto dto = new ClientCertificateRegistrationDto();
         dto.setSubjectDn("CN=x");
         dto.setAuthorizationSecret(secret);
-        return VALIDATOR.validate(dto).stream()
+        return VALIDATOR
+                .validate(dto)
+                .stream()
                 .filter(v -> v.getPropertyPath().toString().equals("authorizationSecret"))
                 .collect(Collectors.toSet());
     }

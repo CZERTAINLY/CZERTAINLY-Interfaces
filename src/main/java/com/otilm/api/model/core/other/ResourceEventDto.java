@@ -9,10 +9,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class ResourceEventDto {
 
-    @Schema(description = "Resource event code",
-            examples = {"discoveryFinished"},
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            implementation = ResourceEvent.class)
+    @Schema(description = "Resource event code", examples = {
+            "discoveryFinished"}, requiredMode = Schema.RequiredMode.REQUIRED, implementation = ResourceEvent.class)
     private ResourceEvent event;
 
     @Schema(description = "Resource of objects that are subject of event", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

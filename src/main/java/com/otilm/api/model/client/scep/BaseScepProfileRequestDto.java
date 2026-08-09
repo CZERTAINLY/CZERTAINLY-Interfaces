@@ -6,94 +6,64 @@ import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsRequestD
 import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.List;
-
 @Data
 public class BaseScepProfileRequestDto {
-    @Schema(
-            description = "Description of the SCEP Profile",
-            examples = {"Sample description"}
-    )
+    @Schema(description = "Description of the SCEP Profile", examples = {"Sample description"})
     private String description;
 
-    @Schema(
-            description = "RA Profile UUID",
-            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
-    )
+    @Schema(description = "RA Profile UUID", examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"})
     private String raProfileUuid;
 
-    @Schema(
-            description = "List of Attributes to issue Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "List of Attributes to issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> issueCertificateAttributes;
 
-    @Schema(
-            description = "UUID of the Certificate to be used as CA Certificate for SCEP Requests",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "UUID of the Certificate to be used as CA Certificate for SCEP Requests", requiredMode = Schema.RequiredMode.REQUIRED)
     private String caCertificateUuid;
 
-    @Schema(
-            description = "List of Custom Attributes"
-    )
+    @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
-    @Schema(
-            description = "Minimum expiry days to allow renewal of certificate. Empty or the value '0' will be " +
-                    "considered as null and half life of the certificate validity will be considered for the protocol. Default value is half of certificate validity."
-    )
+    @Schema(description = "Minimum expiry days to allow renewal of certificate. Empty or the value '0' will be "
+            + "considered as null and half life of the certificate validity will be considered for the protocol. Default value is half of certificate validity.")
     private Integer renewalThreshold;
 
-    @Schema(
-            description = "Include CA Certificate in the SCEP Message response",
-            defaultValue = "False"
-    )
+    @Schema(description = "Include CA Certificate in the SCEP Message response", defaultValue = "False")
     private boolean includeCaCertificate;
 
-    @Schema(
-            description = "Include CA Certificate Chain in the SCEP Message response",
-            defaultValue = "False"
-    )
+    @Schema(description = "Include CA Certificate Chain in the SCEP Message response", defaultValue = "False")
     private boolean includeCaCertificateChain;
 
     @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(description = "Challenge Password for the SCEP Request (write-only).",
-            accessMode = Schema.AccessMode.WRITE_ONLY)
+    @Schema(description = "Challenge Password for the SCEP Request (write-only).", accessMode = Schema.AccessMode.WRITE_ONLY)
     private String challengePassword;
 
     /**
-     * Tri-state toggle governing the write-only {@link #challengePassword}. The form does not prefill the
-     * secret, so a blank value must never be treated as "clear".
+     * Tri-state toggle governing the write-only {@link #challengePassword}. The form does not prefill the secret, so a
+     * blank value must never be treated as "clear".
      * <ul>
-     *   <li>{@code null} (field absent) — keep the stored password unchanged; on create this means no password
-     *       unless a value is supplied (legacy / opt-out behavior).</li>
-     *   <li>{@code true} + non-blank {@code challengePassword} — set the new password.</li>
-     *   <li>{@code true} + blank {@code challengePassword} — keep the stored password; rejected when none is stored.</li>
-     *   <li>{@code false} — clear / do not set a challenge password.</li>
+     * <li>{@code null} (field absent) — keep the stored password unchanged; on create this means no password unless a
+     * value is supplied (legacy / opt-out behavior).</li>
+     * <li>{@code true} + non-blank {@code challengePassword} — set the new password.</li>
+     * <li>{@code true} + blank {@code challengePassword} — keep the stored password; rejected when none is stored.</li>
+     * <li>{@code false} — clear / do not set a challenge password.</li>
      * </ul>
-     * MUST stay nullable and MUST mean keep-when-null. Do NOT normalize it with {@code Boolean.TRUE.equals(...)}
-     * like {@code enableIntune}: that would turn an absent toggle into {@code false} and silently wipe stored
-     * passwords for clients that do not send the field.
+     * MUST stay nullable and MUST mean keep-when-null. Do NOT normalize it with {@code Boolean.TRUE.equals(...)} like
+     * {@code enableIntune}: that would turn an absent toggle into {@code false} and silently wipe stored passwords for
+     * clients that do not send the field.
      */
-    @Schema(
-            description = "Challenge password protection toggle. Omit to keep the stored password unchanged; "
-                    + "true to set a new password (or keep the existing one if left blank); false to remove it.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Challenge password protection toggle. Omit to keep the stored password unchanged; "
+            + "true to set a new password (or keep the existing one if left blank); false to remove it.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean enableChallengePassword;
 
-    @Schema(
-            description = "Source of the enrolment challenge ('protocolDefault' or 'certificateRegistration'). "
-                    + "'protocolDefault' authenticates against the shared challenge password; "
-                    + "'certificateRegistration' requires every initial enrolment to match a pre-registered certificate and "
-                    + "forbids a profile challenge password. Omit to keep the stored value on edit; on create, omit to default to 'protocolDefault'.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Source of the enrolment challenge ('protocolDefault' or 'certificateRegistration'). "
+            + "'protocolDefault' authenticates against the shared challenge password; "
+            + "'certificateRegistration' requires every initial enrolment to match a pre-registered certificate and "
+            + "forbids a profile challenge password. Omit to keep the stored value on edit; on create, omit to default to 'protocolDefault'.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolChallengeSource challengeSource;
 
     @Schema(description = "Status of Intune")
@@ -107,8 +77,7 @@ public class BaseScepProfileRequestDto {
 
     @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(description = "Intune Application Key (write-only).",
-            accessMode = Schema.AccessMode.WRITE_ONLY)
+    @Schema(description = "Intune Application Key (write-only).", accessMode = Schema.AccessMode.WRITE_ONLY)
     private String intuneApplicationKey;
 
     @Valid

@@ -1,9 +1,8 @@
 package com.otilm.api.model.core.settings;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 @Data
 public class CertificateValidationSettingsDto implements Serializable {

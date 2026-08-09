@@ -7,14 +7,21 @@ import com.otilm.api.exception.ValidationException;
 import com.otilm.api.interfaces.client.v1.CryptographicOperationsSyncApiClient;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
-import com.otilm.api.model.connector.cryptography.operations.*;
+import com.otilm.api.model.connector.cryptography.operations.CipherDataRequestDto;
+import com.otilm.api.model.connector.cryptography.operations.DecryptDataResponseDto;
+import com.otilm.api.model.connector.cryptography.operations.EncryptDataResponseDto;
+import com.otilm.api.model.connector.cryptography.operations.RandomDataRequestDto;
+import com.otilm.api.model.connector.cryptography.operations.RandomDataResponseDto;
+import com.otilm.api.model.connector.cryptography.operations.SignDataRequestDto;
+import com.otilm.api.model.connector.cryptography.operations.SignDataResponseDto;
+import com.otilm.api.model.connector.cryptography.operations.VerifyDataRequestDto;
+import com.otilm.api.model.connector.cryptography.operations.VerifyDataResponseDto;
+import java.util.List;
+import javax.net.ssl.TrustManager;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import javax.net.ssl.TrustManager;
-import java.util.List;
 
 public class CryptographicOperationsApiClient extends BaseApiClient implements CryptographicOperationsSyncApiClient {
 
@@ -36,7 +43,8 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
     }
 
     @Override
-    public EncryptDataResponseDto encryptData(ApiClientConnectorInfo connector, String uuid, String keyUuid, CipherDataRequestDto requestDto) throws ConnectorException {
+    public EncryptDataResponseDto encryptData(ApiClientConnectorInfo connector, String uuid, String keyUuid,
+            CipherDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -44,13 +52,13 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .body(Mono.just(requestDto), CipherDataRequestDto.class)
                 .retrieve()
                 .toEntity(EncryptDataResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public DecryptDataResponseDto decryptData(ApiClientConnectorInfo connector, String uuid, String keyUuid, CipherDataRequestDto requestDto) throws ConnectorException {
+    public DecryptDataResponseDto decryptData(ApiClientConnectorInfo connector, String uuid, String keyUuid,
+            CipherDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -58,14 +66,13 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .body(Mono.just(requestDto), CipherDataRequestDto.class)
                 .retrieve()
                 .toEntity(DecryptDataResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
-
     @Override
-    public SignDataResponseDto signData(ApiClientConnectorInfo connector, String uuid, String keyUuid, SignDataRequestDto requestDto) throws ConnectorException {
+    public SignDataResponseDto signData(ApiClientConnectorInfo connector, String uuid, String keyUuid,
+            SignDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -73,13 +80,13 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .body(Mono.just(requestDto), SignDataRequestDto.class)
                 .retrieve()
                 .toEntity(SignDataResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public VerifyDataResponseDto verifyData(ApiClientConnectorInfo connector, String uuid, String keyUuid, VerifyDataRequestDto requestDto) throws ConnectorException {
+    public VerifyDataResponseDto verifyData(ApiClientConnectorInfo connector, String uuid, String keyUuid,
+            VerifyDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -87,26 +94,26 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .body(Mono.just(requestDto), VerifyDataRequestDto.class)
                 .retrieve()
                 .toEntity(VerifyDataResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public List<BaseAttribute> listRandomAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listRandomAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
                 .uri(connector.getUrl() + CRYPTOP_RANDOM_ATTRS_CONTEXT, uuid)
                 .retrieve()
                 .toEntityList(BaseAttribute.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public void validateRandomAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateRandomAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -114,13 +121,13 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .body(Mono.just(attributes), ATTRIBUTE_LIST_TYPE_REF)
                 .retrieve()
                 .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public RandomDataResponseDto randomData(ApiClientConnectorInfo connector, String uuid, RandomDataRequestDto requestDto) throws ConnectorException {
+    public RandomDataResponseDto randomData(ApiClientConnectorInfo connector, String uuid,
+            RandomDataRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -128,9 +135,8 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .body(Mono.just(requestDto), RandomDataRequestDto.class)
                 .retrieve()
                 .toEntity(RandomDataResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
 }

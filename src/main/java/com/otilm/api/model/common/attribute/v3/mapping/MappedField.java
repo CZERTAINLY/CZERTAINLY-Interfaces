@@ -6,22 +6,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "fieldType", visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = RdnMappedField.class, name = FieldType.Codes.RDN),
+@JsonSubTypes({@JsonSubTypes.Type(value = RdnMappedField.class, name = FieldType.Codes.RDN),
         @JsonSubTypes.Type(value = SanMappedField.class, name = FieldType.Codes.SAN),
-        @JsonSubTypes.Type(value = ExtensionMappedField.class, name = FieldType.Codes.EXTENSION)
-})
-@Schema(
-        description = "Describes a single target field within an object; concrete type is determined by fieldType",
-        subTypes = {RdnMappedField.class, SanMappedField.class, ExtensionMappedField.class}
-)
+        @JsonSubTypes.Type(value = ExtensionMappedField.class, name = FieldType.Codes.EXTENSION)})
+@Schema(description = "Describes a single target field within an object; concrete type is determined by fieldType", subTypes = {
+        RdnMappedField.class, SanMappedField.class, ExtensionMappedField.class})
 public abstract class MappedField implements Serializable {
 
     @Schema(description = "Field type, determines the concrete subtype", requiredMode = Schema.RequiredMode.REQUIRED)

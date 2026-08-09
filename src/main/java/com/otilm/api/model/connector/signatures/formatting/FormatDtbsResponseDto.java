@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class FormatDtbsResponseDto {
 
-    @Schema(
-            description = "Data-to-be-signed bytes (e.g. DER-encoded TSTInfo for TSA)",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Data-to-be-signed bytes (e.g. DER-encoded TSTInfo for TSA)", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] dtbs;
 }

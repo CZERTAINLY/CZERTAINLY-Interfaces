@@ -2,9 +2,8 @@ package com.otilm.api.model.client.signing.protocols.tsp;
 
 import com.otilm.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 @Schema(name = "TspBasicCredentialDto", description = "Read-only view of a Basic credential on a TSP Profile.")

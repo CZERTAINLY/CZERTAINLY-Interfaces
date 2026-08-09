@@ -1,21 +1,19 @@
 package com.otilm.api.model.core.connector;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 @Setter
 @Getter
 @Schema(name = "ConnectorDto", description = "Connector details (V1)")
 public class ConnectorDto extends ConnectorApiClientDtoV1 {
 
-    @Schema(description = "List of Function Groups implemented by the Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Function Groups implemented by the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<FunctionGroupDto> functionGroups;
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttribute> customAttributes;

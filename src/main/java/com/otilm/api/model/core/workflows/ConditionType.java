@@ -1,19 +1,17 @@
 package com.otilm.api.model.core.workflows;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ConditionType implements IPlatformEnum {
 
-    CHECK_FIELD("checkField", "Check Field", null)
-    ;
+    CHECK_FIELD("checkField", "Check Field", null);
 
     private static final ConditionType[] VALUES;
 
@@ -33,7 +31,6 @@ public enum ConditionType implements IPlatformEnum {
         this.description = description;
     }
 
-
     @Override
     @JsonValue
     public String getCode() {
@@ -52,11 +49,12 @@ public enum ConditionType implements IPlatformEnum {
 
     @JsonCreator
     public static ConditionType findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown condition type code {}", code)));
+                .orElseThrow(
+                        () -> new ValidationException(ValidationError.create("Unknown condition type code {}", code)));
     }
 
 }

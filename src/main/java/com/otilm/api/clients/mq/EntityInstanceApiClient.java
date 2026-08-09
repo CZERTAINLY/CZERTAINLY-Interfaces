@@ -14,9 +14,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Message queue based Entity Instance API client for connectors.
- * Uses ProxyClient to send entity instance requests via message queue
- * instead of direct REST calls.
+ * Message queue based Entity Instance API client for connectors. Uses ProxyClient to send entity instance requests via
+ * message queue instead of direct REST calls.
  */
 public class EntityInstanceApiClient implements EntityInstanceSyncApiClient {
 
@@ -34,107 +33,62 @@ public class EntityInstanceApiClient implements EntityInstanceSyncApiClient {
 
     @Override
     public List<EntityInstanceDto> listEntityInstances(ApiClientConnectorInfo connector) throws ConnectorException {
-        EntityInstanceDto[] result = proxyClient.sendRequest(
-                connector,
-                BASE_PATH,
-                HTTP_METHOD_GET,
-                null,
-                EntityInstanceDto[].class
-        );
+        EntityInstanceDto[] result = proxyClient
+                .sendRequest(connector, BASE_PATH, HTTP_METHOD_GET, null, EntityInstanceDto[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public EntityInstanceDto getEntityInstance(ApiClientConnectorInfo connector, String entityUuid) throws ConnectorException {
+    public EntityInstanceDto getEntityInstance(ApiClientConnectorInfo connector, String entityUuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + entityUuid;
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                EntityInstanceDto.class
-        );
+        return proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, EntityInstanceDto.class);
     }
 
     @Override
-    public EntityInstanceDto createEntityInstance(ApiClientConnectorInfo connector, EntityInstanceRequestDto requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(
-                connector,
-                BASE_PATH,
-                HTTP_METHOD_POST,
-                requestDto,
-                EntityInstanceDto.class
-        );
+    public EntityInstanceDto createEntityInstance(ApiClientConnectorInfo connector, EntityInstanceRequestDto requestDto)
+            throws ConnectorException {
+        return proxyClient.sendRequest(connector, BASE_PATH, HTTP_METHOD_POST, requestDto, EntityInstanceDto.class);
     }
 
     @Override
-    public EntityInstanceDto updateEntityInstance(ApiClientConnectorInfo connector, String entityUuid, EntityInstanceRequestDto requestDto) throws ConnectorException {
+    public EntityInstanceDto updateEntityInstance(ApiClientConnectorInfo connector, String entityUuid,
+            EntityInstanceRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + entityUuid;
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_PUT,
-                requestDto,
-                EntityInstanceDto.class
-        );
+        return proxyClient.sendRequest(connector, path, HTTP_METHOD_PUT, requestDto, EntityInstanceDto.class);
     }
 
     @Override
     public void removeEntityInstance(ApiClientConnectorInfo connector, String entityUuid) throws ConnectorException {
         String path = BASE_PATH + "/" + entityUuid;
-        proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_DELETE,
-                null,
-                Void.class
-        );
+        proxyClient.sendRequest(connector, path, HTTP_METHOD_DELETE, null, Void.class);
     }
 
     @Override
-    public List<BaseAttribute> listLocationAttributes(ApiClientConnectorInfo connector, String entityUuid) throws ConnectorException {
+    public List<BaseAttribute> listLocationAttributes(ApiClientConnectorInfo connector, String entityUuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + entityUuid + "/location/attributes";
-        BaseAttribute[] result = proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                BaseAttribute[].class
-        );
+        BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public void validateLocationAttributes(ApiClientConnectorInfo connector, String entityUuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateLocationAttributes(ApiClientConnectorInfo connector, String entityUuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = BASE_PATH + "/" + entityUuid + "/location/attributes/validate";
-        proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_POST,
-                attributes,
-                Void.class
-        );
+        proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     // Async variants
     public CompletableFuture<List<EntityInstanceDto>> listEntityInstancesAsync(ApiClientConnectorInfo connector) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                BASE_PATH,
-                HTTP_METHOD_GET,
-                null,
-                EntityInstanceDto[].class
-        ).thenApply(Arrays::asList);
+        return proxyClient
+                .sendRequestAsync(connector, BASE_PATH, HTTP_METHOD_GET, null, EntityInstanceDto[].class)
+                .thenApply(Arrays::asList);
     }
 
-    public CompletableFuture<EntityInstanceDto> getEntityInstanceAsync(ApiClientConnectorInfo connector, String entityUuid) {
+    public CompletableFuture<EntityInstanceDto> getEntityInstanceAsync(ApiClientConnectorInfo connector,
+            String entityUuid) {
         String path = BASE_PATH + "/" + entityUuid;
-        return proxyClient.sendRequestAsync(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                EntityInstanceDto.class
-        );
+        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_GET, null, EntityInstanceDto.class);
     }
 }

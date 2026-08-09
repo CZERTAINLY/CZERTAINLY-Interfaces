@@ -2,12 +2,11 @@ package com.otilm.api.model.core.auth;
 
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +17,6 @@ public class RoleDetailDto extends RoleDto {
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttribute> customAttributes;
-
 
     @Override
     public String toString() {

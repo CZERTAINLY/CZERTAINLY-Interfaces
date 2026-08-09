@@ -1,7 +1,10 @@
 package com.otilm.api.model.client.signing;
 
-import com.otilm.api.exception.ValidationException;
-import com.otilm.api.model.common.NameAndUuidDto;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.otilm.api.model.client.signing.profile.scheme.DelegatedSigningDto;
 import com.otilm.api.model.client.signing.profile.scheme.DelegatedSigningRequestDto;
 import com.otilm.api.model.client.signing.profile.scheme.ManagedSigningDto;
@@ -23,19 +26,16 @@ import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowD
 import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.WorkflowDto;
 import com.otilm.api.model.client.signing.profile.workflow.WorkflowRequestDto;
+import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.certificate.CertificateSimpleDto;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PolymorphicSerializationTest {
 
@@ -117,8 +117,7 @@ class PolymorphicSerializationTest {
                 }
                 """;
 
-        WorkflowRequestDto base =
-                mapper.readValue(json, WorkflowRequestDto.class);
+        WorkflowRequestDto base = mapper.readValue(json, WorkflowRequestDto.class);
 
         assertInstanceOf(TimestampingWorkflowRequestDto.class, base);
         TimestampingWorkflowRequestDto result = (TimestampingWorkflowRequestDto) base;
@@ -151,7 +150,8 @@ class PolymorphicSerializationTest {
 
         assertInstanceOf(TimestampingWorkflowRequestDto.class, deserialized);
         TimestampingWorkflowRequestDto result = (TimestampingWorkflowRequestDto) deserialized;
-        assertEquals(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"), result.getSignatureFormattingConnectorUuid());
+        assertEquals(UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
+                result.getSignatureFormattingConnectorUuid());
     }
 
     // -------------------------------------------------------------------------
@@ -217,7 +217,8 @@ class PolymorphicSerializationTest {
         assertInstanceOf(ContentSigningWorkflowRequestDto.class, base);
         ContentSigningWorkflowRequestDto result = (ContentSigningWorkflowRequestDto) base;
         assertEquals(SigningWorkflowType.CONTENT_SIGNING, result.getType());
-        assertEquals(UUID.fromString("11111111-2222-3333-4444-555555555555"), result.getSignatureFormattingConnectorUuid());
+        assertEquals(UUID.fromString("11111111-2222-3333-4444-555555555555"),
+                result.getSignatureFormattingConnectorUuid());
     }
 
     // -------------------------------------------------------------------------

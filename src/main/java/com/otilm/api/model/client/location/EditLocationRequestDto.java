@@ -2,12 +2,11 @@ package com.otilm.api.model.client.location;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /**
  * Class representing Location edit/update request from clients
@@ -16,29 +15,21 @@ import java.util.List;
 @Getter
 public class EditLocationRequestDto {
 
-    @Schema(
-            description = "Description of the Location"
-    )
+    @Schema(description = "Description of the Location")
     private String description;
 
-    @Schema(
-            description = "List of Attributes for Location",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "List of Attributes for Location", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
-    @Schema(
-            description = "Enabled flag - true = enabled; false = disabled"
-    )
+    @Schema(description = "Enabled flag - true = enabled; false = disabled")
     private Boolean enabled;
 
     public Boolean isEnabled() {
         return enabled;
     }
-
 
     @Override
     public String toString() {

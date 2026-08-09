@@ -1,19 +1,16 @@
 package com.otilm.api.model.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
-
 public class NameAndIdDto implements Serializable {
 
-    @Schema(description = "Object identifier",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Object identifier", requiredMode = Schema.RequiredMode.REQUIRED)
     private int id;
 
-    @Schema(description = "Object name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Object name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     public NameAndIdDto() {

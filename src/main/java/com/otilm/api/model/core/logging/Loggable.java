@@ -12,4 +12,3 @@ public interface Loggable {
 
     List<UUID> toLogResourceObjectsUuids();
 }
-

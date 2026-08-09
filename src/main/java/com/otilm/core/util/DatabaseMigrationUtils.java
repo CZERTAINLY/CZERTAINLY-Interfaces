@@ -8,8 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.zip.CRC32;
 
 /**
- * Helper class for calculating checksums of files.
- * And for storing the checksums of the Java-based migrations.
+ * Helper class for calculating checksums of files. And for storing the checksums of the Java-based migrations.
  *
  * Inspired by <a href="https://github.com/zaunerc/flyway-checksum-tool">flyway-checksum-tool</a>
  */
@@ -25,11 +24,12 @@ public class DatabaseMigrationUtils {
         final File file = new File(filePath);
         final CRC32 crc32 = new CRC32();
 
-        try (FileReader fileReader = new FileReader(file); BufferedReader bufferedReader = new BufferedReader(fileReader, 4096)) {
+        try (FileReader fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader, 4096)) {
             String line;
             boolean firstLineProcessed = false;
             while ((line = bufferedReader.readLine()) != null) {
-                if(!firstLineProcessed) {
+                if (!firstLineProcessed) {
                     line = filterBomFromString(line);
                     firstLineProcessed = true;
                 }
@@ -47,6 +47,7 @@ public class DatabaseMigrationUtils {
 
     /**
      * Determine if this char is a UTF-8 Byte Order Mark
+     *
      * @param c The char to check
      * @return Whether this char is a UTF-8 Byte Order Mark
      */
@@ -56,6 +57,7 @@ public class DatabaseMigrationUtils {
 
     /**
      * Removes the UTF-8 Byte Order Mark from the start of a string if present.
+     *
      * @param s The string
      * @return The string without a Byte Order Mark at the start
      */

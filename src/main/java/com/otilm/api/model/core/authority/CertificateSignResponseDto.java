@@ -9,8 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class CertificateSignResponseDto {
 
-    @Schema(description = "Base64 encoded Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 encoded Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateData;
 
     public String getCertificateData() {
@@ -28,4 +27,3 @@ public class CertificateSignResponseDto {
                 .toString();
     }
 }
-

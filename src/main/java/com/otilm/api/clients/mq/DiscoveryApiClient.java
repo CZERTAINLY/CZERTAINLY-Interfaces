@@ -10,15 +10,18 @@ import com.otilm.api.model.connector.discovery.DiscoveryRequestDto;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Message queue based discovery API client for connectors.
- * Uses ProxyClient to send discovery requests via message queue
- * instead of direct REST calls.
+ * Message queue based discovery API client for connectors. Uses ProxyClient to send discovery requests via message
+ * queue instead of direct REST calls.
  *
- * <p>This client maintains the same signature as the REST-based DiscoveryApiClient
- * to ensure compatibility with existing code.</p>
+ * <p>
+ * This client maintains the same signature as the REST-based DiscoveryApiClient to ensure compatibility with existing
+ * code.
+ * </p>
  *
- * <p>Usage: Inject this client when the connector has a proxyId set.
- * For connectors without proxyId, use the REST-based DiscoveryApiClient.</p>
+ * <p>
+ * Usage: Inject this client when the connector has a proxyId set. For connectors without proxyId, use the REST-based
+ * DiscoveryApiClient.
+ * </p>
  */
 public class DiscoveryApiClient implements DiscoverySyncApiClient {
 
@@ -38,73 +41,50 @@ public class DiscoveryApiClient implements DiscoverySyncApiClient {
     }
 
     @Override
-    public DiscoveryProviderDto discoverCertificates(ApiClientConnectorInfo connector, DiscoveryRequestDto requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(
-                connector,
-                DISCOVERY_BASE_PATH,
-                HTTP_METHOD_POST,
-                requestDto,
-                DiscoveryProviderDto.class
-        );
+    public DiscoveryProviderDto discoverCertificates(ApiClientConnectorInfo connector, DiscoveryRequestDto requestDto)
+            throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, DISCOVERY_BASE_PATH, HTTP_METHOD_POST, requestDto, DiscoveryProviderDto.class);
     }
 
     @Override
-    public DiscoveryProviderDto getDiscoveryData(ApiClientConnectorInfo connector, DiscoveryDataRequestDto requestDto, String uuid) throws ConnectorException {
+    public DiscoveryProviderDto getDiscoveryData(ApiClientConnectorInfo connector, DiscoveryDataRequestDto requestDto,
+            String uuid) throws ConnectorException {
         String path = DISCOVERY_BASE_PATH + "/" + uuid;
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_POST,
-                requestDto,
-                DiscoveryProviderDto.class
-        );
+        return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, DiscoveryProviderDto.class);
     }
 
     @Override
     public void removeDiscovery(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
         String path = DISCOVERY_BASE_PATH + "/" + uuid;
-        proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_DELETE,
-                null,
-                Void.class
-        );
+        proxyClient.sendRequest(connector, path, HTTP_METHOD_DELETE, null, Void.class);
     }
 
     /**
      * Async version of discoverCertificates.
      *
-     * @param connector  Connector configuration (must have proxyId set)
+     * @param connector Connector configuration (must have proxyId set)
      * @param requestDto Discovery request parameters
      * @return CompletableFuture that completes with DiscoveryProviderDto
      */
-    public CompletableFuture<DiscoveryProviderDto> discoverCertificatesAsync(ApiClientConnectorInfo connector, DiscoveryRequestDto requestDto) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                DISCOVERY_BASE_PATH,
-                HTTP_METHOD_POST,
-                requestDto,
-                DiscoveryProviderDto.class
-        );
+    public CompletableFuture<DiscoveryProviderDto> discoverCertificatesAsync(ApiClientConnectorInfo connector,
+            DiscoveryRequestDto requestDto) {
+        return proxyClient
+                .sendRequestAsync(connector, DISCOVERY_BASE_PATH, HTTP_METHOD_POST, requestDto,
+                        DiscoveryProviderDto.class);
     }
 
     /**
      * Async version of getDiscoveryData.
      *
-     * @param connector  Connector configuration (must have proxyId set)
+     * @param connector Connector configuration (must have proxyId set)
      * @param requestDto Discovery data request with pagination
-     * @param uuid       Discovery UUID at the connector
+     * @param uuid Discovery UUID at the connector
      * @return CompletableFuture that completes with DiscoveryProviderDto
      */
-    public CompletableFuture<DiscoveryProviderDto> getDiscoveryDataAsync(ApiClientConnectorInfo connector, DiscoveryDataRequestDto requestDto, String uuid) {
+    public CompletableFuture<DiscoveryProviderDto> getDiscoveryDataAsync(ApiClientConnectorInfo connector,
+            DiscoveryDataRequestDto requestDto, String uuid) {
         String path = DISCOVERY_BASE_PATH + "/" + uuid;
-        return proxyClient.sendRequestAsync(
-                connector,
-                path,
-                HTTP_METHOD_POST,
-                requestDto,
-                DiscoveryProviderDto.class
-        );
+        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, DiscoveryProviderDto.class);
     }
 }

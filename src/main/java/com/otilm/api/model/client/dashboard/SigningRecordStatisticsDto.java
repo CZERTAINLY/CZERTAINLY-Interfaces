@@ -1,18 +1,17 @@
 package com.otilm.api.model.client.dashboard;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Map;
 import lombok.Data;
 
-import java.util.Map;
-
 /**
- * Statistics for the Signing Records dashboard. Every figure is sourced from the shared
- * {@code signing_record} table (never per-instance metrics) and is security-filtered identically
- * to the Signing Records list endpoint, so the numbers are cluster-wide consistent and scoped to
- * the signing profiles the caller may access.
+ * Statistics for the Signing Records dashboard. Every figure is sourced from the shared {@code signing_record} table
+ * (never per-instance metrics) and is security-filtered identically to the Signing Records list endpoint, so the
+ * numbers are cluster-wide consistent and scoped to the signing profiles the caller may access.
  *
- * <p>A retained row is not the same as a signing that happened: recording is opt-in per signing
- * profile and retention deletes rows, so counts describe what is currently <em>retained</em>.
+ * <p>
+ * A retained row is not the same as a signing that happened: recording is opt-in per signing profile and retention
+ * deletes rows, so counts describe what is currently <em>retained</em>.
  */
 @Data
 @Schema(name = "SigningRecordStatisticsDto", description = "Signing Records dashboard statistics")

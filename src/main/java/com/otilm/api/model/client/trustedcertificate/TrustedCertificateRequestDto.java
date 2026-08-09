@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TrustedCertificateRequestDto {
 
-    @Schema(
-            description = "Raw certificate content serialized as Base64 String in JSON",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Raw certificate content serialized as Base64 String in JSON", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] certificateContent;
 
 }

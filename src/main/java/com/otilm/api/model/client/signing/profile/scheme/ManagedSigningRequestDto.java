@@ -1,6 +1,5 @@
 package com.otilm.api.model.client.signing.profile.scheme;
 
-import com.otilm.api.exception.ValidationException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,24 +7,27 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.otilm.api.exception.ValidationException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import java.io.IOException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.IOException;
 
 /**
  * Abstract base for all managed signing request configurations.
  *
- * <p>This is the request-side counterpart of {@link ManagedSigningDto} and follows an identical
- * two-level polymorphic structure.
+ * <p>
+ * This is the request-side counterpart of {@link ManagedSigningDto} and follows an identical two-level polymorphic
+ * structure.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonDeserialize(using = ManagedSigningRequestDto.Deserializer.class)
 @Schema(implementation = ManagedSigningRequestSchemeInterface.class)
-public abstract class ManagedSigningRequestDto extends SigningSchemeRequestDto implements ManagedSigningRequestSchemeInterface {
+public abstract class ManagedSigningRequestDto extends SigningSchemeRequestDto
+        implements
+            ManagedSigningRequestSchemeInterface {
 
     @NotNull
     @Schema(description = "Managed signing type", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -37,8 +39,8 @@ public abstract class ManagedSigningRequestDto extends SigningSchemeRequestDto i
     }
 
     /**
-     * Custom deserializer that implements the second-level type resolution for managed signing
-     * requests. See {@link ManagedSigningDto.Deserializer} for a detailed explanation.
+     * Custom deserializer that implements the second-level type resolution for managed signing requests. See
+     * {@link ManagedSigningDto.Deserializer} for a detailed explanation.
      */
     public static class Deserializer extends StdDeserializer<ManagedSigningRequestDto> {
 
@@ -56,8 +58,11 @@ public abstract class ManagedSigningRequestDto extends SigningSchemeRequestDto i
             try {
                 type = ManagedSigningType.findByCode(typeId);
             } catch (ValidationException e) {
-                String errorMessage = typeId == null ? "Missing managedSigningType" : "Unknown managedSigningType: " + typeId;
-                throw InvalidTypeIdException.from(p, errorMessage, ctxt.constructType(ManagedSigningRequestDto.class), typeId);
+                String errorMessage = typeId == null
+                        ? "Missing managedSigningType"
+                        : "Unknown managedSigningType: " + typeId;
+                throw InvalidTypeIdException
+                        .from(p, errorMessage, ctxt.constructType(ManagedSigningRequestDto.class), typeId);
             }
 
             return switch (type) {

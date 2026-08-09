@@ -4,18 +4,22 @@ import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.interfaces.client.v2.ComplianceSyncApiClient;
-import com.otilm.api.model.connector.compliance.v2.*;
+import com.otilm.api.model.connector.compliance.v2.ComplianceGroupResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRequestDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRuleResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRulesBatchRequestDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRulesBatchResponseDto;
 import com.otilm.api.model.core.auth.Resource;
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
-
-import javax.net.ssl.TrustManager;
-import java.net.URI;
-import java.util.List;
-import java.util.UUID;
 
 public class ComplianceApiClient extends BaseApiClient implements ComplianceSyncApiClient {
 
@@ -37,7 +41,8 @@ public class ComplianceApiClient extends BaseApiClient implements ComplianceSync
     }
 
     @Override
-    public List<ComplianceRuleResponseDto> getComplianceRules(ApiClientConnectorInfo connector, String kind, Resource resource, String type, String format) throws ConnectorException {
+    public List<ComplianceRuleResponseDto> getComplianceRules(ApiClientConnectorInfo connector, String kind,
+            Resource resource, String type, String format) throws ConnectorException {
         URI uri;
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
         uriBuilder.path(COMPLIANCE_RULES_GET_CONTEXT.replace("{kind}", kind));
@@ -54,43 +59,40 @@ public class ComplianceApiClient extends BaseApiClient implements ComplianceSync
         uri = uriBuilder.build();
         WebClient.RequestBodySpec request = prepareRequest(HttpMethod.GET, connector, true).uri(uri);
 
-        return processRequest(r -> r
-                        .retrieve()
-                        .toEntityList(ComplianceRuleResponseDto.class)
-                        .block().getBody(),
-                request,
-                connector);
+        return processRequest(r -> r.retrieve().toEntityList(ComplianceRuleResponseDto.class).block().getBody(),
+                request, connector);
     }
 
     @Override
-    public ComplianceRuleResponseDto getComplianceRule(ApiClientConnectorInfo connector, String kind, UUID ruleUuid) throws ConnectorException {
+    public ComplianceRuleResponseDto getComplianceRule(ApiClientConnectorInfo connector, String kind, UUID ruleUuid)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + COMPLIANCE_RULE_GET_CONTEXT, kind, ruleUuid)
-                        .retrieve()
-                        .toEntity(ComplianceRuleResponseDto.class)
-                        .block().getBody(),
-                request,
-                connector);
+                .uri(connector.getUrl() + COMPLIANCE_RULE_GET_CONTEXT, kind, ruleUuid)
+                .retrieve()
+                .toEntity(ComplianceRuleResponseDto.class)
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public ComplianceRulesBatchResponseDto getComplianceRulesBatch(ApiClientConnectorInfo connector, String kind, ComplianceRulesBatchRequestDto requestDto) throws ConnectorException {
+    public ComplianceRulesBatchResponseDto getComplianceRulesBatch(ApiClientConnectorInfo connector, String kind,
+            ComplianceRulesBatchRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + COMPLIANCE_RULES_GET_CONTEXT, kind)
-                        .body(Mono.just(requestDto), ComplianceRulesBatchRequestDto.class)
-                        .retrieve()
-                        .toEntity(ComplianceRulesBatchResponseDto.class)
-                        .block().getBody(),
-                request,
-                connector);
+                .uri(connector.getUrl() + COMPLIANCE_RULES_GET_CONTEXT, kind)
+                .body(Mono.just(requestDto), ComplianceRulesBatchRequestDto.class)
+                .retrieve()
+                .toEntity(ComplianceRulesBatchResponseDto.class)
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public List<ComplianceGroupResponseDto> getComplianceGroups(ApiClientConnectorInfo connector, String kind, Resource resource) throws ConnectorException {
+    public List<ComplianceGroupResponseDto> getComplianceGroups(ApiClientConnectorInfo connector, String kind,
+            Resource resource) throws ConnectorException {
         URI uri;
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl());
         uriBuilder.path(COMPLIANCE_GROUPS_GET_CONTEXT.replace("{kind}", kind));
@@ -100,51 +102,47 @@ public class ComplianceApiClient extends BaseApiClient implements ComplianceSync
         }
         uri = uriBuilder.build();
         WebClient.RequestBodySpec request = prepareRequest(HttpMethod.GET, connector, true).uri(uri);
-        return processRequest(r -> r
-                        .retrieve()
-                        .toEntityList(ComplianceGroupResponseDto.class)
-                        .block().getBody(),
-                request,
-                connector);
+        return processRequest(r -> r.retrieve().toEntityList(ComplianceGroupResponseDto.class).block().getBody(),
+                request, connector);
     }
 
     @Override
-    public ComplianceGroupResponseDto getComplianceGroup(ApiClientConnectorInfo connector, String kind, UUID groupUuid) throws ConnectorException {
+    public ComplianceGroupResponseDto getComplianceGroup(ApiClientConnectorInfo connector, String kind, UUID groupUuid)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + COMPLIANCE_GROUP_GET_CONTEXT, kind, groupUuid)
-                        .retrieve()
-                        .toEntity(ComplianceGroupResponseDto.class)
-                        .block().getBody(),
-                request,
-                connector);
+                .uri(connector.getUrl() + COMPLIANCE_GROUP_GET_CONTEXT, kind, groupUuid)
+                .retrieve()
+                .toEntity(ComplianceGroupResponseDto.class)
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public List<ComplianceRuleResponseDto> getComplianceGroupRules(ApiClientConnectorInfo connector, String kind, UUID groupUuid) throws ConnectorException {
+    public List<ComplianceRuleResponseDto> getComplianceGroupRules(ApiClientConnectorInfo connector, String kind,
+            UUID groupUuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + COMPLIANCE_GROUP_RULES_CONTEXT, kind, groupUuid)
-                        .retrieve()
-                        .toEntityList(ComplianceRuleResponseDto.class)
-                        .block().getBody(),
-                request,
-                connector);
+                .uri(connector.getUrl() + COMPLIANCE_GROUP_RULES_CONTEXT, kind, groupUuid)
+                .retrieve()
+                .toEntityList(ComplianceRuleResponseDto.class)
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public ComplianceResponseDto checkCompliance(ApiClientConnectorInfo connector, String kind, ComplianceRequestDto requestDto) throws ConnectorException {
+    public ComplianceResponseDto checkCompliance(ApiClientConnectorInfo connector, String kind,
+            ComplianceRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + COMPLIANCE_CONTEXT, kind)
-                        .body(Mono.just(requestDto), ComplianceRequestDto.class)
-                        .retrieve()
-                        .toEntity(ComplianceResponseDto.class)
-                        .block().getBody(),
-                request,
-                connector);
+                .uri(connector.getUrl() + COMPLIANCE_CONTEXT, kind)
+                .body(Mono.just(requestDto), ComplianceRequestDto.class)
+                .retrieve()
+                .toEntity(ComplianceResponseDto.class)
+                .block()
+                .getBody(), request, connector);
     }
 }

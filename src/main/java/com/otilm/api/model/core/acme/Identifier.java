@@ -9,21 +9,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class Identifier {
     /**
-     * Field represents the type of the Identifier. This field primarily defined the
-     * DNS Identifier types
+     * Field represents the type of the Identifier. This field primarily defined the DNS Identifier types
      */
-    @Schema(description = "Type of the Identifier",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"dns"})
+    @Schema(description = "Type of the Identifier", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"dns"})
     private String type;
 
     /**
-     * Represents the value of the Identifier in {@link Identifier#type}
-     * This field is the Identifier itself
+     * Represents the value of the Identifier in {@link Identifier#type} This field is the Identifier itself
      */
-    @Schema(description = "Value of Identifier",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"www.some-domain.com"})
+    @Schema(description = "Value of Identifier", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "www.some-domain.com"})
     private String value;
 
     public Identifier() {

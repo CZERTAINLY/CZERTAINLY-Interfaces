@@ -6,8 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * This class contains set of properties to represent
- * an Attribute definition provided by the client
+ * This class contains set of properties to represent an Attribute definition provided by the client
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestAttributeDto {
@@ -15,29 +14,20 @@ public class RequestAttributeDto {
     /**
      * UUID of the Attribute
      **/
-    @Schema(
-            description = "UUID of the Attribute",
-            example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7"
-    )
+    @Schema(description = "UUID of the Attribute", example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
     private String uuid;
 
     /**
      * Name of the Attribute
      **/
-    @Schema(
-            description = "Name of the Attribute",
-            examples = {"Attribute"},
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Name of the Attribute", examples = {
+            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**
      * Content of the Attribute
      **/
-    @Schema(
-            description = "Content of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Content of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private Object content;
 
     public RequestAttributeDto() {

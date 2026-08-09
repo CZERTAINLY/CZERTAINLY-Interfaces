@@ -20,7 +20,7 @@ public class ComplianceResponseRulesDto {
     @Schema(description = "Rule status", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"ok"})
     private ComplianceRuleStatus status;
 
-    //Default getters and setters
+    // Default getters and setters
 
     public String getUuid() {
         return uuid;

@@ -1,10 +1,9 @@
 package com.otilm.api.model.connector.notification;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
 import java.util.Map;
+import lombok.Data;
 
 @Data
 @Schema(description = "Object data enabled on the notification profile, describing the event's subject object. Best-effort: categories the subject does not support, that are disabled, or that failed to load are absent")

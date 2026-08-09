@@ -1,16 +1,20 @@
 package com.otilm.api.interfaces.client.v2;
 
-import com.otilm.api.exception.ConnectorException;
-import com.otilm.api.model.connector.compliance.v2.*;
-import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.clients.ApiClientConnectorInfo;
-
+import com.otilm.api.exception.ConnectorException;
+import com.otilm.api.model.connector.compliance.v2.ComplianceGroupResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRequestDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRuleResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRulesBatchRequestDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRulesBatchResponseDto;
+import com.otilm.api.model.core.auth.Resource;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Synchronous API client interface for v2 Compliance Provider operations.
- * This interface provides an abstraction layer allowing both REST and MQ implementations.
+ * Synchronous API client interface for v2 Compliance Provider operations. This interface provides an abstraction layer
+ * allowing both REST and MQ implementations.
  */
 public interface ComplianceSyncApiClient {
 
@@ -25,7 +29,8 @@ public interface ComplianceSyncApiClient {
      * @return List of compliance rules
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    List<ComplianceRuleResponseDto> getComplianceRules(ApiClientConnectorInfo connector, String kind, Resource resource, String type, String format) throws ConnectorException;
+    List<ComplianceRuleResponseDto> getComplianceRules(ApiClientConnectorInfo connector, String kind, Resource resource,
+            String type, String format) throws ConnectorException;
 
     /**
      * Get a specific compliance rule by UUID.
@@ -36,7 +41,8 @@ public interface ComplianceSyncApiClient {
      * @return Compliance rule details
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    ComplianceRuleResponseDto getComplianceRule(ApiClientConnectorInfo connector, String kind, UUID ruleUuid) throws ConnectorException;
+    ComplianceRuleResponseDto getComplianceRule(ApiClientConnectorInfo connector, String kind, UUID ruleUuid)
+            throws ConnectorException;
 
     /**
      * Get compliance rules in batch.
@@ -47,7 +53,8 @@ public interface ComplianceSyncApiClient {
      * @return Batch response with rules and groups
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    ComplianceRulesBatchResponseDto getComplianceRulesBatch(ApiClientConnectorInfo connector, String kind, ComplianceRulesBatchRequestDto requestDto) throws ConnectorException;
+    ComplianceRulesBatchResponseDto getComplianceRulesBatch(ApiClientConnectorInfo connector, String kind,
+            ComplianceRulesBatchRequestDto requestDto) throws ConnectorException;
 
     /**
      * Get compliance groups for the given kind with optional filtering.
@@ -58,7 +65,8 @@ public interface ComplianceSyncApiClient {
      * @return List of compliance groups
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    List<ComplianceGroupResponseDto> getComplianceGroups(ApiClientConnectorInfo connector, String kind, Resource resource) throws ConnectorException;
+    List<ComplianceGroupResponseDto> getComplianceGroups(ApiClientConnectorInfo connector, String kind,
+            Resource resource) throws ConnectorException;
 
     /**
      * Get a specific compliance group by UUID.
@@ -69,7 +77,8 @@ public interface ComplianceSyncApiClient {
      * @return Compliance group details
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    ComplianceGroupResponseDto getComplianceGroup(ApiClientConnectorInfo connector, String kind, UUID groupUuid) throws ConnectorException;
+    ComplianceGroupResponseDto getComplianceGroup(ApiClientConnectorInfo connector, String kind, UUID groupUuid)
+            throws ConnectorException;
 
     /**
      * Get rules within a compliance group.
@@ -80,7 +89,8 @@ public interface ComplianceSyncApiClient {
      * @return List of rules in the group
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    List<ComplianceRuleResponseDto> getComplianceGroupRules(ApiClientConnectorInfo connector, String kind, UUID groupUuid) throws ConnectorException;
+    List<ComplianceRuleResponseDto> getComplianceGroupRules(ApiClientConnectorInfo connector, String kind,
+            UUID groupUuid) throws ConnectorException;
 
     /**
      * Check compliance of a resource against defined rules.
@@ -91,5 +101,6 @@ public interface ComplianceSyncApiClient {
      * @return Compliance response with rule results
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    ComplianceResponseDto checkCompliance(ApiClientConnectorInfo connector, String kind, ComplianceRequestDto requestDto) throws ConnectorException;
+    ComplianceResponseDto checkCompliance(ApiClientConnectorInfo connector, String kind,
+            ComplianceRequestDto requestDto) throws ConnectorException;
 }

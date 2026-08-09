@@ -2,11 +2,10 @@ package com.otilm.api.model.connector.compliance.v2;
 
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.UUID;
 
 /*
 List of groups information from the Compliance Provider.
@@ -21,10 +20,12 @@ public class ComplianceGroupResponseDto {
     @Schema(description = "Name of the group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"RFC"})
     private String name;
 
-    @Schema(description = "Description of the group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample description of the group"})
+    @Schema(description = "Description of the group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            "Sample description of the group"})
     private String description;
 
-    @Schema(description = "Resource of the group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {Resource.Codes.CERTIFICATE})
+    @Schema(description = "Resource of the group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            Resource.Codes.CERTIFICATE})
     private Resource resource;
 
 }

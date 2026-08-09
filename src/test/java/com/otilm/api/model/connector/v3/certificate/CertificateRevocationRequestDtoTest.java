@@ -1,10 +1,9 @@
 package com.otilm.api.model.connector.v3.certificate;
 
-import com.otilm.api.model.core.authority.CertificateRevocationReason;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
+import com.otilm.api.model.core.authority.CertificateRevocationReason;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,8 +22,7 @@ class CertificateRevocationRequestDtoTest {
         dto.setMeta(List.of());
 
         String json = mapper.writeValueAsString(dto);
-        CertificateRevocationRequestDtoV3 back =
-                mapper.readValue(json, CertificateRevocationRequestDtoV3.class);
+        CertificateRevocationRequestDtoV3 back = mapper.readValue(json, CertificateRevocationRequestDtoV3.class);
         assertEquals("MIIBkjCCATs...", back.getCertificate());
         assertEquals(CertificateRevocationReason.KEY_COMPROMISE, back.getReason());
     }

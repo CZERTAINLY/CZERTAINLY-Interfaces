@@ -2,12 +2,11 @@ package com.otilm.api.model.core.secret;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 public class SecretUpdateObjectsDto {

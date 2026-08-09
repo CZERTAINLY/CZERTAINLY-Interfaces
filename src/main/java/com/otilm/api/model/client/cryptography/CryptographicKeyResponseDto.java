@@ -2,9 +2,8 @@ package com.otilm.api.model.client.cryptography;
 
 import com.otilm.api.model.core.cryptography.key.KeyItemDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class CryptographicKeyResponseDto {

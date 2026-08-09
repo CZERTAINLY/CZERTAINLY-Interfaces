@@ -3,9 +3,8 @@ package com.otilm.api.model.connector.notification;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 @Schema(description = "Attribute values prepared for notification templates: plain scalar values or reference strings only, decoupled from internal attribute content versioning")

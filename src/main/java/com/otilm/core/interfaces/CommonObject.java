@@ -6,7 +6,10 @@ import java.util.Map;
 public interface CommonObject {
 
     Serializable getId();
+
     String getName();
+
     String getType();
+
     Map<? extends Serializable, ? extends Serializable> getAttributes();
 }

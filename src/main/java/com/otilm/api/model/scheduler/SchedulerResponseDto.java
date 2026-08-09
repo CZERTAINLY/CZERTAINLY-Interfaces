@@ -1,10 +1,9 @@
 package com.otilm.api.model.scheduler;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

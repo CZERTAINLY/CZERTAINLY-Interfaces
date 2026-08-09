@@ -5,9 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
-@Schema(
-        description = "Credential attribute content carrying information about credential to use",
-        type = "object")
+@Schema(description = "Credential attribute content carrying information about credential to use", type = "object")
 public class CredentialAttributeContentV2 extends BaseAttributeContentV2<CredentialAttributeContentData> {
 
     @Schema(description = "Credential attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -37,19 +35,22 @@ public class CredentialAttributeContentV2 extends BaseAttributeContentV2<Credent
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CredentialAttributeContentV2 that)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CredentialAttributeContentV2 that)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         return Objects.equals(data, that.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                super.hashCode()
-        );
+        return Objects.hash(super.hashCode());
     }
-
 
 }

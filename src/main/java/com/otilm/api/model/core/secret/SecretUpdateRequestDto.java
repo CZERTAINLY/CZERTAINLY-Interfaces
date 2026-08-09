@@ -3,10 +3,9 @@ package com.otilm.api.model.core.secret;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.connector.secrets.content.SecretContent;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class SecretUpdateRequestDto {

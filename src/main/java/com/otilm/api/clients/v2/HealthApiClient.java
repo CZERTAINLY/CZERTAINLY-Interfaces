@@ -5,10 +5,9 @@ import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.interfaces.client.v2.HealthSyncApiClient;
 import com.otilm.api.model.client.connector.v2.HealthInfo;
+import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import javax.net.ssl.TrustManager;
 
 public class HealthApiClient extends BaseApiClient implements HealthSyncApiClient {
 
@@ -19,36 +18,24 @@ public class HealthApiClient extends BaseApiClient implements HealthSyncApiClien
     @Override
     public HealthInfo checkHealth(ApiClientConnectorInfo connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
-        return processRequest(r -> r
-                        .uri(connector.getUrl() + "/v2/health")
-                        .retrieve()
-                        .bodyToMono(HealthInfo.class)
-                        .block(),
-                request,
+        return processRequest(
+                r -> r.uri(connector.getUrl() + "/v2/health").retrieve().bodyToMono(HealthInfo.class).block(), request,
                 connector);
     }
 
     @Override
     public HealthInfo checkHealthLiveness(ApiClientConnectorInfo connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
-        return processRequest(r -> r
-                        .uri(connector.getUrl() + "/v2/health/liveness")
-                        .retrieve()
-                        .bodyToMono(HealthInfo.class)
-                        .block(),
-                request,
-                connector);
+        return processRequest(
+                r -> r.uri(connector.getUrl() + "/v2/health/liveness").retrieve().bodyToMono(HealthInfo.class).block(),
+                request, connector);
     }
 
     @Override
     public HealthInfo checkHealthReadiness(ApiClientConnectorInfo connector) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
-        return processRequest(r -> r
-                        .uri(connector.getUrl() + "/v2/health/readiness")
-                        .retrieve()
-                        .bodyToMono(HealthInfo.class)
-                        .block(),
-                request,
-                connector);
+        return processRequest(
+                r -> r.uri(connector.getUrl() + "/v2/health/readiness").retrieve().bodyToMono(HealthInfo.class).block(),
+                request, connector);
     }
 }

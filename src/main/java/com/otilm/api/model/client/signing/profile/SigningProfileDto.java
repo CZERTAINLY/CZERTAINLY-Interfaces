@@ -2,17 +2,16 @@ package com.otilm.api.model.client.signing.profile;
 
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.client.signing.profile.record.SigningRecordPolicyDto;
-import com.otilm.api.model.common.NameAndUuidDto;
-import com.otilm.api.model.core.signing.SigningProtocol;
 import com.otilm.api.model.client.signing.profile.scheme.SigningSchemeDto;
 import com.otilm.api.model.client.signing.profile.workflow.WorkflowDto;
+import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.core.signing.SigningProtocol;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -29,8 +28,7 @@ public class SigningProfileDto extends NameAndUuidDto {
     @Schema(description = "Whether the Signing Profile is enabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
-    @Schema(description = "List of enabled protocols on this Signing Profile. Protocols are managed through dedicated enable/disable endpoints.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of enabled protocols on this Signing Profile. Protocols are managed through dedicated enable/disable endpoints.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<SigningProtocol> enabledProtocols = new ArrayList<>();
 
     @Schema(description = "Signing Scheme configuration", requiredMode = Schema.RequiredMode.REQUIRED)

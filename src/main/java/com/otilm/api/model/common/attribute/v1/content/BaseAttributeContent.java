@@ -4,7 +4,8 @@ public class BaseAttributeContent<T> extends AttributeContent {
 
     private T value;
 
-    public BaseAttributeContent() { }
+    public BaseAttributeContent() {
+    }
 
     public BaseAttributeContent(T value) {
         this.value = value;

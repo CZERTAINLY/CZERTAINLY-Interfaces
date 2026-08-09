@@ -3,41 +3,35 @@ package com.otilm.api.model.core.credential;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 @Setter
 @Getter
 public class CredentialDto extends NameAndUuidDto implements Serializable {
 
-    @Schema(description = "Credential Kind",
-            examples = {"SoftKeyStore, Basic, ApiKey, etc"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Credential Kind", examples = {
+            "SoftKeyStore, Basic, ApiKey, etc"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "List of Credential Attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Credential Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttribute> attributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttribute> customAttributes = new ArrayList<>();
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
-    @Schema(description = "UUID of Credential provider Connector",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUID of Credential provider Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Name of Credential provider Connector",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Name of Credential provider Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorName;
 
     @Override

@@ -2,38 +2,32 @@ package com.otilm.api.model.client.credential;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
-import java.util.List;
-
 @Setter
 @Getter
 public class CredentialRequestDto implements Serializable {
 
-    @Schema(description = "Credential name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Credential name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Credential Kind",
-            examples = {"SoftKeyStore, Basic, ApiKey, etc"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Credential Kind", examples = {
+            "SoftKeyStore, Basic, ApiKey, etc"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "List of Credential Attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Credential Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
-    @Schema(description = "UUID of Credential provider Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of Credential provider Connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
-
 
     @Override
     public String toString() {

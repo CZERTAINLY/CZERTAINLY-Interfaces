@@ -4,9 +4,12 @@ import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import com.otilm.api.model.core.cryptography.key.KeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -14,39 +17,21 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class TokenProfileDto extends NameAndUuidDto {
-    @Schema(
-            description = "Description of Token Profile",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Description of Token Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(
-            description = "UUID of Token Instance",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "UUID of Token Instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private String tokenInstanceUuid;
 
-    @Schema(
-            description = "Name of Token instance",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Name of Token instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private String tokenInstanceName;
 
-    @Schema(
-            description = "Token Instance Status",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Token Instance Status", requiredMode = Schema.RequiredMode.REQUIRED)
     private TokenInstanceStatus tokenInstanceStatus;
 
-    @Schema(
-            description = "Enabled flag - true = enabled; false = disabled",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
-    @Schema(
-            description = "Usages for the Keys assoiated to the profile",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Usages for the Keys assoiated to the profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<KeyUsage> usages;
 }

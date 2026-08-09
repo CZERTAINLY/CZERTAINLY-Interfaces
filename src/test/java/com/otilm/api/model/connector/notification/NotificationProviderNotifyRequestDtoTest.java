@@ -39,8 +39,8 @@ class NotificationProviderNotifyRequestDtoTest {
 
     @Test
     void deserializationToleratesAbsentObjectData() throws Exception {
-        NotificationProviderNotifyRequestDto request = mapper.readValue(
-                "{\"recipients\":[],\"eventType\":\"other\"}", NotificationProviderNotifyRequestDto.class);
+        NotificationProviderNotifyRequestDto request = mapper
+                .readValue("{\"recipients\":[],\"eventType\":\"other\"}", NotificationProviderNotifyRequestDto.class);
         assertNull(request.getObjectData());
     }
 
@@ -53,8 +53,8 @@ class NotificationProviderNotifyRequestDtoTest {
         objectData.setSubject(subject);
         request.setObjectData(objectData);
 
-        NotificationProviderNotifyRequestDto back = mapper.readValue(
-                mapper.writeValueAsString(request), NotificationProviderNotifyRequestDto.class);
+        NotificationProviderNotifyRequestDto back = mapper
+                .readValue(mapper.writeValueAsString(request), NotificationProviderNotifyRequestDto.class);
         assertEquals(request.getObjectData(), back.getObjectData());
     }
 }

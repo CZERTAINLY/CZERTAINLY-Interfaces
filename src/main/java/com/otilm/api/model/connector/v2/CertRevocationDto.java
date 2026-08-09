@@ -3,30 +3,25 @@ package com.otilm.api.model.connector.v2;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.authority.CertificateRevocationReason;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /**
  * Class with parameter to revoke any certificate.
  */
 public class CertRevocationDto {
 
-    @Schema(description = "Revocation reason",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Revocation reason", requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateRevocationReason reason;
 
-    @Schema(description = "List of RA Profiles attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttribute>raProfileAttributes;
+    @Schema(description = "List of RA Profiles attributes", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<RequestAttribute> raProfileAttributes;
 
-    @Schema(description = "List of Attributes to revoke Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttribute>attributes;
+    @Schema(description = "List of Attributes to revoke Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<RequestAttribute> attributes;
 
-    @Schema(description = "Base64 Certificate content. (Certificate to be revoked)",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 Certificate content. (Certificate to be revoked)", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     public CertificateRevocationReason getReason() {
@@ -37,11 +32,11 @@ public class CertRevocationDto {
         this.reason = reason;
     }
 
-    public List<RequestAttribute>getRaProfileAttributes() {
+    public List<RequestAttribute> getRaProfileAttributes() {
         return raProfileAttributes;
     }
 
-    public void setRaProfileAttributes(List<RequestAttribute>raProfileAttributes) {
+    public void setRaProfileAttributes(List<RequestAttribute> raProfileAttributes) {
         this.raProfileAttributes = raProfileAttributes;
     }
 
@@ -53,11 +48,11 @@ public class CertRevocationDto {
         this.certificate = certificate;
     }
 
-    public List<RequestAttribute>getAttributes() {
+    public List<RequestAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<RequestAttribute>attributes) {
+    public void setAttributes(List<RequestAttribute> attributes) {
         this.attributes = attributes;
     }
 

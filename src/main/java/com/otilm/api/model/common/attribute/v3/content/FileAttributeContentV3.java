@@ -1,15 +1,13 @@
 package com.otilm.api.model.common.attribute.v3.content;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.common.content.data.FileAttributeContentData;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(
-        description = "File attribute content for storing encoded file content with additional info",
-        type = "object")
+@Schema(description = "File attribute content for storing encoded file content with additional info", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class FileAttributeContentV3 extends BaseAttributeContentV3<FileAttributeContentData> {
 

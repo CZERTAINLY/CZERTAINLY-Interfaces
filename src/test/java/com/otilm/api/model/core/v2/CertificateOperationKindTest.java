@@ -1,7 +1,7 @@
 package com.otilm.api.model.core.v2;
 
-import com.otilm.api.exception.ValidationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.otilm.api.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,8 +20,7 @@ class CertificateOperationKindTest {
 
     @Test
     void deserializesFromWireCode() throws Exception {
-        assertSame(CertificateOperationKind.REVOKE,
-                mapper.readValue("\"REVOKE\"", CertificateOperationKind.class));
+        assertSame(CertificateOperationKind.REVOKE, mapper.readValue("\"REVOKE\"", CertificateOperationKind.class));
     }
 
     @Test

@@ -1,9 +1,8 @@
 package com.otilm.api.model.connector.v3.certificate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,8 +19,8 @@ class StatusDtosTest {
         dto.setReason(null);
 
         String json = mapper.writeValueAsString(dto);
-        CertificateOperationStatusResponseDto back =
-                mapper.readValue(json, CertificateOperationStatusResponseDto.class);
+        CertificateOperationStatusResponseDto back = mapper
+                .readValue(json, CertificateOperationStatusResponseDto.class);
         assertEquals(CertificateOperationStatus.COMPLETED, back.getStatus());
         assertEquals("MIIBkjCCATs...", back.getCertificateData());
     }
@@ -33,8 +32,8 @@ class StatusDtosTest {
         dto.setRaProfileAttributes(List.of());
         dto.setMeta(List.of());
         String json = mapper.writeValueAsString(dto);
-        CertificateOperationStatusRequestDtoV3 back =
-                mapper.readValue(json, CertificateOperationStatusRequestDtoV3.class);
+        CertificateOperationStatusRequestDtoV3 back = mapper
+                .readValue(json, CertificateOperationStatusRequestDtoV3.class);
         assertEquals(0, back.getMeta().size());
     }
 
@@ -45,8 +44,8 @@ class StatusDtosTest {
         dto.setRaProfileAttributes(List.of());
         dto.setMeta(List.of());
         String json = mapper.writeValueAsString(dto);
-        CertificateOperationCancelRequestDtoV3 back =
-                mapper.readValue(json, CertificateOperationCancelRequestDtoV3.class);
+        CertificateOperationCancelRequestDtoV3 back = mapper
+                .readValue(json, CertificateOperationCancelRequestDtoV3.class);
         assertEquals(0, back.getMeta().size());
     }
 }

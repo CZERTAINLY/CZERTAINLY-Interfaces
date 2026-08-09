@@ -1,25 +1,23 @@
 package com.otilm.api.model.connector.discovery.v2;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.client.connector.v2.FeatureFlag;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 /**
- * A capability a discovery connector may advertise for a specific resource in
- * {@link DiscoverySupportedResourceDto}'s {@code capabilities}. {@link #getFeatureFlag()} carries the
- * invariant that a capability is only valid to advertise if the connector also advertises the
- * interface-level {@link FeatureFlag} it maps to.
+ * A capability a discovery connector may advertise for a specific resource in {@link DiscoverySupportedResourceDto}'s
+ * {@code capabilities}. {@link #getFeatureFlag()} carries the invariant that a capability is only valid to advertise if
+ * the connector also advertises the interface-level {@link FeatureFlag} it maps to.
  *
- * <p>Only capabilities that can genuinely differ from one resource to another belong here. An
- * interface-wide property has no member in this enum: {@link FeatureFlag#DISCOVERY_STREAMING}, for
- * instance, describes the whole discovery interface (a connector either streams or it does not) and
- * is advertised by the feature flag alone.
+ * <p>
+ * Only capabilities that can genuinely differ from one resource to another belong here. An interface-wide property has
+ * no member in this enum: {@link FeatureFlag#DISCOVERY_STREAMING}, for instance, describes the whole discovery
+ * interface (a connector either streams or it does not) and is advertised by the feature flag alone.
  */
 @Schema(enumAsRef = true)
 public enum DiscoveryResourceCapability implements IPlatformEnum {
@@ -65,8 +63,8 @@ public enum DiscoveryResourceCapability implements IPlatformEnum {
     }
 
     /**
-     * The interface-level {@link FeatureFlag} a connector must also advertise for this
-     * capability to be valid on any resource's {@code capabilities} list.
+     * The interface-level {@link FeatureFlag} a connector must also advertise for this capability to be valid on any
+     * resource's {@code capabilities} list.
      */
     public FeatureFlag getFeatureFlag() {
         return this.featureFlag;
@@ -74,10 +72,11 @@ public enum DiscoveryResourceCapability implements IPlatformEnum {
 
     @JsonCreator
     public static DiscoveryResourceCapability findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Discovery resource capability {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown Discovery resource capability {}", code)));
     }
 }

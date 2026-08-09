@@ -12,8 +12,8 @@ class ClientCertificateRekeyRequestDtoTest {
 
     @Test
     void authorizationSecretIsAcceptedOnInputButNeverSerialized() throws Exception {
-        ClientCertificateRekeyRequestDto dto =
-                mapper.readValue("{\"authorizationSecret\":\"s3cret\"}", ClientCertificateRekeyRequestDto.class);
+        ClientCertificateRekeyRequestDto dto = mapper
+                .readValue("{\"authorizationSecret\":\"s3cret\"}", ClientCertificateRekeyRequestDto.class);
         assertEquals("s3cret", dto.getAuthorizationSecret());
 
         String json = mapper.writeValueAsString(dto);
@@ -28,15 +28,15 @@ class ClientCertificateRekeyRequestDtoTest {
         dto.setAuthorizationSecret("s3cret");
         dto.setRequest("csr-payload-sentinel");
         String rendered = dto.toString();
-        assertFalse(rendered.contains("s3cret"),
-                "authorizationSecret must not appear in toString");
+        assertFalse(rendered.contains("s3cret"), "authorizationSecret must not appear in toString");
         assertFalse(rendered.contains("csr-payload-sentinel"),
                 "the CSR payload must not appear in toString — the allowlist, not the field exclude, is what hides it");
     }
 
     @Test
     void builderToStringOmitsAuthorizationSecretAndCsr() {
-        String rendered = ClientCertificateRekeyRequestDto.builder()
+        String rendered = ClientCertificateRekeyRequestDto
+                .builder()
                 .authorizationSecret("s3cret")
                 .request("csr-payload-sentinel")
                 .toString();

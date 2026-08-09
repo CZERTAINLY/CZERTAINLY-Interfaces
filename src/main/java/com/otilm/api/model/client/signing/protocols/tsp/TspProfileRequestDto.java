@@ -8,11 +8,10 @@ import com.otilm.api.model.core.signing.TspAuthenticationMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 @VaultProfileRequiredForBasicPassword
@@ -30,15 +29,14 @@ public class TspProfileRequestDto implements VaultProfileConstrained {
     @Schema(description = "UUID of the default Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
     private UUID defaultSigningProfileUuid;
 
-    @Schema(description = "Vault profile that stores this profile's Basic credentials; required when Basic credentials are configured",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
+    @Schema(description = "Vault profile that stores this profile's Basic credentials; required when Basic credentials are configured", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
     private UUID vaultProfileUuid;
 
-    // During transitional period, the authentication methods may be empty. Once the consumers are migrated, tighten @NotNull to @NotEmpty and REQUIRED.
+    // During transitional period, the authentication methods may be empty. Once the consumers are migrated, tighten
+    // @NotNull to @NotEmpty and REQUIRED.
     @NotNull
-    @Schema(description = "Authentication methods this TSP Profile accepts on the TSP protocol endpoints. " +
-            "Allowed to be empty for the transitional period.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Authentication methods this TSP Profile accepts on the TSP protocol endpoints. "
+            + "Allowed to be empty for the transitional period.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<TspAuthenticationMethod> allowedAuthenticationMethods = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

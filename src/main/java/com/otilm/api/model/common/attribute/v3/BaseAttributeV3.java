@@ -1,39 +1,33 @@
 package com.otilm.api.model.common.attribute.v3;
 
-import com.otilm.api.model.client.attribute.BaseAttributeDtoV3;
-import com.otilm.api.model.common.attribute.common.AttributeVersion;
-import com.otilm.api.model.common.attribute.common.BaseAttribute;
-import com.otilm.api.model.common.attribute.common.AttributeType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.otilm.api.model.client.attribute.BaseAttributeDtoV3;
+import com.otilm.api.model.common.attribute.common.AttributeType;
+import com.otilm.api.model.common.attribute.common.AttributeVersion;
+import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Objects;
-
 @Setter
 @Getter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = DataAttributeV3.class, visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = DataAttributeV3.class, name = AttributeType.Codes.DATA),
+@JsonSubTypes({@JsonSubTypes.Type(value = DataAttributeV3.class, name = AttributeType.Codes.DATA),
         @JsonSubTypes.Type(value = GroupAttributeV3.class, name = AttributeType.Codes.GROUP),
         @JsonSubTypes.Type(value = InfoAttributeV3.class, name = AttributeType.Codes.INFO),
         @JsonSubTypes.Type(value = MetadataAttributeV3.class, name = AttributeType.Codes.META),
-        @JsonSubTypes.Type(value = CustomAttributeV3.class, name = AttributeType.Codes.CUSTOM)
-})
+        @JsonSubTypes.Type(value = CustomAttributeV3.class, name = AttributeType.Codes.CUSTOM)})
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeDtoV3.class)
 public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDtoV3 {
 
-    @Schema(
-            description = "Schema version of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Schema version of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     private String uuid;
@@ -43,9 +37,7 @@ public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDt
     private String description;
 
     @Hidden
-    @Schema(
-        description = "Content of the Attribute"
-    )
+    @Schema(description = "Content of the Attribute")
     private T content;
 
     private int version = 3;
@@ -72,8 +64,12 @@ public class BaseAttributeV3<T> extends BaseAttribute implements BaseAttributeDt
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof BaseAttributeV3<?> that)) return false;
-        return schemaVersion.equals(that.schemaVersion) && Objects.equals(uuid, that.uuid) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(getContent(), that.getContent()) && type == that.type;
+        if (!(object instanceof BaseAttributeV3<?> that)) {
+            return false;
+        }
+        return schemaVersion.equals(that.schemaVersion) && Objects.equals(uuid, that.uuid)
+                && Objects.equals(name, that.name) && Objects.equals(description, that.description)
+                && Objects.equals(getContent(), that.getContent()) && type == that.type;
     }
 
     @Override

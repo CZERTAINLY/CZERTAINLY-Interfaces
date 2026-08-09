@@ -1,8 +1,8 @@
 package com.otilm.api.model.connector.v2;
 
-import com.otilm.api.exception.ValidationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.otilm.api.exception.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,17 +43,14 @@ class CertificateOperationStatusTest {
 
     @Test
     void findByCodeRejectsUnknownDirectly() {
-        assertThrows(ValidationException.class,
-                () -> CertificateOperationStatus.findByCode("bogus"));
+        assertThrows(ValidationException.class, () -> CertificateOperationStatus.findByCode("bogus"));
     }
 
     @Test
     void labelsAndDescriptionsArePopulated() {
         for (CertificateOperationStatus status : CertificateOperationStatus.values()) {
-            assertEquals(false, status.getLabel().isBlank(),
-                    "label missing for " + status.name());
-            assertEquals(false, status.getDescription().isBlank(),
-                    "description missing for " + status.name());
+            assertEquals(false, status.getLabel().isBlank(), "label missing for " + status.name());
+            assertEquals(false, status.getDescription().isBlank(), "description missing for " + status.name());
         }
     }
 }

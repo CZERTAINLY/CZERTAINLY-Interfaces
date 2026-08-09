@@ -14,10 +14,9 @@ import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.GroupAttributeV3;
 import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
 import com.otilm.api.model.core.auth.Resource;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
 import java.util.UUID;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -35,13 +34,13 @@ class AttributeV2DtoTest {
         d.setUuid(UUID.randomUUID().toString());
         d.setName("country");
         d.setType(AttributeType.DATA);
-        d.setContentType(AttributeContentType.STRING);          // else BaseAttributeSerializer can't write the DATA arm
+        d.setContentType(AttributeContentType.STRING); // else BaseAttributeSerializer can't write the DATA arm
         d.setContent(List.of(new StringAttributeContentV3("CZ")));
         return d;
     }
 
     private static GroupAttributeV3 groupDefinition() {
-        GroupAttributeV3 g = new GroupAttributeV3();            // no-arg ctor sets type = GROUP
+        GroupAttributeV3 g = new GroupAttributeV3(); // no-arg ctor sets type = GROUP
         g.setName("profileGroup");
         g.setContent(List.of());
         return g;
@@ -82,8 +81,7 @@ class AttributeV2DtoTest {
         dto.setConnectorVersion("1.4.2-ejbca");
         dto.setDefinitions(List.of(dataDefinition(), groupDefinition()));
 
-        AttributeDefinitionsDto back =
-                mapper.readValue(mapper.writeValueAsString(dto), AttributeDefinitionsDto.class);
+        AttributeDefinitionsDto back = mapper.readValue(mapper.writeValueAsString(dto), AttributeDefinitionsDto.class);
 
         assertEquals("1.4.2-ejbca", back.getConnectorVersion());
         List<BaseAttribute> defs = back.getDefinitions();
@@ -107,8 +105,7 @@ class AttributeV2DtoTest {
         dto.setConnectorVersion("1.0");
         dto.setDefinitions(List.of(parent));
 
-        AttributeDefinitionsDto back =
-                mapper.readValue(mapper.writeValueAsString(dto), AttributeDefinitionsDto.class);
+        AttributeDefinitionsDto back = mapper.readValue(mapper.writeValueAsString(dto), AttributeDefinitionsDto.class);
 
         assertInstanceOf(GroupAttributeV3.class, back.getDefinitions().get(0));
         GroupAttributeV3 backParent = (GroupAttributeV3) back.getDefinitions().get(0);
@@ -167,8 +164,8 @@ class AttributeV2DtoTest {
         dto.setContent(List.of(new StringAttributeContentV3("issuing-ca")));
         dto.setTotalItems(1L);
 
-        AttributeCallbackResponseDto back =
-                mapper.readValue(mapper.writeValueAsString(dto), AttributeCallbackResponseDto.class);
+        AttributeCallbackResponseDto back = mapper
+                .readValue(mapper.writeValueAsString(dto), AttributeCallbackResponseDto.class);
 
         assertEquals(1, back.getContent().size());
         assertInstanceOf(StringAttributeContentV3.class, back.getContent().get(0));
@@ -188,8 +185,8 @@ class AttributeV2DtoTest {
         dto.setContextAttributes(List.of(scope));
         dto.setCurrentAttributes(List.of(currentV2(), currentV3()));
 
-        AttributeCallbackRequestDto back =
-                mapper.readValue(mapper.writeValueAsString(dto), AttributeCallbackRequestDto.class);
+        AttributeCallbackRequestDto back = mapper
+                .readValue(mapper.writeValueAsString(dto), AttributeCallbackRequestDto.class);
 
         assertEquals(ConnectorInterface.AUTHORITY, back.getConnectorInterface());
         assertEquals(1, back.getContextAttributes().size());
@@ -222,8 +219,7 @@ class AttributeV2DtoTest {
         cb.setName("raProfile");
         cb.setAttributes(List.of(currentV3()));
 
-        RequestAttributeCallback back =
-                mapper.readValue(mapper.writeValueAsString(cb), RequestAttributeCallback.class);
+        RequestAttributeCallback back = mapper.readValue(mapper.writeValueAsString(cb), RequestAttributeCallback.class);
 
         assertEquals(1, back.getAttributes().size());
         assertEquals("raProfile", back.getAttributes().get(0).getName());
@@ -245,8 +241,7 @@ class AttributeV2DtoTest {
         req.setContextAttributes(List.of(scope));
         req.setCurrentAttributes(List.of(currentV3()));
 
-        assertFalse(scope.toString().contains("issuing"),
-                "ScopedAttributes.attributes must be @ToString.Exclude");
+        assertFalse(scope.toString().contains("issuing"), "ScopedAttributes.attributes must be @ToString.Exclude");
         String reqStr = req.toString();
         assertFalse(reqStr.contains("issuing"),
                 "request DTO must not render contextAttributes/currentAttributes values");

@@ -1,41 +1,36 @@
 package com.otilm.api.model.common.attribute.v3;
 
-import com.otilm.api.model.common.attribute.common.AttributeContent;
-import com.otilm.api.model.common.attribute.common.AttributeVersion;
-import com.otilm.api.model.common.attribute.common.DataAttribute;
-import com.otilm.api.model.common.attribute.common.AttributeType;
-import com.otilm.api.model.common.attribute.common.callback.AttributeCallback;
-import com.otilm.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
-import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
-import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
-import com.otilm.api.model.common.attribute.common.properties.DataAttributeProperties;
-import com.otilm.api.model.common.attribute.v3.mapping.FieldMapping;
-import com.otilm.api.model.common.attribute.v3.mapping.ValueSource;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.otilm.api.model.common.attribute.common.AttributeContent;
+import com.otilm.api.model.common.attribute.common.AttributeType;
+import com.otilm.api.model.common.attribute.common.AttributeVersion;
+import com.otilm.api.model.common.attribute.common.DataAttribute;
+import com.otilm.api.model.common.attribute.common.callback.AttributeCallback;
+import com.otilm.api.model.common.attribute.common.constraint.BaseAttributeConstraint;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
+import com.otilm.api.model.common.attribute.common.properties.DataAttributeProperties;
+import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
+import com.otilm.api.model.common.attribute.v3.mapping.FieldMapping;
+import com.otilm.api.model.common.attribute.v3.mapping.ValueSource;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-import java.util.Objects;
-
 /**
- * This class contains set of properties to represent
- * an Attribute definition including its value for the attributes
- * of type Data.
+ * This class contains set of properties to represent an Attribute definition including its value for the attributes of
+ * type Data.
  */
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(
-        description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
-        type = "object"
-)
+@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.", type = "object")
 @JsonDeserialize
 @JsonSerialize
 public class DataAttributeV3 extends DataAttribute {
@@ -51,78 +46,49 @@ public class DataAttributeV3 extends DataAttribute {
 
     private AttributeType type;
 
-
     /**
      * Content of the Attribute
      **/
-    @ArraySchema(
-            schema = @Schema(
-                    ref = "BaseAttributeContentDtoV3"
-            ),
-            arraySchema = @Schema(
-                    description = "Content of the Attribute"
-            )
-    )
+    @ArraySchema(schema = @Schema(ref = "BaseAttributeContentDtoV3"), arraySchema = @Schema(description = "Content of the Attribute"))
     private List<BaseAttributeContentV3<?>> content;
 
     /**
      * Type of the Attribute content
      */
-    @Schema(
-            description = "Type of the Content",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Type of the Content", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeContentType contentType;
-
 
     /**
      * Properties of the Attributes
      */
-    @Schema(
-            description = "Properties of the Attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Properties of the Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private DataAttributeProperties properties;
 
     /**
      * List of constraints for the Attributes
      **/
-    @Schema(
-            description = "Optional constraints used for validating the Attribute content"
-    )
+    @Schema(description = "Optional constraints used for validating the Attribute content")
     private List<BaseAttributeConstraint<?>> constraints;
 
     /**
      * Optional definition of callback for getting the content of the Attribute based on the action
      **/
-    @Schema(
-            description = "Optional definition of callback for getting the content of the Attribute based on the action"
-    )
+    @Schema(description = "Optional definition of callback for getting the content of the Attribute based on the action")
     private AttributeCallback attributeCallback;
 
-    @Schema(
-            description = "Schema version of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Schema version of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeVersion schemaVersion = AttributeVersion.V3;
 
-    @Schema(
-            description = "Declares which certificate (or other object) fields this attribute's value projects into; " +
-                    "presence marks this attribute as a certificate request attribute",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Declares which certificate (or other object) fields this attribute's value projects into; "
+            + "presence marks this attribute as a certificate request attribute", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private FieldMapping fieldMapping;
 
-    @Schema(
-            description = "Declares how Core resolves the content of this attribute; orthogonal to fieldMapping",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Declares how Core resolves the content of this attribute; orthogonal to fieldMapping", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ValueSource valueSource;
 
     public DataAttributeV3() {
         this.type = AttributeType.DATA;
     }
-
 
     public DataAttributeV3(DataAttributeV3 original) {
         this.type = AttributeType.DATA;
@@ -156,30 +122,24 @@ public class DataAttributeV3 extends DataAttribute {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DataAttributeV3 that)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DataAttributeV3 that)) {
+            return false;
+        }
 
-        return Objects.equals(content, that.content)
-                && contentType == that.contentType
-                && Objects.equals(properties, that.properties)
-                && Objects.equals(constraints, that.constraints)
+        return Objects.equals(content, that.content) && contentType == that.contentType
+                && Objects.equals(properties, that.properties) && Objects.equals(constraints, that.constraints)
                 && Objects.equals(attributeCallback, that.attributeCallback)
-                && Objects.equals(fieldMapping, that.fieldMapping)
-                && Objects.equals(valueSource, that.valueSource);
+                && Objects.equals(fieldMapping, that.fieldMapping) && Objects.equals(valueSource, that.valueSource);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                super.hashCode(),
-                content,
-                contentType,
-                properties,
-                constraints,
-                attributeCallback,
-                fieldMapping,
-                valueSource
-        );
+        return Objects
+                .hash(super.hashCode(), content, contentType, properties, constraints, attributeCallback, fieldMapping,
+                        valueSource);
     }
 
     @Override

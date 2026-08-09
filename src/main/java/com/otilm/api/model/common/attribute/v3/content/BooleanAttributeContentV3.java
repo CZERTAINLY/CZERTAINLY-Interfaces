@@ -6,9 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@Schema(
-        description = "Boolean attribute content to store true/false values",
-        type = "object")
+@Schema(description = "Boolean attribute content to store true/false values", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class BooleanAttributeContentV3 extends BaseAttributeContentV3<Boolean> {
 

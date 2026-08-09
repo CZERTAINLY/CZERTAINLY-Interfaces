@@ -1,5 +1,8 @@
 package com.otilm.core.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.common.attribute.v1.AttributeCallback;
 import com.otilm.api.model.common.attribute.v1.AttributeDefinition;
 import com.otilm.api.model.common.attribute.v1.AttributeType;
@@ -7,44 +10,47 @@ import com.otilm.api.model.common.attribute.v1.content.BaseAttributeContent;
 import com.otilm.api.model.common.attribute.v1.content.FileAttributeContent;
 import com.otilm.api.model.common.attribute.v1.content.JsonAttributeContent;
 import com.otilm.core.deprecated.AttributeDefinitionUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AttributeMigrationUtils {
     private static final Logger logger = LoggerFactory.getLogger(AttributeMigrationUtils.class);
 
-    public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName) throws SQLException, JsonProcessingException {
+    public static List<String> getMigrationCommands(ResultSet rows, String tableName, String columnName)
+            throws SQLException, JsonProcessingException {
         logger.debug("Migrating Table: {}, Column: {}", tableName, columnName);
         ObjectMapper mapper = new ObjectMapper();
         List<String> migrationCommands = new ArrayList<>();
         while (rows.next()) {
             // the certificate_location table has composite key
             if (tableName.equals("certificate_location")) {
-                logger.debug("Migrating record with Location Id: {}, Certificate Id: {}", rows.getString("location_id"), rows.getString("certificate_id"));
+                logger
+                        .debug("Migrating record with Location Id: {}, Certificate Id: {}",
+                                rows.getString("location_id"), rows.getString("certificate_id"));
             } else {
                 logger.debug("Migrating record with Id: {}", rows.getString("id"));
             }
             List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
-            List<Map<String, Object>> oldAttributeValue = mapper.readValue(rows.getString(columnName), new TypeReference<>() {
-            });
+            List<Map<String, Object>> oldAttributeValue = mapper
+                    .readValue(rows.getString(columnName), new TypeReference<>() {
+                    });
             for (Map<String, Object> item : oldAttributeValue) {
                 attributeDefinitions.add(getNewAttributes(item));
             }
             String updateCommand;
             String serializedAttributes = AttributeDefinitionUtils.serialize(attributeDefinitions);
             if (tableName.equals("certificate_location")) {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE location_id = " + rows.getString("location_id") + " AND certificate_id = " + rows.getString("certificate_id") + ";";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes
+                        + "' WHERE location_id = " + rows.getString("location_id") + " AND certificate_id = "
+                        + rows.getString("certificate_id") + ";";
             } else {
-                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes + "' WHERE id = " + rows.getString("id") + ";";
+                updateCommand = "UPDATE " + tableName + " SET " + columnName + " = '" + serializedAttributes
+                        + "' WHERE id = " + rows.getString("id") + ";";
             }
             migrationCommands.add(updateCommand);
         }
@@ -72,21 +78,24 @@ public class AttributeMigrationUtils {
             attributeDefinition.setList((Boolean) oldAttribute.get("multiValue"));
         }
         if (oldAttribute.get("validationRegex") != null) {
-            attributeDefinition.setValidationRegex(((String) oldAttribute.get("validationRegex")).replaceAll("'", "''"));
+            attributeDefinition
+                    .setValidationRegex(((String) oldAttribute.get("validationRegex")).replaceAll("'", "''"));
         }
         if (oldAttribute.get("value") != null) {
-            if(oldAttribute.get("type").equals("CREDENTIAL")){
+            if (oldAttribute.get("type").equals("CREDENTIAL")) {
                 List<AttributeDefinition> innerAttributeDefinitions = new ArrayList<>();
-                List<Map<String, Object>> oldAttributeValue = (List<Map<String, Object>>) ((Map<String, Object>) oldAttribute.get("value")).get("attributes");
+                List<Map<String, Object>> oldAttributeValue = (List<Map<String, Object>>) ((Map<String, Object>) oldAttribute
+                        .get("value")).get("attributes");
                 for (Map<String, Object> item : oldAttributeValue) {
                     innerAttributeDefinitions.add(getNewAttributes(item));
                 }
                 attributeDefinition.setMultiSelect(false);
                 ((Map<String, Object>) oldAttribute.get("value")).put("attributes", innerAttributeDefinitions);
-            }else {
+            } else {
                 attributeDefinition.setMultiSelect(isMultiselect(oldAttribute.get("value")));
             }
-            attributeDefinition.setContent(getAttributeValue(oldAttribute.get("value"), (String) oldAttribute.get("type")));
+            attributeDefinition
+                    .setContent(getAttributeValue(oldAttribute.get("value"), (String) oldAttribute.get("type")));
         }
         attributeDefinition.setType(getAttributeType(oldAttribute.get("value"), (String) oldAttribute.get("type")));
 

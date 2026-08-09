@@ -1,10 +1,9 @@
 package com.otilm.api.model.core.compliance;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 public class ComplianceConnectorAndRulesDto {
     @Schema(description = "Name of the Compliance Provider")
@@ -19,7 +18,7 @@ public class ComplianceConnectorAndRulesDto {
     @Schema(description = "Rules associated")
     private List<ComplianceRulesDto> rules;
 
-    //Default getters and setters
+    // Default getters and setters
 
     public String getConnectorName() {
         return connectorName;

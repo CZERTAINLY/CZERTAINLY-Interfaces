@@ -24,16 +24,13 @@ public class DirectoryMeta {
     /**
      * Boolean value of the need of external account requirement
      */
-    @Schema(description = "External Account Binding flag",
-            defaultValue = "false")
+    @Schema(description = "External Account Binding flag", defaultValue = "false")
     private Boolean externalAccountRequired;
 
     /**
      * CAA record validation list of hostnames
      */
-    @Schema(description = "Array of CAA record validation servers",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            example = "[\"example1.com\", \"example2.com\"]")
+    @Schema(description = "Array of CAA record validation servers", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"example1.com\", \"example2.com\"]")
     private String[] caaIdentities;
 
     public String getTermsOfService() {
@@ -60,9 +57,13 @@ public class DirectoryMeta {
         this.externalAccountRequired = externalAccountRequired;
     }
 
-    public String[] getCaaIdentities() { return caaIdentities; }
+    public String[] getCaaIdentities() {
+        return caaIdentities;
+    }
 
-    public void setCaaIdentities(String[] caaIdentities) { this.caaIdentities = caaIdentities; }
+    public void setCaaIdentities(String[] caaIdentities) {
+        this.caaIdentities = caaIdentities;
+    }
 
     @Override
     public String toString() {

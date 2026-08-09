@@ -10,14 +10,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ActionDto extends NameAndUuidDto {
 
-    @Schema(
-            description = "Description of the action"
-    )
+    @Schema(description = "Description of the action")
     private String description;
 
-    @Schema(
-            description = "Resource associated with the action",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Resource associated with the action", requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 }

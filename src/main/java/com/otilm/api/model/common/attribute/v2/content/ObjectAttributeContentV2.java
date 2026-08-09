@@ -1,17 +1,14 @@
 package com.otilm.api.model.common.attribute.v2.content;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 @Setter
 @Getter
-@Schema(
-        description = "Object attribute content for data with custom structure",
-        type = "object")
+@Schema(description = "Object attribute content for data with custom structure", type = "object")
 public class ObjectAttributeContentV2 extends BaseAttributeContentV2<Serializable> {
 
     @Schema(description = "Object attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -32,9 +29,15 @@ public class ObjectAttributeContentV2 extends BaseAttributeContentV2<Serializabl
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ObjectAttributeContentV2 that)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ObjectAttributeContentV2 that)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         return Objects.equals(data, that.data);
     }
 

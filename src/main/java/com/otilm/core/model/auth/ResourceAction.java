@@ -1,49 +1,42 @@
 package com.otilm.core.model.auth;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ResourceAction implements IPlatformEnum {
-    NONE("NONE", "None", AccessType.NOT_GRANTABLE),
-    ANY("ANY", "Any", AccessType.NOT_GRANTABLE),
-    MEMBERS("members", "Members", AccessType.READ), // action that is evaluated to allow action for resource lower in hierarchy, e.g. access to certificates through RA profile members action
+    NONE("NONE", "None", AccessType.NOT_GRANTABLE), ANY("ANY", "Any", AccessType.NOT_GRANTABLE), MEMBERS("members",
+            "Members", AccessType.READ), // action that is evaluated to allow action for resource lower in hierarchy,
+                                         // e.g. access to certificates through RA profile members action
 
     // Default (CRUD) Actions
-    LIST("list", "List", AccessType.READ),
-    DETAIL("detail", "Detail", AccessType.READ),
-    CREATE("create", "Create", AccessType.WRITE),
-    UPDATE("update", "Update", AccessType.WRITE),
-    DELETE("delete", "Delete", AccessType.WRITE),
+    LIST("list", "List", AccessType.READ), DETAIL("detail", "Detail", AccessType.READ), CREATE("create", "Create",
+            AccessType.WRITE), UPDATE("update", "Update",
+                    AccessType.WRITE), DELETE("delete", "Delete", AccessType.WRITE),
 
     // Default change state actions that allows also reverse action (disable/deactivate)
-    ENABLE("enable", "Enable", AccessType.WRITE),
-    ACTIVATE("activate", "Activate", AccessType.WRITE),
+    ENABLE("enable", "Enable", AccessType.WRITE), ACTIVATE("activate", "Activate", AccessType.WRITE),
 
     // Lifecycle control actions for long-running operations (e.g. discovery runs)
-    STOP("stop", "Stop", AccessType.WRITE),
-    RESUME("resume", "Resume", AccessType.WRITE),
-    CANCEL("cancel", "Cancel", AccessType.WRITE),
+    STOP("stop", "Stop", AccessType.WRITE), RESUME("resume", "Resume", AccessType.WRITE), CANCEL("cancel", "Cancel",
+            AccessType.WRITE),
 
     // Connector actions
-    APPROVE("approve", "Approve", AccessType.WRITE),
-    CONNECT("connect", "Connect", AccessType.WRITE), // allows also reconnect action
+    APPROVE("approve", "Approve", AccessType.WRITE), CONNECT("connect", "Connect", AccessType.WRITE), // allows also
+                                                                                                      // reconnect
+                                                                                                      // action
 
     // Certificate actions
     // auth-opa-policies pairs this code with Resource.CONNECTOR in resourcesWithAnonymousAccess, so annotating
     // it on that resource would leave the endpoint reachable unauthenticated.
-    REGISTER("register", "Register", AccessType.WRITE),
-    ISSUE("issue", "Issue", AccessType.WRITE),
-    RENEW("renew", "Renew", AccessType.WRITE),
-    REKEY("rekey", "Rekey", AccessType.WRITE),
-    REVOKE("revoke", "Revoke", AccessType.WRITE),
-    ARCHIVE("archive", "Archive", AccessType.WRITE),
+    REGISTER("register", "Register", AccessType.WRITE), ISSUE("issue", "Issue", AccessType.WRITE), RENEW("renew",
+            "Renew", AccessType.WRITE), REKEY("rekey", "Rekey", AccessType.WRITE), REVOKE("revoke", "Revoke",
+                    AccessType.WRITE), ARCHIVE("archive", "Archive", AccessType.WRITE),
 
     // Audit Log export
     EXPORT("export", "Export", AccessType.READ),
@@ -52,39 +45,34 @@ public enum ResourceAction implements IPlatformEnum {
     CHECK_COMPLIANCE("checkCompliance", "Check compliance", AccessType.WRITE),
 
     // Cryptography operation
-    ENCRYPT("encrypt", "Encrypt", AccessType.WRITE),
-    DECRYPT("decrypt", "Decrypt", AccessType.WRITE),
-    VERIFY("verify", "Verify", AccessType.WRITE),
-    SIGN("sign", "Sign", AccessType.WRITE),
+    ENCRYPT("encrypt", "Encrypt", AccessType.WRITE), DECRYPT("decrypt", "Decrypt", AccessType.WRITE), VERIFY("verify",
+            "Verify", AccessType.WRITE), SIGN("sign", "Sign", AccessType.WRITE),
 
     // PROXY
     // Instructions embed a client secret, a broker SAS key and a non-expiring configuration token.
     GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation", AccessType.SENSITIVE_READ),
 
     // Secret
-    GET_SECRET_CONTENT("getSecretContent", "Get secret content", AccessType.SENSITIVE_READ),
-    UPDATE_SOURCE_VAULT_PROFILE("updateSourceVaultProfile", "Update source vault profile", AccessType.WRITE),
+    GET_SECRET_CONTENT("getSecretContent", "Get secret content",
+            AccessType.SENSITIVE_READ), UPDATE_SOURCE_VAULT_PROFILE("updateSourceVaultProfile",
+                    "Update source vault profile", AccessType.WRITE),
 
     // Digital Signing
     TIMESTAMP("timestamp", "Timestamp", AccessType.WRITE), // RFC 3161 Timestamping
     ;
 
     /**
-     * Whether an action may be granted to a role that must not be able to change anything, so such a
-     * permission set can be derived from the action catalogue rather than maintained by hand.
+     * Whether an action may be granted to a role that must not be able to change anything, so such a permission set can
+     * be derived from the action catalogue rather than maintained by hand.
      * <p>
-     * {@code WRITE} covers mutation, side effects in a called system, and use of platform key material even
-     * when nothing is persisted ({@code ENCRYPT}, {@code VERIFY}, {@code SIGN}, {@code TIMESTAMP}); when
-     * uncertain, classify {@code WRITE}, since a wrong {@code READ} grants a write silently.
-     * {@code SENSITIVE_READ} discloses stored secret material. {@code NOT_GRANTABLE} marks {@code NONE} and
-     * {@code ANY}, which the auth service rejects as unknown actions — omitting {@code ANY} denies nothing,
-     * as that gate is satisfied by holding any action on the resource.
+     * {@code WRITE} covers mutation, side effects in a called system, and use of platform key material even when
+     * nothing is persisted ({@code ENCRYPT}, {@code VERIFY}, {@code SIGN}, {@code TIMESTAMP}); when uncertain, classify
+     * {@code WRITE}, since a wrong {@code READ} grants a write silently. {@code SENSITIVE_READ} discloses stored secret
+     * material. {@code NOT_GRANTABLE} marks {@code NONE} and {@code ANY}, which the auth service rejects as unknown
+     * actions — omitting {@code ANY} denies nothing, as that gate is satisfied by holding any action on the resource.
      */
     public enum AccessType {
-        READ,
-        WRITE,
-        SENSITIVE_READ,
-        NOT_GRANTABLE
+        READ, WRITE, SENSITIVE_READ, NOT_GRANTABLE
     }
 
     private static final ResourceAction[] VALUES;
@@ -93,15 +81,11 @@ public enum ResourceAction implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Resource Action Name",
-            example = "create",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Resource Action Name", example = "create", requiredMode = Schema.RequiredMode.REQUIRED)
 
     private final String code;
 
-    @Schema(description = "Resource Action label",
-            example = "Create",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Resource Action label", example = "Create", requiredMode = Schema.RequiredMode.REQUIRED)
 
     private final String label;
 
@@ -133,8 +117,8 @@ public enum ResourceAction implements IPlatformEnum {
     }
 
     /**
-     * Prefer this over comparing {@link AccessType} directly: {@code != WRITE} admits both sensitive reads and
-     * the sentinels that cannot be persisted at all.
+     * Prefer this over comparing {@link AccessType} directly: {@code != WRITE} admits both sensitive reads and the
+     * sentinels that cannot be persisted at all.
      */
     public boolean isGrantableToReadOnlyRole() {
         return this.accessType == AccessType.READ;
@@ -142,11 +126,12 @@ public enum ResourceAction implements IPlatformEnum {
 
     @JsonCreator
     public static ResourceAction findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Resource Action Name {}", code)));
+                .orElseThrow(
+                        () -> new ValidationException(ValidationError.create("Unknown Resource Action Name {}", code)));
     }
 
 }

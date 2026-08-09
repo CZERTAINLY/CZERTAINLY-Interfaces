@@ -10,11 +10,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Validates that {@code defaultPolicyId}, when set together with a non-empty {@code allowedPolicyIds},
- * is itself a member of the allowlist.
+ * Validates that {@code defaultPolicyId}, when set together with a non-empty {@code allowedPolicyIds}, is itself a
+ * member of the allowlist.
  */
 @Constraint(validatedBy = DefaultPolicyIdValidator.class)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ValidDefaultPolicyId {

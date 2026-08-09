@@ -12,89 +12,58 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/notificationProvider")
 @Tag(name = "Notification instances Management", description = "Notification instances Management API")
 public interface NotificationInstanceController extends AuthProtectedConnectorController {
 
-    @Operation(
-            summary = "List Notification instances"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Notification instance list retrieved"
-                    )
-            })
+    @Operation(summary = "List Notification instances")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification instance list retrieved")})
     @GetMapping(path = "/notifications", produces = {"application/json"})
     List<NotificationProviderInstanceDto> listNotificationInstances();
 
-    @Operation(
-            summary = "Get Notification instance"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Notification instance retrieved"
-                    )
-            })
+    @Operation(summary = "Get Notification instance")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification instance retrieved")})
     @GetMapping(path = "/notifications/{uuid}", produces = {"application/json"})
-    NotificationProviderInstanceDto getNotificationInstance(@Parameter(description = "Notification Instance UUID") @PathVariable String uuid) throws NotFoundException;
+    NotificationProviderInstanceDto getNotificationInstance(
+            @Parameter(description = "Notification Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
-    @Operation(
-            summary = "Create Notification instance"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Notification instance created"
-                    )
-            })
+    @Operation(summary = "Create Notification instance")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification instance created")})
     @PostMapping(path = "/notifications", consumes = {"application/json"}, produces = {"application/json"})
-    NotificationProviderInstanceDto createNotificationInstance(@RequestBody NotificationProviderInstanceRequestDto request) throws AlreadyExistException;
+    NotificationProviderInstanceDto createNotificationInstance(
+            @RequestBody NotificationProviderInstanceRequestDto request) throws AlreadyExistException;
 
-    @Operation(
-            summary = "Update Notification instance"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Notification instance updated"
-                    )
-            })
+    @Operation(summary = "Update Notification instance")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification instance updated")})
     @PutMapping(path = "/notifications/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
-    NotificationProviderInstanceDto updateNotificationInstance(@Parameter(description = "Notification Instance UUID") @PathVariable String uuid, @RequestBody NotificationProviderInstanceRequestDto request) throws NotFoundException;
+    NotificationProviderInstanceDto updateNotificationInstance(
+            @Parameter(description = "Notification Instance UUID") @PathVariable String uuid,
+            @RequestBody NotificationProviderInstanceRequestDto request) throws NotFoundException;
 
-    @Operation(
-            summary = "Remove Notification instance"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "Notification instance removed"
-                    )
-            })
+    @Operation(summary = "Remove Notification instance")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification instance removed")})
     @DeleteMapping(path = "/notifications/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeNotificationInstance(@Parameter(description = "Notification Instance UUID") @PathVariable String uuid) throws NotFoundException;
+    void removeNotificationInstance(@Parameter(description = "Notification Instance UUID") @PathVariable String uuid)
+            throws NotFoundException;
 
-    @Operation(
-            summary = "Notify by Notification instance"
-    )
+    @Operation(summary = "Notify by Notification instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification sent")})
-    @PostMapping(path = "/notifications/{uuid}/notify", consumes = {"application/json"}, produces = {"application/json"})
+    @PostMapping(path = "/notifications/{uuid}/notify", consumes = {"application/json"}, produces = {
+            "application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void sendNotification(
-            @Parameter(description = "Notification Instance UUID") @PathVariable String uuid,
+    void sendNotification(@Parameter(description = "Notification Instance UUID") @PathVariable String uuid,
             @RequestBody NotificationProviderNotifyRequestDto request) throws NotFoundException;
 
     @Operation(summary = "List of mapping attributes")

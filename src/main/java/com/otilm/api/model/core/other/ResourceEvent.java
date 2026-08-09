@@ -1,40 +1,75 @@
 package com.otilm.api.model.core.other;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.otilm.api.model.common.events.data.*;
+import com.otilm.api.model.common.events.data.ApprovalEventData;
+import com.otilm.api.model.common.events.data.CertificateActionPerformedEventData;
+import com.otilm.api.model.common.events.data.CertificateDiscoveredEventData;
+import com.otilm.api.model.common.events.data.CertificateEventData;
+import com.otilm.api.model.common.events.data.CertificateExpiringEventData;
+import com.otilm.api.model.common.events.data.CertificateNotCompliantEventData;
+import com.otilm.api.model.common.events.data.CertificateRegisteredEventData;
+import com.otilm.api.model.common.events.data.CertificateStatusChangedEventData;
+import com.otilm.api.model.common.events.data.DiscoveryFinishedEventData;
+import com.otilm.api.model.common.events.data.EventData;
+import com.otilm.api.model.common.events.data.ScheduledJobFinishedEventData;
 import com.otilm.api.model.core.auth.Resource;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-
 import java.util.Arrays;
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 @Schema(enumAsRef = true)
 public enum ResourceEvent implements IPlatformEnum {
 
     // Certificates
-    CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed", "Event when the certificate changes validation status with detail about the certificate", Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateStatusChangedEventData.class, false),
-    CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed", "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution", Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateActionPerformedEventData.class, false),
-    CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered", "Event when the certificate has been newly discovered by some discovery", Resource.CERTIFICATE, List.of(Resource.DISCOVERY), CertificateDiscoveredEventData.class, false),
-    CERTIFICATE_EXPIRING(Codes.CERTIFICATE_EXPIRING, "Certificate expiring", "Event to trigger actions associated with expiring certificates without renewal", Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateExpiringEventData.class, true),
-    CERTIFICATE_NOT_COMPLIANT(Codes.CERTIFICATE_NOT_COMPLIANT, "Certificate not compliant", "Event when the certificate is evaluated as not compliant", Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateNotCompliantEventData.class, false),
-    CERTIFICATE_UPLOADED(Codes.CERTIFICATE_UPLOADED, "Certificate uploaded", "Event when the certificate has been uploaded", Resource.CERTIFICATE, CertificateEventData.class, false),
-    CERTIFICATE_REGISTERED(Codes.CERTIFICATE_REGISTERED, "Certificate registered", "Event when a certificate has been successfully pre-registered, carrying the credential and completion deadline to complete issuance", Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateRegisteredEventData.class, false),
+    CERTIFICATE_STATUS_CHANGED(Codes.CERTIFICATE_STATUS_CHANGED, "Certificate validation status changed",
+            "Event when the certificate changes validation status with detail about the certificate",
+            Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP), CertificateStatusChangedEventData.class,
+            false), CERTIFICATE_ACTION_PERFORMED(Codes.CERTIFICATE_ACTION_PERFORMED, "Certificate action performed",
+                    "Event after certificate action (e.g.: issue, renew, rekey, revoke, etc.) was completed with detail about its execution",
+                    Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP),
+                    CertificateActionPerformedEventData.class,
+                    false), CERTIFICATE_DISCOVERED(Codes.CERTIFICATE_DISCOVERED, "Certificate discovered",
+                            "Event when the certificate has been newly discovered by some discovery",
+                            Resource.CERTIFICATE, List.of(Resource.DISCOVERY), CertificateDiscoveredEventData.class,
+                            false), CERTIFICATE_EXPIRING(Codes.CERTIFICATE_EXPIRING, "Certificate expiring",
+                                    "Event to trigger actions associated with expiring certificates without renewal",
+                                    Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP),
+                                    CertificateExpiringEventData.class, true), CERTIFICATE_NOT_COMPLIANT(
+                                            Codes.CERTIFICATE_NOT_COMPLIANT, "Certificate not compliant",
+                                            "Event when the certificate is evaluated as not compliant",
+                                            Resource.CERTIFICATE, List.of(Resource.RA_PROFILE, Resource.GROUP),
+                                            CertificateNotCompliantEventData.class, false), CERTIFICATE_UPLOADED(
+                                                    Codes.CERTIFICATE_UPLOADED, "Certificate uploaded",
+                                                    "Event when the certificate has been uploaded",
+                                                    Resource.CERTIFICATE, CertificateEventData.class,
+                                                    false), CERTIFICATE_REGISTERED(Codes.CERTIFICATE_REGISTERED,
+                                                            "Certificate registered",
+                                                            "Event when a certificate has been successfully pre-registered, carrying the credential and completion deadline to complete issuance",
+                                                            Resource.CERTIFICATE,
+                                                            List.of(Resource.RA_PROFILE, Resource.GROUP),
+                                                            CertificateRegisteredEventData.class, false),
 
     // Discoveries
-    DISCOVERY_FINISHED(Codes.DISCOVERY_FINISHED, "Discovery Finished", "Event when discovery has been finished.", Resource.DISCOVERY, DiscoveryFinishedEventData.class, false),
+    DISCOVERY_FINISHED(Codes.DISCOVERY_FINISHED, "Discovery Finished", "Event when discovery has been finished.",
+            Resource.DISCOVERY, DiscoveryFinishedEventData.class, false),
 
     // Approval
-    APPROVAL_REQUESTED(Codes.APPROVAL_REQUESTED, "Approval requested", "Event about requesting approval on specific operation defined by current approval step", Resource.APPROVAL, ApprovalEventData.class, false),
-    APPROVAL_CLOSED(Codes.APPROVAL_CLOSED, "Approval closed", "Event after approval was closed informing about the result of approval process", Resource.APPROVAL, ApprovalEventData.class, false),
+    APPROVAL_REQUESTED(Codes.APPROVAL_REQUESTED, "Approval requested",
+            "Event about requesting approval on specific operation defined by current approval step", Resource.APPROVAL,
+            ApprovalEventData.class, false), APPROVAL_CLOSED(Codes.APPROVAL_CLOSED, "Approval closed",
+                    "Event after approval was closed informing about the result of approval process", Resource.APPROVAL,
+                    ApprovalEventData.class, false),
 
     // Scheduler
-    SCHEDULED_JOB_FINISHED(Codes.SCHEDULED_JOB_FINISHED, "Scheduled job finished", "Notification about scheduled job execution finished with result and detail of its execution", Resource.SCHEDULED_JOB, ScheduledJobFinishedEventData.class, false);
+    SCHEDULED_JOB_FINISHED(Codes.SCHEDULED_JOB_FINISHED, "Scheduled job finished",
+            "Notification about scheduled job execution finished with result and detail of its execution",
+            Resource.SCHEDULED_JOB, ScheduledJobFinishedEventData.class, false);
 
     private static final ResourceEvent[] VALUES;
 
@@ -50,14 +85,16 @@ public enum ResourceEvent implements IPlatformEnum {
     private final Class<? extends EventData> eventData;
     private final boolean monitoring;
 
-    ResourceEvent(final String code, final String label, final String description, final Resource resource, Class<? extends EventData> eventData, boolean monitoring) {
+    ResourceEvent(final String code, final String label, final String description, final Resource resource,
+            Class<? extends EventData> eventData, boolean monitoring) {
         this(code, label, description, resource, List.of(), eventData, monitoring);
     }
 
-    ResourceEvent(final String code, final String label, final String description, final Resource resource, final List<Resource> overridingResources, Class<? extends EventData> eventData, boolean monitoring) {
+    ResourceEvent(final String code, final String label, final String description, final Resource resource,
+            final List<Resource> overridingResources, Class<? extends EventData> eventData, boolean monitoring) {
         this.code = code;
         this.label = label;
-        this.description =description;
+        this.description = description;
         this.resource = resource;
         this.overridingResources = overridingResources == null ? List.of() : overridingResources;
         this.eventData = eventData;
@@ -82,15 +119,18 @@ public enum ResourceEvent implements IPlatformEnum {
 
     @JsonCreator
     public static ResourceEvent findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Resource event {}", code)));
+                .orElseThrow(() -> new ValidationException(ValidationError.create("Unknown Resource event {}", code)));
     }
 
     public static List<ResourceEvent> listEventsByResource(Resource resource) {
-        return Arrays.stream(VALUES).filter(event -> event.resource == resource || event.overridingResources.contains(resource)).toList();
+        return Arrays
+                .stream(VALUES)
+                .filter(event -> event.resource == resource || event.overridingResources.contains(resource))
+                .toList();
     }
 
     public static boolean isResourceOfEvent(Resource resource) {

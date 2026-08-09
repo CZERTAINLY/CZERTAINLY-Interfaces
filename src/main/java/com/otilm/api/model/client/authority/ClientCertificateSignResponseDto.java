@@ -9,8 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ClientCertificateSignResponseDto {
 
-    @Schema(description = "Date of signed certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Date of signed certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateData;
 
     public String getCertificateData() {
@@ -28,4 +27,3 @@ public class ClientCertificateSignResponseDto {
                 .toString();
     }
 }
-

@@ -3,10 +3,9 @@ package com.otilm.util;
 import com.otilm.api.model.common.enums.BitMaskEnum;
 import com.otilm.api.model.core.certificate.CertificateKeyUsage;
 import com.otilm.api.model.core.cryptography.key.KeyUsage;
+import java.util.EnumSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.EnumSet;
 
 class BitMaskEnumTest {
 
@@ -22,7 +21,9 @@ class BitMaskEnumTest {
 
     @Test
     void testCertificateKeyUsage() {
-        EnumSet<CertificateKeyUsage> keyUsages = EnumSet.of(CertificateKeyUsage.KEY_AGREEMENT, CertificateKeyUsage.KEY_ENCIPHERMENT, CertificateKeyUsage.KEY_CERT_SIGN);
+        EnumSet<CertificateKeyUsage> keyUsages = EnumSet
+                .of(CertificateKeyUsage.KEY_AGREEMENT, CertificateKeyUsage.KEY_ENCIPHERMENT,
+                        CertificateKeyUsage.KEY_CERT_SIGN);
         int bitMask = BitMaskEnum.convertSetToBitMask(keyUsages);
         Assertions.assertEquals(keyUsages, CertificateKeyUsage.convertBitMaskToSet(bitMask));
     }

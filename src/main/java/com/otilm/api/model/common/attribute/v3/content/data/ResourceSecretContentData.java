@@ -8,10 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(
-        title = "ResourceSecretContentData",
-        description = "Content data for resource object attribute containing secret content"
-)
+@Schema(title = "ResourceSecretContentData", description = "Content data for resource object attribute containing secret content")
 public class ResourceSecretContentData extends ResourceObjectContentData {
 
     @Schema(description = "Secret content of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

@@ -1,10 +1,9 @@
 package com.otilm.api.model.common.events.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

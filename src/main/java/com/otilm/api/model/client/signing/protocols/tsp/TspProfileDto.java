@@ -6,12 +6,11 @@ import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.signing.TspAuthenticationMethod;
 import com.otilm.api.model.core.vaultprofile.VaultProfileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -28,15 +27,10 @@ public class TspProfileDto extends NameAndUuidDto {
     @Schema(description = "Default Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SimplifiedSigningProfileDto defaultSigningProfile;
 
-    @Schema(
-            description = "TSP URL for signing",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            example = "https://ilm.otilm.com/api/v1/protocols/tsp/tsp-profile-1"
-    )
+    @Schema(description = "TSP URL for signing", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "https://ilm.otilm.com/api/v1/protocols/tsp/tsp-profile-1")
     private String signingUrl;
 
-    @Schema(description = "Vault profile that stores this profile's Basic credentials; required when Basic credentials are configured",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Vault profile that stores this profile's Basic credentials; required when Basic credentials are configured", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private VaultProfileDto vaultProfile;
 
     // Once the consumers are migrated, change mode to REQUIRED. Refer to TspProfileRequestDto.

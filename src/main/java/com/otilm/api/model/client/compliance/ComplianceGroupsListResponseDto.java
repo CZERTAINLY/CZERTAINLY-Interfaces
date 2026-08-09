@@ -2,32 +2,27 @@ package com.otilm.api.model.client.compliance;
 
 import com.otilm.api.model.connector.compliance.ComplianceGroupsResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 public class ComplianceGroupsListResponseDto {
-    @Schema(description = "Name of the Compliance Provider",
-            examples = {"Provider1"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Compliance Provider", examples = {
+            "Provider1"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    @Schema(description = "UUID of the Compliance Provider",
-            examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120003"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the Compliance Provider", examples = {
+            "c35bc88c-d0ef-11ec-9d64-0242ac120003"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Kind of the Compliance Provider",
-            examples = {"Kind1"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Kind of the Compliance Provider", examples = {
+            "Kind1"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "Groups from Compliance Provider",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Groups from Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceGroupsResponseDto> groups;
 
-
-    //Default getters and setters
+    // Default getters and setters
     public String getConnectorName() {
         return connectorName;
     }
@@ -65,7 +60,7 @@ public class ComplianceGroupsListResponseDto {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("connectorName", connectorName)
                 .append("connectorUuid", connectorUuid)
-                .append("kind",kind)
+                .append("kind", kind)
                 .append("groups", groups)
                 .toString();
     }

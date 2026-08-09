@@ -2,20 +2,17 @@ package com.otilm.api.model.core.auth;
 
 import com.otilm.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AuthResourceDto extends NameAndUuidDto {
-    @Schema(description = "Resource Name",
-            examples = {"Name"},
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            implementation = Resource.class)
+    @Schema(description = "Resource Name", examples = {
+            "Name"}, requiredMode = Schema.RequiredMode.REQUIRED, implementation = Resource.class)
     private String name;
 
     @Schema(description = "Resource label", requiredMode = Schema.RequiredMode.REQUIRED)

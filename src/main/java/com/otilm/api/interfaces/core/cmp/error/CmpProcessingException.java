@@ -9,8 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This exception is created if a any processing problem (scope: cmp request/response)
- * is raised.
+ * This exception is created if a any processing problem (scope: cmp request/response) is raised.
  */
 public class CmpProcessingException extends CmpBaseException {
 
@@ -22,7 +21,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @param implFailureInfo implementation-based error (platform scope, see ${@link ImplFailureInfo})
      */
     public CmpProcessingException(int failureInfo, ImplFailureInfo implFailureInfo) {
-        this(new DEROctetString("n/a".getBytes()), failureInfo,implFailureInfo, null);
+        this(new DEROctetString("n/a".getBytes()), failureInfo, implFailureInfo, null);
     }
 
     /**
@@ -31,7 +30,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @param ex failure reason
      */
     public CmpProcessingException(PKIFailureInfo failureInfo, ImplFailureInfo implFailureInfo, Exception ex) {
-        this(new DEROctetString("n/a".getBytes()), failureInfo.intValue(),implFailureInfo, ex);
+        this(new DEROctetString("n/a".getBytes()), failureInfo.intValue(), implFailureInfo, ex);
     }
 
     /**
@@ -55,7 +54,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @param errorDetails string description of error
      */
     public CmpProcessingException(ASN1OctetString tid, int failureInfo, String errorDetails) {
-        super(tid, failureInfo,errorDetails, null);
+        super(tid, failureInfo, errorDetails, null);
     }
 
     /**
@@ -64,7 +63,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @param ex failure reason
      */
     public CmpProcessingException(ASN1OctetString tid, int failureInfo, String errorDetails, Exception ex) {
-        super(tid, failureInfo,errorDetails, ex);
+        super(tid, failureInfo, errorDetails, ex);
     }
 
     /**
@@ -73,7 +72,9 @@ public class CmpProcessingException extends CmpBaseException {
      * @param ex failure reason
      */
     public CmpProcessingException(ASN1OctetString tid, int failureInfo, ImplFailureInfo implFailureInfo, Exception ex) {
-        super(tid, failureInfo, implFailureInfo.name() + "("+implFailureInfo.getCode()+"): "+ implFailureInfo.getDescription(), ex);
+        super(tid, failureInfo,
+                implFailureInfo.name() + "(" + implFailureInfo.getCode() + "): " + implFailureInfo.getDescription(),
+                ex);
         this.failureInfo = failureInfo;
         this.implFailureInfo = implFailureInfo;
     }
@@ -90,7 +91,7 @@ public class CmpProcessingException extends CmpBaseException {
      * @return help to build {@link PKIBody} for response flow
      */
     public PKIBody toPKIBody() {
-        if(implFailureInfo != null) {
+        if (implFailureInfo != null) {
             return PkiMessageError.generateBody(failureInfo, implFailureInfo);
         }
         return PkiMessageError.generateBody(failureInfo, errorDetails);

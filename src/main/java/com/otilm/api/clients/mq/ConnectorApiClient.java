@@ -1,20 +1,21 @@
 package com.otilm.api.clients.mq;
 
 import com.otilm.api.clients.ApiClientConnectorInfo;
-import com.otilm.api.interfaces.client.v1.ConnectorSyncApiClient;
 import com.otilm.api.exception.ConnectorException;
+import com.otilm.api.interfaces.client.v1.ConnectorSyncApiClient;
 import com.otilm.api.model.client.connector.InfoResponse;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Message queue based connector API client.
- * Uses ProxyClient to send requests via message queue instead of direct REST calls.
+ * Message queue based connector API client. Uses ProxyClient to send requests via message queue instead of direct REST
+ * calls.
  *
- * <p>This client maintains the same signature as the REST-based ConnectorApiClient
- * to ensure compatibility with existing code.</p>
+ * <p>
+ * This client maintains the same signature as the REST-based ConnectorApiClient to ensure compatibility with existing
+ * code.
+ * </p>
  */
 public class ConnectorApiClient implements ConnectorSyncApiClient {
 
@@ -36,13 +37,8 @@ public class ConnectorApiClient implements ConnectorSyncApiClient {
      */
     @Override
     public List<InfoResponse> listSupportedFunctions(ApiClientConnectorInfo connector) throws ConnectorException {
-        InfoResponse[] result = proxyClient.sendRequest(
-                connector,
-                CONNECTOR_BASE_CONTEXT,
-                HTTP_METHOD_GET,
-                null,
-                InfoResponse[].class
-        );
+        InfoResponse[] result = proxyClient
+                .sendRequest(connector, CONNECTOR_BASE_CONTEXT, HTTP_METHOD_GET, null, InfoResponse[].class);
         return Arrays.asList(result);
     }
 
@@ -53,12 +49,8 @@ public class ConnectorApiClient implements ConnectorSyncApiClient {
      * @return CompletableFuture that completes with list of supported functions
      */
     public CompletableFuture<List<InfoResponse>> listSupportedFunctionsAsync(ApiClientConnectorInfo connector) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                CONNECTOR_BASE_CONTEXT,
-                HTTP_METHOD_GET,
-                null,
-                InfoResponse[].class
-        ).thenApply(Arrays::asList);
+        return proxyClient
+                .sendRequestAsync(connector, CONNECTOR_BASE_CONTEXT, HTTP_METHOD_GET, null, InfoResponse[].class)
+                .thenApply(Arrays::asList);
     }
 }

@@ -9,26 +9,18 @@ import java.io.Serializable;
 /**
  * OpenAPI schema interface for the polymorphic {@link FormatDtbsRequestDto} hierarchy.
  *
- * <p>The concrete subtype is determined by the {@code type} discriminator
- * ({@link SigningWorkflowType}). {@code RAW_SIGNING} is excluded — raw signing
- * does not invoke a Signature Formatting Provider.</p>
+ * <p>
+ * The concrete subtype is determined by the {@code type} discriminator ({@link SigningWorkflowType}).
+ * {@code RAW_SIGNING} is excluded — raw signing does not invoke a Signature Formatting Provider.
+ * </p>
  */
-@Schema(
-        name = "FormatDtbsInterface",
-        description = "DTBS formatting request specific to the signing workflow type",
-        type = "object",
-        discriminatorProperty = "type",
-        discriminatorMapping = {
-                @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING, schema = TimestampingFormatDtbsRequestDto.class),
-                @DiscriminatorMapping(value = SigningWorkflowType.Codes.CONTENT_SIGNING, schema = ContentSigningFormatDtbsRequestDto.class),
-        },
-        oneOf = {
-                TimestampingFormatDtbsRequestDto.class,
-                ContentSigningFormatDtbsRequestDto.class,
-        })
+@Schema(name = "FormatDtbsInterface", description = "DTBS formatting request specific to the signing workflow type", type = "object", discriminatorProperty = "type", discriminatorMapping = {
+        @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING, schema = TimestampingFormatDtbsRequestDto.class),
+        @DiscriminatorMapping(value = SigningWorkflowType.Codes.CONTENT_SIGNING, schema = ContentSigningFormatDtbsRequestDto.class),}, oneOf = {
+                TimestampingFormatDtbsRequestDto.class, ContentSigningFormatDtbsRequestDto.class,})
 public interface FormatDtbsInterface extends Serializable {
 
-    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {SigningWorkflowType.Codes.TIMESTAMPING})
+    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            SigningWorkflowType.Codes.TIMESTAMPING})
     SigningWorkflowType getType();
 }

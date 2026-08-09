@@ -16,13 +16,12 @@ import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AutoClose;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -109,7 +108,8 @@ class DiscoveredItemDtoTest {
         assertTrue(json.contains("\"resource\":\"keys\""), "resource must serialize using the wire code");
         assertEquals(1, StringUtils.countMatches(json, "\"resource\""));
         // Platform wire codes are not camelCase — pin the real codes, not the enum's own name().
-        assertTrue(json.contains("\"type\":\"Public\""), "KeyType must serialize using its platform code, not PUBLIC_KEY");
+        assertTrue(json.contains("\"type\":\"Public\""),
+                "KeyType must serialize using its platform code, not PUBLIC_KEY");
         assertTrue(json.contains("\"algorithm\":\"RSA\""));
         assertTrue(json.contains("\"publicKeyFormat\":\"SubjectPublicKeyInfo\""),
                 "KeyFormat must serialize using its platform code, not SPKI");
@@ -250,7 +250,8 @@ class DiscoveredItemDtoTest {
 
     @Test
     void nonObjectTopLevelInputIsRejected() {
-        assertThrows(MismatchedInputException.class, () -> mapper.readValue("\"just-a-string\"", DiscoveredItemDto.class));
+        assertThrows(MismatchedInputException.class,
+                () -> mapper.readValue("\"just-a-string\"", DiscoveredItemDto.class));
     }
 
     @Test
@@ -273,9 +274,10 @@ class DiscoveredItemDtoTest {
         DiscoveredItemDto fresh = new DiscoveredItemDto();
         assertNull(fresh.getSequence(), "sequence must not be defaulted to 0");
 
-        DiscoveredItemDto dto = mapper.readValue(
-                "{\"uniqueRef\":\"r\",\"payload\":{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"}}",
-                DiscoveredItemDto.class);
+        DiscoveredItemDto dto = mapper
+                .readValue(
+                        "{\"uniqueRef\":\"r\",\"payload\":{\"resource\":\"certificates\",\"certificateData\":\"Y2VydC1kYXRh\"}}",
+                        DiscoveredItemDto.class);
         assertNull(dto.getSequence(), "an omitted sequence must deserialize to null, not to 0");
 
         Set<ConstraintViolation<DiscoveredItemDto>> violations = VALIDATOR.validate(dto);
@@ -295,11 +297,10 @@ class DiscoveredItemDtoTest {
         negative.setUniqueRef("r");
         negative.setPayload(certificatePayload());
 
-        assertTrue(VALIDATOR.validate(zero).stream()
-                        .anyMatch(v -> v.getPropertyPath().toString().equals("sequence")),
+        assertTrue(VALIDATOR.validate(zero).stream().anyMatch(v -> v.getPropertyPath().toString().equals("sequence")),
                 "sequence 0 must be rejected: the published minimum is 1");
-        assertTrue(VALIDATOR.validate(negative).stream()
-                        .anyMatch(v -> v.getPropertyPath().toString().equals("sequence")),
+        assertTrue(
+                VALIDATOR.validate(negative).stream().anyMatch(v -> v.getPropertyPath().toString().equals("sequence")),
                 "a negative sequence must be rejected");
     }
 

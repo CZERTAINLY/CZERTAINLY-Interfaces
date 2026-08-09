@@ -1,9 +1,12 @@
 package com.otilm.api.model.core.discovery;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,9 +41,8 @@ public class DiscoveryCertificateDto {
     @Schema(description = "Base64 encoded Certificate content", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateContent;
 
-    @Schema(description = "Boolean representing if the certificate is newly discovered. True - Certificate is newly discovered" +
-            "false - Certificate was already available in the inventory",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Boolean representing if the certificate is newly discovered. True - Certificate is newly discovered"
+            + "false - Certificate was already available in the inventory", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean newlyDiscovered;
 
     @Schema(description = "Indicator whether the discovery certificate has already been processed.", requiredMode = Schema.RequiredMode.REQUIRED)

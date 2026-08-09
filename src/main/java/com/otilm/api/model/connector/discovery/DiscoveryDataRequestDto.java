@@ -6,20 +6,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class DiscoveryDataRequestDto {
 
-    @Schema(description = "Name of the Discovery",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Discovery Kind",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Discovery Kind", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "Page number for the retrieved certificates",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Page number for the retrieved certificates", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer pageNumber;
 
-    @Schema(description = "Number of certificates per page",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Number of certificates per page", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer itemsPerPage;
 
     public String getName() {

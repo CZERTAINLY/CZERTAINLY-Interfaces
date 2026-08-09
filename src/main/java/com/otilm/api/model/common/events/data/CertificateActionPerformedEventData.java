@@ -17,18 +17,15 @@ public class CertificateActionPerformedEventData extends CertificateEventAuthori
     @Schema(description = "Error message. Filled when action failed", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String errorMessage;
 
-    @Schema(
-            description = "Certificate state observed at the moment the event was emitted. "
-                    + "Any value of `CertificateState` may appear; the values commonly seen by "
-                    + "subscribers of this event are:\n"
-                    + "- `ISSUED` — synchronous issuance / renewal / rekey completed,\n"
-                    + "- `REVOKED` — synchronous revocation completed or asynchronous revocation confirmed,\n"
-                    + "- `PENDING_ISSUE` — asynchronous issuance / renewal / rekey accepted, awaiting completion,\n"
-                    + "- `PENDING_REVOKE` — asynchronous revocation accepted, awaiting completion,\n"
-                    + "- `FAILED` — asynchronous issuance was cancelled, or issuance failed.\n"
-                    + "Optional for backward compatibility with subscribers built before the field "
-                    + "was introduced.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Certificate state observed at the moment the event was emitted. "
+            + "Any value of `CertificateState` may appear; the values commonly seen by "
+            + "subscribers of this event are:\n" + "- `ISSUED` — synchronous issuance / renewal / rekey completed,\n"
+            + "- `REVOKED` — synchronous revocation completed or asynchronous revocation confirmed,\n"
+            + "- `PENDING_ISSUE` — asynchronous issuance / renewal / rekey accepted, awaiting completion,\n"
+            + "- `PENDING_REVOKE` — asynchronous revocation accepted, awaiting completion,\n"
+            + "- `FAILED` — asynchronous issuance was cancelled, or issuance failed.\n"
+            + "Optional for backward compatibility with subscribers built before the field "
+            + "was introduced.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateState state;
 
     public CertificateActionPerformedEventData(String action, String errorMessage) {

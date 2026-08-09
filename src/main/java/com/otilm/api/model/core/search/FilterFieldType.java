@@ -1,21 +1,16 @@
 package com.otilm.api.model.core.search;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum FilterFieldType implements IPlatformEnum {
 
-    STRING(Constants.STRING, "String"),
-    NUMBER(Constants.NUMBER, "Number"),
-    LIST(Constants.LIST, "List"),
-    DATE(Constants.DATE, "Date"),
-    DATETIME(Constants.DATETIME, "DateTime"),
-    BOOLEAN(Constants.BOOLEAN, "Boolean");
+    STRING(Constants.STRING, "String"), NUMBER(Constants.NUMBER, "Number"), LIST(Constants.LIST, "List"), DATE(
+            Constants.DATE, "Date"), DATETIME(Constants.DATETIME, "DateTime"), BOOLEAN(Constants.BOOLEAN, "Boolean");
 
     private static final FilterFieldType[] VALUES;
 
@@ -28,7 +23,7 @@ public enum FilterFieldType implements IPlatformEnum {
     private final String description;
 
     FilterFieldType(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     FilterFieldType(String code, String label, String description) {
@@ -55,10 +50,12 @@ public enum FilterFieldType implements IPlatformEnum {
 
     @JsonCreator
     public static FilterFieldType fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported search field type %s.", code)));
+                .orElseThrow(
+                        () -> new IllegalArgumentException(String.format("Unsupported search field type %s.", code)));
     }
 
     private static class Constants {

@@ -4,19 +4,19 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * Per-operation MQ timeouts for {@link DiscoveryApiClient}, sized independently because a drain can
- * legitimately run far longer than a status poll or a lifecycle control call.
+ * Per-operation MQ timeouts for {@link DiscoveryApiClient}, sized independently because a drain can legitimately run
+ * far longer than a status poll or a lifecycle control call.
  *
  * <ul>
- *   <li>{@link #status()} — the {@code status} poll.</li>
- *   <li>{@link #drain()} — the {@code results} drain; raised where connectors return large batches.</li>
- *   <li>{@link #control()} — {@code initiate}, {@code stop}, {@code resume}, {@code cancel} and the
- *       three metadata reads.</li>
+ * <li>{@link #status()} — the {@code status} poll.</li>
+ * <li>{@link #drain()} — the {@code results} drain; raised where connectors return large batches.</li>
+ * <li>{@link #control()} — {@code initiate}, {@code stop}, {@code resume}, {@code cancel} and the three metadata
+ * reads.</li>
  * </ul>
  *
- * <p>Components must be positive, rejected at construction rather than surfacing as an immediate
- * timeout on the first connector call — the rule {@link com.otilm.api.clients.ClientTuning} applies to
- * its own durations.
+ * <p>
+ * Components must be positive, rejected at construction rather than surfacing as an immediate timeout on the first
+ * connector call — the rule {@link com.otilm.api.clients.ClientTuning} applies to its own durations.
  */
 public record DiscoveryMqTimeouts(Duration status, Duration drain, Duration control) {
 
@@ -27,8 +27,8 @@ public record DiscoveryMqTimeouts(Duration status, Duration drain, Duration cont
     }
 
     /**
-     * A missing component stays a {@link NullPointerException} — a wiring bug, not a value out of
-     * range; a zero or negative one is an {@link IllegalArgumentException} carrying the message shape
+     * A missing component stays a {@link NullPointerException} — a wiring bug, not a value out of range; a zero or
+     * negative one is an {@link IllegalArgumentException} carrying the message shape
      * {@link com.otilm.api.clients.ClientTuning} uses.
      */
     private static void requirePositive(Duration value, String name) {

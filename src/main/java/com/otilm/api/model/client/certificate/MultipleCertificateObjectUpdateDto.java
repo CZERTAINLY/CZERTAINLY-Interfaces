@@ -2,13 +2,12 @@ package com.otilm.api.model.client.certificate;
 
 import com.otilm.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Data
 public class MultipleCertificateObjectUpdateDto implements Loggable {
@@ -30,7 +29,13 @@ public class MultipleCertificateObjectUpdateDto implements Loggable {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("groupUuids", groupUuids).append("ownerUuid", ownerUuid).append("raProfileUuid", raProfileUuid).append("certificateUuids", certificateUuids).append("filters", filters).toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("groupUuids", groupUuids)
+                .append("ownerUuid", ownerUuid)
+                .append("raProfileUuid", raProfileUuid)
+                .append("certificateUuids", certificateUuids)
+                .append("filters", filters)
+                .toString();
     }
 
     @Override

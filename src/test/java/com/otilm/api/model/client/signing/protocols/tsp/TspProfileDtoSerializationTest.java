@@ -1,12 +1,11 @@
 package com.otilm.api.model.client.signing.protocols.tsp;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.core.signing.TspAuthenticationMethod;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 class TspProfileDtoSerializationTest {
 
@@ -21,9 +20,10 @@ class TspProfileDtoSerializationTest {
                 """;
         TspProfileRequestDto dto = mapper.readValue(json, TspProfileRequestDto.class);
 
-        Assertions.assertEquals(
-                List.of(TspAuthenticationMethod.CLIENT_CERTIFICATE, TspAuthenticationMethod.BASIC_PASSWORD),
-                dto.getAllowedAuthenticationMethods());
+        Assertions
+                .assertEquals(
+                        List.of(TspAuthenticationMethod.CLIENT_CERTIFICATE, TspAuthenticationMethod.BASIC_PASSWORD),
+                        dto.getAllowedAuthenticationMethods());
     }
 
     @Test
@@ -33,15 +33,17 @@ class TspProfileDtoSerializationTest {
 
         String json = mapper.writeValueAsString(dto);
 
-        Assertions.assertTrue(json.contains("\"clientCertificate\""),
-                "enum must serialize to its @JsonValue wire code, not the enum name");
+        Assertions
+                .assertTrue(json.contains("\"clientCertificate\""),
+                        "enum must serialize to its @JsonValue wire code, not the enum name");
     }
 
     @Test
     void findByCode_unknownCode_throwsValidationExceptionEchoingTheCode() {
-        ValidationException ex = Assertions.assertThrows(ValidationException.class,
-                () -> TspAuthenticationMethod.findByCode("bogus"));
-        Assertions.assertTrue(ex.getMessage().contains("bogus"),
-                "validation error must echo the rejected code: " + ex.getMessage());
+        ValidationException ex = Assertions
+                .assertThrows(ValidationException.class, () -> TspAuthenticationMethod.findByCode("bogus"));
+        Assertions
+                .assertTrue(ex.getMessage().contains("bogus"),
+                        "validation error must echo the rejected code: " + ex.getMessage());
     }
 }

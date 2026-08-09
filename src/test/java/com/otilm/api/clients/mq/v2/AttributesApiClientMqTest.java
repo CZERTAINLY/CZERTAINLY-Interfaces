@@ -10,31 +10,32 @@ import com.otilm.api.model.client.connector.v2.attribute.AttributeDefinitionsDto
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.common.attribute.v3.InfoAttributeV3;
 import com.otilm.api.model.core.connector.ConnectorDto;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- * Delegation tests for the MQ-based Attributes v2 client. Verifies each method calls
- * {@link ProxyClient#sendRequest} (or its async variant) with the right path / HTTP method / body /
- * response type and returns the proxy's value.
+ * Delegation tests for the MQ-based Attributes v2 client. Verifies each method calls {@link ProxyClient#sendRequest}
+ * (or its async variant) with the right path / HTTP method / body / response type and returns the proxy's value.
  *
- * <p>No mocking framework (Mockito etc.) is on this project's test classpath — only JUnit Jupiter and
- * WireMock — so the proxy is a hand-written recording fake.</p>
+ * <p>
+ * No mocking framework (Mockito etc.) is on this project's test classpath — only JUnit Jupiter and WireMock — so the
+ * proxy is a hand-written recording fake.
+ * </p>
  *
- * <p><b>Out of scope — AC5 / MQ error parity is a Core concern.</b> The {@link ProxyClient}
- * implementation maps connector errors by raw HTTP status code and never reconstructs a
- * {@code ConnectorProblemException} from the connector's {@code errorCode}, so a connector 404
- * ({@code ATTRIBUTE_DEFINITION_NOT_FOUND}) over MQ loses its error code. That parity fix is tracked as a
- * Core gate (core #1622/#1621), not #726, so this suite does NOT assert error mapping over MQ. Note too that
- * {@code ProxyClient} has no query-string notion — the exploded {@code uuids} string rides in the path
- * (verified below); whether it survives the bus is a separate Core/MQ gate.</p>
+ * <p>
+ * <b>Out of scope — AC5 / MQ error parity is a Core concern.</b> The {@link ProxyClient} implementation maps connector
+ * errors by raw HTTP status code and never reconstructs a {@code ConnectorProblemException} from the connector's
+ * {@code errorCode}, so a connector 404 ({@code ATTRIBUTE_DEFINITION_NOT_FOUND}) over MQ loses its error code. That
+ * parity fix is tracked as a Core gate (core #1622/#1621), not #726, so this suite does NOT assert error mapping over
+ * MQ. Note too that {@code ProxyClient} has no query-string notion — the exploded {@code uuids} string rides in the
+ * path (verified below); whether it survives the bus is a separate Core/MQ gate.
+ * </p>
  */
 class AttributesApiClientMqTest {
 
@@ -142,8 +143,7 @@ class AttributesApiClientMqTest {
         AttributeDefinitionsDto expected = new AttributeDefinitionsDto();
         proxyClient.asyncResponse = CompletableFuture.completedFuture(expected);
 
-        CompletableFuture<AttributeDefinitionsDto> result =
-                client.listDefinitionsAsync(connector, List.of(a, b));
+        CompletableFuture<AttributeDefinitionsDto> result = client.listDefinitionsAsync(connector, List.of(a, b));
 
         Assertions.assertSame(expected, result.join());
         // The exploded-uuids path build is the only async logic that differs from the sync path.
@@ -176,9 +176,9 @@ class AttributesApiClientMqTest {
     }
 
     /**
-     * Records the arguments of the single {@code sendRequest}/{@code sendRequestAsync} call under test and
-     * returns the preset response. Only the two overloads exercised by the client are implemented; the
-     * rest throw to surface any unexpected delegation.
+     * Records the arguments of the single {@code sendRequest}/{@code sendRequestAsync} call under test and returns the
+     * preset response. Only the two overloads exercised by the client are implemented; the rest throw to surface any
+     * unexpected delegation.
      */
     private static final class RecordingProxyClient implements ProxyClient {
         private ApiClientConnectorInfo connector;
@@ -192,7 +192,8 @@ class AttributesApiClientMqTest {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType) {
+        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body,
+                Class<T> responseType) {
             this.connector = connector;
             this.path = path;
             this.method = method;
@@ -203,7 +204,8 @@ class AttributesApiClientMqTest {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType) {
+        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method,
+                Object body, Class<T> responseType) {
             this.connector = connector;
             this.path = path;
             this.method = method;
@@ -213,22 +215,26 @@ class AttributesApiClientMqTest {
         }
 
         @Override
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType, Duration timeout) {
+        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body,
+                Class<T> responseType, Duration timeout) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Map<String, String> pathVariables, Object body, Class<T> responseType) {
+        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method,
+                Map<String, String> pathVariables, Object body, Class<T> responseType) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType, Duration timeout) {
+        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method,
+                Object body, Class<T> responseType, Duration timeout) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Map<String, String> pathVariables, Object body, Class<T> responseType, Duration timeout) {
+        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method,
+                Map<String, String> pathVariables, Object body, Class<T> responseType, Duration timeout) {
             throw new UnsupportedOperationException();
         }
 
@@ -238,7 +244,8 @@ class AttributesApiClientMqTest {
         }
 
         @Override
-        public void sendFireAndForget(ApiClientConnectorInfo connector, String path, String method, Object body, String messageType) {
+        public void sendFireAndForget(ApiClientConnectorInfo connector, String path, String method, Object body,
+                String messageType) {
             throw new UnsupportedOperationException();
         }
     }

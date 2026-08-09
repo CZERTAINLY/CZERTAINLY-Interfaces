@@ -6,9 +6,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * This class contains set of properties to represent
- * an Attribute definition including its value for the
- * detail API responses
+ * This class contains set of properties to represent an Attribute definition including its value for the detail API
+ * responses
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseAttributeDto {
@@ -16,48 +15,34 @@ public class ResponseAttributeDto {
     /**
      * UUID of the Attribute
      **/
-    @Schema(
-            description = "UUID of the Attribute",
-            example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7"
-    )
+    @Schema(description = "UUID of the Attribute", example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String uuid;
 
     /**
      * Name of the Attribute, can be used as key for form field label text
      **/
-    @Schema(
-            description = "Name of the Attribute",
-            examples = {"Attribute"},
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Name of the Attribute", examples = {
+            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**
-    * Label of the Attribute, Can be used to display the field name in the User Interface
-    **/
-   @Schema(
-           description = "Label of the the Attribute",
-           examples = {"Attribute Name"},
-           requiredMode = Schema.RequiredMode.REQUIRED
-   )
-   private String label;
+     * Label of the Attribute, Can be used to display the field name in the User Interface
+     **/
+    @Schema(description = "Label of the the Attribute", examples = {
+            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    private String label;
 
     /**
      * Type of the Attribute, base types are defined in {@link AttributeType}
      **/
-    @Schema(
-            description = "Type of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Type of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeType type;
 
     /**
      * Content of the Attribute
      **/
-    @Schema(
-            description = "Content of the Attribute"
-    )
+    @Schema(description = "Content of the Attribute")
     private Object content;
 
     public ResponseAttributeDto() {
@@ -89,14 +74,14 @@ public class ResponseAttributeDto {
     }
 
     public String getLabel() {
-		return label;
-	}
+        return label;
+    }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	public AttributeType getType() {
+    public AttributeType getType() {
         return type;
     }
 

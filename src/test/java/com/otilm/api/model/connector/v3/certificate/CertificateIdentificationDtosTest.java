@@ -1,9 +1,8 @@
 package com.otilm.api.model.connector.v3.certificate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,8 +17,8 @@ class CertificateIdentificationDtosTest {
         dto.setRaProfileAttributes(List.of());
         dto.setCertificate("MIIBkjCCATs...");
         String json = mapper.writeValueAsString(dto);
-        CertificateIdentificationRequestDtoV3 back =
-                mapper.readValue(json, CertificateIdentificationRequestDtoV3.class);
+        CertificateIdentificationRequestDtoV3 back = mapper
+                .readValue(json, CertificateIdentificationRequestDtoV3.class);
         assertEquals("MIIBkjCCATs...", back.getCertificate());
     }
 
@@ -28,8 +27,7 @@ class CertificateIdentificationDtosTest {
         CertificateIdentificationResponseDto dto = new CertificateIdentificationResponseDto();
         dto.setMeta(List.of());
         String json = mapper.writeValueAsString(dto);
-        CertificateIdentificationResponseDto back =
-                mapper.readValue(json, CertificateIdentificationResponseDto.class);
+        CertificateIdentificationResponseDto back = mapper.readValue(json, CertificateIdentificationResponseDto.class);
         assertEquals(0, back.getMeta().size());
     }
 }

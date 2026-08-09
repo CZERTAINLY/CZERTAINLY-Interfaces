@@ -1,17 +1,19 @@
 package com.otilm.api.model.connector.v3.certificate;
 
-import com.otilm.api.model.core.certificate.CertificateType;
-import com.otilm.api.model.core.oid.ExtensionValueEncoding;
-import com.otilm.api.model.core.certificate.GeneralNameType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+import com.otilm.api.model.core.certificate.CertificateType;
+import com.otilm.api.model.core.certificate.GeneralNameType;
+import com.otilm.api.model.core.oid.ExtensionValueEncoding;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CertificateRequestContentSerializationTest {
 
@@ -133,8 +135,7 @@ class CertificateRequestContentSerializationTest {
                 }
                 """;
 
-        assertThrows(InvalidTypeIdException.class,
-                () -> mapper.readValue(json, CertificateRequestContent.class));
+        assertThrows(InvalidTypeIdException.class, () -> mapper.readValue(json, CertificateRequestContent.class));
     }
 
     @Test
@@ -145,7 +146,6 @@ class CertificateRequestContentSerializationTest {
                 }
                 """;
 
-        assertThrows(InvalidTypeIdException.class,
-                () -> mapper.readValue(json, CertificateRequestContent.class));
+        assertThrows(InvalidTypeIdException.class, () -> mapper.readValue(json, CertificateRequestContent.class));
     }
 }

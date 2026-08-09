@@ -9,79 +9,54 @@ import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Data;
 import lombok.ToString;
-
-import java.util.List;
 
 @Data
 public class BaseCmpProfileRequestDto {
 
-    @Schema(
-            description = "Description of the CMP Profile",
-            examples = {"Sample text description"}
-    )
+    @Schema(description = "Description of the CMP Profile", examples = {"Sample text description"})
     private String description;
 
     @ValidUuid
-    @Schema(
-            description = "RA Profile UUID that the CMP Profile is associated with",
-            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
-    )
+    @Schema(description = "RA Profile UUID that the CMP Profile is associated with", examples = {
+            "6b55de1c-844f-11ec-a8a3-0242ac120002"})
     private String raProfileUuid;
 
-    @Schema(
-            description = "List of Attributes to issue Certificate for the associated RA Profile. Required when RA Profile UUID is provided"
-    )
+    @Schema(description = "List of Attributes to issue Certificate for the associated RA Profile. Required when RA Profile UUID is provided")
     private List<RequestAttribute> issueCertificateAttributes;
 
-    @Schema(
-            description = "List of Attributes to revoke Certificate for the associated RA Profile. Required when RA Profile UUID is provided"
-    )
+    @Schema(description = "List of Attributes to revoke Certificate for the associated RA Profile. Required when RA Profile UUID is provided")
     private List<RequestAttribute> revokeCertificateAttributes;
 
-    @Schema(
-            description = "List of Custom Attributes for CMP Profile"
-    )
+    @Schema(description = "List of Custom Attributes for CMP Profile")
     private List<RequestAttribute> customAttributes;
 
     @NotNull
-    @Schema(
-            description = "Protection Method for the CMP Request",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Protection Method for the CMP Request", requiredMode = Schema.RequiredMode.REQUIRED)
     private ProtectionMethod requestProtectionMethod;
 
     @NotNull
-    @Schema(
-            description = "Protection Method for the CMP Response",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Protection Method for the CMP Response", requiredMode = Schema.RequiredMode.REQUIRED)
     private ProtectionMethod responseProtectionMethod;
 
     @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(
-            description = "Shared secret for the CMP Request, used when Protection Method is Shared Secret. " +
-                    "Required when creating a CMP Profile. When editing, a blank or omitted value keeps the " +
-                    "existing shared secret; a value is required if no shared secret is stored yet."
-    )
+    @Schema(description = "Shared secret for the CMP Request, used when Protection Method is Shared Secret. "
+            + "Required when creating a CMP Profile. When editing, a blank or omitted value keeps the "
+            + "existing shared secret; a value is required if no shared secret is stored yet.")
     private String sharedSecret;
 
     @ValidUuid
-    @Schema(
-            description = "UUID of the Certificate to be used as signing certificate for CMP responses. Required when Protection Method is Signature"
-    )
+    @Schema(description = "UUID of the Certificate to be used as signing certificate for CMP responses. Required when Protection Method is Signature")
     private String signingCertificateUuid;
 
-    @Schema(
-            description = "Source of the credential for MAC-protected requests ('protocolDefault' or 'certificateRegistration'). "
-                    + "'protocolDefault' verifies against the profile shared secret; 'certificateRegistration' requires the "
-                    + "senderKID to reference a pre-registered certificate whose challenge is the MAC secret, and forbids a "
-                    + "profile shared secret. Signature protection is independent of this setting. Omit to keep the stored "
-                    + "value on edit; on create, omit to default to 'protocolDefault'.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Source of the credential for MAC-protected requests ('protocolDefault' or 'certificateRegistration'). "
+            + "'protocolDefault' verifies against the profile shared secret; 'certificateRegistration' requires the "
+            + "senderKID to reference a pre-registered certificate whose challenge is the MAC secret, and forbids a "
+            + "profile shared secret. Signature protection is independent of this setting. Omit to keep the stored "
+            + "value on edit; on create, omit to default to 'protocolDefault'.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolChallengeSource challengeSource;
 
     @Valid

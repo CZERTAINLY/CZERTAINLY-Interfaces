@@ -1,24 +1,24 @@
 package com.otilm.api.model.messaging.timequality;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.otilm.api.model.client.signing.timequality.validation.NtpConfiguration;
 import com.otilm.api.model.client.signing.timequality.validation.ValidNtpMinReachable;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 @ValidNtpMinReachable
 @Schema(name = "TimeQualityConfig", description = "NTP-based time quality configuration carried within a configuration snapshot")
-// Compared to TimeQualityConfigurationDto, accuracy is intentionally missing. It is only relevant for `TSTInfo` construction and has no bearing on time quality monitoring.
+// Compared to TimeQualityConfigurationDto, accuracy is intentionally missing. It is only relevant for `TSTInfo`
+// construction and has no bearing on time quality monitoring.
 public class TimeQualityConfig implements Serializable, NtpConfiguration {
 
     @NotNull
@@ -57,7 +57,7 @@ public class TimeQualityConfig implements Serializable, NtpConfiguration {
     private Duration maxClockDrift;
 
     @Schema(description = "Whether to guard against leap second anomalies. When true, signing operations are blocked for approximately two seconds around midnight "
-    + "on days when NTP servers announce an upcoming leap second. Set to false to allow signing through that window at the cost of potential one-second timestamp "
-    + "inaccuracy during the leap event.", example = "true")
+            + "on days when NTP servers announce an upcoming leap second. Set to false to allow signing through that window at the cost of potential one-second timestamp "
+            + "inaccuracy during the leap event.", example = "true")
     private boolean leapSecondGuard;
 }

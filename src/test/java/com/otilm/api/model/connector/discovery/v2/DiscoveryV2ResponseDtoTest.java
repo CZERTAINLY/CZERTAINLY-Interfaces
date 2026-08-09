@@ -12,13 +12,12 @@ import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.junit.jupiter.api.AutoClose;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -79,7 +78,8 @@ class DiscoveryV2ResponseDtoTest {
         assertTrue(json.contains("\"highestSequence\":7"));
 
         DiscoveryResultsResponseDto back = mapper.readValue(json, DiscoveryResultsResponseDto.class);
-        assertEquals(7L, back.getHighestSequence(), "highestSequence must remain run-wide, not corrected to the page max");
+        assertEquals(7L, back.getHighestSequence(),
+                "highestSequence must remain run-wide, not corrected to the page max");
         assertTrue(back.getMore());
         assertEquals(2, back.getItems().size());
         assertEquals(3L, back.getItems().get(0).getSequence());
@@ -157,8 +157,7 @@ class DiscoveryV2ResponseDtoTest {
         Set<ConstraintViolation<DiscoveryResultsResponseDto>> violations = VALIDATOR.validate(dto);
         // A container-element constraint reports the element node, so the path a caller sees for a
         // null entry is items[0].<list element>, not items[0].
-        assertTrue(violations.stream()
-                        .anyMatch(v -> v.getPropertyPath().toString().equals("items[0].<list element>")),
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items[0].<list element>")),
                 "a null entry inside items must be rejected, not counted as a discovered item");
     }
 
@@ -288,10 +287,13 @@ class DiscoveryV2ResponseDtoTest {
 
         DiscoverySupportedResourceDto omittedBack = mapper.readValue(omittedJson, DiscoverySupportedResourceDto.class);
         DiscoverySupportedResourceDto emptyBack = mapper.readValue(emptyJson, DiscoverySupportedResourceDto.class);
-        DiscoverySupportedResourceDto populatedBack = mapper.readValue(populatedJson, DiscoverySupportedResourceDto.class);
+        DiscoverySupportedResourceDto populatedBack = mapper
+                .readValue(populatedJson, DiscoverySupportedResourceDto.class);
 
-        assertNull(omittedBack.getCapabilities(), "null capabilities (all flags apply) must not be normalized to empty");
-        assertTrue(emptyBack.getCapabilities().isEmpty(), "empty capabilities (no flags apply) must not be normalized to null");
+        assertNull(omittedBack.getCapabilities(),
+                "null capabilities (all flags apply) must not be normalized to empty");
+        assertTrue(emptyBack.getCapabilities().isEmpty(),
+                "empty capabilities (no flags apply) must not be normalized to null");
         assertEquals(List.of(DiscoveryResourceCapability.STOP_RESUME), populatedBack.getCapabilities());
     }
 
@@ -410,10 +412,8 @@ class DiscoveryV2ResponseDtoTest {
 
         assertFalse(str.contains("meta"),
                 "toString must not mention the resume checkpoint, which can reach 64 KB: " + str);
-        assertFalse(str.contains("resumeCheckpointCursor"),
-                "toString must not name the checkpoint's entries: " + str);
-        assertFalse(str.contains("resume-checkpoint-blob"),
-                "toString must not write checkpoint content: " + str);
+        assertFalse(str.contains("resumeCheckpointCursor"), "toString must not name the checkpoint's entries: " + str);
+        assertFalse(str.contains("resume-checkpoint-blob"), "toString must not write checkpoint content: " + str);
     }
 
     private MetadataAttribute metadataAttribute(String name, String value) {

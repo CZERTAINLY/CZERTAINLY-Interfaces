@@ -9,7 +9,9 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.UUID;
 
-public class ManagedSignatureFormattingConnectorValidator implements ConstraintValidator<ValidManagedSignatureFormattingConnector, SigningProfileRequestDto> {
+public class ManagedSignatureFormattingConnectorValidator
+        implements
+            ConstraintValidator<ValidManagedSignatureFormattingConnector, SigningProfileRequestDto> {
 
     @Override
     public boolean isValid(SigningProfileRequestDto dto, ConstraintValidatorContext context) {
@@ -28,8 +30,11 @@ public class ManagedSignatureFormattingConnectorValidator implements ConstraintV
             formattingConnectorUuid = tsw.getSignatureFormattingConnectorUuid();
             if (Boolean.TRUE.equals(tsw.getQualifiedTimestamp()) && tsw.getTimeQualityConfigurationUuid() == null) {
                 context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate("timeQualityConfigurationUuid must be provided when qualifiedTimestamp is true")
-                        .addPropertyNode("workflow").addPropertyNode("timeQualityConfigurationUuid")
+                context
+                        .buildConstraintViolationWithTemplate(
+                                "timeQualityConfigurationUuid must be provided when qualifiedTimestamp is true")
+                        .addPropertyNode("workflow")
+                        .addPropertyNode("timeQualityConfigurationUuid")
                         .addConstraintViolation();
                 valid = false;
             }
@@ -41,8 +46,10 @@ public class ManagedSignatureFormattingConnectorValidator implements ConstraintV
 
         if (formattingConnectorUuid == null) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                    .addPropertyNode("workflow").addPropertyNode("signatureFormattingConnectorUuid")
+            context
+                    .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                    .addPropertyNode("workflow")
+                    .addPropertyNode("signatureFormattingConnectorUuid")
                     .addConstraintViolation();
             valid = false;
         }

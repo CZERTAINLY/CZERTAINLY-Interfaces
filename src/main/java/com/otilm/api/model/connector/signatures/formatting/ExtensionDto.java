@@ -11,22 +11,12 @@ public class ExtensionDto {
 
     @NotBlank
     @ValidOid
-    @Schema(
-            description = "OID of the extension",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "1.3.6.1.5.5.7.1.1"
-    )
+    @Schema(description = "OID of the extension", requiredMode = Schema.RequiredMode.REQUIRED, example = "1.3.6.1.5.5.7.1.1")
     private String oid;
 
-    @Schema(
-            description = "Whether the extension is critical",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Whether the extension is critical", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean critical;
 
-    @Schema(
-            description = "Base64-encoded DER value of the extension",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Base64-encoded DER value of the extension", requiredMode = Schema.RequiredMode.REQUIRED)
     private String value;
 }

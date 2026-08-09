@@ -2,11 +2,14 @@ package com.otilm.api.model.client.cryptography.key;
 
 import com.otilm.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,15 +18,10 @@ import java.util.UUID;
 @ToString
 public class BulkCompromiseKeyRequestDto implements Loggable {
 
-    @Schema(
-            description = "Usages for the Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Usages for the Key", requiredMode = Schema.RequiredMode.REQUIRED)
     private KeyCompromiseReason reason;
 
-    @Schema(
-            description = "List of UUIDs of the keys. This will mark all the items inside the selected key as compromised"
-    )
+    @Schema(description = "List of UUIDs of the keys. This will mark all the items inside the selected key as compromised")
     private List<UUID> uuids;
 
     @Override

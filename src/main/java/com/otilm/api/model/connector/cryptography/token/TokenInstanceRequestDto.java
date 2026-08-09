@@ -2,9 +2,12 @@ package com.otilm.api.model.connector.cryptography.token;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,16 +16,13 @@ import java.util.List;
 @ToString
 public class TokenInstanceRequestDto {
 
-    @Schema(description = "Token instance name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Token instance name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Kind of Token instance",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Kind of Token instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "List of Token instance Attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Token instance Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
 }

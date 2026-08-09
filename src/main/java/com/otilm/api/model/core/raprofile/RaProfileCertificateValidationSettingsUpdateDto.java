@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class RaProfileCertificateValidationSettingsUpdateDto {
 
-    @Schema(description = "Indicator whether validation of certificates associated with RA profile should be enabled, if null, then values in platform settings will be used" , requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Indicator whether validation of certificates associated with RA profile should be enabled, if null, then values in platform settings will be used", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "Frequency of validation of certificates in days, when not set, value in platform settings is used", requiredMode = Schema.RequiredMode.NOT_REQUIRED, minimum = "1", defaultValue = "1")

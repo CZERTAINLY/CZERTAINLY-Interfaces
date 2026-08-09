@@ -1,20 +1,17 @@
 package com.otilm.api.model.core.search;
 
-import com.otilm.api.model.common.attribute.common.AttributeType;
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.attribute.common.AttributeType;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum FilterFieldSource implements IPlatformEnum {
 
-    META("meta", "Metadata", AttributeType.META),
-    CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM),
-    DATA("data", "Data attribute", AttributeType.DATA),
-    PROPERTY("property", "Property", null);
+    META("meta", "Metadata", AttributeType.META), CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM), DATA(
+            "data", "Data attribute", AttributeType.DATA), PROPERTY("property", "Property", null);
 
     private static final FilterFieldSource[] VALUES;
 
@@ -28,7 +25,7 @@ public enum FilterFieldSource implements IPlatformEnum {
     private final AttributeType attributeType;
 
     FilterFieldSource(String code, String label, AttributeType attributeType) {
-        this(code, label ,null, attributeType);
+        this(code, label, null, attributeType);
     }
 
     FilterFieldSource(String code, String label, String description, AttributeType attributeType) {
@@ -60,7 +57,8 @@ public enum FilterFieldSource implements IPlatformEnum {
 
     @JsonCreator
     public static FilterFieldSource fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported search group %s.", code)));

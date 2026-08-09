@@ -1,11 +1,10 @@
 package com.otilm.api.model.core.compliance.v2;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.UUID;
 
 @Getter
 @Setter

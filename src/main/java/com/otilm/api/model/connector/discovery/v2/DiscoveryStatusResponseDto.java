@@ -21,15 +21,12 @@ public class DiscoveryStatusResponseDto {
     @NotNull(message = "state is required")
     private DiscoveryRunState state;
 
-    @Schema(description = "Progress detail for the run; omitted when the connector cannot report progress",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Progress detail for the run; omitted when the connector cannot report progress", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private DiscoveryProgressDto progress;
 
     @Schema(description = "Run-wide highest item sequence assigned so far — never page-scoped. Consumers must "
-                  + "advance cursors only by item sequences actually received. Item sequences start at 1, so 0 "
-                  + "means the run has produced no items yet.",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            minimum = "0")
+            + "advance cursors only by item sequences actually received. Item sequences start at 1, so 0 "
+            + "means the run has produced no items yet.", requiredMode = Schema.RequiredMode.REQUIRED, minimum = "0")
     @NotNull(message = "highestSequence is required")
     @PositiveOrZero(message = "highestSequence must not be negative")
     private Long highestSequence;

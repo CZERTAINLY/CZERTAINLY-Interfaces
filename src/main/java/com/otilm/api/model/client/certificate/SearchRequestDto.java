@@ -1,9 +1,8 @@
 package com.otilm.api.model.client.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class SearchRequestDto {

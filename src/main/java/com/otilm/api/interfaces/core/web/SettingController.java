@@ -2,8 +2,14 @@ package com.otilm.api.interfaces.core.web;
 
 import com.otilm.api.exception.NotFoundException;
 import com.otilm.api.interfaces.AuthProtectedController;
-import com.otilm.api.model.core.settings.*;
-import com.otilm.api.model.core.settings.authentication.*;
+import com.otilm.api.model.core.settings.EventSettingsDto;
+import com.otilm.api.model.core.settings.EventsSettingsDto;
+import com.otilm.api.model.core.settings.PlatformSettingsDto;
+import com.otilm.api.model.core.settings.PlatformSettingsUpdateDto;
+import com.otilm.api.model.core.settings.authentication.AuthenticationSettingsDto;
+import com.otilm.api.model.core.settings.authentication.AuthenticationSettingsUpdateDto;
+import com.otilm.api.model.core.settings.authentication.OAuth2ProviderSettingsResponseDto;
+import com.otilm.api.model.core.settings.authentication.OAuth2ProviderSettingsUpdateDto;
 import com.otilm.api.model.core.settings.logging.LoggingSettingsDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,7 +18,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1/settings")
 @Tag(name = "Settings", description = "Settings API")
@@ -56,12 +68,15 @@ public interface SettingController extends AuthProtectedController {
     @Operation(summary = "Get OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "OAuth2 Provider settings retrieved")})
     @GetMapping(path = "/authentication/oauth2Providers/{providerName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    OAuth2ProviderSettingsResponseDto getOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
+    OAuth2ProviderSettingsResponseDto getOAuth2ProviderSettings(
+            @Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName);
 
     @Operation(summary = "Update OAuth2 Provider settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
     @PutMapping(path = "/authentication/oauth2Providers/{providerName}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void updateOAuth2ProviderSettings(@Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName, @Valid @RequestBody OAuth2ProviderSettingsUpdateDto oauth2SettingsDto);
+    void updateOAuth2ProviderSettings(
+            @Parameter(description = "OAuth2 Provider Name") @PathVariable String providerName,
+            @Valid @RequestBody OAuth2ProviderSettingsUpdateDto oauth2SettingsDto);
 
     @Operation(summary = "Remove OAuth2 Provider")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "OAuth2 Provider removed.")})

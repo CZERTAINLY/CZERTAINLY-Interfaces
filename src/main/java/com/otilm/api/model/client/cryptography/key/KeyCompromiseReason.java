@@ -1,18 +1,17 @@
 package com.otilm.api.model.client.cryptography.key;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyCompromiseReason implements IPlatformEnum {
-    UNAUTHORIZED_DISCLOSURE("disclosure", "Unauthorized disclosure"),
-    UNAUTHORIZED_MODIFICATION("modification", "Unauthorized modification"),
+    UNAUTHORIZED_DISCLOSURE("disclosure", "Unauthorized disclosure"), UNAUTHORIZED_MODIFICATION("modification",
+            "Unauthorized modification"),
 
     UNAUTHORIZED_SUBSTITUTION("substitution", "Unauthorized substitution"),
 
@@ -24,14 +23,14 @@ public enum KeyCompromiseReason implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Reason for compromise",
-            examples = {"Unauthorized Disclosure"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Reason for compromise", examples = {
+            "Unauthorized Disclosure"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
 
     KeyCompromiseReason(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     KeyCompromiseReason(String code, String label, String description) {
@@ -42,11 +41,12 @@ public enum KeyCompromiseReason implements IPlatformEnum {
 
     @JsonCreator
     public static KeyCompromiseReason findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown key compromise reason {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown key compromise reason {}", code)));
     }
 
     @Override

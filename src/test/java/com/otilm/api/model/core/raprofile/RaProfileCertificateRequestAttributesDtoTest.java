@@ -1,11 +1,10 @@
 package com.otilm.api.model.core.raprofile;
 
-import com.otilm.api.model.common.attribute.v3.mapping.ValueSourceType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.otilm.api.model.common.attribute.v3.mapping.ValueSourceType;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static com.otilm.util.builders.DataAttributeV3Builder.aDataAttribute;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,8 +23,8 @@ class RaProfileCertificateRequestAttributesDtoTest {
 
         // when
         var json = mapper.writeValueAsString(dto);
-        RaProfileCertificateRequestAttributesDto back =
-                mapper.readValue(json, RaProfileCertificateRequestAttributesDto.class);
+        RaProfileCertificateRequestAttributesDto back = mapper
+                .readValue(json, RaProfileCertificateRequestAttributesDto.class);
 
         // then
         assertEquals(AttributeSetMergeMode.MERGE, back.getMergeMode());
@@ -46,8 +45,8 @@ class RaProfileCertificateRequestAttributesDtoTest {
 
         // when
         var json = mapper.writeValueAsString(dto);
-        RaProfileCertificateRequestAttributesDto back =
-                mapper.readValue(json, RaProfileCertificateRequestAttributesDto.class);
+        RaProfileCertificateRequestAttributesDto back = mapper
+                .readValue(json, RaProfileCertificateRequestAttributesDto.class);
 
         // value source binding is supposed to be hidden
         Assertions.assertFalse(json.contains("valueSourceBindings"));

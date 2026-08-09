@@ -6,8 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * This class contains set of properties to represent
- * an Attribute definition including its value.
+ * This class contains set of properties to represent an Attribute definition including its value.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AttributeDefinition {
@@ -15,131 +14,88 @@ public class AttributeDefinition {
     /**
      * UUID of the Attribute
      **/
-    @Schema(
-            description = "UUID of the Attribute for unique identification",
-            example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "UUID of the Attribute for unique identification", example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
     /**
      * Name of the Attribute for processing
      **/
-    @Schema(
-            description = "Name of the Attribute that is used for identification",
-            examples = {"Attribute"},
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Name of the Attribute that is used for identification", examples = {
+            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**
      * Content of the Attribute
      **/
-    @Schema(
-            description = "Content of the Attribute"
-    )
+    @Schema(description = "Content of the Attribute")
     private Object content;
-    
+
     /**
-    * Friendly name of the Attribute
-    **/
-   @Schema(
-           description = "Friendly name of the the Attribute",
-           examples = {"Attribute Name"},
-           requiredMode = Schema.RequiredMode.REQUIRED
-   )
-   private String label;
+     * Friendly name of the Attribute
+     **/
+    @Schema(description = "Friendly name of the the Attribute", examples = {
+            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    private String label;
 
     /**
      * Type of the Attribute, base types are defined in {@link AttributeType}
      **/
-    @Schema(
-            description = "Type of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Type of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeType type;
 
     /**
      * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
      **/
-    @Schema(
-            description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
-            defaultValue = "false",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean required = false;
 
     /**
      * Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.
      **/
-    @Schema(
-            description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.",
-            defaultValue = "false",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean readOnly = false;
 
     /**
      * Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.
      **/
-    @Schema(
-            description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
-            defaultValue = "true",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.", defaultValue = "true", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean visible = true;
 
     /**
      * Boolean determining if the Attribute contains list of values in the content
      **/
-    @Schema(
-            description = "Boolean determining if the Attribute contains list of values in the content",
-            defaultValue = "false",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Boolean determining if the Attribute contains list of values in the content", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean list = false;
 
     /**
      * Optional description of the Attribute, should contain helper text on what is expected
      **/
-    @Schema(
-            description = "Optional description of the Attribute, should contain helper text on what is expected"
-    )
+    @Schema(description = "Optional description of the Attribute, should contain helper text on what is expected")
     private String description;
 
     /**
      * Optional regular expression used for validating the Attribute content
      **/
-    @Schema(
-            description = "Optional regular expression used for validating the Attribute content"
-    )
+    @Schema(description = "Optional regular expression used for validating the Attribute content")
     private String validationRegex;
 
     /**
      * Optional definition of callback for getting the content of the Attribute based on the action
      **/
-    @Schema(
-            description = "Optional definition of callback for getting the content of the Attribute based on the action"
-    )
+    @Schema(description = "Optional definition of callback for getting the content of the Attribute based on the action")
     private AttributeCallback attributeCallback;
 
     /**
      * Boolean determining if the Attribute can have multiple values
      **/
-    @Schema(
-            description = "Boolean determining if the Attribute can have multiple values",
-            defaultValue = "false",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Boolean determining if the Attribute can have multiple values", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean multiSelect = false;
 
     /**
      * Group of the Attribute, used for the logical grouping of the Attribute
      **/
-    @Schema(
-            description = "Group of the Attribute, used for the logical grouping of the Attribute",
-            examples = {"requiredAttributes"}
-    )
+    @Schema(description = "Group of the Attribute, used for the logical grouping of the Attribute", examples = {
+            "requiredAttributes"})
     private String group;
 
     public AttributeDefinition() {

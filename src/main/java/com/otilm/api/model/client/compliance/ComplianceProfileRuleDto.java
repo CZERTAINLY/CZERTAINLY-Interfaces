@@ -4,13 +4,12 @@ import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Setter
 @Getter
@@ -31,7 +30,8 @@ public class ComplianceProfileRuleDto extends NameAndUuidDto {
     @Schema(description = "Group UUID")
     private String groupUuid;
 
-    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "X509"})
     private CertificateType certificateType;
 
     @Schema(description = "List of attributes for the rule", requiredMode = Schema.RequiredMode.REQUIRED)

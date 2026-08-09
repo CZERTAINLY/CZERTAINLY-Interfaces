@@ -30,7 +30,8 @@ public class TokenInstanceApiClient implements TokenInstanceSyncApiClient {
 
     @Override
     public List<TokenInstanceDto> listTokenInstances(ApiClientConnectorInfo connector) throws ConnectorException {
-        TokenInstanceDto[] result = proxyClient.sendRequest(connector, BASE_PATH, HTTP_METHOD_GET, null, TokenInstanceDto[].class);
+        TokenInstanceDto[] result = proxyClient
+                .sendRequest(connector, BASE_PATH, HTTP_METHOD_GET, null, TokenInstanceDto[].class);
         return Arrays.asList(result);
     }
 
@@ -41,12 +42,14 @@ public class TokenInstanceApiClient implements TokenInstanceSyncApiClient {
     }
 
     @Override
-    public TokenInstanceDto createTokenInstance(ApiClientConnectorInfo connector, TokenInstanceRequestDto requestDto) throws ConnectorException {
+    public TokenInstanceDto createTokenInstance(ApiClientConnectorInfo connector, TokenInstanceRequestDto requestDto)
+            throws ConnectorException {
         return proxyClient.sendRequest(connector, BASE_PATH, HTTP_METHOD_POST, requestDto, TokenInstanceDto.class);
     }
 
     @Override
-    public TokenInstanceDto updateTokenInstance(ApiClientConnectorInfo connector, String uuid, TokenInstanceRequestDto requestDto) throws ConnectorException {
+    public TokenInstanceDto updateTokenInstance(ApiClientConnectorInfo connector, String uuid,
+            TokenInstanceRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid;
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, TokenInstanceDto.class);
     }
@@ -58,39 +61,45 @@ public class TokenInstanceApiClient implements TokenInstanceSyncApiClient {
     }
 
     @Override
-    public TokenInstanceStatusDto getTokenInstanceStatus(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public TokenInstanceStatusDto getTokenInstanceStatus(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/status";
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, TokenInstanceStatusDto.class);
     }
 
     @Override
-    public List<BaseAttribute> listTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/tokenProfile/attributes";
         BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public void validateTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateTokenProfileAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/tokenProfile/attributes/validate";
         proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     @Override
-    public List<BaseAttribute> listTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/activate/attributes";
         BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public void validateTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public void validateTokenInstanceActivationAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/activate/attributes/validate";
         proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     @Override
-    public void activateTokenInstance(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ConnectorException {
+    public void activateTokenInstance(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/activate";
         proxyClient.sendRequest(connector, path, HTTP_METHOD_PATCH, attributes, Void.class);
     }
@@ -103,7 +112,8 @@ public class TokenInstanceApiClient implements TokenInstanceSyncApiClient {
 
     // Async variants for key methods
     public CompletableFuture<List<TokenInstanceDto>> listTokenInstancesAsync(ApiClientConnectorInfo connector) {
-        return proxyClient.sendRequestAsync(connector, BASE_PATH, HTTP_METHOD_GET, null, TokenInstanceDto[].class)
+        return proxyClient
+                .sendRequestAsync(connector, BASE_PATH, HTTP_METHOD_GET, null, TokenInstanceDto[].class)
                 .thenApply(Arrays::asList);
     }
 
@@ -112,7 +122,8 @@ public class TokenInstanceApiClient implements TokenInstanceSyncApiClient {
         return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_GET, null, TokenInstanceDto.class);
     }
 
-    public CompletableFuture<TokenInstanceDto> createTokenInstanceAsync(ApiClientConnectorInfo connector, TokenInstanceRequestDto requestDto) {
+    public CompletableFuture<TokenInstanceDto> createTokenInstanceAsync(ApiClientConnectorInfo connector,
+            TokenInstanceRequestDto requestDto) {
         return proxyClient.sendRequestAsync(connector, BASE_PATH, HTTP_METHOD_POST, requestDto, TokenInstanceDto.class);
     }
 }

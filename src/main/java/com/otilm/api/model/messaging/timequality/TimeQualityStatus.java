@@ -1,20 +1,18 @@
 package com.otilm.api.model.messaging.timequality;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum TimeQualityStatus implements IPlatformEnum {
 
-    OK(Codes.OK, "OK", "Time quality is within acceptable bounds"),
-    DEGRADED(Codes.DEGRADED, "Degraded", "Time quality is outside acceptable bounds or sources are unreliable"),
-    ;
+    OK(Codes.OK, "OK", "Time quality is within acceptable bounds"), DEGRADED(Codes.DEGRADED, "Degraded",
+            "Time quality is outside acceptable bounds or sources are unreliable"),;
 
     private static final TimeQualityStatus[] VALUES;
 
@@ -34,11 +32,12 @@ public enum TimeQualityStatus implements IPlatformEnum {
 
     @JsonCreator
     public static TimeQualityStatus findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown time quality status {}", code)));
+                .orElseThrow(
+                        () -> new ValidationException(ValidationError.create("Unknown time quality status {}", code)));
     }
 
     @Override

@@ -1,17 +1,16 @@
 package com.otilm.util;
 
-import com.otilm.api.model.common.attribute.v1.AttributeDefinition;
-import com.otilm.core.deprecated.AttributeDefinitionUtils;
-import com.otilm.core.util.AttributeMigrationUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
+import com.otilm.api.model.common.attribute.v1.AttributeDefinition;
+import com.otilm.core.deprecated.AttributeDefinitionUtils;
+import com.otilm.core.util.AttributeMigrationUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AttributeMigrationUtilsTest {
 
@@ -51,7 +50,6 @@ public class AttributeMigrationUtilsTest {
         Assertions.assertTrue(attributeDefinitions.get(0).isMultiSelect());
         Assertions.assertTrue(attributeDefinitions.get(0).getContent() instanceof List);
     }
-
 
     @Test
     public void testMultiSelectAttributeCredential() throws JsonProcessingException {

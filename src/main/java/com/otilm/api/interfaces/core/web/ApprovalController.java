@@ -17,7 +17,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/approvals")
 @Tag(name = "Approval Inventory", description = "Approval Inventory API")
@@ -35,36 +40,40 @@ public interface ApprovalController extends AuthProtectedController {
             @Parameter(in = ParameterIn.QUERY, description = "Select if you want to list all history of approvals by user") ApprovalUserDto approvalUserDto);
 
     @Operation(summary = "Get Approval Detail")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval detail retrieved"), @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Approval detail retrieved"),
+            @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
     ApprovalDetailDto getApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid)
             throws NotFoundException;
 
-
     @Operation(summary = "Approving of the Approval")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval approved"), @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval approved"),
+            @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PatchMapping(path = "/{uuid}/approve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void approveApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Rejecting of the Approval")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval rejected"), @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval rejected"),
+            @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PatchMapping(path = "/{uuid}/reject")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void rejectApproval(@Parameter(description = "Approval UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Approving of Recipient of the Approval")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval Recipient approved"), @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval Recipient approved"),
+            @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PatchMapping(path = "/{uuid}/approveRecipient")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void approveApprovalRecipient(@Parameter(description = "Approval UUID") @PathVariable String uuid,
-                                  @RequestBody UserApprovalDto userApprovalDto) throws NotFoundException;
+            @RequestBody UserApprovalDto userApprovalDto) throws NotFoundException;
 
     @Operation(summary = "Rejecting of Recipient of the Approval")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval Recipient rejected"), @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Approval Recipient rejected"),
+            @ApiResponse(responseCode = "404", description = "Approval not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PatchMapping(path = "/{uuid}/rejectRecipient")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void rejectApprovalRecipient(@Parameter(description = "Approval UUID") @PathVariable String uuid,
-                                 @RequestBody UserApprovalDto userApprovalDto) throws NotFoundException;
+            @RequestBody UserApprovalDto userApprovalDto) throws NotFoundException;
 
 }

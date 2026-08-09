@@ -2,12 +2,11 @@ package com.otilm.api.model.client.metadata;
 
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Schema(description = "Metadata response attributes with their source connector")

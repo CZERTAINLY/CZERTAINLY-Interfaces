@@ -4,9 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
-@Schema(
-        description = "Text attribute content used to store longer formatted strings",
-        type = "object")
+@Schema(description = "Text attribute content used to store longer formatted strings", type = "object")
 public class TextAttributeContentV2 extends BaseAttributeContentV2<String> {
 
     @Schema(description = "Text attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -34,9 +32,15 @@ public class TextAttributeContentV2 extends BaseAttributeContentV2<String> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TextAttributeContentV2)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TextAttributeContentV2)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         TextAttributeContentV2 that = (TextAttributeContentV2) o;
         return Objects.equals(data, that.data);
     }

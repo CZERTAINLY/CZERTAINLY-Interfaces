@@ -23,9 +23,6 @@ public class SchedulerJobExecutionMessage {
 
     @Override
     public String toString() {
-        return super.getClass().getName()
-                + "(jobName=" + jobName
-                + ", classToBeExecuted=" + classToBeExecuted
-                + ")";
+        return super.getClass().getName() + "(jobName=" + jobName + ", classToBeExecuted=" + classToBeExecuted + ")";
     }
 }

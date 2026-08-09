@@ -1,30 +1,30 @@
 package com.otilm.api.model.client.signing.profile.scheme;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ManagedSigningType implements IPlatformEnum {
 
     /**
-     * The signing certificate and key pair are provisioned once (e.g. via Token Profile) and reused
-     * across all signing operations that reference this Signing Profile. The key persists on the
-     * cryptographic token for the lifetime of the profile.
+     * The signing certificate and key pair are provisioned once (e.g. via Token Profile) and reused across all signing
+     * operations that reference this Signing Profile. The key persists on the cryptographic token for the lifetime of
+     * the profile.
      */
     STATIC_KEY(Codes.STATIC_KEY, "Static Key", "Signing uses a pre-existing static certificate and key pair"),
 
     /**
-     * A fresh certificate and key pair is issued by the configured CA for each individual signing
-     * operation. The newly issued certificate is valid only for that operation and is not reused.
-     * Requires an RA Profile to be configured on the Signing Profile.
+     * A fresh certificate and key pair is issued by the configured CA for each individual signing operation. The newly
+     * issued certificate is valid only for that operation and is not reused. Requires an RA Profile to be configured on
+     * the Signing Profile.
      */
-    ONE_TIME_KEY(Codes.ONE_TIME_KEY, "One-Time Key", "Signing uses a freshly issued certificate and key pair per operation");
+    ONE_TIME_KEY(Codes.ONE_TIME_KEY, "One-Time Key",
+            "Signing uses a freshly issued certificate and key pair per operation");
 
     private static final ManagedSigningType[] VALUES;
 
@@ -44,11 +44,12 @@ public enum ManagedSigningType implements IPlatformEnum {
 
     @JsonCreator
     public static ManagedSigningType findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown managed signing type {}", code)));
+                .orElseThrow(
+                        () -> new ValidationException(ValidationError.create("Unknown managed signing type {}", code)));
     }
 
     @Override

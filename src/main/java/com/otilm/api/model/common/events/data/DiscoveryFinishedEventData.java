@@ -2,11 +2,10 @@ package com.otilm.api.model.common.events.data;
 
 import com.otilm.api.model.core.discovery.DiscoveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @NoArgsConstructor
 @Getter

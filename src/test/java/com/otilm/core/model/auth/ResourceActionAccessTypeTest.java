@@ -1,30 +1,23 @@
 package com.otilm.core.model.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ResourceActionAccessTypeTest {
 
-    private static final Set<ResourceAction> NOT_GRANTABLE = EnumSet.of(
-            ResourceAction.NONE,
-            ResourceAction.ANY);
+    private static final Set<ResourceAction> NOT_GRANTABLE = EnumSet.of(ResourceAction.NONE, ResourceAction.ANY);
 
-    private static final Set<ResourceAction> READ = EnumSet.of(
-            ResourceAction.MEMBERS,
-            ResourceAction.LIST,
-            ResourceAction.DETAIL,
-            ResourceAction.EXPORT);
+    private static final Set<ResourceAction> READ = EnumSet
+            .of(ResourceAction.MEMBERS, ResourceAction.LIST, ResourceAction.DETAIL, ResourceAction.EXPORT);
 
-    private static final Set<ResourceAction> SENSITIVE_READ = EnumSet.of(
-            ResourceAction.GET_SECRET_CONTENT,
-            ResourceAction.GET_PROXY_INSTALLATION);
+    private static final Set<ResourceAction> SENSITIVE_READ = EnumSet
+            .of(ResourceAction.GET_SECRET_CONTENT, ResourceAction.GET_PROXY_INSTALLATION);
 
     @Test
     void everyActionDeclaresAnAccessType() {
@@ -115,10 +108,7 @@ class ResourceActionAccessTypeTest {
     /** findByCode resolves with findFirst, so a duplicate code would be shadowed rather than rejected. */
     @Test
     void actionCodesAreUnique() {
-        long distinctCodes = Arrays.stream(ResourceAction.values())
-                .map(ResourceAction::getCode)
-                .distinct()
-                .count();
+        long distinctCodes = Arrays.stream(ResourceAction.values()).map(ResourceAction::getCode).distinct().count();
 
         assertEquals(ResourceAction.values().length, distinctCodes);
     }

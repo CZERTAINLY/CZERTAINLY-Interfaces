@@ -1,10 +1,10 @@
 package com.otilm.api.model.client.signing.timequality.validation;
 
+import java.time.Duration;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PositiveDurationValidatorTest {
 

@@ -2,10 +2,9 @@ package com.otilm.api.model.core.compliance;
 
 import com.otilm.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 public class ComplianceProfilesListDto extends NameAndUuidDto {
 
@@ -15,8 +14,7 @@ public class ComplianceProfilesListDto extends NameAndUuidDto {
     @Schema(description = "Rules summary", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ComplianceProviderSummaryDto> rules;
 
-    //Default getters and setters
-
+    // Default getters and setters
 
     public String getDescription() {
         return description;
@@ -33,7 +31,6 @@ public class ComplianceProfilesListDto extends NameAndUuidDto {
     public void setRules(List<ComplianceProviderSummaryDto> rules) {
         this.rules = rules;
     }
-
 
     @Override
     public String toString() {

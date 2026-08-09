@@ -6,11 +6,8 @@ import lombok.Data;
 @Data
 public class ActuatorHealthDto {
 
-    @Schema(
-            description = "Status of the application health",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            allowableValues = {"UNKNOWN", "UP", "DOWN", "OUT_OF_SERVICE"}
-    )
+    @Schema(description = "Status of the application health", requiredMode = Schema.RequiredMode.REQUIRED, allowableValues = {
+            "UNKNOWN", "UP", "DOWN", "OUT_OF_SERVICE"})
     private String status;
 
 }

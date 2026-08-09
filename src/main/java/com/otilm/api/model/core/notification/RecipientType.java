@@ -1,26 +1,28 @@
 package com.otilm.api.model.core.notification;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.otilm.api.model.core.auth.Resource;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum RecipientType implements IPlatformEnum {
 
-    NONE("none", "None", "None recipient type describes that no specific recipient is required when used", null),
-    DEFAULT("default", "Default", "Default recipients are defined by context, e.g. by event and/or resource that is connected with notification", null),
-    USER("user", "User", "Recipient is registered user", Resource.USER),
-    GROUP("group", "Group", "Recipient is group from inventory", Resource.GROUP),
-    ROLE("role", "Role", "Recipient is registered role", Resource.ROLE),
-    OWNER("owner", "Owner", "Recipient is user that is associated as owner of resource object that is connected with notification", Resource.USER),
-    OBJECT("object", "Object", "Notification is sent to the recipient resolved from the attributes of the object present in the notification message, via the notification instance's mapping", null)
-    ;
+    NONE("none", "None", "None recipient type describes that no specific recipient is required when used",
+            null), DEFAULT("default", "Default",
+                    "Default recipients are defined by context, e.g. by event and/or resource that is connected with notification",
+                    null), USER("user", "User", "Recipient is registered user", Resource.USER), GROUP("group", "Group",
+                            "Recipient is group from inventory",
+                            Resource.GROUP), ROLE("role", "Role", "Recipient is registered role", Resource.ROLE), OWNER(
+                                    "owner", "Owner",
+                                    "Recipient is user that is associated as owner of resource object that is connected with notification",
+                                    Resource.USER), OBJECT("object", "Object",
+                                            "Notification is sent to the recipient resolved from the attributes of the object present in the notification message, via the notification instance's mapping",
+                                            null);
 
     private static final RecipientType[] VALUES;
 
@@ -62,11 +64,11 @@ public enum RecipientType implements IPlatformEnum {
 
     @JsonCreator
     public static RecipientType findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(a -> a.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown recipient type code {}", code)));
+                .orElseThrow(
+                        () -> new ValidationException(ValidationError.create("Unknown recipient type code {}", code)));
     }
 }
-

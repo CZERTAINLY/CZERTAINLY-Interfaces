@@ -1,46 +1,50 @@
 package com.otilm.api.interfaces.core.cmp;
 
 import com.otilm.api.interfaces.core.cmp.error.ImplFailureInfo;
+import java.io.IOException;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.DERUTF8String;
-import org.bouncycastle.asn1.cmp.*;
-
-import java.io.IOException;
+import org.bouncycastle.asn1.cmp.CertRepMessage;
+import org.bouncycastle.asn1.cmp.CertResponse;
+import org.bouncycastle.asn1.cmp.ErrorMsgContent;
+import org.bouncycastle.asn1.cmp.PKIBody;
+import org.bouncycastle.asn1.cmp.PKIFailureInfo;
+import org.bouncycastle.asn1.cmp.PKIFreeText;
+import org.bouncycastle.asn1.cmp.PKIHeader;
+import org.bouncycastle.asn1.cmp.PKIMessage;
+import org.bouncycastle.asn1.cmp.PKIStatus;
+import org.bouncycastle.asn1.cmp.PKIStatusInfo;
 
 /**
- *    Error Message Content
- *    <p>This data structure MAY be used by EE, CA, or RA to convey error
- *    info.</p>
- *    <pre>
+ * Error Message Content
+ * <p>
+ * This data structure MAY be used by EE, CA, or RA to convey error info.
+ * </p>
+ *
+ * <pre>
  *    ErrorMsgContent ::= SEQUENCE {
  *         pKIStatusInfo          PKIStatusInfo,
  *         errorCode              INTEGER           OPTIONAL,
  *         errorDetails           PKIFreeText       OPTIONAL
  *    }
- *    </pre>
+ * </pre>
  *
- *    <p>
- *    This message MAY be generated at any time during a PKI transaction.
- *    If the client sends this request, the server MUST respond with a
- *    PKIConfirm response, or another ErrorMsg if any part of the header is
- *    not valid.  Both sides MUST treat this message as the end of the
- *    transaction (if a transaction is in progress).
- *    </p>
- *    <p>
- *    If protection is desired on the message, the client MUST protect it
- *    using the same technique (i.e., signature or MAC) as the starting
- *    message of the transaction.  The CA MUST always sign it with a
- *    signature key.
- *    </p>
+ * <p>
+ * This message MAY be generated at any time during a PKI transaction. If the client sends this request, the server MUST
+ * respond with a PKIConfirm response, or another ErrorMsg if any part of the header is not valid. Both sides MUST treat
+ * this message as the end of the transaction (if a transaction is in progress).
+ * </p>
+ * <p>
+ * If protection is desired on the message, the client MUST protect it using the same technique (i.e., signature or MAC)
+ * as the starting message of the transaction. The CA MUST always sign it with a signature key.
+ * </p>
  *
  * @see <a href="https://www.rfc-editor.org/rfc/rfc4210#section-5.3.21">...</a>
  */
 public class PkiMessageError {
 
     public static PKIHeader generateHeader() {
-        return new PKIHeader(PKIHeader.CMP_2000,
-                PKIHeader.NULL_NAME,
-                PKIHeader.NULL_NAME);
+        return new PKIHeader(PKIHeader.CMP_2000, PKIHeader.NULL_NAME, PKIHeader.NULL_NAME);
     }
 
     public static PKIMessage unprotectedMessage(PKIHeader header, PKIBody body) {
@@ -48,8 +52,7 @@ public class PkiMessageError {
     }
 
     public static PKIMessage unprotectedMessage(PKIHeader header, Exception ex) {
-        return new PKIMessage(header,
-                generateBody(PKIFailureInfo.systemFailure, ex.getMessage()));
+        return new PKIMessage(header, generateBody(PKIFailureInfo.systemFailure, ex.getMessage()));
     }
 
     public static PKIMessage unprotectedMessage(int failInfo, ImplFailureInfo implFailureInfo) {
@@ -57,9 +60,10 @@ public class PkiMessageError {
     }
 
     public static PKIMessage unprotectedMessage(PKIHeader header, int failInfo, ImplFailureInfo implFailureInfo) {
-        if (implFailureInfo == null) throw new IllegalStateException("error handling: there must be known purpose of implementation error");
-        return new PKIMessage(header,
-                generateBody(failInfo, implFailureInfo));
+        if (implFailureInfo == null) {
+            throw new IllegalStateException("error handling: there must be known purpose of implementation error");
+        }
+        return new PKIMessage(header, generateBody(failInfo, implFailureInfo));
     }
 
     public static PKIBody generateBody(int failInfo, ImplFailureInfo implFailureInfo) {
@@ -76,14 +80,15 @@ public class PkiMessageError {
 
     // crmf - ip, cp, kup body
     public static PKIBody generateCrmfErrorBody(final int bodyType, final int failInfo, final String errorDetails) {
-        final PKIStatusInfo pkiStatusInfo =
-                new PKIStatusInfo(PKIStatus.rejection, new PKIFreeText(errorDetails), new PKIFailureInfo(failInfo));
+        final PKIStatusInfo pkiStatusInfo = new PKIStatusInfo(PKIStatus.rejection, new PKIFreeText(errorDetails),
+                new PKIFailureInfo(failInfo));
         final CertResponse[] response = {new CertResponse(new ASN1Integer(0), pkiStatusInfo)};
         return new PKIBody(bodyType, new CertRepMessage(null, response));
     }
 
     /**
      * ANS.1 structure of PKIStatusInfo
+     *
      * <pre>
      *  PKIStatusInfo ::= SEQUENCE {
      *      status        PKIStatus,
@@ -102,24 +107,23 @@ public class PkiMessageError {
      * @see <a href="https://www.rfc-editor.org/rfc/rfc4210#section-5.2.3">...</a>
      * @see <a href="https://www.rfc-editor.org/rfc/rfc4210#appendix-F">...</a>
      */
-    private static PKIStatusInfo pkiStatusInfo(int failInfo, ImplFailureInfo errorFailure){
-        return pkiStatusInfo(failInfo, errorFailure.name() + ": " +errorFailure.getDescription());
+    private static PKIStatusInfo pkiStatusInfo(int failInfo, ImplFailureInfo errorFailure) {
+        return pkiStatusInfo(failInfo, errorFailure.name() + ": " + errorFailure.getDescription());
     }
 
-    private static PKIStatusInfo pkiStatusInfo(int failInfo, String errorDetails){
+    private static PKIStatusInfo pkiStatusInfo(int failInfo, String errorDetails) {
         PKIFreeText statusText;
-        if(errorDetails == null || errorDetails.isBlank()) {
-            statusText=new PKIFreeText("");
+        if (errorDetails == null || errorDetails.isBlank()) {
+            statusText = new PKIFreeText("");
         } else {
-            statusText=new PKIFreeText(errorDetails);
+            statusText = new PKIFreeText(errorDetails);
         }
-        return new PKIStatusInfo(
-                PKIStatus.rejection,
-                statusText, new PKIFailureInfo(failInfo));
+        return new PKIStatusInfo(PKIStatus.rejection, statusText, new PKIFailureInfo(failInfo));
     }
 
     /**
      * ANS1.structure of ErrorMsgContent
+     *
      * <pre>
      *  ErrorMsgContent ::= SEQUENCE {
      *      pKIStatusInfo          PKIStatusInfo,
@@ -135,24 +139,19 @@ public class PkiMessageError {
      *
      * @see <a href="https://www.rfc-editor.org/rfc/rfc4210#section-5.3.21">...</a>
      */
-    private static ErrorMsgContent errorMsgContent(PKIStatusInfo pkiStatusInfo,
-                                                   ImplFailureInfo implFailureInfo) {
-        return errorMsgContent(pkiStatusInfo,
-                implFailureInfo.getCode(), implFailureInfo.getDescription());
+    private static ErrorMsgContent errorMsgContent(PKIStatusInfo pkiStatusInfo, ImplFailureInfo implFailureInfo) {
+        return errorMsgContent(pkiStatusInfo, implFailureInfo.getCode(), implFailureInfo.getDescription());
     }
-    private static ErrorMsgContent errorMsgContent(PKIStatusInfo pkiStatusInfo,
-                                                   int code, String errorText) {
-        return new ErrorMsgContent(
-                pkiStatusInfo,
-                new ASN1Integer(code),
-                new PKIFreeText(new DERUTF8String(errorText)));
+
+    private static ErrorMsgContent errorMsgContent(PKIStatusInfo pkiStatusInfo, int code, String errorText) {
+        return new ErrorMsgContent(pkiStatusInfo, new ASN1Integer(code), new PKIFreeText(new DERUTF8String(errorText)));
     }
 
     /**
      * @throws IllegalStateException if given <code>pkiResponse</code> could not be DER encoded
      */
     public static byte[] encode(PKIMessage pkiResponse) {
-        try{
+        try {
             return pkiResponse.getEncoded();
         } catch (IOException e) {
             throw new IllegalStateException("PKIMessage could not be encoded");

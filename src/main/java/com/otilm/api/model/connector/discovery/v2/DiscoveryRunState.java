@@ -1,22 +1,18 @@
 package com.otilm.api.model.connector.discovery.v2;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum DiscoveryRunState implements IPlatformEnum {
 
-    RUNNING("running", "Running"),
-    STOPPED("stopped", "Stopped"),
-    COMPLETED("completed", "Completed"),
-    FAILED("failed", "Failed"),
-    CANCELLED("cancelled", "Cancelled");
+    RUNNING("running", "Running"), STOPPED("stopped", "Stopped"), COMPLETED("completed", "Completed"), FAILED("failed",
+            "Failed"), CANCELLED("cancelled", "Cancelled");
 
     private static final DiscoveryRunState[] VALUES;
 
@@ -56,10 +52,11 @@ public enum DiscoveryRunState implements IPlatformEnum {
 
     @JsonCreator
     public static DiscoveryRunState findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Discovery run state {}", code)));
+                .orElseThrow(
+                        () -> new ValidationException(ValidationError.create("Unknown Discovery run state {}", code)));
     }
 }

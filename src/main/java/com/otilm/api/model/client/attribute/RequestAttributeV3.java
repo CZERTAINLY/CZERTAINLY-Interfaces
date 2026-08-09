@@ -3,13 +3,12 @@ package com.otilm.api.model.client.attribute;
 import com.otilm.api.model.common.attribute.common.AttributeVersion;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
+import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -27,9 +26,9 @@ public class RequestAttributeV3 extends RequestAttribute {
 
     private AttributeVersion version = AttributeVersion.V3;
 
-    public RequestAttributeV3(UUID uuid, String name, AttributeContentType contentType, List<BaseAttributeContentV3<?>> content) {
+    public RequestAttributeV3(UUID uuid, String name, AttributeContentType contentType,
+            List<BaseAttributeContentV3<?>> content) {
         this(uuid, name, contentType, content, AttributeVersion.V3);
     }
-
 
 }

@@ -1,10 +1,9 @@
 package com.otilm.api.model.client.signing.protocols.tsp;
 
-import com.otilm.api.model.common.NameAndUuidDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
+import com.otilm.api.model.common.NameAndUuidDto;
 import java.util.UUID;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,8 +28,7 @@ class TspBasicCredentialDtoTest {
         var json = mapper.writeValueAsString(response);
 
         // then
-        assertFalse(json.toLowerCase().contains("password"),
-                "Response DTO must never carry a password field: " + json);
+        assertFalse(json.toLowerCase().contains("password"), "Response DTO must never carry a password field: " + json);
         assertTrue(json.contains(username));
     }
 }

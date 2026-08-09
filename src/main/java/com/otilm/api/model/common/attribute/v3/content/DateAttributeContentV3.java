@@ -1,23 +1,20 @@
 package com.otilm.api.model.common.attribute.v3.content;
 
-import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Setter
 @Getter
-@Schema(
-        description = "Date attribute content in predefined format",
-        type = "object")
+@Schema(description = "Date attribute content in predefined format", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class DateAttributeContentV3 extends BaseAttributeContentV3<LocalDate> {
 

@@ -14,8 +14,10 @@ public interface SignatureFormattingSyncApiClient {
 
     List<BaseAttribute> listFormattingAttributes(ApiClientConnectorInfo connector) throws ConnectorException;
 
-    FormatDtbsResponseDto formatDtbs(ApiClientConnectorInfo connector, FormatDtbsRequestDto requestDto) throws ConnectorException;
+    FormatDtbsResponseDto formatDtbs(ApiClientConnectorInfo connector, FormatDtbsRequestDto requestDto)
+            throws ConnectorException;
 
-    FormattedResponseDto formatSigningResponse(ApiClientConnectorInfo connector, FormatResponseRequestDto requestDto) throws ConnectorException;
+    FormattedResponseDto formatSigningResponse(ApiClientConnectorInfo connector, FormatResponseRequestDto requestDto)
+            throws ConnectorException;
 
 }

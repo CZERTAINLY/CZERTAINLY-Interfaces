@@ -2,12 +2,11 @@ package com.otilm.api.model.client.raprofile;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /**
  * Class representing RA profile registration request
@@ -16,15 +15,13 @@ import java.util.List;
 @Getter
 public class AddRaProfileRequestDto {
 
-    @Schema(description = "RA Profile name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "RA Profile name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @Schema(description = "RA Profile description")
     private String description;
 
-    @Schema(description = "List of Attributes to create RA Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Attributes to create RA Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Schema(description = "List of Custom Attributes")
@@ -32,7 +29,6 @@ public class AddRaProfileRequestDto {
 
     @Schema(description = "Enabled flag - true = enabled; false = disabled", defaultValue = "false")
     private Boolean enabled;
-
 
     public Boolean isEnabled() {
         return enabled;

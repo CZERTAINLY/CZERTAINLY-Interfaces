@@ -2,10 +2,9 @@ package com.otilm.api.model.core.workflows;
 
 import com.otilm.api.model.common.validation.NullableNotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class UpdateRuleRequestDto {
@@ -14,15 +13,10 @@ public class UpdateRuleRequestDto {
     @NullableNotBlank
     private String name;
 
-    @Schema(
-            description = "Description of the Rule"
-    )
+    @Schema(description = "Description of the Rule")
     private String description;
 
-    @Schema(
-            description = "List of UUIDs of existing conditions to add to the rule",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "List of UUIDs of existing conditions to add to the rule", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> conditionsUuids = new ArrayList<>();
 
 }

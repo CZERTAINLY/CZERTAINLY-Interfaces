@@ -1,10 +1,9 @@
 package com.otilm.api.model.client.notification;
 
-import com.otilm.api.model.core.notification.NotificationDataCategory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
+import com.otilm.api.model.core.notification.NotificationDataCategory;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -22,8 +21,8 @@ class NotificationProfileUpdateRequestDtoTest {
 
     @Test
     void emptyCategoriesDeserializeAsEmptyList() throws Exception {
-        NotificationProfileUpdateRequestDto dto = mapper.readValue(
-                "{\"eventDataCategories\":[]}", NotificationProfileUpdateRequestDto.class);
+        NotificationProfileUpdateRequestDto dto = mapper
+                .readValue("{\"eventDataCategories\":[]}", NotificationProfileUpdateRequestDto.class);
         assertNotNull(dto.getEventDataCategories());
         assertTrue(dto.getEventDataCategories().isEmpty());
     }
@@ -31,16 +30,18 @@ class NotificationProfileUpdateRequestDtoTest {
     @Test
     void categoriesRideWireCodes() throws Exception {
         NotificationProfileUpdateRequestDto dto = new NotificationProfileUpdateRequestDto();
-        dto.setEventDataCategories(List.of(
-                NotificationDataCategory.CUSTOM_ATTRIBUTES, NotificationDataCategory.OBJECT_CONTENT));
+        dto
+                .setEventDataCategories(
+                        List.of(NotificationDataCategory.CUSTOM_ATTRIBUTES, NotificationDataCategory.OBJECT_CONTENT));
         String json = mapper.writeValueAsString(dto);
         assertTrue(json.contains("\"eventDataCategories\":[\"customAttributes\",\"objectContent\"]"), json);
     }
 
     @Test
     void createRequestInheritsCategories() throws Exception {
-        NotificationProfileRequestDto dto = mapper.readValue(
-                "{\"name\":\"profile\",\"eventDataCategories\":[\"metadata\"]}", NotificationProfileRequestDto.class);
+        NotificationProfileRequestDto dto = mapper
+                .readValue("{\"name\":\"profile\",\"eventDataCategories\":[\"metadata\"]}",
+                        NotificationProfileRequestDto.class);
         assertNotNull(dto.getEventDataCategories());
         assertTrue(dto.getEventDataCategories().contains(NotificationDataCategory.METADATA));
     }

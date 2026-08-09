@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class ConnectDto {
 
-    @Schema(description = "Function Group information of a connector",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Function Group information of a connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private FunctionGroupDto functionGroup;
 }

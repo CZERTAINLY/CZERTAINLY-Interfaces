@@ -9,8 +9,10 @@ import lombok.ToString;
 /**
  * DTBS formatting request for the Content Signing workflow.
  *
- * <p>No additional Core-provided fields beyond the base at this time.
- * Reserved for future content-signing-specific properties.</p>
+ * <p>
+ * No additional Core-provided fields beyond the base at this time. Reserved for future content-signing-specific
+ * properties.
+ * </p>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

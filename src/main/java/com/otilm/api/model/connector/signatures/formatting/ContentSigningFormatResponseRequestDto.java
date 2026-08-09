@@ -9,8 +9,9 @@ import lombok.ToString;
 /**
  * Response formatting request for the Content Signing workflow.
  *
- * <p>No additional fields beyond the base at this time.
- * Reserved for future content-signing-specific properties.</p>
+ * <p>
+ * No additional fields beyond the base at this time. Reserved for future content-signing-specific properties.
+ * </p>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

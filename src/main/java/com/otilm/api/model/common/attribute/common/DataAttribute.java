@@ -5,10 +5,9 @@ import com.otilm.api.model.common.attribute.common.constraint.BaseAttributeConst
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.common.properties.DataAttributeProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +15,9 @@ import java.util.List;
 public abstract class DataAttribute extends BaseAttribute implements DataAttributeDto {
 
     public abstract void setContent(List<? extends AttributeContent> content);
+
     public abstract AttributeContentType getContentType();
+
     public abstract DataAttributeProperties getProperties();
 
     public abstract List<BaseAttributeConstraint<?>> getConstraints();
