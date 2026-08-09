@@ -5,19 +5,18 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Verifies the JSR-380 constraints that ARE the #725 contract actually fire — annotations that are
- * declared but never validated would be a silent regression.
+ * Verifies the JSR-380 constraints that ARE the #725 contract actually fire — annotations that are declared but never
+ * validated would be a silent regression.
  */
 class AttributeV2ValidationTest {
 
@@ -37,8 +36,8 @@ class AttributeV2ValidationTest {
 
     @Test
     void requestDto_missingRequiredFields_producesViolations() {
-        Set<ConstraintViolation<AttributeCallbackRequestDto>> violations =
-                validator.validate(new AttributeCallbackRequestDto());
+        Set<ConstraintViolation<AttributeCallbackRequestDto>> violations = validator
+                .validate(new AttributeCallbackRequestDto());
         // connectorInterface, interfaceVersion, attributeUuid, attributeName, contextAttributes, currentAttributes
         assertEquals(6, violations.size(), "all 6 required fields must be flagged");
     }

@@ -1,17 +1,15 @@
 package com.otilm.api.model.common.attribute.common.constraint;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum AttributeConstraintType implements IPlatformEnum {
-    REGEXP(Codes.REGEXP, "Regular Expression"),
-    RANGE(Codes.RANGE, "Integer Range"),
-    DATETIME(Codes.DATETIME, "DateTime Range");
+    REGEXP(Codes.REGEXP, "Regular Expression"), RANGE(Codes.RANGE, "Integer Range"), DATETIME(Codes.DATETIME,
+            "DateTime Range");
 
     private static final AttributeConstraintType[] VALUES;
 
@@ -24,7 +22,7 @@ public enum AttributeConstraintType implements IPlatformEnum {
     private final String description;
 
     AttributeConstraintType(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     AttributeConstraintType(String code, String label, String description) {
@@ -51,10 +49,12 @@ public enum AttributeConstraintType implements IPlatformEnum {
 
     @JsonCreator
     public static AttributeConstraintType fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported attribute constraint type %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("Unsupported attribute constraint type %s.", code)));
     }
 
     public static class Codes {

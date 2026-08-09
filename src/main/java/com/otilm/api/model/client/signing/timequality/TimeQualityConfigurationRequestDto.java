@@ -1,28 +1,27 @@
 package com.otilm.api.model.client.signing.timequality;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.signing.timequality.validation.ClockDriftConfiguration;
 import com.otilm.api.model.client.signing.timequality.validation.NtpCheckIntervalConfiguration;
 import com.otilm.api.model.client.signing.timequality.validation.NtpConfiguration;
+import com.otilm.api.model.client.signing.timequality.validation.NtpIntervalAccuracyConfiguration;
 import com.otilm.api.model.client.signing.timequality.validation.PositiveDuration;
 import com.otilm.api.model.client.signing.timequality.validation.ValidHostnameList;
 import com.otilm.api.model.client.signing.timequality.validation.ValidMaxClockDrift;
-import com.otilm.api.model.client.signing.timequality.validation.NtpIntervalAccuracyConfiguration;
 import com.otilm.api.model.client.signing.timequality.validation.ValidNtpCheckInterval;
 import com.otilm.api.model.client.signing.timequality.validation.ValidNtpCheckTimeout;
 import com.otilm.api.model.client.signing.timequality.validation.ValidNtpMinReachable;
 import com.otilm.api.model.common.validation.ValidName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 @ValidMaxClockDrift
@@ -30,7 +29,12 @@ import java.util.List;
 @ValidNtpCheckTimeout
 @ValidNtpMinReachable
 @Schema(name = "TimeQualityConfigurationRequestDto", description = "Request to create or update a Time Quality Configuration")
-public class TimeQualityConfigurationRequestDto implements ClockDriftConfiguration, NtpCheckIntervalConfiguration, NtpConfiguration, NtpIntervalAccuracyConfiguration {
+public class TimeQualityConfigurationRequestDto
+        implements
+            ClockDriftConfiguration,
+            NtpCheckIntervalConfiguration,
+            NtpConfiguration,
+            NtpIntervalAccuracyConfiguration {
 
     @NotBlank
     @ValidName

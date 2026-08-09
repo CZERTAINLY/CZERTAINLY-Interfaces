@@ -1,17 +1,16 @@
 package com.otilm.api.interfaces.client.v1;
 
+import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.model.common.attribute.common.DataAttribute;
 import com.otilm.api.model.connector.notification.NotificationProviderInstanceDto;
 import com.otilm.api.model.connector.notification.NotificationProviderInstanceRequestDto;
 import com.otilm.api.model.connector.notification.NotificationProviderNotifyRequestDto;
-import com.otilm.api.clients.ApiClientConnectorInfo;
-
 import java.util.List;
 
 /**
- * Synchronous API client interface for Notification Instance operations.
- * This interface provides an abstraction layer allowing both REST and MQ implementations.
+ * Synchronous API client interface for Notification Instance operations. This interface provides an abstraction layer
+ * allowing both REST and MQ implementations.
  */
 public interface NotificationInstanceSyncApiClient {
 
@@ -22,7 +21,8 @@ public interface NotificationInstanceSyncApiClient {
      * @return List of notification instances
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    List<NotificationProviderInstanceDto> listNotificationInstances(ApiClientConnectorInfo connector) throws ConnectorException;
+    List<NotificationProviderInstanceDto> listNotificationInstances(ApiClientConnectorInfo connector)
+            throws ConnectorException;
 
     /**
      * Get a specific notification instance.
@@ -32,7 +32,8 @@ public interface NotificationInstanceSyncApiClient {
      * @return Notification instance details
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    NotificationProviderInstanceDto getNotificationInstance(ApiClientConnectorInfo connector, String uuid) throws ConnectorException;
+    NotificationProviderInstanceDto getNotificationInstance(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException;
 
     /**
      * Create a new notification instance.
@@ -42,7 +43,8 @@ public interface NotificationInstanceSyncApiClient {
      * @return Created notification instance
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    NotificationProviderInstanceDto createNotificationInstance(ApiClientConnectorInfo connector, NotificationProviderInstanceRequestDto requestDto) throws ConnectorException;
+    NotificationProviderInstanceDto createNotificationInstance(ApiClientConnectorInfo connector,
+            NotificationProviderInstanceRequestDto requestDto) throws ConnectorException;
 
     /**
      * Update an existing notification instance.
@@ -53,7 +55,8 @@ public interface NotificationInstanceSyncApiClient {
      * @return Updated notification instance
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    NotificationProviderInstanceDto updateNotificationInstance(ApiClientConnectorInfo connector, String uuid, NotificationProviderInstanceRequestDto requestDto) throws ConnectorException;
+    NotificationProviderInstanceDto updateNotificationInstance(ApiClientConnectorInfo connector, String uuid,
+            NotificationProviderInstanceRequestDto requestDto) throws ConnectorException;
 
     /**
      * Remove a notification instance.
@@ -72,7 +75,8 @@ public interface NotificationInstanceSyncApiClient {
      * @param requestDto Notification request
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    void sendNotification(ApiClientConnectorInfo connector, String uuid, NotificationProviderNotifyRequestDto requestDto) throws ConnectorException;
+    void sendNotification(ApiClientConnectorInfo connector, String uuid,
+            NotificationProviderNotifyRequestDto requestDto) throws ConnectorException;
 
     /**
      * List mapping attributes for a notification kind.

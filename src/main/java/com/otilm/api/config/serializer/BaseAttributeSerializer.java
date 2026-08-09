@@ -1,19 +1,20 @@
 package com.otilm.api.config.serializer;
 
-import com.otilm.api.model.common.attribute.common.*;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import com.otilm.api.model.common.attribute.common.CustomAttribute;
+import com.otilm.api.model.common.attribute.common.DataAttribute;
+import com.otilm.api.model.common.attribute.common.MetadataAttribute;
 import com.otilm.api.model.common.attribute.v2.GroupAttributeV2;
 import com.otilm.api.model.common.attribute.v2.InfoAttributeV2;
 import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.GroupAttributeV3;
 import com.otilm.api.model.common.attribute.v3.InfoAttributeV3;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-
 import java.io.IOException;
 
-public class BaseAttributeSerializer
-        extends JsonSerializer<BaseAttribute> {
+public class BaseAttributeSerializer extends JsonSerializer<BaseAttribute> {
 
     public static final String CONTENT_TYPE = "contentType";
     public static final String ATTR_PROPERTIES = "properties";
@@ -21,10 +22,7 @@ public class BaseAttributeSerializer
     public static final String CONSTRAINTS = "constraints";
 
     @Override
-    public void serialize(BaseAttribute value,
-                          JsonGenerator gen,
-                          SerializerProvider serializers)
-            throws IOException {
+    public void serialize(BaseAttribute value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
         gen.writeStartObject();
 
@@ -36,7 +34,6 @@ public class BaseAttributeSerializer
 
         gen.writeFieldName("content");
         serializers.defaultSerializeValue(value.getContent(), gen);
-
 
         switch (value.getType()) {
             case DATA -> {
@@ -109,4 +106,3 @@ public class BaseAttributeSerializer
     }
 
 }
-

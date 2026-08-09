@@ -20,8 +20,6 @@ public class CertificateComplianceCheckDto {
 
     @Override
     public String toString() {
-        return "CertificateComplianceCheckDto{" +
-                "certificateUuids=" + certificateUuids +
-                '}';
+        return "CertificateComplianceCheckDto{" + "certificateUuids=" + certificateUuids + '}';
     }
 }

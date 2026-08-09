@@ -1,21 +1,22 @@
 package com.otilm.api.model.messaging.timequality;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum LeapSecondWarning implements IPlatformEnum {
 
-    NONE(Codes.NONE, "None", "No leap second announced; also set when NTP leap indicators conflict across servers — the conflict is reflected by TimeQualityStatus.DEGRADED"),
-    POSITIVE(Codes.POSITIVE, "Positive", "Positive leap second announced: one second will be inserted at end of day"),
-    NEGATIVE(Codes.NEGATIVE, "Negative", "Negative leap second announced: one second will be deleted at end of day"),
-    ;
+    NONE(Codes.NONE, "None",
+            "No leap second announced; also set when NTP leap indicators conflict across servers — the conflict is reflected by TimeQualityStatus.DEGRADED"), POSITIVE(
+                    Codes.POSITIVE, "Positive",
+                    "Positive leap second announced: one second will be inserted at end of day"), NEGATIVE(
+                            Codes.NEGATIVE, "Negative",
+                            "Negative leap second announced: one second will be deleted at end of day"),;
 
     private static final LeapSecondWarning[] VALUES;
 
@@ -35,11 +36,12 @@ public enum LeapSecondWarning implements IPlatformEnum {
 
     @JsonCreator
     public static LeapSecondWarning findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown leap second warning {}", code)));
+                .orElseThrow(
+                        () -> new ValidationException(ValidationError.create("Unknown leap second warning {}", code)));
     }
 
     @Override

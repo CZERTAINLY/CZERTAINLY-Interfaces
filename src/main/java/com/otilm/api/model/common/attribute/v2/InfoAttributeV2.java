@@ -1,33 +1,28 @@
 package com.otilm.api.model.common.attribute.v2;
 
-import com.otilm.api.model.common.attribute.common.AttributeType;
-import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
-import com.otilm.api.model.common.attribute.v2.content.*;
-import com.otilm.api.model.common.attribute.common.properties.InfoAttributeProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.otilm.api.model.common.attribute.common.AttributeType;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
+import com.otilm.api.model.common.attribute.common.properties.InfoAttributeProperties;
+import com.otilm.api.model.common.attribute.v2.content.BaseAttributeContentV2;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-import java.util.Objects;
-
 /**
- * This class contains set of properties to represent
- * an Attribute definition including its value for the Attributes
- * of type Info.
+ * This class contains set of properties to represent an Attribute definition including its value for the Attributes of
+ * type Info.
  */
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(
-        description = "Info attribute contains content that is for information purpose or represents additional information for object (metadata). Its content can not be edited and is not send in requests to store.",
-        type = "object"
-)
+@Schema(description = "Info attribute contains content that is for information purpose or represents additional information for object (metadata). Its content can not be edited and is not send in requests to store.", type = "object")
 @JsonDeserialize
 @JsonSerialize
 public class InfoAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2<?>>> {
@@ -35,29 +30,19 @@ public class InfoAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
     /**
      * Content of the Attribute
      **/
-    @Schema(
-            description = "Content of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Content of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<BaseAttributeContentV2<?>> content;
 
     /**
      * Type of the Attribute content
      */
-    @Schema(
-            description = "Type of the Content",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Type of the Content", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeContentType contentType;
-
 
     /**
      * Properties of the Attributes
      */
-    @Schema(
-            description = "Properties of the Attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Properties of the Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private InfoAttributeProperties properties;
 
     public InfoAttributeV2() {
@@ -77,27 +62,28 @@ public class InfoAttributeV2 extends BaseAttributeV2<List<BaseAttributeContentV2
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("content", content)
                 .append("contentType", contentType)
-                .append("properties", properties).toString();
+                .append("properties", properties)
+                .toString();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof InfoAttributeV2 that)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof InfoAttributeV2 that)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
-        return Objects.equals(content, that.content)
-                && contentType == that.contentType
+        return Objects.equals(content, that.content) && contentType == that.contentType
                 && Objects.equals(properties, that.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                super.hashCode(),
-                content,
-                contentType,
-                properties
-        );
+        return Objects.hash(super.hashCode(), content, contentType, properties);
     }
 }

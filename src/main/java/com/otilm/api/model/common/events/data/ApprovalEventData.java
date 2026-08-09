@@ -4,12 +4,11 @@ import com.otilm.api.model.client.approval.ApprovalStatusEnum;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.notification.RecipientType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Date;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,7 +55,5 @@ public class ApprovalEventData implements EventData {
 
     @Schema(description = "Approval recipient UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID recipientUuid;
-
-
 
 }

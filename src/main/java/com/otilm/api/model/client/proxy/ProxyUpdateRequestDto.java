@@ -10,15 +10,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 public class ProxyUpdateRequestDto {
 
-    @Schema(description = "Detailed description of the Proxy",
-        examples = {"This proxy is used for connecting to external connectors in DMZ network"},
-        requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Detailed description of the Proxy", examples = {
+            "This proxy is used for connecting to external connectors in DMZ network"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-            .append("description", description)
-            .toString();
+                .append("description", description)
+                .toString();
     }
 }

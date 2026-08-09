@@ -17,14 +17,13 @@ import com.otilm.api.model.common.attribute.v3.InfoAttributeV3;
 import com.otilm.api.model.common.error.ErrorCode;
 import com.otilm.api.model.core.connector.ConnectorDto;
 import com.otilm.api.model.core.connector.ConnectorStatus;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-
-import java.util.List;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -53,9 +52,9 @@ class AttributesApiClientTest {
     }
 
     /**
-     * Full-registry list round-trips a NON-EMPTY, mixed attribute-schema v2/v3 definition list, proving
-     * the polymorphic {@code BaseAttribute} (de)serialization survives over the wire and the concrete
-     * subtypes (v2 DATA + v3 INFO) are reconstructed by version/type discriminator.
+     * Full-registry list round-trips a NON-EMPTY, mixed attribute-schema v2/v3 definition list, proving the polymorphic
+     * {@code BaseAttribute} (de)serialization survives over the wire and the concrete subtypes (v2 DATA + v3 INFO) are
+     * reconstructed by version/type discriminator.
      */
     @Test
     void listDefinitions_returnsDto() throws ConnectorException {
@@ -80,11 +79,14 @@ class AttributesApiClientTest {
                   ]
                 }
                 """;
-        mockServer.stubFor(WireMock.get("/v2/attributes")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(json)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/attributes")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(json)));
 
         AttributeDefinitionsDto dto = client.listDefinitions(connector, null);
 
@@ -104,42 +106,52 @@ class AttributesApiClientTest {
     }
 
     /**
-     * With a non-empty uuid list the outgoing request MUST be the exploded form
-     * {@code ?uuids=a&uuids=b} (matching the controller's {@code Explode.TRUE}), NOT a single CSV value.
+     * With a non-empty uuid list the outgoing request MUST be the exploded form {@code ?uuids=a&uuids=b} (matching the
+     * controller's {@code Explode.TRUE}), NOT a single CSV value.
      */
     @Test
     void listDefinitions_emitsExplodedUuidsQuery() throws ConnectorException {
         UUID a = UUID.fromString("11111111-1111-1111-1111-111111111111");
         UUID b = UUID.fromString("22222222-2222-2222-2222-222222222222");
 
-        mockServer.stubFor(WireMock.get(WireMock.urlPathEqualTo("/v2/attributes"))
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"connectorVersion\":\"1.0\",\"definitions\":[]}")));
+        mockServer
+                .stubFor(WireMock
+                        .get(WireMock.urlPathEqualTo("/v2/attributes"))
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"connectorVersion\":\"1.0\",\"definitions\":[]}")));
 
         client.listDefinitions(connector, List.of(a, b));
 
         // Each uuid is its own repeated query parameter; a CSV value "a,b" would NOT match these.
-        mockServer.verify(WireMock.getRequestedFor(WireMock.urlPathEqualTo("/v2/attributes"))
-                .withQueryParam("uuids", WireMock.equalTo(a.toString()))
-                .withQueryParam("uuids", WireMock.equalTo(b.toString())));
+        mockServer
+                .verify(WireMock
+                        .getRequestedFor(WireMock.urlPathEqualTo("/v2/attributes"))
+                        .withQueryParam("uuids", WireMock.equalTo(a.toString()))
+                        .withQueryParam("uuids", WireMock.equalTo(b.toString())));
 
         // And explicitly reject the CSV form.
-        mockServer.verify(0, WireMock.getRequestedFor(WireMock.urlPathEqualTo("/v2/attributes"))
-                .withQueryParam("uuids", WireMock.equalTo(a + "," + b)));
+        mockServer
+                .verify(0,
+                        WireMock
+                                .getRequestedFor(WireMock.urlPathEqualTo("/v2/attributes"))
+                                .withQueryParam("uuids", WireMock.equalTo(a + "," + b)));
     }
 
     @Test
     void listDefinitions_successWithEmptyBody_failsClearly() {
-        mockServer.stubFor(WireMock.get("/v2/attributes")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/attributes")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
 
-        IllegalStateException ex = Assertions.assertThrows(
-                IllegalStateException.class,
-                () -> client.listDefinitions(connector, null));
+        IllegalStateException ex = Assertions
+                .assertThrows(IllegalStateException.class, () -> client.listDefinitions(connector, null));
 
         Assertions.assertTrue(ex.getMessage().contains("Attributes v2 list definitions"));
     }
@@ -156,11 +168,14 @@ class AttributesApiClientTest {
                   "version": 3
                 }
                 """;
-        mockServer.stubFor(WireMock.get("/v2/attributes/" + uuid)
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(json)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/attributes/" + uuid)
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(json)));
 
         BaseAttribute attr = client.getDefinition(connector, uuid);
 
@@ -172,22 +187,24 @@ class AttributesApiClientTest {
     @Test
     void getDefinition_successWithEmptyBody_failsClearly() {
         UUID uuid = UUID.fromString("11111111-1111-1111-1111-111111111111");
-        mockServer.stubFor(WireMock.get("/v2/attributes/" + uuid)
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/attributes/" + uuid)
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
 
-        IllegalStateException ex = Assertions.assertThrows(
-                IllegalStateException.class,
-                () -> client.getDefinition(connector, uuid));
+        IllegalStateException ex = Assertions
+                .assertThrows(IllegalStateException.class, () -> client.getDefinition(connector, uuid));
 
         Assertions.assertTrue(ex.getMessage().contains("Attributes v2 get definition"));
     }
 
     /**
      * A connector 404 carrying an RFC 9457 {@code application/problem+json} body with
-     * {@code errorCode=ATTRIBUTE_DEFINITION_NOT_FOUND} surfaces as {@link ConnectorProblemException}
-     * (via {@code BaseApiClient.handleHttpExceptions}), preserving the error code — the in-repo half of AC5.
+     * {@code errorCode=ATTRIBUTE_DEFINITION_NOT_FOUND} surfaces as {@link ConnectorProblemException} (via
+     * {@code BaseApiClient.handleHttpExceptions}), preserving the error code — the in-repo half of AC5.
      */
     @Test
     void getDefinition_unknownUuid_mapsProblem() {
@@ -204,15 +221,17 @@ class AttributesApiClientTest {
                   "retryable": false
                 }
                 """;
-        mockServer.stubFor(WireMock.get("/v2/attributes/" + uuid)
-                .willReturn(WireMock.aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(problemJson)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/attributes/" + uuid)
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(404)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(problemJson)));
 
-        ConnectorProblemException ex = Assertions.assertThrows(
-                ConnectorProblemException.class,
-                () -> client.getDefinition(connector, uuid));
+        ConnectorProblemException ex = Assertions
+                .assertThrows(ConnectorProblemException.class, () -> client.getDefinition(connector, uuid));
 
         Assertions.assertEquals(ErrorCode.ATTRIBUTE_DEFINITION_NOT_FOUND, ex.getProblemDetail().getErrorCode());
         Assertions.assertEquals(404, ex.getProblemDetail().getStatus());
@@ -232,11 +251,14 @@ class AttributesApiClientTest {
                   "totalItems": 1
                 }
                 """;
-        mockServer.stubFor(WireMock.post("/v2/attributes/callback")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(responseJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/attributes/callback")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(responseJson)));
 
         AttributeCallbackRequestDto request = new AttributeCallbackRequestDto();
         request.setConnectorInterface(ConnectorInterface.AUTHORITY);
@@ -253,16 +275,21 @@ class AttributesApiClientTest {
         Assertions.assertEquals(1L, response.getTotalItems());
         Assertions.assertNull(response.getAttributes());
 
-        mockServer.verify(WireMock.postRequestedFor(WireMock.urlEqualTo("/v2/attributes/callback"))
-                .withRequestBody(WireMock.matchingJsonPath("$.attributeName", WireMock.equalTo("someAttr"))));
+        mockServer
+                .verify(WireMock
+                        .postRequestedFor(WireMock.urlEqualTo("/v2/attributes/callback"))
+                        .withRequestBody(WireMock.matchingJsonPath("$.attributeName", WireMock.equalTo("someAttr"))));
     }
 
     @Test
     void callback_successWithEmptyBody_failsClearly() {
-        mockServer.stubFor(WireMock.post("/v2/attributes/callback")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/attributes/callback")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)));
 
         AttributeCallbackRequestDto request = new AttributeCallbackRequestDto();
         request.setConnectorInterface(ConnectorInterface.AUTHORITY);
@@ -272,17 +299,16 @@ class AttributesApiClientTest {
         request.setContextAttributes(List.of());
         request.setCurrentAttributes(List.of());
 
-        IllegalStateException ex = Assertions.assertThrows(
-                IllegalStateException.class,
-                () -> client.callback(connector, request));
+        IllegalStateException ex = Assertions
+                .assertThrows(IllegalStateException.class, () -> client.callback(connector, request));
 
         Assertions.assertTrue(ex.getMessage().contains("Attributes v2 callback"));
     }
 
     /**
-     * Callback GROUP arm: the connector returns runtime-injected GROUP children as the {@code attributes}
-     * arm (polymorphic {@code BaseAttribute} definitions), with the {@code content} arm absent. Exercises
-     * the second response arm's Jackson wiring, which the DATA-arm test does not.
+     * Callback GROUP arm: the connector returns runtime-injected GROUP children as the {@code attributes} arm
+     * (polymorphic {@code BaseAttribute} definitions), with the {@code content} arm absent. Exercises the second
+     * response arm's Jackson wiring, which the DATA-arm test does not.
      */
     @Test
     void callback_attributesArm_returnsGroupChildren() throws ConnectorException {
@@ -293,11 +319,14 @@ class AttributesApiClientTest {
                   ]
                 }
                 """;
-        mockServer.stubFor(WireMock.post("/v2/attributes/callback")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(responseJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/attributes/callback")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(responseJson)));
 
         AttributeCallbackRequestDto request = new AttributeCallbackRequestDto();
         request.setConnectorInterface(ConnectorInterface.AUTHORITY);

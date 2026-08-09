@@ -1,9 +1,8 @@
 package com.otilm.api.model.client.connector.v2;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Map;
+import lombok.Data;
 
 @Data
 public class HealthInfoComponent {

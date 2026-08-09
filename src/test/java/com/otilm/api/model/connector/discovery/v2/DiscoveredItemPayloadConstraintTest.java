@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.AutoClose;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,18 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Guards the one thing that makes a mislabelled payload detectable at all.
  *
- * <p>Payload subtypes tolerate unknown properties, so connectors can add a field without a
- * lock-step release. The cost is that Jackson cannot tell a wrong-shaped payload from a
- * right-shaped one carrying a new field: a body whose {@code resource} says {@code keys} but whose
- * fields are a certificate's deserializes into {@code DiscoveredKeyDto} with every one of its own
- * fields left null. Nothing about the resource resolution rejects it. What rejects it is that the
- * resulting instance then violates its own required-field constraints.
+ * <p>
+ * Payload subtypes tolerate unknown properties, so connectors can add a field without a lock-step release. The cost is
+ * that Jackson cannot tell a wrong-shaped payload from a right-shaped one carrying a new field: a body whose
+ * {@code resource} says {@code keys} but whose fields are a certificate's deserializes into {@code DiscoveredKeyDto}
+ * with every one of its own fields left null. Nothing about the resource resolution rejects it. What rejects it is that
+ * the resulting instance then violates its own required-field constraints.
  *
- * <p>That makes those constraints load-bearing rather than decorative, and it makes their absence
- * invisible: a future payload subtype with no required field would accept any mislabelled body
- * silently, and every existing test would stay green because none of them mentions the new type.
- * This test enumerates the registered subtypes instead of naming them, so adding one without a
- * constraint fails the build.
+ * <p>
+ * That makes those constraints load-bearing rather than decorative, and it makes their absence invisible: a future
+ * payload subtype with no required field would accept any mislabelled body silently, and every existing test would stay
+ * green because none of them mentions the new type. This test enumerates the registered subtypes instead of naming
+ * them, so adding one without a constraint fails the build.
  */
 class DiscoveredItemPayloadConstraintTest {
 

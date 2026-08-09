@@ -10,9 +10,8 @@ import lombok.EqualsAndHashCode;
 public class NotificationProfileRequestDto extends NotificationProfileUpdateRequestDto {
 
     @NotBlank
-    @Schema(description = "Name of the Notification profile",
-            examples = {"NotificationProfile1"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Notification profile", examples = {
+            "NotificationProfile1"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
 }

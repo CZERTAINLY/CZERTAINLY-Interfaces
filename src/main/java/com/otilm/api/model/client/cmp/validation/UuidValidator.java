@@ -3,7 +3,6 @@ package com.otilm.api.model.client.cmp.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.util.List;
 import java.util.UUID;
 
 public class UuidValidator implements ConstraintValidator<ValidUuid, String> {

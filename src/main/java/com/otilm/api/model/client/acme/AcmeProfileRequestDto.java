@@ -2,90 +2,43 @@ package com.otilm.api.model.client.acme;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsRequestDto;
-import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 @Data
 public class AcmeProfileRequestDto {
 
-    @Schema(
-            description = "Name of the ACME Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"Profile Name 1"}
-    )
+    @Schema(description = "Name of the ACME Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "Profile Name 1"})
     private String name;
 
-    @Schema(
-            description = "Description of the ACME Profile",
-            examples = {"Sample description"}
-    )
+    @Schema(description = "Description of the ACME Profile", examples = {"Sample description"})
     private String description;
-    @Schema(
-            description = "Terms of Service URL",
-            examples = {"https://sample-url.com/termsOfService"}
-    )
+    @Schema(description = "Terms of Service URL", examples = {"https://sample-url.com/termsOfService"})
     private String termsOfServiceUrl;
-    @Schema(
-            description = "Website URL",
-            examples = {"https://sample-url.com"}
-    )
+    @Schema(description = "Website URL", examples = {"https://sample-url.com"})
     private String websiteUrl;
-    @Schema(
-            description = "DNS Resolver IP address",
-            defaultValue = "System Default",
-            examples = {"8.8.8.8"}
-    )
+    @Schema(description = "DNS Resolver IP address", defaultValue = "System Default", examples = {"8.8.8.8"})
     private String dnsResolverIp;
-    @Schema(
-            description = "DNS Resolver port number",
-            defaultValue = "53",
-            examples = {"53"}
-    )
+    @Schema(description = "DNS Resolver port number", defaultValue = "53", examples = {"53"})
     private String dnsResolverPort;
-    @Schema(
-            description = "RA Profile UUID",
-            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"}
-    )
+    @Schema(description = "RA Profile UUID", examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"})
     private String raProfileUuid;
-    @Schema(
-            description = "Retry interval for the Orders",
-            defaultValue = "30",
-            example = "60"
-    )
+    @Schema(description = "Retry interval for the Orders", defaultValue = "30", example = "60")
     private Integer retryInterval;
-    @Schema(
-            description = "Order Validity",
-            defaultValue = "36000",
-            example = "3000"
-    )
+    @Schema(description = "Order Validity", defaultValue = "36000", example = "3000")
     private Integer validity;
-    @Schema(
-            description = "List of Attributes to issue Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "List of Attributes to issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> issueCertificateAttributes;
-    @Schema(
-            description = "List of Attributes to revoke Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "List of Attributes to revoke Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> revokeCertificateAttributes;
-    @Schema(
-            description = "Require contact information for new Account",
-            defaultValue = "false",
-            example = "true"
-    )
+    @Schema(description = "Require contact information for new Account", defaultValue = "false", example = "true")
     private Boolean requireContact;
-    @Schema(
-            description = "Require new Account to agree on Terms of Service",
-            defaultValue = "false",
-            example = "false"
-    )
+    @Schema(description = "Require new Account to agree on Terms of Service", defaultValue = "false", example = "false")
     private Boolean requireTermsOfService;
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;

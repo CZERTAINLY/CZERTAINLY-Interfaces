@@ -8,19 +8,18 @@ import com.otilm.api.testsupport.ValidatorFixture;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
-
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.AutoClose;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Proves the normative rule stated in {@link DiscoveredKeyDto}'s javadoc — key material never
- * traverses discovery — is actually enforced by bean validation, not just documented.
+ * Proves the normative rule stated in {@link DiscoveredKeyDto}'s javadoc — key material never traverses discovery — is
+ * actually enforced by bean validation, not just documented.
  */
 class DiscoveredKeyDtoValidationTest {
 
@@ -137,31 +136,30 @@ class DiscoveredKeyDtoValidationTest {
     }
 
     private static Set<String> propertyPaths(Set<ConstraintViolation<DiscoveredKeyDto>> violations) {
-        return violations.stream()
-                .map(v -> v.getPropertyPath().toString())
-                .collect(Collectors.toSet());
+        return violations.stream().map(v -> v.getPropertyPath().toString()).collect(Collectors.toSet());
     }
 
     /**
-     * A connector author reads only the generated document, so the published prose has to name
-     * every key type the validator actually covers — no more and no fewer. Both descriptions draw
-     * their list from {@link NoPrivateKeyMaterial#TYPES_WITHOUT_A_PUBLIC_PART_NAMES}, and this pins
-     * that single list against {@link NoPrivateKeyMaterial#TYPES_WITHOUT_A_PUBLIC_PART}, the set the
-     * validator applies.
+     * A connector author reads only the generated document, so the published prose has to name every key type the
+     * validator actually covers — no more and no fewer. Both descriptions draw their list from
+     * {@link NoPrivateKeyMaterial#TYPES_WITHOUT_A_PUBLIC_PART_NAMES}, and this pins that single list against
+     * {@link NoPrivateKeyMaterial#TYPES_WITHOUT_A_PUBLIC_PART}, the set the validator applies.
      */
     @Test
     void publishedProseNamesExactlyTheKeyTypesTheRuleCovers() throws NoSuchFieldException {
         String classProse = DiscoveredKeyDto.class.getAnnotation(Schema.class).description();
-        String publicKeyProse = DiscoveredKeyDto.class.getDeclaredField("publicKey")
-                .getAnnotation(Schema.class).description();
+        String publicKeyProse = DiscoveredKeyDto.class
+                .getDeclaredField("publicKey")
+                .getAnnotation(Schema.class)
+                .description();
 
         for (KeyType type : KeyType.values()) {
             boolean covered = NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART.contains(type);
             assertEquals(covered, classProse.contains(type.name()),
                     covered
                             ? "the class-level rule must name " + type.name() + ": " + classProse
-                            : "the class-level rule must not name " + type.name() + ", which it does not "
-                                    + "cover: " + classProse);
+                            : "the class-level rule must not name " + type.name() + ", which it does not " + "cover: "
+                                    + classProse);
             assertEquals(covered, publicKeyProse.contains(type.name()),
                     covered
                             ? "publicKey's description must name " + type.name() + ": " + publicKeyProse

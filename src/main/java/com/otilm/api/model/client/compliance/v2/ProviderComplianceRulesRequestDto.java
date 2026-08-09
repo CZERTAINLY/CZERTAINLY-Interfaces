@@ -1,15 +1,16 @@
 package com.otilm.api.model.client.compliance.v2;
 
-import com.otilm.api.model.connector.compliance.v2.ComplianceRuleRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRuleRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.*;
 
 @Getter
 @Setter

@@ -21,7 +21,8 @@ public class NotificationInstanceRequestDto extends NotificationInstanceUpdateRe
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("name", name)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("name", name)
                 .append("connectorUuid", connectorUuid)
                 .append("kind", kind)
                 .toString();

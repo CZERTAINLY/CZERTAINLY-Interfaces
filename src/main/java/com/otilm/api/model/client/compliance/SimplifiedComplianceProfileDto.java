@@ -10,7 +10,7 @@ public class SimplifiedComplianceProfileDto extends NameAndUuidDto {
     @Schema(description = "Description of the Compliance Profile")
     private String description;
 
-    //Default getters and setters
+    // Default getters and setters
 
     public String getDescription() {
         return description;

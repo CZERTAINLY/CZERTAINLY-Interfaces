@@ -1,19 +1,16 @@
 package com.otilm.api.model.common.attribute.v3.content;
 
-import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalTime;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalTime;
-
-@Schema(
-        description = "Time attribute content in predefined format",
-        type = "object")
+@Schema(description = "Time attribute content in predefined format", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class TimeAttributeContentV3 extends BaseAttributeContentV3<LocalTime> {
 

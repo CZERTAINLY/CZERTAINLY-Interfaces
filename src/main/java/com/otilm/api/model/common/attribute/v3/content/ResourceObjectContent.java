@@ -5,9 +5,7 @@ import com.otilm.api.model.common.attribute.v3.content.data.ResourceObjectConten
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 
-@Schema(
-        description = "Resource object attribute content carrying resource object data",
-        type = "object")
+@Schema(description = "Resource object attribute content carrying resource object data", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class ResourceObjectContent extends BaseAttributeContentV3<ResourceObjectContentData> {
 

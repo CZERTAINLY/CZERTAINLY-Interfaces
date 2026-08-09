@@ -1,14 +1,13 @@
 package com.otilm.api.clients;
 
-import com.otilm.api.interfaces.client.v1.ConnectorSyncApiClient;
 import com.otilm.api.exception.ConnectorException;
+import com.otilm.api.interfaces.client.v1.ConnectorSyncApiClient;
 import com.otilm.api.model.client.connector.InfoResponse;
+import java.util.List;
+import javax.net.ssl.TrustManager;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import javax.net.ssl.TrustManager;
-import java.util.List;
 
 public class ConnectorApiClient extends BaseApiClient implements ConnectorSyncApiClient {
 
@@ -27,11 +26,10 @@ public class ConnectorApiClient extends BaseApiClient implements ConnectorSyncAp
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, false);
 
         return processRequest(r -> r
-                        .uri(connector.getUrl() + CONNECTOR_BASE_CONTEXT)
-                        .retrieve()
-                        .toEntity(MAP_TYPE_REF)
-                        .block().getBody(),
-                request,
-                connector);
+                .uri(connector.getUrl() + CONNECTOR_BASE_CONTEXT)
+                .retrieve()
+                .toEntity(MAP_TYPE_REF)
+                .block()
+                .getBody(), request, connector);
     }
 }

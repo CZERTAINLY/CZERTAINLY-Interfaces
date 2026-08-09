@@ -5,8 +5,7 @@ import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 @Data
-@Schema(name = "SigningRecordPolicyRequestDto",
-        description = "Per-profile policy for what to record about each signing operation")
+@Schema(name = "SigningRecordPolicyRequestDto", description = "Per-profile policy for what to record about each signing operation")
 public class SigningRecordPolicyRequestDto {
 
     @Schema(description = "Master switch: when false, no Signing Record is created at all for this profile, "

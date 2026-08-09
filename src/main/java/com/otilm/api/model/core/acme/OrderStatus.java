@@ -1,18 +1,13 @@
 package com.otilm.api.model.core.acme;
 
-import com.otilm.api.exception.ValidationError;
-import com.otilm.api.exception.ValidationException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-
+import com.otilm.api.exception.ValidationError;
+import com.otilm.api.exception.ValidationException;
 import java.util.Arrays;
 
 public enum OrderStatus {
-    PENDING("pending"),
-    READY("ready"),
-    PROCESSING("processing"),
-    VALID("valid"),
-    INVALID("invalid");
+    PENDING("pending"), READY("ready"), PROCESSING("processing"), VALID("valid"), INVALID("invalid");
 
     /**
      * Status code for any given status
@@ -30,10 +25,11 @@ public enum OrderStatus {
 
     @JsonCreator
     public static OrderStatus findByCode(String code) {
-        return Arrays.stream(OrderStatus.values())
+        return Arrays
+                .stream(OrderStatus.values())
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown ACME Order status code {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown ACME Order status code {}", code)));
     }
 }

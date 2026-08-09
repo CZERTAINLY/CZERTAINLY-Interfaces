@@ -24,5 +24,4 @@ public interface BitMaskEnum {
         return result;
     }
 
-
 }

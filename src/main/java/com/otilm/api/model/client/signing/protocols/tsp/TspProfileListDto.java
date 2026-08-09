@@ -19,11 +19,7 @@ public class TspProfileListDto extends NameAndUuidDto {
     @Schema(description = "Default Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SimplifiedSigningProfileDto defaultSigningProfile;
 
-    @Schema(
-            description = "TSP URL for signing",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            example = "https://ilm.otilm.com/api/v1/protocols/tsp/tsp-profile-1"
-    )
+    @Schema(description = "TSP URL for signing", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "https://ilm.otilm.com/api/v1/protocols/tsp/tsp-profile-1")
     private String signingUrl;
 
     @Schema(description = "Enabled flag of the TSP Profile", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")

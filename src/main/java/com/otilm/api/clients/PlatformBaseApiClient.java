@@ -3,6 +3,9 @@ package com.otilm.api.clients;
 import com.otilm.api.exception.ConnectionServiceException;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,10 +16,6 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public abstract class PlatformBaseApiClient {
 
@@ -44,7 +43,7 @@ public abstract class PlatformBaseApiClient {
 
     public WebClient getClient(final String customServiceUrl) {
         if (client == null) {
-            if(customServiceUrl != null){
+            if (customServiceUrl != null) {
                 client = WebClient
                         .builder()
                         .filter(ExchangeFilterFunction.ofResponseProcessor(getHttpExceptionHandler()))
@@ -70,17 +69,18 @@ public abstract class PlatformBaseApiClient {
 
     static Mono<ClientResponse> handleHttpExceptions(final ClientResponse clientResponse) {
         if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {
-            return clientResponse.bodyToMono(ERROR_LIST_TYPE_REF).flatMap(body ->
-                    Mono.error(new ValidationException(body.stream()
-                                    .map(ValidationError::create)
-                                    .collect(Collectors.toList())
-                            )
-                    )
-            );
+            return clientResponse
+                    .bodyToMono(ERROR_LIST_TYPE_REF)
+                    .flatMap(body -> Mono
+                            .error(new ValidationException(
+                                    body.stream().map(ValidationError::create).collect(Collectors.toList()))));
         }
         if (clientResponse.statusCode().isError()) {
-            return clientResponse.bodyToMono(String.class)
-                    .flatMap(body -> Mono.error(new ConnectionServiceException(body, HttpStatus.valueOf(clientResponse.statusCode().value()))));
+            return clientResponse
+                    .bodyToMono(String.class)
+                    .flatMap(body -> Mono
+                            .error(new ConnectionServiceException(body,
+                                    HttpStatus.valueOf(clientResponse.statusCode().value()))));
         }
 
         return Mono.just(clientResponse);

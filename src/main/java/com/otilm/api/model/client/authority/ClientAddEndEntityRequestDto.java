@@ -9,8 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ClientAddEndEntityRequestDto extends ClientBaseEndEntityRequestDto {
 
-    @Schema(description = "End Entity name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     public String getUsername() {
@@ -34,4 +33,3 @@ public class ClientAddEndEntityRequestDto extends ClientBaseEndEntityRequestDto 
                 .toString();
     }
 }
-

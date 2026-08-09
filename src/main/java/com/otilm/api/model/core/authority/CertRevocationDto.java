@@ -9,16 +9,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class CertRevocationDto {
 
-    @Schema(description = "Certificate serial number",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate serial number", requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificateSN;
 
-    @Schema(description = "Issuer domain name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Issuer domain name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String issuerDN;
 
-    @Schema(description = "Revocation reason",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Revocation reason", requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateRevocationReason reason;
 
     public String getCertificateSN() {

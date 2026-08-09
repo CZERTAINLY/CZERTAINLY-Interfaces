@@ -23,6 +23,9 @@ import com.otilm.api.model.connector.discovery.v2.DiscoverySupportedResourceDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.connector.ConnectorDto;
 import com.otilm.api.model.core.connector.ConnectorStatus;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,10 +38,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -82,11 +81,14 @@ class DiscoveryApiClientTest {
                   { "resource": "keys", "capabilities": [] }
                 ]
                 """;
-        mockServer.stubFor(WireMock.get("/v2/discoveryProvider/resources")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(json)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/discoveryProvider/resources")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(json)));
 
         List<DiscoverySupportedResourceDto> result = client.listSupportedResources(connector);
 
@@ -101,16 +103,19 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * The list operations decode an array and wrap it, so the wrapper — not Jackson or Reactor —
-     * decides mutability. Both transports must hand back a list a caller can sort or filter in place.
+     * The list operations decode an array and wrap it, so the wrapper — not Jackson or Reactor — decides mutability.
+     * Both transports must hand back a list a caller can sort or filter in place.
      */
     @Test
     void listSupportedResources_returnsMutableList() throws ConnectorException {
-        mockServer.stubFor(WireMock.get("/v2/discoveryProvider/resources")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("[{\"resource\":\"certificates\"}]")));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/discoveryProvider/resources")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("[{\"resource\":\"certificates\"}]")));
 
         List<DiscoverySupportedResourceDto> result = client.listSupportedResources(connector);
 
@@ -125,11 +130,14 @@ class DiscoveryApiClientTest {
                   { "uuid": "11111111-1111-1111-1111-111111111111", "name": "targetAddress", "type": "data", "contentType": "string", "version": 2 }
                 ]
                 """;
-        mockServer.stubFor(WireMock.get("/v2/discoveryProvider/attributes")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(json)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/discoveryProvider/attributes")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(json)));
 
         List<BaseAttribute> result = client.listRunAttributes(connector);
 
@@ -148,11 +156,14 @@ class DiscoveryApiClientTest {
                   { "uuid": "22222222-2222-2222-2222-222222222222", "name": "keySize", "type": "data", "contentType": "integer", "version": 2 }
                 ]
                 """;
-        mockServer.stubFor(WireMock.get("/v2/discoveryProvider/keys/attributes")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(json)));
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/discoveryProvider/keys/attributes")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(json)));
 
         List<BaseAttribute> result = client.listResourceAttributes(connector, Resource.CRYPTOGRAPHIC_KEY);
 
@@ -161,20 +172,23 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * Body matchers, not just path and method: without them a client that dropped {@code .body(...)},
-     * sent the wrong DTO, or lost {@code runId} would still match the stub and pass. The
-     * {@code resources} entry pins the wire code {@code "certificates"} — the request-body half of the
-     * wire-code contract {@code listResourceAttributes_usesResourceWireCodeInPath} pins on the path.
+     * Body matchers, not just path and method: without them a client that dropped {@code .body(...)}, sent the wrong
+     * DTO, or lost {@code runId} would still match the stub and pass. The {@code resources} entry pins the wire code
+     * {@code "certificates"} — the request-body half of the wire-code contract
+     * {@code listResourceAttributes_usesResourceWireCodeInPath} pins on the path.
      */
     @Test
     void initiate_returnsMeta() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/initiate")
-                .withRequestBody(WireMock.matchingJsonPath("$.runId", WireMock.equalTo(RUN_ID.toString())))
-                .withRequestBody(WireMock.matchingJsonPath("$.resources[0]", WireMock.equalTo("certificates")))
-                .willReturn(WireMock.aResponse()
-                        .withStatus(202)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"meta\":[]}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/initiate")
+                        .withRequestBody(WireMock.matchingJsonPath("$.runId", WireMock.equalTo(RUN_ID.toString())))
+                        .withRequestBody(WireMock.matchingJsonPath("$.resources[0]", WireMock.equalTo("certificates")))
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(202)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"meta\":[]}")));
 
         DiscoveryInitiateRequestDto request = new DiscoveryInitiateRequestDto();
         request.setRunId(RUN_ID);
@@ -189,12 +203,15 @@ class DiscoveryApiClientTest {
     /** Pins the run-request body shape (the DTO shared by status, stop, resume and cancel). */
     @Test
     void status_returnsRunState() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/status")
-                .withRequestBody(WireMock.matchingJsonPath("$.runId", WireMock.equalTo(RUN_ID.toString())))
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"state\":\"running\",\"highestSequence\":42}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/status")
+                        .withRequestBody(WireMock.matchingJsonPath("$.runId", WireMock.equalTo(RUN_ID.toString())))
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"state\":\"running\",\"highestSequence\":42}")));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -206,19 +223,21 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * Pins the drain body shape, including the {@code afterSequence} cursor — a drain that silently
-     * lost its cursor would re-read the run from the start on every poll, which no response assertion
-     * would notice.
+     * Pins the drain body shape, including the {@code afterSequence} cursor — a drain that silently lost its cursor
+     * would re-read the run from the start on every poll, which no response assertion would notice.
      */
     @Test
     void results_returnsPage() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/results")
-                .withRequestBody(WireMock.matchingJsonPath("$.runId", WireMock.equalTo(RUN_ID.toString())))
-                .withRequestBody(WireMock.matchingJsonPath("$.afterSequence", WireMock.equalTo("12")))
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"items\":[],\"highestSequence\":7,\"more\":false}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/results")
+                        .withRequestBody(WireMock.matchingJsonPath("$.runId", WireMock.equalTo(RUN_ID.toString())))
+                        .withRequestBody(WireMock.matchingJsonPath("$.afterSequence", WireMock.equalTo("12")))
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"items\":[],\"highestSequence\":7,\"more\":false}")));
 
         DiscoveryDrainRequestDto request = new DiscoveryDrainRequestDto();
         request.setRunId(RUN_ID);
@@ -233,11 +252,14 @@ class DiscoveryApiClientTest {
 
     @Test
     void stop_returnsMeta() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/stop")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"meta\":[]}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/stop")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"meta\":[]}")));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -250,11 +272,14 @@ class DiscoveryApiClientTest {
 
     @Test
     void resume_returnsMeta() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/resume")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(202)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"meta\":[]}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/resume")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(202)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"meta\":[]}")));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -267,8 +292,10 @@ class DiscoveryApiClientTest {
 
     @Test
     void cancel_204OnSuccess() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse().withStatus(204)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock.aResponse().withStatus(204)));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -279,18 +306,21 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A 404 on cancel means the run is already terminal, i.e. success, so the client must surface it
-     * via the returned {@code ResponseEntity}'s status, never as a thrown exception. That is the reason
-     * {@code cancel} returns {@code ResponseEntity<Void>}.
+     * A 404 on cancel means the run is already terminal, i.e. success, so the client must surface it via the returned
+     * {@code ResponseEntity}'s status, never as a thrown exception. That is the reason {@code cancel} returns
+     * {@code ResponseEntity<Void>}.
      */
     @Test
     void cancel_404IsReturnedAsStatusNotException() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(notTrackedProblemJson("OPERATION_NOT_TRACKED",
-                                "https://docs.otilm.com/problems/connector/discovery/OPERATION_NOT_TRACKED"))));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(404)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(notTrackedProblemJson("OPERATION_NOT_TRACKED",
+                                        "https://docs.otilm.com/problems/connector/discovery/OPERATION_NOT_TRACKED"))));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -301,18 +331,21 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A conformant not-tracked 404 needs no operator attention, so it must not produce the diagnostic
-     * WARN reserved for the ambiguous bare-404 fallback — which would otherwise fire on every routine
-     * cancel of an already-finished run and train operators to ignore it.
+     * A conformant not-tracked 404 needs no operator attention, so it must not produce the diagnostic WARN reserved for
+     * the ambiguous bare-404 fallback — which would otherwise fire on every routine cancel of an already-finished run
+     * and train operators to ignore it.
      */
     @Test
     void cancel_conformantNotTracked404DoesNotWarn() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(notTrackedProblemJson("OPERATION_NOT_TRACKED",
-                                "https://docs.otilm.com/problems/connector/discovery/OPERATION_NOT_TRACKED"))));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(404)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(notTrackedProblemJson("OPERATION_NOT_TRACKED",
+                                        "https://docs.otilm.com/problems/connector/discovery/OPERATION_NOT_TRACKED"))));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -326,25 +359,28 @@ class DiscoveryApiClientTest {
         }
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        Assertions.assertTrue(warnings(recorder).isEmpty(),
-                () -> "a conformant not-tracked 404 must not warn, got " + recorder.list);
+        Assertions
+                .assertTrue(warnings(recorder).isEmpty(),
+                        () -> "a conformant not-tracked 404 must not warn, got " + recorder.list);
     }
 
     /**
-     * The not-tracked rule is the shared
-     * {@link com.otilm.api.model.common.error.ConnectorOperationErrorCodes}, not a local one-code
-     * comparison, so it recognises {@code REGISTRATION_NOT_FOUND} as well as
-     * {@code OPERATION_NOT_TRACKED}. Pinning the second code keeps every consumer classifying a
-     * connector's answer identically.
+     * The not-tracked rule is the shared {@link com.otilm.api.model.common.error.ConnectorOperationErrorCodes}, not a
+     * local one-code comparison, so it recognises {@code REGISTRATION_NOT_FOUND} as well as
+     * {@code OPERATION_NOT_TRACKED}. Pinning the second code keeps every consumer classifying a connector's answer
+     * identically.
      */
     @Test
     void cancel_registrationNotFoundIsSwallowedViaSharedRule() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(notTrackedProblemJson("REGISTRATION_NOT_FOUND",
-                                "https://docs.otilm.com/problems/connector/authority/REGISTRATION_NOT_FOUND"))));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(404)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(notTrackedProblemJson("REGISTRATION_NOT_FOUND",
+                                        "https://docs.otilm.com/problems/connector/authority/REGISTRATION_NOT_FOUND"))));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -355,9 +391,8 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * A 422 refusal (run past the point of no return) is a real failure and must still throw, so the
-     * 404-swallowing branch intercepts only a not-tracked answer, not every
-     * {@link ConnectorProblemException}.
+     * A 422 refusal (run past the point of no return) is a real failure and must still throw, so the 404-swallowing
+     * branch intercepts only a not-tracked answer, not every {@link ConnectorProblemException}.
      */
     @Test
     void cancel_422StillThrows() {
@@ -373,18 +408,20 @@ class DiscoveryApiClientTest {
                   "retryable": false
                 }
                 """;
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(422)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(problemJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(422)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(problemJson)));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
 
-        ConnectorProblemException ex = Assertions.assertThrows(
-                ConnectorProblemException.class,
-                () -> client.cancel(connector, request));
+        ConnectorProblemException ex = Assertions
+                .assertThrows(ConnectorProblemException.class, () -> client.cancel(connector, request));
 
         Assertions.assertEquals(ErrorCode.OPERATION_PAST_POINT_OF_NO_RETURN, ex.getProblemDetail().getErrorCode());
         Assertions.assertEquals(connector, ex.getConnector());
@@ -393,17 +430,19 @@ class DiscoveryApiClientTest {
     /**
      * A terse-but-conformant connector can answer 404 without an {@code application/problem+json} body.
      * {@code BaseApiClient}'s legacy fallback maps that shape to
-     * {@link com.otilm.api.exception.ConnectorEntityNotFoundException} rather than
-     * {@link ConnectorProblemException}, and cancel must accept it too, or a legitimately-terminal run
-     * would be reported as a failure.
+     * {@link com.otilm.api.exception.ConnectorEntityNotFoundException} rather than {@link ConnectorProblemException},
+     * and cancel must accept it too, or a legitimately-terminal run would be reported as a failure.
      */
     @Test
     void cancel_legacyNotFoundIsReturnedAsStatusNotException() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(springDefaultErrorPage())));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(404)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(springDefaultErrorPage())));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -415,20 +454,23 @@ class DiscoveryApiClientTest {
 
     /**
      * The terse 404 can be terser still: no body at all, and no {@code Content-Type}. A Go connector's
-     * {@code w.WriteHeader(404)} sends exactly that, and cancel is the likeliest place to meet it since
-     * the route is declared bodiless even on success.
+     * {@code w.WriteHeader(404)} sends exactly that, and cancel is the likeliest place to meet it since the route is
+     * declared bodiless even on success.
      *
-     * <p>{@code BaseApiClient}'s legacy 404 branch reads the body for the exception message with
-     * {@code bodyToMono(String.class).flatMap(...)}, which never runs for a zero-length body. Without
-     * a {@code defaultIfEmpty} the response filter completes empty, no connector exception is raised,
-     * and an unmapped {@link IllegalStateException} escapes instead — so {@code cancel}'s
-     * {@code onErrorResume} never sees a {@code ConnectorEntityNotFoundException} and a
-     * legitimately-terminal run reaches Core as a hard failure of an uncatchable type.
+     * <p>
+     * {@code BaseApiClient}'s legacy 404 branch reads the body for the exception message with
+     * {@code bodyToMono(String.class).flatMap(...)}, which never runs for a zero-length body. Without a
+     * {@code defaultIfEmpty} the response filter completes empty, no connector exception is raised, and an unmapped
+     * {@link IllegalStateException} escapes instead — so {@code cancel}'s {@code onErrorResume} never sees a
+     * {@code ConnectorEntityNotFoundException} and a legitimately-terminal run reaches Core as a hard failure of an
+     * uncatchable type.
      */
     @Test
     void cancel_bodiless404IsReturnedAsStatusNotIllegalState() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse().withStatus(404)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock.aResponse().withStatus(404)));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -439,19 +481,22 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * The lenient bare-404 fallback must stay diagnosable: the shared connector contract also documents
-     * 404 as "endpoint not found or not implemented", and the body stubbed here is Spring's
-     * unmapped-route error page. A connector that never implemented {@code /discoveries/cancel}, or one
-     * reached through a stale base URL, would otherwise be reported as an already-terminal cancellation
-     * — a silently failed abort. So the WARN must name both the connector and the path to go check.
+     * The lenient bare-404 fallback must stay diagnosable: the shared connector contract also documents 404 as
+     * "endpoint not found or not implemented", and the body stubbed here is Spring's unmapped-route error page. A
+     * connector that never implemented {@code /discoveries/cancel}, or one reached through a stale base URL, would
+     * otherwise be reported as an already-terminal cancellation — a silently failed abort. So the WARN must name both
+     * the connector and the path to go check.
      */
     @Test
     void cancel_bare404IsSwallowedButWarnsNamingConnectorAndPath() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/cancel")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(springDefaultErrorPage())));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/cancel")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(404)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(springDefaultErrorPage())));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
@@ -467,18 +512,17 @@ class DiscoveryApiClientTest {
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
         List<ILoggingEvent> warnings = warnings(recorder);
-        Assertions.assertEquals(1, warnings.size(),
-                () -> "expected exactly one WARN for the swallowed bare 404, got " + recorder.list);
+        Assertions
+                .assertEquals(1, warnings.size(),
+                        () -> "expected exactly one WARN for the swallowed bare 404, got " + recorder.list);
         String message = warnings.get(0).getFormattedMessage();
-        Assertions.assertTrue(message.contains(CONNECTOR_NAME),
-                () -> "the WARN must name the connector: " + message);
-        Assertions.assertTrue(message.contains(CANCEL_PATH),
-                () -> "the WARN must name the path: " + message);
+        Assertions.assertTrue(message.contains(CONNECTOR_NAME), () -> "the WARN must name the connector: " + message);
+        Assertions.assertTrue(message.contains(CANCEL_PATH), () -> "the WARN must name the path: " + message);
     }
 
     /**
-     * Every other lifecycle call keeps the standard mapping — a 404 surfaces as
-     * {@link ConnectorProblemException} with {@code errorCode=OPERATION_NOT_TRACKED} — unlike cancel.
+     * Every other lifecycle call keeps the standard mapping — a 404 surfaces as {@link ConnectorProblemException} with
+     * {@code errorCode=OPERATION_NOT_TRACKED} — unlike cancel.
      */
     @Test
     void status_404MapsToOperationNotTracked() {
@@ -494,18 +538,20 @@ class DiscoveryApiClientTest {
                   "retryable": false
                 }
                 """;
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/status")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(404)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(problemJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/status")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(404)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(problemJson)));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
 
-        ConnectorProblemException ex = Assertions.assertThrows(
-                ConnectorProblemException.class,
-                () -> client.status(connector, request));
+        ConnectorProblemException ex = Assertions
+                .assertThrows(ConnectorProblemException.class, () -> client.status(connector, request));
 
         Assertions.assertEquals(ErrorCode.OPERATION_NOT_TRACKED, ex.getProblemDetail().getErrorCode());
         Assertions.assertEquals(connector, ex.getConnector());
@@ -525,19 +571,21 @@ class DiscoveryApiClientTest {
                   "retryable": false
                 }
                 """;
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/initiate")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(422)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(problemJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/initiate")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(422)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(problemJson)));
 
         DiscoveryInitiateRequestDto request = new DiscoveryInitiateRequestDto();
         request.setRunId(RUN_ID);
         request.setResources(List.of(Resource.CERTIFICATE));
 
-        ConnectorProblemException ex = Assertions.assertThrows(
-                ConnectorProblemException.class,
-                () -> client.initiate(connector, request));
+        ConnectorProblemException ex = Assertions
+                .assertThrows(ConnectorProblemException.class, () -> client.initiate(connector, request));
 
         Assertions.assertEquals(ErrorCode.VALIDATION_FAILED, ex.getProblemDetail().getErrorCode());
         Assertions.assertEquals(connector, ex.getConnector());
@@ -557,40 +605,44 @@ class DiscoveryApiClientTest {
                   "retryable": false
                 }
                 """;
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/resume")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(410)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(problemJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/resume")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(410)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(problemJson)));
 
         DiscoveryRunRequestDto request = new DiscoveryRunRequestDto();
         request.setRunId(RUN_ID);
 
-        ConnectorProblemException ex = Assertions.assertThrows(
-                ConnectorProblemException.class,
-                () -> client.resume(connector, request));
+        ConnectorProblemException ex = Assertions
+                .assertThrows(ConnectorProblemException.class, () -> client.resume(connector, request));
 
         Assertions.assertEquals(ErrorCode.CHECKPOINT_LOST, ex.getProblemDetail().getErrorCode());
         Assertions.assertEquals(connector, ex.getConnector());
     }
 
     /**
-     * A {@code results} page larger than the configured read cap must fail fast rather than buffer an
-     * unbounded response into memory.
+     * A {@code results} page larger than the configured read cap must fail fast rather than buffer an unbounded
+     * response into memory.
      *
-     * <p>The cap lives on the shared {@code WebClient}, so it cannot be dialed down through the
-     * process-wide {@code BaseApiClient.prepareWebClient()} singleton without either being ignored
-     * (another test may have claimed the tuning first) or shrinking the cap for every other test in the
-     * JVM run. Hence the throwaway small-cap client.
+     * <p>
+     * The cap lives on the shared {@code WebClient}, so it cannot be dialed down through the process-wide
+     * {@code BaseApiClient.prepareWebClient()} singleton without either being ignored (another test may have claimed
+     * the tuning first) or shrinking the cap for every other test in the JVM run. Hence the throwaway small-cap client.
      *
-     * <p>The stubbed body is syntactically valid JSON — a real {@code DiscoveryResultsResponseDto} shape
-     * plus one padding field — so the failure comes from the size gate tripping before parsing, not
-     * from malformed input failing around the same size.
+     * <p>
+     * The stubbed body is syntactically valid JSON — a real {@code DiscoveryResultsResponseDto} shape plus one padding
+     * field — so the failure comes from the size gate tripping before parsing, not from malformed input failing around
+     * the same size.
      *
-     * <p>The codec enforces the cap while decoding the 2xx body, inside {@code retrieve()}, which wraps
-     * the breach in a {@link WebClientResponseException} carrying the response status and keeping the
-     * original {@link DataBufferLimitException} as its cause. Asserted here through the exception class
-     * this client's caller actually sees.
+     * <p>
+     * The codec enforces the cap while decoding the 2xx body, inside {@code retrieve()}, which wraps the breach in a
+     * {@link WebClientResponseException} carrying the response status and keeping the original
+     * {@link DataBufferLimitException} as its cause. Asserted here through the exception class this client's caller
+     * actually sees.
      */
     @Test
     void results_oversizedResponse_failsInsteadOfBuffering() {
@@ -599,18 +651,20 @@ class DiscoveryApiClientTest {
 
         String oversizedBody = "{\"items\":[],\"highestSequence\":0,\"more\":false,\"padding\":\""
                 + "a".repeat(smallCap * 4) + "\"}";
-        mockServer.stubFor(WireMock.post("/v2/discoveryProvider/discoveries/results")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(oversizedBody)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v2/discoveryProvider/discoveries/results")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(oversizedBody)));
 
         DiscoveryDrainRequestDto request = new DiscoveryDrainRequestDto();
         request.setRunId(RUN_ID);
 
-        ConnectorServerException ex = Assertions.assertThrows(
-                ConnectorServerException.class,
-                () -> smallCapClient.results(connector, request));
+        ConnectorServerException ex = Assertions
+                .assertThrows(ConnectorServerException.class, () -> smallCapClient.results(connector, request));
 
         // The status is the one the connector really sent (200), not a synthesized 413.
         Assertions.assertEquals(HttpStatus.OK, ex.getHttpStatus());
@@ -621,13 +675,13 @@ class DiscoveryApiClientTest {
     /**
      * The read cap must bound a whole list response, not each of its elements.
      *
-     * <p>{@code toEntityList(X.class)} streams the array through Spring's {@code Jackson2Tokenizer},
-     * whose {@code assertInMemorySize} resets its byte counter every time a top-level element
-     * completes, so the cap degrades into a per-element cap and the {@code collectList} assembling the
-     * result is unbounded. Every element below is a couple of dozen bytes while the array as a whole is
-     * several times over the cap — the shape a connector returning a million tiny objects produces, and
-     * the shape an element-wise cap waves through. Decoding an array type instead routes through the
-     * codec's bounded {@code decodeToMono}, so the whole response is measured.
+     * <p>
+     * {@code toEntityList(X.class)} streams the array through Spring's {@code Jackson2Tokenizer}, whose
+     * {@code assertInMemorySize} resets its byte counter every time a top-level element completes, so the cap degrades
+     * into a per-element cap and the {@code collectList} assembling the result is unbounded. Every element below is a
+     * couple of dozen bytes while the array as a whole is several times over the cap — the shape a connector returning
+     * a million tiny objects produces, and the shape an element-wise cap waves through. Decoding an array type instead
+     * routes through the codec's bounded {@code decodeToMono}, so the whole response is measured.
      */
     @Test
     void listSupportedResources_oversizedArrayOfSmallElements_failsInsteadOfAssembling() {
@@ -635,19 +689,22 @@ class DiscoveryApiClientTest {
         DiscoveryApiClient smallCapClient = smallCapClient(smallCap);
 
         // ~27 bytes per element, 1000 elements: no element is near the cap, the array is ~3.5x over it.
-        String oversizedArray = "[" + String.join(",",
-                Collections.nCopies(1000, "{\"resource\":\"certificates\"}")) + "]";
-        Assertions.assertTrue(oversizedArray.length() > smallCap * 3,
-                "the stubbed array must be comfortably over the cap");
-        mockServer.stubFor(WireMock.get("/v2/discoveryProvider/resources")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody(oversizedArray)));
+        String oversizedArray = "[" + String.join(",", Collections.nCopies(1000, "{\"resource\":\"certificates\"}"))
+                + "]";
+        Assertions
+                .assertTrue(oversizedArray.length() > smallCap * 3,
+                        "the stubbed array must be comfortably over the cap");
+        mockServer
+                .stubFor(WireMock
+                        .get("/v2/discoveryProvider/resources")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(oversizedArray)));
 
-        ConnectorServerException ex = Assertions.assertThrows(
-                ConnectorServerException.class,
-                () -> smallCapClient.listSupportedResources(connector));
+        ConnectorServerException ex = Assertions
+                .assertThrows(ConnectorServerException.class, () -> smallCapClient.listSupportedResources(connector));
 
         // As above: the connector's own status (200), never a synthesized 413.
         Assertions.assertEquals(HttpStatus.OK, ex.getHttpStatus());
@@ -659,8 +716,10 @@ class DiscoveryApiClientTest {
      * {@code results_oversizedResponse_failsInsteadOfBuffering}.
      */
     private DiscoveryApiClient smallCapClient(int maxInMemorySize) {
-        WebClient smallCapWebClient = WebClient.builder()
-                .exchangeStrategies(ExchangeStrategies.builder()
+        WebClient smallCapWebClient = WebClient
+                .builder()
+                .exchangeStrategies(ExchangeStrategies
+                        .builder()
                         .codecs(c -> c.defaultCodecs().maxInMemorySize(maxInMemorySize))
                         .build())
                 .build();
@@ -684,27 +743,27 @@ class DiscoveryApiClientTest {
     }
 
     /**
-     * Spring's default unmapped-route error page: a 404 with no {@code application/problem+json} body,
-     * what a connector that never implemented the endpoint returns.
+     * Spring's default unmapped-route error page: a 404 with no {@code application/problem+json} body, what a connector
+     * that never implemented the endpoint returns.
      */
     private static String springDefaultErrorPage() {
-        return "{\"timestamp\":\"2026-08-06T10:00:00Z\",\"status\":404,\"error\":\"Not Found\","
-                + "\"path\":\"" + CANCEL_PATH + "\"}";
+        return "{\"timestamp\":\"2026-08-06T10:00:00Z\",\"status\":404,\"error\":\"Not Found\"," + "\"path\":\""
+                + CANCEL_PATH + "\"}";
     }
 
     /**
      * Attach a recorder to this client's own logger so a test can assert on the events it emits.
      *
-     * <p>logback-classic is this module's SLF4J provider (slf4j-simple is on the test classpath too but
-     * loses provider selection), so asserting the type makes a provider change fail loudly instead of
-     * silently skipping the log assertions. The level is pinned so the assertions do not depend on the
-     * ambient root level, and restored to inherited — the module ships no logback configuration, so
-     * inherited is the original state.
+     * <p>
+     * logback-classic is this module's SLF4J provider (slf4j-simple is on the test classpath too but loses provider
+     * selection), so asserting the type makes a provider change fail loudly instead of silently skipping the log
+     * assertions. The level is pinned so the assertions do not depend on the ambient root level, and restored to
+     * inherited — the module ships no logback configuration, so inherited is the original state.
      */
     private static ListAppender<ILoggingEvent> attachClientLogRecorder() {
-        Logger clientLogger = Assertions.assertInstanceOf(Logger.class,
-                LoggerFactory.getLogger(DiscoveryApiClient.class),
-                "expected logback-classic to be the active SLF4J provider");
+        Logger clientLogger = Assertions
+                .assertInstanceOf(Logger.class, LoggerFactory.getLogger(DiscoveryApiClient.class),
+                        "expected logback-classic to be the active SLF4J provider");
         ListAppender<ILoggingEvent> recorder = new ListAppender<>();
         recorder.setContext(clientLogger.getLoggerContext());
         recorder.start();
@@ -721,8 +780,6 @@ class DiscoveryApiClientTest {
     }
 
     private static List<ILoggingEvent> warnings(ListAppender<ILoggingEvent> recorder) {
-        return recorder.list.stream()
-                .filter(event -> event.getLevel() == Level.WARN)
-                .toList();
+        return recorder.list.stream().filter(event -> event.getLevel() == Level.WARN).toList();
     }
 }

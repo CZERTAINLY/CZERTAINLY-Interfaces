@@ -1,18 +1,16 @@
 package com.otilm.api.model.connector.secrets.content;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyStoreType implements IPlatformEnum {
-    JKS("JKS", "Java Key Store"),
-    PKCS12("PKCS12", "PKCS#12 Key Store");
+    JKS("JKS", "Java Key Store"), PKCS12("PKCS12", "PKCS#12 Key Store");
 
     private static final KeyStoreType[] VALUES;
 
@@ -36,11 +34,11 @@ public enum KeyStoreType implements IPlatformEnum {
 
     @JsonCreator
     public static KeyStoreType findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown key store type {}", code)));
+                .orElseThrow(() -> new ValidationException(ValidationError.create("Unknown key store type {}", code)));
     }
 
     @Override

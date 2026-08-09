@@ -1,24 +1,18 @@
 package com.otilm.api.model.core.certificate;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CertificateValidationStatus implements IPlatformEnum {
-    NOT_CHECKED("not_checked", "Not checked"),
-    FAILED("failed", "Failed"),
-    INACTIVE("inactive", "Inactive"),
-    INVALID("invalid", "Invalid"),
-    VALID("valid", "Valid"),
-    REVOKED("revoked", "Revoked"),
-    EXPIRING("expiring", "Expiring"),
-    EXPIRED("expired", "Expired");
+    NOT_CHECKED("not_checked", "Not checked"), FAILED("failed", "Failed"), INACTIVE("inactive", "Inactive"), INVALID(
+            "invalid", "Invalid"), VALID("valid", "Valid"), REVOKED("revoked",
+                    "Revoked"), EXPIRING("expiring", "Expiring"), EXPIRED("expired", "Expired");
 
     private static final CertificateValidationStatus[] VALUES;
 
@@ -30,9 +24,8 @@ public enum CertificateValidationStatus implements IPlatformEnum {
     private final String label;
     private final String description;
 
-
     CertificateValidationStatus(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     CertificateValidationStatus(String code, String label, String description) {
@@ -59,12 +52,12 @@ public enum CertificateValidationStatus implements IPlatformEnum {
 
     @JsonCreator
     public static CertificateValidationStatus findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown certificate validation status {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown certificate validation status {}", code)));
     }
-
 
 }

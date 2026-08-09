@@ -10,12 +10,11 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.Set;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -79,13 +78,15 @@ class SigningProfileConstraintValidatorsTest {
 
     @Test
     void delegatedTimestampingNullFormattingUuid_noFormattingViolation() {
-        assertFalse(hasViolationOn(validator.validate(profileRequest(delegatedScheme(), new TimestampingWorkflowRequestDto())),
+        assertFalse(hasViolationOn(
+                validator.validate(profileRequest(delegatedScheme(), new TimestampingWorkflowRequestDto())),
                 "workflow.signatureFormattingConnectorUuid"));
     }
 
     @Test
     void managedContentSigningNullFormattingUuid_producesViolation() {
-        assertTrue(hasViolationOn(validator.validate(profileRequest(managedScheme(), new ContentSigningWorkflowRequestDto())),
+        assertTrue(hasViolationOn(
+                validator.validate(profileRequest(managedScheme(), new ContentSigningWorkflowRequestDto())),
                 "workflow.signatureFormattingConnectorUuid"));
     }
 
@@ -99,8 +100,9 @@ class SigningProfileConstraintValidatorsTest {
 
     @Test
     void managedRawSigningNullFormattingUuid_noFormattingViolation() {
-        assertFalse(hasViolationOn(validator.validate(profileRequest(managedScheme(), new RawSigningWorkflowRequestDto())),
-                "workflow.signatureFormattingConnectorUuid"));
+        assertFalse(
+                hasViolationOn(validator.validate(profileRequest(managedScheme(), new RawSigningWorkflowRequestDto())),
+                        "workflow.signatureFormattingConnectorUuid"));
     }
 
     @Test
@@ -131,7 +133,8 @@ class SigningProfileConstraintValidatorsTest {
 
     @Test
     void managedTimestampingQualifiedTimestampNullNullTqcUuid_noQualificationViolation() {
-        assertFalse(hasViolationOn(validator.validate(profileRequest(managedScheme(), new TimestampingWorkflowRequestDto())),
+        assertFalse(hasViolationOn(
+                validator.validate(profileRequest(managedScheme(), new TimestampingWorkflowRequestDto())),
                 "workflow.timeQualityConfigurationUuid"));
     }
 

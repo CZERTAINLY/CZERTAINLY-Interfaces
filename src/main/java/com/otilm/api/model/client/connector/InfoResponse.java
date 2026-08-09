@@ -3,10 +3,9 @@ package com.otilm.api.model.client.connector;
 import com.otilm.api.model.core.connector.BaseFunctionGroupDto;
 import com.otilm.api.model.core.connector.EndpointDto;
 import com.otilm.api.model.core.connector.FunctionGroupCode;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 public class InfoResponse extends BaseFunctionGroupDto {
 

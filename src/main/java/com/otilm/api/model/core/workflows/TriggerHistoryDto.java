@@ -2,12 +2,11 @@ package com.otilm.api.model.core.workflows;
 
 import com.otilm.api.model.common.UuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -35,4 +34,4 @@ public class TriggerHistoryDto extends UuidDto {
 
     @Schema(description = "List of records for each action that has not been performed and each condition that has not been evaluated.", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerHistoryRecordDto> records = new ArrayList<>();
- }
+}

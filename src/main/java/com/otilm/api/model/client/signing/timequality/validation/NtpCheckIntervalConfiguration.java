@@ -4,5 +4,6 @@ import java.time.Duration;
 
 public interface NtpCheckIntervalConfiguration {
     Duration getNtpCheckTimeout();
+
     Duration getNtpCheckInterval();
 }

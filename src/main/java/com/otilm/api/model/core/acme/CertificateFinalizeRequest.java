@@ -9,15 +9,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class CertificateFinalizeRequest {
     /**
-     * A CSR encoding the parameters for the certificate being requested [RFC2986].  The CSR is sent in the
+     * A CSR encoding the parameters for the certificate being requested [RFC2986]. The CSR is sent in the
      * base64url-encoded version of the DER format. (Note: Because this field uses base64url, and does not include
      * headers, it is different from PEM.).
      */
-    @Schema(
-            description = "CSR in Base64url-encoded version of the DER format",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"<base64url-encoded version of the DER format>"}
-    )
+    @Schema(description = "CSR in Base64url-encoded version of the DER format", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "<base64url-encoded version of the DER format>"})
     private String csr;
 
     public String getCsr() {
@@ -30,9 +27,7 @@ public class CertificateFinalizeRequest {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("csr", csr)
-                .toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("csr", csr).toString();
     }
 
 }

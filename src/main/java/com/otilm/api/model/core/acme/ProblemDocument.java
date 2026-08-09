@@ -1,15 +1,13 @@
 package com.otilm.api.model.core.acme;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
- * Parameter for the problem documents or errors during the ACME
- * process. This is based on the RFC7807
+ * Parameter for the problem documents or errors during the ACME process. This is based on the RFC7807
  */
 public class ProblemDocument implements Serializable {
 
@@ -18,9 +16,8 @@ public class ProblemDocument implements Serializable {
     /**
      * Type of the problem.
      */
-    @Schema(description = "Type of the ACME problem",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"notFound"})
+    @Schema(description = "Type of the ACME problem", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "notFound"})
     private String type;
 
     /**
@@ -32,16 +29,16 @@ public class ProblemDocument implements Serializable {
     /**
      * Details of the problem. These statements should be understandable by the user.
      */
-    @Schema(description = "ACME problem details",
-            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Requested object is not found"})
+    @Schema(description = "ACME problem details", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "Requested object is not found"})
     private String detail;
 
     /**
-     * URL of the changes if something needs to be approved. Used in ACME to notify the new instance of
-     * Terms of Service to be agreed by the client to continue with the ACME operations
+     * URL of the changes if something needs to be approved. Used in ACME to notify the new instance of Terms of Service
+     * to be agreed by the client to continue with the ACME operations
      */
-    @Schema(description = "URL of the changes if something needs to be approved",
-            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"https://some-company.com/instances/changes"})
+    @Schema(description = "URL of the changes if something needs to be approved", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "https://some-company.com/instances/changes"})
     private String instance;
 
     /**
@@ -51,8 +48,8 @@ public class ProblemDocument implements Serializable {
     private List<ProblemDocument> subproblems;
 
     /**
-     * List of supported algorithms supported by the server.
-     * This field is mandatory if the client signs the JWS by some unsupported algorithm
+     * List of supported algorithms supported by the server. This field is mandatory if the client signs the JWS by some
+     * unsupported algorithm
      */
     @Schema(description = "List of supported algorithms", example = "[\"ES256\"]")
     private List<String> algorithms;

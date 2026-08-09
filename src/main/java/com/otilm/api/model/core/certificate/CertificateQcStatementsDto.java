@@ -1,9 +1,8 @@
 package com.otilm.api.model.core.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 @Schema(name = "CertificateQcStatementsDto", description = "Parsed QC Statements from a qualified certificate")

@@ -12,22 +12,14 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CmpProfileRequestDto extends BaseCmpProfileRequestDto {
 
-    @NotBlank(
-            message = "Name of the CMP Profile is required"
-    )
+    @NotBlank(message = "Name of the CMP Profile is required")
     @ValidName
-    @Schema(
-            description = "Name of the CMP Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"Example CMP Profile"}
-    )
+    @Schema(description = "Name of the CMP Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "Example CMP Profile"})
     private String name;
 
     @NotNull
-    @Schema(
-            description = "Variant of the CMP Profile",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Variant of the CMP Profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private CmpProfileVariant variant;
 
 }

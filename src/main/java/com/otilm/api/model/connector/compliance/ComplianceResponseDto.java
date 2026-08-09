@@ -2,10 +2,9 @@ package com.otilm.api.model.connector.compliance;
 
 import com.otilm.api.model.core.compliance.ComplianceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /*
 Contains the list of parameters returned by the Compliance Provider after
@@ -14,13 +13,14 @@ by the Core from the Connector once the compliance check is completed.
  */
 public class ComplianceResponseDto {
 
-    @Schema(description = "Status of the compliance check", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"ok"})
+    @Schema(description = "Status of the compliance check", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "ok"})
     private ComplianceStatus status;
 
     @Schema(description = "List of rules applied and their status")
     private List<ComplianceResponseRulesDto> rules;
 
-    //Default getters and setters
+    // Default getters and setters
     public ComplianceStatus getStatus() {
         return status;
     }

@@ -12,16 +12,14 @@ class CancelPendingCertificateRequestDtoTest {
 
     @Test
     void deserializesEmptyBody() throws Exception {
-        CancelPendingCertificateRequestDto dto =
-                mapper.readValue("{}", CancelPendingCertificateRequestDto.class);
+        CancelPendingCertificateRequestDto dto = mapper.readValue("{}", CancelPendingCertificateRequestDto.class);
         assertNull(dto.getReason());
     }
 
     @Test
     void deserializesWithReason() throws Exception {
-        CancelPendingCertificateRequestDto dto = mapper.readValue(
-                "{\"reason\":\"requirement changed\"}",
-                CancelPendingCertificateRequestDto.class);
+        CancelPendingCertificateRequestDto dto = mapper
+                .readValue("{\"reason\":\"requirement changed\"}", CancelPendingCertificateRequestDto.class);
         assertEquals("requirement changed", dto.getReason());
     }
 
@@ -31,8 +29,7 @@ class CancelPendingCertificateRequestDtoTest {
         dto.setReason("ops decision reversed");
 
         String json = mapper.writeValueAsString(dto);
-        CancelPendingCertificateRequestDto back =
-                mapper.readValue(json, CancelPendingCertificateRequestDto.class);
+        CancelPendingCertificateRequestDto back = mapper.readValue(json, CancelPendingCertificateRequestDto.class);
 
         assertEquals("ops decision reversed", back.getReason());
     }

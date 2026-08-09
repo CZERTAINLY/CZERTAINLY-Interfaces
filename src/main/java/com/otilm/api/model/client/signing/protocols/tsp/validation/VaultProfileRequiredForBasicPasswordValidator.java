@@ -7,7 +7,8 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.util.Collection;
 
 public class VaultProfileRequiredForBasicPasswordValidator
-        implements ConstraintValidator<VaultProfileRequiredForBasicPassword, VaultProfileConstrained> {
+        implements
+            ConstraintValidator<VaultProfileRequiredForBasicPassword, VaultProfileConstrained> {
 
     @Override
     public boolean isValid(VaultProfileConstrained value, ConstraintValidatorContext context) {
@@ -21,7 +22,8 @@ public class VaultProfileRequiredForBasicPasswordValidator
         boolean valid = value.getVaultProfileUuid() != null;
         if (!valid) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+            context
+                    .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
                     .addPropertyNode("vaultProfileUuid")
                     .addConstraintViolation();
         }

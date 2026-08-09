@@ -1,10 +1,9 @@
 package com.otilm.api.model.connector.compliance;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /*
 Contains the list of parameters required for creating a new compliance check request.
@@ -21,7 +20,7 @@ public class ComplianceRequestDto {
     @Schema(description = "List of UUIDs of Compliance rules")
     private List<ComplianceRequestRulesDto> rules;
 
-    //Default getters and setters
+    // Default getters and setters
 
     public String getCertificate() {
         return certificate;

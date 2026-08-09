@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface VaultSyncApiClient {
 
-    void checkVaultConnection(ApiClientConnectorInfo connector, List<RequestAttribute> attributes) throws ConnectorException;
+    void checkVaultConnection(ApiClientConnectorInfo connector, List<RequestAttribute> attributes)
+            throws ConnectorException;
 
     List<BaseAttribute> listVaultAttributes(ApiClientConnectorInfo connector) throws ConnectorException;
 
-    List<BaseAttribute> listVaultProfileAttributes(ApiClientConnectorInfo connector, List<RequestAttribute> attributes) throws ConnectorException;
+    List<BaseAttribute> listVaultProfileAttributes(ApiClientConnectorInfo connector, List<RequestAttribute> attributes)
+            throws ConnectorException;
 }

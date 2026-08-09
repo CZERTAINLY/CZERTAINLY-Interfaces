@@ -15,7 +15,8 @@ public class TimeAttributeContent extends AttributeContent {
     @JsonSerialize(using = LocalTimeSerializer.class)
     private LocalTime value;
 
-    public TimeAttributeContent() { }
+    public TimeAttributeContent() {
+    }
 
     public TimeAttributeContent(LocalTime value) {
         this.value = value;

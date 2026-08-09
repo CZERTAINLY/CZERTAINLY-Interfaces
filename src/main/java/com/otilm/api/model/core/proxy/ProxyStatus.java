@@ -1,24 +1,20 @@
 package com.otilm.api.model.core.proxy;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ProxyStatus implements IPlatformEnum {
 
-    INITIALIZED("initialized", "Initial state"),
-    PROVISIONING("provisioning", "Provisioning in progress"),
-    FAILED("failed", "Failed"),
-    WAITING_FOR_INSTALLATION("waitingForInstallation", "Waiting for installation"),
-    CONNECTED("connected", "Connected"),
-    DISCONNECTED("disconnected", "Disconnected")
-    ;
+    INITIALIZED("initialized", "Initial state"), PROVISIONING("provisioning", "Provisioning in progress"), FAILED(
+            "failed",
+            "Failed"), WAITING_FOR_INSTALLATION("waitingForInstallation", "Waiting for installation"), CONNECTED(
+                    "connected", "Connected"), DISCONNECTED("disconnected", "Disconnected");
 
     private static final ProxyStatus[] VALUES;
 
@@ -26,14 +22,13 @@ public enum ProxyStatus implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Proxy status",
-            examples = {"connected"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Proxy status", examples = {"connected"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;
 
     ProxyStatus(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     ProxyStatus(String code, String label, String description) {
@@ -60,10 +55,10 @@ public enum ProxyStatus implements IPlatformEnum {
 
     @JsonCreator
     public static ProxyStatus findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Proxy status {}", code)));
+                .orElseThrow(() -> new ValidationException(ValidationError.create("Unknown Proxy status {}", code)));
     }
 }

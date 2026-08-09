@@ -2,10 +2,9 @@ package com.otilm.api.model.client.signing.timequality.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.bouncycastle.util.IPAddress;
-
 import java.util.List;
 import java.util.regex.Pattern;
+import org.bouncycastle.util.IPAddress;
 
 public class HostnameListValidator implements ConstraintValidator<ValidHostnameList, List<String>> {
 

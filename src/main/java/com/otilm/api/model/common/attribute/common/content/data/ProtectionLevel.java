@@ -1,14 +1,13 @@
 package com.otilm.api.model.common.attribute.common.content.data;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
 public enum ProtectionLevel implements IPlatformEnum {
-    NONE("none", "No Protection", "Attribute content is in plain text"),
-    ENCRYPTED("encrypted", "Encrypted", "Attribute content is encrypted by a PBE cipher")
-    ;
+    NONE("none", "No Protection", "Attribute content is in plain text"), ENCRYPTED("encrypted", "Encrypted",
+            "Attribute content is encrypted by a PBE cipher");
 
     private final String code;
     private final String label;
@@ -19,7 +18,6 @@ public enum ProtectionLevel implements IPlatformEnum {
         this.label = label;
         this.description = description;
     }
-
 
     @Override
     @JsonValue

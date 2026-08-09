@@ -8,9 +8,8 @@ import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowR
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.Test;
-
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,8 +35,7 @@ class SigningRecordPolicyValidatorTest {
         Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator.validate(r);
 
         assertFalse(violations.isEmpty());
-        assertTrue(violations.stream().anyMatch(v ->
-                v.getPropertyPath().toString().contains("recordSignedDocument")));
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().contains("recordSignedDocument")));
     }
 
     @Test
@@ -50,8 +48,7 @@ class SigningRecordPolicyValidatorTest {
 
         Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator.validate(r);
 
-        assertTrue(violations.stream().noneMatch(v ->
-                v.getPropertyPath().toString().contains("recordSignedDocument")));
+        assertTrue(violations.stream().noneMatch(v -> v.getPropertyPath().toString().contains("recordSignedDocument")));
     }
 
     @Test
@@ -64,7 +61,6 @@ class SigningRecordPolicyValidatorTest {
 
         Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator.validate(r);
 
-        assertTrue(violations.stream().noneMatch(v ->
-                v.getPropertyPath().toString().contains("recordSignedDocument")));
+        assertTrue(violations.stream().noneMatch(v -> v.getPropertyPath().toString().contains("recordSignedDocument")));
     }
 }

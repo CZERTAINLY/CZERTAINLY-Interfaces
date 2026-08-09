@@ -18,13 +18,38 @@ class DiscoveryOperationControllerCompileTest {
 
     /** Minimal mock impl — compilation alone proves the interface signatures are coherent. */
     static class Mock implements DiscoveryOperationController {
-        @Override public DiscoveryInitiateResponseDto initiate(DiscoveryInitiateRequestDto request) { return new DiscoveryInitiateResponseDto(); }
-        @Override public DiscoveryStatusResponseDto status(DiscoveryRunRequestDto request) { return new DiscoveryStatusResponseDto(); }
-        @Override public DiscoveryResultsResponseDto results(DiscoveryDrainRequestDto request) { return new DiscoveryResultsResponseDto(); }
-        @Override public Flux<DiscoveryEvent> stream(DiscoveryStreamRequestDto request) { return Flux.empty(); }
-        @Override public DiscoveryStopResponseDto stop(DiscoveryRunRequestDto request) { return new DiscoveryStopResponseDto(); }
-        @Override public DiscoveryInitiateResponseDto resume(DiscoveryRunRequestDto request) { return new DiscoveryInitiateResponseDto(); }
-        @Override public void cancel(DiscoveryRunRequestDto request) {
+        @Override
+        public DiscoveryInitiateResponseDto initiate(DiscoveryInitiateRequestDto request) {
+            return new DiscoveryInitiateResponseDto();
+        }
+
+        @Override
+        public DiscoveryStatusResponseDto status(DiscoveryRunRequestDto request) {
+            return new DiscoveryStatusResponseDto();
+        }
+
+        @Override
+        public DiscoveryResultsResponseDto results(DiscoveryDrainRequestDto request) {
+            return new DiscoveryResultsResponseDto();
+        }
+
+        @Override
+        public Flux<DiscoveryEvent> stream(DiscoveryStreamRequestDto request) {
+            return Flux.empty();
+        }
+
+        @Override
+        public DiscoveryStopResponseDto stop(DiscoveryRunRequestDto request) {
+            return new DiscoveryStopResponseDto();
+        }
+
+        @Override
+        public DiscoveryInitiateResponseDto resume(DiscoveryRunRequestDto request) {
+            return new DiscoveryInitiateResponseDto();
+        }
+
+        @Override
+        public void cancel(DiscoveryRunRequestDto request) {
             throw new UnsupportedOperationException("compile-time contract check only");
         }
     }

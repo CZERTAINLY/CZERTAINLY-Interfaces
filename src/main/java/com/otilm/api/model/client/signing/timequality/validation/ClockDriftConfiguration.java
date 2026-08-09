@@ -4,5 +4,6 @@ import java.time.Duration;
 
 public interface ClockDriftConfiguration {
     Duration getMaxClockDrift();
+
     Duration getAccuracy();
 }

@@ -2,12 +2,11 @@ package com.otilm.api.model.client.notification;
 
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -33,7 +32,8 @@ public class NotificationDto {
     @Schema(description = "Target object identification (UUID)")
     private List<String> targetObjectIdentification;
 
-    public NotificationDto(UUID uuid, String message, String detail, Date readAt, Date sentAt, Resource targetObjectType, String targetObjectIdentification) {
+    public NotificationDto(UUID uuid, String message, String detail, Date readAt, Date sentAt,
+            Resource targetObjectType, String targetObjectIdentification) {
         this.uuid = uuid;
         this.message = message;
         this.detail = detail;

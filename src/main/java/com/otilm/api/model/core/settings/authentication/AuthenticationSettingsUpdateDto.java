@@ -3,9 +3,8 @@ package com.otilm.api.model.core.settings.authentication;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class AuthenticationSettingsUpdateDto {

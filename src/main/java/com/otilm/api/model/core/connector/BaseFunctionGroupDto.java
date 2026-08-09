@@ -1,25 +1,20 @@
 package com.otilm.api.model.core.connector;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class BaseFunctionGroupDto implements Serializable {
 
-    @Schema(description = "Enumerated code of functional group",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enumerated code of functional group", requiredMode = Schema.RequiredMode.REQUIRED)
     protected FunctionGroupCode functionGroupCode;
 
-    @Schema(description = "List of supported functional group kinds",
-            example = "[\"SoftKeyStore\", \"Basic\", \"ApiKey\"]",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of supported functional group kinds", example = "[\"SoftKeyStore\", \"Basic\", \"ApiKey\"]", requiredMode = Schema.RequiredMode.REQUIRED)
     protected List<String> kinds;
 
-    @Schema(description = "List of end points related to functional group",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of end points related to functional group", requiredMode = Schema.RequiredMode.REQUIRED)
     protected List<EndpointDto> endPoints;
 
     public BaseFunctionGroupDto() {

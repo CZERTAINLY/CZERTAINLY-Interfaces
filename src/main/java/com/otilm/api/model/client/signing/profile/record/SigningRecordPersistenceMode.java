@@ -1,20 +1,22 @@
 package com.otilm.api.model.client.signing.profile.record;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true, description = "Persistence mode for Signing Records, ordered by descending durability")
 public enum SigningRecordPersistenceMode implements IPlatformEnum {
 
-    IMMEDIATE(Codes.IMMEDIATE, "Immediate", "Record is written synchronously before the response is returned; highest durability, highest latency"),
-    DEFERRED_DURABLE(Codes.DEFERRED_DURABLE, "Deferred Durable", "Record is written asynchronously but guaranteed to be persisted; balanced latency and durability"),
-    BEST_EFFORT(Codes.BEST_EFFORT, "Best Effort", "Record is written on a best-effort basis with no durability guarantee; lowest latency");
+    IMMEDIATE(Codes.IMMEDIATE, "Immediate",
+            "Record is written synchronously before the response is returned; highest durability, highest latency"), DEFERRED_DURABLE(
+                    Codes.DEFERRED_DURABLE, "Deferred Durable",
+                    "Record is written asynchronously but guaranteed to be persisted; balanced latency and durability"), BEST_EFFORT(
+                            Codes.BEST_EFFORT, "Best Effort",
+                            "Record is written on a best-effort basis with no durability guarantee; lowest latency");
 
     private final String code;
     private final String label;
@@ -46,11 +48,12 @@ public enum SigningRecordPersistenceMode implements IPlatformEnum {
 
     @JsonCreator
     public static SigningRecordPersistenceMode findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown signing record persistence mode {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown signing record persistence mode {}", code)));
     }
 
     public static class Codes {

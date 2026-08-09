@@ -15,10 +15,8 @@ public class ValidNameValidator implements ConstraintValidator<ValidName, String
     }
 
     private static boolean isUnreserved(char c) {
-        return (c >= 'a' && c <= 'z') ||
-                (c >= 'A' && c <= 'Z') ||
-                (c >= '0' && c <= '9') ||
-                c == '-' || c == '.' || c == '_' || c == '~';
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '-' || c == '.'
+                || c == '_' || c == '~';
     }
 
 }

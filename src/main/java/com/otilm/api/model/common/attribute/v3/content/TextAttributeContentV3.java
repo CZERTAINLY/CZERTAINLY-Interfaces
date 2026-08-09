@@ -8,9 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Schema(
-        description = "Text attribute content used to store longer formatted strings",
-        type = "object")
+@Schema(description = "Text attribute content used to store longer formatted strings", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class TextAttributeContentV3 extends BaseAttributeContentV3<String> {
 

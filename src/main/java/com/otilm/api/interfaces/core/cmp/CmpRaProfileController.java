@@ -10,56 +10,34 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/v1/protocols/cmp/raProfile/{raProfileName}")
-@Tag(name = "CMP RA Profile", description = "Interfaces used by CMP clients to request CMP related operations " +
-        "on top of RA Profile. CMP Profile defines the behaviour for the specific CMP configuration. CMP Profile is " +
-        "bound with specific RA Profile and it can be used by the CMP clients to request operations on their specific " +
-        "URL. These operations are always specific only for the RA Profile.")
+@Tag(name = "CMP RA Profile", description = "Interfaces used by CMP clients to request CMP related operations "
+        + "on top of RA Profile. CMP Profile defines the behaviour for the specific CMP configuration. CMP Profile is "
+        + "bound with specific RA Profile and it can be used by the CMP clients to request operations on their specific "
+        + "URL. These operations are always specific only for the RA Profile.")
 public interface CmpRaProfileController extends InBandResponseController {
 
     @Operation(summary = "CMP Get Operations")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "CMP Operations retrieved"),
-            @ApiResponse(responseCode = "500", description = "Operation is not allowed")
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CMP Operations retrieved"),
+            @ApiResponse(responseCode = "500", description = "Operation is not allowed")})
     @GetMapping
-    ResponseEntity<byte[]> doGet(
-            @PathVariable String raProfileName,
-            @RequestParam(required = false) @Schema(
-                    description = "DER encoded CMP data", type = "string", format = "binary") byte[] message
-    ) throws CmpBaseException;
+    ResponseEntity<byte[]> doGet(@PathVariable String raProfileName,
+            @RequestParam(required = false) @Schema(description = "DER encoded CMP data", type = "string", format = "binary") byte[] message)
+            throws CmpBaseException;
 
-    @Operation(
-            summary = "CMP Post Operation",
-            externalDocs = @ExternalDocumentation(
-                    description = "RFC 4210",
-                    url = "https://www.rfc-editor.org/rfc/rfc4210"
-            )
-    )
-    @ApiResponses(value = {@ApiResponse(
-            responseCode = "200",
-            description = "Operation executed",
-            content = {@Content(
-                    schema = @Schema(
-                            description = "Response structure(s) defined in RFC 4210, section 5.3",
-                            externalDocs = @ExternalDocumentation(
-                                    description = "RFC 4210",
-                                    url = "https://www.rfc-editor.org/rfc/rfc4210#section-5.3"
-                            ),
-                            type = "string",
-                            format = "binary"
-                    )
-            )}
-    )})
-    @PostMapping(
-            consumes = {"application/pkixcmp"},
-            produces = {"application/pkixcmp"}
-    )
-    ResponseEntity<byte[]> doPost(
-            @PathVariable String raProfileName,
-            @RequestBody @Schema(description = "Binary CMP data", type = "string", format = "binary") byte[] request
-    ) throws CmpBaseException;
+    @Operation(summary = "CMP Post Operation", externalDocs = @ExternalDocumentation(description = "RFC 4210", url = "https://www.rfc-editor.org/rfc/rfc4210"))
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed", content = {
+            @Content(schema = @Schema(description = "Response structure(s) defined in RFC 4210, section 5.3", externalDocs = @ExternalDocumentation(description = "RFC 4210", url = "https://www.rfc-editor.org/rfc/rfc4210#section-5.3"), type = "string", format = "binary"))})})
+    @PostMapping(consumes = {"application/pkixcmp"}, produces = {"application/pkixcmp"})
+    ResponseEntity<byte[]> doPost(@PathVariable String raProfileName,
+            @RequestBody @Schema(description = "Binary CMP data", type = "string", format = "binary") byte[] request)
+            throws CmpBaseException;
 
 }

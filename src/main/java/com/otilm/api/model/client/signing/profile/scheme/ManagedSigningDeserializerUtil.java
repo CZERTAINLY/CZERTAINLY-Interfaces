@@ -9,18 +9,19 @@ import java.io.IOException;
 
 final class ManagedSigningDeserializerUtil {
 
-    private ManagedSigningDeserializerUtil() {}
+    private ManagedSigningDeserializerUtil() {
+    }
 
     /**
-     * Reads the current JSON value as a tree and asserts it is a JSON object.
-     * Throws {@link MismatchedInputException} (mapped to 4xx by Jackson) instead of
-     * a {@link ClassCastException} when the payload is not an object node.
+     * Reads the current JSON value as a tree and asserts it is a JSON object. Throws {@link MismatchedInputException}
+     * (mapped to 4xx by Jackson) instead of a {@link ClassCastException} when the payload is not an object node.
      */
     static ObjectNode readObjectNode(JsonParser p, Class<?> targetType) throws IOException {
         JsonNode node = p.readValueAsTree();
         if (!node.isObject()) {
-            throw MismatchedInputException.from(p, targetType,
-                    "Expected JSON object for " + targetType.getSimpleName() + ", got: " + node.getNodeType());
+            throw MismatchedInputException
+                    .from(p, targetType,
+                            "Expected JSON object for " + targetType.getSimpleName() + ", got: " + node.getNodeType());
         }
         return (ObjectNode) node;
     }

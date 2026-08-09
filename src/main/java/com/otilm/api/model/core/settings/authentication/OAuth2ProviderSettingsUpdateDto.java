@@ -2,12 +2,11 @@ package com.otilm.api.model.core.settings.authentication;
 
 import com.otilm.api.model.core.logging.Sensitive;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import org.hibernate.validator.constraints.URL;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 @Data
 public class OAuth2ProviderSettingsUpdateDto implements Serializable {

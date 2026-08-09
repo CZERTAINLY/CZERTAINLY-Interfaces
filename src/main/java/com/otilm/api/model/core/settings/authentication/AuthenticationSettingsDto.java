@@ -3,10 +3,9 @@ package com.otilm.api.model.core.settings.authentication;
 import com.otilm.api.model.core.settings.SettingsDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
 @Data
 public class AuthenticationSettingsDto implements SettingsDto {

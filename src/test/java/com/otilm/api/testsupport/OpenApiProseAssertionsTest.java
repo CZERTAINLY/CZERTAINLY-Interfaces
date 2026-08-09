@@ -8,10 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link OpenApiProseAssertions} is the guard that keeps Core-internal vocabulary out of the
- * published document, so shortening its list must not shorten its reach. Longer phrases were
- * dropped as redundant on the strength of the word-boundary matcher; this holds the matcher to that
- * claim.
+ * {@link OpenApiProseAssertions} is the guard that keeps Core-internal vocabulary out of the published document, so
+ * shortening its list must not shorten its reach. Longer phrases were dropped as redundant on the strength of the
+ * word-boundary matcher; this holds the matcher to that claim.
  */
 class OpenApiProseAssertionsTest {
 

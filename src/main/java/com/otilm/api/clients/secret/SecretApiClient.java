@@ -4,13 +4,17 @@ import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
-import com.otilm.api.model.connector.secrets.*;
+import com.otilm.api.model.connector.secrets.CreateSecretRequestDto;
+import com.otilm.api.model.connector.secrets.SecretContentResponseDto;
+import com.otilm.api.model.connector.secrets.SecretRequestDto;
+import com.otilm.api.model.connector.secrets.SecretResponseDto;
+import com.otilm.api.model.connector.secrets.SecretType;
+import com.otilm.api.model.connector.secrets.UpdateSecretRequestDto;
+import java.util.List;
+import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.net.ssl.TrustManager;
-import java.util.List;
 
 public class SecretApiClient extends BaseApiClient {
 
@@ -20,102 +24,79 @@ public class SecretApiClient extends BaseApiClient {
         super(webClient, defaultTrustManagers);
     }
 
-    public List<BaseAttribute> getSecretAttributes(ApiClientConnectorInfo connector, SecretType secretType) throws ConnectorException {
-        return processRequest(
-                type -> prepareRequest(HttpMethod.GET, connector, true)
-                        .uri(connector.getUrl() + SECRET_BASE_PATH + "/" + type.getCode() + "/attributes")
-                        .retrieve()
-                        .bodyToFlux(BaseAttribute.class)
-                        .collectList()
-                        .block(),
-                secretType,
-                connector
-        );
+    public List<BaseAttribute> getSecretAttributes(ApiClientConnectorInfo connector, SecretType secretType)
+            throws ConnectorException {
+        return processRequest(type -> prepareRequest(HttpMethod.GET, connector, true)
+                .uri(connector.getUrl() + SECRET_BASE_PATH + "/" + type.getCode() + "/attributes")
+                .retrieve()
+                .bodyToFlux(BaseAttribute.class)
+                .collectList()
+                .block(), secretType, connector);
     }
 
-    public SecretContentResponseDto getSecretContent(ApiClientConnectorInfo connector, SecretRequestDto request, String version) throws ConnectorException {
-        return processRequest(
-                req -> {
-                    UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                            .fromUriString(connector.getUrl() + SECRET_BASE_PATH + "/content");
-                    if (version != null) {
-                        uriBuilder.queryParam("version", version);
-                    }
+    public SecretContentResponseDto getSecretContent(ApiClientConnectorInfo connector, SecretRequestDto request,
+            String version) throws ConnectorException {
+        return processRequest(req -> {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                    .fromUriString(connector.getUrl() + SECRET_BASE_PATH + "/content");
+            if (version != null) {
+                uriBuilder.queryParam("version", version);
+            }
 
-                    return prepareRequest(HttpMethod.POST, connector, true)
-                            .uri(uriBuilder.build().toUri())
-                            .bodyValue(req)
-                            .retrieve()
-                            .bodyToMono(SecretContentResponseDto.class)
-                            .block();
-                },
-                request,
-                connector
-        );
+            return prepareRequest(HttpMethod.POST, connector, true)
+                    .uri(uriBuilder.build().toUri())
+                    .bodyValue(req)
+                    .retrieve()
+                    .bodyToMono(SecretContentResponseDto.class)
+                    .block();
+        }, request, connector);
     }
 
-    public SecretResponseDto createSecret(ApiClientConnectorInfo connector, CreateSecretRequestDto request) throws ConnectorException {
-        return processRequest(
-                req -> prepareRequest(HttpMethod.POST, connector, true)
-                        .uri(connector.getUrl() + SECRET_BASE_PATH)
-                        .bodyValue(req)
-                        .retrieve()
-                        .bodyToMono(SecretResponseDto.class)
-                        .block(),
-                request,
-                connector
-        );
+    public SecretResponseDto createSecret(ApiClientConnectorInfo connector, CreateSecretRequestDto request)
+            throws ConnectorException {
+        return processRequest(req -> prepareRequest(HttpMethod.POST, connector, true)
+                .uri(connector.getUrl() + SECRET_BASE_PATH)
+                .bodyValue(req)
+                .retrieve()
+                .bodyToMono(SecretResponseDto.class)
+                .block(), request, connector);
     }
 
-    public SecretResponseDto updateSecret(ApiClientConnectorInfo connector, UpdateSecretRequestDto request) throws ConnectorException {
-        return processRequest(
-                req -> prepareRequest(HttpMethod.PUT, connector, true)
-                        .uri(connector.getUrl() + SECRET_BASE_PATH)
-                        .bodyValue(req)
-                        .retrieve()
-                        .bodyToMono(SecretResponseDto.class)
-                        .block(),
-                request,
-                connector
-        );
+    public SecretResponseDto updateSecret(ApiClientConnectorInfo connector, UpdateSecretRequestDto request)
+            throws ConnectorException {
+        return processRequest(req -> prepareRequest(HttpMethod.PUT, connector, true)
+                .uri(connector.getUrl() + SECRET_BASE_PATH)
+                .bodyValue(req)
+                .retrieve()
+                .bodyToMono(SecretResponseDto.class)
+                .block(), request, connector);
     }
 
     public void deleteSecret(ApiClientConnectorInfo connector, SecretRequestDto request) throws ConnectorException {
-        processRequest(
-                req -> prepareRequest(HttpMethod.DELETE, connector, true)
-                        .uri(connector.getUrl() + SECRET_BASE_PATH)
-                        .bodyValue(req)
-                        .retrieve()
-                        .toBodilessEntity()
-                        .block(),
-                request,
-                connector
-        );
+        processRequest(req -> prepareRequest(HttpMethod.DELETE, connector, true)
+                .uri(connector.getUrl() + SECRET_BASE_PATH)
+                .bodyValue(req)
+                .retrieve()
+                .toBodilessEntity()
+                .block(), request, connector);
     }
 
     public List<BaseAttribute> getRotateAttributes(ApiClientConnectorInfo connector) throws ConnectorException {
-        return processRequest(
-                c -> prepareRequest(HttpMethod.GET, c, true)
-                        .uri(c.getUrl() + SECRET_BASE_PATH + "/rotate/attributes")
-                        .retrieve()
-                        .bodyToFlux(BaseAttribute.class)
-                        .collectList()
-                        .block(),
-                connector,
-                connector
-        );
+        return processRequest(c -> prepareRequest(HttpMethod.GET, c, true)
+                .uri(c.getUrl() + SECRET_BASE_PATH + "/rotate/attributes")
+                .retrieve()
+                .bodyToFlux(BaseAttribute.class)
+                .collectList()
+                .block(), connector, connector);
     }
 
-    public SecretResponseDto rotateSecret(ApiClientConnectorInfo connector, SecretRequestDto request) throws ConnectorException {
-        return processRequest(
-                req -> prepareRequest(HttpMethod.POST, connector, true)
-                        .uri(connector.getUrl() + SECRET_BASE_PATH + "/rotate")
-                        .bodyValue(req)
-                        .retrieve()
-                        .bodyToMono(SecretResponseDto.class)
-                        .block(),
-                request,
-                connector
-        );
+    public SecretResponseDto rotateSecret(ApiClientConnectorInfo connector, SecretRequestDto request)
+            throws ConnectorException {
+        return processRequest(req -> prepareRequest(HttpMethod.POST, connector, true)
+                .uri(connector.getUrl() + SECRET_BASE_PATH + "/rotate")
+                .bodyValue(req)
+                .retrieve()
+                .bodyToMono(SecretResponseDto.class)
+                .block(), request, connector);
     }
 }

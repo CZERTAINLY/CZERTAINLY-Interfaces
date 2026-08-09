@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Implemented by request DTOs that carry an allowed-authentication-methods list and a backing
- * vault-profile reference, so {@link VaultProfileRequiredForBasicPasswordValidator} can validate
- * across those fields without being coupled to a concrete DTO class.
+ * Implemented by request DTOs that carry an allowed-authentication-methods list and a backing vault-profile reference,
+ * so {@link VaultProfileRequiredForBasicPasswordValidator} can validate across those fields without being coupled to a
+ * concrete DTO class.
  */
 public interface VaultProfileConstrained {
 

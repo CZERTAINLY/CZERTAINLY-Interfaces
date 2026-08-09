@@ -1,11 +1,10 @@
 package com.otilm.api.model.connector.v3.certificate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.core.certificate.CertificateType;
 import com.otilm.api.model.core.certificate.GeneralNameType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -27,8 +26,8 @@ class RequestContentDualWireTest {
         dto.setRequestContent(x509Content());
 
         // when
-        CertificateRegistrationRequestDtoV3 back =
-                mapper.readValue(mapper.writeValueAsString(dto), CertificateRegistrationRequestDtoV3.class);
+        CertificateRegistrationRequestDtoV3 back = mapper
+                .readValue(mapper.writeValueAsString(dto), CertificateRegistrationRequestDtoV3.class);
 
         // then — the flat field survives and the structured content resolves to its concrete subtype
         assertEquals(subjectDn, back.getSubjectDn());
@@ -67,8 +66,8 @@ class RequestContentDualWireTest {
         renew.setRequestContent(x509Content());
 
         // when
-        CertificateRenewRequestDtoV3 back =
-                mapper.readValue(mapper.writeValueAsString(renew), CertificateRenewRequestDtoV3.class);
+        CertificateRenewRequestDtoV3 back = mapper
+                .readValue(mapper.writeValueAsString(renew), CertificateRenewRequestDtoV3.class);
 
         // then — the structured content survives with its subject and SAN intact
         assertInstanceOf(X509RequestContent.class, back.getRequestContent());
@@ -88,8 +87,8 @@ class RequestContentDualWireTest {
         sign.setRequestContent(x509Content());
 
         // when
-        CertificateSignRequestDtoV3 back =
-                mapper.readValue(mapper.writeValueAsString(sign), CertificateSignRequestDtoV3.class);
+        CertificateSignRequestDtoV3 back = mapper
+                .readValue(mapper.writeValueAsString(sign), CertificateSignRequestDtoV3.class);
 
         // then — the structured content resolves to its concrete subtype with subject and SAN intact
         assertInstanceOf(X509RequestContent.class, back.getRequestContent());
@@ -105,8 +104,7 @@ class RequestContentDualWireTest {
         var legacy = "{\"authorityAttributes\":[],\"raProfileAttributes\":[],\"subjectDn\":\"CN=x\"}";
 
         // when
-        CertificateRegistrationRequestDtoV3 back =
-                mapper.readValue(legacy, CertificateRegistrationRequestDtoV3.class);
+        CertificateRegistrationRequestDtoV3 back = mapper.readValue(legacy, CertificateRegistrationRequestDtoV3.class);
 
         // then — the absent field deserializes to null with no contract change
         assertEquals("CN=x", back.getSubjectDn());

@@ -23,7 +23,8 @@ public class ValidationError {
     private static String formatDescription(String template, Object... objects) {
         String message = template;
         for (Object object : objects) {
-            message = message.replaceFirst("\\{\\}", object != null ? Matcher.quoteReplacement(object.toString()) : "null");
+            message = message
+                    .replaceFirst("\\{\\}", object != null ? Matcher.quoteReplacement(object.toString()) : "null");
         }
         return message;
     }

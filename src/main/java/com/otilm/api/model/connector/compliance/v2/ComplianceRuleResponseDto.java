@@ -3,13 +3,12 @@ package com.otilm.api.model.connector.compliance.v2;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /*
 List of rules information from the Compliance Provider. The attributes of the rules is used
@@ -31,13 +30,16 @@ public class ComplianceRuleResponseDto {
     @Schema(description = "Description of the rule", examples = {"Sample rule description"})
     private String description;
 
-    @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {Resource.Codes.CERTIFICATE})
+    @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            Resource.Codes.CERTIFICATE})
     private Resource resource;
 
-    @Schema(description = "Type of the resource object to which this rule can be applied", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"X.509"})
+    @Schema(description = "Type of the resource object to which this rule can be applied", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            "X.509"})
     private String type;
 
-    @Schema(description = "Format of the resource object data that are sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"pkcs7"})
+    @Schema(description = "Format of the resource object data that are sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            "pkcs7"})
     private String format;
 
     @Schema(description = "Rule attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

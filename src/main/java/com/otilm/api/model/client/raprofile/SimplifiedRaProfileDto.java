@@ -2,13 +2,12 @@ package com.otilm.api.model.client.raprofile;
 
 import com.otilm.api.model.common.NameAndUuidDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.UUID;
 
 /**
  * Class representing RA profile
@@ -18,8 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class SimplifiedRaProfileDto extends NameAndUuidDto {
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "Authority Instance UUID")

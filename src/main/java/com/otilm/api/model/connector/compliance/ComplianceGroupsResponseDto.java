@@ -15,10 +15,11 @@ public class ComplianceGroupsResponseDto {
     @Schema(description = "Name of the group", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"RFC"})
     private String name;
 
-    @Schema(description = "Description of the group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Sample description of the group"})
+    @Schema(description = "Description of the group", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            "Sample description of the group"})
     private String description;
 
-    //Default getters and setters
+    // Default getters and setters
 
     public String getUuid() {
         return uuid;

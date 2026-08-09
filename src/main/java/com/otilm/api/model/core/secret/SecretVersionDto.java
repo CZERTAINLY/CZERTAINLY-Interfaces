@@ -1,9 +1,8 @@
 package com.otilm.api.model.core.secret;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.time.OffsetDateTime;
+import lombok.Data;
 
 @Data
 public class SecretVersionDto {

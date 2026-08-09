@@ -1,18 +1,15 @@
 package com.otilm.api.model.core.certificate;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CertificateFormatEncoding implements IPlatformEnum {
 
-    PEM("pem", "PEM", "PEM certificate format encoding"),
-    DER("der", "DER", "DER certificate format encoding");
-
+    PEM("pem", "PEM", "PEM certificate format encoding"), DER("der", "DER", "DER certificate format encoding");
 
     private final String code;
     private final String label;
@@ -32,12 +29,13 @@ public enum CertificateFormatEncoding implements IPlatformEnum {
 
     @JsonCreator
     public static CertificateFormatEncoding fromCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(e -> e.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported certificate format encoding %s.", code)));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("Unsupported certificate format encoding %s.", code)));
     }
-
 
     @Override
     @JsonValue

@@ -3,16 +3,14 @@ package com.otilm.api.model.connector.secrets.content;
 import com.otilm.api.model.connector.secrets.SecretType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
 import java.util.Map;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(
-        title = "KeyValueSecretContent",
-        description = "Secret representing key-value pairs"
-)
+@Schema(title = "KeyValueSecretContent", description = "Secret representing key-value pairs")
 public class KeyValueSecretContent extends SecretContent {
 
     @NotNull

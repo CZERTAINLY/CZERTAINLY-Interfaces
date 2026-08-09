@@ -9,7 +9,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 public class SigningRecordPolicyValidator
-        implements ConstraintValidator<ValidSigningRecordPolicy, SigningProfileRequestDto> {
+        implements
+            ConstraintValidator<ValidSigningRecordPolicy, SigningProfileRequestDto> {
 
     @Override
     public boolean isValid(SigningProfileRequestDto dto, ConstraintValidatorContext ctx) {
@@ -28,11 +29,13 @@ public class SigningRecordPolicyValidator
         }
 
         boolean isSupportedWorkflow = wf instanceof ContentSigningWorkflowRequestDto
-                  || wf instanceof TimestampingWorkflowRequestDto;
+                || wf instanceof TimestampingWorkflowRequestDto;
         if (!isSupportedWorkflow) {
             ctx.disableDefaultConstraintViolation();
-            ctx.buildConstraintViolationWithTemplate(ctx.getDefaultConstraintMessageTemplate())
-                    .addPropertyNode("recordPolicy").addPropertyNode("recordSignedDocument")
+            ctx
+                    .buildConstraintViolationWithTemplate(ctx.getDefaultConstraintMessageTemplate())
+                    .addPropertyNode("recordPolicy")
+                    .addPropertyNode("recordSignedDocument")
                     .addConstraintViolation();
         }
         return isSupportedWorkflow;

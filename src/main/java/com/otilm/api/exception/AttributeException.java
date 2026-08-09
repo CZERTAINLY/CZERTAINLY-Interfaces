@@ -20,7 +20,9 @@ public class AttributeException extends Exception implements PlatformException {
     }
 
     public AttributeException(String message, String uuid, String name, AttributeType type, String connectorUuid) {
-        super(String.format("%s|Attribute[UUID=%s, Name=%s, Type=%s, ConnectorUUID=%s]", message, uuid, name, type.getLabel(), connectorUuid));
+        super(String
+                .format("%s|Attribute[UUID=%s, Name=%s, Type=%s, ConnectorUUID=%s]", message, uuid, name,
+                        type.getLabel(), connectorUuid));
         this.uuid = uuid;
         this.name = name;
         this.type = type;

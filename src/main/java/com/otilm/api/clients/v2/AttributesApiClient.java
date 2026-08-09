@@ -8,24 +8,24 @@ import com.otilm.api.model.client.connector.v2.attribute.AttributeCallbackReques
 import com.otilm.api.model.client.connector.v2.attribute.AttributeCallbackResponseDto;
 import com.otilm.api.model.client.connector.v2.attribute.AttributeDefinitionsDto;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import javax.net.ssl.TrustManager;
-import java.net.URI;
-import java.util.List;
-import java.util.UUID;
-
 /**
- * WebClient (HTTP) implementation of the Attributes v2 API client (common NG provider interface),
- * mirroring the sibling MQ-based {@link com.otilm.api.clients.mq.v2.AttributesApiClient} and the
- * Info/Health/Metrics v2 trio.
+ * WebClient (HTTP) implementation of the Attributes v2 API client (common NG provider interface), mirroring the sibling
+ * MQ-based {@link com.otilm.api.clients.mq.v2.AttributesApiClient} and the Info/Health/Metrics v2 trio.
  *
- * <p>The path constants below are part of the v2 connector API contract — they describe the routes a
- * connector implementation must expose, not URIs configurable per environment.</p>
+ * <p>
+ * The path constants below are part of the v2 connector API contract — they describe the routes a connector
+ * implementation must expose, not URIs configurable per environment.
+ * </p>
  */
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class AttributesApiClient extends BaseApiClient implements AttributesSyncApiClient {
@@ -41,7 +41,8 @@ public class AttributesApiClient extends BaseApiClient implements AttributesSync
     }
 
     @Override
-    public AttributeDefinitionsDto listDefinitions(ApiClientConnectorInfo connector, List<UUID> uuids) throws ConnectorException {
+    public AttributeDefinitionsDto listDefinitions(ApiClientConnectorInfo connector, List<UUID> uuids)
+            throws ConnectorException {
         UriBuilder uriBuilder = UriComponentsBuilder.fromUriString(connector.getUrl()).path(ATTRIBUTES_CONTEXT);
         if (uuids != null && !uuids.isEmpty()) {
             // Exploded form: one repeated `uuids` query parameter per UUID (matches the controller's
@@ -53,36 +54,26 @@ public class AttributesApiClient extends BaseApiClient implements AttributesSync
         URI uri = uriBuilder.build();
 
         WebClient.RequestBodySpec request = prepareRequest(HttpMethod.GET, connector, true).uri(uri);
-        return processRequest(r -> requireBody(r
-                        .retrieve()
-                        .toEntity(AttributeDefinitionsDto.class),
-                "Attributes v2 list definitions"),
-                request,
-                connector);
+        return processRequest(r -> requireBody(r.retrieve().toEntity(AttributeDefinitionsDto.class),
+                "Attributes v2 list definitions"), request, connector);
     }
 
     @Override
     public BaseAttribute getDefinition(ApiClientConnectorInfo connector, UUID uuid) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
-        return processRequest(r -> requireBody(r
-                        .uri(connector.getUrl() + ATTRIBUTE_CONTEXT, uuid)
-                        .retrieve()
-                        .toEntity(BaseAttribute.class),
-                "Attributes v2 get definition"),
-                request,
-                connector);
+        return processRequest(r -> requireBody(
+                r.uri(connector.getUrl() + ATTRIBUTE_CONTEXT, uuid).retrieve().toEntity(BaseAttribute.class),
+                "Attributes v2 get definition"), request, connector);
     }
 
     @Override
-    public AttributeCallbackResponseDto callback(ApiClientConnectorInfo connector, AttributeCallbackRequestDto requestDto) throws ConnectorException {
+    public AttributeCallbackResponseDto callback(ApiClientConnectorInfo connector,
+            AttributeCallbackRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
         return processRequest(r -> requireBody(r
-                        .uri(connector.getUrl() + CALLBACK_CONTEXT)
-                        .body(Mono.just(requestDto), AttributeCallbackRequestDto.class)
-                        .retrieve()
-                        .toEntity(AttributeCallbackResponseDto.class),
-                "Attributes v2 callback"),
-                request,
-                connector);
+                .uri(connector.getUrl() + CALLBACK_CONTEXT)
+                .body(Mono.just(requestDto), AttributeCallbackRequestDto.class)
+                .retrieve()
+                .toEntity(AttributeCallbackResponseDto.class), "Attributes v2 callback"), request, connector);
     }
 }

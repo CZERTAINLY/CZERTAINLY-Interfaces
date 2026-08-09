@@ -4,9 +4,13 @@ import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.clients.mq.ProxyClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.interfaces.client.v2.ComplianceSyncApiClient;
-import com.otilm.api.model.connector.compliance.v2.*;
+import com.otilm.api.model.connector.compliance.v2.ComplianceGroupResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRequestDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRuleResponseDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRulesBatchRequestDto;
+import com.otilm.api.model.connector.compliance.v2.ComplianceRulesBatchResponseDto;
 import com.otilm.api.model.core.auth.Resource;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -30,7 +34,8 @@ public class ComplianceApiClient implements ComplianceSyncApiClient {
     }
 
     @Override
-    public List<ComplianceRuleResponseDto> getComplianceRules(ApiClientConnectorInfo connector, String kind, Resource resource, String type, String format) throws ConnectorException {
+    public List<ComplianceRuleResponseDto> getComplianceRules(ApiClientConnectorInfo connector, String kind,
+            Resource resource, String type, String format) throws ConnectorException {
         StringBuilder pathBuilder = new StringBuilder(BASE_PATH).append("/").append(kind).append("/rules");
         boolean hasQuery = false;
         if (resource != null) {
@@ -38,65 +43,86 @@ public class ComplianceApiClient implements ComplianceSyncApiClient {
             hasQuery = true;
         }
         if (type != null) {
-            pathBuilder.append(hasQuery ? "&" : "?").append("type=").append(URLEncoder.encode(type, StandardCharsets.UTF_8));
+            pathBuilder
+                    .append(hasQuery ? "&" : "?")
+                    .append("type=")
+                    .append(URLEncoder.encode(type, StandardCharsets.UTF_8));
             hasQuery = true;
         }
         if (format != null) {
-            pathBuilder.append(hasQuery ? "&" : "?").append("format=").append(URLEncoder.encode(format, StandardCharsets.UTF_8));
+            pathBuilder
+                    .append(hasQuery ? "&" : "?")
+                    .append("format=")
+                    .append(URLEncoder.encode(format, StandardCharsets.UTF_8));
         }
-        ComplianceRuleResponseDto[] result = proxyClient.sendRequest(connector, pathBuilder.toString(), HTTP_METHOD_GET, null, ComplianceRuleResponseDto[].class);
+        ComplianceRuleResponseDto[] result = proxyClient
+                .sendRequest(connector, pathBuilder.toString(), HTTP_METHOD_GET, null,
+                        ComplianceRuleResponseDto[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public ComplianceRuleResponseDto getComplianceRule(ApiClientConnectorInfo connector, String kind, UUID ruleUuid) throws ConnectorException {
+    public ComplianceRuleResponseDto getComplianceRule(ApiClientConnectorInfo connector, String kind, UUID ruleUuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + kind + "/rules/" + ruleUuid;
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, ComplianceRuleResponseDto.class);
     }
 
     @Override
-    public ComplianceRulesBatchResponseDto getComplianceRulesBatch(ApiClientConnectorInfo connector, String kind, ComplianceRulesBatchRequestDto requestDto) throws ConnectorException {
+    public ComplianceRulesBatchResponseDto getComplianceRulesBatch(ApiClientConnectorInfo connector, String kind,
+            ComplianceRulesBatchRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + kind + "/rules";
-        return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, ComplianceRulesBatchResponseDto.class);
+        return proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_POST, requestDto, ComplianceRulesBatchResponseDto.class);
     }
 
     @Override
-    public List<ComplianceGroupResponseDto> getComplianceGroups(ApiClientConnectorInfo connector, String kind, Resource resource) throws ConnectorException {
+    public List<ComplianceGroupResponseDto> getComplianceGroups(ApiClientConnectorInfo connector, String kind,
+            Resource resource) throws ConnectorException {
         StringBuilder pathBuilder = new StringBuilder(BASE_PATH).append("/").append(kind).append("/groups");
         if (resource != null) {
             pathBuilder.append("?resource=").append(URLEncoder.encode(resource.getCode(), StandardCharsets.UTF_8));
         }
-        ComplianceGroupResponseDto[] result = proxyClient.sendRequest(connector, pathBuilder.toString(), HTTP_METHOD_GET, null, ComplianceGroupResponseDto[].class);
+        ComplianceGroupResponseDto[] result = proxyClient
+                .sendRequest(connector, pathBuilder.toString(), HTTP_METHOD_GET, null,
+                        ComplianceGroupResponseDto[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public ComplianceGroupResponseDto getComplianceGroup(ApiClientConnectorInfo connector, String kind, UUID groupUuid) throws ConnectorException {
+    public ComplianceGroupResponseDto getComplianceGroup(ApiClientConnectorInfo connector, String kind, UUID groupUuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + kind + "/groups/" + groupUuid;
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, ComplianceGroupResponseDto.class);
     }
 
     @Override
-    public List<ComplianceRuleResponseDto> getComplianceGroupRules(ApiClientConnectorInfo connector, String kind, UUID groupUuid) throws ConnectorException {
+    public List<ComplianceRuleResponseDto> getComplianceGroupRules(ApiClientConnectorInfo connector, String kind,
+            UUID groupUuid) throws ConnectorException {
         String path = BASE_PATH + "/" + kind + "/groups/" + groupUuid + "/rules";
-        ComplianceRuleResponseDto[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, ComplianceRuleResponseDto[].class);
+        ComplianceRuleResponseDto[] result = proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_GET, null, ComplianceRuleResponseDto[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public ComplianceResponseDto checkCompliance(ApiClientConnectorInfo connector, String kind, ComplianceRequestDto requestDto) throws ConnectorException {
+    public ComplianceResponseDto checkCompliance(ApiClientConnectorInfo connector, String kind,
+            ComplianceRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + kind + "/compliance";
         return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, ComplianceResponseDto.class);
     }
 
     // Async variants
-    public CompletableFuture<ComplianceResponseDto> checkComplianceAsync(ApiClientConnectorInfo connector, String kind, ComplianceRequestDto requestDto) {
+    public CompletableFuture<ComplianceResponseDto> checkComplianceAsync(ApiClientConnectorInfo connector, String kind,
+            ComplianceRequestDto requestDto) {
         String path = BASE_PATH + "/" + kind + "/compliance";
         return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, ComplianceResponseDto.class);
     }
 
-    public CompletableFuture<ComplianceRulesBatchResponseDto> getComplianceRulesBatchAsync(ApiClientConnectorInfo connector, String kind, ComplianceRulesBatchRequestDto requestDto) {
+    public CompletableFuture<ComplianceRulesBatchResponseDto> getComplianceRulesBatchAsync(
+            ApiClientConnectorInfo connector, String kind, ComplianceRulesBatchRequestDto requestDto) {
         String path = BASE_PATH + "/" + kind + "/rules";
-        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, ComplianceRulesBatchResponseDto.class);
+        return proxyClient
+                .sendRequestAsync(connector, path, HTTP_METHOD_POST, requestDto, ComplianceRulesBatchResponseDto.class);
     }
 }

@@ -10,9 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@Schema(
-        description = "Date attribute content in predefined format",
-        type = "object")
+@Schema(description = "Date attribute content in predefined format", type = "object")
 public class DateAttributeContentV2 extends BaseAttributeContentV2<LocalDate> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -38,9 +36,15 @@ public class DateAttributeContentV2 extends BaseAttributeContentV2<LocalDate> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DateAttributeContentV2)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DateAttributeContentV2)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         DateAttributeContentV2 that = (DateAttributeContentV2) o;
         return Objects.equals(data, that.data);
     }

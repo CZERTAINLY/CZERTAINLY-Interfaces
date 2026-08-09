@@ -6,20 +6,11 @@ import java.util.Arrays;
  * This class defines Attribute data types.
  */
 public enum AttributeType {
-	
-	STRING(Constants.STRING),
-    INTEGER(Constants.INTEGER),
-	SECRET(Constants.SECRET),
-	FILE(Constants.FILE),
-	BOOLEAN(Constants.BOOLEAN),
-    CREDENTIAL(Constants.CREDENTIAL),
-    DATE(Constants.DATE),
-    FLOAT(Constants.FLOAT),
-    JSON(Constants.JSON),
-    TEXT(Constants.TEXT),
-    TIME(Constants.TIME),
-    DATETIME(Constants.DATETIME),
-    CODEBLOCK(Constants.CODEBLOCK);
+
+    STRING(Constants.STRING), INTEGER(Constants.INTEGER), SECRET(Constants.SECRET), FILE(Constants.FILE), BOOLEAN(
+            Constants.BOOLEAN), CREDENTIAL(Constants.CREDENTIAL), DATE(Constants.DATE), FLOAT(Constants.FLOAT), JSON(
+                    Constants.JSON), TEXT(Constants.TEXT), TIME(
+                            Constants.TIME), DATETIME(Constants.DATETIME), CODEBLOCK(Constants.CODEBLOCK);
 
     private final String code;
 
@@ -32,7 +23,8 @@ public enum AttributeType {
     }
 
     public static AttributeType fromCode(String code) {
-        return Arrays.stream(values())
+        return Arrays
+                .stream(values())
                 .filter(e -> e.code.equals(code))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Unsupported type %s.", code)));
@@ -54,9 +46,9 @@ public enum AttributeType {
                 return null;
         }
     }
-    
+
     private static class Constants {
-    	/** Simple text Attribute **/
+        /** Simple text Attribute **/
         private static final String STRING = "string";
 
         /** Simple integer Attribute **/

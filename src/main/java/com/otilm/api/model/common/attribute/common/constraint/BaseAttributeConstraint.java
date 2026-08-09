@@ -1,25 +1,22 @@
 package com.otilm.api.model.common.attribute.common.constraint;
 
-import com.otilm.api.model.client.attribute.BaseAttributeConstraintDto;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.otilm.api.model.client.attribute.BaseAttributeConstraintDto;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = RegexpAttributeConstraint.class, visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = RegexpAttributeConstraint.class, name = AttributeConstraintType.Codes.REGEXP),
+@JsonSubTypes({@JsonSubTypes.Type(value = RegexpAttributeConstraint.class, name = AttributeConstraintType.Codes.REGEXP),
         @JsonSubTypes.Type(value = RangeAttributeConstraint.class, name = AttributeConstraintType.Codes.RANGE),
-        @JsonSubTypes.Type(value = DateTimeAttributeConstraint.class, name = AttributeConstraintType.Codes.DATETIME)
-})
+        @JsonSubTypes.Type(value = DateTimeAttributeConstraint.class, name = AttributeConstraintType.Codes.DATETIME)})
 @Schema(implementation = BaseAttributeConstraintDto.class)
 public class BaseAttributeConstraint<T extends Serializable> extends AttributeConstraint {
     @Schema(description = "Description of the constraint")
@@ -45,7 +42,7 @@ public class BaseAttributeConstraint<T extends Serializable> extends AttributeCo
         this.type = type;
     }
 
-    //Empty constructor needed for serialization/deserialization purpose
+    // Empty constructor needed for serialization/deserialization purpose
     public BaseAttributeConstraint() {
     }
 

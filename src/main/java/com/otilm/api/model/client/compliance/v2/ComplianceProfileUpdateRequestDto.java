@@ -3,17 +3,21 @@ package com.otilm.api.model.client.compliance.v2;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.*;
 
 @Getter
 @Setter
 @ToString
 public class ComplianceProfileUpdateRequestDto {
-    @Schema(description = "Description of the Compliance Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"Profile 1"})
+    @Schema(description = "Description of the Compliance Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            "Profile 1"})
     private String description;
 
     @Schema(description = "UUIDs of internal rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

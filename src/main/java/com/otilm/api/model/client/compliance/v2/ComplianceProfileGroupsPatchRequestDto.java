@@ -2,11 +2,10 @@ package com.otilm.api.model.client.compliance.v2;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -26,7 +25,8 @@ public class ComplianceProfileGroupsPatchRequestDto {
     private UUID connectorUuid;
 
     @NotNull
-    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"default"})
+    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "default"})
     private String kind;
 
 }

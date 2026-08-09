@@ -5,17 +5,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ExportResultDto {
-	
-	@Schema(
-            description = "Name of the file",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+
+    @Schema(description = "Name of the file", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fileName;
-	
-	@Schema(
-            description = "File content in byte array",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+
+    @Schema(description = "File content in byte array", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] fileContent;
 
     public String getFileName() {

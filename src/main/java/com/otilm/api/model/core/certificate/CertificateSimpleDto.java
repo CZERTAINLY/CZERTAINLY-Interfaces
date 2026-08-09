@@ -1,10 +1,9 @@
 package com.otilm.api.model.core.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Date;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 public class CertificateSimpleDto {
@@ -57,4 +56,3 @@ public class CertificateSimpleDto {
     @Schema(description = "Not after date", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Date notAfter;
 }
-

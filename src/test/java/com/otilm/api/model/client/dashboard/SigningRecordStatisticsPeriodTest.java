@@ -1,7 +1,7 @@
 package com.otilm.api.model.client.dashboard;
 
-import com.otilm.api.exception.ValidationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.otilm.api.exception.ValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +12,12 @@ class SigningRecordStatisticsPeriodTest {
     @Test
     void findByCode_resolvesWireCode() {
         Assertions.assertEquals(SigningRecordStatisticsPeriod.LAST_7D, SigningRecordStatisticsPeriod.findByCode("7d"));
-        Assertions.assertEquals(SigningRecordStatisticsPeriod.LAST_24H, SigningRecordStatisticsPeriod.findByCode("24h"));
-        Assertions.assertEquals(SigningRecordStatisticsPeriod.LAST_30D, SigningRecordStatisticsPeriod.findByCode("30d"));
-        Assertions.assertEquals(SigningRecordStatisticsPeriod.LAST_90D, SigningRecordStatisticsPeriod.findByCode("90d"));
+        Assertions
+                .assertEquals(SigningRecordStatisticsPeriod.LAST_24H, SigningRecordStatisticsPeriod.findByCode("24h"));
+        Assertions
+                .assertEquals(SigningRecordStatisticsPeriod.LAST_30D, SigningRecordStatisticsPeriod.findByCode("30d"));
+        Assertions
+                .assertEquals(SigningRecordStatisticsPeriod.LAST_90D, SigningRecordStatisticsPeriod.findByCode("90d"));
     }
 
     @Test
@@ -29,7 +32,8 @@ class SigningRecordStatisticsPeriodTest {
 
     @Test
     void deserializesFromWireCode() throws Exception {
-        Assertions.assertEquals(SigningRecordStatisticsPeriod.LAST_90D,
-                mapper.readValue("\"90d\"", SigningRecordStatisticsPeriod.class));
+        Assertions
+                .assertEquals(SigningRecordStatisticsPeriod.LAST_90D,
+                        mapper.readValue("\"90d\"", SigningRecordStatisticsPeriod.class));
     }
 }

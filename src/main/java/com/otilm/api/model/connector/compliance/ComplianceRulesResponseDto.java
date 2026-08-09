@@ -3,12 +3,11 @@ package com.otilm.api.model.connector.compliance;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.core.certificate.CertificateType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 /*
 List of rules information from the Compliance Provider. These rules will
@@ -27,7 +26,8 @@ public class ComplianceRulesResponseDto {
     @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Rule1"})
     private String name;
 
-    @Schema(description = "Type of the certificate to which this rule can be applied", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
+    @Schema(description = "Type of the certificate to which this rule can be applied", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "X509"})
     private CertificateType certificateType;
 
     @Schema(description = "Rule attributes")

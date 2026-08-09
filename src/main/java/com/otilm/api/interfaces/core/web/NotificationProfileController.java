@@ -22,7 +22,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/notificationProfiles")
 @Tag(name = "Notification profile inventory", description = "Notification profile inventory API")
@@ -34,24 +41,45 @@ public interface NotificationProfileController extends AuthProtectedController {
     NotificationProfileResponseDto listNotificationProfiles(final PaginationRequestDto paginationRequestDto);
 
     @Operation(summary = "Get Notification profile details")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification profile retrieved"), @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification profile retrieved"),
+            @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
-    NotificationProfileDetailDto getNotificationProfile(@Parameter(description = "Notification profile UUID") @PathVariable String uuid, @Parameter(in = ParameterIn.QUERY, description = "Select specific version of the notification profile") Integer version) throws NotFoundException;
+    NotificationProfileDetailDto getNotificationProfile(
+            @Parameter(description = "Notification profile UUID") @PathVariable String uuid,
+            @Parameter(in = ParameterIn.QUERY, description = "Select specific version of the notification profile") Integer version)
+            throws NotFoundException;
 
     @Operation(summary = "Delete notification profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification profile deleted"), @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification profile deleted"),
+            @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteNotificationProfile(@Parameter(description = "Notification profile UUID") @PathVariable String uuid) throws NotFoundException;
+    void deleteNotificationProfile(@Parameter(description = "Notification profile UUID") @PathVariable String uuid)
+            throws NotFoundException;
 
     @Operation(summary = "Create Notification profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "New Notification profile created", content = @Content(schema = @Schema(implementation = NotificationProfileDetailDto.class))), @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "New Notification profile created", content = @Content(schema = @Schema(implementation = NotificationProfileDetailDto.class))),
+            @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<?> createNotificationProfile(@Valid @RequestBody NotificationProfileRequestDto notificationProfileRequestDto) throws NotFoundException, AlreadyExistException;
+    ResponseEntity<?> createNotificationProfile(
+            @Valid @RequestBody NotificationProfileRequestDto notificationProfileRequestDto)
+            throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Edit Notification profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification profile updated", content = @Content(schema = @Schema(implementation = NotificationProfileDetailDto.class))), @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))), @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Notification profile updated", content = @Content(schema = @Schema(implementation = NotificationProfileDetailDto.class))),
+            @ApiResponse(responseCode = "404", description = "Notification profile not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<?> editNotificationProfile(@Parameter(description = "Notification profile UUID") @PathVariable String uuid, @Valid @RequestBody NotificationProfileUpdateRequestDto notificationProfileUpdateRequestDto) throws NotFoundException;
+    ResponseEntity<?> editNotificationProfile(
+            @Parameter(description = "Notification profile UUID") @PathVariable String uuid,
+            @Valid @RequestBody NotificationProfileUpdateRequestDto notificationProfileUpdateRequestDto)
+            throws NotFoundException;
 
 }

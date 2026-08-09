@@ -4,8 +4,7 @@ import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.DEROctetString;
 
 /**
- * This exception is created if a configuration (scope: cmp request/response)
- * is failed or in corrupted state.
+ * This exception is created if a configuration (scope: cmp request/response) is failed or in corrupted state.
  */
 public class CmpConfigurationException extends CmpBaseException {
 

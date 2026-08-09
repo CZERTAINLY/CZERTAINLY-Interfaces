@@ -3,19 +3,19 @@ package com.otilm.api.model.core.auth;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Data
 public class UserDto implements Loggable {
 
-    @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"5b5f0784-2519-11ed-861d-0242ac120002"})
+    @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "5b5f0784-2519-11ed-861d-0242ac120002"})
     private String uuid;
 
     @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"user1"})

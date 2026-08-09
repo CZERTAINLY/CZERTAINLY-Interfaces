@@ -1,15 +1,14 @@
 package com.otilm.api.model.common.attribute.common.content.data;
 
-import com.otilm.api.exception.ValidationException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.otilm.api.exception.ValidationException;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.util.MimeType;
-
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -31,8 +30,12 @@ public class FileAttributeContentData implements AttributeContentData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FileAttributeContentData that)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FileAttributeContentData that)) {
+            return false;
+        }
         return Objects.equals(content, that.content) && Objects.equals(fileName, that.fileName);
     }
 
@@ -52,8 +55,14 @@ public class FileAttributeContentData implements AttributeContentData {
 
     @Override
     public void validate() throws ValidationException {
-        if (content == null) throw new ValidationException("Content is not present in file attribute content data");
-        if (fileName == null) throw new ValidationException("File name is not present in file attribute content data");
-        if (mimeType == null) throw new ValidationException("MIME type is not present in file attribute content data");
+        if (content == null) {
+            throw new ValidationException("Content is not present in file attribute content data");
+        }
+        if (fileName == null) {
+            throw new ValidationException("File name is not present in file attribute content data");
+        }
+        if (mimeType == null) {
+            throw new ValidationException("MIME type is not present in file attribute content data");
+        }
     }
 }

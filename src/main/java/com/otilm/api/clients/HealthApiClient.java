@@ -1,12 +1,11 @@
 package com.otilm.api.clients;
 
-import com.otilm.api.interfaces.client.v1.HealthSyncApiClient;
 import com.otilm.api.exception.ConnectorException;
+import com.otilm.api.interfaces.client.v1.HealthSyncApiClient;
 import com.otilm.api.model.common.HealthDto;
+import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import javax.net.ssl.TrustManager;
 
 public class HealthApiClient extends BaseApiClient implements HealthSyncApiClient {
 
@@ -25,8 +24,7 @@ public class HealthApiClient extends BaseApiClient implements HealthSyncApiClien
                 .uri(connector.getUrl() + HEALTH_BASE_CONTEXT)
                 .retrieve()
                 .toEntity(HealthDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 }

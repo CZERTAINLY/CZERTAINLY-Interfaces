@@ -8,17 +8,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * Class representing a request to revoke and delete End Entity
  */
 public class RevokeAndDeleteRequestDto {
-	
-	@Schema(
-            description = "Reason for the revocation",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+
+    @Schema(description = "Reason for the revocation", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer reason;
-	
-	@Schema(
-            description = "Name of the user",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+
+    @Schema(description = "Name of the user", requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     public Integer getReason() {

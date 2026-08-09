@@ -8,9 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Schema(
-        description = "String attribute content",
-        type = "object")
+@Schema(description = "String attribute content", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class StringAttributeContentV3 extends BaseAttributeContentV3<String> {
 

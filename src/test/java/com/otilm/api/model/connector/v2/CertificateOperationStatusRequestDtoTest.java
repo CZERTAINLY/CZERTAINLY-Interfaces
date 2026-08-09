@@ -1,9 +1,8 @@
 package com.otilm.api.model.connector.v2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,8 +18,7 @@ class CertificateOperationStatusRequestDtoTest {
         dto.setMeta(List.of());
 
         String json = mapper.writeValueAsString(dto);
-        CertificateOperationStatusRequestDto back =
-                mapper.readValue(json, CertificateOperationStatusRequestDto.class);
+        CertificateOperationStatusRequestDto back = mapper.readValue(json, CertificateOperationStatusRequestDto.class);
 
         assertNotNull(back);
         assertNotNull(back.getRaProfileAttributes());
@@ -32,8 +30,7 @@ class CertificateOperationStatusRequestDtoTest {
     @Test
     void deserializesWithoutMeta() throws Exception {
         String json = "{\"raProfileAttributes\":[]}";
-        CertificateOperationStatusRequestDto dto =
-                mapper.readValue(json, CertificateOperationStatusRequestDto.class);
+        CertificateOperationStatusRequestDto dto = mapper.readValue(json, CertificateOperationStatusRequestDto.class);
         assertNotNull(dto.getRaProfileAttributes());
     }
 

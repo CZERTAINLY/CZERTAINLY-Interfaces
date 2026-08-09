@@ -20,12 +20,12 @@ public interface StatisticsController extends AuthProtectedController {
     @Operation(summary = "Get Dashboard/Statistics Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Details retrieved")})
     @GetMapping(produces = {"application/json"})
-    StatisticsDto getStatistics(@Parameter(description = "Include archived certificates in the statistics") @RequestParam(value = "includeArchived", required = false, defaultValue = "false") boolean includeArchived);
+    StatisticsDto getStatistics(
+            @Parameter(description = "Include archived certificates in the statistics") @RequestParam(value = "includeArchived", required = false, defaultValue = "false") boolean includeArchived);
 
     @Operation(operationId = "getSigningRecordStatistics", summary = "Get Signing Records dashboard statistics")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Signing Records statistics retrieved")})
     @GetMapping(path = "/signingRecords", produces = {"application/json"})
     SigningRecordStatisticsDto getSigningRecordStatistics(
-            @Parameter(description = "Time window for the volume-over-time series (the count badges and breakdowns are window-independent)")
-            @RequestParam(value = "period", required = false, defaultValue = SigningRecordStatisticsPeriod.Codes.LAST_7D) SigningRecordStatisticsPeriod period);
+            @Parameter(description = "Time window for the volume-over-time series (the count badges and breakdowns are window-independent)") @RequestParam(value = "period", required = false, defaultValue = SigningRecordStatisticsPeriod.Codes.LAST_7D) SigningRecordStatisticsPeriod period);
 }

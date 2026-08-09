@@ -1,12 +1,11 @@
 package com.otilm.api.model.core.compliance;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 /*
@@ -17,10 +16,8 @@ the overall compliance status
 
 @Schema(enumAsRef = true)
 public enum ComplianceRuleStatus implements IPlatformEnum {
-    OK(Codes.OK, "Compliant"),
-    NOK(Codes.NOK, "Not Compliant"),
-    NA(Codes.NA, "Not Applicable"),
-    NOT_AVAILABLE(Codes.NOT_AVAILABLE, "Not Available");
+    OK(Codes.OK, "Compliant"), NOK(Codes.NOK, "Not Compliant"), NA(Codes.NA,
+            "Not Applicable"), NOT_AVAILABLE(Codes.NOT_AVAILABLE, "Not Available");
 
     private static final ComplianceRuleStatus[] VALUES;
 
@@ -60,11 +57,12 @@ public enum ComplianceRuleStatus implements IPlatformEnum {
 
     @JsonCreator
     public static ComplianceRuleStatus findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown Compliance rule status {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown Compliance rule status {}", code)));
     }
 
     public static class Codes {

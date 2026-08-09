@@ -1,29 +1,19 @@
 package com.otilm.api.model.common.attribute.v1;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Set;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Set;
-
 public class AttributeCallback {
 
-    @Schema(
-            description = "Context part of callback URL",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Context part of callback URL", requiredMode = Schema.RequiredMode.REQUIRED)
     private String callbackContext;
 
-    @Schema(
-            description = "HTTP method of the callback",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "HTTP method of the callback", requiredMode = Schema.RequiredMode.REQUIRED)
     private String callbackMethod;
 
-    @Schema(
-            description = "Mappings for the callback method",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Mappings for the callback method", requiredMode = Schema.RequiredMode.REQUIRED)
     private Set<AttributeCallbackMapping> mappings;
 
     public String getCallbackContext() {

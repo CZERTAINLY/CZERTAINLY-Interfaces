@@ -12,13 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Proves {@link IPlatformEnumConverterFactory} does what
- * {@code DiscoveryMetadataController#listResourceAttributes}'s {@code @PathVariable Resource
- * resource} needs: Spring's default enum binding calls {@code Enum.valueOf}, which only matches
- * the Java constant name (e.g. {@code CERTIFICATE}), never the wire code (e.g.
- * {@code "certificates"}) that actually appears in the path. Every platform enum implements
- * {@link IPlatformEnum#getCode()}, so one factory converts by code for all of them; {@link Resource}
- * is used here only as a concrete, representative example.
+ * Proves {@link IPlatformEnumConverterFactory} does what {@code DiscoveryMetadataController#listResourceAttributes}'s
+ * {@code @PathVariable Resource
+ * resource} needs: Spring's default enum binding calls {@code Enum.valueOf}, which only matches the Java constant name
+ * (e.g. {@code CERTIFICATE}), never the wire code (e.g. {@code "certificates"}) that actually appears in the path.
+ * Every platform enum implements {@link IPlatformEnum#getCode()}, so one factory converts by code for all of them;
+ * {@link Resource} is used here only as a concrete, representative example.
  */
 class IPlatformEnumConverterFactoryTest {
 
@@ -42,10 +41,10 @@ class IPlatformEnumConverterFactoryTest {
     }
 
     /**
-     * An enum constant declared with a body is not an instance of its own enum class but of an
-     * anonymous subclass, whose {@code getEnumConstants()} is null. No {@link IPlatformEnum} in this
-     * library declares a constant body today, but the factory promises to cover every future one, so
-     * the target type has to be normalized to the declaring enum before its constants are read.
+     * An enum constant declared with a body is not an instance of its own enum class but of an anonymous subclass,
+     * whose {@code getEnumConstants()} is null. No {@link IPlatformEnum} in this library declares a constant body
+     * today, but the factory promises to cover every future one, so the target type has to be normalized to the
+     * declaring enum before its constants are read.
      */
     @Test
     void convertsWhenTheTargetTypeIsAConstantBodySubclass() {
@@ -63,8 +62,8 @@ class IPlatformEnumConverterFactoryTest {
 
     @Test
     void constantBodySubclassStillReportsAnUnknownCodeAsAConversionError() {
-        Converter<String, ? extends EnumWithConstantBody> converter =
-                factory.getConverter(EnumWithConstantBody.WITH_BODY.getClass());
+        Converter<String, ? extends EnumWithConstantBody> converter = factory
+                .getConverter(EnumWithConstantBody.WITH_BODY.getClass());
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> converter.convert("not-a-real-code"));
@@ -111,8 +110,8 @@ class IPlatformEnumConverterFactoryTest {
     }
 
     /**
-     * {@link IPlatformEnum} is an interface, so nothing stops a non-enum from implementing it. The
-     * factory has to say so rather than dereference a null constant array.
+     * {@link IPlatformEnum} is an interface, so nothing stops a non-enum from implementing it. The factory has to say
+     * so rather than dereference a null constant array.
      */
     private static final class NotAnEnum implements IPlatformEnum {
 

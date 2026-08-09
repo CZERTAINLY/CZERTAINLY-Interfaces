@@ -12,10 +12,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class FormattedResponseDto {
 
-    @Schema(
-            description = "Final formatted output bytes (e.g. DER-encoded TimeStampResp for TSA)",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Final formatted output bytes (e.g. DER-encoded TimeStampResp for TSA)", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] response;
 
 }

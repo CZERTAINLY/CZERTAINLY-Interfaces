@@ -1,15 +1,14 @@
 package com.otilm.api.model.client.connector.v2;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Schema(enumAsRef = true)
 public enum ConnectorVersion implements IPlatformEnum {
 
-    V1(Codes.V1, 1),
-    V2(Codes.V2, 2);
+    V1(Codes.V1, 1), V2(Codes.V2, 2);
 
     private final String code;
 
@@ -38,7 +37,9 @@ public enum ConnectorVersion implements IPlatformEnum {
     }
 
     public static class Codes {
-        private Codes(){}
+        private Codes() {
+        }
+
         public static final String V1 = "v1";
         public static final String V2 = "v2";
     }

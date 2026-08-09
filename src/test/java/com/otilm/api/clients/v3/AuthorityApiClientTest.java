@@ -1,5 +1,7 @@
 package com.otilm.api.clients.v3;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorProblemException;
@@ -10,8 +12,7 @@ import com.otilm.api.model.connector.v3.authority.CrlRequestDtoV3;
 import com.otilm.api.model.connector.v3.authority.CrlResponseDto;
 import com.otilm.api.model.core.connector.ConnectorDto;
 import com.otilm.api.model.core.connector.ConnectorStatus;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -50,8 +49,10 @@ class AuthorityApiClientTest {
 
     @Test
     void checkAuthorityConnection_204OnSuccess() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/authorities")
-                .willReturn(WireMock.aResponse().withStatus(204)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/authorities")
+                        .willReturn(WireMock.aResponse().withStatus(204)));
 
         ResponseEntity<Void> response = client.checkAuthorityConnection(connector, List.of());
 
@@ -60,11 +61,14 @@ class AuthorityApiClientTest {
 
     @Test
     void getCrl_returnsCrlBody() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/authorities/crl")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"crl\":\"MIIBkjCCATs...\"}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/authorities/crl")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"crl\":\"MIIBkjCCATs...\"}")));
 
         CrlRequestDtoV3 req = new CrlRequestDtoV3();
         req.setAuthorityAttributes(List.of());
@@ -77,11 +81,15 @@ class AuthorityApiClientTest {
 
     @Test
     void getCaCertificates_returnsChain() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/authorities/caCertificates")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"certificates\":[{\"certificateData\":\"issuing-base64\",\"certificateType\":\"X.509\"},{\"certificateData\":\"root-base64\",\"certificateType\":\"X.509\"}]}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/authorities/caCertificates")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(
+                                        "{\"certificates\":[{\"certificateData\":\"issuing-base64\",\"certificateType\":\"X.509\"},{\"certificateData\":\"root-base64\",\"certificateType\":\"X.509\"}]}")));
 
         CaCertificatesRequestDtoV3 req = new CaCertificatesRequestDtoV3();
         req.setAuthorityAttributes(List.of());
@@ -107,19 +115,21 @@ class AuthorityApiClientTest {
                 }
                 """;
 
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/authorities/crl")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(422)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(problemJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/authorities/crl")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(422)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(problemJson)));
 
         CrlRequestDtoV3 req = new CrlRequestDtoV3();
         req.setAuthorityAttributes(List.of());
         req.setRaProfileAttributes(List.of());
 
-        ConnectorProblemException ex = Assertions.assertThrows(
-                ConnectorProblemException.class,
-                () -> client.getCrl(connector, req));
+        ConnectorProblemException ex = Assertions
+                .assertThrows(ConnectorProblemException.class, () -> client.getCrl(connector, req));
 
         Assertions.assertEquals(ErrorCode.REGISTRATION_NOT_FOUND, ex.getProblemDetail().getErrorCode());
         Assertions.assertEquals(connector, ex.getConnector());

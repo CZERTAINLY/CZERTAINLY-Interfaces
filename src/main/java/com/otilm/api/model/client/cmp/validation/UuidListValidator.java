@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class UuidListValidator implements ConstraintValidator<ValidUuidList, List<String>> {
 

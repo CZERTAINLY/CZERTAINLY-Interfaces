@@ -2,18 +2,17 @@ package com.otilm.api.model.connector.secrets;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.common.attribute.common.MetadataAttribute;
-import com.otilm.api.model.connector.secrets.content.*;
+import com.otilm.api.model.connector.secrets.content.SecretContent;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @Builder
@@ -22,7 +21,8 @@ import java.util.List;
 public class UpdateSecretRequestDto implements SecretOperationRequest {
 
     @NotBlank
-    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"MyServerCredentials"})
+    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "MyServerCredentials"})
     private String name;
 
     @Valid

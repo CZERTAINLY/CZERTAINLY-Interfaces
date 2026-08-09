@@ -8,9 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Schema(
-        description = "Float attribute content for decimal numbers",
-        type = "object")
+@Schema(description = "Float attribute content for decimal numbers", type = "object")
 @EqualsAndHashCode(callSuper = true)
 public class FloatAttributeContentV3 extends BaseAttributeContentV3<Float> {
 

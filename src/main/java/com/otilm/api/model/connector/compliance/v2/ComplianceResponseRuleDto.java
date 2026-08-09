@@ -2,12 +2,11 @@ package com.otilm.api.model.connector.compliance.v2;
 
 import com.otilm.api.model.core.compliance.ComplianceRuleStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.UUID;
 
 /*
 Contains the description for rules and its validation results. This object is part of

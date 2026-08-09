@@ -1,24 +1,19 @@
 package com.otilm.api.model.connector.secrets;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum SecretType implements IPlatformEnum {
-    BASIC_AUTH(Codes.BASIC_AUTH, "Basic Authentication"),
-    API_KEY(Codes.API_KEY, "API Key"),
-    JWT_TOKEN(Codes.JWT_TOKEN, "JWT Token"),
-    PRIVATE_KEY(Codes.PRIVATE_KEY, "Private Key"),
-    SECRET_KEY(Codes.SECRET_KEY, "Secret Key"),
-    KEY_STORE(Codes.KEY_STORE, "Key Store"),
-    KEY_VALUE(Codes.KEY_VALUE, "Key-Value Pairs"),
-    GENERIC(Codes.GENERIC, "Generic");
+    BASIC_AUTH(Codes.BASIC_AUTH, "Basic Authentication"), API_KEY(Codes.API_KEY, "API Key"), JWT_TOKEN(Codes.JWT_TOKEN,
+            "JWT Token"), PRIVATE_KEY(Codes.PRIVATE_KEY, "Private Key"), SECRET_KEY(Codes.SECRET_KEY,
+                    "Secret Key"), KEY_STORE(Codes.KEY_STORE, "Key Store"), KEY_VALUE(Codes.KEY_VALUE,
+                            "Key-Value Pairs"), GENERIC(Codes.GENERIC, "Generic");
 
     private static final SecretType[] VALUES;
 
@@ -42,11 +37,11 @@ public enum SecretType implements IPlatformEnum {
 
     @JsonCreator
     public static SecretType findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown secret type {}", code)));
+                .orElseThrow(() -> new ValidationException(ValidationError.create("Unknown secret type {}", code)));
     }
 
     @Override

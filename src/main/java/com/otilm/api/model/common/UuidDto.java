@@ -2,17 +2,15 @@ package com.otilm.api.model.common;
 
 import com.otilm.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 public class UuidDto implements Serializable, Loggable {
 
-    @Schema(description = "Object identifier",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Object identifier", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
     public UuidDto() {
@@ -36,6 +34,5 @@ public class UuidDto implements Serializable, Loggable {
     public List<UUID> toLogResourceObjectsUuids() {
         return List.of(UUID.fromString(uuid));
     }
-
 
 }

@@ -1,16 +1,15 @@
 package com.otilm.api.interfaces.client.v1;
 
+import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.model.core.authority.AddEndEntityRequestDto;
 import com.otilm.api.model.core.authority.EditEndEntityRequestDto;
 import com.otilm.api.model.core.authority.EndEntityDto;
-import com.otilm.api.clients.ApiClientConnectorInfo;
-
 import java.util.List;
 
 /**
- * Synchronous API client interface for End Entity operations.
- * This interface provides an abstraction layer allowing both REST and MQ implementations.
+ * Synchronous API client interface for End Entity operations. This interface provides an abstraction layer allowing
+ * both REST and MQ implementations.
  */
 public interface EndEntitySyncApiClient {
 
@@ -23,7 +22,8 @@ public interface EndEntitySyncApiClient {
      * @return List of end entities
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    List<EndEntityDto> listEntities(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName) throws ConnectorException;
+    List<EndEntityDto> listEntities(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName)
+            throws ConnectorException;
 
     /**
      * Get a specific end entity.
@@ -35,7 +35,8 @@ public interface EndEntitySyncApiClient {
      * @return End entity details
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    EndEntityDto getEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException;
+    EndEntityDto getEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName,
+            String endEntityName) throws ConnectorException;
 
     /**
      * Create a new end entity.
@@ -46,7 +47,8 @@ public interface EndEntitySyncApiClient {
      * @param requestDto End entity creation request
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    void createEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName, AddEndEntityRequestDto requestDto) throws ConnectorException;
+    void createEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName,
+            AddEndEntityRequestDto requestDto) throws ConnectorException;
 
     /**
      * Update an existing end entity.
@@ -58,7 +60,8 @@ public interface EndEntitySyncApiClient {
      * @param requestDto End entity update request
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    void updateEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName, String endEntityName, EditEndEntityRequestDto requestDto) throws ConnectorException;
+    void updateEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName,
+            String endEntityName, EditEndEntityRequestDto requestDto) throws ConnectorException;
 
     /**
      * Revoke and delete an end entity.
@@ -69,7 +72,8 @@ public interface EndEntitySyncApiClient {
      * @param endEntityName End entity name
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    void revokeAndDeleteEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException;
+    void revokeAndDeleteEndEntity(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName,
+            String endEntityName) throws ConnectorException;
 
     /**
      * Reset password for an end entity.
@@ -80,5 +84,6 @@ public interface EndEntitySyncApiClient {
      * @param endEntityName End entity name
      * @throws ConnectorException If there is an error communicating with the connector
      */
-    void resetPassword(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName, String endEntityName) throws ConnectorException;
+    void resetPassword(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName,
+            String endEntityName) throws ConnectorException;
 }

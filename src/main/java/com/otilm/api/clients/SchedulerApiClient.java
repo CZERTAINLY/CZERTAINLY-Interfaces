@@ -28,53 +28,53 @@ public class SchedulerApiClient extends PlatformBaseApiClient {
     public void schedulerCreate(final SchedulerRequestDto schedulerDto) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST);
         processRequest(r -> r
-                        .uri(schedulerBaseUrl + SCHEDULER_CREATE)
-                        .body(Mono.just(schedulerDto), SchedulerRequestDto.class)
-                        .retrieve()
-                        .toEntity(SchedulerResponseDto.class)
-                        .block().getBody(),
-                request);
+                .uri(schedulerBaseUrl + SCHEDULER_CREATE)
+                .body(Mono.just(schedulerDto), SchedulerRequestDto.class)
+                .retrieve()
+                .toEntity(SchedulerResponseDto.class)
+                .block()
+                .getBody(), request);
     }
 
     public void deleteScheduledJob(final String jobName) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.DELETE);
         processRequest(r -> r
-                        .uri(schedulerBaseUrl + SCHEDULER_DELETE, jobName)
-                        .retrieve()
-                        .toEntity(Void.class)
-                        .block().getBody(),
-                request);
+                .uri(schedulerBaseUrl + SCHEDULER_DELETE, jobName)
+                .retrieve()
+                .toEntity(Void.class)
+                .block()
+                .getBody(), request);
     }
 
     public void enableScheduledJob(final String jobName) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET);
         processRequest(r -> r
-                        .uri(schedulerBaseUrl + SCHEDULER_ENABLE, jobName)
-                        .retrieve()
-                        .toEntity(Void.class)
-                        .block().getBody(),
-                request);
+                .uri(schedulerBaseUrl + SCHEDULER_ENABLE, jobName)
+                .retrieve()
+                .toEntity(Void.class)
+                .block()
+                .getBody(), request);
     }
 
     public void disableScheduledJob(final String jobName) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET);
         processRequest(r -> r
-                        .uri(schedulerBaseUrl + SCHEDULER_DISABLE, jobName)
-                        .retrieve()
-                        .toEntity(Void.class)
-                        .block().getBody(),
-                request);
+                .uri(schedulerBaseUrl + SCHEDULER_DISABLE, jobName)
+                .retrieve()
+                .toEntity(Void.class)
+                .block()
+                .getBody(), request);
     }
 
     public void updateScheduledJob(SchedulerRequestDto schedulerRequestDto) throws SchedulerException {
         final WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET);
         processRequest(r -> r
-                        .uri(schedulerBaseUrl + SCHEDULER_UPDATE)
-                        .body(Mono.just(schedulerRequestDto), SchedulerRequestDto.class)
-                        .retrieve()
-                        .toEntity(SchedulerResponseDto.class)
-                        .block().getBody(),
-                request);
+                .uri(schedulerBaseUrl + SCHEDULER_UPDATE)
+                .body(Mono.just(schedulerRequestDto), SchedulerRequestDto.class)
+                .retrieve()
+                .toEntity(SchedulerResponseDto.class)
+                .block()
+                .getBody(), request);
     }
 
     @Override

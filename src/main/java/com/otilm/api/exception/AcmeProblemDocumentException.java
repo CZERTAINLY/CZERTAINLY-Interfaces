@@ -3,9 +3,8 @@ package com.otilm.api.exception;
 import com.otilm.api.model.core.acme.Problem;
 import com.otilm.api.model.core.acme.ProblemDocument;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.http.HttpStatus;
-
 import java.util.Map;
+import org.springframework.http.HttpStatus;
 
 public class AcmeProblemDocumentException extends Exception implements PlatformException {
     @Schema(description = "HTTP Status code corresponding to the error")

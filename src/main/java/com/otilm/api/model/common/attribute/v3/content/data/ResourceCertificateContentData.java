@@ -8,10 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(
-        title = "ResourceCertificateContentData",
-        description = "Content data for resource object attribute containing certificate content"
-)
+@Schema(title = "ResourceCertificateContentData", description = "Content data for resource object attribute containing certificate content")
 public class ResourceCertificateContentData extends ResourceObjectContentData {
 
     @Schema(description = "Certificate type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

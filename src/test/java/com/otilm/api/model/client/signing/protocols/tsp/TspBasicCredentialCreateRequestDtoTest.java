@@ -5,12 +5,11 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import java.util.Set;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -120,8 +119,8 @@ class TspBasicCredentialCreateRequestDtoTest {
         // given
         var username = "svc-account";
         var secret = "s3cr3t";
-        var json = "{\"username\":\"" + username + "\",\"password\":\"" + secret + "\","
-                + "\"mappedUserUuid\":\"" + MAPPED_USER_UUID + "\"}";
+        var json = "{\"username\":\"" + username + "\",\"password\":\"" + secret + "\"," + "\"mappedUserUuid\":\""
+                + MAPPED_USER_UUID + "\"}";
 
         // when
         TspBasicCredentialCreateRequestDto parsed = mapper.readValue(json, TspBasicCredentialCreateRequestDto.class);
@@ -142,7 +141,8 @@ class TspBasicCredentialCreateRequestDtoTest {
         return dto;
     }
 
-    private static boolean hasViolationOn(Set<ConstraintViolation<TspBasicCredentialCreateRequestDto>> violations, String property) {
+    private static boolean hasViolationOn(Set<ConstraintViolation<TspBasicCredentialCreateRequestDto>> violations,
+            String property) {
         return violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals(property));
     }
 }

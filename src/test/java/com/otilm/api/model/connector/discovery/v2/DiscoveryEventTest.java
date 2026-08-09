@@ -13,14 +13,13 @@ import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
-
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AutoClose;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,9 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * {@link DiscoveryEvent} is flat: {@code type} is a field of the event object itself, not a wrapper
- * around a nested payload. Every fixture below is therefore a single flat JSON object — no
- * {@code payload} key.
+ * {@link DiscoveryEvent} is flat: {@code type} is a field of the event object itself, not a wrapper around a nested
+ * payload. Every fixture below is therefore a single flat JSON object — no {@code payload} key.
  */
 class DiscoveryEventTest {
 
@@ -73,8 +71,7 @@ class DiscoveryEventTest {
         // A resultBatch event carrying one real DiscoveredItemDto, whose shape
         // DiscoveredItemDtoTest covers independently. Irregular whitespace again, for the same
         // reason as above.
-        String json = "{\"type\": \"resultBatch\",  \"items\": ["
-                + "{\"sequence\": 1, \"uniqueRef\": \"cert-ref-1\", "
+        String json = "{\"type\": \"resultBatch\",  \"items\": [" + "{\"sequence\": 1, \"uniqueRef\": \"cert-ref-1\", "
                 + "\"payload\": {\"resource\": \"certificates\", \"certificateData\": \"Y2VydC1kYXRh\"}}]}";
 
         DiscoveryEvent event = mapper.readValue(json, DiscoveryEvent.class);
@@ -149,8 +146,7 @@ class DiscoveryEventTest {
         Set<ConstraintViolation<DiscoveryResultBatchEvent>> violations = VALIDATOR.validate(batch);
         // A container-element constraint reports the element node, so the path a caller sees for a
         // null entry is items[0].<list element>, not items[0].
-        assertTrue(violations.stream()
-                        .anyMatch(v -> v.getPropertyPath().toString().equals("items[0].<list element>")),
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("items[0].<list element>")),
                 "a null entry inside items must be rejected, not counted as a discovered item");
     }
 
@@ -259,8 +255,8 @@ class DiscoveryEventTest {
         // whether or not it is also a real enum member. BaseApiClient turns this failure into a
         // PlatformException at the client boundary (see BaseApiClientTest); here the mapper is
         // called directly, so the raw Jackson exception surfaces.
-        assertThrows(InvalidTypeIdException.class,
-                () -> mapper.readValue("{\"type\":\"widgets\",\"code\":\"x\",\"message\":\"y\"}", DiscoveryEvent.class));
+        assertThrows(InvalidTypeIdException.class, () -> mapper
+                .readValue("{\"type\":\"widgets\",\"code\":\"x\",\"message\":\"y\"}", DiscoveryEvent.class));
     }
 
     @Test

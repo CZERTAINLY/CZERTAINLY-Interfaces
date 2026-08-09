@@ -10,11 +10,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1/local")
 @Tag(name = "Local operations", description = "API only accessible from localhost")
@@ -23,7 +24,6 @@ public interface LocalController extends NoAuthController {
     @Operation(summary = "Create Administrator")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Admin created")})
     @PostMapping(path = "/admins", consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<UserDetailDto> addAdmin(
-            @RequestBody AddUserRequestDto request)
-            throws CertificateException, NotFoundException, NoSuchAlgorithmException, AlreadyExistException, AttributeException;
+    ResponseEntity<UserDetailDto> addAdmin(@RequestBody AddUserRequestDto request) throws CertificateException,
+            NotFoundException, NoSuchAlgorithmException, AlreadyExistException, AttributeException;
 }

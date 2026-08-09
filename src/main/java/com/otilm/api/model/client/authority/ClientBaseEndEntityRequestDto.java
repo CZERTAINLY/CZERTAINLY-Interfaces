@@ -11,8 +11,7 @@ import java.util.List;
  */
 public class ClientBaseEndEntityRequestDto {
 
-    @Schema(description = "RA profile related to End Entity",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "RA profile related to End Entity", requiredMode = Schema.RequiredMode.REQUIRED)
     protected RaProfileDto raProfile;
 
     @Schema(description = "End Entity email")
@@ -21,15 +20,13 @@ public class ClientBaseEndEntityRequestDto {
     @Schema(description = "End Entity extension data")
     protected List<EndEntityExtendedInfoDto> extensionData;
 
-    @Schema(description = "End Entity password",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity password", requiredMode = Schema.RequiredMode.REQUIRED)
     protected String password;
 
     @Schema(description = "End Entity Subject alternative name")
     protected String subjectAltName;
 
-    @Schema(description = "End Entity subject domain name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity subject domain name", requiredMode = Schema.RequiredMode.REQUIRED)
     protected String subjectDN;
 
     public RaProfileDto getRaProfile() {
@@ -80,4 +77,3 @@ public class ClientBaseEndEntityRequestDto {
         this.subjectDN = subjectDN;
     }
 }
-

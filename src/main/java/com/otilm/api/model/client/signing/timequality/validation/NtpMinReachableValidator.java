@@ -12,7 +12,8 @@ public class NtpMinReachableValidator implements ConstraintValidator<ValidNtpMin
         }
         if (value.getNtpServersMinReachable() > value.getNtpServers().size()) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+            context
+                    .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
                     .addPropertyNode("ntpServersMinReachable")
                     .addConstraintViolation();
             return false;

@@ -5,11 +5,10 @@ import com.otilm.api.interfaces.client.v1.CertificateSyncApiClient;
 import com.otilm.api.model.core.authority.CertRevocationDto;
 import com.otilm.api.model.core.authority.CertificateSignRequestDto;
 import com.otilm.api.model.core.authority.CertificateSignResponseDto;
+import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import javax.net.ssl.TrustManager;
 
 public class CertificateApiClient extends BaseApiClient implements CertificateSyncApiClient {
 
@@ -23,7 +22,8 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
     }
 
     @Override
-    public CertificateSignResponseDto issueCertificate(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName, CertificateSignRequestDto requestDto) throws ConnectorException {
+    public CertificateSignResponseDto issueCertificate(ApiClientConnectorInfo connector, String authorityUuid,
+            String endEntityProfileName, CertificateSignRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -31,13 +31,13 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
                 .body(Mono.just(requestDto), CertificateSignRequestDto.class)
                 .retrieve()
                 .toEntity(CertificateSignResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public void revokeCertificate(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName, CertRevocationDto requestDto) throws ConnectorException {
+    public void revokeCertificate(ApiClientConnectorInfo connector, String authorityUuid, String endEntityProfileName,
+            CertRevocationDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         processRequest(r -> r
@@ -45,8 +45,7 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
                 .body(Mono.just(requestDto), CertRevocationDto.class)
                 .retrieve()
                 .toEntity(Void.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 }

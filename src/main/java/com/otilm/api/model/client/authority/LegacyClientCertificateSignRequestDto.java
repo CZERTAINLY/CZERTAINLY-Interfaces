@@ -9,16 +9,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class LegacyClientCertificateSignRequestDto {
 
-    @Schema(description = "End Entity password",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity password", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
-    @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate sign request (PKCS#10) encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
     private String pkcs10;
 
-    @Schema(description = "End Entity username",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Entity username", requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     public String getPassword() {

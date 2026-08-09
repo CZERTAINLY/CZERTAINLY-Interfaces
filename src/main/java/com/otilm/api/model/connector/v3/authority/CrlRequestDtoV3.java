@@ -11,8 +11,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class CrlRequestDtoV3 extends AuthorityV3ScopedRequestDto {
 
-    @Schema(description = "If true, the delta CRL is returned where supported; otherwise the full CRL.",
-            defaultValue = "false",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "If true, the delta CRL is returned where supported; otherwise the full CRL.", defaultValue = "false", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private boolean delta;
 }

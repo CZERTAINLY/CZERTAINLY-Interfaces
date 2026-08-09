@@ -10,9 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalTime;
 import java.util.Objects;
 
-@Schema(
-        description = "Time attribute content in predefined format",
-        type = "object")
+@Schema(description = "Time attribute content in predefined format", type = "object")
 public class TimeAttributeContentV2 extends BaseAttributeContentV2<LocalTime> {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
@@ -40,9 +38,15 @@ public class TimeAttributeContentV2 extends BaseAttributeContentV2<LocalTime> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TimeAttributeContentV2)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TimeAttributeContentV2)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         TimeAttributeContentV2 that = (TimeAttributeContentV2) o;
         return Objects.equals(data, that.data);
     }

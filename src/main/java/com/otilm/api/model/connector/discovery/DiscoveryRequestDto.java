@@ -2,27 +2,23 @@ package com.otilm.api.model.connector.discovery;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 @Setter
 @Getter
 public class DiscoveryRequestDto {
 
-    @Schema(description = "Name of the Discovery",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Discovery Kind",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Discovery Kind", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "Discovery Provider Attributes. Mandatory for creating new Discovery"
-    )
+    @Schema(description = "Discovery Provider Attributes. Mandatory for creating new Discovery")
     private List<RequestAttribute> attributes;
 
     @Override

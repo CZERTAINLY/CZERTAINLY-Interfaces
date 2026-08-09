@@ -1,25 +1,23 @@
 package com.otilm.api.model.common.attribute.v3.content;
 
-import com.otilm.api.model.client.attribute.BaseAttributeContentDtoV3;
-import com.otilm.api.model.common.attribute.common.AttributeContent;
-import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.otilm.api.model.client.attribute.BaseAttributeContentDtoV3;
+import com.otilm.api.model.common.attribute.common.AttributeContent;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "contentType", visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = BooleanAttributeContentV3.class, name = AttributeContentType.Codes.BOOLEAN),
+@JsonSubTypes({@JsonSubTypes.Type(value = BooleanAttributeContentV3.class, name = AttributeContentType.Codes.BOOLEAN),
         @JsonSubTypes.Type(value = CodeBlockAttributeContentV3.class, name = AttributeContentType.Codes.CODEBLOCK),
         @JsonSubTypes.Type(value = DateAttributeContentV3.class, name = AttributeContentType.Codes.DATE),
         @JsonSubTypes.Type(value = DateTimeAttributeContentV3.class, name = AttributeContentType.Codes.DATETIME),
@@ -30,12 +28,13 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = StringAttributeContentV3.class, name = AttributeContentType.Codes.STRING),
         @JsonSubTypes.Type(value = TextAttributeContentV3.class, name = AttributeContentType.Codes.TEXT),
         @JsonSubTypes.Type(value = TimeAttributeContentV3.class, name = AttributeContentType.Codes.TIME),
-        @JsonSubTypes.Type(value = ResourceObjectContent.class, name = AttributeContentType.Codes.RESOURCE)
-})
+        @JsonSubTypes.Type(value = ResourceObjectContent.class, name = AttributeContentType.Codes.RESOURCE)})
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @Schema(implementation = BaseAttributeContentDtoV3.class)
 @JsonDeserialize
-public class BaseAttributeContentV3<T extends Serializable> extends AttributeContent implements BaseAttributeContentDtoV3 {
+public class BaseAttributeContentV3<T extends Serializable> extends AttributeContent
+        implements
+            BaseAttributeContentDtoV3 {
 
     private String reference;
 
@@ -60,12 +59,19 @@ public class BaseAttributeContentV3<T extends Serializable> extends AttributeCon
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) return false;
-        if (this == o) return true;
-        if (!(o instanceof BaseAttributeContentV3<?> that)) return false;
+        if (o == null) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BaseAttributeContentV3<?> that)) {
+            return false;
+        }
 
         // content is considered equal when reference and data are equal
-        return Objects.equals(this.reference, that.getReference()) && Objects.equals(this.getData(), that.getData()) && Objects.equals(this.contentType, that.getContentType());
+        return Objects.equals(this.reference, that.getReference()) && Objects.equals(this.getData(), that.getData())
+                && Objects.equals(this.contentType, that.getContentType());
     }
 
     @Override

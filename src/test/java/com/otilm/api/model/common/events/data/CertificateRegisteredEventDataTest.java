@@ -2,9 +2,8 @@ package com.otilm.api.model.common.events.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import org.junit.jupiter.api.Test;
-
 import java.time.ZonedDateTime;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,7 +35,8 @@ class CertificateRegisteredEventDataTest {
         String json = mapper.writeValueAsString(data);
         // The whole design depends on the credential reaching external notification providers via JSON — a stray
         // @JsonIgnore (plausible next to the toString/equals exclusions) would silently break delivery.
-        assertTrue(json.contains("s3cret-challenge-value"), "the credential must serialize to JSON for external delivery");
+        assertTrue(json.contains("s3cret-challenge-value"),
+                "the credential must serialize to JSON for external delivery");
 
         CertificateRegisteredEventData back = mapper.readValue(json, CertificateRegisteredEventData.class);
         assertEquals("s3cret-challenge-value", back.getCredential(), "the credential must round-trip through JSON");

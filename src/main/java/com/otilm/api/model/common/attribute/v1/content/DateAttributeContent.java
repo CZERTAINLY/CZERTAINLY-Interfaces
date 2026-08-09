@@ -15,7 +15,8 @@ public class DateAttributeContent extends AttributeContent {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate value;
 
-    public DateAttributeContent() { }
+    public DateAttributeContent() {
+    }
 
     public DateAttributeContent(LocalDate value) {
         this.value = value;

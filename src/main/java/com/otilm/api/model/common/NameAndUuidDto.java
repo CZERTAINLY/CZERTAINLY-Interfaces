@@ -2,25 +2,21 @@ package com.otilm.api.model.common;
 
 import com.otilm.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
-
 @Data
 public class NameAndUuidDto implements Serializable, Loggable {
 
-    @Schema(description = "Object identifier",
-            examples = {"7b55ge1c-844f-11dc-a8a3-0242ac120002"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Object identifier", examples = {
+            "7b55ge1c-844f-11dc-a8a3-0242ac120002"}, requiredMode = Schema.RequiredMode.REQUIRED)
     protected String uuid;
 
-    @Schema(description = "Object Name",
-            examples = {"Name"},
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Object Name", examples = {"Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
     protected String name;
 
     public NameAndUuidDto() {

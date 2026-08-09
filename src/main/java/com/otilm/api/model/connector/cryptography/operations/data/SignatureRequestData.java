@@ -2,7 +2,11 @@ package com.otilm.api.model.connector.cryptography.operations.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,16 +16,11 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SignatureRequestData {
 
-    @Schema(
-            description = "Data to be signed or verified",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Data to be signed or verified", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] data;
 
-    @Schema(
-            description = "Custom identifier of the data, that should be the same as in the request, if available",
-            examples = {"customId"}
-    )
+    @Schema(description = "Custom identifier of the data, that should be the same as in the request, if available", examples = {
+            "customId"})
     private String identifier;
 
 }

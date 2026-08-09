@@ -8,10 +8,11 @@ public class FileAttributeContent extends BaseAttributeContent<String> {
     @Schema(description = "Name of the file", examples = {"example.txt"})
     private String fileName;
 
-    @Schema(description = "Content-Type of the data", example="xml")
+    @Schema(description = "Content-Type of the data", example = "xml")
     private String contentType;
 
-    public FileAttributeContent() { }
+    public FileAttributeContent() {
+    }
 
     public FileAttributeContent(String value, String fileName, String contentType) {
         super(value);

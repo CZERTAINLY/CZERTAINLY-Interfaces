@@ -10,9 +10,6 @@ import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import org.junit.jupiter.api.AutoClose;
-import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.AutoClose;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -117,12 +116,16 @@ class DiscoveryV2RequestDtoTest {
         // A container-element constraint reports the element node, so the path a caller sees for a
         // null entry is resources[i].<list element>, not resources[i].
         Set<ConstraintViolation<DiscoveryInitiateRequestDto>> onlyNullViolations = VALIDATOR.validate(onlyNull);
-        assertTrue(onlyNullViolations.stream()
+        assertTrue(
+                onlyNullViolations
+                        .stream()
                         .anyMatch(v -> v.getPropertyPath().toString().equals("resources[0].<list element>")),
                 "a resources list holding only null must be rejected");
 
         Set<ConstraintViolation<DiscoveryInitiateRequestDto>> trailingNullViolations = VALIDATOR.validate(trailingNull);
-        assertTrue(trailingNullViolations.stream()
+        assertTrue(
+                trailingNullViolations
+                        .stream()
                         .anyMatch(v -> v.getPropertyPath().toString().equals("resources[1].<list element>")),
                 "a null alongside a real resource type must still be rejected");
     }
@@ -149,8 +152,8 @@ class DiscoveryV2RequestDtoTest {
         overCap.setMaxBytes(DiscoveryDrainRequestDto.MAX_BYTES_CAP + 1);
 
         assertTrue(VALIDATOR.validate(atCap).isEmpty(), "maxBytes exactly at the cap must be accepted");
-        assertTrue(VALIDATOR.validate(overCap).stream()
-                        .anyMatch(v -> v.getPropertyPath().toString().equals("maxBytes")),
+        assertTrue(
+                VALIDATOR.validate(overCap).stream().anyMatch(v -> v.getPropertyPath().toString().equals("maxBytes")),
                 "maxBytes above the transport cap must be rejected, not merely documented as too large");
     }
 
@@ -162,7 +165,9 @@ class DiscoveryV2RequestDtoTest {
         dto.setMaxItems(0);
         dto.setMaxBytes(0L);
 
-        Set<String> paths = VALIDATOR.validate(dto).stream()
+        Set<String> paths = VALIDATOR
+                .validate(dto)
+                .stream()
                 .map(v -> v.getPropertyPath().toString())
                 .collect(Collectors.toSet());
         assertTrue(paths.contains("afterSequence"), "a negative cursor must be rejected");
@@ -198,8 +203,10 @@ class DiscoveryV2RequestDtoTest {
         DiscoveryRunRequestDto dto = new DiscoveryRunRequestDto();
         UUID runId = UUID.fromString("55555555-5555-5555-5555-555555555555");
         dto.setRunId(runId);
-        dto.setAttributes(List.of(new RequestAttributeV3(UUID.randomUUID(), "targetPassword", AttributeContentType.STRING,
-                List.of(new StringAttributeContentV3("super-secret-target-password")))));
+        dto
+                .setAttributes(List
+                        .of(new RequestAttributeV3(UUID.randomUUID(), "targetPassword", AttributeContentType.STRING,
+                                List.of(new StringAttributeContentV3("super-secret-target-password")))));
 
         String str = dto.toString();
 

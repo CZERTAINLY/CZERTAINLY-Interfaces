@@ -1,10 +1,9 @@
 package com.otilm.api.model.core.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 public class ObjectPermissionsDto {
 
@@ -28,9 +27,13 @@ public class ObjectPermissionsDto {
         this.uuid = uuid;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public List<String> getAllow() {
         return allow;

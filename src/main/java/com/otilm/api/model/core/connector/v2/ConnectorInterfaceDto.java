@@ -3,11 +3,10 @@ package com.otilm.api.model.core.connector.v2;
 import com.otilm.api.model.client.connector.v2.ConnectorInterface;
 import com.otilm.api.model.client.connector.v2.FeatureFlag;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 public class ConnectorInterfaceDto implements Serializable {

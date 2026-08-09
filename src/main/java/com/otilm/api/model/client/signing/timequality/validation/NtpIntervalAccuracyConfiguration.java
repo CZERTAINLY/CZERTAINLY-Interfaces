@@ -4,5 +4,6 @@ import java.time.Duration;
 
 public interface NtpIntervalAccuracyConfiguration {
     Duration getNtpCheckInterval();
+
     Duration getAccuracy();
 }

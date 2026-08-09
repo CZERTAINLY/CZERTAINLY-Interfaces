@@ -2,7 +2,11 @@ package com.otilm.api.model.client.cryptography.operations;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,21 +16,14 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class SignatureResponseData {
 
-    @Schema(
-            description = "Base64 encoded signature data",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Base64 encoded signature data", requiredMode = Schema.RequiredMode.REQUIRED)
     private String data;
 
-    @Schema(
-            description = "Custom identifier of the data, that should be the same as in the request, if available",
-            examples = {"customId"}
-    )
+    @Schema(description = "Custom identifier of the data, that should be the same as in the request, if available", examples = {
+            "customId"})
     private String identifier;
 
-    @Schema(
-            description = "Additional details of the data, for example, the data type, error handling, etc."
-    )
+    @Schema(description = "Additional details of the data, for example, the data type, error handling, etc.")
     private Object details;
 
 }

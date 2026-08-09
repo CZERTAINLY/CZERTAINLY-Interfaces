@@ -4,15 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
 /**
- * According to the RFC 8894
- * <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-pkistatus">pkiStatus</a>
- * It may contain custom PkiStatus codes if required (but out of scope of the standard)
+ * According to the RFC 8894 <a href="https://www.rfc-editor.org/rfc/rfc8894.html#name-pkistatus">pkiStatus</a> It may
+ * contain custom PkiStatus codes if required (but out of scope of the standard)
  */
 @Schema(enumAsRef = true)
 public enum PkiStatus {
-    SUCCESS(0, "SUCCESS", "Request granted."),
-    FAILURE(2, "FAILURE", "Request rejected."),
-    PENDING(3, "PENDING", "Request pending for manual approval.");
+    SUCCESS(0, "SUCCESS", "Request granted."), FAILURE(2, "FAILURE", "Request rejected."), PENDING(3, "PENDING",
+            "Request pending for manual approval.");
 
     private static final PkiStatus[] VALUES;
 
@@ -76,6 +74,6 @@ public enum PkiStatus {
 
     @Override
     public String toString() {
-        return name + " ("+String.valueOf(value)+")";
+        return name + " (" + String.valueOf(value) + ")";
     }
 }

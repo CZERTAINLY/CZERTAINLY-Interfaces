@@ -1,11 +1,10 @@
 package com.otilm.api.model.client.certificate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 @Data
 public class CertificateUpdateObjectsDto {
@@ -24,6 +23,11 @@ public class CertificateUpdateObjectsDto {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("groupUuid", groupUuids).append("ownerUuid", ownerUuid).append("raProfileUuid", raProfileUuid).append("trustedCa", trustedCa).toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("groupUuid", groupUuids)
+                .append("ownerUuid", ownerUuid)
+                .append("raProfileUuid", raProfileUuid)
+                .append("trustedCa", trustedCa)
+                .toString();
     }
 }

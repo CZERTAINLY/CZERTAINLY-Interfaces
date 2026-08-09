@@ -1,11 +1,14 @@
 package com.otilm.api.model.connector.cryptography.token;
 
-import com.otilm.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.otilm.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,15 +18,10 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TokenInstanceStatusComponent {
 
-    @Schema(
-            description = "Token instance component status",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Token instance component status", requiredMode = Schema.RequiredMode.REQUIRED)
     private TokenInstanceStatus status;
 
-    @Schema(
-            description = "Token instance component details"
-    )
+    @Schema(description = "Token instance component details")
     private Map<String, Object> details;
 
 }

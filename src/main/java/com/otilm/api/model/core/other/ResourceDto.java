@@ -9,10 +9,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class ResourceDto {
 
-    @Schema(description = "Resource code",
-            examples = {"certificates"},
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            implementation = Resource.class)
+    @Schema(description = "Resource code", examples = {
+            "certificates"}, requiredMode = Schema.RequiredMode.REQUIRED, implementation = Resource.class)
     private Resource resource;
 
     @Schema(description = "If resource has Object access permissions. True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)

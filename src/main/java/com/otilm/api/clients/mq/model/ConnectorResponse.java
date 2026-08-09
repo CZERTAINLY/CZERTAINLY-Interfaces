@@ -1,14 +1,18 @@
 package com.otilm.api.clients.mq.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-
 import java.io.Serializable;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * HTTP response details from the connector.
- * This structure is returned within ProxyMessage to provide the actual HTTP response data.
+ * HTTP response details from the connector. This structure is returned within ProxyMessage to provide the actual HTTP
+ * response data.
  */
 @Getter
 @Setter
@@ -18,9 +22,8 @@ import java.util.Map;
 @Builder
 public class ConnectorResponse implements Serializable {
 
-    @Schema(description = "HTTP status code from the connector response. " +
-            "0 if request failed before reaching connector",
-            examples = {"200", "404", "500", "0"})
+    @Schema(description = "HTTP status code from the connector response. "
+            + "0 if request failed before reaching connector", examples = {"200", "404", "500", "0"})
     private int statusCode;
 
     @Schema(description = "HTTP response headers from the connector")
@@ -35,9 +38,8 @@ public class ConnectorResponse implements Serializable {
     @Schema(description = "Error message if request failed (empty on success)")
     private String error;
 
-    @Schema(description = "Error category for classification",
-            examples = {"validation", "authentication", "authorization", "not_found",
-                    "timeout", "connection", "server_error", "unknown"})
+    @Schema(description = "Error category for classification", examples = {"validation", "authentication",
+            "authorization", "not_found", "timeout", "connection", "server_error", "unknown"})
     private String errorCategory;
 
     @Schema(description = "Whether the error is transient and the message can be retried")

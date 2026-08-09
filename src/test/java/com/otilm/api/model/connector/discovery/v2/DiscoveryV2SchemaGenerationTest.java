@@ -4,22 +4,21 @@ import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Generates the OpenAPI schema and asserts each union base carries a {@code discriminator} stanza
- * with a {@code mapping}, and that the discriminator property appears in every {@code oneOf}
- * subschema — the condition client generators require, and the reason the discriminator sits
- * inside the payload rather than on its container (see {@code DiscoveredItemPayloadDto} and
- * {@code DiscoveryEvent}). Generation goes through swagger-core's {@code ModelConverters}, the
- * resolver springdoc uses at runtime, because this module has no OpenAPI build plugin to invoke.
+ * Generates the OpenAPI schema and asserts each union base carries a {@code discriminator} stanza with a
+ * {@code mapping}, and that the discriminator property appears in every {@code oneOf} subschema — the condition client
+ * generators require, and the reason the discriminator sits inside the payload rather than on its container (see
+ * {@code DiscoveredItemPayloadDto} and {@code DiscoveryEvent}). Generation goes through swagger-core's
+ * {@code ModelConverters}, the resolver springdoc uses at runtime, because this module has no OpenAPI build plugin to
+ * invoke.
  */
 class DiscoveryV2SchemaGenerationTest {
 
@@ -33,9 +32,10 @@ class DiscoveryV2SchemaGenerationTest {
         Discriminator discriminator = base.getDiscriminator();
         assertNotNull(discriminator, "DiscoveredItemPayload must carry a discriminator stanza");
         assertEquals("resource", discriminator.getPropertyName());
-        assertEquals(Map.of(
-                        "certificates", "#/components/schemas/DiscoveredCertificateDto",
-                        "keys", "#/components/schemas/DiscoveredKeyDto"),
+        assertEquals(
+                Map
+                        .of("certificates", "#/components/schemas/DiscoveredCertificateDto", "keys",
+                                "#/components/schemas/DiscoveredKeyDto"),
                 discriminator.getMapping(),
                 "discriminator.mapping must name both concrete payload schemas by their wire codes");
 
@@ -53,12 +53,13 @@ class DiscoveryV2SchemaGenerationTest {
         Discriminator discriminator = base.getDiscriminator();
         assertNotNull(discriminator, "DiscoveryEvent must carry a discriminator stanza");
         assertEquals("type", discriminator.getPropertyName());
-        assertEquals(Map.of(
-                        "progress", "#/components/schemas/DiscoveryProgressEvent",
-                        "resultBatch", "#/components/schemas/DiscoveryResultBatchEvent",
-                        "stateChanged", "#/components/schemas/DiscoveryStateChangedEvent",
-                        "heartbeat", "#/components/schemas/DiscoveryHeartbeatEvent",
-                        "error", "#/components/schemas/DiscoveryErrorEvent"),
+        assertEquals(
+                Map
+                        .of("progress", "#/components/schemas/DiscoveryProgressEvent", "resultBatch",
+                                "#/components/schemas/DiscoveryResultBatchEvent", "stateChanged",
+                                "#/components/schemas/DiscoveryStateChangedEvent", "heartbeat",
+                                "#/components/schemas/DiscoveryHeartbeatEvent", "error",
+                                "#/components/schemas/DiscoveryErrorEvent"),
                 discriminator.getMapping(),
                 "discriminator.mapping must name all five concrete event schemas by their wire codes");
 
@@ -70,39 +71,37 @@ class DiscoveryV2SchemaGenerationTest {
     }
 
     /**
-     * The OpenAPI rule every generated discriminator must satisfy: {@code discriminator.propertyName}
-     * must name a property present in the subschema. springdoc/swagger-core will happily generate a
-     * discriminator that fails this rule, so it is checked against the generated subschema rather
-     * than assumed.
+     * The OpenAPI rule every generated discriminator must satisfy: {@code discriminator.propertyName} must name a
+     * property present in the subschema. springdoc/swagger-core will happily generate a discriminator that fails this
+     * rule, so it is checked against the generated subschema rather than assumed.
      *
-     * <p>Verified empirically that "present" here means "resolvable across the schema graph": each
-     * concrete subtype implements the annotated base interface, so swagger-core emits it as a
-     * {@code ComposedSchema} — {@code allOf: [{$ref: <base>}, {type: object, properties: {<own
-     * fields>}}]} — with the discriminator property living on the referenced base (declared once,
-     * as the interface's own abstract accessor) rather than duplicated onto every subtype's local
-     * properties. That is the same shape the OpenAPI spec's own Pet/Cat/Dog discriminator example
-     * uses, and {@code allOf} composition is exactly how a JSON Schema validator (and codegen)
-     * resolves a property "present in" a subschema — so this walks {@code allOf}/{@code $ref}
-     * rather than checking {@link Schema#getProperties()} directly.
+     * <p>
+     * Verified empirically that "present" here means "resolvable across the schema graph": each concrete subtype
+     * implements the annotated base interface, so swagger-core emits it as a {@code ComposedSchema} —
+     * {@code allOf: [{$ref: <base>}, {type: object, properties: {<own
+     * fields>}}]} — with the discriminator property living on the referenced base (declared once, as the interface's
+     * own abstract accessor) rather than duplicated onto every subtype's local properties. That is the same shape the
+     * OpenAPI spec's own Pet/Cat/Dog discriminator example uses, and {@code allOf} composition is exactly how a JSON
+     * Schema validator (and codegen) resolves a property "present in" a subschema — so this walks
+     * {@code allOf}/{@code $ref} rather than checking {@link Schema#getProperties()} directly.
      */
     private void assertSubschemaDeclaresProperty(Map<String, Schema> schemas, String schemaName, String property) {
         Schema<?> sub = schemas.get(schemaName);
         assertNotNull(sub, "expected a generated schema named " + schemaName + "; found " + schemas.keySet());
-        assertTrue(resolvesProperty(sub, property, schemas),
-                schemaName + " must resolve property '" + property + "' (directly or via allOf/$ref) for the "
-                        + "discriminator to be resolvable against it");
+        assertTrue(resolvesProperty(sub, property, schemas), schemaName + " must resolve property '" + property
+                + "' (directly or via allOf/$ref) for the " + "discriminator to be resolvable against it");
     }
 
     /**
-     * A component must not be published differently depending on which endpoint's schema graph
-     * reached it, because the assembled document keeps one definition per name and whichever entry
-     * wins is what SDK generators consume.
+     * A component must not be published differently depending on which endpoint's schema graph reached it, because the
+     * assembled document keeps one definition per name and whichever entry wins is what SDK generators consume.
      *
-     * <p>Two ways that broke here. A self-referential {@code byResource} made the event path emit a
-     * {@code DiscoveryProgressDto} with {@code byResource} silently missing, and a {@code description}
-     * on a {@code $ref} field was hoisted onto the referenced component, overwriting its own — OpenAPI
-     * 3.0 cannot carry a sibling description, so swagger-core pushes it down. Both would have shipped
-     * a wrong contract to Go and Python connector authors while every Java test stayed green.
+     * <p>
+     * Two ways that broke here. A self-referential {@code byResource} made the event path emit a
+     * {@code DiscoveryProgressDto} with {@code byResource} silently missing, and a {@code description} on a
+     * {@code $ref} field was hoisted onto the referenced component, overwriting its own — OpenAPI 3.0 cannot carry a
+     * sibling description, so swagger-core pushes it down. Both would have shipped a wrong contract to Go and Python
+     * connector authors while every Java test stayed green.
      */
     @Test
     void progressComponentsAreIdenticalFromEveryEntryPoint() {
@@ -133,19 +132,16 @@ class DiscoveryV2SchemaGenerationTest {
     }
 
     /**
-     * Discovery must not rewrite a component it does not own. {@code Resource} is platform-wide, so a
-     * description hoisted onto it from a discovery field would follow it into every other API that
-     * references it — the same {@code $ref} hoisting as above, but with a blast radius outside this
-     * contract entirely. Asserted against the component as generated from {@code Resource} alone,
-     * which is the definition every other API contributes.
+     * Discovery must not rewrite a component it does not own. {@code Resource} is platform-wide, so a description
+     * hoisted onto it from a discovery field would follow it into every other API that references it — the same
+     * {@code $ref} hoisting as above, but with a blast radius outside this contract entirely. Asserted against the
+     * component as generated from {@code Resource} alone, which is the definition every other API contributes.
      */
     @Test
     void discoveryDoesNotRewriteThePlatformWideResourceComponent() {
-        String ownDescription = ModelConverters.getInstance()
-                .readAll(Resource.class).get("Resource").getDescription();
+        String ownDescription = ModelConverters.getInstance().readAll(Resource.class).get("Resource").getDescription();
 
-        for (Class<?> discoveryRoot : new Class<?>[]{
-                DiscoveredItemPayloadDto.class, DiscoveredCertificateDto.class,
+        for (Class<?> discoveryRoot : new Class<?>[]{DiscoveredItemPayloadDto.class, DiscoveredCertificateDto.class,
                 DiscoveredKeyDto.class, DiscoveredItemDto.class, DiscoveryEvent.class}) {
             Schema<?> resource = ModelConverters.getInstance().readAll(discoveryRoot).get("Resource");
             if (resource == null) {

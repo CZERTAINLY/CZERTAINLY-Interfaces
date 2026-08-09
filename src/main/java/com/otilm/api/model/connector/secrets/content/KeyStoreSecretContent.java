@@ -4,14 +4,13 @@ import com.otilm.api.model.connector.secrets.SecretType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(
-        title = "KeyStoreSecretContent",
-        description = "Secret representing Key Store"
-)
+@Schema(title = "KeyStoreSecretContent", description = "Secret representing Key Store")
 public class KeyStoreSecretContent extends SecretContent {
 
     @NotNull

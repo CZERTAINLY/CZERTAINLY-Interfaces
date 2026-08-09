@@ -2,27 +2,23 @@ package com.otilm.api.model.connector.entity;
 
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 @Setter
 @Getter
 public class EntityInstanceRequestDto {
 
-    @Schema(description = "Entity instance name",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Entity instance name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Kind of Entity instance",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Kind of Entity instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "List of Entity instance Attributes",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Entity instance Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Override

@@ -4,20 +4,17 @@ import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.protocol.ProtocolCertificateAssociationsDto;
-import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AcmeProfileDto extends NameAndUuidDto {
-    @Schema(description = "Enabled flag - true = enabled; false = disabled",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
     @Schema(description = "ACME Profile description", examples = {"Sample description"})
@@ -38,9 +35,11 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private Boolean termsOfServiceChangeDisable;
     @Schema(description = "Order validity", example = "36000")
     private Integer validity;
-    @Schema(description = "ACME Directory URL", examples = {"https://some-server.com/api/v1/protocols/acme/profile1/directory"})
+    @Schema(description = "ACME Directory URL", examples = {
+            "https://some-server.com/api/v1/protocols/acme/profile1/directory"})
     private String directoryUrl;
-    @Schema(description = "Changes of Terms of Service URL", examples = {"https://some-company.com/termsOfService/change"})
+    @Schema(description = "Changes of Terms of Service URL", examples = {
+            "https://some-company.com/termsOfService/change"})
     private String termsOfServiceChangeUrl;
     @Schema(description = "Require Contact information for new Account", example = "true")
     private Boolean requireContact;

@@ -1,17 +1,16 @@
 package com.otilm.api.model.connector.compliance.v2;
 
-import com.otilm.api.model.core.auth.Resource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /*
 Contains the list of parameters required for creating a new compliance check request.
@@ -26,13 +25,16 @@ any incoming compliance check request
 @Schema(name = "ComplianceRequestDtoV2", description = "Request for Compliance Check V2")
 public class ComplianceRequestDto {
 
-    @Schema(description = "Resource of rules to be checked", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {Resource.Codes.CERTIFICATE})
+    @Schema(description = "Resource of rules to be checked", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            Resource.Codes.CERTIFICATE})
     private Resource resource;
 
-    @Schema(description = "Type of the resource object that is sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"X.509"})
+    @Schema(description = "Type of the resource object that is sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            "X.509"})
     private String type;
 
-    @Schema(description = "Format of the resource object data that are sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"pkcs7"})
+    @Schema(description = "Format of the resource object data that are sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
+            "pkcs7"})
     private String format;
 
     @NotNull

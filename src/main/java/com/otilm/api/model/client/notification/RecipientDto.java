@@ -15,7 +15,8 @@ public class RecipientDto {
     @Schema(description = "Recipient type", requiredMode = Schema.RequiredMode.REQUIRED)
     private RecipientType type;
 
-    @Schema(description = "Recipient object UUID", examples = {"7b55ge1c-844f-11dc-a8a3-0242ac120002"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Recipient object UUID", examples = {
+            "7b55ge1c-844f-11dc-a8a3-0242ac120002"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String uuid;
 
     @Schema(description = "Recipient object name", examples = {"Name"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)

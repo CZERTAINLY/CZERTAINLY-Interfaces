@@ -2,7 +2,11 @@ package com.otilm.api.model.connector.cryptography.key;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,16 +16,10 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class KeyPairDataResponseDto {
 
-    @Schema(
-            description = "Data of the Public Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Data of the Public Key", requiredMode = Schema.RequiredMode.REQUIRED)
     private KeyDataResponseDto publicKeyData;
 
-    @Schema(
-            description = "Data of the Private Key",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Data of the Private Key", requiredMode = Schema.RequiredMode.REQUIRED)
     private KeyDataResponseDto privateKeyData;
 
 }

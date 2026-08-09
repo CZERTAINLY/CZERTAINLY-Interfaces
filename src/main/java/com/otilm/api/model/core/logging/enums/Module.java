@@ -1,29 +1,31 @@
 package com.otilm.api.model.core.logging.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum Module implements IPlatformEnum {
-    APPROVALS("approvals", "Approvals"),
-    AUTH("auth", "Auth", "Authentication and authorization module"),
-    CERTIFICATES("certificates", "Certificates", "Certificates management and operations"),
-    CRYPTOGRAPHIC_KEYS("keys", "Cryptographic keys", "Cryptographic keys management and operations"),
-    COMPLIANCE("compliance", "Compliance"),
-    CORE("core", "Core", "Core functionality including connectors, credentials and attributes"),
-    DISCOVERY("discovery", "Discovery", "Discovery of different resources"),
-    ENTITIES("entities", "Entities", "Entities and locations management"),
-    PROTOCOLS("protocols", "Protocols", "Protocols management and operations"),
-    SCHEDULER("scheduler", "Scheduler", "Scheduled jobs and tasks"),
-    SECRETS("secrets", "Secrets", "Secrets management and operations"),
-    SIGNING("signing", "Signing", "Signing management and operations"),
-    WORKFLOWS("workflows", "Workflows", "Workflows management");
+    APPROVALS("approvals", "Approvals"), AUTH("auth", "Auth", "Authentication and authorization module"), CERTIFICATES(
+            "certificates", "Certificates", "Certificates management and operations"), CRYPTOGRAPHIC_KEYS("keys",
+                    "Cryptographic keys",
+                    "Cryptographic keys management and operations"), COMPLIANCE("compliance", "Compliance"), CORE(
+                            "core", "Core",
+                            "Core functionality including connectors, credentials and attributes"), DISCOVERY(
+                                    "discovery", "Discovery", "Discovery of different resources"), ENTITIES("entities",
+                                            "Entities", "Entities and locations management"), PROTOCOLS("protocols",
+                                                    "Protocols", "Protocols management and operations"), SCHEDULER(
+                                                            "scheduler", "Scheduler",
+                                                            "Scheduled jobs and tasks"), SECRETS("secrets", "Secrets",
+                                                                    "Secrets management and operations"), SIGNING(
+                                                                            "signing", "Signing",
+                                                                            "Signing management and operations"), WORKFLOWS(
+                                                                                    "workflows", "Workflows",
+                                                                                    "Workflows management");
 
     private static final Module[] VALUES;
 
@@ -36,7 +38,7 @@ public enum Module implements IPlatformEnum {
     private final String description;
 
     Module(String code, String label) {
-        this(code, label,null);
+        this(code, label, null);
     }
 
     Module(String code, String label, String description) {
@@ -63,10 +65,10 @@ public enum Module implements IPlatformEnum {
 
     @JsonCreator
     public static Module findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(m -> m.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown module code {}", code)));
+                .orElseThrow(() -> new ValidationException(ValidationError.create("Unknown module code {}", code)));
     }
 }

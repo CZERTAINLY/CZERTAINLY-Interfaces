@@ -1,16 +1,13 @@
 package com.otilm.api.model.common.attribute.v2.content;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Objects;
-
 @Setter
 @Getter
-@Schema(
-        description = "String attribute content",
-        type = "object")
+@Schema(description = "String attribute content", type = "object")
 public class StringAttributeContentV2 extends BaseAttributeContentV2<String> {
 
     @Schema(description = "String attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -31,8 +28,12 @@ public class StringAttributeContentV2 extends BaseAttributeContentV2<String> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof StringAttributeContentV2)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof StringAttributeContentV2)) {
+            return false;
+        }
         StringAttributeContentV2 that = (StringAttributeContentV2) o;
         return Objects.equals(data, that.data);
     }

@@ -1,9 +1,8 @@
 package com.otilm.api.model.connector.v3.certificate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,8 +26,7 @@ class CertificateRegistrationRequestDtoTest {
         dto.setAttributes(List.of());
 
         String json = mapper.writeValueAsString(dto);
-        CertificateRegistrationRequestDtoV3 back =
-                mapper.readValue(json, CertificateRegistrationRequestDtoV3.class);
+        CertificateRegistrationRequestDtoV3 back = mapper.readValue(json, CertificateRegistrationRequestDtoV3.class);
         assertEquals("CN=device-7,O=Acme", back.getSubjectDn());
         assertEquals("DNS:device-7.acme.local", back.getSubjectAltName());
         assertEquals(1, back.getExtensions().size());

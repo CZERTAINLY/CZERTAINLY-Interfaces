@@ -22,6 +22,10 @@ import com.otilm.api.model.connector.discovery.v2.DiscoveryStopResponseDto;
 import com.otilm.api.model.connector.discovery.v2.DiscoverySupportedResourceDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.connector.ConnectorDto;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,28 +33,25 @@ import org.junit.jupiter.api.function.Executable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
 /**
- * Delegation tests for the MQ Discovery v2 client: each method must reach {@link ProxyClient} with the
- * right connector, path, method, body and response type, with the right per-operation {@code Duration},
- * and must return what the contract promises the caller.
+ * Delegation tests for the MQ Discovery v2 client: each method must reach {@link ProxyClient} with the right connector,
+ * path, method, body and response type, with the right per-operation {@code Duration}, and must return what the
+ * contract promises the caller.
  *
- * <p>The proxy is a hand-written recording fake because no mocking framework is on this project's test
- * classpath, matching {@code com.otilm.api.clients.mq.v2.AttributesApiClientMqTest}. It throws
- * {@link AssertionError} from every {@code ProxyClient} overload lacking a {@code Duration}, which makes
- * the explicit-timeout rule structural — a future call to one fails at the call site, unasserted.
+ * <p>
+ * The proxy is a hand-written recording fake because no mocking framework is on this project's test classpath, matching
+ * {@code com.otilm.api.clients.mq.v2.AttributesApiClientMqTest}. It throws {@link AssertionError} from every
+ * {@code ProxyClient} overload lacking a {@code Duration}, which makes the explicit-timeout rule structural — a future
+ * call to one fails at the call site, unasserted.
  *
- * <p>The three timeouts (11s/22s/33s) differ from each other and from
- * {@link DiscoveryMqTimeouts#defaults()}, so a mis-mapped component fails rather than passing by
- * coincidence.
+ * <p>
+ * The three timeouts (11s/22s/33s) differ from each other and from {@link DiscoveryMqTimeouts#defaults()}, so a
+ * mis-mapped component fails rather than passing by coincidence.
  *
- * <p>This class asserts against {@link DiscoveryPaths} constants while the REST suite hardcodes the same
- * routes as literals. Keep it that way: the literals are the independent pin on the constants, and
- * converting them would leave nothing checking the constants at all.
+ * <p>
+ * This class asserts against {@link DiscoveryPaths} constants while the REST suite hardcodes the same routes as
+ * literals. Keep it that way: the literals are the independent pin on the constants, and converting them would leave
+ * nothing checking the constants at all.
  */
 class DiscoveryApiClientMqTest {
 
@@ -84,7 +85,9 @@ class DiscoveryApiClientMqTest {
         List<DiscoverySupportedResourceDto> result = client.listSupportedResources(connector);
 
         Assertions.assertEquals(List.of(item), result);
-        proxyClient.assertCalled(connector, DiscoveryPaths.RESOURCES, "GET", null, DiscoverySupportedResourceDto[].class, CONTROL_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.RESOURCES, "GET", null, DiscoverySupportedResourceDto[].class,
+                        CONTROL_TIMEOUT);
     }
 
     @Test
@@ -95,7 +98,9 @@ class DiscoveryApiClientMqTest {
         List<BaseAttribute> result = client.listRunAttributes(connector);
 
         Assertions.assertEquals(List.of(attribute), result);
-        proxyClient.assertCalled(connector, DiscoveryPaths.ATTRIBUTES, "GET", null, BaseAttribute[].class, CONTROL_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.ATTRIBUTES, "GET", null, BaseAttribute[].class,
+                        CONTROL_TIMEOUT);
     }
 
     @Test
@@ -107,7 +112,9 @@ class DiscoveryApiClientMqTest {
 
         Assertions.assertEquals(List.of(attribute), result);
         // The wire code, never the Java enum name: "certificates", not "CERTIFICATE".
-        proxyClient.assertCalled(connector, DiscoveryPaths.BASE + "/certificates/attributes", "GET", null, BaseAttribute[].class, CONTROL_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.BASE + "/certificates/attributes", "GET", null,
+                        BaseAttribute[].class, CONTROL_TIMEOUT);
     }
 
     @Test
@@ -116,7 +123,9 @@ class DiscoveryApiClientMqTest {
 
         client.listResourceAttributes(connector, Resource.CRYPTOGRAPHIC_KEY);
 
-        proxyClient.assertCalled(connector, DiscoveryPaths.BASE + "/keys/attributes", "GET", null, BaseAttribute[].class, CONTROL_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.BASE + "/keys/attributes", "GET", null, BaseAttribute[].class,
+                        CONTROL_TIMEOUT);
     }
 
     // ---- Lifecycle (POST) ----
@@ -130,7 +139,9 @@ class DiscoveryApiClientMqTest {
         DiscoveryInitiateResponseDto result = client.initiate(connector, request);
 
         Assertions.assertSame(expected, result);
-        proxyClient.assertCalled(connector, DiscoveryPaths.INITIATE, "POST", request, DiscoveryInitiateResponseDto.class, CONTROL_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.INITIATE, "POST", request, DiscoveryInitiateResponseDto.class,
+                        CONTROL_TIMEOUT);
     }
 
     @Test
@@ -142,7 +153,9 @@ class DiscoveryApiClientMqTest {
         DiscoveryStatusResponseDto result = client.status(connector, request);
 
         Assertions.assertSame(expected, result);
-        proxyClient.assertCalled(connector, DiscoveryPaths.STATUS, "POST", request, DiscoveryStatusResponseDto.class, STATUS_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.STATUS, "POST", request, DiscoveryStatusResponseDto.class,
+                        STATUS_TIMEOUT);
     }
 
     @Test
@@ -155,7 +168,9 @@ class DiscoveryApiClientMqTest {
 
         Assertions.assertSame(expected, result);
         // The drain is the one operation allowed a longer budget than the rest.
-        proxyClient.assertCalled(connector, DiscoveryPaths.RESULTS, "POST", request, DiscoveryResultsResponseDto.class, DRAIN_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.RESULTS, "POST", request, DiscoveryResultsResponseDto.class,
+                        DRAIN_TIMEOUT);
     }
 
     @Test
@@ -167,7 +182,9 @@ class DiscoveryApiClientMqTest {
         DiscoveryStopResponseDto result = client.stop(connector, request);
 
         Assertions.assertSame(expected, result);
-        proxyClient.assertCalled(connector, DiscoveryPaths.STOP, "POST", request, DiscoveryStopResponseDto.class, CONTROL_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.STOP, "POST", request, DiscoveryStopResponseDto.class,
+                        CONTROL_TIMEOUT);
     }
 
     @Test
@@ -179,14 +196,16 @@ class DiscoveryApiClientMqTest {
         DiscoveryInitiateResponseDto result = client.resume(connector, request);
 
         Assertions.assertSame(expected, result);
-        proxyClient.assertCalled(connector, DiscoveryPaths.RESUME, "POST", request, DiscoveryInitiateResponseDto.class, CONTROL_TIMEOUT);
+        proxyClient
+                .assertCalled(connector, DiscoveryPaths.RESUME, "POST", request, DiscoveryInitiateResponseDto.class,
+                        CONTROL_TIMEOUT);
     }
 
     // ---- cancel: the one operation whose status is part of its contract ----
 
     /**
-     * 204 is cancel's only contract success status, so whatever successful status the proxy reports —
-     * including the {@code 200} the interface default produces — must reach the caller as 204.
+     * 204 is cancel's only contract success status, so whatever successful status the proxy reports — including the
+     * {@code 200} the interface default produces — must reach the caller as 204.
      */
     @Test
     void cancel_normalizesEverySuccessfulProxyStatusToNoContent() throws ConnectorException {
@@ -196,19 +215,22 @@ class DiscoveryApiClientMqTest {
 
             ResponseEntity<Void> result = client.cancel(connector, request);
 
-            Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode(),
-                    "cancel must answer 204 regardless of the successful status the proxy reported (" + proxyStatus + ")");
+            Assertions
+                    .assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode(),
+                            "cancel must answer 204 regardless of the successful status the proxy reported ("
+                                    + proxyStatus + ")");
             Assertions.assertNull(result.getBody());
             proxyClient.assertCalled(connector, DiscoveryPaths.CANCEL, "POST", request, Void.class, CONTROL_TIMEOUT);
-            Assertions.assertTrue(proxyClient.viaSendRequestForEntity,
-                    "cancel must use sendRequestForEntity - its ResponseEntity<Void> return exists to carry the upstream status");
+            Assertions
+                    .assertTrue(proxyClient.viaSendRequestForEntity,
+                            "cancel must use sendRequestForEntity - its ResponseEntity<Void> return exists to carry the upstream status");
         }
     }
 
     /**
-     * The composed case, with no override in the way: a proxy that leaves the {@code Duration} overload
-     * of {@code sendRequestForEntity} to the interface default still yields 204, because the client
-     * normalizes what the default wrapped in {@code ResponseEntity.ok}.
+     * The composed case, with no override in the way: a proxy that leaves the {@code Duration} overload of
+     * {@code sendRequestForEntity} to the interface default still yields 204, because the client normalizes what the
+     * default wrapped in {@code ResponseEntity.ok}.
      */
     @Test
     void cancel_yieldsNoContentEvenWhenTheProxyLeavesTheOverloadToTheInterfaceDefault() throws ConnectorException {
@@ -222,9 +244,9 @@ class DiscoveryApiClientMqTest {
     }
 
     /**
-     * The 404 the proxy classifies into {@link ConnectorEntityNotFoundException} is the run being
-     * untracked — already the terminal state cancel asked for. REST reports it as a 404 response, so MQ
-     * must too, or the identical call succeeds on one transport and hard-fails on the other.
+     * The 404 the proxy classifies into {@link ConnectorEntityNotFoundException} is the run being untracked — already
+     * the terminal state cancel asked for. REST reports it as a 404 response, so MQ must too, or the identical call
+     * succeeds on one transport and hard-fails on the other.
      */
     @Test
     void cancel_reportsANotTrackedRunAsNotFoundInsteadOfThrowing() throws ConnectorException {
@@ -249,16 +271,17 @@ class DiscoveryApiClientMqTest {
     }
 
     /**
-     * The not-tracked catch must stay narrow: the 422 past-the-point-of-no-return refusal is a real
-     * failure and may not be laundered into a 404 response.
+     * The not-tracked catch must stay narrow: the 422 past-the-point-of-no-return refusal is a real failure and may not
+     * be laundered into a 404 response.
      */
     @Test
     void cancel_rethrowsAProblemThatIsNotAboutAnUntrackedRun() {
         ConnectorProblemException refusal = problem(ErrorCode.OPERATION_PAST_POINT_OF_NO_RETURN);
         proxyClient.failure = refusal;
 
-        ConnectorProblemException thrown = Assertions.assertThrows(ConnectorProblemException.class,
-                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+        ConnectorProblemException thrown = Assertions
+                .assertThrows(ConnectorProblemException.class,
+                        () -> client.cancel(connector, new DiscoveryRunRequestDto()));
 
         Assertions.assertSame(refusal, thrown, "a refusal must reach the caller unchanged");
     }
@@ -269,10 +292,10 @@ class DiscoveryApiClientMqTest {
     }
 
     /**
-     * A not-tracked error code is only ever legitimate on a 404. {@code REGISTRATION_NOT_FOUND} is
-     * authority's flavour of not-tracked and is declared 422, and cancel's own 422 means the run is past
-     * the point of no return — so honouring the code without checking the status would answer a refused
-     * cancel, or a non-conformant authority code on a discovery route, as a successful cancellation.
+     * A not-tracked error code is only ever legitimate on a 404. {@code REGISTRATION_NOT_FOUND} is authority's flavour
+     * of not-tracked and is declared 422, and cancel's own 422 means the run is past the point of no return — so
+     * honouring the code without checking the status would answer a refused cancel, or a non-conformant authority code
+     * on a discovery route, as a successful cancellation.
      */
     @Test
     void cancel_notTrackedCodeOnANon404_isNotSwallowedAsSuccess() {
@@ -281,26 +304,26 @@ class DiscoveryApiClientMqTest {
         problem.setErrorCode(ErrorCode.REGISTRATION_NOT_FOUND);
         proxyClient.failure = new ConnectorProblemException(problem);
 
-        ConnectorException thrown = Assertions.assertThrows(ConnectorException.class,
-                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+        ConnectorException thrown = Assertions
+                .assertThrows(ConnectorException.class, () -> client.cancel(connector, new DiscoveryRunRequestDto()));
 
-        Assertions.assertSame(proxyClient.failure, thrown,
-                "a 422 must reach the caller, whatever error code it carries");
+        Assertions
+                .assertSame(proxyClient.failure, thrown, "a 422 must reach the caller, whatever error code it carries");
     }
 
     /**
-     * {@link DiscoverySyncApiClient} allows exactly two returned outcomes for cancel, 204 and 404, and
-     * requires every other failure to be thrown. A {@code ProxyClient} that preserves the upstream status
-     * hands back an entity rather than throwing, so returning whatever arrived would break that rule from
-     * inside the client — cancel's own 422 most of all, since it means the run is past the point of no
-     * return and must never read as a completed cancellation.
+     * {@link DiscoverySyncApiClient} allows exactly two returned outcomes for cancel, 204 and 404, and requires every
+     * other failure to be thrown. A {@code ProxyClient} that preserves the upstream status hands back an entity rather
+     * than throwing, so returning whatever arrived would break that rule from inside the client — cancel's own 422 most
+     * of all, since it means the run is past the point of no return and must never read as a completed cancellation.
      */
     @Test
     void cancel_relayedNon404IsThrownRatherThanReturned() {
         proxyClient.syncResponse = ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 
-        ConnectorClientException ex = Assertions.assertThrows(ConnectorClientException.class,
-                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+        ConnectorClientException ex = Assertions
+                .assertThrows(ConnectorClientException.class,
+                        () -> client.cancel(connector, new DiscoveryRunRequestDto()));
 
         Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ex.getHttpStatus());
         Assertions.assertEquals(connector, ex.getConnector());
@@ -310,18 +333,19 @@ class DiscoveryApiClientMqTest {
     void cancel_relayed404IsStillReturnedAsTheContractsTerminalOutcome() {
         proxyClient.syncResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        ResponseEntity<Void> response = Assertions.assertDoesNotThrow(
-                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+        ResponseEntity<Void> response = Assertions
+                .assertDoesNotThrow(() -> client.cancel(connector, new DiscoveryRunRequestDto()));
 
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(),
-                "a relayed 404 is the one non-2xx the contract lets the caller read");
+        Assertions
+                .assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(),
+                        "a relayed 404 is the one non-2xx the contract lets the caller read");
     }
 
     /**
-     * {@code ConnectorProblemException#getHttpStatus()} runs {@code HttpStatus.valueOf} on the problem
-     * document's status, which throws for a valid code with no enum constant such as 499. Asking it while
-     * deciding whether a failure is not-tracked would therefore replace the connector's own problem
-     * exception with an {@code IllegalArgumentException}, so the status is compared as an int.
+     * {@code ConnectorProblemException#getHttpStatus()} runs {@code HttpStatus.valueOf} on the problem document's
+     * status, which throws for a valid code with no enum constant such as 499. Asking it while deciding whether a
+     * failure is not-tracked would therefore replace the connector's own problem exception with an
+     * {@code IllegalArgumentException}, so the status is compared as an int.
      */
     @Test
     void cancel_problemOnANonEnumStatusPropagatesUnchanged() {
@@ -330,11 +354,12 @@ class DiscoveryApiClientMqTest {
         problem.setErrorCode(ErrorCode.UPSTREAM_ERROR);
         proxyClient.failure = new ConnectorProblemException(problem);
 
-        ConnectorException thrown = Assertions.assertThrows(ConnectorException.class,
-                () -> client.cancel(connector, new DiscoveryRunRequestDto()));
+        ConnectorException thrown = Assertions
+                .assertThrows(ConnectorException.class, () -> client.cancel(connector, new DiscoveryRunRequestDto()));
 
-        Assertions.assertSame(proxyClient.failure, thrown,
-                "the connector's problem must survive a status outside Spring's HttpStatus enum");
+        Assertions
+                .assertSame(proxyClient.failure, thrown,
+                        "the connector's problem must survive a status outside Spring's HttpStatus enum");
     }
 
     // ---- Error propagation: this client adds no mapping of its own ----
@@ -363,10 +388,10 @@ class DiscoveryApiClientMqTest {
     // ---- Bodiless responses: the proxy returns null when the relayed response had no body ----
 
     /**
-     * A list route answering with no body at all is non-conformant, not empty — it must return a JSON
-     * array. Reading it as empty would make a broken connector indistinguishable from one that genuinely
-     * reports nothing, which for {@code listSupportedResources} is a distinction Core acts on. REST
-     * rejects it identically through {@code BaseApiClient.requireBody}.
+     * A list route answering with no body at all is non-conformant, not empty — it must return a JSON array. Reading it
+     * as empty would make a broken connector indistinguishable from one that genuinely reports nothing, which for
+     * {@code listSupportedResources} is a distinction Core acts on. REST rejects it identically through
+     * {@code BaseApiClient.requireBody}.
      */
     @Test
     void listOperationsFailNamingTheOperationOnABodilessResponse() {
@@ -374,7 +399,8 @@ class DiscoveryApiClientMqTest {
 
         assertFailsNaming("listSupportedResources", () -> client.listSupportedResources(connector));
         assertFailsNaming("listRunAttributes", () -> client.listRunAttributes(connector));
-        assertFailsNaming("listResourceAttributes", () -> client.listResourceAttributes(connector, Resource.CERTIFICATE));
+        assertFailsNaming("listResourceAttributes",
+                () -> client.listResourceAttributes(connector, Resource.CERTIFICATE));
     }
 
     @Test
@@ -384,13 +410,14 @@ class DiscoveryApiClientMqTest {
         List<BaseAttribute> result = client.listRunAttributes(connector);
 
         Assertions.assertEquals(1, result.size());
-        Assertions.assertDoesNotThrow(() -> result.add(new InfoAttributeV3()),
-                "the returned list must be mutable on both transports, not an Arrays.asList view");
+        Assertions
+                .assertDoesNotThrow(() -> result.add(new InfoAttributeV3()),
+                        "the returned list must be mutable on both transports, not an Arrays.asList view");
     }
 
     /**
-     * The operations whose 2xx response must carry a payload fail loudly instead of handing
-     * {@code null} to Core, where it would resurface as an NPE attributed to no connector.
+     * The operations whose 2xx response must carry a payload fail loudly instead of handing {@code null} to Core, where
+     * it would resurface as an NPE attributed to no connector.
      */
     @Test
     void singleValueOperationsFailNamingTheOperationOnABodilessResponse() {
@@ -407,10 +434,12 @@ class DiscoveryApiClientMqTest {
 
     private void assertFailsNaming(String operation, Executable call) {
         ConnectorException thrown = Assertions.assertThrows(ConnectorException.class, call);
-        Assertions.assertTrue(thrown.getMessage().contains(operation),
-                "the failure must name the operation, was: " + thrown.getMessage());
-        Assertions.assertSame(connector, thrown.getConnector(),
-                "the failure must be attributed to the connector that produced it");
+        Assertions
+                .assertTrue(thrown.getMessage().contains(operation),
+                        "the failure must name the operation, was: " + thrown.getMessage());
+        Assertions
+                .assertSame(connector, thrown.getConnector(),
+                        "the failure must be attributed to the connector that produced it");
     }
 
     // ---- Eager validation ----
@@ -437,17 +466,20 @@ class DiscoveryApiClientMqTest {
 
     @Test
     void timeoutsRejectNullComponents() {
-        Assertions.assertThrows(NullPointerException.class,
-                () -> new DiscoveryMqTimeouts(null, DRAIN_TIMEOUT, CONTROL_TIMEOUT));
-        Assertions.assertThrows(NullPointerException.class,
-                () -> new DiscoveryMqTimeouts(STATUS_TIMEOUT, null, CONTROL_TIMEOUT));
-        Assertions.assertThrows(NullPointerException.class,
-                () -> new DiscoveryMqTimeouts(STATUS_TIMEOUT, DRAIN_TIMEOUT, null));
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> new DiscoveryMqTimeouts(null, DRAIN_TIMEOUT, CONTROL_TIMEOUT));
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> new DiscoveryMqTimeouts(STATUS_TIMEOUT, null, CONTROL_TIMEOUT));
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> new DiscoveryMqTimeouts(STATUS_TIMEOUT, DRAIN_TIMEOUT, null));
     }
 
     /**
-     * A 0ms or negative timeout must fail at construction, not as an immediate, puzzling timeout on
-     * the first connector call.
+     * A 0ms or negative timeout must fail at construction, not as an immediate, puzzling timeout on the first connector
+     * call.
      */
     @Test
     void timeoutsRejectNonPositiveComponents() {
@@ -463,8 +495,10 @@ class DiscoveryApiClientMqTest {
 
     private static void assertNotPositive(String component, Executable construction) {
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, construction);
-        Assertions.assertTrue(thrown.getMessage().startsWith(component + " must be a positive duration"),
-                "the message must name the component and match the ClientTuning shape, was: " + thrown.getMessage());
+        Assertions
+                .assertTrue(thrown.getMessage().startsWith(component + " must be a positive duration"),
+                        "the message must name the component and match the ClientTuning shape, was: "
+                                + thrown.getMessage());
     }
 
     @Test
@@ -480,19 +514,19 @@ class DiscoveryApiClientMqTest {
     // ---- ProxyClient default overload ----
 
     /**
-     * {@code sendRequestForEntity(…, Duration)} is a {@code default} method that
-     * {@link RecordingProxyClient} overrides, so this covers the default body itself: it must forward
-     * the caller's timeout to {@code sendRequest} rather than drop it. The status it produces is not
-     * asserted — it is not the contract status, and {@code cancel} normalizes it; see
-     * {@link #cancel_yieldsNoContentEvenWhenTheProxyLeavesTheOverloadToTheInterfaceDefault()}.
+     * {@code sendRequestForEntity(…, Duration)} is a {@code default} method that {@link RecordingProxyClient}
+     * overrides, so this covers the default body itself: it must forward the caller's timeout to {@code sendRequest}
+     * rather than drop it. The status it produces is not asserted — it is not the contract status, and {@code cancel}
+     * normalizes it; see {@link #cancel_yieldsNoContentEvenWhenTheProxyLeavesTheOverloadToTheInterfaceDefault()}.
      */
     @Test
     void sendRequestForEntityDefaultForwardsTheCallersTimeout() throws ConnectorException {
         DiscoveryStopResponseDto body = new DiscoveryStopResponseDto();
         TimeoutCapturingProxyClient proxy = new TimeoutCapturingProxyClient(body);
 
-        ResponseEntity<DiscoveryStopResponseDto> response = proxy.sendRequestForEntity(
-                connector, DiscoveryPaths.STOP, "POST", null, DiscoveryStopResponseDto.class, DRAIN_TIMEOUT);
+        ResponseEntity<DiscoveryStopResponseDto> response = proxy
+                .sendRequestForEntity(connector, DiscoveryPaths.STOP, "POST", null, DiscoveryStopResponseDto.class,
+                        DRAIN_TIMEOUT);
 
         Assertions.assertEquals(DRAIN_TIMEOUT, proxy.seenTimeout);
         Assertions.assertSame(body, response.getBody());
@@ -513,7 +547,7 @@ class DiscoveryApiClientMqTest {
         @Override
         @SuppressWarnings("unchecked")
         public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body,
-                                 Class<T> responseType, Duration timeout) {
+                Class<T> responseType, Duration timeout) {
             this.seenTimeout = timeout;
             return (T) response;
         }
@@ -522,9 +556,10 @@ class DiscoveryApiClientMqTest {
     /**
      * Records the one call the client under test makes.
      *
-     * <p>The recorded connector must stay named {@code seenConnector}, not {@code connector}: sharing
-     * the enclosing test's field name makes {@code assertCalled} compare the field with itself, so it
-     * could never fail and nothing would check that the client forwards the caller's connector.
+     * <p>
+     * The recorded connector must stay named {@code seenConnector}, not {@code connector}: sharing the enclosing test's
+     * field name makes {@code assertCalled} compare the field with itself, so it could never fail and nothing would
+     * check that the client forwards the caller's connector.
      */
     private static final class RecordingProxyClient extends UnsupportedProxyClient {
         private ApiClientConnectorInfo seenConnector;
@@ -541,7 +576,7 @@ class DiscoveryApiClientMqTest {
         @Override
         @SuppressWarnings("unchecked")
         public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body,
-                                 Class<T> responseType, Duration timeout) throws ConnectorException {
+                Class<T> responseType, Duration timeout) throws ConnectorException {
             capture(connector, path, method, body, responseType, timeout, false);
             return (T) syncResponse;
         }
@@ -549,13 +584,13 @@ class DiscoveryApiClientMqTest {
         @Override
         @SuppressWarnings("unchecked")
         public <T> ResponseEntity<T> sendRequestForEntity(ApiClientConnectorInfo connector, String path, String method,
-                                                         Object body, Class<T> responseType, Duration timeout) throws ConnectorException {
+                Object body, Class<T> responseType, Duration timeout) throws ConnectorException {
             capture(connector, path, method, body, responseType, timeout, true);
             return (ResponseEntity<T>) syncResponse;
         }
 
         private void capture(ApiClientConnectorInfo connector, String path, String method, Object body,
-                            Class<?> responseType, Duration timeout, boolean forEntity) throws ConnectorException {
+                Class<?> responseType, Duration timeout, boolean forEntity) throws ConnectorException {
             this.seenConnector = connector;
             this.path = path;
             this.method = method;
@@ -569,8 +604,9 @@ class DiscoveryApiClientMqTest {
         }
 
         private void assertCalled(ApiClientConnectorInfo expectedConnector, String expectedPath, String expectedMethod,
-                                  Object expectedBody, Class<?> expectedResponseType, Duration expectedTimeout) {
-            Assertions.assertSame(expectedConnector, seenConnector, "the caller's connector must be forwarded unchanged");
+                Object expectedBody, Class<?> expectedResponseType, Duration expectedTimeout) {
+            Assertions
+                    .assertSame(expectedConnector, seenConnector, "the caller's connector must be forwarded unchanged");
             Assertions.assertEquals(expectedPath, path);
             Assertions.assertEquals(expectedMethod, method);
             Assertions.assertSame(expectedBody, body);
@@ -580,20 +616,22 @@ class DiscoveryApiClientMqTest {
     }
 
     /**
-     * Base fake: every {@link ProxyClient} member the discovery client must not touch. Reaching a
-     * timeout-less overload means an operation silently readopted the proxy's shared default timeout.
+     * Base fake: every {@link ProxyClient} member the discovery client must not touch. Reaching a timeout-less overload
+     * means an operation silently readopted the proxy's shared default timeout.
      */
     private abstract static class UnsupportedProxyClient implements ProxyClient {
 
         private static final String NO_TIMEOUT = "the discovery v2 MQ client must pass an explicit Duration on every call";
 
         @Override
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType) {
+        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body,
+                Class<T> responseType) {
             throw new AssertionError(NO_TIMEOUT + " - timeout-less sendRequest was called for " + path);
         }
 
         @Override
-        public <T> ResponseEntity<T> sendRequestForEntity(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType) {
+        public <T> ResponseEntity<T> sendRequestForEntity(ApiClientConnectorInfo connector, String path, String method,
+                Object body, Class<T> responseType) {
             throw new AssertionError(NO_TIMEOUT + " - timeout-less sendRequestForEntity was called for " + path);
         }
 
@@ -601,22 +639,26 @@ class DiscoveryApiClientMqTest {
         // call, so each concrete fake supplies it.
 
         @Override
-        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Map<String, String> pathVariables, Object body, Class<T> responseType) {
+        public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method,
+                Map<String, String> pathVariables, Object body, Class<T> responseType) {
             throw new AssertionError(NO_TIMEOUT + " - the path-variable sendRequest overload takes no timeout");
         }
 
         @Override
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType) {
+        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method,
+                Object body, Class<T> responseType) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Object body, Class<T> responseType, Duration timeout) {
+        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method,
+                Object body, Class<T> responseType, Duration timeout) {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method, Map<String, String> pathVariables, Object body, Class<T> responseType, Duration timeout) {
+        public <T> CompletableFuture<T> sendRequestAsync(ApiClientConnectorInfo connector, String path, String method,
+                Map<String, String> pathVariables, Object body, Class<T> responseType, Duration timeout) {
             throw new UnsupportedOperationException();
         }
 
@@ -626,7 +668,8 @@ class DiscoveryApiClientMqTest {
         }
 
         @Override
-        public void sendFireAndForget(ApiClientConnectorInfo connector, String path, String method, Object body, String messageType) {
+        public void sendFireAndForget(ApiClientConnectorInfo connector, String path, String method, Object body,
+                String messageType) {
             throw new UnsupportedOperationException();
         }
     }

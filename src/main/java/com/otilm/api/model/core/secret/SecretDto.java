@@ -4,10 +4,9 @@ import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.connector.secrets.SecretType;
 import com.otilm.api.model.core.compliance.ComplianceStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -37,10 +36,7 @@ public class SecretDto extends NameAndUuidDto {
     @Schema(description = "Groups that have access to the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<NameAndUuidDto> groups;
 
-    @Schema(
-            description = "Secret compliance status",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Secret compliance status", requiredMode = Schema.RequiredMode.REQUIRED)
     private ComplianceStatus complianceStatus;
 
 }

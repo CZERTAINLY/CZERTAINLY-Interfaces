@@ -1,11 +1,12 @@
 package com.otilm.api.exception;
 
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CertificateRequestValidationExceptionTest {
 
@@ -13,9 +14,9 @@ class CertificateRequestValidationExceptionTest {
     void carriesShapedMessageAndDetails_whenConstructedWithDetails() {
         // given
         var message = "Uploaded CSR does not satisfy the request-attribute policy";
-        var findings = List.of(
-                "Missing required mapped field: Common Name",
-                "SAN dNSName 'evil.example.com' is not allowed by the request-attribute set");
+        var findings = List
+                .of("Missing required mapped field: Common Name",
+                        "SAN dNSName 'evil.example.com' is not allowed by the request-attribute set");
 
         // when
         var exception = new CertificateRequestValidationException(message, findings);

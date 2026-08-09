@@ -1,15 +1,13 @@
 package com.otilm.api.model.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Map;
-
 public class HealthDto {
 
-    @Schema(description = "Current connector operational status",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Current connector operational status", requiredMode = Schema.RequiredMode.REQUIRED)
     private HealthStatus status;
 
     @Schema(description = "Detailed status description")

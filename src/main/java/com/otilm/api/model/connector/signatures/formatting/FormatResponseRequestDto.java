@@ -1,25 +1,22 @@
 package com.otilm.api.model.connector.signatures.formatting;
 
-import com.otilm.api.model.client.attribute.RequestAttribute;
-import com.otilm.api.model.client.signing.profile.workflow.SigningWorkflowType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.otilm.api.model.client.attribute.RequestAttribute;
+import com.otilm.api.model.client.signing.profile.workflow.SigningWorkflowType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
-@JsonSubTypes({
-        @Type(value = TimestampingFormatResponseRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
-        @Type(value = ContentSigningFormatResponseRequestDto.class, name = SigningWorkflowType.Codes.CONTENT_SIGNING),
-})
+@JsonSubTypes({@Type(value = TimestampingFormatResponseRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
+        @Type(value = ContentSigningFormatResponseRequestDto.class, name = SigningWorkflowType.Codes.CONTENT_SIGNING),})
 @Schema(implementation = FormatResponseInterface.class)
 public abstract class FormatResponseRequestDto implements FormatResponseInterface {
 
@@ -28,31 +25,19 @@ public abstract class FormatResponseRequestDto implements FormatResponseInterfac
     private final SigningWorkflowType type;
 
     @NotNull
-    @Schema(
-            description = "Data-to-be-signed bytes returned by formatDtbs (already contains serialNumber, signingTime, etc.)",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Data-to-be-signed bytes returned by formatDtbs (already contains serialNumber, signingTime, etc.)", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] dtbs;
 
     @NotNull
-    @Schema(
-            description = "Raw signature bytes from the Cryptography Provider",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Raw signature bytes from the Cryptography Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] signature;
 
     @NotEmpty
-    @Schema(
-            description = "Certificate chain where the first element is the signer certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Certificate chain where the first element is the signer certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<byte[]> certificateChain;
 
     @NotNull
-    @Schema(
-            description = "Formatting-specific parameters, same attributes as passed to formatDtbs",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Formatting-specific parameters, same attributes as passed to formatDtbs", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> formatAttributes;
 
     protected FormatResponseRequestDto(SigningWorkflowType type) {

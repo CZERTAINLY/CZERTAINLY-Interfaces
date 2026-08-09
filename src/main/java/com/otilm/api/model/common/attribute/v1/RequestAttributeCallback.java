@@ -2,11 +2,10 @@ package com.otilm.api.model.common.attribute.v1;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import java.io.Serializable;
 import java.util.Map;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestAttributeCallback {
@@ -14,23 +13,16 @@ public class RequestAttributeCallback {
     @Schema(description = "UUID of the Attribute")
     private String uuid;
 
-    @Schema(description = "Name of the Attribute",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(
-            description = "Map of path variables supported by the callback method"
-    )
+    @Schema(description = "Map of path variables supported by the callback method")
     private Map<String, Serializable> pathVariables;
 
-    @Schema(
-            description = "Map of the query parameters supported by the callback method"
-    )
+    @Schema(description = "Map of the query parameters supported by the callback method")
     private Map<String, Serializable> queryParameters;
 
-    @Schema(
-            description = "Request body for the callback method"
-    )
+    @Schema(description = "Request body for the callback method")
     private Map<String, Serializable> requestBody;
 
     public String getName() {

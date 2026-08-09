@@ -3,44 +3,27 @@ package com.otilm.api.model.core.workflows;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 @Data
 public class ExecutionItemRequestDto {
-    @Schema(
-            description = "Source of the field in the execution item",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Source of the field in the execution item", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private FilterFieldSource fieldSource;
 
-    @Schema(
-            description = "Field identifier of the execution item",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Field identifier of the execution item", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String fieldIdentifier;
 
-    @Schema(
-            description = "UUID of the Notification profile",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUID of the Notification profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String notificationProfileUuid;
 
-    @Schema(
-            description = "Static data of the execution item. Must be null when sourceFieldSource or sourceFieldIdentifier is set"
-    )
+    @Schema(description = "Static data of the execution item. Must be null when sourceFieldSource or sourceFieldIdentifier is set")
     private Serializable data;
 
-    @Schema(
-            description = "Source field source for mapping (META, DATA, or CUSTOM). When set, value is read from this source instead of static data. Must be provided together with sourceFieldIdentifier; neither field is valid on its own.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Source field source for mapping (META, DATA, or CUSTOM). When set, value is read from this source instead of static data. Must be provided together with sourceFieldIdentifier; neither field is valid on its own.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private FilterFieldSource sourceFieldSource;
 
-    @Schema(
-            description = "Source field identifier for mapping (format: name|ContentType). Must be provided together with sourceFieldSource; neither field is valid on its own.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED
-    )
+    @Schema(description = "Source field identifier for mapping (format: name|ContentType). Must be provided together with sourceFieldSource; neither field is valid on its own.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String sourceFieldIdentifier;
 
     @AssertTrue(message = "Field source and field identifier are required (set field execution) or notification profile UUID (send notification execution).")

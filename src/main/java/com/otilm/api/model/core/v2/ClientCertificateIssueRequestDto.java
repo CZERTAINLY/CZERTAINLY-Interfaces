@@ -4,99 +4,71 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import java.util.List;
+import java.util.UUID;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-import java.util.UUID;
-
 /**
- * Request to issue a certificate for an external client from a CSR, including completing a pre-registered
- * certificate, which additionally carries the authorization secret.
+ * Request to issue a certificate for an external client from a CSR, including completing a pre-registered certificate,
+ * which additionally carries the authorization secret.
  */
 @Data
 public class ClientCertificateIssueRequestDto {
 
-    @Schema(
-            description = "List of attributes to create CSR. Required if CSR is not provided"
-    )
+    @Schema(description = "List of attributes to create CSR. Required if CSR is not provided")
     List<RequestAttribute> csrAttributes;
 
-    @Schema(
-            description = "List of attributes to sign the CSR"
-    )
+    @Schema(description = "List of attributes to sign the CSR")
     List<RequestAttribute> signatureAttributes;
 
-    @Schema(
-            description = "List of attributes to sign the alternative private key"
-    )
+    @Schema(description = "List of attributes to sign the alternative private key")
     List<RequestAttribute> altSignatureAttributes;
 
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     // Key Related Parameters
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(
-            description = "Certificate signing request encoded as Base64 string",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Certificate signing request encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
     private String request;
 
-    @Schema(
-            description = "Certificate signing request format",
-            defaultValue = "pkcs10"
-    )
+    @Schema(description = "Certificate signing request format", defaultValue = "pkcs10")
     private CertificateRequestFormat format = CertificateRequestFormat.PKCS10;
 
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     // Key Related Parameters
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(
-            description = "Token Profile UUID. Required if CSR is not uploaded"
-    )
+    @Schema(description = "Token Profile UUID. Required if CSR is not uploaded")
     private UUID tokenProfileUuid;
 
-    @Schema(
-            description = "Key UUID. Required if CSR is not uploaded"
-    )
+    @Schema(description = "Key UUID. Required if CSR is not uploaded")
     private UUID keyUuid;
 
-    @Schema(
-            description = "Token Profile UUID for the alternative key."
-    )
+    @Schema(description = "Token Profile UUID for the alternative key.")
     private UUID altTokenProfileUuid;
 
-    @Schema(
-            description = "Alternative Key UUID."
-    )
+    @Schema(description = "Alternative Key UUID.")
     private UUID altKeyUuid;
 
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     // Attributes
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(
-            description = "List of RA Profile related Attributes to issue Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "List of RA Profile related Attributes to issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
-    @Schema(
-            description = "List of Custom Attributes"
-    )
+    @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
     // Format (@Size/@Pattern) is enforced at registration, not here: on the verify path a malformed secret
     // must fail the challenge identically to a wrong one, so no format constraint is applied (no format oracle).
     @EqualsAndHashCode.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(
-            description = "One-time authorization secret proving the caller may complete a pre-registered "
-                    + "certificate. Write-only; ignored for certificates without an active registration.",
-            accessMode = Schema.AccessMode.WRITE_ONLY
-    )
+    @Schema(description = "One-time authorization secret proving the caller may complete a pre-registered "
+            + "certificate. Write-only; ignored for certificates without an active registration.", accessMode = Schema.AccessMode.WRITE_ONLY)
     private String authorizationSecret;
 
     // Deliberate allowlist — only non-sensitive fields. Never append request (the CSR) or authorizationSecret.

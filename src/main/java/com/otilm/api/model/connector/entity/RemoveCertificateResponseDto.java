@@ -7,10 +7,7 @@ import java.util.List;
 
 public class RemoveCertificateResponseDto {
 
-    @Schema(
-            description = "Metadata of the Certificate",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Metadata of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<MetadataAttributeV2> certificateMetadata;
 
     public List<MetadataAttributeV2> getCertificateMetadata() {

@@ -4,14 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
-@Schema(
-        description = "Boolean attribute content to store true/false values",
-        type = "object")
+@Schema(description = "Boolean attribute content to store true/false values", type = "object")
 public class BooleanAttributeContentV2 extends BaseAttributeContentV2<Boolean> {
 
     @Schema(description = "Boolean attribute value", requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean data;
-
 
     public BooleanAttributeContentV2() {
     }
@@ -37,9 +34,15 @@ public class BooleanAttributeContentV2 extends BaseAttributeContentV2<Boolean> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BooleanAttributeContentV2)) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BooleanAttributeContentV2)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         BooleanAttributeContentV2 that = (BooleanAttributeContentV2) o;
         return Objects.equals(data, that.data);
     }

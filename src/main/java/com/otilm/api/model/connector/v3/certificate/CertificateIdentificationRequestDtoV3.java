@@ -12,9 +12,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class CertificateIdentificationRequestDtoV3 extends AuthorityV3ScopedRequestDto {
 
-    @Schema(description = "Base64 of cert to identify at the upstream CA",
-            format = "byte",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 of cert to identify at the upstream CA", format = "byte", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "certificate is required for identify")
     private String certificate;
 }

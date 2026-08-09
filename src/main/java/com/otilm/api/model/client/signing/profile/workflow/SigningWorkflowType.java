@@ -1,21 +1,19 @@
 package com.otilm.api.model.client.signing.profile.workflow;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum SigningWorkflowType implements IPlatformEnum {
 
-    CONTENT_SIGNING(Codes.CONTENT_SIGNING, "Content Signing", "Signing of content"),
-    RAW_SIGNING(Codes.RAW_SIGNING, "Raw Signing", "Signing of raw data"),
-    TIMESTAMPING(Codes.TIMESTAMPING, "Timestamping", "Timestamping of data"),
-    ;
+    CONTENT_SIGNING(Codes.CONTENT_SIGNING, "Content Signing", "Signing of content"), RAW_SIGNING(Codes.RAW_SIGNING,
+            "Raw Signing",
+            "Signing of raw data"), TIMESTAMPING(Codes.TIMESTAMPING, "Timestamping", "Timestamping of data"),;
 
     private static final SigningWorkflowType[] VALUES;
 
@@ -35,11 +33,12 @@ public enum SigningWorkflowType implements IPlatformEnum {
 
     @JsonCreator
     public static SigningWorkflowType findByCode(String code) {
-        return Arrays.stream(VALUES)
+        return Arrays
+                .stream(VALUES)
                 .filter(k -> k.code.equals(code))
                 .findFirst()
-                .orElseThrow(() ->
-                        new ValidationException(ValidationError.create("Unknown signing workflow type {}", code)));
+                .orElseThrow(() -> new ValidationException(
+                        ValidationError.create("Unknown signing workflow type {}", code)));
     }
 
     @Override

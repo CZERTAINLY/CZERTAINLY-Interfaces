@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Class representing a request to regenerate certificate
@@ -25,64 +24,44 @@ import java.util.UUID;
 @Data
 public class ClientCertificateRekeyRequestDto {
 
-    @Schema(
-            description = "True to replace renewed certificate in the associated locations",
-            defaultValue = "false"
-    )
+    @Schema(description = "True to replace renewed certificate in the associated locations", defaultValue = "false")
     public boolean replaceInLocations;
 
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     // Request Related Parameters
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(
-            description = "Certificate signing request encoded as Base64 string. If not provided, CSR attributes will be used"
-    )
+    @Schema(description = "Certificate signing request encoded as Base64 string. If not provided, CSR attributes will be used")
     private String request;
 
-    @Schema(
-            description = "Certificate signing request format",
-            defaultValue = "pkcs10"
-    )
+    @Schema(description = "Certificate signing request format", defaultValue = "pkcs10")
     @Builder.Default
     private CertificateRequestFormat format = CertificateRequestFormat.PKCS10;
 
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     // Key Related Parameters
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(
-            description = "Key UUID"
-    )
+    @Schema(description = "Key UUID")
     private UUID keyUuid;
 
-    @Schema(
-            description = "Token Profile UUID"
-    )
+    @Schema(description = "Token Profile UUID")
     private UUID tokenProfileUuid;
 
-    @Schema(
-            description = "Alternative Key UUID"
-    )
+    @Schema(description = "Alternative Key UUID")
     private UUID altKeyUuid;
 
-    @Schema(
-            description = "Token Profile UUID for the alternative key"
-    )
+    @Schema(description = "Token Profile UUID for the alternative key")
     private UUID altTokenProfileUuid;
 
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     // Attributes
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(
-            description = "Signature Attributes. If not provided, existing attributes will be used to generate the new CSR"
-    )
+    @Schema(description = "Signature Attributes. If not provided, existing attributes will be used to generate the new CSR")
     private List<RequestAttribute> signatureAttributes;
 
-    @Schema(
-            description = "Alternative Signature Attributes. If not provided, existing alternative attributes will be used to generate the new CSR"
-    )
+    @Schema(description = "Alternative Signature Attributes. If not provided, existing alternative attributes will be used to generate the new CSR")
     private List<RequestAttribute> altSignatureAttributes;
 
     // Format (@Size/@Pattern) is enforced at registration, not here: on the verify path a malformed secret
@@ -90,11 +69,8 @@ public class ClientCertificateRekeyRequestDto {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(
-            description = "One-time authorization secret for rekeying a certificate that has an active "
-                    + "registration. Write-only; ignored for certificates without one.",
-            accessMode = Schema.AccessMode.WRITE_ONLY
-    )
+    @Schema(description = "One-time authorization secret for rekeying a certificate that has an active "
+            + "registration. Write-only; ignored for certificates without one.", accessMode = Schema.AccessMode.WRITE_ONLY)
     private String authorizationSecret;
 
     // Deliberate allowlist — avoid leaking CSR/request or secrets via logs.
@@ -110,8 +86,8 @@ public class ClientCertificateRekeyRequestDto {
     /**
      * Partial builder declaration; Lombok fills in the rest. Declared only to replace the generated builder
      * {@code toString()}, which would otherwise print every builder field — including the write-only
-     * {@code authorizationSecret} and the CSR payload, which the DTO's own allowlisted {@code toString()}
-     * deliberately omits.
+     * {@code authorizationSecret} and the CSR payload, which the DTO's own allowlisted {@code toString()} deliberately
+     * omits.
      */
     public static class ClientCertificateRekeyRequestDtoBuilder {
         @Override

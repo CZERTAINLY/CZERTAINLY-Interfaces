@@ -10,8 +10,7 @@ class FeatureFlagBehaviorTest {
     @Test
     void everyFlagDeclaresBehavior() {
         for (FeatureFlag flag : FeatureFlag.values()) {
-            assertNotNull(flag.getBehavior(),
-                "FeatureFlag " + flag + " must declare a FeatureFlagBehavior");
+            assertNotNull(flag.getBehavior(), "FeatureFlag " + flag + " must declare a FeatureFlagBehavior");
         }
     }
 

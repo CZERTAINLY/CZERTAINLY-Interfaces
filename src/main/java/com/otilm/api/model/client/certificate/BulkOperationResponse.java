@@ -13,7 +13,6 @@ public class BulkOperationResponse {
     @Schema(description = "Message for the action", requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
-
     public BulkOperationStatus getStatus() {
         return status;
     }

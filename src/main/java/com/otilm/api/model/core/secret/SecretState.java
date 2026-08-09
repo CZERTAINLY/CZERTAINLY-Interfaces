@@ -1,20 +1,22 @@
 package com.otilm.api.model.core.secret;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
 public enum SecretState implements IPlatformEnum {
 
-    INACTIVE("inactive", "Inactive", "Secret is managed but not active and is not available to use"),
-    ACTIVE("active", "Active", "Secret is active and available for use"),
-    EXPIRED("expired", "Expired", "Secret has expired and is no longer valid"),
-    REVOKED("revoked", "Revoked", "Secret has been revoked and is no longer valid"),
-    PENDING_APPROVAL("pendingApproval", "Pending Approval", "Secret is pending approval and is not available for use"),
-    REJECTED("rejected", "Rejected", "Secret has been rejected and is not available for use"),
-    FAILED("failed", "Failed", "Creation of the secret has failed and is not available for use"),
-    ;
+    INACTIVE("inactive", "Inactive", "Secret is managed but not active and is not available to use"), ACTIVE("active",
+            "Active", "Secret is active and available for use"), EXPIRED("expired", "Expired",
+                    "Secret has expired and is no longer valid"), REVOKED("revoked", "Revoked",
+                            "Secret has been revoked and is no longer valid"), PENDING_APPROVAL("pendingApproval",
+                                    "Pending Approval",
+                                    "Secret is pending approval and is not available for use"), REJECTED("rejected",
+                                            "Rejected",
+                                            "Secret has been rejected and is not available for use"), FAILED("failed",
+                                                    "Failed",
+                                                    "Creation of the secret has failed and is not available for use"),;
 
     private final String code;
     private final String label;

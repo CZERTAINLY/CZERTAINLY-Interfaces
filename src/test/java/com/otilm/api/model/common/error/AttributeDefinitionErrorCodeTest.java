@@ -1,9 +1,8 @@
 package com.otilm.api.model.common.error;
 
+import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-
-import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -26,15 +25,13 @@ class AttributeDefinitionErrorCodeTest {
         URI type = ProblemDetailExtended
                 .fromErrorCode(ErrorCode.ATTRIBUTE_DEFINITION_NOT_FOUND, "x", null, null)
                 .getType();
-        assertEquals("https://docs.otilm.com/problems/connector/ATTRIBUTE_DEFINITION_NOT_FOUND",
-                type.toString());
+        assertEquals("https://docs.otilm.com/problems/connector/ATTRIBUTE_DEFINITION_NOT_FOUND", type.toString());
     }
 
     @Test
     void valuesOf_stillResolvesAllCodes() {
         // adding the new entry must not break enum iteration / valueOf
         assertTrue(ErrorCode.values().length > 1);
-        assertEquals(ErrorCode.ATTRIBUTE_DEFINITION_NOT_FOUND,
-                ErrorCode.valueOf("ATTRIBUTE_DEFINITION_NOT_FOUND"));
+        assertEquals(ErrorCode.ATTRIBUTE_DEFINITION_NOT_FOUND, ErrorCode.valueOf("ATTRIBUTE_DEFINITION_NOT_FOUND"));
     }
 }

@@ -8,15 +8,14 @@ import lombok.Data;
 
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "signingScheme", visible = true)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = ManagedSigningRequestDto.class, name = SigningScheme.Codes.MANAGED),
-        @JsonSubTypes.Type(value = DelegatedSigningRequestDto.class, name = SigningScheme.Codes.DELEGATED),
-})
+@JsonSubTypes({@JsonSubTypes.Type(value = ManagedSigningRequestDto.class, name = SigningScheme.Codes.MANAGED),
+        @JsonSubTypes.Type(value = DelegatedSigningRequestDto.class, name = SigningScheme.Codes.DELEGATED),})
 @Schema(implementation = SigningSchemeRequestInterface.class)
 public abstract class SigningSchemeRequestDto implements SigningSchemeRequestInterface {
 
     @NotNull
-    @Schema(description = "Signing scheme", requiredMode = Schema.RequiredMode.REQUIRED, examples = {SigningScheme.Codes.MANAGED})
+    @Schema(description = "Signing scheme", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            SigningScheme.Codes.MANAGED})
     private final SigningScheme signingScheme;
 
     protected SigningSchemeRequestDto(SigningScheme signingScheme) {

@@ -6,14 +6,13 @@ import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.common.content.data.ProtectionLevel;
 import com.otilm.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -33,8 +32,9 @@ public class AttributeDefinitionDto implements Loggable {
 
     /**
      * Friendly name of the Attribute
-      **/
-    @Schema(description = "Friendly name of the Attribute", examples = {"Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+     **/
+    @Schema(description = "Friendly name of the Attribute", examples = {
+            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String label;
 
     /**
@@ -52,9 +52,7 @@ public class AttributeDefinitionDto implements Loggable {
     /**
      * Boolean determining if the Attribute is enabled.
      **/
-    @Schema(
-            description = "Boolean determining if the Attribute is enabled. Required only for Custom Attribute"
-    )
+    @Schema(description = "Boolean determining if the Attribute is enabled. Required only for Custom Attribute")
     private Boolean enabled;
 
     @Schema(description = "Protection level of attribute content")
@@ -62,7 +60,6 @@ public class AttributeDefinitionDto implements Loggable {
 
     @Schema(description = "Version of the attribute")
     private AttributeVersion version;
-
 
     @Override
     public String toString() {

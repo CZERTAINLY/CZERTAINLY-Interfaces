@@ -11,7 +11,8 @@ public class EndEntityExtendedInfoDto {
     private String name;
     private String value;
 
-    public EndEntityExtendedInfoDto() { }
+    public EndEntityExtendedInfoDto() {
+    }
 
     public EndEntityExtendedInfoDto(String name, String value) {
         this.name = name;

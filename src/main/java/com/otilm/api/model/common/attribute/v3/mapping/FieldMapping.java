@@ -5,10 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
+import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,8 +18,7 @@ public class FieldMapping implements Serializable {
     @NotNull(message = "Object type is required")
     private ObjectType objectType;
 
-    @Schema(description = "One or more target fields (supports 1-to-many, e.g. CN + dNSName from a single attribute)",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "One or more target fields (supports 1-to-many, e.g. CN + dNSName from a single attribute)", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "Mapped Fields must be non-empty")
     @Valid
     private List<MappedField> fields;

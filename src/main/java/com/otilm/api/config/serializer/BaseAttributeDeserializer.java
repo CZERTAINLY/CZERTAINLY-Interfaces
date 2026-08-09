@@ -1,14 +1,21 @@
 package com.otilm.api.config.serializer;
 
-import com.otilm.api.model.common.attribute.common.AttributeType;
-import com.otilm.api.model.common.attribute.common.BaseAttribute;
-import com.otilm.api.model.common.attribute.v2.*;
-import com.otilm.api.model.common.attribute.v3.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import com.otilm.api.model.common.attribute.common.AttributeType;
+import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import com.otilm.api.model.common.attribute.v2.CustomAttributeV2;
+import com.otilm.api.model.common.attribute.v2.DataAttributeV2;
+import com.otilm.api.model.common.attribute.v2.GroupAttributeV2;
+import com.otilm.api.model.common.attribute.v2.InfoAttributeV2;
+import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
+import com.otilm.api.model.common.attribute.v3.CustomAttributeV3;
+import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
+import com.otilm.api.model.common.attribute.v3.GroupAttributeV3;
+import com.otilm.api.model.common.attribute.v3.InfoAttributeV3;
+import com.otilm.api.model.common.attribute.v3.MetadataAttributeV3;
 import java.io.IOException;
 
 public class BaseAttributeDeserializer extends JsonDeserializer<BaseAttribute> {
@@ -35,8 +42,7 @@ public class BaseAttributeDeserializer extends JsonDeserializer<BaseAttribute> {
                 case CUSTOM -> valueType = CustomAttributeV2.class;
                 case INFO -> valueType = InfoAttributeV2.class;
             }
-        }
-        else if (version.equals("3")) {
+        } else if (version.equals("3")) {
             switch (attributeType) {
                 case META -> valueType = MetadataAttributeV3.class;
                 case DATA -> valueType = DataAttributeV3.class;
@@ -47,7 +53,6 @@ public class BaseAttributeDeserializer extends JsonDeserializer<BaseAttribute> {
         } else {
             throw new IllegalArgumentException("Unsupported Attribute version: " + version);
         }
-
 
         return jp.getCodec().treeToValue(node, valueType);
     }

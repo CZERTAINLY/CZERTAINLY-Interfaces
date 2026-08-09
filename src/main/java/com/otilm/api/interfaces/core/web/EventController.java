@@ -18,21 +18,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.UUID;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1/workflows/events")
 @Tag(name = "Workflow Event Management", description = "Workflow Event Management API")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                )
-        })
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 public interface EventController extends AuthProtectedController {
 
     @Operation(summary = "Get event history for a resource object")
@@ -41,25 +38,24 @@ public interface EventController extends AuthProtectedController {
     PaginationResponseDto<ObjectEventHistoryDto> getObjectEventHistory(
             @Parameter(description = "Resource", required = true) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID uuid,
-            PaginationRequestDto pagination
-    ) throws NotFoundException;
+            PaginationRequestDto pagination) throws NotFoundException;
 
     @Operation(summary = "Get history of event defined in platform settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Event history retrieved")})
-    @PostMapping(path = "/{event}/history", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/{event}/history", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
+            MediaType.APPLICATION_JSON_VALUE})
     PaginationResponseDto<EventHistoryDto> getPlatformSettingsEventHistory(
             @Parameter(description = "Event name", required = true) @PathVariable ResourceEvent event,
-            @RequestBody @Valid EventHistoryRequestDto request
-    ) throws NotFoundException;
+            @RequestBody @Valid EventHistoryRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Get history of event defined by an object")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Event history retrieved")})
-    @PostMapping(path = "/{event}/{resource}/{uuid}/history", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/{event}/{resource}/{uuid}/history", consumes = {
+            MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     PaginationResponseDto<EventHistoryDto> getObjectDefinedEventHistory(
             @Parameter(description = "Event name", required = true) @PathVariable ResourceEvent event,
             @Parameter(description = "Resource", required = true) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID uuid,
-            @RequestBody @Valid EventHistoryRequestDto request
-    ) throws NotFoundException;
+            @RequestBody @Valid EventHistoryRequestDto request) throws NotFoundException;
 
 }

@@ -4,20 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class JwsBody {
 
-    @Schema(
-            description = "Protected field of JWS",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Protected field of JWS", requiredMode = Schema.RequiredMode.REQUIRED)
     private String protectedField;
-    @Schema(
-            description = "JWS payload",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "JWS payload", requiredMode = Schema.RequiredMode.REQUIRED)
     private String payload;
-    @Schema(
-            description = "JWS signature",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "JWS signature", requiredMode = Schema.RequiredMode.REQUIRED)
     private String signature;
 
     public String getProtected() {

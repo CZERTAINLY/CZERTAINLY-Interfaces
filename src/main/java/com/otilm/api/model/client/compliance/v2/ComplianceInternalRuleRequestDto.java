@@ -1,22 +1,21 @@
 package com.otilm.api.model.client.compliance.v2;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.logging.Loggable;
 import com.otilm.api.model.core.workflows.ConditionItemRequestDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter

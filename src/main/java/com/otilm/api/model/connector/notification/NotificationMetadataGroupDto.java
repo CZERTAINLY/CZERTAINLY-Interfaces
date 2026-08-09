@@ -2,9 +2,8 @@ package com.otilm.api.model.connector.notification;
 
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Map;
+import lombok.Data;
 
 @Data
 @Schema(description = "Connector-sourced metadata grouped by connector and source object type; same-named attributes from different connectors live in different groups")

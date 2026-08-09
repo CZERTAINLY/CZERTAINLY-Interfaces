@@ -3,14 +3,13 @@ package com.otilm.api.model.connector.secrets.content;
 import com.otilm.api.model.connector.secrets.SecretType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(
-        title = "ApiKeySecretContent",
-        description = "Secret representing an API Key"
-)
+@Schema(title = "ApiKeySecretContent", description = "Secret representing an API Key")
 public class ApiKeySecretContent extends SecretContent {
 
     @NotBlank

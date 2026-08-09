@@ -2,10 +2,9 @@ package com.otilm.api.model.core.workflows;
 
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class TriggerHistorySummaryDto {
@@ -29,4 +28,4 @@ public class TriggerHistorySummaryDto {
 
     @Schema(description = "List of history of objects that triggers has been evaluated on.", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerHistoryObjectSummaryDto> objects = new ArrayList<>();
- }
+}

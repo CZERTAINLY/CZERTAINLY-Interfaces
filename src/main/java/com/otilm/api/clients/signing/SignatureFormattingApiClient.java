@@ -9,12 +9,11 @@ import com.otilm.api.model.connector.signatures.formatting.FormatDtbsRequestDto;
 import com.otilm.api.model.connector.signatures.formatting.FormatDtbsResponseDto;
 import com.otilm.api.model.connector.signatures.formatting.FormatResponseRequestDto;
 import com.otilm.api.model.connector.signatures.formatting.FormattedResponseDto;
+import java.util.List;
+import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import javax.net.ssl.TrustManager;
-import java.util.List;
 
 public class SignatureFormattingApiClient extends BaseApiClient implements SignatureFormattingSyncApiClient {
 
@@ -32,18 +31,18 @@ public class SignatureFormattingApiClient extends BaseApiClient implements Signa
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.GET, connector, true);
 
         return processRequest(r -> {
-                    var entity = r.uri(connector.getUrl() + ATTRIBUTES_CONTEXT)
-                            .retrieve()
-                            .toEntityList(BaseAttribute.class)
-                            .block();
-                    return entity != null && entity.getBody() != null ? entity.getBody() : List.of();
-                },
-                request,
-                connector);
+            var entity = r
+                    .uri(connector.getUrl() + ATTRIBUTES_CONTEXT)
+                    .retrieve()
+                    .toEntityList(BaseAttribute.class)
+                    .block();
+            return entity != null && entity.getBody() != null ? entity.getBody() : List.of();
+        }, request, connector);
     }
 
     @Override
-    public FormatDtbsResponseDto formatDtbs(ApiClientConnectorInfo connector, FormatDtbsRequestDto requestDto) throws ConnectorException {
+    public FormatDtbsResponseDto formatDtbs(ApiClientConnectorInfo connector, FormatDtbsRequestDto requestDto)
+            throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -51,13 +50,13 @@ public class SignatureFormattingApiClient extends BaseApiClient implements Signa
                 .body(Mono.just(requestDto), FormatDtbsRequestDto.class)
                 .retrieve()
                 .toEntity(FormatDtbsResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 
     @Override
-    public FormattedResponseDto formatSigningResponse(ApiClientConnectorInfo connector, FormatResponseRequestDto requestDto) throws ConnectorException {
+    public FormattedResponseDto formatSigningResponse(ApiClientConnectorInfo connector,
+            FormatResponseRequestDto requestDto) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
 
         return processRequest(r -> r
@@ -65,8 +64,7 @@ public class SignatureFormattingApiClient extends BaseApiClient implements Signa
                 .body(Mono.just(requestDto), FormatResponseRequestDto.class)
                 .retrieve()
                 .toEntity(FormattedResponseDto.class)
-                .block().getBody(),
-                request,
-                connector);
+                .block()
+                .getBody(), request, connector);
     }
 }

@@ -8,12 +8,13 @@ import java.util.Set;
 /**
  * The discovery v2 connector routes, defined once for both transports.
  *
- * <p>The REST and MQ clients address the same connector contract, so a route that differs between
- * them is a defect no test in either suite would catch. Both import these constants rather than
- * declaring their own.
+ * <p>
+ * The REST and MQ clients address the same connector contract, so a route that differs between them is a defect no test
+ * in either suite would catch. Both import these constants rather than declaring their own.
  *
- * <p>Streaming ({@code POST /v2/discoveryProvider/discoveries/stream}) is deliberately absent: no
- * client implements it yet. See {@link com.otilm.api.interfaces.client.v2.DiscoverySyncApiClient}.
+ * <p>
+ * Streaming ({@code POST /v2/discoveryProvider/discoveries/stream}) is deliberately absent: no client implements it
+ * yet. See {@link com.otilm.api.interfaces.client.v2.DiscoverySyncApiClient}.
  */
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public final class DiscoveryPaths {
@@ -37,20 +38,19 @@ public final class DiscoveryPaths {
      * The resources a discovery run can report, pinned by the {@code @JsonSubTypes} registered on
      * {@code DiscoveredItemPayloadDto} — a payload type exists for exactly these two.
      */
-    private static final Set<Resource> DISCOVERABLE =
-            EnumSet.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY);
+    private static final Set<Resource> DISCOVERABLE = EnumSet.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY);
 
     private DiscoveryPaths() {
     }
 
     /**
-     * The per-resource attribute route, bound by the resource's wire code ({@code "certificates"},
-     * {@code "keys"}) rather than its Java enum name.
+     * The per-resource attribute route, bound by the resource's wire code ({@code "certificates"}, {@code "keys"})
+     * rather than its Java enum name.
      *
-     * <p>Rejects a resource discovery cannot report. Unchecked, {@code Resource.DISCOVERY} (code
-     * {@code "discoveries"}) would compose to {@code /v2/discoveryProvider/discoveries/attributes},
-     * inside the run-lifecycle namespace, so a caller mistake would surface as a 404 from an apparent
-     * lifecycle route rather than as the argument error it is.
+     * <p>
+     * Rejects a resource discovery cannot report. Unchecked, {@code Resource.DISCOVERY} (code {@code "discoveries"})
+     * would compose to {@code /v2/discoveryProvider/discoveries/attributes}, inside the run-lifecycle namespace, so a
+     * caller mistake would surface as a 404 from an apparent lifecycle route rather than as the argument error it is.
      *
      * @throws IllegalArgumentException if {@code resource} is not discoverable
      */

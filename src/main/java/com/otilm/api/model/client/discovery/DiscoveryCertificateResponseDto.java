@@ -2,9 +2,8 @@ package com.otilm.api.model.client.discovery;
 
 import com.otilm.api.model.core.discovery.DiscoveryCertificateDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class DiscoveryCertificateResponseDto {

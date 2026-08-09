@@ -9,9 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Setter
-@Schema(
-        description = "DateTime attribute constraint to specify boundaries for date value",
-        type = "object")
+@Schema(description = "DateTime attribute constraint to specify boundaries for date value", type = "object")
 public class DateTimeAttributeConstraint extends BaseAttributeConstraint<DateTimeAttributeConstraintData> {
 
     @Schema(description = "DateTime Range Attribute Constraint Data")
@@ -28,8 +26,6 @@ public class DateTimeAttributeConstraint extends BaseAttributeConstraint<DateTim
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("data", data)
-                .toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("data", data).toString();
     }
 }

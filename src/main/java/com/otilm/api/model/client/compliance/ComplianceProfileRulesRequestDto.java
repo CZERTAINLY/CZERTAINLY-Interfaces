@@ -2,20 +2,17 @@ package com.otilm.api.model.client.compliance;
 
 import com.otilm.api.model.connector.compliance.ComplianceRequestRulesDto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 public class ComplianceProfileRulesRequestDto {
-    @Schema(description = "UUID of the Compliance Provider",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120005"})
+    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "c35bc88c-d0ef-11ec-9d64-0242ac120005"})
     private String connectorUuid;
 
-    @Schema(description = "Kind of the Compliance Provider",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"x509"})
+    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "x509"})
     private String kind;
 
     @Schema(description = "Rules for new Compliance Profiles")

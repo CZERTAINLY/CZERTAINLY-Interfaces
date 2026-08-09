@@ -11,14 +11,12 @@ import com.otilm.api.model.connector.v3.authority.CaCertificatesRequestDtoV3;
 import com.otilm.api.model.connector.v3.authority.CaCertificatesResponseDto;
 import com.otilm.api.model.connector.v3.authority.CrlRequestDtoV3;
 import com.otilm.api.model.connector.v3.authority.CrlResponseDto;
-import org.springframework.http.ResponseEntity;
-
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 /**
- * MQ-based implementation of v3 Authority API client.
- * Mirror of {@link com.otilm.api.clients.v3.AuthorityApiClient}.
+ * MQ-based implementation of v3 Authority API client. Mirror of {@link com.otilm.api.clients.v3.AuthorityApiClient}.
  */
 @SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class AuthorityApiClient implements AuthoritySyncApiClient {
@@ -40,28 +38,37 @@ public class AuthorityApiClient implements AuthoritySyncApiClient {
 
     @Override
     public List<BaseAttribute> listAuthorityAttributes(ApiClientConnectorInfo connector) throws ConnectorException {
-        BaseAttribute[] result = proxyClient.sendRequest(connector, PATH_ATTRIBUTES, HTTP_METHOD_GET, null, BaseAttribute[].class);
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_ATTRIBUTES, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public ResponseEntity<Void> checkAuthorityConnection(ApiClientConnectorInfo connector, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public ResponseEntity<Void> checkAuthorityConnection(ApiClientConnectorInfo connector,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         return proxyClient.sendRequestForEntity(connector, BASE_PATH, HTTP_METHOD_POST, attributes, Void.class);
     }
 
     @Override
-    public List<BaseAttribute> listRaProfileAttributes(ApiClientConnectorInfo connector, List<RequestAttribute> authorityAttributes) throws ConnectorException {
-        BaseAttribute[] result = proxyClient.sendRequest(connector, PATH_RA_PROFILE_ATTRIBUTES, HTTP_METHOD_POST, authorityAttributes, BaseAttribute[].class);
+    public List<BaseAttribute> listRaProfileAttributes(ApiClientConnectorInfo connector,
+            List<RequestAttribute> authorityAttributes) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_RA_PROFILE_ATTRIBUTES, HTTP_METHOD_POST, authorityAttributes,
+                        BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public CrlResponseDto getCrl(ApiClientConnectorInfo connector, CrlRequestDtoV3 requestDto) throws ConnectorException {
+    public CrlResponseDto getCrl(ApiClientConnectorInfo connector, CrlRequestDtoV3 requestDto)
+            throws ConnectorException {
         return proxyClient.sendRequest(connector, PATH_CRL, HTTP_METHOD_POST, requestDto, CrlResponseDto.class);
     }
 
     @Override
-    public CaCertificatesResponseDto getCaCertificates(ApiClientConnectorInfo connector, CaCertificatesRequestDtoV3 requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(connector, PATH_CA_CERTIFICATES, HTTP_METHOD_POST, requestDto, CaCertificatesResponseDto.class);
+    public CaCertificatesResponseDto getCaCertificates(ApiClientConnectorInfo connector,
+            CaCertificatesRequestDtoV3 requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, PATH_CA_CERTIFICATES, HTTP_METHOD_POST, requestDto,
+                        CaCertificatesResponseDto.class);
     }
 }

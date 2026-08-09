@@ -4,8 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-@Schema(name = "SigningRecordPolicyDto",
-        description = "Effective Signing Record policy on a Signing Profile")
+@Schema(name = "SigningRecordPolicyDto", description = "Effective Signing Record policy on a Signing Profile")
 public class SigningRecordPolicyDto {
     @Schema(description = "Master switch: when false, no Signing Record is created at all for this profile, "
             + "regardless of the content policy below")

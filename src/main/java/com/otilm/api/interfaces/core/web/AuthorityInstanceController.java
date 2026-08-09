@@ -1,11 +1,18 @@
 package com.otilm.api.interfaces.core.web;
 
-import com.otilm.api.exception.*;
+import com.otilm.api.exception.AlreadyExistException;
+import com.otilm.api.exception.AttributeException;
+import com.otilm.api.exception.ConnectorException;
+import com.otilm.api.exception.NotFoundException;
+import com.otilm.api.exception.ValidationException;
 import com.otilm.api.interfaces.AuthProtectedController;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.authority.AuthorityInstanceRequestDto;
 import com.otilm.api.model.client.authority.AuthorityInstanceUpdateRequestDto;
-import com.otilm.api.model.common.*;
+import com.otilm.api.model.common.BulkActionMessageDto;
+import com.otilm.api.model.common.ErrorMessageDto;
+import com.otilm.api.model.common.NameAndIdDto;
+import com.otilm.api.model.common.UuidDto;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.core.authority.AuthorityInstanceDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,32 +25,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/authorities")
 @Tag(name = "Authority Management", description = "Authority Management API")
-@ApiResponses(
-        value = {
-                @ApiResponse(
-                        responseCode = "404",
-                        description = "Not Found",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "502",
-                        description = "Connector Error",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-                @ApiResponse(
-                        responseCode = "503",
-                        description = "Connector Communication Error",
-                        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-                ),
-        })
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface AuthorityInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List of available Authority instances")
@@ -54,91 +54,101 @@ public interface AuthorityInstanceController extends AuthProtectedController {
     @Operation(summary = "Details of an Authority instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority instance details retrieved")})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
-    AuthorityInstanceDto getAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException;
+    AuthorityInstanceDto getAuthorityInstance(
+            @Parameter(description = "Authority instance UUID") @PathVariable String uuid)
+            throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Add Authority instance")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "New Authority instance added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "New Authority instance added", content = @Content(schema = @Schema(implementation = UuidDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createAuthorityInstance(@RequestBody @Valid AuthorityInstanceRequestDto request)
             throws AlreadyExistException, ConnectorException, AttributeException, NotFoundException;
 
     @Operation(summary = "Edit Authority instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority instance details updated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {
-            "application/json"})
-    AuthorityInstanceDto editAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody @Valid AuthorityInstanceUpdateRequestDto request)
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
+    AuthorityInstanceDto editAuthorityInstance(
+            @Parameter(description = "Authority instance UUID") @PathVariable String uuid,
+            @RequestBody @Valid AuthorityInstanceUpdateRequestDto request)
             throws ConnectorException, AttributeException, NotFoundException;
 
     @Operation(summary = "Delete Authority instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Authority instance deleted")})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
-    void deleteAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException;
+    void deleteAuthorityInstance(@Parameter(description = "Authority instance UUID") @PathVariable String uuid)
+            throws ConnectorException, NotFoundException;
 
     @Operation(summary = "List entity profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Entity profiles retrieved")})
     @GetMapping(path = "/{uuid}/endentityprofiles", produces = {"application/json"})
-    List<NameAndIdDto> listEntityProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException;
+    List<NameAndIdDto> listEntityProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid)
+            throws ConnectorException, NotFoundException;
 
     @Operation(summary = "List certificate profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate profiles retrieved")})
-    @GetMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles", produces = {"application/json"})
-    List<NameAndIdDto> listCertificateProfiles(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
-            throws ConnectorException, NotFoundException;
+    @GetMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/certificateprofiles", produces = {
+            "application/json"})
+    List<NameAndIdDto> listCertificateProfiles(
+            @Parameter(description = "Authority instance UUID") @PathVariable String uuid,
+            @PathVariable Integer endEntityProfileId) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "List CAs in Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CAs in Profile retrieved")})
     @GetMapping(path = "/{uuid}/endentityprofiles/{endEntityProfileId}/cas", produces = {"application/json"})
-    List<NameAndIdDto> listCAsInProfile(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @PathVariable Integer endEntityProfileId)
-            throws ConnectorException, NotFoundException;
+    List<NameAndIdDto> listCAsInProfile(@Parameter(description = "Authority instance UUID") @PathVariable String uuid,
+            @PathVariable Integer endEntityProfileId) throws ConnectorException, NotFoundException;
 
-    @Operation(summary = "List authority attributes for a connector",
-            description = "Connector-scoped authority attribute schema for a stateless authority connector, keyed by connector UUID.")
+    @Operation(summary = "List authority attributes for a connector", description = "Connector-scoped authority attribute schema for a stateless authority connector, keyed by connector UUID.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority attributes retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{connectorUuid}/attributes", produces = {"application/json"})
     List<BaseAttribute> listAuthorityInstanceAttributes(
             @Parameter(description = "Connector UUID") @PathVariable String connectorUuid,
             @Parameter(description = "AUTHORITY interface UUID; disambiguates when the connector exposes more "
                     + "than one AUTHORITY interface version (e.g. v2 and v3). Optional when a single AUTHORITY "
-                    + "interface exists.")
-            @RequestParam(required = false) String interfaceUuid)
+                    + "interface exists.") @RequestParam(required = false) String interfaceUuid)
             throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "List RA Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information retrieved")})
     @GetMapping(path = "/{uuid}/attributes/raProfile", produces = {"application/json"})
-    List<BaseAttribute> listRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid) throws ConnectorException, NotFoundException, AttributeException;
+    List<BaseAttribute> listRAProfileAttributes(
+            @Parameter(description = "Authority instance UUID") @PathVariable String uuid)
+            throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "Validate RA Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attribute information validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
-    @PostMapping(path = "/{uuid}/attributes/raProfile/validate", consumes = {
-            "application/json"}, produces = {"application/json"})
-    void validateRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid, @RequestBody List<RequestAttribute> attributes)
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
+    @PostMapping(path = "/{uuid}/attributes/raProfile/validate", consumes = {"application/json"}, produces = {
+            "application/json"})
+    void validateRAProfileAttributes(@Parameter(description = "Authority instance UUID") @PathVariable String uuid,
+            @RequestBody List<RequestAttribute> attributes)
             throws ConnectorException, AttributeException, NotFoundException;
 
     @Operation(summary = "Delete multiple Authority instances")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority instances deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(produces = {"application/json"})
-    List<BulkActionMessageDto> bulkDeleteAuthorityInstance(@io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Authority Instance UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-            examples = {@ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")}))
-                                                           @RequestBody List<String> uuids) throws ConnectorException, ValidationException;
+    List<BulkActionMessageDto> bulkDeleteAuthorityInstance(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Authority Instance UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> uuids)
+            throws ConnectorException, ValidationException;
 
     @Operation(summary = "Force delete multiple Authority instances")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority instances forced to delete"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-                    examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+            @ApiResponse(responseCode = "422", description = "Unprocessible Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(path = "/force", produces = {"application/json"})
-    List<BulkActionMessageDto> forceDeleteAuthorityInstances(@RequestBody List<String> uuids) throws NotFoundException, ValidationException;
+    List<BulkActionMessageDto> forceDeleteAuthorityInstances(@RequestBody List<String> uuids)
+            throws NotFoundException, ValidationException;
 
 }

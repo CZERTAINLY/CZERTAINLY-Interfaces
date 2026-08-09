@@ -10,10 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class KeyAssociationDto extends NameAndUuidDto {
 
-    @Schema(
-            description = "Type of the resource",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Type of the resource", requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
 }

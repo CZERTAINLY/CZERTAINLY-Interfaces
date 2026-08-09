@@ -1,7 +1,11 @@
 package com.otilm.api.model.connector.cryptography.operations;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,10 +14,7 @@ import lombok.*;
 @ToString
 public class RandomDataResponseDto {
 
-    @Schema(
-            description = "Random generated data",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
+    @Schema(description = "Random generated data", requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] data;
 
 }

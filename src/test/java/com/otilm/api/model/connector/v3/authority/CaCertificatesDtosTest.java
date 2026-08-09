@@ -1,11 +1,10 @@
 package com.otilm.api.model.connector.v3.authority;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.connector.v3.certificate.CertificateDataResponseDto;
 import com.otilm.api.model.core.certificate.CertificateType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

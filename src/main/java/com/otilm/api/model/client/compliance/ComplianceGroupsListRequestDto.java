@@ -5,17 +5,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ComplianceGroupsListRequestDto {
-    @Schema(description = "UUID of the Compliance Provider. If not provided, groups from all the Providers is returned",
-            examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120003"},
-            defaultValue = "null")
+    @Schema(description = "UUID of the Compliance Provider. If not provided, groups from all the Providers is returned", examples = {
+            "c35bc88c-d0ef-11ec-9d64-0242ac120003"}, defaultValue = "null")
     private String uuid;
 
-    @Schema(description = "Kind of the Compliance Provider. If not provided, groups from all the kinds is returned",
-            examples = {"Kind1"},
-            defaultValue = "null")
+    @Schema(description = "Kind of the Compliance Provider. If not provided, groups from all the kinds is returned", examples = {
+            "Kind1"}, defaultValue = "null")
     private String kind;
 
-    //Default getters and setters
+    // Default getters and setters
     public String getUuid() {
         return uuid;
     }

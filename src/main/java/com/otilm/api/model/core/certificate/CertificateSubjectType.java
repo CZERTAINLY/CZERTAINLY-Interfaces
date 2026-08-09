@@ -1,16 +1,18 @@
 package com.otilm.api.model.core.certificate;
 
-import com.otilm.api.model.common.enums.IPlatformEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(enumAsRef = true)
 public enum CertificateSubjectType implements IPlatformEnum {
 
-    END_ENTITY("endEntity", "End Entity", "Certificate issued by a Certificate Authority."),
-    SELF_SIGNED_END_ENTITY("selfSignedEndEntity", "Self-signed End Entity", "Certificate signed by itself, not issued by certificate authority."),
-    INTERMEDIATE_CA("intermediateCa", "Intermediate CA", "Certificate of certificate authority that is used to issue end entity certificate and isn’t the top of the chain authority."),
-    ROOT_CA("rootCa", "Root CA", "Certificate of the top of the chain certificate authority.");
+    END_ENTITY("endEntity", "End Entity", "Certificate issued by a Certificate Authority."), SELF_SIGNED_END_ENTITY(
+            "selfSignedEndEntity", "Self-signed End Entity",
+            "Certificate signed by itself, not issued by certificate authority."), INTERMEDIATE_CA("intermediateCa",
+                    "Intermediate CA",
+                    "Certificate of certificate authority that is used to issue end entity certificate and isn’t the top of the chain authority."), ROOT_CA(
+                            "rootCa", "Root CA", "Certificate of the top of the chain certificate authority.");
 
     private final String code;
     private final String label;

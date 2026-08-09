@@ -3,7 +3,9 @@ package com.otilm.api.model.client.signing.timequality.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class NtpCheckIntervalAccuracyValidator implements ConstraintValidator<ValidNtpCheckInterval, NtpIntervalAccuracyConfiguration> {
+public class NtpCheckIntervalAccuracyValidator
+        implements
+            ConstraintValidator<ValidNtpCheckInterval, NtpIntervalAccuracyConfiguration> {
 
     @Override
     public boolean isValid(NtpIntervalAccuracyConfiguration value, ConstraintValidatorContext context) {
@@ -12,7 +14,8 @@ public class NtpCheckIntervalAccuracyValidator implements ConstraintValidator<Va
         }
         if (value.getNtpCheckInterval().compareTo(value.getAccuracy()) >= 0) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+            context
+                    .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
                     .addPropertyNode("ntpCheckInterval")
                     .addConstraintViolation();
             return false;

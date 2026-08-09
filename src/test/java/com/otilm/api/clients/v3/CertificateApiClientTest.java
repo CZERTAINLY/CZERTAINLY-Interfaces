@@ -1,5 +1,7 @@
 package com.otilm.api.clients.v3;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorProblemException;
@@ -9,8 +11,7 @@ import com.otilm.api.model.connector.v3.certificate.CertificateOperationCancelRe
 import com.otilm.api.model.connector.v3.certificate.CertificateSignRequestDtoV3;
 import com.otilm.api.model.core.connector.ConnectorDto;
 import com.otilm.api.model.core.connector.ConnectorStatus;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
@@ -49,11 +48,14 @@ class CertificateApiClientTest {
 
     @Test
     void issue_sync200ReturnsCertificateData() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/certificates/issue")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"certificateData\":\"MIIBkjCCATs...\",\"certificateType\":\"X.509\"}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/certificates/issue")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"certificateData\":\"MIIBkjCCATs...\",\"certificateType\":\"X.509\"}")));
 
         CertificateSignRequestDtoV3 req = new CertificateSignRequestDtoV3();
         req.setAuthorityAttributes(List.of());
@@ -69,11 +71,14 @@ class CertificateApiClientTest {
 
     @Test
     void issue_async202ReturnsMetaOnly() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/certificates/issue")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(202)
-                        .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                        .withBody("{\"certificateData\":null,\"meta\":[]}")));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/certificates/issue")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(202)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("{\"certificateData\":null,\"meta\":[]}")));
 
         CertificateSignRequestDtoV3 req = new CertificateSignRequestDtoV3();
         req.setAuthorityAttributes(List.of());
@@ -89,8 +94,10 @@ class CertificateApiClientTest {
 
     @Test
     void cancelIssue_204OnSuccess() throws ConnectorException {
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/certificates/issue/cancel")
-                .willReturn(WireMock.aResponse().withStatus(204)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/certificates/issue/cancel")
+                        .willReturn(WireMock.aResponse().withStatus(204)));
 
         CertificateOperationCancelRequestDtoV3 req = new CertificateOperationCancelRequestDtoV3();
         req.setAuthorityAttributes(List.of());
@@ -117,20 +124,22 @@ class CertificateApiClientTest {
                 }
                 """;
 
-        mockServer.stubFor(WireMock.post("/v3/authorityProvider/certificates/issue")
-                .willReturn(WireMock.aResponse()
-                        .withStatus(422)
-                        .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-                        .withBody(problemJson)));
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/certificates/issue")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(422)
+                                .withHeader("Content-Type", MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                                .withBody(problemJson)));
 
         CertificateSignRequestDtoV3 req = new CertificateSignRequestDtoV3();
         req.setAuthorityAttributes(List.of());
         req.setRaProfileAttributes(List.of());
         req.setRequest("bogus");
 
-        ConnectorProblemException ex = Assertions.assertThrows(
-                ConnectorProblemException.class,
-                () -> client.issue(connector, req));
+        ConnectorProblemException ex = Assertions
+                .assertThrows(ConnectorProblemException.class, () -> client.issue(connector, req));
 
         Assertions.assertEquals(ErrorCode.CSR_MALFORMED, ex.getProblemDetail().getErrorCode());
         Assertions.assertFalse(ex.getProblemDetail().isRetryable());

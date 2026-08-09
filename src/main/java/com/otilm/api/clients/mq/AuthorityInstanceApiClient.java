@@ -18,9 +18,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Message queue based Authority Instance API client for connectors.
- * Uses ProxyClient to send authority instance requests via message queue
- * instead of direct REST calls.
+ * Message queue based Authority Instance API client for connectors. Uses ProxyClient to send authority instance
+ * requests via message queue instead of direct REST calls.
  */
 public class AuthorityInstanceApiClient implements AuthorityInstanceSyncApiClient {
 
@@ -36,132 +35,82 @@ public class AuthorityInstanceApiClient implements AuthorityInstanceSyncApiClien
     }
 
     @Override
-    public List<AuthorityProviderInstanceDto> listAuthorityInstances(ApiClientConnectorInfo connector) throws ConnectorException {
-        AuthorityProviderInstanceDto[] result = proxyClient.sendRequest(
-                connector,
-                BASE_PATH,
-                HTTP_METHOD_GET,
-                null,
-                AuthorityProviderInstanceDto[].class
-        );
+    public List<AuthorityProviderInstanceDto> listAuthorityInstances(ApiClientConnectorInfo connector)
+            throws ConnectorException {
+        AuthorityProviderInstanceDto[] result = proxyClient
+                .sendRequest(connector, BASE_PATH, HTTP_METHOD_GET, null, AuthorityProviderInstanceDto[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public AuthorityProviderInstanceDto getAuthorityInstance(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public AuthorityProviderInstanceDto getAuthorityInstance(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid;
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                AuthorityProviderInstanceDto.class
-        );
+        return proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, AuthorityProviderInstanceDto.class);
     }
 
     @Override
-    public AuthorityProviderInstanceDto createAuthorityInstance(ApiClientConnectorInfo connector, AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
-        return proxyClient.sendRequest(
-                connector,
-                BASE_PATH,
-                HTTP_METHOD_POST,
-                requestDto,
-                AuthorityProviderInstanceDto.class
-        );
+    public AuthorityProviderInstanceDto createAuthorityInstance(ApiClientConnectorInfo connector,
+            AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
+        return proxyClient
+                .sendRequest(connector, BASE_PATH, HTTP_METHOD_POST, requestDto, AuthorityProviderInstanceDto.class);
     }
 
     @Override
-    public AuthorityProviderInstanceDto updateAuthorityInstance(ApiClientConnectorInfo connector, String uuid, AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
+    public AuthorityProviderInstanceDto updateAuthorityInstance(ApiClientConnectorInfo connector, String uuid,
+            AuthorityProviderInstanceRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid;
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_POST,
-                requestDto,
-                AuthorityProviderInstanceDto.class
-        );
+        return proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_POST, requestDto, AuthorityProviderInstanceDto.class);
     }
 
     @Override
     public void removeAuthorityInstance(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid;
-        proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_DELETE,
-                null,
-                Void.class
-        );
+        proxyClient.sendRequest(connector, path, HTTP_METHOD_DELETE, null, Void.class);
     }
 
     @Override
-    public List<BaseAttribute> listRAProfileAttributes(ApiClientConnectorInfo connector, String uuid) throws ConnectorException {
+    public List<BaseAttribute> listRAProfileAttributes(ApiClientConnectorInfo connector, String uuid)
+            throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/raProfile/attributes";
-        BaseAttribute[] result = proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                BaseAttribute[].class
-        );
+        BaseAttribute[] result = proxyClient.sendRequest(connector, path, HTTP_METHOD_GET, null, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
     @Override
-    public Boolean validateRAProfileAttributes(ApiClientConnectorInfo connector, String uuid, List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
+    public Boolean validateRAProfileAttributes(ApiClientConnectorInfo connector, String uuid,
+            List<RequestAttribute> attributes) throws ValidationException, ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/raProfile/attributes/validate";
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_POST,
-                attributes,
-                Boolean.class
-        );
+        return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, attributes, Boolean.class);
     }
 
     @Override
-    public CertificateRevocationListResponseDto getCrl(ApiClientConnectorInfo connector, String uuid, CertificateRevocationListRequestDto requestDto) throws ConnectorException {
+    public CertificateRevocationListResponseDto getCrl(ApiClientConnectorInfo connector, String uuid,
+            CertificateRevocationListRequestDto requestDto) throws ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/crl";
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_POST,
-                requestDto,
-                CertificateRevocationListResponseDto.class
-        );
+        return proxyClient
+                .sendRequest(connector, path, HTTP_METHOD_POST, requestDto, CertificateRevocationListResponseDto.class);
     }
 
     @Override
-    public CaCertificatesResponseDto getCaCertificates(ApiClientConnectorInfo connector, String uuid, CaCertificatesRequestDto requestDto) throws ValidationException, ConnectorException {
+    public CaCertificatesResponseDto getCaCertificates(ApiClientConnectorInfo connector, String uuid,
+            CaCertificatesRequestDto requestDto) throws ValidationException, ConnectorException {
         String path = BASE_PATH + "/" + uuid + "/caCertificates";
-        return proxyClient.sendRequest(
-                connector,
-                path,
-                HTTP_METHOD_POST,
-                requestDto,
-                CaCertificatesResponseDto.class
-        );
+        return proxyClient.sendRequest(connector, path, HTTP_METHOD_POST, requestDto, CaCertificatesResponseDto.class);
     }
 
     // Async variants for key methods
-    public CompletableFuture<List<AuthorityProviderInstanceDto>> listAuthorityInstancesAsync(ApiClientConnectorInfo connector) {
-        return proxyClient.sendRequestAsync(
-                connector,
-                BASE_PATH,
-                HTTP_METHOD_GET,
-                null,
-                AuthorityProviderInstanceDto[].class
-        ).thenApply(Arrays::asList);
+    public CompletableFuture<List<AuthorityProviderInstanceDto>> listAuthorityInstancesAsync(
+            ApiClientConnectorInfo connector) {
+        return proxyClient
+                .sendRequestAsync(connector, BASE_PATH, HTTP_METHOD_GET, null, AuthorityProviderInstanceDto[].class)
+                .thenApply(Arrays::asList);
     }
 
-    public CompletableFuture<AuthorityProviderInstanceDto> getAuthorityInstanceAsync(ApiClientConnectorInfo connector, String uuid) {
+    public CompletableFuture<AuthorityProviderInstanceDto> getAuthorityInstanceAsync(ApiClientConnectorInfo connector,
+            String uuid) {
         String path = BASE_PATH + "/" + uuid;
-        return proxyClient.sendRequestAsync(
-                connector,
-                path,
-                HTTP_METHOD_GET,
-                null,
-                AuthorityProviderInstanceDto.class
-        );
+        return proxyClient.sendRequestAsync(connector, path, HTTP_METHOD_GET, null, AuthorityProviderInstanceDto.class);
     }
 }

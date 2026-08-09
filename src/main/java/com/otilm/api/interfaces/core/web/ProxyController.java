@@ -20,22 +20,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/proxies")
 @Tag(name = "Proxy Management", description = "Proxy Management API")
-@ApiResponses(
-    value =
-    @ApiResponse(
-        responseCode = "404",
-        description = "Not Found",
-        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))
-    )
-)
+@ApiResponses(value = @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))))
 public interface ProxyController extends AuthProtectedController {
 
     @Operation(summary = "List Proxies by Status")
@@ -50,23 +50,19 @@ public interface ProxyController extends AuthProtectedController {
 
     @Operation(summary = "Create a new Proxy")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "New Proxy created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-        @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))
-    })
+            @ApiResponse(responseCode = "201", description = "New Proxy created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<?> createProxy(@RequestBody ProxyRequestDto request)
-        throws AlreadyExistException;
+    ResponseEntity<?> createProxy(@RequestBody ProxyRequestDto request) throws AlreadyExistException;
 
     @Operation(summary = "Edit a Proxy")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Proxy updated"),
-        @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
-            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))
-    })
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Proxy updated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
-    ProxyDto editProxy(@Parameter(description = "Proxy UUID") @PathVariable String uuid, @RequestBody ProxyUpdateRequestDto request)
-        throws NotFoundException;
+    ProxyDto editProxy(@Parameter(description = "Proxy UUID") @PathVariable String uuid,
+            @RequestBody ProxyUpdateRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Delete a Proxy")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Proxy deleted")})
@@ -75,7 +71,9 @@ public interface ProxyController extends AuthProtectedController {
     void deleteProxy(@Parameter(description = "Proxy UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Get instructions to install a Proxy")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Proxy installation instructions retrieved")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Proxy installation instructions retrieved")})
     @GetMapping(path = "/{uuid}/instructions", produces = {"application/json"})
-    ProxyInstallInstructionsDto getInstallationInstructions(@Parameter(description = "Proxy UUID") @PathVariable String uuid) throws NotFoundException;
+    ProxyInstallInstructionsDto getInstallationInstructions(
+            @Parameter(description = "Proxy UUID") @PathVariable String uuid) throws NotFoundException;
 }

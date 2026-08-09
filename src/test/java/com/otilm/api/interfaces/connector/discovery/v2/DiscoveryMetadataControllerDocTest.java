@@ -8,13 +8,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
 
 import static com.otilm.api.testsupport.OpenApiProseAssertions.assertNoJargon;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -22,12 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Guards the public OpenAPI surface of {@link DiscoveryMetadataController}: every operation is
- * documented, every non-2xx response (should one ever be added at method level) names a real
- * {@link ErrorCode} and carries the {@link ProblemDetailExtended} content schema, no
- * Core-internal design jargon leaks into the published prose (summaries, descriptions, response
- * text, and parameter text alike; see {@link OpenApiProseAssertions} for the shared banned-term
- * list), and the controller extends the NG (common.v2) auth base rather than any legacy one.
+ * Guards the public OpenAPI surface of {@link DiscoveryMetadataController}: every operation is documented, every
+ * non-2xx response (should one ever be added at method level) names a real {@link ErrorCode} and carries the
+ * {@link ProblemDetailExtended} content schema, no Core-internal design jargon leaks into the published prose
+ * (summaries, descriptions, response text, and parameter text alike; see {@link OpenApiProseAssertions} for the shared
+ * banned-term list), and the controller extends the NG (common.v2) auth base rather than any legacy one.
  */
 class DiscoveryMetadataControllerDocTest {
 
@@ -44,8 +42,7 @@ class DiscoveryMetadataControllerDocTest {
 
             ApiResponses responses = m.getAnnotation(ApiResponses.class);
             assertNotNull(responses, "missing @ApiResponses on " + m.getName());
-            boolean hasSuccess = Arrays.stream(responses.value())
-                    .anyMatch(r -> r.responseCode().startsWith("2"));
+            boolean hasSuccess = Arrays.stream(responses.value()).anyMatch(r -> r.responseCode().startsWith("2"));
             assertTrue(hasSuccess, "no 2xx response documented on " + m.getName());
             for (ApiResponse r : responses.value()) {
                 assertFalse(r.description().isBlank(), "blank response description on " + m.getName());
@@ -56,8 +53,8 @@ class DiscoveryMetadataControllerDocTest {
                 // Fully qualified deliberately: Parameter is already java.lang.reflect.Parameter
                 // here, the reflected method parameter this loop walks. Do not "clean up" into an
                 // import - it would shadow the reflection type this file depends on.
-                io.swagger.v3.oas.annotations.Parameter param =
-                        p.getAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
+                io.swagger.v3.oas.annotations.Parameter param = p
+                        .getAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
                 if (param != null) {
                     assertFalse(param.description().isBlank(), "blank @Parameter description on " + m.getName());
                     assertNoJargon(m.getName() + " parameter", param.description());
@@ -71,10 +68,11 @@ class DiscoveryMetadataControllerDocTest {
 
     @Test
     void controllerExtendsCommonV2AuthBase() {
-        List<String> supers = Arrays.stream(DiscoveryMetadataController.class.getInterfaces())
-                .map(Class::getName).toList();
-        assertTrue(supers.contains(
-                        "com.otilm.api.interfaces.connector.common.v2.AuthProtectedConnectorController"),
+        List<String> supers = Arrays
+                .stream(DiscoveryMetadataController.class.getInterfaces())
+                .map(Class::getName)
+                .toList();
+        assertTrue(supers.contains("com.otilm.api.interfaces.connector.common.v2.AuthProtectedConnectorController"),
                 "DiscoveryMetadataController must extend the common.v2 auth base, not a legacy one; found " + supers);
     }
 
@@ -87,10 +85,9 @@ class DiscoveryMetadataControllerDocTest {
     }
 
     /**
-     * Every non-2xx response must name a real {@link ErrorCode} in its description. No method on
-     * this interface currently declares one at the method level (the base's 401/404/500 cover
-     * the surface), so this passes vacuously today; it guards against a future addition slipping
-     * in unnamed.
+     * Every non-2xx response must name a real {@link ErrorCode} in its description. No method on this interface
+     * currently declares one at the method level (the base's 401/404/500 cover the surface), so this passes vacuously
+     * today; it guards against a future addition slipping in unnamed.
      */
     @Test
     void every4xxOr5xxResponseNamesAKnownErrorCode() {
@@ -108,10 +105,9 @@ class DiscoveryMetadataControllerDocTest {
     }
 
     /**
-     * Every non-2xx response must declare the {@link ProblemDetailExtended} content schema
-     * explicitly, for the same reason as the sibling check on
-     * {@code DiscoveryOperationControllerDocTest}. Passes vacuously today; guards a future
-     * method-level error response from shipping without one.
+     * Every non-2xx response must declare the {@link ProblemDetailExtended} content schema explicitly, for the same
+     * reason as the sibling check on {@code DiscoveryOperationControllerDocTest}. Passes vacuously today; guards a
+     * future method-level error response from shipping without one.
      */
     @Test
     void every4xxOr5xxResponseDeclaresProblemDetailContent() {
@@ -123,12 +119,12 @@ class DiscoveryMetadataControllerDocTest {
                     continue;
                 }
                 Content[] content = r.content();
-                boolean hasProblemDetail = Arrays.stream(content).anyMatch(c ->
-                        c.mediaType().equals(MediaType.APPLICATION_PROBLEM_JSON_VALUE)
+                boolean hasProblemDetail = Arrays
+                        .stream(content)
+                        .anyMatch(c -> c.mediaType().equals(MediaType.APPLICATION_PROBLEM_JSON_VALUE)
                                 && c.schema().implementation() == ProblemDetailExtended.class);
-                assertTrue(hasProblemDetail,
-                        "response " + r.responseCode() + " on " + m.getName()
-                                + " does not declare ProblemDetailExtended content");
+                assertTrue(hasProblemDetail, "response " + r.responseCode() + " on " + m.getName()
+                        + " does not declare ProblemDetailExtended content");
             }
         }
     }

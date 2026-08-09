@@ -6,9 +6,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ErrorMessageDto {
 
-    @Schema(description = "Error message detail",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            examples = {"Error message"})
+    @Schema(description = "Error message detail", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
+            "Error message"})
     private String message;
 
     public ErrorMessageDto(String message) {
@@ -29,8 +28,6 @@ public class ErrorMessageDto {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("message", message)
-                .toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("message", message).toString();
     }
 }

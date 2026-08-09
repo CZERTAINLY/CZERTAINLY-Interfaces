@@ -1,13 +1,11 @@
 package com.otilm.api.model.common.events.data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.UUID;
+import lombok.Data;
 
 @Data
 public class CertificateEventData implements EventData {
-
 
     @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID certificateUuid;
@@ -26,7 +24,8 @@ public class CertificateEventData implements EventData {
 
     @Override
     public String toString() {
-        return "Certificate: {certificateUuid=%s, fingerprint='%s', serialNumber='%s', subjectDn='%s', issuerDn='%s'}".formatted(certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn);
+        return "Certificate: {certificateUuid=%s, fingerprint='%s', serialNumber='%s', subjectDn='%s', issuerDn='%s'}"
+                .formatted(certificateUuid, fingerprint, serialNumber, subjectDn, issuerDn);
     }
 
 }
