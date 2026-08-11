@@ -8,8 +8,9 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum AttributeConstraintType implements IPlatformEnum {
-    REGEXP(Codes.REGEXP, "Regular Expression"), RANGE(Codes.RANGE, "Integer Range"), DATETIME(Codes.DATETIME,
-            "DateTime Range");
+    REGEXP(Codes.REGEXP, "Regular Expression"),
+    RANGE(Codes.RANGE, "Integer Range"),
+    DATETIME(Codes.DATETIME, "DateTime Range");
 
     private static final AttributeConstraintType[] VALUES;
 

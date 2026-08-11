@@ -11,10 +11,12 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum ProxyStatus implements IPlatformEnum {
 
-    INITIALIZED("initialized", "Initial state"), PROVISIONING("provisioning", "Provisioning in progress"), FAILED(
-            "failed",
-            "Failed"), WAITING_FOR_INSTALLATION("waitingForInstallation", "Waiting for installation"), CONNECTED(
-                    "connected", "Connected"), DISCONNECTED("disconnected", "Disconnected");
+    INITIALIZED("initialized", "Initial state"),
+    PROVISIONING("provisioning", "Provisioning in progress"),
+    FAILED("failed", "Failed"),
+    WAITING_FOR_INSTALLATION("waitingForInstallation", "Waiting for installation"),
+    CONNECTED("connected", "Connected"),
+    DISCONNECTED("disconnected", "Disconnected");
 
     private static final ProxyStatus[] VALUES;
 

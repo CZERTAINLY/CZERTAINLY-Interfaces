@@ -9,7 +9,9 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum SchedulerJobExecutionStatus implements IPlatformEnum {
 
-    STARTED("started", "Started"), SUCCESS("succeeded", "Succeeded"), FAILED("failed", "Failed");
+    STARTED("started", "Started"),
+    SUCCESS("succeeded", "Succeeded"),
+    FAILED("failed", "Failed");
 
     private static final SchedulerJobExecutionStatus[] VALUES;
 

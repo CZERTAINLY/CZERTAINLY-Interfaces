@@ -11,8 +11,11 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum DiscoveryEventType implements IPlatformEnum {
 
-    PROGRESS(Codes.PROGRESS, "Progress"), RESULT_BATCH(Codes.RESULT_BATCH, "Result Batch"), STATE_CHANGED(
-            Codes.STATE_CHANGED, "State Changed"), HEARTBEAT(Codes.HEARTBEAT, "Heartbeat"), ERROR(Codes.ERROR, "Error");
+    PROGRESS(Codes.PROGRESS, "Progress"),
+    RESULT_BATCH(Codes.RESULT_BATCH, "Result Batch"),
+    STATE_CHANGED(Codes.STATE_CHANGED, "State Changed"),
+    HEARTBEAT(Codes.HEARTBEAT, "Heartbeat"),
+    ERROR(Codes.ERROR, "Error");
 
     private static final DiscoveryEventType[] VALUES;
 

@@ -30,9 +30,10 @@ import java.util.Arrays;
 public enum TspAuthenticationMethod implements IPlatformEnum {
 
     CLIENT_CERTIFICATE(Codes.CLIENT_CERTIFICATE, "Client Certificate",
-            "Mutual-TLS client certificate (ssl-client-cert header)"), BEARER_TOKEN(Codes.BEARER_TOKEN, "Bearer Token",
-                    "JWT carried in the Authorization: Bearer header"), BASIC_PASSWORD(Codes.BASIC_PASSWORD,
-                            "Basic Password", "Username/password carried in the Authorization: Basic header"),;
+            "Mutual-TLS client certificate (ssl-client-cert header)"),
+    BEARER_TOKEN(Codes.BEARER_TOKEN, "Bearer Token", "JWT carried in the Authorization: Bearer header"),
+    BASIC_PASSWORD(Codes.BASIC_PASSWORD, "Basic Password",
+            "Username/password carried in the Authorization: Basic header");
 
     private static final TspAuthenticationMethod[] VALUES;
 

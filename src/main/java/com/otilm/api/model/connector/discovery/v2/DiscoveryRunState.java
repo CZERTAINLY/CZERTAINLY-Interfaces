@@ -11,8 +11,11 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum DiscoveryRunState implements IPlatformEnum {
 
-    RUNNING("running", "Running"), STOPPED("stopped", "Stopped"), COMPLETED("completed", "Completed"), FAILED("failed",
-            "Failed"), CANCELLED("cancelled", "Cancelled");
+    RUNNING("running", "Running"),
+    STOPPED("stopped", "Stopped"),
+    COMPLETED("completed", "Completed"),
+    FAILED("failed", "Failed"),
+    CANCELLED("cancelled", "Cancelled");
 
     private static final DiscoveryRunState[] VALUES;
 

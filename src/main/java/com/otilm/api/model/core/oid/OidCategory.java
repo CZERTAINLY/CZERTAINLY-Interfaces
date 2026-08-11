@@ -9,12 +9,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public enum OidCategory implements IPlatformEnum {
 
     RDN_ATTRIBUTE_TYPE(Codes.RDN_ATTRIBUTE_TYPE, "RDN Attribute Type",
-            "OID for a type of attribute that can appear in DN"), EXTENDED_KEY_USAGE(Codes.EXTENDED_KEY_USAGE,
-                    "Extended Key Usage",
-                    "OID specifying key purpose in Extended Key Usage extension"), CERTIFICATE_EXTENSION(
-                            Codes.CERTIFICATE_EXTENSION, "Certificate Extension",
-                            "OID for a custom X.509 certificate extension with typed value encoding"), GENERIC(
-                                    Codes.GENERIC, "Generic", "Generic OID for general use");
+            "OID for a type of attribute that can appear in DN"),
+    EXTENDED_KEY_USAGE(Codes.EXTENDED_KEY_USAGE, "Extended Key Usage",
+            "OID specifying key purpose in Extended Key Usage extension"),
+    CERTIFICATE_EXTENSION(Codes.CERTIFICATE_EXTENSION, "Certificate Extension",
+            "OID for a custom X.509 certificate extension with typed value encoding"),
+    GENERIC(Codes.GENERIC, "Generic", "Generic OID for general use");
 
     private static final OidCategory[] VALUES;
 

@@ -10,8 +10,11 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ActorType implements IPlatformEnum {
-    ANONYMOUS("anonymous", "Anonymous"), CORE("core", "Core"), USER("user", "User"), CONNECTOR("connector",
-            "Connector"), PROTOCOL("protocol", "Protocol");
+    ANONYMOUS("anonymous", "Anonymous"),
+    CORE("core", "Core"),
+    USER("user", "User"),
+    CONNECTOR("connector", "Connector"),
+    PROTOCOL("protocol", "Protocol");
 
     private static final ActorType[] VALUES;
 

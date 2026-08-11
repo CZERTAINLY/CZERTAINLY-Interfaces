@@ -10,12 +10,12 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyFormat implements IPlatformEnum {
-    RAW("Raw", "Raw", "Encoded key in raw format"), SPKI("SubjectPublicKeyInfo", "SubjectPublicKeyInfo",
-            "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"), PRKI("PrivateKeyInfo", "PrivateKeyInfo",
-                    "DER-encoded ASN.1 PrivateKeyInfo of the private key"), EPRKI("EncryptedPrivateKeyInfo",
-                            "EncryptedPrivateKeyInfo",
-                            "DER-encoded ASN.1 EncryptedPrivateKeyInfo of the private key"), CUSTOM("Custom", "Custom",
-                                    "Custom, external, specific data");
+    RAW("Raw", "Raw", "Encoded key in raw format"),
+    SPKI("SubjectPublicKeyInfo", "SubjectPublicKeyInfo", "DER-encoded ASN.1 SubjectPublicKeyInfo of the public key"),
+    PRKI("PrivateKeyInfo", "PrivateKeyInfo", "DER-encoded ASN.1 PrivateKeyInfo of the private key"),
+    EPRKI("EncryptedPrivateKeyInfo", "EncryptedPrivateKeyInfo",
+            "DER-encoded ASN.1 EncryptedPrivateKeyInfo of the private key"),
+    CUSTOM("Custom", "Custom", "Custom, external, specific data");
 
     private static final KeyFormat[] VALUES;
 

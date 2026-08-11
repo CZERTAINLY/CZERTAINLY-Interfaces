@@ -16,8 +16,10 @@ the overall compliance status
 
 @Schema(enumAsRef = true)
 public enum ComplianceRuleStatus implements IPlatformEnum {
-    OK(Codes.OK, "Compliant"), NOK(Codes.NOK, "Not Compliant"), NA(Codes.NA,
-            "Not Applicable"), NOT_AVAILABLE(Codes.NOT_AVAILABLE, "Not Available");
+    OK(Codes.OK, "Compliant"),
+    NOK(Codes.NOK, "Not Compliant"),
+    NA(Codes.NA, "Not Applicable"),
+    NOT_AVAILABLE(Codes.NOT_AVAILABLE, "Not Available");
 
     private static final ComplianceRuleStatus[] VALUES;
 

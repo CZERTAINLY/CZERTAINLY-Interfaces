@@ -11,8 +11,10 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum ConnectorStatus implements IPlatformEnum {
 
-    WAITING_FOR_APPROVAL("waitingForApproval", "Waiting for approval"), CONNECTED("connected",
-            "Connected"), FAILED("failed", "Failed"), OFFLINE("offline", "Offline");
+    WAITING_FOR_APPROVAL("waitingForApproval", "Waiting for approval"),
+    CONNECTED("connected", "Connected"),
+    FAILED("failed", "Failed"),
+    OFFLINE("offline", "Offline");
 
     private static final ConnectorStatus[] VALUES;
 

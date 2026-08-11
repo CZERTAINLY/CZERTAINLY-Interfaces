@@ -13,7 +13,8 @@ import java.util.Arrays;
  */
 @Schema(enumAsRef = true)
 public enum ProtectionMethod implements IPlatformEnum {
-    SHARED_SECRET("sharedSecret", "Shared Secret"), SIGNATURE("signature", "Signature");
+    SHARED_SECRET("sharedSecret", "Shared Secret"),
+    SIGNATURE("signature", "Signature");
 
     private static final ProtectionMethod[] VALUES;
 

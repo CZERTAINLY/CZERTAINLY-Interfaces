@@ -10,7 +10,8 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum OperationResult implements IPlatformEnum {
-    SUCCESS("success", "Success"), FAILURE("failure", "Failure");
+    SUCCESS("success", "Success"),
+    FAILURE("failure", "Failure");
 
     private static final OperationResult[] VALUES;
 

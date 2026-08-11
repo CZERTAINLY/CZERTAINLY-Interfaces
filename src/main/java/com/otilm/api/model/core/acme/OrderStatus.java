@@ -7,7 +7,11 @@ import com.otilm.api.exception.ValidationException;
 import java.util.Arrays;
 
 public enum OrderStatus {
-    PENDING("pending"), READY("ready"), PROCESSING("processing"), VALID("valid"), INVALID("invalid");
+    PENDING("pending"),
+    READY("ready"),
+    PROCESSING("processing"),
+    VALID("valid"),
+    INVALID("invalid");
 
     /**
      * Status code for any given status

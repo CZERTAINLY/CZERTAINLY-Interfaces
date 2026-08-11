@@ -11,8 +11,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum ExecutionType implements IPlatformEnum {
 
-    SET_FIELD("setField", "Set field", "Set a field of the resource"), SEND_NOTIFICATION("sendNotification",
-            "Send notification", "Send a notification based on notification profile");
+    SET_FIELD("setField", "Set field", "Set a field of the resource"),
+    SEND_NOTIFICATION("sendNotification", "Send notification", "Send a notification based on notification profile");
 
     private static final ExecutionType[] VALUES;
 

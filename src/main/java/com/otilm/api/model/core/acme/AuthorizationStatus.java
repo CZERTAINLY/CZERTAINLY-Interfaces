@@ -10,8 +10,12 @@ import java.util.Arrays;
  * List of possible status for the Authorization object in ACME protocol
  */
 public enum AuthorizationStatus {
-    PENDING("pending"), VALID("valid"), INVALID("invalid"), DEACTIVATED("deactivated"), EXPIRED("expired"), REVOKED(
-            "revoked");
+    PENDING("pending"),
+    VALID("valid"),
+    INVALID("invalid"),
+    DEACTIVATED("deactivated"),
+    EXPIRED("expired"),
+    REVOKED("revoked");
 
     /**
      * Status code for any given status

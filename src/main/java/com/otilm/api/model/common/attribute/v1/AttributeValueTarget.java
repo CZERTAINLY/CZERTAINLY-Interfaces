@@ -9,7 +9,9 @@ import java.util.Arrays;
 
 public enum AttributeValueTarget {
 
-    PATH_VARIABLE("pathVariable"), REQUEST_PARAMETER("requestParameter"), BODY("body");
+    PATH_VARIABLE("pathVariable"),
+    REQUEST_PARAMETER("requestParameter"),
+    BODY("body");
 
     @Schema(description = "Attribute value Target", examples = {
             "pathVariable"}, requiredMode = Schema.RequiredMode.REQUIRED)

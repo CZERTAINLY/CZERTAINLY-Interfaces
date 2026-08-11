@@ -8,8 +8,11 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum AuthType implements IPlatformEnum {
-    NONE("none", "None"), BASIC("basic", "Basic"), CERTIFICATE("certificate", "Certificate"), API_KEY("apiKey",
-            "API Key"), JWT("jwt", "JWT token");
+    NONE("none", "None"),
+    BASIC("basic", "Basic"),
+    CERTIFICATE("certificate", "Certificate"),
+    API_KEY("apiKey", "API Key"),
+    JWT("jwt", "JWT token");
 
     private static final AuthType[] VALUES;
 

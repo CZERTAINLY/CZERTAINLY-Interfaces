@@ -12,8 +12,11 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeType implements IPlatformEnum {
 
-    DATA(Codes.DATA, "Data"), GROUP(Codes.GROUP, "Group"), INFO(Codes.INFO, "Info"), META(Codes.META,
-            "Metadata"), CUSTOM(Codes.CUSTOM, "Custom");
+    DATA(Codes.DATA, "Data"),
+    GROUP(Codes.GROUP, "Group"),
+    INFO(Codes.INFO, "Info"),
+    META(Codes.META, "Metadata"),
+    CUSTOM(Codes.CUSTOM, "Custom");
 
     private static final AttributeType[] VALUES;
 

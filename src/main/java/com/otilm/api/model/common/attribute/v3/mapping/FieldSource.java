@@ -9,8 +9,9 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum FieldSource implements IPlatformEnum {
 
-    CSR("csr", "CSR"), PLATFORM("platform", "Platform"), CSR_THEN_PLATFORM("csrThenPlatform",
-            "CSR, falling back to Platform");
+    CSR("csr", "CSR"),
+    PLATFORM("platform", "Platform"),
+    CSR_THEN_PLATFORM("csrThenPlatform", "CSR, falling back to Platform");
 
     private static final FieldSource[] VALUES = values();
 
