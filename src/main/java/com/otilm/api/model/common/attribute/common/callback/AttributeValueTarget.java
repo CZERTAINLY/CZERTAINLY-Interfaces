@@ -11,8 +11,10 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AttributeValueTarget implements IPlatformEnum {
 
-    PATH_VARIABLE("pathVariable", "Path variable"), REQUEST_PARAMETER("requestParameter",
-            "Request parameter"), BODY("body", "Body property"), FILTER("filter", "Filter for resource content type");
+    PATH_VARIABLE("pathVariable", "Path variable"),
+    REQUEST_PARAMETER("requestParameter", "Request parameter"),
+    BODY("body", "Body property"),
+    FILTER("filter", "Filter for resource content type");
 
     private static final AttributeValueTarget[] VALUES;
 

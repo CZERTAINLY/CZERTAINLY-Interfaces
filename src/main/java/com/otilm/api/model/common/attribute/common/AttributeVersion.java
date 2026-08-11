@@ -9,7 +9,8 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum AttributeVersion implements IPlatformEnum {
 
-    V2(Codes.V2, 2), V3(Codes.V3, 3);
+    V2(Codes.V2, 2),
+    V3(Codes.V3, 3);
 
     private final String code;
 

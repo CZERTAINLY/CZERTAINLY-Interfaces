@@ -10,7 +10,8 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyStoreType implements IPlatformEnum {
-    JKS("JKS", "Java Key Store"), PKCS12("PKCS12", "PKCS#12 Key Store");
+    JKS("JKS", "Java Key Store"),
+    PKCS12("PKCS12", "PKCS#12 Key Store");
 
     private static final KeyStoreType[] VALUES;
 

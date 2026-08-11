@@ -12,11 +12,11 @@ import java.util.Arrays;
 public enum SigningRecordPersistenceMode implements IPlatformEnum {
 
     IMMEDIATE(Codes.IMMEDIATE, "Immediate",
-            "Record is written synchronously before the response is returned; highest durability, highest latency"), DEFERRED_DURABLE(
-                    Codes.DEFERRED_DURABLE, "Deferred Durable",
-                    "Record is written asynchronously but guaranteed to be persisted; balanced latency and durability"), BEST_EFFORT(
-                            Codes.BEST_EFFORT, "Best Effort",
-                            "Record is written on a best-effort basis with no durability guarantee; lowest latency");
+            "Record is written synchronously before the response is returned; highest durability, highest latency"),
+    DEFERRED_DURABLE(Codes.DEFERRED_DURABLE, "Deferred Durable",
+            "Record is written asynchronously but guaranteed to be persisted; balanced latency and durability"),
+    BEST_EFFORT(Codes.BEST_EFFORT, "Best Effort",
+            "Record is written on a best-effort basis with no durability guarantee; lowest latency");
 
     private final String code;
     private final String label;

@@ -9,8 +9,12 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum FilterFieldType implements IPlatformEnum {
 
-    STRING(Constants.STRING, "String"), NUMBER(Constants.NUMBER, "Number"), LIST(Constants.LIST, "List"), DATE(
-            Constants.DATE, "Date"), DATETIME(Constants.DATETIME, "DateTime"), BOOLEAN(Constants.BOOLEAN, "Boolean");
+    STRING(Constants.STRING, "String"),
+    NUMBER(Constants.NUMBER, "Number"),
+    LIST(Constants.LIST, "List"),
+    DATE(Constants.DATE, "Date"),
+    DATETIME(Constants.DATETIME, "DateTime"),
+    BOOLEAN(Constants.BOOLEAN, "Boolean");
 
     private static final FilterFieldType[] VALUES;
 

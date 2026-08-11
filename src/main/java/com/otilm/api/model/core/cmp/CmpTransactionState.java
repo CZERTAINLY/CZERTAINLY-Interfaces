@@ -10,9 +10,11 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CmpTransactionState implements IPlatformEnum {
-    CERT_ISSUED("cert_issued", "Certificate issued"), CERT_REKEYED("cert_rekeyed",
-            "Certificate re-keyed"), CERT_CONFIRMED("cert_confirmed", "Certificate confirmed"), CERT_REVOKED(
-                    "cert_revoked", "Certificate revoked"), FAILED("failed", "Failed", "Any error occurred");
+    CERT_ISSUED("cert_issued", "Certificate issued"),
+    CERT_REKEYED("cert_rekeyed", "Certificate re-keyed"),
+    CERT_CONFIRMED("cert_confirmed", "Certificate confirmed"),
+    CERT_REVOKED("cert_revoked", "Certificate revoked"),
+    FAILED("failed", "Failed", "Any error occurred");
 
     private static final CmpTransactionState[] VALUES;
 

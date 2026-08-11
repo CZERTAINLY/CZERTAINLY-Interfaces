@@ -10,7 +10,9 @@ import java.util.Arrays;
 public enum FieldType implements IPlatformEnum {
 
     // X.509 certificate
-    RDN(Codes.RDN, "RDN"), SAN(Codes.SAN, "Subject Alternative Name"), EXTENSION(Codes.EXTENSION, "Extension");
+    RDN(Codes.RDN, "RDN"),
+    SAN(Codes.SAN, "Subject Alternative Name"),
+    EXTENSION(Codes.EXTENSION, "Extension");
 
     public static class Codes {
         public static final String RDN = "rdn";

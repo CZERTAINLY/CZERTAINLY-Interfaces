@@ -11,9 +11,9 @@ import java.util.Arrays;
 @Schema(name = "CertificateOperationStatusV3", enumAsRef = true)
 public enum CertificateOperationStatus implements IPlatformEnum {
 
-    IN_PROGRESS("inProgress", "In progress", "Operation is still running at the upstream CA"), COMPLETED("completed",
-            "Completed", "Operation has reached terminal success"), FAILED("failed", "Failed",
-                    "Operation has reached terminal failure");
+    IN_PROGRESS("inProgress", "In progress", "Operation is still running at the upstream CA"),
+    COMPLETED("completed", "Completed", "Operation has reached terminal success"),
+    FAILED("failed", "Failed", "Operation has reached terminal failure");
 
     private final String code;
     private final String label;

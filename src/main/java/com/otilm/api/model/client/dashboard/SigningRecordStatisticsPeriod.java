@@ -17,15 +17,18 @@ import java.util.Arrays;
 public enum SigningRecordStatisticsPeriod implements IPlatformEnum {
 
     LAST_24H(Codes.LAST_24H, "Last 24 hours", "Signings over the last 24 hours, bucketed hourly", Duration.ofDays(1),
-            Bucket.HOUR), LAST_7D(Codes.LAST_7D, "Last 7 days", "Signings over the last 7 days, bucketed daily",
-                    Duration.ofDays(7), Bucket.DAY), LAST_30D(Codes.LAST_30D, "Last 30 days",
-                            "Signings over the last 30 days, bucketed daily", Duration.ofDays(30),
-                            Bucket.DAY), LAST_90D(Codes.LAST_90D, "Last 90 days",
-                                    "Signings over the last 90 days, bucketed daily", Duration.ofDays(90), Bucket.DAY),;
+            Bucket.HOUR),
+    LAST_7D(Codes.LAST_7D, "Last 7 days", "Signings over the last 7 days, bucketed daily", Duration.ofDays(7),
+            Bucket.DAY),
+    LAST_30D(Codes.LAST_30D, "Last 30 days", "Signings over the last 30 days, bucketed daily", Duration.ofDays(30),
+            Bucket.DAY),
+    LAST_90D(Codes.LAST_90D, "Last 90 days", "Signings over the last 90 days, bucketed daily", Duration.ofDays(90),
+            Bucket.DAY);
 
     /** Bucketing granularity of the volume-over-time series for a period. */
     public enum Bucket {
-        HOUR, DAY
+        HOUR,
+        DAY
     }
 
     private static final SigningRecordStatisticsPeriod[] VALUES;

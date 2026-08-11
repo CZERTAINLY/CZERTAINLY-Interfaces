@@ -14,9 +14,9 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum QcType implements IPlatformEnum {
 
-    ESIGN(Codes.ESIGN, "Qualified Signature", "id-etsi-qct-esign (0.4.0.1862.1.6.1) — natural person signature"), ESEAL(
-            Codes.ESEAL, "Qualified Seal", "id-etsi-qct-eseal (0.4.0.1862.1.6.2) — legal entity seal"), WEB(Codes.WEB,
-                    "Qualified Website Authentication", "id-etsi-qct-web (0.4.0.1862.1.6.3) — website authentication"),;
+    ESIGN(Codes.ESIGN, "Qualified Signature", "id-etsi-qct-esign (0.4.0.1862.1.6.1) — natural person signature"),
+    ESEAL(Codes.ESEAL, "Qualified Seal", "id-etsi-qct-eseal (0.4.0.1862.1.6.2) — legal entity seal"),
+    WEB(Codes.WEB, "Qualified Website Authentication", "id-etsi-qct-web (0.4.0.1862.1.6.3) — website authentication");
 
     private static final QcType[] VALUES;
 

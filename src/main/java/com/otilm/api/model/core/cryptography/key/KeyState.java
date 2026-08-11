@@ -10,9 +10,12 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyState implements IPlatformEnum {
-    PRE_ACTIVE("pre-active", "Pre-active"), ACTIVE("active", "Active"), DEACTIVATED("deactivated",
-            "Deactivated"), COMPROMISED("compromised", "Compromised"), DESTROYED("destroyed",
-                    "Destroyed"), DESTROYED_COMPROMISED("destroyedCompromised", "Destroyed Compromised");
+    PRE_ACTIVE("pre-active", "Pre-active"),
+    ACTIVE("active", "Active"),
+    DEACTIVATED("deactivated", "Deactivated"),
+    COMPROMISED("compromised", "Compromised"),
+    DESTROYED("destroyed", "Destroyed"),
+    DESTROYED_COMPROMISED("destroyedCompromised", "Destroyed Compromised");
 
     private static final KeyState[] VALUES;
 

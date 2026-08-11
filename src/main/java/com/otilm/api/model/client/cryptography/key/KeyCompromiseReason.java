@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyCompromiseReason implements IPlatformEnum {
-    UNAUTHORIZED_DISCLOSURE("disclosure", "Unauthorized disclosure"), UNAUTHORIZED_MODIFICATION("modification",
-            "Unauthorized modification"),
+    UNAUTHORIZED_DISCLOSURE("disclosure", "Unauthorized disclosure"),
+    UNAUTHORIZED_MODIFICATION("modification", "Unauthorized modification"),
 
     UNAUTHORIZED_SUBSTITUTION("substitution", "Unauthorized substitution"),
 

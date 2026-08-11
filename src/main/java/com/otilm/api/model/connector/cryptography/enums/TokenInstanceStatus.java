@@ -10,9 +10,12 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum TokenInstanceStatus implements IPlatformEnum {
-    CONNECTED("Connected", "Connected"), DISCONNECTED("Disconnected", "Disconnected"), ACTIVATED("Activated",
-            "Activated"), DEACTIVATED("Deactivated",
-                    "Deactivated"), WARNING("Warning", "Warning"), UNKNOWN("Unknown", "Unknown");
+    CONNECTED("Connected", "Connected"),
+    DISCONNECTED("Disconnected", "Disconnected"),
+    ACTIVATED("Activated", "Activated"),
+    DEACTIVATED("Deactivated", "Deactivated"),
+    WARNING("Warning", "Warning"),
+    UNKNOWN("Unknown", "Unknown");
 
     private static final TokenInstanceStatus[] VALUES;
 

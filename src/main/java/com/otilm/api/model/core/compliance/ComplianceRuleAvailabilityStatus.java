@@ -14,8 +14,9 @@ List of possible statuses for rule compared to existing association in complianc
 
 @Schema(enumAsRef = true)
 public enum ComplianceRuleAvailabilityStatus implements IPlatformEnum {
-    AVAILABLE(Codes.AVAILABLE, "Available"), NOT_AVAILABLE(Codes.NOT_AVAILABLE, "Not available"), UPDATED(Codes.UPDATED,
-            "Updated");
+    AVAILABLE(Codes.AVAILABLE, "Available"),
+    NOT_AVAILABLE(Codes.NOT_AVAILABLE, "Not available"),
+    UPDATED(Codes.UPDATED, "Updated");
 
     private static final ComplianceRuleAvailabilityStatus[] VALUES;
 

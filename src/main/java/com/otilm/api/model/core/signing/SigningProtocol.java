@@ -11,8 +11,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum SigningProtocol implements IPlatformEnum {
 
-    CSC_API(Codes.CSC_API, "CSC API Protocol", "Cloud Signature Consortium API v2"), TSP(Codes.TSP,
-            "Timestamping Protocol", "Timestamping Protocol based on RFC 3161"),;
+    CSC_API(Codes.CSC_API, "CSC API Protocol", "Cloud Signature Consortium API v2"),
+    TSP(Codes.TSP, "Timestamping Protocol", "Timestamping Protocol based on RFC 3161");
 
     private static final SigningProtocol[] VALUES;
 

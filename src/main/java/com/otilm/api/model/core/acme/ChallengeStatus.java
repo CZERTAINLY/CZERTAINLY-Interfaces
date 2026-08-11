@@ -10,7 +10,10 @@ import java.util.Arrays;
  * ENUM representing the possible values for the ACME challenge
  */
 public enum ChallengeStatus {
-    PENDING("pending"), VALID("valid"), INVALID("invalid"), PROCESSING("processing");
+    PENDING("pending"),
+    VALID("valid"),
+    INVALID("invalid"),
+    PROCESSING("processing");
 
     /**
      * Status code for any given status

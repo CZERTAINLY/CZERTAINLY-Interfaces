@@ -9,11 +9,13 @@ import org.springframework.lang.Nullable;
  */
 @Schema(enumAsRef = true)
 public enum MessageType {
-    RESERVED(0, "Reserved", ""), CERT_REP(3, "CertRep", "Response to certificate or CRL request."), RENEWAL_REQ(17,
-            "RenewalReq", "PKCS#10 certificate request authenticated with an existing certificate."), PKCS_REQ(19,
-                    "PKCSReq", "PKCS#10 certificate request authenticated with a shared secret."), CERT_POLL(20,
-                            "CertPoll", "Certificate polling in manual enrolment."), GET_CERT(21, "GetCert",
-                                    "Retrieve a certificate."), GET_CRL(22, "GetCRL", "Retrieve a CRL.");
+    RESERVED(0, "Reserved", ""),
+    CERT_REP(3, "CertRep", "Response to certificate or CRL request."),
+    RENEWAL_REQ(17, "RenewalReq", "PKCS#10 certificate request authenticated with an existing certificate."),
+    PKCS_REQ(19, "PKCSReq", "PKCS#10 certificate request authenticated with a shared secret."),
+    CERT_POLL(20, "CertPoll", "Certificate polling in manual enrolment."),
+    GET_CERT(21, "GetCert", "Retrieve a certificate."),
+    GET_CRL(22, "GetCRL", "Retrieve a CRL.");
 
     private static final MessageType[] VALUES;
 

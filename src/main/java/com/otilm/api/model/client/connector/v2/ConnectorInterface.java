@@ -12,18 +12,20 @@ import java.util.Arrays;
 public enum ConnectorInterface implements IPlatformEnum {
 
     // Common interfaces
-    INFO("info", "Info", InterfaceCategory.COMMON), HEALTH("health", "Health", InterfaceCategory.COMMON), METRICS(
-            "metrics", "Metrics",
-            InterfaceCategory.COMMON), ATTRIBUTES("attributes", "Attributes", InterfaceCategory.COMMON),
+    INFO("info", "Info", InterfaceCategory.COMMON),
+    HEALTH("health", "Health", InterfaceCategory.COMMON),
+    METRICS("metrics", "Metrics", InterfaceCategory.COMMON),
+    ATTRIBUTES("attributes", "Attributes", InterfaceCategory.COMMON),
     // Functional interfaces
-    AUTHORITY("authority", "Authority", InterfaceCategory.FUNCTIONAL), DISCOVERY("discovery", "Discovery",
-            InterfaceCategory.FUNCTIONAL), ENTITY("entity", "Entity", InterfaceCategory.FUNCTIONAL), COMPLIANCE(
-                    "compliance", "Compliance", InterfaceCategory.FUNCTIONAL), CRYPTOGRAPHY("cryptography",
-                            "Cryptography", InterfaceCategory.FUNCTIONAL), NOTIFICATION("notification", "Notification",
-                                    InterfaceCategory.FUNCTIONAL), SECRET("secret", "Secret",
-                                            InterfaceCategory.FUNCTIONAL), SIGNATURE_FORMATTING("signatureFormatting",
-                                                    "Signature Formatting", InterfaceCategory.FUNCTIONAL), SIGNING(
-                                                            "signing", "Signing", InterfaceCategory.FUNCTIONAL);
+    AUTHORITY("authority", "Authority", InterfaceCategory.FUNCTIONAL),
+    DISCOVERY("discovery", "Discovery", InterfaceCategory.FUNCTIONAL),
+    ENTITY("entity", "Entity", InterfaceCategory.FUNCTIONAL),
+    COMPLIANCE("compliance", "Compliance", InterfaceCategory.FUNCTIONAL),
+    CRYPTOGRAPHY("cryptography", "Cryptography", InterfaceCategory.FUNCTIONAL),
+    NOTIFICATION("notification", "Notification", InterfaceCategory.FUNCTIONAL),
+    SECRET("secret", "Secret", InterfaceCategory.FUNCTIONAL),
+    SIGNATURE_FORMATTING("signatureFormatting", "Signature Formatting", InterfaceCategory.FUNCTIONAL),
+    SIGNING("signing", "Signing", InterfaceCategory.FUNCTIONAL);
 
     /**
      * Groups a connector interface as a common baseline interface (info/health/metrics/attributes) or a
@@ -31,7 +33,8 @@ public enum ConnectorInterface implements IPlatformEnum {
      * interfaces are required for a connector to register is enforced by Core, independently of this category.
      */
     public enum InterfaceCategory {
-        COMMON, FUNCTIONAL
+        COMMON,
+        FUNCTIONAL
     }
 
     private static final ConnectorInterface[] VALUES;

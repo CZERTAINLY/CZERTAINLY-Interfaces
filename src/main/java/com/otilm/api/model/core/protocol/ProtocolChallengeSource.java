@@ -15,8 +15,8 @@ import java.util.Arrays;
  */
 @Schema(enumAsRef = true)
 public enum ProtocolChallengeSource implements IPlatformEnum {
-    PROTOCOL_DEFAULT("protocolDefault", "Protocol Default"), CERTIFICATE_REGISTRATION("certificateRegistration",
-            "Certificate Registration");
+    PROTOCOL_DEFAULT("protocolDefault", "Protocol Default"),
+    CERTIFICATE_REGISTRATION("certificateRegistration", "Certificate Registration");
 
     private static final ProtocolChallengeSource[] VALUES;
 

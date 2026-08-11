@@ -20,13 +20,11 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum NotificationDataCategory implements IPlatformEnum {
 
-    CUSTOM_ATTRIBUTES("customAttributes", "Custom attributes",
-            "Include the event object's custom attribute values"), METADATA("metadata", "Metadata",
-                    "Include connector-provided metadata, grouped by connector and source object"), ASSOCIATIONS(
-                            "associations", "Associations",
-                            "Include owner, groups, and RA profile references"), OBJECT_CONTENT("objectContent",
-                                    "Object content",
-                                    "Include the object's content when its type provides one, e.g. certificates as Base64 DER");
+    CUSTOM_ATTRIBUTES("customAttributes", "Custom attributes", "Include the event object's custom attribute values"),
+    METADATA("metadata", "Metadata", "Include connector-provided metadata, grouped by connector and source object"),
+    ASSOCIATIONS("associations", "Associations", "Include owner, groups, and RA profile references"),
+    OBJECT_CONTENT("objectContent", "Object content",
+            "Include the object's content when its type provides one, e.g. certificates as Base64 DER");
 
     private static final NotificationDataCategory[] VALUES;
 

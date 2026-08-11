@@ -9,9 +9,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 public enum SettingsSection implements IPlatformEnum {
-    PLATFORM("platform", "Platform", "Platform settings"), EVENTS("events", "Events",
-            "Platform events settings"), AUTHENTICATION("authentication", "Authentication",
-                    "Platform authentication settings"), LOGGING("logging", "Logging", "Platform logging settings");
+    PLATFORM("platform", "Platform", "Platform settings"),
+    EVENTS("events", "Events", "Platform events settings"),
+    AUTHENTICATION("authentication", "Authentication", "Platform authentication settings"),
+    LOGGING("logging", "Logging", "Platform logging settings");
 
     private static final SettingsSection[] VALUES;
 

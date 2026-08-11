@@ -7,10 +7,19 @@ import java.util.Arrays;
  */
 public enum AttributeType {
 
-    STRING(Constants.STRING), INTEGER(Constants.INTEGER), SECRET(Constants.SECRET), FILE(Constants.FILE), BOOLEAN(
-            Constants.BOOLEAN), CREDENTIAL(Constants.CREDENTIAL), DATE(Constants.DATE), FLOAT(Constants.FLOAT), JSON(
-                    Constants.JSON), TEXT(Constants.TEXT), TIME(
-                            Constants.TIME), DATETIME(Constants.DATETIME), CODEBLOCK(Constants.CODEBLOCK);
+    STRING(Constants.STRING),
+    INTEGER(Constants.INTEGER),
+    SECRET(Constants.SECRET),
+    FILE(Constants.FILE),
+    BOOLEAN(Constants.BOOLEAN),
+    CREDENTIAL(Constants.CREDENTIAL),
+    DATE(Constants.DATE),
+    FLOAT(Constants.FLOAT),
+    JSON(Constants.JSON),
+    TEXT(Constants.TEXT),
+    TIME(Constants.TIME),
+    DATETIME(Constants.DATETIME),
+    CODEBLOCK(Constants.CODEBLOCK);
 
     private final String code;
 

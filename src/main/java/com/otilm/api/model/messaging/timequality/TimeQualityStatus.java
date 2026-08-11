@@ -11,8 +11,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum TimeQualityStatus implements IPlatformEnum {
 
-    OK(Codes.OK, "OK", "Time quality is within acceptable bounds"), DEGRADED(Codes.DEGRADED, "Degraded",
-            "Time quality is outside acceptable bounds or sources are unreliable"),;
+    OK(Codes.OK, "OK", "Time quality is within acceptable bounds"),
+    DEGRADED(Codes.DEGRADED, "Degraded", "Time quality is outside acceptable bounds or sources are unreliable");
 
     private static final TimeQualityStatus[] VALUES;
 

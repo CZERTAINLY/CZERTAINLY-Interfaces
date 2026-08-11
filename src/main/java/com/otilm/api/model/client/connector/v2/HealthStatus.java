@@ -10,12 +10,12 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum HealthStatus implements IPlatformEnum {
-    UP("UP", "Up", "The service (or component) is fully operational and healthy."), DEGRADED("DEGRADED", "Degraded",
-            "The service is working but with reduced functionality or performance."), DOWN("DOWN", "Down",
-                    "The service (or component) is not functioning correctly and is unavailable."), OUT_OF_SERVICE(
-                            "OUT_OF_SERVICE", "Out of Service",
-                            "The service (or component) is intentionally out of service (e.g., disabled, under maintenance)."), UNKNOWN(
-                                    "UNKNOWN", "Unknown", "The health state cannot be determined.");
+    UP("UP", "Up", "The service (or component) is fully operational and healthy."),
+    DEGRADED("DEGRADED", "Degraded", "The service is working but with reduced functionality or performance."),
+    DOWN("DOWN", "Down", "The service (or component) is not functioning correctly and is unavailable."),
+    OUT_OF_SERVICE("OUT_OF_SERVICE", "Out of Service",
+            "The service (or component) is intentionally out of service (e.g., disabled, under maintenance)."),
+    UNKNOWN("UNKNOWN", "Unknown", "The health state cannot be determined.");
 
     private static final HealthStatus[] VALUES;
 

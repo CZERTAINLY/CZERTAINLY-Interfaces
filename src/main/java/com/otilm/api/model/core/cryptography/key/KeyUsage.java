@@ -15,18 +15,22 @@ import org.springframework.lang.Nullable;
 @Schema(enumAsRef = true)
 public enum KeyUsage implements IPlatformEnum, BitMaskEnum {
 
-    SIGN("sign", "Sign", "Allow for signing. Applies to Sign operation. Valid for PGP Key, Private Key", 1), VERIFY(
-            "verify", "Verify",
+    SIGN("sign", "Sign", "Allow for signing. Applies to Sign operation. Valid for PGP Key, Private Key", 1),
+    VERIFY("verify", "Verify",
             "Allow for signature verification. Applies to Signature Verify and Validate operations. Valid for PGP Key, Certificate and Public Key.",
-            1 << 1), ENCRYPT("encrypt", "Encrypt",
-                    "Allow for encryption. Applies to Encrypt operation. Valid for PGP Key, Private Key, Public Key and Symmetric Key. Encryption for the purpose of wrapping is separate Wrap Key value.",
-                    1 << 2), DECRYPT("decrypt", "Decrypt",
-                            "Allow for decryption. Applies to Decrypt operation. Valid for PGP Key, Private Key, Public Key and Symmetric Key. Decryption for the purpose of unwrapping is separate Unwrap Key value.",
-                            1 << 3), WRAP("wrap", "Wrap key",
-                                    "Allow for key wrapping. Applies to Get operation when wrapping is required by Wrapping Specification is provided on the object used to Wrap. Valid for PGP Key, Private Key and Symmetric Key. Note: even if the underlying wrapping mechanism is encryption, this value is logically separate.",
-                                    1 << 4), UNWRAP("unwrap", "Unwrap key",
-                                            "Allow for key unwrapping. Applies to Get operation when unwrapping is required on the object used to Unwrap.  Valid for PGP Key, Private Key, Public Key and Symmetric Key. Not interchangeable with Decrypt. Note: even if the underlying unwrapping mechanism is decryption, this value is logically separate.",
-                                            1 << 5);
+            1 << 1),
+    ENCRYPT("encrypt", "Encrypt",
+            "Allow for encryption. Applies to Encrypt operation. Valid for PGP Key, Private Key, Public Key and Symmetric Key. Encryption for the purpose of wrapping is separate Wrap Key value.",
+            1 << 2),
+    DECRYPT("decrypt", "Decrypt",
+            "Allow for decryption. Applies to Decrypt operation. Valid for PGP Key, Private Key, Public Key and Symmetric Key. Decryption for the purpose of unwrapping is separate Unwrap Key value.",
+            1 << 3),
+    WRAP("wrap", "Wrap key",
+            "Allow for key wrapping. Applies to Get operation when wrapping is required by Wrapping Specification is provided on the object used to Wrap. Valid for PGP Key, Private Key and Symmetric Key. Note: even if the underlying wrapping mechanism is encryption, this value is logically separate.",
+            1 << 4),
+    UNWRAP("unwrap", "Unwrap key",
+            "Allow for key unwrapping. Applies to Get operation when unwrapping is required on the object used to Unwrap.  Valid for PGP Key, Private Key, Public Key and Symmetric Key. Not interchangeable with Decrypt. Note: even if the underlying unwrapping mechanism is decryption, this value is logically separate.",
+            1 << 5);
 
     private static final KeyUsage[] VALUES;
 

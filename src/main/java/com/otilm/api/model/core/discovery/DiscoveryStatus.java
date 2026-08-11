@@ -11,9 +11,13 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum DiscoveryStatus implements IPlatformEnum {
 
-    IN_PROGRESS("inProgress", "In Progress"), PROCESSING("processing", "Processing"), FAILED("failed",
-            "Failed"), COMPLETED("completed", "Completed"), WARNING("warning",
-                    "Warning"), STOPPED("stopped", "Stopped"), CANCELLED("cancelled", "Cancelled");
+    IN_PROGRESS("inProgress", "In Progress"),
+    PROCESSING("processing", "Processing"),
+    FAILED("failed", "Failed"),
+    COMPLETED("completed", "Completed"),
+    WARNING("warning", "Warning"),
+    STOPPED("stopped", "Stopped"),
+    CANCELLED("cancelled", "Cancelled");
 
     private static final DiscoveryStatus[] VALUES;
 
