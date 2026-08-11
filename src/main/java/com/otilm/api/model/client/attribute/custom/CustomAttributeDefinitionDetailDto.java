@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Setter
-public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
+public class CustomAttributeDefinitionDetailDto extends CustomAttributeDefinitionDto {
 
     /**
      * Type of the Attribute. For the custom attribute, the type will always be "custom"
@@ -21,12 +21,6 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(description = "Type of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
             "custom"}, defaultValue = "custom")
     private AttributeType type;
-
-    /**
-     * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
-     **/
-    @Schema(description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.", requiredMode = Schema.RequiredMode.REQUIRED)
-    private boolean required;
 
     /**
      * Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.
@@ -65,14 +59,6 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
     @Schema(description = "Predefined content for the attribute if needed. The content of the Attribute must satisfy the type")
     private List<AttributeContent> content;
 
-    /**
-     * List of resources
-     *
-     * @return
-     */
-    @Schema(description = "List of resources which are allowed to use the Custom Attribute")
-    private List<Resource> resources;
-
     @Schema(description = "Boolean determining if a list Attribute can have values other than predefined options")
     private boolean extensibleList;
 
@@ -87,8 +73,8 @@ public class CustomAttributeDefinitionDetailDto extends AttributeDefinitionDto {
                 .append("list", list)
                 .append("multiSelect", multiSelect)
                 .append("content", content)
-                .append("resources", resources)
-                .append("required", required)
+                .append("resources", getResources())
+                .append("required", isRequired())
                 .append("extensibleList", extensibleList)
                 .toString();
     }

@@ -3,9 +3,13 @@ package com.otilm.api.model.client.attribute.custom;
 import com.otilm.api.model.client.attribute.AttributeDefinitionDto;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Setter
+@Getter
 public class CustomAttributeDefinitionDto extends AttributeDefinitionDto {
 
     /**
@@ -14,11 +18,10 @@ public class CustomAttributeDefinitionDto extends AttributeDefinitionDto {
     @Schema(description = "List of resources for custom attribute", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<Resource> resources;
 
-    public List<Resource> getResources() {
-        return resources;
-    }
+    /**
+     * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
+     **/
+    @Schema(description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.", requiredMode = Schema.RequiredMode.REQUIRED)
+    private boolean required;
 
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
-    }
 }
