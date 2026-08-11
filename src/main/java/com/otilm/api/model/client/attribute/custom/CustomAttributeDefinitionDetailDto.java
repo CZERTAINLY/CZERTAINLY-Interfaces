@@ -1,9 +1,7 @@
 package com.otilm.api.model.client.attribute.custom;
 
-import com.otilm.api.model.client.attribute.AttributeDefinitionDto;
 import com.otilm.api.model.common.attribute.common.AttributeContent;
 import com.otilm.api.model.common.attribute.common.AttributeType;
-import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Getter;

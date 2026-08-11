@@ -3,10 +3,9 @@ package com.otilm.api.model.client.attribute.custom;
 import com.otilm.api.model.client.attribute.AttributeDefinitionDto;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Setter
 @Getter
