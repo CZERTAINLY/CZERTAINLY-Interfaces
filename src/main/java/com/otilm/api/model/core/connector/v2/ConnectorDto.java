@@ -16,21 +16,24 @@ import lombok.EqualsAndHashCode;
 @Schema(name = "ConnectorDtoV2")
 public class ConnectorDto extends NameAndUuidDto {
 
-    @Schema(description = "Version of the Connector based on the implemented interfaces.", requiredMode = Schema.RequiredMode.REQUIRED, example = "v2")
+    @Schema(description = "Version of the Connector based on the implemented interfaces.",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "v2")
     private ConnectorVersion version;
 
-    @Schema(description = "URL of the Connector", examples = {
-            "http://network-discovery-provider:8080"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL of the Connector", examples = {"http://network-discovery-provider:8080"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
 
-    @Schema(description = "Status of the Connector", examples = {
-            "CONNECTED"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Status of the Connector", examples = {"CONNECTED"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
 
-    @Schema(description = "List of Function Groups implemented by the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Function Groups implemented by the Connector",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<FunctionGroupDto> functionGroups = new ArrayList<>();
 
-    @Schema(description = "List of connector interfaces implemented by the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of connector interfaces implemented by the Connector",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ConnectorInterfaceDto> interfaces = new ArrayList<>();
 
     @Schema(description = "Proxy for message queue routing. "

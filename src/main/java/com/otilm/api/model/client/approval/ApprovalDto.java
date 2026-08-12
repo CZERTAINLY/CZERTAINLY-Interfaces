@@ -16,7 +16,8 @@ public class ApprovalDto {
     @Schema(description = "UUID of the user that requested approval", requiredMode = Schema.RequiredMode.REQUIRED)
     private String creatorUuid;
 
-    @Schema(description = "Username of the user that requested approval", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Username of the user that requested approval",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String creatorUsername;
 
     @Schema(description = "Version of the Approval profile", requiredMode = Schema.RequiredMode.REQUIRED)

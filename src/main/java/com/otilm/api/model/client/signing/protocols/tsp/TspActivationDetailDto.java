@@ -12,9 +12,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class TspActivationDetailDto extends NameAndUuidDto {
 
-    @Schema(description = "TSP availability flag - true = activated; false = not activated", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "TSP availability flag - true = activated; false = not activated",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean available;
 
-    @Schema(description = "TSP URL for signing", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "https://ilm.otilm.com/api/v1/protocols/tsp/signingProfiles/signing-profile-1")
+    @Schema(description = "TSP URL for signing", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "https://ilm.otilm.com/api/v1/protocols/tsp/signingProfiles/signing-profile-1")
     private String signingUrl;
 }

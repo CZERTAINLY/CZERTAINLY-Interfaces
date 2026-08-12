@@ -18,18 +18,21 @@ public class EventHistoryDto {
     @Schema(description = "Status of the event firing.", requiredMode = Schema.RequiredMode.REQUIRED)
     private EventStatus status;
 
-    @Schema(description = "Resource of the objects that triggers have been evaluated on.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Resource of the objects that triggers have been evaluated on.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
     @Schema(description = "Number of objects evaluated.", requiredMode = Schema.RequiredMode.REQUIRED)
     private int objectsEvaluated;
 
-    @Schema(description = "Number of objects matched at least by one trigger.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Number of objects matched at least by one trigger.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private int objectsMatched;
 
     @Schema(description = "Number of objects matched by ignore triggers.", requiredMode = Schema.RequiredMode.REQUIRED)
     private int objectsIgnored;
 
-    @Schema(description = "Paginated list of trigger evaluations on individual objects.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Paginated list of trigger evaluations on individual objects.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private PaginationResponseDto<TriggerHistoryObjectSummaryDto> objectHistories;
 }

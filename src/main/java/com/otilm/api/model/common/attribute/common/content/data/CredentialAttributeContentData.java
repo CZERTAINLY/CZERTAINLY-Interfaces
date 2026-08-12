@@ -15,8 +15,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @EqualsAndHashCode(callSuper = true)
 public class CredentialAttributeContentData extends NameAndUuidDto {
 
-    @Schema(description = "Credential Kind", examples = {
-            "SoftKeyStore, Basic, ApiKey, etc"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Credential Kind", examples = {"SoftKeyStore, Basic, ApiKey, etc"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes", requiredMode = Schema.RequiredMode.REQUIRED)

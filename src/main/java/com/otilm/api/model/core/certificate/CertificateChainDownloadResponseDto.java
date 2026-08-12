@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CertificateChainDownloadResponseDto extends CertificateDownloadResponseDto {
 
-    @Schema(description = "Indicator whether the chain returned is complete", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Indicator whether the chain returned is complete",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean completeChain;
 }

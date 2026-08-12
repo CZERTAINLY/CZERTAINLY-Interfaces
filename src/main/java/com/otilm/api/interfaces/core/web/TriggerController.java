@@ -44,30 +44,39 @@ public interface TriggerController extends AuthProtectedController {
     List<TriggerDto> listTriggers(@RequestParam(required = false) Resource resource);
 
     @Operation(summary = "Create Trigger")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Trigger created"),
-            @ApiResponse(responseCode = "404", description = "Rule or Action not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Trigger created"),
+            @ApiResponse(responseCode = "404", description = "Rule or Action not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(path = "/triggers", consumes = {"application/json"}, produces = {"application/json"})
     TriggerDetailDto createTrigger(@RequestBody TriggerRequestDto request)
             throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Get Trigger details")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger details retrieved"),
-            @ApiResponse(responseCode = "404", description = "Trigger not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Trigger details retrieved"),
+            @ApiResponse(responseCode = "404", description = "Trigger not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/triggers/{triggerUuid}", produces = {"application/json"})
     TriggerDetailDto getTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid)
             throws NotFoundException;
 
     @Operation(summary = "Update Trigger")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger updated"),
-            @ApiResponse(responseCode = "404", description = "Trigger, Rule or Action not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "409", description = "Trigger already exists", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Trigger updated"),
+            @ApiResponse(responseCode = "404", description = "Trigger, Rule or Action not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "409", description = "Trigger already exists",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PutMapping(path = "/triggers/{triggerUuid}", consumes = {"application/json"}, produces = {"application/json"})
     TriggerDetailDto updateTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid,
             @RequestBody @Valid UpdateTriggerRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Delete Trigger")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Trigger deleted"),
-            @ApiResponse(responseCode = "404", description = "Trigger not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Trigger deleted"),
+            @ApiResponse(responseCode = "404", description = "Trigger not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(path = "/triggers/{triggerUuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteTrigger(@Parameter(description = "Trigger UUID") @PathVariable String triggerUuid)
@@ -80,16 +89,20 @@ public interface TriggerController extends AuthProtectedController {
             @Parameter(description = "Trigger Association Object UUID") @PathVariable String associationObjectUuid);
 
     @Operation(summary = "Get Trigger History Summary")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Trigger History Summary retrieved"),
-            @ApiResponse(responseCode = "404", description = "Trigger not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Trigger History Summary retrieved"),
+            @ApiResponse(responseCode = "404", description = "Trigger not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/triggers/history/{associationObjectUuid}", produces = {"application/json"})
     TriggerHistorySummaryDto getTriggerHistorySummary(
             @Parameter(description = "Trigger Association Object UUID") @PathVariable String associationObjectUuid)
             throws NotFoundException;
 
     @Operation(summary = "Associate event with triggers")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Trigger associations created"),
-            @ApiResponse(responseCode = "404", description = "Rule or Action not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Trigger associations created"),
+            @ApiResponse(responseCode = "404", description = "Rule or Action not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(path = "/events", consumes = {"application/json"}, produces = {"application/json"})
     void associateEventTriggers(@RequestBody TriggerEventAssociationRequestDto request) throws NotFoundException;
 
@@ -98,6 +111,7 @@ public interface TriggerController extends AuthProtectedController {
     @GetMapping(path = "/events/{resource}/{associationObjectUuid}", produces = {"application/json"})
     Map<ResourceEvent, List<UUID>> getEventTriggersAssociations(
             @Parameter(description = "Resource", required = true) @PathVariable Resource resource,
-            @Parameter(description = "Association object UUID", required = true) @PathVariable UUID associationObjectUuid);
+            @Parameter(description = "Association object UUID",
+                    required = true) @PathVariable UUID associationObjectUuid);
 
 }

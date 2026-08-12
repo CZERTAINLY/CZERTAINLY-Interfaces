@@ -13,11 +13,12 @@ import lombok.EqualsAndHashCode;
 @Schema(name = "ConnectorDetailDtoV2")
 public class ConnectorDetailDto extends ConnectorDto implements ApiClientConnectorInfo {
 
-    @Schema(description = "Type of authentication for the Connector", examples = {
-            "none"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type of authentication for the Connector", examples = {"none"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
 
-    @Schema(description = "List of Attributes for the authentication type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of Attributes for the authentication type",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> authAttributes;
 
     @Schema(description = "List of Custom Attributes")

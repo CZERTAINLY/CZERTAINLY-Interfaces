@@ -19,13 +19,13 @@ import lombok.NoArgsConstructor;
 public class SecretRequestDto implements SecretOperationRequest {
 
     @NotBlank
-    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "MyServerCredentials"})
+    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"MyServerCredentials"})
     private String name;
 
     @NotNull
-    @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SecretType.Codes.API_KEY})
+    @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SecretType.Codes.API_KEY})
     private SecretType type;
 
     @Builder.Default

@@ -12,19 +12,23 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-@Schema(name = "TimeQualityConfigSnapshot", description = "Full snapshot of all NTP-based time quality configurations, sent by Core to Time Quality Monitor")
+@Schema(name = "TimeQualityConfigSnapshot",
+        description = "Full snapshot of all NTP-based time quality configurations, sent by Core to Time Quality Monitor")
 public class TimeQualityConfigSnapshot implements Serializable {
 
-    @Schema(description = "Correlation identifier carried from the matching TimeQualityConfigRequest. Null when Core publishes the snapshot proactively.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")
+    @Schema(description = "Correlation identifier carried from the matching TimeQualityConfigRequest. Null when Core publishes the snapshot proactively.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")
     private UUID correlationId;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Timestamp when the snapshot was generated, in ISO 8601 UTC format", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Timestamp when the snapshot was generated, in ISO 8601 UTC format",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Instant generatedAt;
 
     @NotNull
     @Valid
-    @Schema(description = "Complete list of active NTP-based time quality configurations; always a full snapshot, never a delta", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Complete list of active NTP-based time quality configurations; always a full snapshot, never a delta",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TimeQualityConfig> configurations = new ArrayList<>();
 }

@@ -25,16 +25,16 @@ any incoming compliance check request
 @Schema(name = "ComplianceRequestDtoV2", description = "Request for Compliance Check V2")
 public class ComplianceRequestDto {
 
-    @Schema(description = "Resource of rules to be checked", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            Resource.Codes.CERTIFICATE})
+    @Schema(description = "Resource of rules to be checked", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {Resource.Codes.CERTIFICATE})
     private Resource resource;
 
-    @Schema(description = "Type of the resource object that is sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "X.509"})
+    @Schema(description = "Type of the resource object that is sent to compliance check",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"X.509"})
     private String type;
 
-    @Schema(description = "Format of the resource object data that are sent to compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "pkcs7"})
+    @Schema(description = "Format of the resource object data that are sent to compliance check",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"pkcs7"})
     private String format;
 
     @NotNull

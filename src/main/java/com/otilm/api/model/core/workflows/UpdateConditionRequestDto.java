@@ -15,7 +15,8 @@ public class UpdateConditionRequestDto {
     @Schema(description = "Description of the condition")
     private String description;
 
-    @Schema(description = "List of the condition items to add to condition", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of the condition items to add to condition",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ConditionItemRequestDto> items;
 
 }

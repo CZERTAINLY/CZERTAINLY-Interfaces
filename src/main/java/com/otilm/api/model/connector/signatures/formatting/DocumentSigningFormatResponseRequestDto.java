@@ -16,7 +16,8 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@Schema(title = "DocumentSigningFormatResponseRequestDto", description = "Response formatting request for Document Signing")
+@Schema(title = "DocumentSigningFormatResponseRequestDto",
+        description = "Response formatting request for Document Signing")
 public class DocumentSigningFormatResponseRequestDto extends FormatResponseRequestDto {
 
     public DocumentSigningFormatResponseRequestDto() {

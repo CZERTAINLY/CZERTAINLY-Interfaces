@@ -12,6 +12,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class SimplifiedSigningProfileDto extends NameAndUuidDto {
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 }

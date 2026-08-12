@@ -23,10 +23,12 @@ import lombok.ToString;
 @Schema(description = "Request to set the editable platform default request-attribute definitions.")
 public class CertificateRequestAttributesSettingsUpdateDto implements Serializable {
 
-    @ArraySchema(arraySchema = @Schema(description = "Ordered list of platform default request-attribute definitions", requiredMode = Schema.RequiredMode.NOT_REQUIRED))
+    @ArraySchema(arraySchema = @Schema(description = "Ordered list of platform default request-attribute definitions",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @Valid
     private List<BaseAttribute> requestAttributes = new ArrayList<>();
 
-    @Schema(description = "Platform default for external-CSR strictness; an RA Profile inherits this when its own externalCsrValidationStrict is null", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Platform default for external-CSR strictness; an RA Profile inherits this when its own externalCsrValidationStrict is null",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean externalCsrValidationStrict;
 }

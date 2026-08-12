@@ -20,7 +20,8 @@ import lombok.NoArgsConstructor;
 @Schema(name = "OperationSupport", description = "Per-operation support flags for an authority/RA profile.")
 public class OperationSupport {
 
-    @Schema(description = "Operation kind (ISSUE, RENEW, REVOKE, REGISTER).", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Operation kind (ISSUE, RENEW, REVOKE, REGISTER).",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateOperationKind operation;
 
     @Schema(description = "Whether the operation is supported by this authority.")

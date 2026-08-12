@@ -13,8 +13,8 @@ public class CertificateRevocationRequest {
      * The Certificate to be revoked, in the base64url-encoded version of the DER format. (Note: Because this field uses
      * base64url, and does not include headers, it is different from PEM.).
      */
-    @Schema(description = "Certificate in base64url-encoded version of DER format", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "<base64url-encoded version of the DER format>"})
+    @Schema(description = "Certificate in base64url-encoded version of DER format",
+            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"<base64url-encoded version of the DER format>"})
     private String certificate;
 
     /**
@@ -24,7 +24,10 @@ public class CertificateRevocationRequest {
      * can set the code for revocation is UNSPECIFIED.
      *
      */
-    @Schema(description = "Revocation reason code", externalDocs = @ExternalDocumentation(description = "RFC 5280, section 5.3.1", url = "https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1"), requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
+    @Schema(description = "Revocation reason code",
+            externalDocs = @ExternalDocumentation(description = "RFC 5280, section 5.3.1",
+                    url = "https://datatracker.ietf.org/doc/html/rfc5280#section-5.3.1"),
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
     private Integer reason;
 
     public String getCertificate() {

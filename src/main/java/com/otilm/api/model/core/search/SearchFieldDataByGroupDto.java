@@ -10,7 +10,8 @@ public class SearchFieldDataByGroupDto {
     @Schema(description = "Search group", requiredMode = Schema.RequiredMode.REQUIRED)
     private FilterFieldSource filterFieldSource;
 
-    @Schema(description = "List of search fields for specified search group", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of search fields for specified search group",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<SearchFieldDataDto> searchFieldData;
 
     public SearchFieldDataByGroupDto(List<SearchFieldDataDto> searchFieldData, FilterFieldSource filterFieldSource) {

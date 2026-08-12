@@ -39,9 +39,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/v1")
 @Tag(name = "Vault Profile Management", description = "APIs for managing Vault Profiles")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Profiles")
@@ -59,8 +62,8 @@ public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "Update a Vault Profile")
     @ApiResponse(responseCode = "200", description = "Vault Profile updated")
-    @PutMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}", consumes = {
-            "application/json"}, produces = {"application/json"})
+    @PutMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}", consumes = {"application/json"},
+            produces = {"application/json"})
     VaultProfileDetailDto updateVaultProfile(
             @Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid,
             @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid,
@@ -77,8 +80,8 @@ public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "Create a Vault Profile")
     @ApiResponse(responseCode = "201", description = "Vault Profile created")
-    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles", consumes = {"application/json"},
+            produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     VaultProfileDetailDto createVaultProfile(
             @Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid,
@@ -102,9 +105,10 @@ public interface VaultProfileController extends AuthProtectedController {
             throws NotFoundException;
 
     @Operation(summary = "List attributes for creating a secret in a Vault Profile")
-    @ApiResponse(responseCode = "200", description = "List of attributes for creating a secret in a Vault Profile retrieved")
-    @GetMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets/{secretType}/attributes", produces = {
-            "application/json"})
+    @ApiResponse(responseCode = "200",
+            description = "List of attributes for creating a secret in a Vault Profile retrieved")
+    @GetMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets/{secretType}/attributes",
+            produces = {"application/json"})
     List<BaseAttribute> listSecretAttributes(
             @Parameter(description = "UUID of Vault Instance") @PathVariable UUID vaultUuid,
             @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid,

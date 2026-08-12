@@ -13,6 +13,7 @@ public class VaultProfileDetailDto extends VaultProfileDto {
     @Schema(description = "List of attributes of the Vault profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttribute> attributes;
 
-    @Schema(description = "List of custom attributes of the Vault profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of custom attributes of the Vault profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> customAttributes;
 }

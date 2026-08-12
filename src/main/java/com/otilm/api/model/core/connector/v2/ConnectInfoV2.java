@@ -16,7 +16,8 @@ public class ConnectInfoV2 extends ConnectInfo {
     @Schema(description = "Connector Information", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ConnectorInfo connector;
 
-    @Schema(description = "Interfaces supported and implemented by the connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Interfaces supported and implemented by the connector",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ConnectorInterfaceInfo> interfaces = new ArrayList<>();
 
     public ConnectInfoV2() {

@@ -38,8 +38,16 @@ public class ConnectorResponse implements Serializable {
     @Schema(description = "Error message if request failed (empty on success)")
     private String error;
 
-    @Schema(description = "Error category for classification", examples = {"validation", "authentication",
-            "authorization", "not_found", "timeout", "connection", "server_error", "unknown"})
+    @Schema(description = "Error category for classification",
+            examples = {
+                    "validation",
+                    "authentication",
+                    "authorization",
+                    "not_found",
+                    "timeout",
+                    "connection",
+                    "server_error",
+                    "unknown"})
     private String errorCategory;
 
     @Schema(description = "Whether the error is transient and the message can be retried")

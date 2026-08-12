@@ -23,26 +23,29 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CertificateSignRequestDtoV3 extends AuthorityV3ScopedRequestDto {
 
-    @Schema(description = "Certificate signing request, Base64-encoded", format = "byte", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate signing request, Base64-encoded", format = "byte",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "CSR (request) is required for issue")
     private String request;
 
     @Schema(description = "CSR format", defaultValue = "pkcs10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateRequestFormat format;
 
-    @Schema(description = "Issue-specific dynamic attributes (from shared /issue/attributes schema endpoint)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Issue-specific dynamic attributes (from shared /issue/attributes schema endpoint)",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Schema(description = "Connector-defined metadata. On issue against a prior registration, "
             + "this carries the meta returned by the /register response (replayed so the "
-            + "stateless connector can resolve the upstream end-entity). "
-            + "Null/empty = fresh issuance.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "stateless connector can resolve the upstream end-entity). " + "Null/empty = fresh issuance.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> meta;
 
     @Schema(description = "Optional structured request content (typed RDNs, SANs, extensions). "
             + "Present ONLY when the connector advertises the CERTIFICATE_REQUEST_STRUCTURED feature flag. "
             + "When present it is the authoritative source of subject identity and extensions for this issuance; "
-            + "otherwise identity is taken from the submitted CSR (request).", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "otherwise identity is taken from the submitted CSR (request).",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     private CertificateRequestContent requestContent;
 }

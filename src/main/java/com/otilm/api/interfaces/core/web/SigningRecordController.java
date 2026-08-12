@@ -34,7 +34,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "Signing Record Management", description = "Signing Record Management API. "
         + "Signing Records are produced as a result of digital signing cryptographic operations. They cannot be created or updated directly via this API.")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 public interface SigningRecordController extends AuthProtectedController {
 
     @Operation(operationId = "listSigningRecordSearchableFields", summary = "List search filters for Signing Records")
@@ -61,11 +62,15 @@ public interface SigningRecordController extends AuthProtectedController {
             throws NotFoundException;
 
     @Operation(operationId = "bulkDeleteSigningRecords", summary = "Delete multiple Signing Records")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Signing Records deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Signing Records deleted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    List<BulkActionMessageDto> bulkDeleteSigningRecords(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Signing Record UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<UUID> uuids);
+    List<BulkActionMessageDto> bulkDeleteSigningRecords(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Signing Record UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<UUID> uuids);
 }

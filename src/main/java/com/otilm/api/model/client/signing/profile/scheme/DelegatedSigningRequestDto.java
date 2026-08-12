@@ -12,12 +12,14 @@ import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(name = "DelegatedSigningRequestDto", description = "Request to configure delegated signing with Connector and attributes")
+@Schema(name = "DelegatedSigningRequestDto",
+        description = "Request to configure delegated signing with Connector and attributes")
 @ToString(callSuper = true)
 public class DelegatedSigningRequestDto extends SigningSchemeRequestDto {
 
     @NotNull
-    @Schema(description = "UUID of the Connector to use for delegated signing", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the Connector to use for delegated signing",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID connectorUuid;
 
     @Schema(description = "List of attributes for the Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

@@ -46,29 +46,43 @@ import org.springframework.web.bind.annotation.RequestParam;
  * and fails fast if the registry is inconsistent.
  */
 @RequestMapping("/v2/attributes")
-@Tag(name = "Connector Attributes v2", description = "Attribute-definition registry and stateless callback surface for NG connectors.")
+@Tag(name = "Connector Attributes v2",
+        description = "Attribute-definition registry and stateless callback surface for NG connectors.")
 public interface AttributesController extends AuthProtectedConnectorController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "List attribute definitions", description = "Returns the connector's attribute-definition registry. With the optional uuids "
-            + "parameter, returns only the matching definitions (found ones); otherwise returns the full registry.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Attribute definitions retrieved successfully")})
+    @Operation(summary = "List attribute definitions",
+            description = "Returns the connector's attribute-definition registry. With the optional uuids "
+                    + "parameter, returns only the matching definitions (found ones); otherwise returns the full registry.")
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200", description = "Attribute definitions retrieved successfully")})
     AttributeDefinitionsDto listDefinitions(
-            @Parameter(description = "Connector-global attribute UUIDs to look up. Repeat the parameter per UUID.", explode = Explode.TRUE) @RequestParam(name = "uuids", required = false) List<UUID> uuids);
+            @Parameter(description = "Connector-global attribute UUIDs to look up. Repeat the parameter per UUID.",
+                    explode = Explode.TRUE) @RequestParam(name = "uuids", required = false) List<UUID> uuids);
 
     @GetMapping(value = "/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Get an attribute definition", description = "Returns a single attribute definition by its connector-global UUID.")
+    @Operation(summary = "Get an attribute definition",
+            description = "Returns a single attribute definition by its connector-global UUID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Attribute definition retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Attribute definition not found for the given UUID", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class)))})
+            @ApiResponse(responseCode = "404", description = "Attribute definition not found for the given UUID",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     BaseAttribute getDefinition(@PathVariable UUID uuid);
 
-    @PostMapping(value = "/callback", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Execute an attribute callback", description = "Resolves dynamic attribute content for the attribute identified in the request, "
-            + "using the supplied scope and current attribute values.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Callback executed successfully"),
-            @ApiResponse(responseCode = "404", description = "Attribute definition referenced by the callback was not found", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class))),
-            @ApiResponse(responseCode = "422", description = "Callback request failed validation at the connector", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class)))})
+    @PostMapping(value = "/callback", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Execute an attribute callback",
+            description = "Resolves dynamic attribute content for the attribute identified in the request, "
+                    + "using the supplied scope and current attribute values.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Callback executed successfully"),
+            @ApiResponse(responseCode = "404",
+                    description = "Attribute definition referenced by the callback was not found",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "422", description = "Callback request failed validation at the connector",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     AttributeCallbackResponseDto callback(@Valid @RequestBody AttributeCallbackRequestDto request);
 }

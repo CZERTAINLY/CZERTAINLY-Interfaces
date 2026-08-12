@@ -26,7 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/cryptographyProvider/tokens")
-@Tag(name = "Token Management", description = "Token Management API is used to manage Token instance created from Cryptography Providers. Token represents connection with key stores that can perform cryptographic operations. It can manage one or more key stores, or it can be used with external key stores, such as vaults, hardware security modules, etc. Token Profile represents particular key store that can be used to execute cryptographic operations and key management through the Token instance.")
+@Tag(name = "Token Management",
+        description = "Token Management API is used to manage Token instance created from Cryptography Providers. Token represents connection with key stores that can perform cryptographic operations. It can manage one or more key stores, or it can be used with external key stores, such as vaults, hardware security modules, etc. Token Profile represents particular key store that can be used to execute cryptographic operations and key management through the Token instance.")
 public interface TokenInstanceController extends AuthProtectedConnectorController {
 
     @Operation(summary = "List Token instances")
@@ -70,7 +71,8 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
     void removeTokenInstance(@Parameter(description = "Token instance UUID") @PathVariable String uuid)
             throws NotFoundException;
 
-    @Operation(summary = "Get Token instance status", description = "Returns the connection status of the Token instance including additional information that might be useful")
+    @Operation(summary = "Get Token instance status",
+            description = "Returns the connection status of the Token instance including additional information that might be useful")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Token instance status retrieved")})
     @GetMapping(path = "/{uuid}/status", produces = {"application/json"})
     /**
@@ -90,8 +92,8 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
 
     @Operation(summary = "Validate Token Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Token Profile Attributes validated")})
-    @PostMapping(path = "/{uuid}/tokenProfile/attributes/validate", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/{uuid}/tokenProfile/attributes/validate", consumes = {"application/json"},
+            produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     /**
      * @throws NotFoundException Token instance not found
@@ -115,8 +117,8 @@ public interface TokenInstanceController extends AuthProtectedConnectorControlle
 
     @Operation(summary = "Validate Token activation Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Token activation Attributes validated")})
-    @PostMapping(path = "/{uuid}/activate/attributes/validate", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/{uuid}/activate/attributes/validate", consumes = {"application/json"},
+            produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     /**
      * @throws NotFoundException Token instance not found

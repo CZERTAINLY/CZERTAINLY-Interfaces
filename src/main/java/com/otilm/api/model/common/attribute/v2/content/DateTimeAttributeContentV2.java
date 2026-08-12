@@ -13,7 +13,8 @@ public class DateTimeAttributeContentV2 extends BaseAttributeContentV2<ZonedDate
     // ISO_OFFSET_DATE_TIME Date Time with Offset 2011-12-03T10:15:30+01:00'
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonDeserialize(using = ZonedDateTimeDeserializer.class)
-    @Schema(description = "DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "DateTime attribute value in format yyyy-MM-ddTHH:mm:ss.SSSXXX",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ZonedDateTime data;
 
     public DateTimeAttributeContentV2(ZonedDateTime data) {

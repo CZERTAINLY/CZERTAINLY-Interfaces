@@ -15,8 +15,8 @@ public class ComplianceProfileRequestDto extends ComplianceProfileUpdateRequestD
 
     @NotNull
     @NotBlank
-    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "Profile 1"})
+    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"Profile 1"})
     private String name;
 
 }

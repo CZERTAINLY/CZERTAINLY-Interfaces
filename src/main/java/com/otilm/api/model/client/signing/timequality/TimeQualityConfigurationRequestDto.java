@@ -28,7 +28,8 @@ import lombok.Data;
 @ValidNtpCheckInterval
 @ValidNtpCheckTimeout
 @ValidNtpMinReachable
-@Schema(name = "TimeQualityConfigurationRequestDto", description = "Request to create or update a Time Quality Configuration")
+@Schema(name = "TimeQualityConfigurationRequestDto",
+        description = "Request to create or update a Time Quality Configuration")
 public class TimeQualityConfigurationRequestDto
         implements
             ClockDriftConfiguration,
@@ -38,47 +39,56 @@ public class TimeQualityConfigurationRequestDto
 
     @NotBlank
     @ValidName
-    @Schema(description = "Name of the Time Quality Configuration", requiredMode = Schema.RequiredMode.REQUIRED, example = "NTP-Config-1")
+    @Schema(description = "Name of the Time Quality Configuration", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "NTP-Config-1")
     private String name;
 
     @NotNull
     @PositiveDuration
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Desired accuracy for the time quality, in ISO 8601 duration format", requiredMode = Schema.RequiredMode.REQUIRED, example = "PT1S")
+    @Schema(description = "Desired accuracy for the time quality, in ISO 8601 duration format",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "PT1S")
     private Duration accuracy;
 
     @NotEmpty
     @ValidHostnameList
-    @Schema(description = "List of NTP server addresses", requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"pool.ntp.org\", \"time.google.com\"]")
+    @Schema(description = "List of NTP server addresses", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "[\"pool.ntp.org\", \"time.google.com\"]")
     private List<String> ntpServers;
 
     @NotNull
     @PositiveDuration
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Interval between NTP checks, in ISO 8601 duration format", requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.5S")
+    @Schema(description = "Interval between NTP checks, in ISO 8601 duration format",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.5S")
     private Duration ntpCheckInterval;
 
     @Positive
-    @Schema(description = "Number of NTP samples to take per server during each check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "3", defaultValue = "3")
+    @Schema(description = "Number of NTP samples to take per server during each check",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "3", defaultValue = "3")
     private int ntpSamplesPerServer = 3;
 
     @NotNull
     @PositiveDuration
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Timeout for the entire NTP check cycle, in ISO 8601 duration format", requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.1S")
+    @Schema(description = "Timeout for the entire NTP check cycle, in ISO 8601 duration format",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.1S")
     private Duration ntpCheckTimeout;
 
     @Positive
-    @Schema(description = "Minimum number of NTP servers that must be reachable", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1", defaultValue = "1")
+    @Schema(description = "Minimum number of NTP servers that must be reachable",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1", defaultValue = "1")
     private int ntpServersMinReachable = 1;
 
     @NotNull
     @PositiveDuration
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Maximum allowed clock drift from NTP reference time, in ISO 8601 duration format", requiredMode = Schema.RequiredMode.REQUIRED, example = "PT500MS")
+    @Schema(description = "Maximum allowed clock drift from NTP reference time, in ISO 8601 duration format",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "PT500MS")
     private Duration maxClockDrift;
 
-    @Schema(description = "Whether to guard against leap second anomalies", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "true", defaultValue = "true")
+    @Schema(description = "Whether to guard against leap second anomalies",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "true", defaultValue = "true")
     private boolean leapSecondGuard = true;
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

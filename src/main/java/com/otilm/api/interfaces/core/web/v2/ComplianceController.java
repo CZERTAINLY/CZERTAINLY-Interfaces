@@ -29,44 +29,62 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/v2/compliance")
 @Tag(name = "Compliance Management v2", description = "Compliance Management v2 API")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface ComplianceController extends AuthProtectedController {
 
-    @Operation(operationId = "checkComplianceV2", summary = "Initiate compliance check for requested compliance profiles")
+    @Operation(operationId = "checkComplianceV2",
+            summary = "Initiate compliance check for requested compliance profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void checkCompliance(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Compliance Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> uuids,
-            @Parameter(description = "Filter objects checked by compliance based on its resource and evaluate only rules applicable to that resource") @RequestParam(required = false) Resource resource,
-            @Parameter(description = "Filter objects checked by compliance based on its type and evaluate only rules applicable to that resource type", example = "X.509") @RequestParam(required = false) String type)
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Compliance Profile UUIDs",
+                    content = @Content(array = @ArraySchema(
+                            schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> uuids,
+            @Parameter(
+                    description = "Filter objects checked by compliance based on its resource and evaluate only rules applicable to that resource") @RequestParam(
+                            required = false) Resource resource,
+            @Parameter(
+                    description = "Filter objects checked by compliance based on its type and evaluate only rules applicable to that resource type",
+                    example = "X.509") @RequestParam(required = false) String type)
             throws ConnectorException, NotFoundException;
 
-    @Operation(operationId = "checkResourceObjectsComplianceV2", summary = "Initiate compliance Check for requested resource objects")
+    @Operation(operationId = "checkResourceObjectsComplianceV2",
+            summary = "Initiate compliance Check for requested resource objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @PostMapping(path = "/{resource}", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void checkResourceObjectsCompliance(
-            @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Resource object UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> objectUuids)
+            @Parameter(description = "Resource", required = true,
+                    example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Resource object UUIDs",
+                    content = @Content(array = @ArraySchema(
+                            schema = @Schema(implementation = UUID.class)))) @RequestBody List<UUID> objectUuids)
             throws ConnectorException, NotFoundException;
 
-    @Operation(operationId = "checkResourceObjectComplianceV2", summary = "Initiate compliance Check for requested resource object")
+    @Operation(operationId = "checkResourceObjectComplianceV2",
+            summary = "Initiate compliance Check for requested resource object")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @PostMapping(path = "/{resource}/{objectUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void checkResourceObjectCompliance(
-            @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource,
+            @Parameter(description = "Resource", required = true,
+                    example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid)
             throws ConnectorException, NotFoundException;
 
-    @Operation(operationId = "getComplianceCheckResultV2", summary = "Get the latest compliance check result for the specified resource object")
+    @Operation(operationId = "getComplianceCheckResultV2",
+            summary = "Get the latest compliance check result for the specified resource object")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @GetMapping(path = "/{resource}/{objectUuid}", produces = {MediaType.APPLICATION_JSON_VALUE})
     ComplianceCheckResultDto getComplianceCheckResult(
-            @Parameter(description = "Resource", required = true, example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource,
+            @Parameter(description = "Resource", required = true,
+                    example = Resource.Codes.RA_PROFILE) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid)
             throws NotFoundException;
 

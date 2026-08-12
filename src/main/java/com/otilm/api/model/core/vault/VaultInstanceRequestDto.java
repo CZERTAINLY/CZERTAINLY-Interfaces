@@ -11,11 +11,13 @@ import lombok.Data;
 @Data
 public class VaultInstanceRequestDto {
 
-    @Schema(description = "UUID of the Connector associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the Connector associated with this Vault instance",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private UUID connectorUuid;
 
-    @Schema(description = "UUID of the Connector Interface associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the Connector Interface associated with this Vault instance",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private UUID interfaceUuid;
 
@@ -29,6 +31,7 @@ public class VaultInstanceRequestDto {
     @Schema(description = "List of attributes of the Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes = new ArrayList<>();
 
-    @Schema(description = "List of custom attributes of the Vault instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of custom attributes of the Vault instance",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> customAttributes = new ArrayList<>();
 }

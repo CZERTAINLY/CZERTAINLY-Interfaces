@@ -14,11 +14,13 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-@Schema(name = "TimeQualityResultMessage", description = "NTP time quality check result, published by Time Quality Monitor and consumed by Core")
+@Schema(name = "TimeQualityResultMessage",
+        description = "NTP time quality check result, published by Time Quality Monitor and consumed by Core")
 public class TimeQualityResultMessage implements Serializable {
 
     @NotNull
-    @Schema(description = "UUID of the time quality configuration that produced this result", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the time quality configuration that produced this result",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID configurationId;
 
     @NotBlank
@@ -27,25 +29,31 @@ public class TimeQualityResultMessage implements Serializable {
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Timestamp when the check was performed, in ISO 8601 UTC format", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Timestamp when the check was performed, in ISO 8601 UTC format",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Instant timestamp;
 
     @NotNull
-    @Schema(description = "Overall time quality status. DEGRADED is always set when NTP leap indicators conflict across servers (LeapUnsync), regardless of the profile's leapSecondGuard setting", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Overall time quality status. DEGRADED is always set when NTP leap indicators conflict across servers (LeapUnsync), regardless of the profile's leapSecondGuard setting",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private TimeQualityStatus status;
 
-    @Schema(description = "Measured clock drift from NTP reference time in milliseconds; null when drift could not be determined", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Measured clock drift from NTP reference time in milliseconds; null when drift could not be determined",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Double measuredDriftMs;
 
     @PositiveOrZero
-    @Schema(description = "Number of NTP servers that were reachable during this check", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Number of NTP servers that were reachable during this check",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private int reachableServers;
 
-    @Schema(description = "Human-readable reason for the resulting status, if applicable", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Human-readable reason for the resulting status, if applicable",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String reason;
 
     @NotNull
-    @Schema(description = "Leap second warning derived from NTP leap indicators. Set to NONE when indicators conflict", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Leap second warning derived from NTP leap indicators. Set to NONE when indicators conflict",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private LeapSecondWarning leapSecondWarning;
 
     @NotEmpty

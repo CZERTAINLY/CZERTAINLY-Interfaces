@@ -41,11 +41,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1")
-@Tag(name = "Secret Management", description = "APIs for managing secrets, including creation, retrieval, updating, and deletion of secrets.")
+@Tag(name = "Secret Management",
+        description = "APIs for managing secrets, including creation, retrieval, updating, and deletion of secrets.")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface SecretManagementController extends AuthProtectedController {
 
     @Operation(operationId = "getSecretSearchableFields", summary = "List search filters for secrets")
@@ -55,8 +59,8 @@ public interface SecretManagementController extends AuthProtectedController {
 
     @Operation(summary = "List secrets")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of secrets retrieved")})
-    @PostMapping(path = "/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     PaginationResponseDto<SecretDto> listSecrets(@RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Get secret details")
@@ -79,8 +83,8 @@ public interface SecretManagementController extends AuthProtectedController {
 
     @Operation(summary = "Create a new secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Secret created successfully")})
-    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets", consumes = {
-            MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/vaults/{vaultUuid}/vaultProfiles/{vaultProfileUuid}/secrets",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     SecretDetailDto createSecret(@RequestBody @Valid SecretRequestDto secretRequest,
             @Parameter(description = "UUID of vault profile") @PathVariable UUID vaultProfileUuid,
@@ -89,8 +93,8 @@ public interface SecretManagementController extends AuthProtectedController {
 
     @Operation(summary = "Update an existing secret")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret updated successfully")})
-    @PutMapping(path = "/secrets/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(path = "/secrets/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     SecretDetailDto updateSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid,
             @RequestBody SecretUpdateRequestDto secretRequest)
             throws NotFoundException, AttributeException, ConnectorException;
@@ -100,7 +104,8 @@ public interface SecretManagementController extends AuthProtectedController {
     @DeleteMapping(path = "/secrets/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid,
-            @Parameter(description = "Delete secret from vaults as well") @RequestParam(defaultValue = "false") boolean deleteInVaults)
+            @Parameter(description = "Delete secret from vaults as well") @RequestParam(
+                    defaultValue = "false") boolean deleteInVaults)
             throws NotFoundException, ConnectorException, AttributeException;
 
     @Operation(summary = "Enable a secret")
@@ -116,10 +121,10 @@ public interface SecretManagementController extends AuthProtectedController {
     void disableSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Add vault profile to secret")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Vault profile added to secret successfully")})
-    @PatchMapping(path = "/secrets/{uuid}/syncVaultProfiles/{vaultProfileUuid}", consumes = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "204", description = "Vault profile added to secret successfully")})
+    @PatchMapping(path = "/secrets/{uuid}/syncVaultProfiles/{vaultProfileUuid}",
+            consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void addVaultProfileToSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid,
             @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid,
@@ -133,7 +138,8 @@ public interface SecretManagementController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeVaultProfileFromSecret(@Parameter(description = "UUID of the secret") @PathVariable UUID uuid,
             @Parameter(description = "UUID of the vault profile") @PathVariable UUID vaultProfileUuid,
-            @Parameter(description = "Delete secret in the associated vault as well") @RequestParam(defaultValue = "false") boolean deleteInVault)
+            @Parameter(description = "Delete secret in the associated vault as well") @RequestParam(
+                    defaultValue = "false") boolean deleteInVault)
             throws NotFoundException, ConnectorException, AttributeException;
 
     @Operation(summary = "Update Secret Objects")

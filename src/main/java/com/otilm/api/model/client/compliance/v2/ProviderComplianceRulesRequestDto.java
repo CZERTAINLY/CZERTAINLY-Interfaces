@@ -28,7 +28,8 @@ public class ProviderComplianceRulesRequestDto {
     @Schema(description = "Provider rules associated", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Set<ComplianceRuleRequestDto> rules = new HashSet<>();
 
-    @Schema(description = "Provider groups UUIDS to associate profile with", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Provider groups UUIDS to associate profile with",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Set<UUID> groups = new HashSet<>();
 
     @JsonIgnore

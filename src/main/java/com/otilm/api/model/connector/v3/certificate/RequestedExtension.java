@@ -20,7 +20,8 @@ import lombok.ToString;
 @Schema(description = "A requested X.509 extension; SAN is never duplicated here — it is carried in subjectAltNames only")
 public class RequestedExtension {
 
-    @Schema(description = "OID of the X.509 extension (dotted-decimal, RFC 5280)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "OID of the X.509 extension (dotted-decimal, RFC 5280)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Extension OID is required")
     private String oid;
 
@@ -32,7 +33,8 @@ public class RequestedExtension {
     @NotNull(message = "Extension encoding is required")
     private ExtensionValueEncoding encoding;
 
-    @Schema(description = "Extension value; a string whose interpretation is declared by encoding", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Extension value; a string whose interpretation is declared by encoding",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Extension value is required")
     private String value;
 }

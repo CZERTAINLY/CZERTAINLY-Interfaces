@@ -20,7 +20,8 @@ public class ConnectorInterfaceDto implements Serializable {
     @Schema(description = "Version of the implemented connector interface", requiredMode = Schema.RequiredMode.REQUIRED)
     private String version;
 
-    @Schema(description = "Features supported by the connector interface", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Features supported by the connector interface",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<FeatureFlag> features;
 
 }

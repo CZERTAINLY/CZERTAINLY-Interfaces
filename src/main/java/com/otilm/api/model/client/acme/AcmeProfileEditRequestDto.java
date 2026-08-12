@@ -26,11 +26,12 @@ public class AcmeProfileEditRequestDto {
     private String raProfileUuid;
     @Schema(description = "Retry interval for the Orders", defaultValue = "30", example = "60")
     private Integer retryInterval;
-    @Schema(description = "Disable new Orders due to change in Terms of Service", defaultValue = "false", example = "false")
+    @Schema(description = "Disable new Orders due to change in Terms of Service", defaultValue = "false",
+            example = "false")
     private Boolean termsOfServiceChangeDisable;
 
-    @Schema(description = "Changes of Terms of Service URL", examples = {
-            "https://sample-url.com/termsOfService/change"})
+    @Schema(description = "Changes of Terms of Service URL",
+            examples = {"https://sample-url.com/termsOfService/change"})
     private String termsOfServiceChangeUrl;
     @Schema(description = "Order Validity", defaultValue = "36000", example = "3000")
     private Integer validity;
@@ -46,7 +47,8 @@ public class AcmeProfileEditRequestDto {
     private List<RequestAttribute> customAttributes;
 
     @Valid
-    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsRequestDto certificateAssociations;
 
     public Boolean isRequireTermsOfService() {

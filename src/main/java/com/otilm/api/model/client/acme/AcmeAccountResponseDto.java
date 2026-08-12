@@ -14,10 +14,11 @@ public class AcmeAccountResponseDto {
 
     @Schema(description = "ID of the Account", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"TtrgfYTR6F"})
     private String accountId;
-    @Schema(description = "UUID of the Account", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "6b55de1c-844f-11ec-a8a3-0242ac120002"})
+    @Schema(description = "UUID of the Account", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"})
     private String uuid;
-    @Schema(description = "Enabled flag. enabled=true, disabled=false", requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
+    @Schema(description = "Enabled flag. enabled=true, disabled=false", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "false")
     private Boolean enabled;
     @Schema(description = "Order count for the Account", requiredMode = Schema.RequiredMode.REQUIRED, example = "23")
     private Integer totalOrders;
@@ -33,17 +34,18 @@ public class AcmeAccountResponseDto {
     private Integer processingOrders;
     @Schema(description = "Status of the Account", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"VALID"})
     private AccountStatus status;
-    @Schema(description = "Contact information", requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"mailto: someadmin@domain.com\"]")
+    @Schema(description = "Contact information", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "[\"mailto: someadmin@domain.com\"]")
     private List<String> contact;
     @Schema(description = "Terms of Service Agreed", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
     private Boolean termsOfServiceAgreed;
     @Schema(description = "RA Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {"RA Profile 1"})
     private SimplifiedRaProfileDto raProfile;
-    @Schema(description = "Name of the ACME Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "ACME Profile 1"})
+    @Schema(description = "Name of the ACME Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"ACME Profile 1"})
     private String acmeProfileName;
-    @Schema(description = "UUID of the ACME Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "6b55de1c-844f-11ec-a8a3-0242ac120002"})
+    @Schema(description = "UUID of the ACME Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"})
     private String acmeProfileUuid;
 
     public boolean isEnabled() {

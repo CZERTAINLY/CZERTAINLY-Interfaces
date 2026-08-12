@@ -24,12 +24,13 @@ import lombok.ToString;
 public class DocumentSigningWorkflowDto extends WorkflowDto {
 
     @Schema(description = "Signature Formatting Provider that constructs the data-to-be-signed (DTBS) for Document signing. "
-            + "Present only when ILM-managed signing is used; null for delegated signing.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Present only when ILM-managed signing is used; null for delegated signing.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private NameAndUuidDto signatureFormattingConnector;
 
     @Schema(description = "Attributes configured on the Signature Formatting Provider that control DTBS construction "
-            + "for the document signing workflow. "
-            + "Applicable only when ILM-managed signing is used.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "for the document signing workflow. " + "Applicable only when ILM-managed signing is used.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> signatureFormattingConnectorAttributes = new ArrayList<>();
 
     public DocumentSigningWorkflowDto() {

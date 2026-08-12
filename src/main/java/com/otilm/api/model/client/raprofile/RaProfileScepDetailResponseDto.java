@@ -11,7 +11,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class RaProfileScepDetailResponseDto extends NameAndUuidDto {
 
-    @Schema(description = "SCEP availability flag - true = yes; false = no", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "SCEP availability flag - true = yes; false = no",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean scepAvailable;
 
     @Schema(description = "SCEP URL")

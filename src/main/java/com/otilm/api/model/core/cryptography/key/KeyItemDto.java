@@ -25,7 +25,8 @@ public class KeyItemDto extends NameAndUuidDto {
     @Schema(description = "Description of the Key", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private OffsetDateTime creationTime;
 
     @Schema(description = "UUID of the wrapper object", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -73,7 +74,8 @@ public class KeyItemDto extends NameAndUuidDto {
     @Schema(description = "Key Usages", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<KeyUsage> usage;
 
-    @Schema(description = "Boolean describing if the key is enabled or not", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Boolean describing if the key is enabled or not",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
     @Schema(description = "Key State", requiredMode = Schema.RequiredMode.REQUIRED)

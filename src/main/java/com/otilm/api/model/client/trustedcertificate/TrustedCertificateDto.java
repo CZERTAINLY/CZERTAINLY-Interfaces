@@ -12,7 +12,8 @@ public class TrustedCertificateDto {
     @Schema(description = "UUID of the Trusted Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "Raw certificate content serialized as Base64 String in JSON", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Raw certificate content serialized as Base64 String in JSON",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] certificateContent;
 
     @Schema(description = "Certificate issuer DN", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

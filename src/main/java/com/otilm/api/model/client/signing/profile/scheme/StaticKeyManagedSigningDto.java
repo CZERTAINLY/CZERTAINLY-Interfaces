@@ -16,14 +16,17 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
 @JsonDeserialize(using = JsonDeserializer.None.class)
-@Schema(name = "StaticKeyManagedSigningDto", description = "Managed signing using a pre-existing static certificate and associated key(s)")
+@Schema(name = "StaticKeyManagedSigningDto",
+        description = "Managed signing using a pre-existing static certificate and associated key(s)")
 @ToString(callSuper = true)
 public class StaticKeyManagedSigningDto extends ManagedSigningDto {
 
-    @Schema(description = "Certificate and the associated key(s) used for signing", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate and the associated key(s) used for signing",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateSimpleDto certificate;
 
-    @Schema(description = "List of attributes required for signing operations (such as digest algorithm), provided by the Cryptography Provider Connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of attributes required for signing operations (such as digest algorithm), provided by the Cryptography Provider Connector",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttribute> signingOperationAttributes = new ArrayList<>();
 
     public StaticKeyManagedSigningDto() {

@@ -20,9 +20,11 @@ public class CertificateValidationResultDto {
     @Schema(description = "Certificate validation check results", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Map<CertificateValidationCheck, CertificateValidationCheckDto> validationChecks;
 
-    @Schema(description = "Overall certificate validation result message", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Overall certificate validation result message",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String message;
 
-    @Schema(description = "Date of the most recent validation of the certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Date of the most recent validation of the certificate",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private OffsetDateTime validationTimestamp;
 }

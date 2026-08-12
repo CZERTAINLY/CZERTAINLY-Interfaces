@@ -10,7 +10,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ApprovalDetailStepDto extends ApprovalStepDto {
 
-    @Schema(description = "List of the approval recipient related for this step", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of the approval recipient related for this step",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ApprovalStepRecipientDto> approvalStepRecipients;
 
     public ApprovalDetailStepDto(final ApprovalStepDto approvalStepDto) {

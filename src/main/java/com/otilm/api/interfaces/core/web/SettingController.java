@@ -37,7 +37,8 @@ public interface SettingController extends AuthProtectedController {
 
     @Operation(summary = "Update platform settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
-    @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     void updatePlatformSettings(@Valid @RequestBody PlatformSettingsUpdateDto platformSettingsDto);
 
     @Operation(summary = "Get events settings")
@@ -47,12 +48,14 @@ public interface SettingController extends AuthProtectedController {
 
     @Operation(summary = "Update multiple events settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
-    @PutMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     void updateEventsSettings(@Valid @RequestBody EventsSettingsDto eventsSettingsDto) throws NotFoundException;
 
     @Operation(summary = "Update single event settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Setting updated")})
-    @PatchMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(path = "/events", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     void updateEventSettings(@Valid @RequestBody EventSettingsDto eventSettingsDto) throws NotFoundException;
 
     @Operation(summary = "Get authentication settings")
@@ -90,6 +93,7 @@ public interface SettingController extends AuthProtectedController {
 
     @Operation(summary = "Update logging settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Logging settings updated")})
-    @PutMapping(path = "/logging", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/logging", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     void updateLoggingSettings(@Valid @RequestBody LoggingSettingsDto loggingSettingsDto);
 }

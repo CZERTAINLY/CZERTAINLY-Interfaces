@@ -16,7 +16,8 @@ public class UpdateExecutionRequestDto {
     @Schema(description = "Description of the execution")
     private String description;
 
-    @Schema(description = "List of the execution items to add to execution", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of the execution items to add to execution",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ExecutionItemRequestDto> items = new ArrayList<>();
 
 }

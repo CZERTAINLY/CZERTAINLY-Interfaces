@@ -27,7 +27,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.", type = "object")
+@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
+        type = "object")
 @JsonDeserialize
 @JsonSerialize
 public class DataAttributeV2 extends DataAttribute {
@@ -46,7 +47,8 @@ public class DataAttributeV2 extends DataAttribute {
     /**
      * Content of the Attribute
      **/
-    @ArraySchema(schema = @Schema(ref = "BaseAttributeContentDtoV2"), arraySchema = @Schema(description = "Content of the Attribute"))
+    @ArraySchema(schema = @Schema(ref = "BaseAttributeContentDtoV2"),
+            arraySchema = @Schema(description = "Content of the Attribute"))
     private List<BaseAttributeContentV2<?>> content;
 
     /**

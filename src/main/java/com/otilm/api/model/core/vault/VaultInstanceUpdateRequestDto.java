@@ -15,6 +15,7 @@ public class VaultInstanceUpdateRequestDto {
     @Schema(description = "List of attributes of the Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes = new ArrayList<>();
 
-    @Schema(description = "List of custom attributes of the Vault instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of custom attributes of the Vault instance",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> customAttributes = new ArrayList<>();
 }

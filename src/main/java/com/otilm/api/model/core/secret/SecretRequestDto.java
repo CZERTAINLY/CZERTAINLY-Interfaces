@@ -26,7 +26,8 @@ public class SecretRequestDto {
     @Schema(description = "List of attributes associated with the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes = new ArrayList<>();
 
-    @Schema(description = "List of custom attributes associated with the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of custom attributes associated with the secret",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> customAttributes = new ArrayList<>();
 
 }

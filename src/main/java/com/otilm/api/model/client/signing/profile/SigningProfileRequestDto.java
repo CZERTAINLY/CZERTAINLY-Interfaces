@@ -22,15 +22,18 @@ import lombok.Data;
 public class SigningProfileRequestDto {
     @NotBlank
     @ValidName
-    @Schema(description = "Name of the Signing Profile", requiredMode = Schema.RequiredMode.REQUIRED, example = "SigningProfile-1")
+    @Schema(description = "Name of the Signing Profile", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "SigningProfile-1")
     private String name;
 
-    @Schema(description = "Description of the Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "Profile for document signing")
+    @Schema(description = "Description of the Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "Profile for document signing")
     private String description;
 
     @NotNull
     @Valid
-    @Schema(description = "Signing scheme configuration (who holds the key and how the cryptographic operation is performed)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Signing scheme configuration (who holds the key and how the cryptographic operation is performed)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private SigningSchemeRequestDto signingScheme;
 
     @NotNull
@@ -42,6 +45,7 @@ public class SigningProfileRequestDto {
     private List<RequestAttribute> customAttributes = new ArrayList<>();
 
     @Valid
-    @Schema(description = "Signing Record policy. When omitted, defaults are used (no signing record).", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Signing Record policy. When omitted, defaults are used (no signing record).",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SigningRecordPolicyRequestDto recordPolicy;
 }

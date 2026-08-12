@@ -22,7 +22,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Info attribute contains content that is for metadata. Its content can not be edited and is not send in requests to store.", type = "object")
+@Schema(description = "Info attribute contains content that is for metadata. Its content can not be edited and is not send in requests to store.",
+        type = "object")
 @JsonDeserialize
 @JsonSerialize
 public class MetadataAttributeV3 extends MetadataAttribute {

@@ -20,17 +20,29 @@ import org.springframework.web.bind.annotation.RestController;
 @OpenAPIDefinition(servers = {@Server(url = "https://demo.otilm.com", description = "Platform Demo server")})
 @RestController
 @SecuritySchemes(value = {
-        @SecurityScheme(name = OpenApiConfig.BASIC_SECURITY_SCHEME_NAME, type = SecuritySchemeType.HTTP, scheme = "Basic"),
-        @SecurityScheme(name = OpenApiConfig.CERTIFICATE_TLS_SECURITY_SCHEME_NAME, type = SecuritySchemeType.MUTUALTLS, description = "Client certificate authentication"),
-        @SecurityScheme(name = OpenApiConfig.CONNECTOR_API_KEY_SECURITY_SCHEME_NAME, type = SecuritySchemeType.APIKEY, in = SecuritySchemeIn.HEADER, paramName = "X-API-KEY", description = "API Key in header configured for connector"),
-        @SecurityScheme(name = OpenApiConfig.NO_SECURITY_SCHEME_NAME, type = SecuritySchemeType.HTTP, scheme = "none", description = "No authentication")})
-@SecurityRequirements(value = {@SecurityRequirement(name = OpenApiConfig.BASIC_SECURITY_SCHEME_NAME),
+        @SecurityScheme(name = OpenApiConfig.BASIC_SECURITY_SCHEME_NAME, type = SecuritySchemeType.HTTP,
+                scheme = "Basic"),
+        @SecurityScheme(name = OpenApiConfig.CERTIFICATE_TLS_SECURITY_SCHEME_NAME, type = SecuritySchemeType.MUTUALTLS,
+                description = "Client certificate authentication"),
+        @SecurityScheme(name = OpenApiConfig.CONNECTOR_API_KEY_SECURITY_SCHEME_NAME, type = SecuritySchemeType.APIKEY,
+                in = SecuritySchemeIn.HEADER, paramName = "X-API-KEY",
+                description = "API Key in header configured for connector"),
+        @SecurityScheme(name = OpenApiConfig.NO_SECURITY_SCHEME_NAME, type = SecuritySchemeType.HTTP, scheme = "none",
+                description = "No authentication")})
+@SecurityRequirements(value = {
+        @SecurityRequirement(name = OpenApiConfig.BASIC_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_TLS_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.CONNECTOR_API_KEY_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.NO_SECURITY_SCHEME_NAME),})
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class))),
-        @ApiResponse(responseCode = "404", description = "Not Found. Endpoint not found or not implemented", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class))),
-        @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class)))})
+        @ApiResponse(responseCode = "401", description = "Unauthorized",
+                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                        schema = @Schema(implementation = ProblemDetailExtended.class))),
+        @ApiResponse(responseCode = "404", description = "Not Found. Endpoint not found or not implemented",
+                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                        schema = @Schema(implementation = ProblemDetailExtended.class))),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                        schema = @Schema(implementation = ProblemDetailExtended.class)))})
 public interface AuthProtectedConnectorController {
 }

@@ -40,7 +40,8 @@ public class KeyData {
 
     @Schema(description = "Value of the Key", requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "format")
-    @JsonSubTypes({@JsonSubTypes.Type(value = RawKeyValue.class, name = "Raw"),
+    @JsonSubTypes({
+            @JsonSubTypes.Type(value = RawKeyValue.class, name = "Raw"),
             @JsonSubTypes.Type(value = SpkiKeyValue.class, name = "SubjectPublicKeyInfo"),
             @JsonSubTypes.Type(value = PrkiKeyValue.class, name = "PrivateKeyInfo"),
             @JsonSubTypes.Type(value = EprkiKeyValue.class, name = "EncryptedPrivateKeyInfo"),

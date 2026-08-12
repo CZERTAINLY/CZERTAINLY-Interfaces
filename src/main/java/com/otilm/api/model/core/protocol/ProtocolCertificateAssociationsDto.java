@@ -11,13 +11,16 @@ import lombok.Data;
 @Data
 public class ProtocolCertificateAssociationsDto implements Serializable {
 
-    @Schema(description = "UUID of the user to be associated with certificate by protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUID of the user to be associated with certificate by protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID ownerUuid;
 
-    @Schema(description = "UUIDs of the groups to be associated with certificate by protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUIDs of the groups to be associated with certificate by protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<UUID> groupUuids = new ArrayList<>();
 
-    @Schema(description = "Custom Attributes to be associated with certificate by protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Custom Attributes to be associated with certificate by protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> customAttributes = new ArrayList<>();
 
 }

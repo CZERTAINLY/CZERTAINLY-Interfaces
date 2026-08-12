@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class TimeQualityConfigurationListDto extends NameAndUuidDto {
 
-    @Schema(description = "List of NTP server addresses", requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"pool.ntp.org\", \"time.google.com\"]")
+    @Schema(description = "List of NTP server addresses", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "[\"pool.ntp.org\", \"time.google.com\"]")
     private List<String> ntpServers;
 }

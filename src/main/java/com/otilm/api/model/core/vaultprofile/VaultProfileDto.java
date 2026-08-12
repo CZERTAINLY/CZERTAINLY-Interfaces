@@ -12,7 +12,8 @@ public class VaultProfileDto extends NameAndUuidDto {
     @Schema(description = "Description of the Vault profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Vault instance associated with this Vault profile", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Vault instance associated with this Vault profile",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto vaultInstance;
 
     @Schema(description = "Indicates whether the Vault profile is enabled", requiredMode = Schema.RequiredMode.REQUIRED)

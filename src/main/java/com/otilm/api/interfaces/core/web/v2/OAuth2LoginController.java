@@ -25,12 +25,15 @@ public interface OAuth2LoginController extends NoAuthController {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     List<LoginProviderDto> getOAuth2Providers(@RequestParam(value = "error", required = false) String error);
 
-    @Operation(summary = "Login with OAuth2 provider", description = "Initiates OAuth2 login flow with the specified provider. Returns a redirect response to the provider's authentication page.")
+    @Operation(summary = "Login with OAuth2 provider",
+            description = "Initiates OAuth2 login flow with the specified provider. Returns a redirect response to the provider's authentication page.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "302", description = "Redirect to provider's authentication page"),
             @ApiResponse(responseCode = "400", description = "Bad request - invalid provider or authentication error")})
     @GetMapping("/{provider}/login")
     ResponseEntity<Void> loginWithProvider(
-            @Parameter(description = "Name of the OAuth2 authentication provider", required = true) @PathVariable String provider,
-            @Parameter(description = "Redirect URL to return to after successful authentication") @RequestParam(value = "redirect", required = false) String redirect);
+            @Parameter(description = "Name of the OAuth2 authentication provider",
+                    required = true) @PathVariable String provider,
+            @Parameter(description = "Redirect URL to return to after successful authentication") @RequestParam(
+                    value = "redirect", required = false) String redirect);
 }

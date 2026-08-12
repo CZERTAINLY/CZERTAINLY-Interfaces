@@ -30,8 +30,8 @@ public class ComplianceProfileRuleDto extends NameAndUuidDto {
     @Schema(description = "Group UUID")
     private String groupUuid;
 
-    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "X509"})
+    @Schema(description = "Certificate type for the rule", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"X509"})
     private CertificateType certificateType;
 
     @Schema(description = "List of attributes for the rule", requiredMode = Schema.RequiredMode.REQUIRED)

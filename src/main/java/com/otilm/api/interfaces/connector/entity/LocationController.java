@@ -33,13 +33,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/entityProvider/entities/{entityUuid}/locations")
-@Tag(name = "Location Operations", description = "Interfaces to control certificates and key stores on Entities. "
-        + "Locations provides capabilities of getting the certificates already on the Entity, "
-        + "pushing new certificates, generation of new key pair and certificate signing requests, "
-        + "removing certificates and management of the Entity end-to-end automation.")
+@Tag(name = "Location Operations",
+        description = "Interfaces to control certificates and key stores on Entities. "
+                + "Locations provides capabilities of getting the certificates already on the Entity, "
+                + "pushing new certificates, generation of new key pair and certificate signing requests, "
+                + "removing certificates and management of the Entity end-to-end automation.")
 public interface LocationController extends AuthProtectedConnectorController {
 
-    @Operation(summary = "Get Location Details", description = "Get information about the Location content. All identified certificates are returned")
+    @Operation(summary = "Get Location Details",
+            description = "Get information about the Location content. All identified certificates are returned")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Location detail and content retrieved")})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     LocationDetailResponseDto getLocationDetail(
@@ -53,16 +55,20 @@ public interface LocationController extends AuthProtectedConnectorController {
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
             @RequestBody PushCertificateRequestDto request) throws NotFoundException, LocationException;
 
-    @Operation(summary = "List Push Certificate Attributes", description = "List of Attributes to push Certificate into Location")
+    @Operation(summary = "List Push Certificate Attributes",
+            description = "List of Attributes to push Certificate into Location")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes for push retrieved")})
     @GetMapping(path = "/push/attributes", produces = {"application/json"})
     List<BaseAttribute> listPushCertificateAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
-    @Operation(summary = "Validate Push Certificate Attributes", description = "Validate list of Attributes to push Certificate into Location")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @Operation(summary = "Validate Push Certificate Attributes",
+            description = "Validate list of Attributes to push Certificate into Location")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/push/attributes/validate", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validatePushCertificateAttributes(
@@ -89,10 +95,13 @@ public interface LocationController extends AuthProtectedConnectorController {
     List<BaseAttribute> listGenerateCsrAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
-    @Operation(summary = "Validate CSR Attributes", description = "Validate list of Attributes to generate key pair and CSR")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @Operation(summary = "Validate CSR Attributes",
+            description = "Validate list of Attributes to generate key pair and CSR")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/csr/attributes/validate", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateGenerateCsrAttributes(@Parameter(description = "Entity Instance UUID") @PathVariable String entityUuid,

@@ -29,7 +29,8 @@ public class RaProfileDto extends NameAndUuidDto {
     @Schema(description = "Has Authority of legacy authority provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean legacyAuthority;
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "List of RA Profiles attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -41,10 +42,12 @@ public class RaProfileDto extends NameAndUuidDto {
     @Schema(description = "List of protocols enabled", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<String> enabledProtocols;
 
-    @Schema(description = "Settings for validation of certificates associated with the RA Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Settings for validation of certificates associated with the RA Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private RaProfileCertificateValidationSettingsDto certificateValidationSettings;
 
-    @Schema(description = "Static certificate-request-attribute set configured for the RA Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Static certificate-request-attribute set configured for the RA Profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private RaProfileCertificateRequestAttributesDto certificateRequestAttributes;
 
     @Override

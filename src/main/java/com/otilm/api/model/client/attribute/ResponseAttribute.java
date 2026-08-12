@@ -14,8 +14,10 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version", visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = ResponseAttributeV3.class, name = AttributeVersion.Codes.V3),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "version",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ResponseAttributeV3.class, name = AttributeVersion.Codes.V3),
         @JsonSubTypes.Type(value = ResponseAttributeV2.class, name = AttributeVersion.Codes.V2)})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(implementation = ResponseAttributeDto.class)

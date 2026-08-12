@@ -31,12 +31,14 @@ public class ComplianceInternalRuleRequestDto implements Loggable {
     private String description;
 
     @NotNull
-    @Schema(description = "Resource associated with the compliance internal rule", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Resource associated with the compliance internal rule",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
     @NotNull
     @NotEmpty
-    @Schema(description = "List of the condition items to add to compliance internal rule", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of the condition items to add to compliance internal rule",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ConditionItemRequestDto> conditionItems = new ArrayList<>();
 
     @JsonIgnore

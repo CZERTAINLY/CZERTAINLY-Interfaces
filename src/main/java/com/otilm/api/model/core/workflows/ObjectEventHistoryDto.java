@@ -21,10 +21,12 @@ public class ObjectEventHistoryDto {
     @Schema(description = "Origin that caused the event to be triggered.")
     private ResourceObjectDto origin;
 
-    @Schema(description = "All conditions in the trigger have been matched.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "All conditions in the trigger have been matched.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean conditionsMatched;
 
-    @Schema(description = "All actions in the trigger have been performed.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "All actions in the trigger have been performed.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean actionsPerformed;
 
     @Schema(description = "Time at which the event was triggered.", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -33,9 +35,11 @@ public class ObjectEventHistoryDto {
     @Schema(description = "Additional message.")
     private String message;
 
-    @Schema(description = "If trigger was sending notifications, confirmation whether notification has been sent successfully or not.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "If trigger was sending notifications, confirmation whether notification has been sent successfully or not.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean notificationsSent;
 
-    @Schema(description = "List of records for each condition that has not been matched and each action that has not been performed.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of records for each condition that has not been matched and each action that has not been performed.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerHistoryRecordDto> records = new ArrayList<>();
 }

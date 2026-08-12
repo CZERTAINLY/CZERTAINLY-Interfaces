@@ -19,8 +19,8 @@ public class VerificationResponseData {
     @Schema(description = "Data to be signed or verified", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean result;
 
-    @Schema(description = "Custom identifier of the data, that should be the same as in the request, if available", examples = {
-            "customId"})
+    @Schema(description = "Custom identifier of the data, that should be the same as in the request, if available",
+            examples = {"customId"})
     private String identifier;
 
     @Schema(description = "Additional details for the result, for example reason, etc.")

@@ -17,8 +17,8 @@ public class Identifier {
     /**
      * Represents the value of the Identifier in {@link Identifier#type} This field is the Identifier itself
      */
-    @Schema(description = "Value of Identifier", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "www.some-domain.com"})
+    @Schema(description = "Value of Identifier", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"www.some-domain.com"})
     private String value;
 
     public Identifier() {

@@ -24,19 +24,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/discoveryProvider")
-@Tag(name = "Discovery", description = "Discovery Provider API. "
-        + "Used to schedule and establish certificate discovery process. "
-        + "Once the discovery process is started, the progress and the history "
-        + "of the certificate discovery can be requested. Discovery provides "
-        + "information about discovered certificates and meta data that are specific "
-        + "to implementation of the discovery provider.")
+@Tag(name = "Discovery",
+        description = "Discovery Provider API. " + "Used to schedule and establish certificate discovery process. "
+                + "Once the discovery process is started, the progress and the history "
+                + "of the certificate discovery can be requested. Discovery provides "
+                + "information about discovered certificates and meta data that are specific "
+                + "to implementation of the discovery provider.")
 public interface DiscoveryController extends AuthProtectedConnectorController {
 
     @PostMapping(path = "/discover", consumes = {"application/json"}, produces = {"application/json"})
     @Operation(summary = "Initiate certificate Discovery")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Discovery initiated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Discovery initiated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     DiscoveryProviderDto discoverCertificate(@RequestBody DiscoveryRequestDto request)
             throws IOException, NotFoundException;
 

@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SecretResponseDto {
 
-    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "MyServerCredentials"})
+    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"MyServerCredentials"})
     private String name;
 
-    @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SecretType.Codes.API_KEY})
+    @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SecretType.Codes.API_KEY})
     private SecretType type;
 
     @Schema(description = "Secret version, if versioning is supported", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

@@ -19,7 +19,8 @@ import lombok.Data;
 public class CancelPendingCertificateRequestDto {
 
     @Schema(description = "Optional free-text reason from the user explaining why the pending operation "
-            + "is being cancelled. Recorded in the certificate event history.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, maxLength = 1000)
+            + "is being cancelled. Recorded in the certificate event history.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, maxLength = 1000)
     @Size(max = 1000, message = "reason must be at most 1000 characters")
     private String reason;
 }

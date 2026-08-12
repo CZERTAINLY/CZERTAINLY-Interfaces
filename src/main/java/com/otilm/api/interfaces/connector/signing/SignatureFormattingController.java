@@ -23,9 +23,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1/signatureProvider/formatting")
-@Tag(name = "Signature Formatting Provider", description = "Signature Formatting Provider API defines operations for protocol-specific formatting of digital signing requests. "
-        + "The provider is stateless and handles the conversion between raw signing material and "
-        + "protocol-specific formats (e.g. TSA TimeStampToken, AdES signature containers).")
+@Tag(name = "Signature Formatting Provider",
+        description = "Signature Formatting Provider API defines operations for protocol-specific formatting of digital signing requests. "
+                + "The provider is stateless and handles the conversion between raw signing material and "
+                + "protocol-specific formats (e.g. TSA TimeStampToken, AdES signature containers).")
 public interface SignatureFormattingController extends AuthProtectedConnectorController {
 
     @Operation(summary = "List Formatting Attributes", operationId = "listFormattingAttributes")
@@ -34,16 +35,20 @@ public interface SignatureFormattingController extends AuthProtectedConnectorCon
     List<BaseAttribute> listFormattingAttributes();
 
     @Operation(summary = "Compute data-to-be-signed bytes", operationId = "formatDtbs")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data-to-be-signed bytes computed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data-to-be-signed bytes computed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/formatDtbs", consumes = {"application/json"}, produces = {"application/json"})
     FormatDtbsResponseDto formatDtbs(@Valid @RequestBody FormatDtbsRequestDto request) throws ValidationException;
 
     @Operation(summary = "Assemble final formatted output", operationId = "formatSigningResponse")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Formatted response assembled"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Formatted response assembled"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/formatResponse", consumes = {"application/json"}, produces = {"application/json"})
     FormattedResponseDto formatSigningResponse(@Valid @RequestBody FormatResponseRequestDto request)
             throws ValidationException;

@@ -22,18 +22,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SecurityRequirements
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "400", description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)})
 public interface InfoController {
 
     @GetMapping(path = "/info", produces = {"application/json"})
     @Operation(summary = "Get information about running Platform Application")
-    @SecurityRequirements(value = {@SecurityRequirement(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME),
+    @SecurityRequirements(value = {
+            @SecurityRequirement(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME),
             @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
             @SecurityRequirement(name = OpenApiConfig.SESSION_SECURITY_SCHEME_NAME),})
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Platform Application info retrieved"),
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Platform Application info retrieved"),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))),})
+            @ApiResponse(responseCode = "403", description = "Forbidden",
+                    content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))),})
     CoreInfoResponseDto getInfo();
 
     @GetMapping(path = "/health/liveness", produces = {"application/json"})

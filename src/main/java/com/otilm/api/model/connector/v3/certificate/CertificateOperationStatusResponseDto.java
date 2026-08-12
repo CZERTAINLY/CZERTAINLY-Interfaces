@@ -21,12 +21,15 @@ public class CertificateOperationStatusResponseDto {
     private CertificateOperationStatus status;
 
     @Schema(description = "Base64-encoded certificate content. Populated when status=COMPLETED for issue/renew. "
-            + "Always null for revoke and register status responses.", format = "byte", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Always null for revoke and register status responses.", format = "byte",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String certificateData;
 
-    @Schema(description = "Optional updated connector-defined metadata", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Optional updated connector-defined metadata",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> meta;
 
-    @Schema(description = "Failure detail when status=FAILED — curated message text (no raw exception messages)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Failure detail when status=FAILED — curated message text (no raw exception messages)",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String reason;
 }

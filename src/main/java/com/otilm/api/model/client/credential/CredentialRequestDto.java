@@ -16,8 +16,8 @@ public class CredentialRequestDto implements Serializable {
     @Schema(description = "Credential name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Credential Kind", examples = {
-            "SoftKeyStore, Basic, ApiKey, etc"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Credential Kind", examples = {"SoftKeyStore, Basic, ApiKey, etc"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes", requiredMode = Schema.RequiredMode.REQUIRED)

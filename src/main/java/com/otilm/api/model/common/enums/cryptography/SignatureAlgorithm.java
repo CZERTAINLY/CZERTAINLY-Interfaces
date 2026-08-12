@@ -78,8 +78,8 @@ public enum SignatureAlgorithm implements IPlatformEnum {
         return new AlgorithmIdentifier(PKCSObjectIdentifiers.id_RSASSA_PSS, pssParams);
     }
 
-    @Schema(description = "Signature algorithm code", examples = {
-            "SHA256withECDSA"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Signature algorithm code", examples = {"SHA256withECDSA"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

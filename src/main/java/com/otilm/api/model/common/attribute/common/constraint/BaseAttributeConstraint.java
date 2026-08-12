@@ -13,8 +13,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Setter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = RegexpAttributeConstraint.class, visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = RegexpAttributeConstraint.class, name = AttributeConstraintType.Codes.REGEXP),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type",
+        defaultImpl = RegexpAttributeConstraint.class, visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RegexpAttributeConstraint.class, name = AttributeConstraintType.Codes.REGEXP),
         @JsonSubTypes.Type(value = RangeAttributeConstraint.class, name = AttributeConstraintType.Codes.RANGE),
         @JsonSubTypes.Type(value = DateTimeAttributeConstraint.class, name = AttributeConstraintType.Codes.DATETIME)})
 @Schema(implementation = BaseAttributeConstraintDto.class)

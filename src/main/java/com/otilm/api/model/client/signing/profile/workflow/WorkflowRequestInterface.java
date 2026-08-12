@@ -19,15 +19,23 @@ import java.io.Serializable;
  * {@code null} on a Signing Profile request.
  * </p>
  */
-@Schema(name = "WorkflowRequestInterface", description = "Workflow configuration request specific to the signing workflow type", type = "object", discriminatorProperty = "type", discriminatorMapping = {
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING, schema = TimestampingWorkflowRequestDto.class),
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING, schema = DocumentSigningWorkflowRequestDto.class),
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.RAW_SIGNING, schema = RawSigningWorkflowRequestDto.class),}, oneOf = {
-                TimestampingWorkflowRequestDto.class, DocumentSigningWorkflowRequestDto.class,
+@Schema(name = "WorkflowRequestInterface",
+        description = "Workflow configuration request specific to the signing workflow type", type = "object",
+        discriminatorProperty = "type",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING,
+                        schema = TimestampingWorkflowRequestDto.class),
+                @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING,
+                        schema = DocumentSigningWorkflowRequestDto.class),
+                @DiscriminatorMapping(value = SigningWorkflowType.Codes.RAW_SIGNING,
+                        schema = RawSigningWorkflowRequestDto.class),},
+        oneOf = {
+                TimestampingWorkflowRequestDto.class,
+                DocumentSigningWorkflowRequestDto.class,
                 RawSigningWorkflowRequestDto.class,})
 public interface WorkflowRequestInterface extends Serializable {
 
-    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SigningWorkflowType.Codes.TIMESTAMPING})
+    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SigningWorkflowType.Codes.TIMESTAMPING})
     SigningWorkflowType getType();
 }

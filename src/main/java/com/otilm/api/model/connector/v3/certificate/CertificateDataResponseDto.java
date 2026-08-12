@@ -25,14 +25,17 @@ public class CertificateDataResponseDto {
 
     @Schema(description = "Base64-encoded certificate content. Populated only for issue/renew sync 200. "
             + "Null for any async 202 response; register sync 200 (registration produces no cert); "
-            + "revoke responses (revoke never carries a payload).", format = "byte", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "revoke responses (revoke never carries a payload).", format = "byte",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String certificateData;
 
     @Schema(description = "Connector-defined metadata. Present on async 202 as the tracking handle Core "
-            + "replays on subsequent /status and /cancel calls; optional on 200 responses.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "replays on subsequent /status and /cancel calls; optional on 200 responses.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> meta;
 
     @Schema(description = "Type hint for the certificate. Default X.509. Set explicitly when issuing non-X.509 "
-            + "certificates (e.g. SSH certificates) so Core does not need to infer type from certificateData.", defaultValue = "X.509", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "certificates (e.g. SSH certificates) so Core does not need to infer type from certificateData.",
+            defaultValue = "X.509", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 }

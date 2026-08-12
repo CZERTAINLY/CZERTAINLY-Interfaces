@@ -16,7 +16,8 @@ public class AttributeCallback implements Serializable {
     @Schema(description = "Context part of callback URL", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String callbackContext;
 
-    @Schema(description = "HTTP method of the callback. This value is required for connector callbacks and optional only for callbacks defined on resource objects.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "HTTP method of the callback. This value is required for connector callbacks and optional only for callbacks defined on resource objects.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String callbackMethod;
 
     @Schema(description = "Mappings for the callback method", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -33,7 +34,8 @@ public class AttributeCallback implements Serializable {
             + "marks the callback as an Attributes v2 callback; an empty list means the callback fires "
             + "once when the form opens (it depends on no other field). At most one of dependsOn or "
             + "callbackContext may be set; a callback with neither field set defines no callback. "
-            + "Not allowed on RESOURCE attributes. These rules are enforced by the platform.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Not allowed on RESOURCE attributes. These rules are enforced by the platform.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<String> dependsOn;
 
     @Override

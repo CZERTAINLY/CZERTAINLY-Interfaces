@@ -20,10 +20,12 @@ public class CertificateLocationDto {
     @Schema(description = "Metadata of the Certificate related to the Location")
     private List<MetadataAttribute> metadata;
 
-    @Schema(description = "Type of the Certificate", defaultValue = "X509", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Type of the Certificate", defaultValue = "X509",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
-    @Schema(description = "If the Certificate in Location has associated private key", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "If the Certificate in Location has associated private key",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean withKey;
 
     @Schema(description = "List of Attributes to replace Certificate")

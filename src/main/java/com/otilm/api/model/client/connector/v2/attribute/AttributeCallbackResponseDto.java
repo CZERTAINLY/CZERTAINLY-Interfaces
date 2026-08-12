@@ -29,14 +29,17 @@ import lombok.ToString;
 public class AttributeCallbackResponseDto {
 
     @Schema(description = "Resolved attribute content (v3 content model). Set this arm for DATA-attribute dropdown options. "
-            + "Exactly one of content or attributes must be set; leave the other unset.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Exactly one of content or attributes must be set; leave the other unset.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<BaseAttributeContentV3<?>> content;
 
     @Schema(description = "Runtime-injected attribute definitions. Set this arm to return GROUP children. "
-            + "Exactly one of content or attributes must be set; leave the other unset.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Exactly one of content or attributes must be set; leave the other unset.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<BaseAttribute> attributes;
 
-    @Schema(description = "Total number of items available, for paginated content responses.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Total number of items available, for paginated content responses.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Long totalItems;
 
     /**

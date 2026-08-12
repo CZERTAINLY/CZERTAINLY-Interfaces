@@ -15,13 +15,16 @@ import lombok.ToString;
 @ToString
 public class ComplianceRulesBatchRequestDto {
 
-    @Schema(description = "UUIDs of the rules to retrieve", requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"b11c9be1-b619-4ef5-be1b-a1cd9ef265b7\"]")
+    @Schema(description = "UUIDs of the rules to retrieve", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "[\"b11c9be1-b619-4ef5-be1b-a1cd9ef265b7\"]")
     private Set<UUID> ruleUuids = new HashSet<>();
 
-    @Schema(description = "UUIDs of the groups to retrieve", requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"b11c9be1-b619-4ef5-be1b-a1cd9ef265b7\"]")
+    @Schema(description = "UUIDs of the groups to retrieve", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "[\"b11c9be1-b619-4ef5-be1b-a1cd9ef265b7\"]")
     private Set<UUID> groupUuids = new HashSet<>();
 
-    @Schema(description = "Flag to determine whether to include group rules in the response", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
+    @Schema(description = "Flag to determine whether to include group rules in the response",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
     private boolean withGroupRules;
 
     @JsonIgnore

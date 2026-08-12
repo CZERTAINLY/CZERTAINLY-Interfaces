@@ -17,7 +17,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 public class CertificateRenewRequestDto {
 
-    @Schema(description = "Certificate signing request encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate signing request encoded as Base64 string",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String request;
 
     @Schema(description = "Certificate signing request format", defaultValue = "pkcs10")
@@ -26,7 +27,8 @@ public class CertificateRenewRequestDto {
     @Schema(description = "List of RA Profiles attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> raProfileAttributes;
 
-    @Schema(description = "Base64 Certificate content. (Certificate to be renewed)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 Certificate content. (Certificate to be renewed)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     @Schema(description = "Metadata for the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)

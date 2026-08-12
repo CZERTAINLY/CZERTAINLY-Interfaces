@@ -29,9 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/entityProvider/entities")
-@Tag(name = "Entity Management", description = "Management interfaces to control Entities in the platform. "
-        + "Entities can be created, edited, removed. Support for the bulk operation and listing of available "
-        + "Entities for the automation. Location attributes and validation.")
+@Tag(name = "Entity Management",
+        description = "Management interfaces to control Entities in the platform. "
+                + "Entities can be created, edited, removed. Support for the bulk operation and listing of available "
+                + "Entities for the automation. Location attributes and validation.")
 public interface EntityController extends AuthProtectedConnectorController {
 
     @Operation(summary = "List Entity instances", description = "List available Entity instances")
@@ -46,10 +47,13 @@ public interface EntityController extends AuthProtectedConnectorController {
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid) throws NotFoundException;
 
     @Operation(summary = "Create Entity instance")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Entity instance created"),
-            @ApiResponse(responseCode = "422", description = "Attribute validation failed", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, examples = {
-                    "Attribute validation error message"})), examples = {
-                            @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Entity instance created"),
+            @ApiResponse(responseCode = "422", description = "Attribute validation failed",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = String.class,
+                                    examples = {"Attribute validation error message"})),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
 
             )})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
@@ -78,9 +82,11 @@ public interface EntityController extends AuthProtectedConnectorController {
     @Operation(summary = "Validate Location Attributes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Entity Location Attributes validation completed"),
-            @ApiResponse(responseCode = "422", description = "Attribute validation failed", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class, examples = {
-                    "Attribute validation error message"})), examples = {
-                            @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
+            @ApiResponse(responseCode = "422", description = "Attribute validation failed",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = String.class,
+                                    examples = {"Attribute validation error message"})),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})
 
             )})
     @PostMapping(path = "/{entityUuid}/location/attributes/validate", consumes = {"application/json"})

@@ -16,7 +16,8 @@ public class VaultInstanceDto extends NameAndUuidDto {
     @Schema(description = "Connector associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto connector;
 
-    @Schema(description = "Connector Interface associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Connector Interface associated with this Vault instance",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorInterfaceDto connectorInterface;
 
 }

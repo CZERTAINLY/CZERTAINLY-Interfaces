@@ -43,8 +43,8 @@ public enum ConnectorInterface implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Connector interface code", examples = {
-            "authority"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Connector interface code", examples = {"authority"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final InterfaceCategory category;

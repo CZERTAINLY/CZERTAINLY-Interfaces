@@ -21,7 +21,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Group attribute and its content represents dynamic list of additional attributes retrieved by callback. Its content can not be edited and is not send in requests to store.", type = "object")
+@Schema(description = "Group attribute and its content represents dynamic list of additional attributes retrieved by callback. Its content can not be edited and is not send in requests to store.",
+        type = "object")
 @JsonDeserialize
 @JsonSerialize
 public class GroupAttributeV3 extends BaseAttributeV3<List<BaseAttributeV3<?>>> {
@@ -29,7 +30,8 @@ public class GroupAttributeV3 extends BaseAttributeV3<List<BaseAttributeV3<?>>> 
     /**
      * Content of the Attribute
      **/
-    @ArraySchema(schema = @Schema(ref = "BaseAttributeDto"), arraySchema = @Schema(description = "List of all different types of attributes"))
+    @ArraySchema(schema = @Schema(ref = "BaseAttributeDto"),
+            arraySchema = @Schema(description = "List of all different types of attributes"))
     private List<BaseAttributeV3<?>> content;
 
     /**

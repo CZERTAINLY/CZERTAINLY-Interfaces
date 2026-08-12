@@ -21,12 +21,12 @@ public class ComplianceCheckRuleDto implements Serializable {
     @Schema(description = "Compliance rule name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "Sample rule description"})
+    @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"Sample rule description"})
     private String description;
 
-    @Schema(description = "Result status of rule compliance check", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            ComplianceRuleStatus.Codes.OK})
+    @Schema(description = "Result status of rule compliance check", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {ComplianceRuleStatus.Codes.OK})
     private ComplianceRuleStatus status;
 
     @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -38,8 +38,8 @@ public class ComplianceCheckRuleDto implements Serializable {
     @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String kind;
 
-    @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            Resource.Codes.CERTIFICATE})
+    @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {Resource.Codes.CERTIFICATE})
     private Resource resource;
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

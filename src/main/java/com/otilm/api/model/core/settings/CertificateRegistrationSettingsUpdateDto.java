@@ -10,11 +10,13 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CertificateRegistrationSettingsUpdateDto implements Serializable {
 
-    @Schema(description = "Default issuance window in days, applied when a pre-registration omits an explicit expiry", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "7", minimum = "1")
+    @Schema(description = "Default issuance window in days, applied when a pre-registration omits an explicit expiry",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "7", minimum = "1")
     @Positive
     private Integer defaultIssuanceWindowDays = 7;
 
-    @Schema(description = "Maximum failed challenge-verification attempts before the registration authorization locks", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "5", minimum = "1")
+    @Schema(description = "Maximum failed challenge-verification attempts before the registration authorization locks",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "5", minimum = "1")
     @Positive
     private Integer maxFailedAttempts = 5;
 

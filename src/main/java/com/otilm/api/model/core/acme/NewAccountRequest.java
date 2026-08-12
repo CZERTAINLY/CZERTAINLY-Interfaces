@@ -14,7 +14,8 @@ public class NewAccountRequest {
      * Contact field in the ACME Account. This contains the array of URLs that the server can use to contact the client
      * for issues related to this Account. This is an optional parameter.
      */
-    @Schema(description = "List of contacts for the Account. Required if the required flag is set in ACME Profile", example = "[\"mailto:someadmin@domain.com\"]")
+    @Schema(description = "List of contacts for the Account. Required if the required flag is set in ACME Profile",
+            example = "[\"mailto:someadmin@domain.com\"]")
     private List<String> contact;
 
     /**
@@ -22,7 +23,8 @@ public class NewAccountRequest {
      * Account request indicating the client has agreed to the Terms of Service. This field cannot be updated by the
      * client. This is a non-mandatory field.
      */
-    @Schema(description = "Terms of Service agreed flag. true = Yes, false = No. Required if the required flag is set in ACME Profile", example = "false")
+    @Schema(description = "Terms of Service agreed flag. true = Yes, false = No. Required if the required flag is set in ACME Profile",
+            example = "false")
     private boolean termsOfServiceAgreed;
 
     /**

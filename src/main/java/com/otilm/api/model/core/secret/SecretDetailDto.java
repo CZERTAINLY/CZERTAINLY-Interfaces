@@ -12,7 +12,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class SecretDetailDto extends SecretDto {
 
-    @Schema(description = "List of vault profiles where the secret is stored", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of vault profiles where the secret is stored",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<SyncVaultProfileDto> syncVaultProfiles;
 
     @Schema(description = "Date and time when the secret was created", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -24,10 +25,12 @@ public class SecretDetailDto extends SecretDto {
     @Schema(description = "List of attributes associated with the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResponseAttribute> attributes;
 
-    @Schema(description = "List of custom attributes associated with the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of custom attributes associated with the secret",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> customAttributes;
 
-    @Schema(description = "List of metadata associated with the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of metadata associated with the secret",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataResponseDto> metadata;
 
 }

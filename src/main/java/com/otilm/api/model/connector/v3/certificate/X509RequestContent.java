@@ -19,7 +19,8 @@ public class X509RequestContent extends CertificateRequestContent {
     @Schema(description = "Ordered subject DN components", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RdnEntry> subject;
 
-    @Schema(description = "Subject Alternative Name entries; SAN is never duplicated in extensions", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Subject Alternative Name entries; SAN is never duplicated in extensions",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<GeneralNameEntry> subjectAltNames;
 
     @Schema(description = "Requested X.509 extensions, excluding SAN", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

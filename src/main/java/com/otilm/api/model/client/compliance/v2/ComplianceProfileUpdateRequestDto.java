@@ -16,15 +16,17 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ComplianceProfileUpdateRequestDto {
-    @Schema(description = "Description of the Compliance Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "Profile 1"})
+    @Schema(description = "Description of the Compliance Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"Profile 1"})
     private String description;
 
-    @Schema(description = "UUIDs of internal rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUIDs of internal rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Set<UUID> internalRules = new HashSet<>();
 
     @Valid
-    @Schema(description = "Provider rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Provider rules to be associated with the Compliance Profile. Profiles can be created without rules and can be added later.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ProviderComplianceRulesRequestDto> providerRules = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

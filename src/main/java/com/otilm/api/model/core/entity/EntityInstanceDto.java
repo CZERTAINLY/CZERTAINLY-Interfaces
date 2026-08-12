@@ -29,8 +29,8 @@ public class EntityInstanceDto extends NameAndUuidDto {
     @Schema(description = "Name of Entity Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorName;
 
-    @Schema(description = "Entity instance Kind", examples = {
-            "Keystore, etc."}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Entity instance Kind", examples = {"Keystore, etc."},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Override

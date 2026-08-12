@@ -12,8 +12,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class AcmeProfileRequestDto {
 
-    @Schema(description = "Name of the ACME Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "Profile Name 1"})
+    @Schema(description = "Name of the ACME Profile", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"Profile Name 1"})
     private String name;
 
     @Schema(description = "Description of the ACME Profile", examples = {"Sample description"})
@@ -43,7 +43,8 @@ public class AcmeProfileRequestDto {
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
-    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     private ProtocolCertificateAssociationsRequestDto certificateAssociations;
 

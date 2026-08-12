@@ -19,20 +19,31 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * {@code {type, payload}} wrapper around it — that would only duplicate the discriminator and let the two copies
  * disagree.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = DiscoveryProgressEvent.class, name = DiscoveryEventType.Codes.PROGRESS),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DiscoveryProgressEvent.class, name = DiscoveryEventType.Codes.PROGRESS),
         @JsonSubTypes.Type(value = DiscoveryResultBatchEvent.class, name = DiscoveryEventType.Codes.RESULT_BATCH),
         @JsonSubTypes.Type(value = DiscoveryStateChangedEvent.class, name = DiscoveryEventType.Codes.STATE_CHANGED),
         @JsonSubTypes.Type(value = DiscoveryHeartbeatEvent.class, name = DiscoveryEventType.Codes.HEARTBEAT),
         @JsonSubTypes.Type(value = DiscoveryErrorEvent.class, name = DiscoveryEventType.Codes.ERROR)})
-@Schema(name = "DiscoveryEvent", description = "One flat discovery stream/AMQP event; type selects the concrete shape.", type = "object", discriminatorProperty = "type", discriminatorMapping = {
-        @DiscriminatorMapping(value = DiscoveryEventType.Codes.PROGRESS, schema = DiscoveryProgressEvent.class),
-        @DiscriminatorMapping(value = DiscoveryEventType.Codes.RESULT_BATCH, schema = DiscoveryResultBatchEvent.class),
-        @DiscriminatorMapping(value = DiscoveryEventType.Codes.STATE_CHANGED, schema = DiscoveryStateChangedEvent.class),
-        @DiscriminatorMapping(value = DiscoveryEventType.Codes.HEARTBEAT, schema = DiscoveryHeartbeatEvent.class),
-        @DiscriminatorMapping(value = DiscoveryEventType.Codes.ERROR, schema = DiscoveryErrorEvent.class)}, oneOf = {
-                DiscoveryProgressEvent.class, DiscoveryResultBatchEvent.class, DiscoveryStateChangedEvent.class,
-                DiscoveryHeartbeatEvent.class, DiscoveryErrorEvent.class})
+@Schema(name = "DiscoveryEvent", description = "One flat discovery stream/AMQP event; type selects the concrete shape.",
+        type = "object", discriminatorProperty = "type",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = DiscoveryEventType.Codes.PROGRESS, schema = DiscoveryProgressEvent.class),
+                @DiscriminatorMapping(value = DiscoveryEventType.Codes.RESULT_BATCH,
+                        schema = DiscoveryResultBatchEvent.class),
+                @DiscriminatorMapping(value = DiscoveryEventType.Codes.STATE_CHANGED,
+                        schema = DiscoveryStateChangedEvent.class),
+                @DiscriminatorMapping(value = DiscoveryEventType.Codes.HEARTBEAT,
+                        schema = DiscoveryHeartbeatEvent.class),
+                @DiscriminatorMapping(value = DiscoveryEventType.Codes.ERROR, schema = DiscoveryErrorEvent.class)},
+        oneOf = {
+                DiscoveryProgressEvent.class,
+                DiscoveryResultBatchEvent.class,
+                DiscoveryStateChangedEvent.class,
+                DiscoveryHeartbeatEvent.class,
+                DiscoveryErrorEvent.class})
 public interface DiscoveryEvent {
 
     DiscoveryEventType getType();

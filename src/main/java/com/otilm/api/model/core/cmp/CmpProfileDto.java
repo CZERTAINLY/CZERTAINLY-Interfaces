@@ -11,7 +11,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CmpProfileDto extends NameAndUuidDto {
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
     @Schema(description = "Variant of the CMP Profile", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -26,6 +27,7 @@ public class CmpProfileDto extends NameAndUuidDto {
     @Schema(description = "CMP URL", examples = {"https://your-domain.com/api/v1/protocols/cmp/cmpProfile"})
     private String cmpUrl;
 
-    @Schema(description = "Source of the credential for MAC-protected requests", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Source of the credential for MAC-protected requests",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ProtocolChallengeSource challengeSource;
 }

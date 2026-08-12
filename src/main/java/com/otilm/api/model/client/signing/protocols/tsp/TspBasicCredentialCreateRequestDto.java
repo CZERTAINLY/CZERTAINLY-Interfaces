@@ -9,20 +9,24 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@Schema(name = "TspBasicCredentialCreateRequestDto", description = "A Basic (username/password) credential to create on a TSP Profile.")
+@Schema(name = "TspBasicCredentialCreateRequestDto",
+        description = "A Basic (username/password) credential to create on a TSP Profile.")
 public class TspBasicCredentialCreateRequestDto {
 
     @NotBlank
-    @Schema(description = "Basic username; unique within the TSP profile.", requiredMode = Schema.RequiredMode.REQUIRED, example = "svc-account")
+    @Schema(description = "Basic username; unique within the TSP profile.", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "svc-account")
     private String username;
 
     @NotBlank
     @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(description = "Basic password (write-only). Required on create.", requiredMode = Schema.RequiredMode.REQUIRED, accessMode = Schema.AccessMode.WRITE_ONLY)
+    @Schema(description = "Basic password (write-only). Required on create.",
+            requiredMode = Schema.RequiredMode.REQUIRED, accessMode = Schema.AccessMode.WRITE_ONLY)
     private String password;
 
     @NotNull
-    @Schema(description = "UUID of the real ILM user this credential authenticates as.", requiredMode = Schema.RequiredMode.REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
+    @Schema(description = "UUID of the real ILM user this credential authenticates as.",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
     private UUID mappedUserUuid;
 }

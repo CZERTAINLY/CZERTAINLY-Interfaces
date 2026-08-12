@@ -35,8 +35,10 @@ public interface AuthController extends AuthProtectedController {
     UserProfileDetailDto profile();
 
     @Operation(summary = "Update User Profile")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authenticate a user"),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Authenticate a user"),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PutMapping(path = "/profile", produces = {"application/json"})
     UserDetailDto updateUserProfile(@RequestBody @Valid UpdateUserRequestDto request)
             throws NotFoundException, CertificateException;
@@ -47,8 +49,10 @@ public interface AuthController extends AuthProtectedController {
     List<AuthResourceDto> getAuthResources();
 
     @Operation(summary = "Get List of objects for Object Access")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Objects retrieved"),
-            @ApiResponse(responseCode = "404", description = "Resource object not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Objects retrieved"),
+            @ApiResponse(responseCode = "404", description = "Resource object not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/resources/{resourceName}/objects", produces = {"application/json"})
     List<NameAndUuidDto> getObjectsForResource(
             @Parameter(description = "Resource Name") @PathVariable Resource resourceName) throws NotFoundException;

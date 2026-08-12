@@ -16,8 +16,8 @@ public class CertificateDataResponseDto {
 
     @Schema(description = "Base64 encoded Certificate content. Required for synchronous "
             + "(HTTP 200) responses; absent for asynchronous (HTTP 202) responses, "
-            + "where the operation is still in flight and only optional metadata "
-            + "may be carried in the body.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "where the operation is still in flight and only optional metadata " + "may be carried in the body.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String certificateData;
 
     @Schema(description = "UUID of Certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -26,7 +26,8 @@ public class CertificateDataResponseDto {
     @Schema(description = "Metadata for the Certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> meta;
 
-    @Schema(description = "Type of the Certificate", defaultValue = "X509", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Type of the Certificate", defaultValue = "X509",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
     @Override

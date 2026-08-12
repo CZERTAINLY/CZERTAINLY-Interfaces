@@ -21,15 +21,19 @@ public class CustomOidEntryUpdateRequestDto {
     @Schema(description = "Description of the custom OID entry", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Category of the OID entry. When updating OID entry, this property does not change the category and is instead used to determine type of additional properties.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Category of the OID entry. When updating OID entry, this property does not change the category and is instead used to determine type of additional properties.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private OidCategory category;
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "category")
     @JsonSubTypes({
-            @JsonSubTypes.Type(value = RdnAttributeTypeOidPropertiesDto.class, name = OidCategory.Codes.RDN_ATTRIBUTE_TYPE),
-            @JsonSubTypes.Type(value = CertificateExtensionOidPropertiesDto.class, name = OidCategory.Codes.CERTIFICATE_EXTENSION)})
-    @Schema(description = "Additional properties depending on OID category", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            @JsonSubTypes.Type(value = RdnAttributeTypeOidPropertiesDto.class,
+                    name = OidCategory.Codes.RDN_ATTRIBUTE_TYPE),
+            @JsonSubTypes.Type(value = CertificateExtensionOidPropertiesDto.class,
+                    name = OidCategory.Codes.CERTIFICATE_EXTENSION)})
+    @Schema(description = "Additional properties depending on OID category",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     private AdditionalOidPropertiesDto additionalProperties;
 }

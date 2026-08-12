@@ -21,7 +21,8 @@ public class ExecutionRequestDto {
     @Schema(description = "Resource associated with the execution", requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
-    @Schema(description = "List of the execution items to add to execution", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of the execution items to add to execution",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ExecutionItemRequestDto> items = new ArrayList<>();
 
 }

@@ -8,15 +8,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class AcmeProfileListDto extends NameAndUuidDto {
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
     private boolean enabled;
     @Schema(description = "ACME Profile description", examples = {"Some description"})
     private String description;
     @Schema(description = "RA Profile")
     private SimplifiedRaProfileDto raProfile;
 
-    @Schema(description = "URL of the ACME Directory", examples = {
-            "https://some-server.com/api/v1/protocols/acme/profile1/directory"})
+    @Schema(description = "URL of the ACME Directory",
+            examples = {"https://some-server.com/api/v1/protocols/acme/profile1/directory"})
     private String directoryUrl;
 
     public boolean isEnabled() {

@@ -13,12 +13,14 @@ public class SecretUpdateRequestDto {
     @Schema(description = "Description of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
-    @Schema(description = "Content of the secret. If not provided, the secret content will not be updated", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Content of the secret. If not provided, the secret content will not be updated",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SecretContent secret;
 
     @Schema(description = "List of attributes associated with the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes = new ArrayList<>();
 
-    @Schema(description = "List of custom attributes associated with the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of custom attributes associated with the secret",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> customAttributes = new ArrayList<>();
 }

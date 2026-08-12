@@ -16,7 +16,8 @@ public class UpdateRuleRequestDto {
     @Schema(description = "Description of the Rule")
     private String description;
 
-    @Schema(description = "List of UUIDs of existing conditions to add to the rule", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of UUIDs of existing conditions to add to the rule",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> conditionsUuids = new ArrayList<>();
 
 }

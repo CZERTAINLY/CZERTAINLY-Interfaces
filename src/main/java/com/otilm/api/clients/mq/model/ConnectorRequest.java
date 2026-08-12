@@ -22,16 +22,17 @@ import lombok.ToString;
 @Builder
 public class ConnectorRequest implements Serializable {
 
-    @Schema(description = "Base URL of the connector", examples = {
-            "https://connector.example.com"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base URL of the connector", examples = {"https://connector.example.com"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUrl;
 
-    @Schema(description = "HTTP method", examples = {"GET", "POST", "PUT", "DELETE",
-            "PATCH"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "HTTP method", examples = {"GET", "POST", "PUT", "DELETE", "PATCH"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String method;
 
-    @Schema(description = "Request path (relative to connectorUrl)", examples = {"/v1/health",
-            "/v1/authorityProvider/authorities/{uuid}"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Request path (relative to connectorUrl)",
+            examples = {"/v1/health", "/v1/authorityProvider/authorities/{uuid}"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String path;
 
     @Schema(description = "Authentication configuration for the connector", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -48,8 +49,8 @@ public class ConnectorRequest implements Serializable {
     @Schema(description = "Request body (JSON object)")
     private Object body;
 
-    @Schema(description = "Request timeout in Go duration format", examples = {"30s", "1m",
-            "500ms"}, defaultValue = "30s")
+    @Schema(description = "Request timeout in Go duration format", examples = {"30s", "1m", "500ms"},
+            defaultValue = "30s")
     private String timeout;
 
     @Schema(description = "Retry policy configuration")

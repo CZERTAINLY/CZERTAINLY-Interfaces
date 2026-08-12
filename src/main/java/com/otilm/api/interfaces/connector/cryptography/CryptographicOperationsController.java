@@ -33,7 +33,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/cryptographyProvider/tokens/{uuid}/keys")
-@Tag(name = "Cryptographic Operations", description = "Cryptographic Operations API defines operations that can be executed on existing cryptographic Keys.")
+@Tag(name = "Cryptographic Operations",
+        description = "Cryptographic Operations API defines operations that can be executed on existing cryptographic Keys.")
 public interface CryptographicOperationsController extends AuthProtectedConnectorController {
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -45,9 +46,11 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
     // ------------------------------------------------------------------------------
 
     @Operation(summary = "Encrypt data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data encrypted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data encrypted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{keyUuid}/encrypt", consumes = {"application/json"}, produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance or Key not found
@@ -57,9 +60,11 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
             @RequestBody CipherDataRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Decrypt data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data decrypted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data decrypted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{keyUuid}/decrypt", consumes = {"application/json"}, produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance or Key not found
@@ -73,9 +78,11 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
     /////////////////////////////////////////////////////////////////////////////////
 
     @Operation(summary = "Sign data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data signed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data signed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{keyUuid}/sign", consumes = {"application/json"}, produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance or Key not found
@@ -85,9 +92,11 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
             throws NotFoundException;
 
     @Operation(summary = "Verify data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data decrypted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data decrypted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{keyUuid}/verify", consumes = {"application/json"}, produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance or Key not found
@@ -110,9 +119,11 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
             throws NotFoundException;
 
     @Operation(summary = "Validate random generator Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/random/attributes/validate", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     /**
@@ -123,9 +134,11 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
             @RequestBody List<RequestAttribute> attributes) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Generate random data")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Random data generated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Random data generated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/random", consumes = {"application/json"}, produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance not found

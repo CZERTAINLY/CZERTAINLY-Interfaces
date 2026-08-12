@@ -15,8 +15,8 @@ public class Account {
      * "revoked". The value "deactivated" should be used to indicate client-initiated deactivation whereas "revoked"
      * should be used to indicate server-initiated deactivation.
      **/
-    @Schema(description = "Status of the ACME Account", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "valid"})
+    @Schema(description = "Status of the ACME Account", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"valid"})
     private AccountStatus status;
 
     /**
@@ -37,8 +37,8 @@ public class Account {
     /**
      * Represents the URL of from which the list of Orders for this Account can be fetched. This is a mandatory field.
      */
-    @Schema(description = "URL to get the list of Orders for the Account", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://some-server.com/acme/orders/JHJGfgf34s"}
+    @Schema(description = "URL to get the list of Orders for the Account", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://some-server.com/acme/orders/JHJGfgf34s"}
 
     )
     private String orders;

@@ -22,7 +22,8 @@ public class RequestAttributeCallback {
     private String uuid;
 
     @Schema(description = "Connector-interface row UUID the form was listed under. Identifies the interface version "
-            + "the callback belongs to for parent-less (Attributes v2) forms.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "the callback belongs to for parent-less (Attributes v2) forms.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID interfaceUuid;
 
     @Schema(description = "Name of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -44,7 +45,8 @@ public class RequestAttributeCallback {
     private PaginationRequestDto pagination;
 
     @Schema(description = "Attributes v2 callback values: the dependsOn-named attributes the callback consumes, "
-            + "reference-typed values expanded inline by Core. Used by the NG (Attributes v2) callback path.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "reference-typed values expanded inline by Core. Used by the NG (Attributes v2) callback path.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Override

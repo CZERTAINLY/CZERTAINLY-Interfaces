@@ -30,7 +30,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.", type = "object")
+@Schema(description = "Data attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
+        type = "object")
 @JsonDeserialize
 @JsonSerialize
 public class DataAttributeV3 extends DataAttribute {
@@ -49,7 +50,8 @@ public class DataAttributeV3 extends DataAttribute {
     /**
      * Content of the Attribute
      **/
-    @ArraySchema(schema = @Schema(ref = "BaseAttributeContentDtoV3"), arraySchema = @Schema(description = "Content of the Attribute"))
+    @ArraySchema(schema = @Schema(ref = "BaseAttributeContentDtoV3"),
+            arraySchema = @Schema(description = "Content of the Attribute"))
     private List<BaseAttributeContentV3<?>> content;
 
     /**
@@ -80,10 +82,12 @@ public class DataAttributeV3 extends DataAttribute {
     private AttributeVersion schemaVersion = AttributeVersion.V3;
 
     @Schema(description = "Declares which certificate (or other object) fields this attribute's value projects into; "
-            + "presence marks this attribute as a certificate request attribute", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "presence marks this attribute as a certificate request attribute",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private FieldMapping fieldMapping;
 
-    @Schema(description = "Declares how Core resolves the content of this attribute; orthogonal to fieldMapping", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Declares how Core resolves the content of this attribute; orthogonal to fieldMapping",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ValueSource valueSource;
 
     public DataAttributeV3() {

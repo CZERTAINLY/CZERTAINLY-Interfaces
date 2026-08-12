@@ -14,12 +14,13 @@ import lombok.ToString;
 @AllArgsConstructor
 public class ProxyInstallInstructionsDto {
 
-    @Schema(description = "Proxy identifier", examples = {
-            "7b55be1c-844f-11dc-a8a3-0242ac120002"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Proxy identifier", examples = {"7b55be1c-844f-11dc-a8a3-0242ac120002"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "Installation instructions for the Proxy", examples = {
-            "helm install my-proxy ./proxy --set proxy.code=my-proxy-123"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Installation instructions for the Proxy",
+            examples = {"helm install my-proxy ./proxy --set proxy.code=my-proxy-123"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String installationInstructions;
 
 }

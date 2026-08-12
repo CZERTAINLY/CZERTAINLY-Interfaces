@@ -13,15 +13,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "certificateType", visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "certificateType",
+        visible = true)
 @JsonSubTypes({@JsonSubTypes.Type(value = X509RequestContent.class, name = CertificateType.Codes.X509)})
 @Schema(description = "Typed certificate request content carrying the decoded identity intent; "
-        + "coexists with the raw CSR which remains authoritative for the public key and proof of possession", type = "object", discriminatorProperty = "certificateType", discriminatorMapping = {
-                @DiscriminatorMapping(value = CertificateType.Codes.X509, schema = X509RequestContent.class)}, subTypes = {
-                        X509RequestContent.class})
+        + "coexists with the raw CSR which remains authoritative for the public key and proof of possession",
+        type = "object", discriminatorProperty = "certificateType",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = CertificateType.Codes.X509, schema = X509RequestContent.class)},
+        subTypes = {X509RequestContent.class})
 public abstract class CertificateRequestContent {
 
-    @Schema(description = "Certificate type, determines the concrete subtype", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate type, determines the concrete subtype",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Certificate type is required")
     private CertificateType certificateType;
 }

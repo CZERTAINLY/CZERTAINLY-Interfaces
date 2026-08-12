@@ -14,13 +14,18 @@ import java.io.Serializable;
  * {@code RAW_SIGNING} is excluded — raw signing does not invoke a Signature Formatting Provider.
  * </p>
  */
-@Schema(name = "FormatResponseInterface", description = "Response formatting request specific to the signing workflow type", type = "object", discriminatorProperty = "type", discriminatorMapping = {
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING, schema = TimestampingFormatResponseRequestDto.class),
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING, schema = DocumentSigningFormatResponseRequestDto.class),}, oneOf = {
-                TimestampingFormatResponseRequestDto.class, DocumentSigningFormatResponseRequestDto.class,})
+@Schema(name = "FormatResponseInterface",
+        description = "Response formatting request specific to the signing workflow type", type = "object",
+        discriminatorProperty = "type",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING,
+                        schema = TimestampingFormatResponseRequestDto.class),
+                @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING,
+                        schema = DocumentSigningFormatResponseRequestDto.class),},
+        oneOf = {TimestampingFormatResponseRequestDto.class, DocumentSigningFormatResponseRequestDto.class,})
 public interface FormatResponseInterface extends Serializable {
 
-    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SigningWorkflowType.Codes.TIMESTAMPING})
+    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SigningWorkflowType.Codes.TIMESTAMPING})
     SigningWorkflowType getType();
 }

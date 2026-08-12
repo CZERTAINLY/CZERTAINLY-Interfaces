@@ -19,8 +19,8 @@ public class Authorization {
      * Status of the Authorization Object. Possible values are "pending", "valid", "invalid", "deactivated", "expired"
      * and "revoked"
      */
-    @Schema(description = "ACME Authorization status", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "pending"})
+    @Schema(description = "ACME Authorization status", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"pending"})
     private AuthorizationStatus status;
 
     /**

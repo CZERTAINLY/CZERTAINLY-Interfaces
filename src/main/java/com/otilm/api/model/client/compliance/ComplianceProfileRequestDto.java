@@ -11,8 +11,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Setter
 @Getter
 public class ComplianceProfileRequestDto {
-    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "Profile 1"})
+    @Schema(description = "Name of the Compliance Profile", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"Profile 1"})
     private String name;
 
     @Schema(description = "Description of the Compliance Profile", examples = {"Profile 1"})

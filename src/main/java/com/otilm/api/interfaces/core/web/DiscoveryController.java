@@ -40,8 +40,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/v1/discoveries")
 @Tag(name = "Discovery Management", description = "Discovery Management API")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 
 public interface DiscoveryController extends AuthProtectedController {
 
@@ -51,15 +53,19 @@ public interface DiscoveryController extends AuthProtectedController {
     DiscoveryResponseDto listDiscoveries(@RequestBody SearchRequestDto request);
 
     @Operation(summary = "Discovery Details")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Discovery details retrieved"),
-            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Discovery details retrieved"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
     DiscoveryHistoryDetailDto getDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
             throws NotFoundException;
 
     @Operation(summary = "Discovery Details")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Discovery details retrieved"),
-            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Discovery details retrieved"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}/certificates", produces = {"application/json"})
     DiscoveryCertificateResponseDto getDiscoveryCertificates(
             @Parameter(description = "Discovery UUID") @PathVariable String uuid,
@@ -69,29 +75,37 @@ public interface DiscoveryController extends AuthProtectedController {
 
     @Operation(summary = "Create Discovery")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Discovery Created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+            @ApiResponse(responseCode = "201", description = "Discovery Created",
+                    content = @Content(schema = @Schema(implementation = UuidDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "404", description = "Connector not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request) throws AlreadyExistException,
             NotFoundException, CertificateException, InterruptedException, ConnectorException, AttributeException;
 
     @Operation(summary = "Delete Discovery")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Discovery deleted"),
-            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Discovery deleted"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Delete Multiple Discoveries")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Discoveries deleted"),
-            @ApiResponse(responseCode = "404", description = "Discovery not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Discoveries deleted"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDeleteDiscovery(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Discovery UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> discoveryUuids)
+    void bulkDeleteDiscovery(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Discovery UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> discoveryUuids)
             throws NotFoundException;
 
     @Operation(operationId = "getDiscoverySearchableFields", summary = "Get Discovery searchable fields information")
@@ -102,10 +116,13 @@ public interface DiscoveryController extends AuthProtectedController {
 
     @Operation(summary = "Schedule Discovery")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Discovery Scheduled", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+            @ApiResponse(responseCode = "201", description = "Discovery Scheduled",
+                    content = @Content(schema = @Schema(implementation = UuidDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "404", description = "Connector not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(path = "/schedule", consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> scheduleDiscovery(@RequestBody ScheduleDiscoveryDto scheduleDiscoveryDto)
             throws AlreadyExistException, CertificateException, InterruptedException, ConnectorException,

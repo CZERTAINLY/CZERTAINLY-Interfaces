@@ -20,7 +20,8 @@ public class CertificateInLocationDto {
     @Schema(description = "Current validation status of the certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateValidationStatus validationStatus;
 
-    @Schema(description = "Common Name of the Subject DN field of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Common Name of the Subject DN field of the Certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String commonName;
 
     @Schema(description = "Serial number in HEX of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -35,6 +36,7 @@ public class CertificateInLocationDto {
     @Schema(description = "Applied issue attributes")
     private List<ResponseAttribute> csrAttributes;
 
-    @Schema(description = "If the Certificate in Location has associated private key", defaultValue = "false", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "If the Certificate in Location has associated private key", defaultValue = "false",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private boolean withKey;
 }

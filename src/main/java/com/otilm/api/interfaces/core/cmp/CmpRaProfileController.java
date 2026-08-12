@@ -25,16 +25,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface CmpRaProfileController extends InBandResponseController {
 
     @Operation(summary = "CMP Get Operations")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CMP Operations retrieved"),
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CMP Operations retrieved"),
             @ApiResponse(responseCode = "500", description = "Operation is not allowed")})
     @GetMapping
     ResponseEntity<byte[]> doGet(@PathVariable String raProfileName,
-            @RequestParam(required = false) @Schema(description = "DER encoded CMP data", type = "string", format = "binary") byte[] message)
+            @RequestParam(required = false) @Schema(description = "DER encoded CMP data", type = "string",
+                    format = "binary") byte[] message)
             throws CmpBaseException;
 
-    @Operation(summary = "CMP Post Operation", externalDocs = @ExternalDocumentation(description = "RFC 4210", url = "https://www.rfc-editor.org/rfc/rfc4210"))
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Operation executed", content = {
-            @Content(schema = @Schema(description = "Response structure(s) defined in RFC 4210, section 5.3", externalDocs = @ExternalDocumentation(description = "RFC 4210", url = "https://www.rfc-editor.org/rfc/rfc4210#section-5.3"), type = "string", format = "binary"))})})
+    @Operation(summary = "CMP Post Operation",
+            externalDocs = @ExternalDocumentation(description = "RFC 4210",
+                    url = "https://www.rfc-editor.org/rfc/rfc4210"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operation executed", content = {
+                    @Content(schema = @Schema(description = "Response structure(s) defined in RFC 4210, section 5.3",
+                            externalDocs = @ExternalDocumentation(description = "RFC 4210",
+                                    url = "https://www.rfc-editor.org/rfc/rfc4210#section-5.3"),
+                            type = "string", format = "binary"))})})
     @PostMapping(consumes = {"application/pkixcmp"}, produces = {"application/pkixcmp"})
     ResponseEntity<byte[]> doPost(@PathVariable String raProfileName,
             @RequestBody @Schema(description = "Binary CMP data", type = "string", format = "binary") byte[] request)

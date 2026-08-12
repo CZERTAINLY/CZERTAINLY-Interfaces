@@ -23,8 +23,8 @@ public enum KeyCompromiseReason implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Reason for compromise", examples = {
-            "Unauthorized Disclosure"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Reason for compromise", examples = {"Unauthorized Disclosure"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

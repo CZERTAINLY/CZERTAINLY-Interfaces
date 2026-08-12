@@ -28,21 +28,22 @@ public class GlobalMetadataCreateRequestDto {
     /**
      * Friendly name of the Attribute
      **/
-    @Schema(description = "Friendly name of the the Attribute", examples = {
-            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Friendly name of the the Attribute", examples = {"Attribute Name"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String label;
 
     /**
      * Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.
      **/
-    @Schema(description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.", defaultValue = "true")
+    @Schema(description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
+            defaultValue = "true")
     private boolean visible = true;
 
     /**
      * Group of the Attribute, used for the logical grouping of the Attribute
      **/
-    @Schema(description = "Group of the Attribute, used for the logical grouping of the Attribute", examples = {
-            "requiredAttributes"})
+    @Schema(description = "Group of the Attribute, used for the logical grouping of the Attribute",
+            examples = {"requiredAttributes"})
     private String group;
 
     public String getName() {

@@ -21,7 +21,8 @@ public class BaseScepProfileRequestDto {
     @Schema(description = "List of Attributes to issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> issueCertificateAttributes;
 
-    @Schema(description = "UUID of the Certificate to be used as CA Certificate for SCEP Requests", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the Certificate to be used as CA Certificate for SCEP Requests",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String caCertificateUuid;
 
     @Schema(description = "List of Custom Attributes")
@@ -39,7 +40,8 @@ public class BaseScepProfileRequestDto {
 
     @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Schema(description = "Challenge Password for the SCEP Request (write-only).", accessMode = Schema.AccessMode.WRITE_ONLY)
+    @Schema(description = "Challenge Password for the SCEP Request (write-only).",
+            accessMode = Schema.AccessMode.WRITE_ONLY)
     private String challengePassword;
 
     /**
@@ -57,13 +59,15 @@ public class BaseScepProfileRequestDto {
      * clients that do not send the field.
      */
     @Schema(description = "Challenge password protection toggle. Omit to keep the stored password unchanged; "
-            + "true to set a new password (or keep the existing one if left blank); false to remove it.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "true to set a new password (or keep the existing one if left blank); false to remove it.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean enableChallengePassword;
 
     @Schema(description = "Source of the enrolment challenge ('protocolDefault' or 'certificateRegistration'). "
             + "'protocolDefault' authenticates against the shared challenge password; "
             + "'certificateRegistration' requires every initial enrolment to match a pre-registered certificate and "
-            + "forbids a profile challenge password. Omit to keep the stored value on edit; on create, omit to default to 'protocolDefault'.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "forbids a profile challenge password. Omit to keep the stored value on edit; on create, omit to default to 'protocolDefault'.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolChallengeSource challengeSource;
 
     @Schema(description = "Status of Intune")
@@ -81,6 +85,7 @@ public class BaseScepProfileRequestDto {
     private String intuneApplicationKey;
 
     @Valid
-    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsRequestDto certificateAssociations;
 }

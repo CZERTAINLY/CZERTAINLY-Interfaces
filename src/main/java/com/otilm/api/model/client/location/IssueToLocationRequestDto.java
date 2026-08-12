@@ -17,7 +17,8 @@ public class IssueToLocationRequestDto {
     @Schema(description = "List of CSR Attributes for Location", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> csrAttributes;
 
-    @Schema(description = "List of certificate issue Attributes for RA Profile", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of certificate issue Attributes for RA Profile",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> issueAttributes;
 
     @Schema(description = "List of Custom Attributes")

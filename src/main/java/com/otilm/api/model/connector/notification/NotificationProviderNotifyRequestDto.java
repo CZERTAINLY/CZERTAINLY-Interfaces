@@ -17,20 +17,23 @@ public class NotificationProviderNotifyRequestDto {
      * @deprecated
      */
     @Deprecated(forRemoval = true)
-    @Schema(description = "Notification event type that happened to trigger the notification", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Notification event type that happened to trigger the notification",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String eventType;
 
-    @Schema(description = "Event type that happened to trigger the notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Event type that happened to trigger the notification",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ResourceEvent event;
 
-    @Schema(description = "Resource which is represented by data", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "certificate"})
+    @Schema(description = "Resource which is represented by data", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"certificate"})
     private Resource resource;
 
     // Excluded from toString: the untyped payload can carry sensitive values (e.g. a registration
     // credential) that a typed event class would exclude from its own toString.
     @ToString.Exclude
-    @Schema(description = "Data associated with notification event and resource", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Data associated with notification event and resource",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Object notificationData;
 
     // Excluded from toString: bulk object data must not leak into logs or tracing spans on accidental
@@ -38,6 +41,7 @@ public class NotificationProviderNotifyRequestDto {
     // pre-enrichment wire format.
     @ToString.Exclude
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Schema(description = "Additional object data enabled on the notification profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Additional object data enabled on the notification profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private NotificationEventObjectDataDto objectData;
 }

@@ -18,7 +18,8 @@ public class CertificateIssuanceRequest {
     /**
      * The requested value of notBefore field in the certificate. The date format is as defined in the RFC3339.
      */
-    @Schema(description = "Requested value of notBefore field in the certificate", format = "date-time", type = "string")
+    @Schema(description = "Requested value of notBefore field in the certificate", format = "date-time",
+            type = "string")
     private String notBefore;
 
     /**

@@ -14,9 +14,12 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
-@JsonSubTypes({@Type(value = TimestampingFormatResponseRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
-        @Type(value = DocumentSigningFormatResponseRequestDto.class, name = SigningWorkflowType.Codes.DOCUMENT_SIGNING),})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type",
+        visible = true)
+@JsonSubTypes({
+        @Type(value = TimestampingFormatResponseRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
+        @Type(value = DocumentSigningFormatResponseRequestDto.class,
+                name = SigningWorkflowType.Codes.DOCUMENT_SIGNING),})
 @Schema(implementation = FormatResponseInterface.class)
 public abstract class FormatResponseRequestDto implements FormatResponseInterface {
 
@@ -25,19 +28,23 @@ public abstract class FormatResponseRequestDto implements FormatResponseInterfac
     private final SigningWorkflowType type;
 
     @NotNull
-    @Schema(description = "Data-to-be-signed bytes returned by formatDtbs (already contains serialNumber, signingTime, etc.)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Data-to-be-signed bytes returned by formatDtbs (already contains serialNumber, signingTime, etc.)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] dtbs;
 
     @NotNull
-    @Schema(description = "Raw signature bytes from the Cryptography Provider", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Raw signature bytes from the Cryptography Provider",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] signature;
 
     @NotEmpty
-    @Schema(description = "Certificate chain where the first element is the signer certificate", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate chain where the first element is the signer certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<byte[]> certificateChain;
 
     @NotNull
-    @Schema(description = "Formatting-specific parameters, same attributes as passed to formatDtbs", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Formatting-specific parameters, same attributes as passed to formatDtbs",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> formatAttributes;
 
     protected FormatResponseRequestDto(SigningWorkflowType type) {

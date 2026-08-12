@@ -14,8 +14,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class UserDto implements Loggable {
 
-    @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "5b5f0784-2519-11ed-861d-0242ac120002"})
+    @Schema(description = "UUID of the User", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"5b5f0784-2519-11ed-861d-0242ac120002"})
     private String uuid;
 
     @Schema(description = "Username of the user", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"user1"})
@@ -36,7 +36,8 @@ public class UserDto implements Loggable {
     @Schema(description = "Groups of the user", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<NameAndUuidDto> groups = new ArrayList<>();
 
-    @Schema(description = "Status of the user. True = Enabled, False = Disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Status of the user. True = Enabled, False = Disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "Is System user. True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)

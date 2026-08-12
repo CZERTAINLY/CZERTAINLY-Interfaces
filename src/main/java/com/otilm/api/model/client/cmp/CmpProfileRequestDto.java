@@ -14,8 +14,8 @@ public class CmpProfileRequestDto extends BaseCmpProfileRequestDto {
 
     @NotBlank(message = "Name of the CMP Profile is required")
     @ValidName
-    @Schema(description = "Name of the CMP Profile", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "Example CMP Profile"})
+    @Schema(description = "Name of the CMP Profile", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"Example CMP Profile"})
     private String name;
 
     @NotNull

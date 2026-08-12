@@ -12,7 +12,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 @Data
 public class CertificateIdentificationRequestDto {
-    @Schema(description = "Base64 Certificate content. (certificate to be identified)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 Certificate content. (certificate to be identified)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     @Schema(description = "List of RA Profiles attributes", requiredMode = Schema.RequiredMode.REQUIRED)

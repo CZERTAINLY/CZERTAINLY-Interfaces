@@ -23,7 +23,8 @@ public class KeyDetailDto extends NameAndUuidDto {
     @Schema(description = "Description of the Key", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Creation time of the Key. If the key is discovered from the connector, then it will be returned",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private OffsetDateTime creationTime;
 
     @Schema(description = "UUID of the Token Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -38,7 +39,8 @@ public class KeyDetailDto extends NameAndUuidDto {
     @Schema(description = "Token Instance Name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String tokenInstanceName;
 
-    @Schema(description = "Custom Attributes for the Cryptographic Key", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Custom Attributes for the Cryptographic Key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> customAttributes;
 
     @Schema(description = "Attributes for the Cryptographic Key", requiredMode = Schema.RequiredMode.REQUIRED)

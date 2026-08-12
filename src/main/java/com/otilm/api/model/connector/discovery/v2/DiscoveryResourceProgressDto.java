@@ -28,7 +28,8 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscoveryResourceProgressDto {
 
-    @Schema(description = "Number of items processed so far; omitted when the connector cannot report it", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Number of items processed so far; omitted when the connector cannot report it",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Long processed;
 
     @Schema(description = "Estimated total number of items for the run; omitted when the connector cannot "

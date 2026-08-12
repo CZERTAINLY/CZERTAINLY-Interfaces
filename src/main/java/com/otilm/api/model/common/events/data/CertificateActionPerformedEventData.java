@@ -24,8 +24,8 @@ public class CertificateActionPerformedEventData extends CertificateEventAuthori
             + "- `PENDING_ISSUE` — asynchronous issuance / renewal / rekey accepted, awaiting completion,\n"
             + "- `PENDING_REVOKE` — asynchronous revocation accepted, awaiting completion,\n"
             + "- `FAILED` — asynchronous issuance was cancelled, or issuance failed.\n"
-            + "Optional for backward compatibility with subscribers built before the field "
-            + "was introduced.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Optional for backward compatibility with subscribers built before the field " + "was introduced.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateState state;
 
     public CertificateActionPerformedEventData(String action, String errorMessage) {

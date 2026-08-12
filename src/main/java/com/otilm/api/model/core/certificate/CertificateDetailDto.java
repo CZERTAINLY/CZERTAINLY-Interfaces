@@ -39,7 +39,8 @@ public class CertificateDetailDto extends CertificateDto {
     @Schema(description = "Locations associated to the Certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Set<LocationDto> locations;
 
-    @Schema(description = "Pre-registration authorization status; present only for certificates that were pre-registered", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Pre-registration authorization status; present only for certificates that were pre-registered",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateRegistrationDetailDto registration;
 
     /**
@@ -48,7 +49,9 @@ public class CertificateDetailDto extends CertificateDto {
      * endpoint instead that is part of compliance v2 implementation.
      */
     @Deprecated(since = "2.16.0", forRemoval = true)
-    @Schema(deprecated = true, description = "Certificate compliance check result. Deprecated, use `complianceResult` property instead.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(deprecated = true,
+            description = "Certificate compliance check result. Deprecated, use `complianceResult` property instead.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<CertificateComplianceResultDto> nonCompliantRules;
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

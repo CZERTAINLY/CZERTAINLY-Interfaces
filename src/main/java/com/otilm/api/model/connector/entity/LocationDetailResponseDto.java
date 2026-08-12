@@ -18,10 +18,12 @@ public class LocationDetailResponseDto {
     @Schema(description = "Location metadata", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> metadata;
 
-    @Schema(description = "Support for multiple Certificates in the Location", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Support for multiple Certificates in the Location", defaultValue = "false",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean multipleEntries;
 
-    @Schema(description = "Support for key pair management in the Location", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Support for key pair management in the Location", defaultValue = "false",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean supportKeyManagement;
 
     @Override

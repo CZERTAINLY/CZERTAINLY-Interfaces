@@ -37,11 +37,13 @@ import lombok.ToString;
 @ToString
 public class AttributeDefinitionsDto {
 
-    @Schema(description = "Connector build version, echoed so Core can detect staleness. A version string, not a content hash.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Connector build version, echoed so Core can detect staleness. A version string, not a content hash.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String connectorVersion;
 
-    @Schema(description = "Attribute definitions keyed by connector-global UUID. Polymorphic across attribute schema v2/v3.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Attribute definitions keyed by connector-global UUID. Polymorphic across attribute schema v2/v3.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private List<BaseAttribute> definitions;
 }

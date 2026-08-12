@@ -20,6 +20,7 @@ public class TriggerHistoryObjectSummaryDto {
     @Schema(description = "Was matched by ignore trigger.", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean ignored;
 
-    @Schema(description = "List of records for each trigger that has been evaluated.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of records for each trigger that has been evaluated.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerHistoryObjectTriggerSummaryDto> triggers = new ArrayList<>();
 }

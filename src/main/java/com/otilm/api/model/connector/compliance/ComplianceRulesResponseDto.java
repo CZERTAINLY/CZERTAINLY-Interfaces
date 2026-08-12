@@ -17,17 +17,19 @@ to request for additional information for the rule.
 @Getter
 @Setter
 public class ComplianceRulesResponseDto {
-    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
     private String uuid;
 
-    @Schema(description = "UUID of the group to which the rule belongs to", example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
+    @Schema(description = "UUID of the group to which the rule belongs to",
+            example = "b11c9be1-b619-4ef5-be1b-a1cd9ef265b7")
     private String groupUuid;
 
     @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"Rule1"})
     private String name;
 
-    @Schema(description = "Type of the certificate to which this rule can be applied", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "X509"})
+    @Schema(description = "Type of the certificate to which this rule can be applied",
+            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"X509"})
     private CertificateType certificateType;
 
     @Schema(description = "Rule attributes")

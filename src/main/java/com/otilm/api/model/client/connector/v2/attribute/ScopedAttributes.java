@@ -24,14 +24,17 @@ import lombok.ToString.Exclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ScopedAttributes {
 
-    @Schema(description = "Kind of the scope object. Serialized as the plural resource code, e.g. \"authorities\", \"raProfiles\", \"vaults\".", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Kind of the scope object. Serialized as the plural resource code, e.g. \"authorities\", \"raProfiles\", \"vaults\".",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private Resource scope;
 
-    @Schema(description = "UUID of the scope object, for correlation/logging only — never a lookup key on the connector side.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUID of the scope object, for correlation/logging only — never a lookup key on the connector side.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID objectUuid;
 
-    @Schema(description = "Credential-expanded attributes of the scope object.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Credential-expanded attributes of the scope object.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @Exclude
     @NotNull
     @Valid

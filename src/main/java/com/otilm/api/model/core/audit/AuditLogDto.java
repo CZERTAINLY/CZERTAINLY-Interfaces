@@ -14,8 +14,21 @@ import java.util.Map;
 import lombok.Data;
 
 @Data
-@JsonPropertyOrder({"id", "version", "loggedAt", "timestamp", "module", "actor", "source", "resource",
-        "affiliatedResource", "operation", "operationResult", "message", "operationData", "additionalData"})
+@JsonPropertyOrder({
+        "id",
+        "version",
+        "loggedAt",
+        "timestamp",
+        "module",
+        "actor",
+        "source",
+        "resource",
+        "affiliatedResource",
+        "operation",
+        "operationResult",
+        "message",
+        "operationData",
+        "additionalData"})
 public class AuditLogDto {
 
     @Schema(description = "Audit log Id", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -42,19 +55,22 @@ public class AuditLogDto {
     @Schema(description = "Resource that is subject of action logged", requiredMode = Schema.RequiredMode.REQUIRED)
     private ResourceRecord resource;
 
-    @Schema(description = "Affiliated resource that is related to subject resource", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Affiliated resource that is related to subject resource",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ResourceRecord affiliatedResource;
 
     @Schema(description = "Resource operation that is being logged", requiredMode = Schema.RequiredMode.REQUIRED)
     private Operation operation;
 
-    @Schema(description = "Result of the resource operation. Either success or failed", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Result of the resource operation. Either success or failed",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private OperationResult operationResult;
 
     @Schema(description = "Additional message", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String message;
 
-    @Schema(description = "Structured data dependent on resource and its operation", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Structured data dependent on resource and its operation",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Serializable operationData;
 
     @Schema(description = "Additional data specific to event logged", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
