@@ -3,7 +3,7 @@ package com.otilm.api.model.client.signing.profile.validation;
 import com.otilm.api.model.client.signing.profile.SigningProfileRequestDto;
 import com.otilm.api.model.client.signing.profile.scheme.DelegatedSigningRequestDto;
 import com.otilm.api.model.client.signing.profile.scheme.StaticKeyManagedSigningRequestDto;
-import com.otilm.api.model.client.signing.profile.workflow.ContentSigningWorkflowRequestDto;
+import com.otilm.api.model.client.signing.profile.workflow.DocumentSigningWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.RawSigningWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowRequestDto;
 import jakarta.validation.ConstraintViolation;
@@ -84,15 +84,15 @@ class SigningProfileConstraintValidatorsTest {
     }
 
     @Test
-    void managedContentSigningNullFormattingUuid_producesViolation() {
+    void managedDocumentSigningNullFormattingUuid_producesViolation() {
         assertTrue(hasViolationOn(
-                validator.validate(profileRequest(managedScheme(), new ContentSigningWorkflowRequestDto())),
+                validator.validate(profileRequest(managedScheme(), new DocumentSigningWorkflowRequestDto())),
                 "workflow.signatureFormattingConnectorUuid"));
     }
 
     @Test
-    void managedContentSigningWithFormattingUuid_noFormattingViolation() {
-        ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
+    void managedDocumentSigningWithFormattingUuid_noFormattingViolation() {
+        DocumentSigningWorkflowRequestDto workflow = new DocumentSigningWorkflowRequestDto();
         workflow.setSignatureFormattingConnectorUuid(UUID.randomUUID());
         assertFalse(hasViolationOn(validator.validate(profileRequest(managedScheme(), workflow)),
                 "workflow.signatureFormattingConnectorUuid"));

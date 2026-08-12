@@ -16,8 +16,8 @@ import java.io.Serializable;
  */
 @Schema(name = "FormatResponseInterface", description = "Response formatting request specific to the signing workflow type", type = "object", discriminatorProperty = "type", discriminatorMapping = {
         @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING, schema = TimestampingFormatResponseRequestDto.class),
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.CONTENT_SIGNING, schema = ContentSigningFormatResponseRequestDto.class),}, oneOf = {
-                TimestampingFormatResponseRequestDto.class, ContentSigningFormatResponseRequestDto.class,})
+        @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING, schema = DocumentSigningFormatResponseRequestDto.class),}, oneOf = {
+                TimestampingFormatResponseRequestDto.class, DocumentSigningFormatResponseRequestDto.class,})
 public interface FormatResponseInterface extends Serializable {
 
     @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {

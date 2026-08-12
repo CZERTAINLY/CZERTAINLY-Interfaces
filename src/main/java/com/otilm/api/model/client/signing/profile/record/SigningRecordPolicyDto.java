@@ -16,7 +16,7 @@ public class SigningRecordPolicyDto {
     @Schema(description = "Content policy: capture raw signature value")
     private boolean recordSignature;
 
-    @Schema(description = "Content policy: capture assembled signed document (only valid for CONTENT_SIGNING and TIMESTAMPING workflows)")
+    @Schema(description = "Content policy: capture assembled signed document (only valid for DOCUMENT_SIGNING and TIMESTAMPING workflows)")
     private boolean recordSignedDocument;
 
     @Schema(description = "Content policy: capture data-to-be-signed bytes")
