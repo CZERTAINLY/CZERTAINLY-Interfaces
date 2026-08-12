@@ -10,12 +10,13 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CertificateValidationCheck implements IPlatformEnum {
-    CERTIFICATE_CHAIN("certificate_chain", "Certificate chain"), SIGNATURE_VERIFICATION("signature",
-            "Signature Verification"), CERTIFICATE_VALIDITY("certificate_validity",
-                    "Certificate Validity"), OCSP_VERIFICATION("ocsp_verification",
-                            "OCSP Verification"), CRL_VERIFICATION("crl_verification",
-                                    "CRL Verification"), BASIC_CONSTRAINTS("basic_constraints",
-                                            "Basic Constraints"), KEY_USAGE("key_usage", "Certificate Key Usage");
+    CERTIFICATE_CHAIN("certificate_chain", "Certificate chain"),
+    SIGNATURE_VERIFICATION("signature", "Signature Verification"),
+    CERTIFICATE_VALIDITY("certificate_validity", "Certificate Validity"),
+    OCSP_VERIFICATION("ocsp_verification", "OCSP Verification"),
+    CRL_VERIFICATION("crl_verification", "CRL Verification"),
+    BASIC_CONSTRAINTS("basic_constraints", "Basic Constraints"),
+    KEY_USAGE("key_usage", "Certificate Key Usage");
 
     private static final CertificateValidationCheck[] VALUES;
 

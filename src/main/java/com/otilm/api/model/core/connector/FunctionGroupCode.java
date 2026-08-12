@@ -11,16 +11,15 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum FunctionGroupCode implements IPlatformEnum {
 
-    CREDENTIAL_PROVIDER("credentialProvider", "Credential Provider"), LEGACY_AUTHORITY_PROVIDER(
-            "legacyAuthorityProvider", "Legacy Authority Provider"), AUTHORITY_PROVIDER("authorityProvider",
-                    "Authority Provider"), DISCOVERY_PROVIDER("discoveryProvider",
-                            "Discovery Provider"), ENTITY_PROVIDER("entityProvider",
-                                    "Entity Provider"), COMPLIANCE_PROVIDER("complianceProvider",
-                                            "Compliance Provider"), COMPLIANCE_PROVIDER_V2("complianceProviderV2",
-                                                    "Compliance Provider V2"), CRYPTOGRAPHY_PROVIDER(
-                                                            "cryptographyProvider",
-                                                            "Cryptography Provider"), NOTIFICATION_PROVIDER(
-                                                                    "notificationProvider", "Notification Provider");
+    CREDENTIAL_PROVIDER("credentialProvider", "Credential Provider"),
+    LEGACY_AUTHORITY_PROVIDER("legacyAuthorityProvider", "Legacy Authority Provider"),
+    AUTHORITY_PROVIDER("authorityProvider", "Authority Provider"),
+    DISCOVERY_PROVIDER("discoveryProvider", "Discovery Provider"),
+    ENTITY_PROVIDER("entityProvider", "Entity Provider"),
+    COMPLIANCE_PROVIDER("complianceProvider", "Compliance Provider"),
+    COMPLIANCE_PROVIDER_V2("complianceProviderV2", "Compliance Provider V2"),
+    CRYPTOGRAPHY_PROVIDER("cryptographyProvider", "Cryptography Provider"),
+    NOTIFICATION_PROVIDER("notificationProvider", "Notification Provider");
 
     private static final FunctionGroupCode[] VALUES;
 

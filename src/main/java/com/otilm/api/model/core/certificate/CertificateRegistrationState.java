@@ -10,10 +10,10 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum CertificateRegistrationState implements IPlatformEnum {
-    ACTIVE("active", "Active", "Registration is active; the challenge gates issue/rekey"), EXPIRED("expired", "Expired",
-            "The issuance window has passed"), LOCKED("locked", "Locked",
-                    "Locked after too many failed challenge attempts"), CLOSED("closed", "Closed",
-                            "Behaves as unregistered (operator-closed or terminal)");
+    ACTIVE("active", "Active", "Registration is active; the challenge gates issue/rekey"),
+    EXPIRED("expired", "Expired", "The issuance window has passed"),
+    LOCKED("locked", "Locked", "Locked after too many failed challenge attempts"),
+    CLOSED("closed", "Closed", "Behaves as unregistered (operator-closed or terminal)");
 
     private static final CertificateRegistrationState[] VALUES;
 

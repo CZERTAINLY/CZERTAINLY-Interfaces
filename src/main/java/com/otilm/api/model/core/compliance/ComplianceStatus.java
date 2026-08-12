@@ -15,8 +15,11 @@ the compliance status of the individual rules
  */
 @Schema(enumAsRef = true)
 public enum ComplianceStatus implements IPlatformEnum {
-    NOT_CHECKED(Codes.NOT_CHECKED, "Not checked"), OK(Codes.OK, "Compliant"), NOK(Codes.NOK,
-            "Not Compliant"), NA(Codes.NA, "Not Applicable"), FAILED(Codes.FAILED, "Failed");
+    NOT_CHECKED(Codes.NOT_CHECKED, "Not checked"),
+    OK(Codes.OK, "Compliant"),
+    NOK(Codes.NOK, "Not Compliant"),
+    NA(Codes.NA, "Not Applicable"),
+    FAILED(Codes.FAILED, "Failed");
 
     private static final ComplianceStatus[] VALUES;
 

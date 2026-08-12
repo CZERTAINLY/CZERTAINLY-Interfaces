@@ -10,9 +10,10 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyType implements IPlatformEnum {
-    SECRET_KEY("Secret", "Secret key", "Symmetric secret key"), PUBLIC_KEY("Public", "Public key",
-            "Asymmetric public key"), PRIVATE_KEY("Private", "Private key", "Asymmetric private key"), SPLIT_KEY(
-                    "Split", "Split key", "Secret or private key split into parts");
+    SECRET_KEY("Secret", "Secret key", "Symmetric secret key"),
+    PUBLIC_KEY("Public", "Public key", "Asymmetric public key"),
+    PRIVATE_KEY("Private", "Private key", "Asymmetric private key"),
+    SPLIT_KEY("Split", "Split key", "Secret or private key split into parts");
 
     private static final KeyType[] VALUES;
 

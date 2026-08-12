@@ -11,7 +11,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum TriggerType implements IPlatformEnum {
 
-    EVENT("event", "Event", null), MANUAL("manual", "Manual", null),;
+    EVENT("event", "Event", null),
+    MANUAL("manual", "Manual", null);
 
     private static final TriggerType[] VALUES;
 

@@ -9,7 +9,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum CertificateFormatEncoding implements IPlatformEnum {
 
-    PEM("pem", "PEM", "PEM certificate format encoding"), DER("der", "DER", "DER certificate format encoding");
+    PEM("pem", "PEM", "PEM certificate format encoding"),
+    DER("der", "DER", "DER certificate format encoding");
 
     private final String code;
     private final String label;

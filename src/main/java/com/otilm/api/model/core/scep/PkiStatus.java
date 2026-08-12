@@ -9,8 +9,9 @@ import org.springframework.lang.Nullable;
  */
 @Schema(enumAsRef = true)
 public enum PkiStatus {
-    SUCCESS(0, "SUCCESS", "Request granted."), FAILURE(2, "FAILURE", "Request rejected."), PENDING(3, "PENDING",
-            "Request pending for manual approval.");
+    SUCCESS(0, "SUCCESS", "Request granted."),
+    FAILURE(2, "FAILURE", "Request rejected."),
+    PENDING(3, "PENDING", "Request pending for manual approval.");
 
     private static final PkiStatus[] VALUES;
 

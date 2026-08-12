@@ -4,7 +4,10 @@ import com.otilm.api.model.common.enums.IPlatformEnum;
 
 public enum ApprovalStatusEnum implements IPlatformEnum {
 
-    PENDING("Pending"), APPROVED("Approved"), REJECTED("Rejected"), EXPIRED("Expired");
+    PENDING("Pending"),
+    APPROVED("Approved"),
+    REJECTED("Rejected"),
+    EXPIRED("Expired");
 
     private String code;
 

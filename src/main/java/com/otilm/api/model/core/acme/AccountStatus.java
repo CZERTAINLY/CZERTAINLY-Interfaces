@@ -14,7 +14,9 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum AccountStatus implements IPlatformEnum {
 
-    VALID("valid", "Valid"), DEACTIVATED("deactivated", "Deactivated"), REVOKED("revoked", "Revoked");
+    VALID("valid", "Valid"),
+    DEACTIVATED("deactivated", "Deactivated"),
+    REVOKED("revoked", "Revoked");
 
     private static final AccountStatus[] VALUES;
 

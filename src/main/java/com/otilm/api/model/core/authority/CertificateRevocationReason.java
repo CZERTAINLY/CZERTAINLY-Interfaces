@@ -12,19 +12,15 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum CertificateRevocationReason implements IPlatformEnum {
 
-    UNSPECIFIED("unspecified", "Unspecified", 0, CRLReason.UNSPECIFIED), KEY_COMPROMISE("keyCompromise",
-            "Key compromise", 1, CRLReason.KEY_COMPROMISE), CA_COMPROMISE("cACompromise", "CA compromise", 2,
-                    CRLReason.CA_COMPROMISE), AFFILIATION_CHANGED("affiliationChanged", "Affiliation changed", 3,
-                            CRLReason.AFFILIATION_CHANGED), SUPERSEDED("superseded", "Superseded", 4,
-                                    CRLReason.SUPERSEDED), CESSATION_OF_OPERATION("cessationOfOperation",
-                                            "Cessation of operation", 5,
-                                            CRLReason.CESSATION_OF_OPERATION), CERTIFICATE_HOLD("certificateHold",
-                                                    "Certificate hold", 6,
-                                                    CRLReason.CERTIFICATE_HOLD), PRIVILEGES_WITHDRAWN(
-                                                            "privilegeWithdrawn", "Privilege withdrawn", 9,
-                                                            CRLReason.PRIVILEGE_WITHDRAWN), AA_COMPROMISE(
-                                                                    "aACompromise", "AA compromise", 10,
-                                                                    CRLReason.CA_COMPROMISE);
+    UNSPECIFIED("unspecified", "Unspecified", 0, CRLReason.UNSPECIFIED),
+    KEY_COMPROMISE("keyCompromise", "Key compromise", 1, CRLReason.KEY_COMPROMISE),
+    CA_COMPROMISE("cACompromise", "CA compromise", 2, CRLReason.CA_COMPROMISE),
+    AFFILIATION_CHANGED("affiliationChanged", "Affiliation changed", 3, CRLReason.AFFILIATION_CHANGED),
+    SUPERSEDED("superseded", "Superseded", 4, CRLReason.SUPERSEDED),
+    CESSATION_OF_OPERATION("cessationOfOperation", "Cessation of operation", 5, CRLReason.CESSATION_OF_OPERATION),
+    CERTIFICATE_HOLD("certificateHold", "Certificate hold", 6, CRLReason.CERTIFICATE_HOLD),
+    PRIVILEGES_WITHDRAWN("privilegeWithdrawn", "Privilege withdrawn", 9, CRLReason.PRIVILEGE_WITHDRAWN),
+    AA_COMPROMISE("aACompromise", "AA compromise", 10, CRLReason.CA_COMPROMISE);
 
     private static final CertificateRevocationReason[] VALUES;
 

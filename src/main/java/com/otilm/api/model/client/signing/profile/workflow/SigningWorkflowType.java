@@ -11,9 +11,9 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum SigningWorkflowType implements IPlatformEnum {
 
-    CONTENT_SIGNING(Codes.CONTENT_SIGNING, "Content Signing", "Signing of content"), RAW_SIGNING(Codes.RAW_SIGNING,
-            "Raw Signing",
-            "Signing of raw data"), TIMESTAMPING(Codes.TIMESTAMPING, "Timestamping", "Timestamping of data"),;
+    CONTENT_SIGNING(Codes.CONTENT_SIGNING, "Content Signing", "Signing of content"),
+    RAW_SIGNING(Codes.RAW_SIGNING, "Raw Signing", "Signing of raw data"),
+    TIMESTAMPING(Codes.TIMESTAMPING, "Timestamping", "Timestamping of data");
 
     private static final SigningWorkflowType[] VALUES;
 

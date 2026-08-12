@@ -8,7 +8,8 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum ConnectorVersion implements IPlatformEnum {
 
-    V1(Codes.V1, 1), V2(Codes.V2, 2);
+    V1(Codes.V1, 1),
+    V2(Codes.V2, 2);
 
     private final String code;
 

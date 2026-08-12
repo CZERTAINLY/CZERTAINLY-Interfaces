@@ -9,8 +9,9 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum ValueSourceType implements IPlatformEnum {
 
-    NONE("none", "None (free input)"), CONNECTOR_CALLBACK("connectorCallback",
-            "Connector Callback"), STATIC_LIST("staticList", "Static List");
+    NONE("none", "None (free input)"),
+    CONNECTOR_CALLBACK("connectorCallback", "Connector Callback"),
+    STATIC_LIST("staticList", "Static List");
 
     private static final ValueSourceType[] VALUES = values();
 

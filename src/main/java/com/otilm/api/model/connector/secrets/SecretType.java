@@ -10,10 +10,14 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum SecretType implements IPlatformEnum {
-    BASIC_AUTH(Codes.BASIC_AUTH, "Basic Authentication"), API_KEY(Codes.API_KEY, "API Key"), JWT_TOKEN(Codes.JWT_TOKEN,
-            "JWT Token"), PRIVATE_KEY(Codes.PRIVATE_KEY, "Private Key"), SECRET_KEY(Codes.SECRET_KEY,
-                    "Secret Key"), KEY_STORE(Codes.KEY_STORE, "Key Store"), KEY_VALUE(Codes.KEY_VALUE,
-                            "Key-Value Pairs"), GENERIC(Codes.GENERIC, "Generic");
+    BASIC_AUTH(Codes.BASIC_AUTH, "Basic Authentication"),
+    API_KEY(Codes.API_KEY, "API Key"),
+    JWT_TOKEN(Codes.JWT_TOKEN, "JWT Token"),
+    PRIVATE_KEY(Codes.PRIVATE_KEY, "Private Key"),
+    SECRET_KEY(Codes.SECRET_KEY, "Secret Key"),
+    KEY_STORE(Codes.KEY_STORE, "Key Store"),
+    KEY_VALUE(Codes.KEY_VALUE, "Key-Value Pairs"),
+    GENERIC(Codes.GENERIC, "Generic");
 
     private static final SecretType[] VALUES;
 

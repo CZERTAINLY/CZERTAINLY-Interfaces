@@ -2,6 +2,11 @@
 # locally, the git-build-hook-maven-plugin wires `git config blame.ignoreRevsFile` to point
 # here on the first Maven build of the clone — see the blame-ignore-revs profile in the parent POM).
 #
-# The SHA below is the one-shot `mvn spotless:apply` formatting commit, so blame attributes
-# lines to their real authors rather than the reformatting commit.
+# The SHAs below are whole-tree reformatting commits, so blame attributes lines to their
+# real authors rather than to the reformatting commit.
+
+# Apply Spotless formatting and Checkstyle fixes
 e443ce097d22e79364d0fda4369aea06f9b069e6
+
+# Break enum constants one per line
+0c0f926beb06029ce12264ef9b9eeb31d399c7fb

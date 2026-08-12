@@ -9,8 +9,10 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum ObjectType implements IPlatformEnum {
 
-    X509_CERTIFICATE("x509Certificate", "X.509 Certificate"), SSH_CERTIFICATE("sshCertificate",
-            "SSH Certificate"), KEY("key", "Key"), SECRET("secret", "Secret");
+    X509_CERTIFICATE("x509Certificate", "X.509 Certificate"),
+    SSH_CERTIFICATE("sshCertificate", "SSH Certificate"),
+    KEY("key", "Key"),
+    SECRET("secret", "Secret");
 
     private static final ObjectType[] VALUES = values();
 

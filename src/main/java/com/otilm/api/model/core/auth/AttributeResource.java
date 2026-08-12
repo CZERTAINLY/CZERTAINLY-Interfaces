@@ -11,12 +11,12 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum AttributeResource implements IPlatformEnum {
 
-    CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate", ResourceCertificateContentData.class), CREDENTIAL(
-            Resource.Codes.CREDENTIAL, "Credential", ResourceSimpleContentData.class), AUTHORITY(
-                    Resource.Codes.AUTHORITY, "Authority", ResourceSimpleContentData.class), ENTITY(
-                            Resource.Codes.ENTITY, "Entity Instance", ResourceSimpleContentData.class), LOCATION(
-                                    Resource.Codes.LOCATION, "Location", ResourceSimpleContentData.class), SECRET(
-                                            Resource.Codes.SECRET, "Secret", ResourceSecretContentData.class),;
+    CERTIFICATE(Resource.Codes.CERTIFICATE, "Certificate", ResourceCertificateContentData.class),
+    CREDENTIAL(Resource.Codes.CREDENTIAL, "Credential", ResourceSimpleContentData.class),
+    AUTHORITY(Resource.Codes.AUTHORITY, "Authority", ResourceSimpleContentData.class),
+    ENTITY(Resource.Codes.ENTITY, "Entity Instance", ResourceSimpleContentData.class),
+    LOCATION(Resource.Codes.LOCATION, "Location", ResourceSimpleContentData.class),
+    SECRET(Resource.Codes.SECRET, "Secret", ResourceSecretContentData.class);
 
     private final String code;
     private final String label;

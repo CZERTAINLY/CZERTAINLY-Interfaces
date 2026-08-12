@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum RsaEncryptionScheme implements IPlatformEnum {
-    PKCS1_v1_5("PKCS1-v1_5", "PKCS#1 v1.5", "Deterministic RSA encryption scheme"), OAEP("OAEP", "OAEP",
-            "Optimal Asymmetric Encryption Padding");
+    PKCS1_v1_5("PKCS1-v1_5", "PKCS#1 v1.5", "Deterministic RSA encryption scheme"),
+    OAEP("OAEP", "OAEP", "Optimal Asymmetric Encryption Padding");
 
     @Schema(description = "Type of the RSA encryption scheme", examples = {
             "OAEP"}, requiredMode = Schema.RequiredMode.REQUIRED)

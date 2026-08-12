@@ -10,22 +10,19 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum Module implements IPlatformEnum {
-    APPROVALS("approvals", "Approvals"), AUTH("auth", "Auth", "Authentication and authorization module"), CERTIFICATES(
-            "certificates", "Certificates", "Certificates management and operations"), CRYPTOGRAPHIC_KEYS("keys",
-                    "Cryptographic keys",
-                    "Cryptographic keys management and operations"), COMPLIANCE("compliance", "Compliance"), CORE(
-                            "core", "Core",
-                            "Core functionality including connectors, credentials and attributes"), DISCOVERY(
-                                    "discovery", "Discovery", "Discovery of different resources"), ENTITIES("entities",
-                                            "Entities", "Entities and locations management"), PROTOCOLS("protocols",
-                                                    "Protocols", "Protocols management and operations"), SCHEDULER(
-                                                            "scheduler", "Scheduler",
-                                                            "Scheduled jobs and tasks"), SECRETS("secrets", "Secrets",
-                                                                    "Secrets management and operations"), SIGNING(
-                                                                            "signing", "Signing",
-                                                                            "Signing management and operations"), WORKFLOWS(
-                                                                                    "workflows", "Workflows",
-                                                                                    "Workflows management");
+    APPROVALS("approvals", "Approvals"),
+    AUTH("auth", "Auth", "Authentication and authorization module"),
+    CERTIFICATES("certificates", "Certificates", "Certificates management and operations"),
+    CRYPTOGRAPHIC_KEYS("keys", "Cryptographic keys", "Cryptographic keys management and operations"),
+    COMPLIANCE("compliance", "Compliance"),
+    CORE("core", "Core", "Core functionality including connectors, credentials and attributes"),
+    DISCOVERY("discovery", "Discovery", "Discovery of different resources"),
+    ENTITIES("entities", "Entities", "Entities and locations management"),
+    PROTOCOLS("protocols", "Protocols", "Protocols management and operations"),
+    SCHEDULER("scheduler", "Scheduler", "Scheduled jobs and tasks"),
+    SECRETS("secrets", "Secrets", "Secrets management and operations"),
+    SIGNING("signing", "Signing", "Signing management and operations"),
+    WORKFLOWS("workflows", "Workflows", "Workflows management");
 
     private static final Module[] VALUES;
 

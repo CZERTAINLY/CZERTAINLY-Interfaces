@@ -14,10 +14,10 @@ import java.util.Arrays;
 public enum AttributeSetMergeMode implements IPlatformEnum {
 
     STATIC_ONLY("staticOnly", "Static only",
-            "Use only the RA Profile static set; ignore the connector supplied set (default)"), CONNECTOR_ONLY(
-                    "connectorOnly", "Connector only",
-                    "Use only the connector supplied set; ignore the static set"), MERGE("merge", "Merge",
-                            "Union of both sets; on a key conflict the connector definition wins and the static set contributes only what the connector did not supply");
+            "Use only the RA Profile static set; ignore the connector supplied set (default)"),
+    CONNECTOR_ONLY("connectorOnly", "Connector only", "Use only the connector supplied set; ignore the static set"),
+    MERGE("merge", "Merge",
+            "Union of both sets; on a key conflict the connector definition wins and the static set contributes only what the connector did not supply");
 
     private static final AttributeSetMergeMode[] VALUES = values();
 

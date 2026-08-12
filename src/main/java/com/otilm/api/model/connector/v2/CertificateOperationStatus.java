@@ -15,10 +15,10 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum CertificateOperationStatus implements IPlatformEnum {
 
-    IN_PROGRESS("inProgress", "In progress", "Operation is still being processed asynchronously"), COMPLETED(
-            "completed", "Completed",
-            "Operation finished; cert data included for issue/renew, no payload for revoke"), FAILED("failed", "Failed",
-                    "Operation failed; reason field carries detail");
+    IN_PROGRESS("inProgress", "In progress", "Operation is still being processed asynchronously"),
+    COMPLETED("completed", "Completed",
+            "Operation finished; cert data included for issue/renew, no payload for revoke"),
+    FAILED("failed", "Failed", "Operation failed; reason field carries detail");
 
     private static final CertificateOperationStatus[] VALUES;
 

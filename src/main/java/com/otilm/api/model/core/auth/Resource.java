@@ -12,19 +12,26 @@ import java.util.List;
 
 @Schema(enumAsRef = true)
 public enum Resource implements IPlatformEnum {
-    NONE("NONE", "None"), ANY("ANY", "Any"),
+    NONE("NONE", "None"),
+    ANY("ANY", "Any"),
 
     // GENERAL
-    DASHBOARD("dashboard", "Dashboard"), SETTINGS("settings", "Settings"), AUDIT_LOG("auditLogs",
-            "Audit logs"), CREDENTIAL(Codes.CREDENTIAL, "Credential", true, true), CONNECTOR(Codes.CONNECTOR,
-                    "Connector", true, true), ATTRIBUTE(Codes.ATTRIBUTE, "Attribute",
-                            true), SCHEDULED_JOB("jobs", "Scheduled job"), PROXY(Codes.PROXY, "Proxy", true),
+    DASHBOARD("dashboard", "Dashboard"),
+    SETTINGS("settings", "Settings"),
+    AUDIT_LOG("auditLogs", "Audit logs"),
+    CREDENTIAL(Codes.CREDENTIAL, "Credential", true, true),
+    CONNECTOR(Codes.CONNECTOR, "Connector", true, true),
+    ATTRIBUTE(Codes.ATTRIBUTE, "Attribute", true),
+    SCHEDULED_JOB("jobs", "Scheduled job"),
+    PROXY(Codes.PROXY, "Proxy", true),
 
     // AUTH
-    USER(Codes.USER, "User", false, true, true, false), ROLE(Codes.ROLE, "Role", false, true),
+    USER(Codes.USER, "User", false, true, true, false),
+    ROLE(Codes.ROLE, "Role", false, true),
 
     // ACME
-    ACME_ACCOUNT(Codes.ACME_ACCOUNT, "ACME Account"), ACME_PROFILE(Codes.ACME_PROFILE, "ACME Profile", true, true),
+    ACME_ACCOUNT(Codes.ACME_ACCOUNT, "ACME Account"),
+    ACME_PROFILE(Codes.ACME_PROFILE, "ACME Profile", true, true),
 
     CBOM(Codes.CBOM, "CBOM"),
 
@@ -35,66 +42,73 @@ public enum Resource implements IPlatformEnum {
     CMP_PROFILE(Codes.CMP_PROFILE, "CMP Profile", true, true),
 
     // CERTIFICATES
-    AUTHORITY(Codes.AUTHORITY, "Authority", true, true), RA_PROFILE(Codes.RA_PROFILE, "RA Profile", true,
-            true), CERTIFICATE(Codes.CERTIFICATE, "Certificate", false, true, true, true), CERTIFICATE_REQUEST(
-                    Codes.CERTIFICATE_REQUEST, "Certificate Request", false,
-                    false), GROUP(Codes.GROUP, "Group", true, true), COMPLIANCE_PROFILE(Codes.COMPLIANCE_PROFILE,
-                            "Compliance Profile", true, true), DISCOVERY(Codes.DISCOVERY, "Discovery", false, true),
+    AUTHORITY(Codes.AUTHORITY, "Authority", true, true),
+    RA_PROFILE(Codes.RA_PROFILE, "RA Profile", true, true),
+    CERTIFICATE(Codes.CERTIFICATE, "Certificate", false, true, true, true),
+    CERTIFICATE_REQUEST(Codes.CERTIFICATE_REQUEST, "Certificate Request", false, false),
+    GROUP(Codes.GROUP, "Group", true, true),
+    COMPLIANCE_PROFILE(Codes.COMPLIANCE_PROFILE, "Compliance Profile", true, true),
+    DISCOVERY(Codes.DISCOVERY, "Discovery", false, true),
 
     // OID
     OID(Codes.OID, "OID", true, false),
 
     // ENTITIES
-    ENTITY(Codes.ENTITY, "Entity", true, true), LOCATION(Codes.LOCATION, "Location", true, true),
+    ENTITY(Codes.ENTITY, "Entity", true, true),
+    LOCATION(Codes.LOCATION, "Location", true, true),
 
     // CRYPTOGRAPHY
-    TOKEN_PROFILE(Codes.TOKEN_PROFILE, "Token Profile", true, true), TOKEN(Codes.TOKEN, "Token", true,
-            true), CRYPTOGRAPHIC_KEY(Codes.CRYPTOGRAPHIC_KEY, "Key", false, true, true, true),
+    TOKEN_PROFILE(Codes.TOKEN_PROFILE, "Token Profile", true, true),
+    TOKEN(Codes.TOKEN, "Token", true, true),
+    CRYPTOGRAPHIC_KEY(Codes.CRYPTOGRAPHIC_KEY, "Key", false, true, true, true),
 
     // APPROVALS
-    APPROVAL_PROFILE("approvalProfiles", "Approval profile"), APPROVAL(Codes.APPROVAL, "Approval"),
+    APPROVAL_PROFILE("approvalProfiles", "Approval profile"),
+    APPROVAL(Codes.APPROVAL, "Approval"),
 
     // NOTIFICATIONS
-    NOTIFICATION_PROFILE("notificationProfiles", "Notification profile"), NOTIFICATION_INSTANCE("notificationInstances",
-            "Notification instance"),
+    NOTIFICATION_PROFILE("notificationProfiles", "Notification profile"),
+    NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // WORKFLOWS
-    RULE("rules", "Rule"), ACTION("actions", "Action"), TRIGGER("triggers", "Trigger"),
+    RULE("rules", "Rule"),
+    ACTION("actions", "Action"),
+    TRIGGER("triggers", "Trigger"),
 
     // ADDED FOR LOGS PURPOSES
-    RESOURCE("resources", "Resource"), RESOURCE_EVENT("resourceEvents", "Resource Event"), SEARCH_FILTER(
-            "searchFilters", "Search Filter"), CRYPTOGRAPHIC_KEY_ITEM("keyItems", "Key item"), PLATFORM_ENUM(
-                    "platformEnums", "Platform enumerator"), NOTIFICATION("notifications", "Notification"), CONDITION(
-                            "conditions", "Condition"), EXECUTION("executions", "Execution"), COMPLIANCE_RULE(
-                                    "complianceRules", "Compliance Rule"), COMPLIANCE_GROUP("complianceGroups",
-                                            "Compliance Group"), CUSTOM_ATTRIBUTE("customAttributes",
-                                                    "Custom Attribute"), GLOBAL_METADATA("globalMetadata",
-                                                            "Global Metadata"), ACME_ORDER("acmeOrders",
-                                                                    "ACME Order"), ACME_AUTHORIZATION(
-                                                                            "acmeAuthorizations",
-                                                                            "ACME Authorization"), ACME_CHALLENGE(
-                                                                                    "acmeChallenges",
-                                                                                    "ACME Challenge"), CMP_TRANSACTION(
-                                                                                            "cmpTransactions",
-                                                                                            "CMP Transaction"), END_ENTITY_PROFILE(
-                                                                                                    "endEntityProfiles",
-                                                                                                    "End entity profile"), AUTHENTICATION_PROVIDER(
-                                                                                                            "authenticationProviders",
-                                                                                                            "Authentication Provider"),
+    RESOURCE("resources", "Resource"),
+    RESOURCE_EVENT("resourceEvents", "Resource Event"),
+    SEARCH_FILTER("searchFilters", "Search Filter"),
+    CRYPTOGRAPHIC_KEY_ITEM("keyItems", "Key item"),
+    PLATFORM_ENUM("platformEnums", "Platform enumerator"),
+    NOTIFICATION("notifications", "Notification"),
+    CONDITION("conditions", "Condition"),
+    EXECUTION("executions", "Execution"),
+    COMPLIANCE_RULE("complianceRules", "Compliance Rule"),
+    COMPLIANCE_GROUP("complianceGroups", "Compliance Group"),
+    CUSTOM_ATTRIBUTE("customAttributes", "Custom Attribute"),
+    GLOBAL_METADATA("globalMetadata", "Global Metadata"),
+    ACME_ORDER("acmeOrders", "ACME Order"),
+    ACME_AUTHORIZATION("acmeAuthorizations", "ACME Authorization"),
+    ACME_CHALLENGE("acmeChallenges", "ACME Challenge"),
+    CMP_TRANSACTION("cmpTransactions", "CMP Transaction"),
+    END_ENTITY_PROFILE("endEntityProfiles", "End entity profile"),
+    AUTHENTICATION_PROVIDER("authenticationProviders", "Authentication Provider"),
 
     // SAAS
     TRUSTED_CERTIFICATE("trustedCertificates", "Trusted Certificate"),
 
     // Secrets
-    VAULT(Codes.VAULT, "Vault", true, true), VAULT_PROFILE(Codes.VAULT_PROFILE, "Vault Profile", true,
-            true), SECRET(Codes.SECRET, "Secret", false, true, true, true),
+    VAULT(Codes.VAULT, "Vault", true, true),
+    VAULT_PROFILE(Codes.VAULT_PROFILE, "Vault Profile", true, true),
+    SECRET(Codes.SECRET, "Secret", false, true, true, true),
 
     // SIGNING
-    SIGNING_PROFILE(Codes.SIGNING_PROFILE, "Signing Profile", true, true), SIGNING_RECORD(Codes.SIGNING_RECORD,
-            "Signing Record"), TIME_QUALITY_CONFIGURATION(Codes.TIME_QUALITY_CONFIGURATION,
-                    "Time Quality Configuration", true, true), TSP_PROFILE(Codes.TSP_PROFILE,
-                            "Timestamping Protocol Profile", true, true), TSP_PROFILE_BASIC_CREDENTIAL(
-                                    Codes.TSP_PROFILE_BASIC_CREDENTIAL, "TSP Profile Basic Credential", true, true),;
+    SIGNING_PROFILE(Codes.SIGNING_PROFILE, "Signing Profile", true, true),
+    SIGNING_RECORD(Codes.SIGNING_RECORD, "Signing Record"),
+    TIME_QUALITY_CONFIGURATION(Codes.TIME_QUALITY_CONFIGURATION, "Time Quality Configuration", true, true),
+    TSP_PROFILE(Codes.TSP_PROFILE, "Timestamping Protocol Profile", true, true),
+    TSP_PROFILE_BASIC_CREDENTIAL(Codes.TSP_PROFILE_BASIC_CREDENTIAL, "TSP Profile Basic Credential", true, true);
 
     private static final Resource[] VALUES;
     private static final EnumSet<Resource> complianceSubjects = EnumSet

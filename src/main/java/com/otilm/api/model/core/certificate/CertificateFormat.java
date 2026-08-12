@@ -9,8 +9,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum CertificateFormat implements IPlatformEnum {
 
-    RAW("raw", "Raw", "Raw certificate format, extension based on encoding"), PKCS7("pkcs7", "PKCS#7",
-            "PKCS#7 certificate format");
+    RAW("raw", "Raw", "Raw certificate format, extension based on encoding"),
+    PKCS7("pkcs7", "PKCS#7", "PKCS#7 certificate format");
 
     private final String code;
     private final String label;

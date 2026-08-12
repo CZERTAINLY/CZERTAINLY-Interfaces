@@ -10,8 +10,10 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum FilterFieldSource implements IPlatformEnum {
 
-    META("meta", "Metadata", AttributeType.META), CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM), DATA(
-            "data", "Data attribute", AttributeType.DATA), PROPERTY("property", "Property", null);
+    META("meta", "Metadata", AttributeType.META),
+    CUSTOM("custom", "Custom attribute", AttributeType.CUSTOM),
+    DATA("data", "Data attribute", AttributeType.DATA),
+    PROPERTY("property", "Property", null);
 
     private static final FilterFieldSource[] VALUES;
 

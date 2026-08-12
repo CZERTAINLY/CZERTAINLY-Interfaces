@@ -11,12 +11,15 @@ import lombok.Getter;
 @Schema(enumAsRef = true)
 public enum CertificateKeyUsage implements IPlatformEnum, BitMaskEnum {
 
-    DIGITAL_SIGNATURE("digitalSignature", "Digital Signature", 0), NON_REPUDIATION("nonRepudiation", "Non Repudiation",
-            1), KEY_ENCIPHERMENT("keyEncipherment", "Key Encipherment", 2), DATA_ENCIPHERMENT("dataEncipherment",
-                    "Data Encipherment",
-                    3), KEY_AGREEMENT("keyAgreement", "Key Agreement", 4), KEY_CERT_SIGN("keyCertSign", "Key Cert Sign",
-                            5), CRL_SIGN("cRLSign", "CRL Sign", 6), ENCIPHER_ONLY("encipherOnly", "Encipher Only",
-                                    7), DECIPHER_ONLY("decipherOnly", "Decipher Only", 8);
+    DIGITAL_SIGNATURE("digitalSignature", "Digital Signature", 0),
+    NON_REPUDIATION("nonRepudiation", "Non Repudiation", 1),
+    KEY_ENCIPHERMENT("keyEncipherment", "Key Encipherment", 2),
+    DATA_ENCIPHERMENT("dataEncipherment", "Data Encipherment", 3),
+    KEY_AGREEMENT("keyAgreement", "Key Agreement", 4),
+    KEY_CERT_SIGN("keyCertSign", "Key Cert Sign", 5),
+    CRL_SIGN("cRLSign", "CRL Sign", 6),
+    ENCIPHER_ONLY("encipherOnly", "Encipher Only", 7),
+    DECIPHER_ONLY("decipherOnly", "Decipher Only", 8);
 
     private final String code;
     private final String label;

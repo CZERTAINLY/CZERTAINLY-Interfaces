@@ -10,33 +10,42 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum ResourceAction implements IPlatformEnum {
-    NONE("NONE", "None", AccessType.NOT_GRANTABLE), ANY("ANY", "Any", AccessType.NOT_GRANTABLE), MEMBERS("members",
-            "Members", AccessType.READ), // action that is evaluated to allow action for resource lower in hierarchy,
-                                         // e.g. access to certificates through RA profile members action
+    NONE("NONE", "None", AccessType.NOT_GRANTABLE),
+    ANY("ANY", "Any", AccessType.NOT_GRANTABLE),
+    // Action that is evaluated to allow action for resource lower in hierarchy, e.g. access to
+    // certificates through RA profile members action.
+    MEMBERS("members", "Members", AccessType.READ),
 
     // Default (CRUD) Actions
-    LIST("list", "List", AccessType.READ), DETAIL("detail", "Detail", AccessType.READ), CREATE("create", "Create",
-            AccessType.WRITE), UPDATE("update", "Update",
-                    AccessType.WRITE), DELETE("delete", "Delete", AccessType.WRITE),
+    LIST("list", "List", AccessType.READ),
+    DETAIL("detail", "Detail", AccessType.READ),
+    CREATE("create", "Create", AccessType.WRITE),
+    UPDATE("update", "Update", AccessType.WRITE),
+    DELETE("delete", "Delete", AccessType.WRITE),
 
     // Default change state actions that allows also reverse action (disable/deactivate)
-    ENABLE("enable", "Enable", AccessType.WRITE), ACTIVATE("activate", "Activate", AccessType.WRITE),
+    ENABLE("enable", "Enable", AccessType.WRITE),
+    ACTIVATE("activate", "Activate", AccessType.WRITE),
 
     // Lifecycle control actions for long-running operations (e.g. discovery runs)
-    STOP("stop", "Stop", AccessType.WRITE), RESUME("resume", "Resume", AccessType.WRITE), CANCEL("cancel", "Cancel",
-            AccessType.WRITE),
+    STOP("stop", "Stop", AccessType.WRITE),
+    RESUME("resume", "Resume", AccessType.WRITE),
+    CANCEL("cancel", "Cancel", AccessType.WRITE),
 
     // Connector actions
-    APPROVE("approve", "Approve", AccessType.WRITE), CONNECT("connect", "Connect", AccessType.WRITE), // allows also
-                                                                                                      // reconnect
-                                                                                                      // action
+    APPROVE("approve", "Approve", AccessType.WRITE),
+    // Allows also the reconnect action.
+    CONNECT("connect", "Connect", AccessType.WRITE),
 
     // Certificate actions
     // auth-opa-policies pairs this code with Resource.CONNECTOR in resourcesWithAnonymousAccess, so annotating
     // it on that resource would leave the endpoint reachable unauthenticated.
-    REGISTER("register", "Register", AccessType.WRITE), ISSUE("issue", "Issue", AccessType.WRITE), RENEW("renew",
-            "Renew", AccessType.WRITE), REKEY("rekey", "Rekey", AccessType.WRITE), REVOKE("revoke", "Revoke",
-                    AccessType.WRITE), ARCHIVE("archive", "Archive", AccessType.WRITE),
+    REGISTER("register", "Register", AccessType.WRITE),
+    ISSUE("issue", "Issue", AccessType.WRITE),
+    RENEW("renew", "Renew", AccessType.WRITE),
+    REKEY("rekey", "Rekey", AccessType.WRITE),
+    REVOKE("revoke", "Revoke", AccessType.WRITE),
+    ARCHIVE("archive", "Archive", AccessType.WRITE),
 
     // Audit Log export
     EXPORT("export", "Export", AccessType.READ),
@@ -45,17 +54,18 @@ public enum ResourceAction implements IPlatformEnum {
     CHECK_COMPLIANCE("checkCompliance", "Check compliance", AccessType.WRITE),
 
     // Cryptography operation
-    ENCRYPT("encrypt", "Encrypt", AccessType.WRITE), DECRYPT("decrypt", "Decrypt", AccessType.WRITE), VERIFY("verify",
-            "Verify", AccessType.WRITE), SIGN("sign", "Sign", AccessType.WRITE),
+    ENCRYPT("encrypt", "Encrypt", AccessType.WRITE),
+    DECRYPT("decrypt", "Decrypt", AccessType.WRITE),
+    VERIFY("verify", "Verify", AccessType.WRITE),
+    SIGN("sign", "Sign", AccessType.WRITE),
 
     // PROXY
     // Instructions embed a client secret, a broker SAS key and a non-expiring configuration token.
     GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation", AccessType.SENSITIVE_READ),
 
     // Secret
-    GET_SECRET_CONTENT("getSecretContent", "Get secret content",
-            AccessType.SENSITIVE_READ), UPDATE_SOURCE_VAULT_PROFILE("updateSourceVaultProfile",
-                    "Update source vault profile", AccessType.WRITE),
+    GET_SECRET_CONTENT("getSecretContent", "Get secret content", AccessType.SENSITIVE_READ),
+    UPDATE_SOURCE_VAULT_PROFILE("updateSourceVaultProfile", "Update source vault profile", AccessType.WRITE),
 
     // Digital Signing
     TIMESTAMP("timestamp", "Timestamp", AccessType.WRITE), // RFC 3161 Timestamping
@@ -72,7 +82,10 @@ public enum ResourceAction implements IPlatformEnum {
      * actions — omitting {@code ANY} denies nothing, as that gate is satisfied by holding any action on the resource.
      */
     public enum AccessType {
-        READ, WRITE, SENSITIVE_READ, NOT_GRANTABLE
+        READ,
+        WRITE,
+        SENSITIVE_READ,
+        NOT_GRANTABLE
     }
 
     private static final ResourceAction[] VALUES;

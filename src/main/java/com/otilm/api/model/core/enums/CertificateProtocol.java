@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(enumAsRef = true)
 public enum CertificateProtocol implements IPlatformEnum {
 
-    ACME("acme", "ACME Protocol"), SCEP("scep", "SCEP Protocol"), CMP("cmp", "CMP Protocol");
+    ACME("acme", "ACME Protocol"),
+    SCEP("scep", "SCEP Protocol"),
+    CMP("cmp", "CMP Protocol");
 
     private final String code;
     private final String label;

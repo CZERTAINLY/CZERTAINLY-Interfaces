@@ -28,7 +28,7 @@ public enum EndEntityStatus {
     KEY_RECOVERY(70),
 
     /** the operation is waiting to be approved before execution **/
-    WAITING_FOR_ADD_APPROVAL(80),;
+    WAITING_FOR_ADD_APPROVAL(80);
 
     private final int code;
 

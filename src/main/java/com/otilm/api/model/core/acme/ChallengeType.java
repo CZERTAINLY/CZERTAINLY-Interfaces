@@ -10,7 +10,8 @@ import java.util.Arrays;
  * ENUM representing the possible values for the ACME Challenge type
  */
 public enum ChallengeType {
-    HTTP01("http-01"), DNS01("dns-01");
+    HTTP01("http-01"),
+    DNS01("dns-01");
 
     /**
      * Type of Challenge code

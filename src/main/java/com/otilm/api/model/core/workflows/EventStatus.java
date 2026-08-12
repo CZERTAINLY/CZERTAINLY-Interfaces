@@ -11,8 +11,9 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum EventStatus implements IPlatformEnum {
 
-    IN_PROGRESS("inProgress", "In Progress", null), FINISHED("finished", "Finished", null), FAILED("failed", "Failed",
-            null);
+    IN_PROGRESS("inProgress", "In Progress", null),
+    FINISHED("finished", "Finished", null),
+    FAILED("failed", "Failed", null);
 
     private static final EventStatus[] VALUES;
 

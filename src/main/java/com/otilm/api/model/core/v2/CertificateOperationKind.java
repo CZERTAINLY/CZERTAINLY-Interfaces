@@ -22,9 +22,10 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum CertificateOperationKind implements IPlatformEnum {
 
-    ISSUE("ISSUE", "Issue", "Issue a new certificate"), RENEW("RENEW", "Renew",
-            "Renew an existing certificate"), REVOKE("REVOKE", "Revoke", "Revoke a certificate"), REGISTER("REGISTER",
-                    "Register", "Register (pre-enroll) a certificate before issuance");
+    ISSUE("ISSUE", "Issue", "Issue a new certificate"),
+    RENEW("RENEW", "Renew", "Renew an existing certificate"),
+    REVOKE("REVOKE", "Revoke", "Revoke a certificate"),
+    REGISTER("REGISTER", "Register", "Register (pre-enroll) a certificate before issuance");
 
     private final String code;
     private final String label;

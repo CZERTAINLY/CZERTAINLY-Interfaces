@@ -10,7 +10,9 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum HealthStatus implements IPlatformEnum {
-    OK("ok", "ON"), NOK("nok", "OFF"), UNKNOWN("unknown", "Unknown");
+    OK("ok", "ON"),
+    NOK("nok", "OFF"),
+    UNKNOWN("unknown", "Unknown");
 
     private static final HealthStatus[] VALUES;
 

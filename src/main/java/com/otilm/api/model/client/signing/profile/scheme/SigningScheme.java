@@ -16,8 +16,8 @@ import java.util.Arrays;
 @Schema(enumAsRef = true)
 public enum SigningScheme implements IPlatformEnum {
 
-    MANAGED(Codes.MANAGED, "Managed Signing", "ILM manages the signing workflow"), DELEGATED(Codes.DELEGATED,
-            "Delegated Signing", "ILM delegates the signing to an external signing service");
+    MANAGED(Codes.MANAGED, "Managed Signing", "ILM manages the signing workflow"),
+    DELEGATED(Codes.DELEGATED, "Delegated Signing", "ILM delegates the signing to an external signing service");
 
     private static final SigningScheme[] VALUES;
 
