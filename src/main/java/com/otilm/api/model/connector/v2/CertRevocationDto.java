@@ -21,7 +21,8 @@ public class CertRevocationDto {
     @Schema(description = "List of Attributes to revoke Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
-    @Schema(description = "Base64 Certificate content. (Certificate to be revoked)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 Certificate content. (Certificate to be revoked)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String certificate;
 
     public CertificateRevocationReason getReason() {

@@ -17,18 +17,21 @@ import lombok.ToString;
 public class ComplianceProfileRulesPatchRequestDto {
 
     @NotNull
-    @Schema(description = "Indicates if removing or adding rule with UUID specified in request", requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
+    @Schema(description = "Indicates if removing or adding rule with UUID specified in request",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "false")
     private boolean removal;
 
     @NotNull
-    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
+    @Schema(description = "UUID of the rule", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
     private UUID ruleUuid;
 
-    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
+    @Schema(description = "UUID of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
     private UUID connectorUuid;
 
-    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "default"})
+    @Schema(description = "Kind of the Compliance Provider", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"default"})
     private String kind;
 
     @Schema(description = "Attributes for the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

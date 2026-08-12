@@ -20,8 +20,8 @@ public class BaseCmpProfileRequestDto {
     private String description;
 
     @ValidUuid
-    @Schema(description = "RA Profile UUID that the CMP Profile is associated with", examples = {
-            "6b55de1c-844f-11ec-a8a3-0242ac120002"})
+    @Schema(description = "RA Profile UUID that the CMP Profile is associated with",
+            examples = {"6b55de1c-844f-11ec-a8a3-0242ac120002"})
     private String raProfileUuid;
 
     @Schema(description = "List of Attributes to issue Certificate for the associated RA Profile. Required when RA Profile UUID is provided")
@@ -56,11 +56,13 @@ public class BaseCmpProfileRequestDto {
             + "'protocolDefault' verifies against the profile shared secret; 'certificateRegistration' requires the "
             + "senderKID to reference a pre-registered certificate whose challenge is the MAC secret, and forbids a "
             + "profile shared secret. Signature protection is independent of this setting. Omit to keep the stored "
-            + "value on edit; on create, omit to default to 'protocolDefault'.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "value on edit; on create, omit to default to 'protocolDefault'.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolChallengeSource challengeSource;
 
     @Valid
-    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsRequestDto certificateAssociations;
 
 }

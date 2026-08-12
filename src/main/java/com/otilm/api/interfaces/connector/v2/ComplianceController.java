@@ -22,19 +22,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v2/complianceProvider/{kind}")
-@Tag(name = "Compliance", description = "Compliance Provider API. "
-        + "Used to check the compliance of resource objects. The provider contains the "
-        + "list of rules for checking the compliance. The user can choose the list of compliance checks "
-        + "that has to be performed. To check for the compliance of a resource object, the Connector accepts "
-        + "its content and the list of rule references. Once the values are received, compliance is "
-        + "checked and status will be returned")
+@Tag(name = "Compliance",
+        description = "Compliance Provider API. "
+                + "Used to check the compliance of resource objects. The provider contains the "
+                + "list of rules for checking the compliance. The user can choose the list of compliance checks "
+                + "that has to be performed. To check for the compliance of a resource object, the Connector accepts "
+                + "its content and the list of rule references. Once the values are received, compliance is "
+                + "checked and status will be returned")
 public interface ComplianceController extends AuthProtectedConnectorController {
-    @PostMapping(path = "/compliance", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/compliance", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Check resource object compliance")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Compliance check completed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Compliance check completed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     ComplianceResponseDto checkCompliance(@Parameter(description = "Connector Kind") @PathVariable String kind,
             @RequestBody @Valid ComplianceRequestDto request) throws IOException, NotFoundException;
 }

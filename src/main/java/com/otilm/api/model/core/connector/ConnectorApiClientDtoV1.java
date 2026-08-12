@@ -17,19 +17,20 @@ import lombok.ToString;
 @Getter
 @ToString(callSuper = true)
 public class ConnectorApiClientDtoV1 extends NameAndUuidDto implements ApiClientConnectorInfo {
-    @Schema(description = "URL of the Connector", examples = {
-            "http://network-discovery-provider:8080"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL of the Connector", examples = {"http://network-discovery-provider:8080"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
 
-    @Schema(description = "Type of authentication for the Connector", examples = {
-            "none"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type of authentication for the Connector", examples = {"none"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
 
-    @Schema(description = "List of Attributes for the authentication type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of Attributes for the authentication type",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> authAttributes;
 
-    @Schema(description = "Status of the Connector", examples = {
-            "CONNECTED"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Status of the Connector", examples = {"CONNECTED"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
 
     @Schema(description = "Proxy for message queue routing. "

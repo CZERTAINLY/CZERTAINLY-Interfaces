@@ -44,29 +44,36 @@ public interface GlobalMetadataController extends AuthProtectedController {
     List<AttributeDefinitionDto> listGlobalMetadata();
 
     @Operation(summary = "Global Metadata details")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Global Metadata details retrieved"),
-            @ApiResponse(responseCode = "404", description = "Global Metadata not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Global Metadata details retrieved"),
+            @ApiResponse(responseCode = "404", description = "Global Metadata not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
     GlobalMetadataDefinitionDetailDto getGlobalMetadata(@PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Create Global Metadata")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Global Metadata created", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
+            @ApiResponse(responseCode = "201", description = "Global Metadata created",
+                    content = @Content(schema = @Schema(implementation = UuidDto.class)))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<GlobalMetadataDefinitionDetailDto> createGlobalMetadata(
             @RequestBody GlobalMetadataCreateRequestDto request) throws AlreadyExistException, AttributeException;
 
     @Operation(summary = "Edit Global Metadata")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Global Metadata updated"),
-            @ApiResponse(responseCode = "404", description = "Global Metadata not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Global Metadata updated"),
+            @ApiResponse(responseCode = "404", description = "Global Metadata not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
     GlobalMetadataDefinitionDetailDto editGlobalMetadata(
             @Parameter(description = "Global Metadata UUID") @PathVariable String uuid,
             @RequestBody GlobalMetadataUpdateRequestDto request) throws NotFoundException, AttributeException;
 
     @Operation(summary = "Delete Global Metadata")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Global Metadata deleted"),
-            @ApiResponse(responseCode = "404", description = "Global Metadata not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Global Metadata deleted"),
+            @ApiResponse(responseCode = "404", description = "Global Metadata not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteGlobalMetadata(@Parameter(description = "Global Metadata UUID") @PathVariable String uuid)
@@ -76,9 +83,11 @@ public interface GlobalMetadataController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Global Metadata deleted")})
     @DeleteMapping(produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDeleteGlobalMetadata(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Global Metadata UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> attributeUuids);
+    void bulkDeleteGlobalMetadata(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Global Metadata UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> attributeUuids);
 
     @Operation(summary = "Get Available Connector Metadata")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Connector Metadata retrieved")})
@@ -88,7 +97,8 @@ public interface GlobalMetadataController extends AuthProtectedController {
     @Operation(summary = "Promote Connector Metadata to Global Metadata")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Connector Metadata promoted to global metadata"),
-            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+            @ApiResponse(responseCode = "404", description = "Connector not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(path = "/promote", consumes = {"application/json"}, produces = {"application/json"})
     GlobalMetadataDefinitionDetailDto promoteConnectorMetadata(
             @RequestBody ConnectorMetadataPromotionRequestDto request) throws NotFoundException;

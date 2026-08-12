@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/v2/complianceProvider/{kind}")
-@Tag(name = "Compliance Rules", description = "Compliance Provider rules API. "
-        + "Used to get the list of rules provided by the connector. "
-        + "These rules will be made available for the users to choose from the list."
-        + "To check for the compliance of resource objects, the Connector accepts "
-        + "content and the list of rule references. Once the values are received, compliance is "
-        + "checked based on the rules.")
+@Tag(name = "Compliance Rules",
+        description = "Compliance Provider rules API. " + "Used to get the list of rules provided by the connector. "
+                + "These rules will be made available for the users to choose from the list."
+                + "To check for the compliance of resource objects, the Connector accepts "
+                + "content and the list of rule references. Once the values are received, compliance is "
+                + "checked based on the rules.")
 public interface ComplianceRuleController extends AuthProtectedConnectorController {
     @GetMapping(path = "/rules", produces = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Get list of rules")

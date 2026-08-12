@@ -10,7 +10,8 @@ import lombok.Data;
 public class AuthenticationSettingsUpdateDto {
 
     @NotNull
-    @Schema(description = "Disable using localhost user for requests from localhost", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Disable using localhost user for requests from localhost",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean disableLocalhostUser = false;
 
     @Valid

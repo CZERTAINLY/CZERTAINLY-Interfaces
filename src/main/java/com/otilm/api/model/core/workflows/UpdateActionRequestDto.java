@@ -16,7 +16,8 @@ public class UpdateActionRequestDto {
     @Schema(description = "Description of the action")
     private String description;
 
-    @Schema(description = "List of UUIDs of existing executions to add to the action", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of UUIDs of existing executions to add to the action",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> executionsUuids = new ArrayList<>();
 
 }

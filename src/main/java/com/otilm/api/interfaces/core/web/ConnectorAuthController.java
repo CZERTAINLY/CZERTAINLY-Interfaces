@@ -22,13 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v1/connectors/auth")
 @Tag(name = "Connector Authentication", description = "Connector Authentication API")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 
 public interface ConnectorAuthController extends AuthProtectedController {
 
     @Operation(summary = "Get list of Authentication Types")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Auth Types retrieved", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+            @ApiResponse(responseCode = "200", description = "Auth Types retrieved",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
     @GetMapping(path = "/types", produces = {"application/json"})
     Set<AuthType> getAuthenticationTypes();
 
@@ -49,8 +51,8 @@ public interface ConnectorAuthController extends AuthProtectedController {
 
     @Operation(summary = "Validate certificate auth Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes validated")})
-    @PostMapping(path = "/attributes/certificate/validate", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/attributes/certificate/validate", consumes = {"application/json"},
+            produces = {"application/json"})
     void validateCertificateAttributes(@RequestBody List<RequestAttribute> attributes);
 
     @Operation(summary = "Get API Key auth Attributes")

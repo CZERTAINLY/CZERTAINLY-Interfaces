@@ -13,8 +13,8 @@ public class CertificateFinalizeRequest {
      * base64url-encoded version of the DER format. (Note: Because this field uses base64url, and does not include
      * headers, it is different from PEM.).
      */
-    @Schema(description = "CSR in Base64url-encoded version of the DER format", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "<base64url-encoded version of the DER format>"})
+    @Schema(description = "CSR in Base64url-encoded version of the DER format",
+            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"<base64url-encoded version of the DER format>"})
     private String csr;
 
     public String getCsr() {

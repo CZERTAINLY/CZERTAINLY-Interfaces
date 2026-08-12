@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 public class TriggerHistoryRecordDto {
-    @Schema(description = "Message with cause of action/condition failure.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Message with cause of action/condition failure.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String message;
 
     @Schema(description = "Condition that is referenced by history record")

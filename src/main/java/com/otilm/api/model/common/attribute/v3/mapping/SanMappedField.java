@@ -27,7 +27,8 @@ public class SanMappedField extends MappedField {
             + "because different OtherName OIDs carry differently-typed values (e.g. UPN → UTF8String)")
     private ExtensionValueEncoding otherNameValueEncoding;
 
-    @AssertTrue(message = "An otherNameOid and otherNameValueEncoding must be provided when generalNameType is OTHER_NAME")
+    @AssertTrue(
+            message = "An otherNameOid and otherNameValueEncoding must be provided when generalNameType is OTHER_NAME")
     @JsonIgnore
     @Schema(hidden = true)
     private boolean isOtherNameValid() {

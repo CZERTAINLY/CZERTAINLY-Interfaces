@@ -32,7 +32,8 @@ public class DiscoveryResultsResponseDto {
     @PositiveOrZero(message = "highestSequence must not be negative")
     private Long highestSequence;
 
-    @Schema(description = "True when the connector has additional items beyond this page", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "True when the connector has additional items beyond this page",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "more is required")
     private Boolean more;
 }

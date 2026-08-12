@@ -16,7 +16,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 public class CertificateSignRequestDto {
 
-    @Schema(description = "Certificate signing request encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate signing request encoded as Base64 string",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String request;
 
     @Schema(description = "Certificate signing request format", defaultValue = "pkcs10")

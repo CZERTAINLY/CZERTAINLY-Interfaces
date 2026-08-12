@@ -17,6 +17,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class CertificateOperationCancelRequestDtoV3 extends AuthorityV3ScopedRequestDto {
 
-    @Schema(description = "Connector-defined metadata returned in the original 202 Accepted response", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Connector-defined metadata returned in the original 202 Accepted response",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> meta;
 }

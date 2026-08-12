@@ -12,7 +12,8 @@ public class CertificateDownloadResponseDto {
     @Schema(description = "Encoding of the downloaded content", requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateFormatEncoding encoding;
 
-    @Schema(description = "Base64 encoded content in the specified format and encoding", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 encoded content in the specified format and encoding",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String content;
 
 }

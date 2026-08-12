@@ -15,6 +15,7 @@ public class TspBasicCredentialDto {
     @Schema(description = "Basic username", requiredMode = Schema.RequiredMode.REQUIRED, example = "svc-account")
     private String username;
 
-    @Schema(description = "The real ILM user this credential authenticates as", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The real ILM user this credential authenticates as",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto mappedUser;
 }

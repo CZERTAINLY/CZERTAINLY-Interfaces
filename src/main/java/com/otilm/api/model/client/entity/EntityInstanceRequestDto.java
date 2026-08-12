@@ -24,8 +24,8 @@ public class EntityInstanceRequestDto {
     @Schema(description = "UUID of Entity Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Entity instance Kind", examples = {
-            "Keystore, etc."}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Entity instance Kind", examples = {"Keystore, etc."},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Override

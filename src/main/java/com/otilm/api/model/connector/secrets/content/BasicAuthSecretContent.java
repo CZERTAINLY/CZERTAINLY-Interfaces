@@ -13,7 +13,8 @@ import lombok.ToString;
 public class BasicAuthSecretContent extends SecretContent {
 
     @NotBlank
-    @Schema(description = "Username for Basic Authentication", example = "admin", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Username for Basic Authentication", example = "admin",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     @NotBlank

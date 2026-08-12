@@ -21,7 +21,8 @@ public class ConditionRequestDto {
     @Schema(description = "Resource associated with the condition", requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
-    @Schema(description = "List of the condition items to add to condition", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of the condition items to add to condition",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ConditionItemRequestDto> items = new ArrayList<>();
 
 }

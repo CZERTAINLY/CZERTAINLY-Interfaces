@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 public class CertificateChainResponseDto {
 
-    @Schema(description = "Indicator whether the chain returned is complete", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Indicator whether the chain returned is complete",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean completeChain;
 
     @Schema(description = "List of certificates in the chain", requiredMode = Schema.RequiredMode.REQUIRED)

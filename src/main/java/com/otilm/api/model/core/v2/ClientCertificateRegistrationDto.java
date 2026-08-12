@@ -32,8 +32,9 @@ import lombok.ToString;
  * </p>
  */
 @Data
-@Schema(name = "ClientCertificateRegistrationRequest", description = "Pre-registration request for a v3 authority. Reserves a slot/identity at the CA "
-        + "before any CSR exists; the returned tracking handle is later used to complete issuance.")
+@Schema(name = "ClientCertificateRegistrationRequest",
+        description = "Pre-registration request for a v3 authority. Reserves a slot/identity at the CA "
+                + "before any CSR exists; the returned tracking handle is later used to complete issuance.")
 public class ClientCertificateRegistrationDto {
 
     @Schema(description = "Subject DN. Optional per RFC 5280 §4.1.2.6: an empty subject is permitted "
@@ -85,7 +86,8 @@ public class ClientCertificateRegistrationDto {
     @Schema(description = "Optional UUID of an existing certificate this registration succeeds. When set, the "
             + "registration is a pre-registered successor of the source certificate: renewing the source "
             + "certificate is gated by this registration's challenge and completes into the registered "
-            + "successor. When omitted, the registration is a standalone placeholder completed by issue.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "successor. When omitted, the registration is a standalone placeholder completed by issue.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID sourceCertificateUuid;
 
     @ToString.Exclude
@@ -97,7 +99,8 @@ public class ClientCertificateRegistrationDto {
             + "certificate. Write-only and optional — the operator supplies it to opt the registration "
             + "into challenge-gated issuance; the platform never generates one. Challenge verification "
             + "gates issue of this pre-registered certificate, rekey of it after issuance, and — when "
-            + "registered as a successor (sourceCertificateUuid) — renew of the source certificate.", accessMode = Schema.AccessMode.WRITE_ONLY, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "registered as a successor (sourceCertificateUuid) — renew of the source certificate.",
+            accessMode = Schema.AccessMode.WRITE_ONLY, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorizationSecret;
 
     @Future
@@ -116,7 +119,8 @@ public class ClientCertificateRegistrationDto {
      * set" invariant.
      */
     @JsonIgnore
-    @AssertTrue(message = "At least one of subjectDn, subjectAltName, or csrAttributes must provide subject identity (RFC 5280 §4.1.2.6)")
+    @AssertTrue(
+            message = "At least one of subjectDn, subjectAltName, or csrAttributes must provide subject identity (RFC 5280 §4.1.2.6)")
     @Schema(hidden = true)
     public boolean isSubjectIdentificationProvided() {
         return (subjectDn != null && !subjectDn.isBlank()) || (subjectAltName != null && !subjectAltName.isBlank())
@@ -130,7 +134,8 @@ public class ClientCertificateRegistrationDto {
      * from register handling.
      */
     @JsonIgnore
-    @AssertTrue(message = "Provide the pre-registration identity via csrAttributes or the flat subjectDn/subjectAltName/extensions fields, not both")
+    @AssertTrue(
+            message = "Provide the pre-registration identity via csrAttributes or the flat subjectDn/subjectAltName/extensions fields, not both")
     @Schema(hidden = true)
     public boolean isSingleIdentitySource() {
         boolean structured = csrAttributes != null && csrAttributes.stream().anyMatch(Objects::nonNull);

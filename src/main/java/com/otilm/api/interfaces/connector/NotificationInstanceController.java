@@ -60,8 +60,8 @@ public interface NotificationInstanceController extends AuthProtectedConnectorCo
 
     @Operation(summary = "Notify by Notification instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Notification sent")})
-    @PostMapping(path = "/notifications/{uuid}/notify", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/notifications/{uuid}/notify", consumes = {"application/json"},
+            produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void sendNotification(@Parameter(description = "Notification Instance UUID") @PathVariable String uuid,
             @RequestBody NotificationProviderNotifyRequestDto request) throws NotFoundException;

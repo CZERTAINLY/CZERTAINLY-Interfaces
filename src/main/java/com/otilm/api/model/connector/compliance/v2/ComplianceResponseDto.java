@@ -19,7 +19,8 @@ by the Core from the Connector once the compliance check is completed.
 @Schema(name = "ComplianceResponseDtoV2", description = "Response of Compliance Check V2")
 public class ComplianceResponseDto {
 
-    @Schema(description = "Status of the compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = ComplianceStatus.Codes.OK)
+    @Schema(description = "Status of the compliance check", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = ComplianceStatus.Codes.OK)
     private ComplianceStatus status;
 
     @Schema(description = "List of rules applied and their status", requiredMode = Schema.RequiredMode.REQUIRED)

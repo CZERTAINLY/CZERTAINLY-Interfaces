@@ -33,23 +33,31 @@ import org.springframework.web.bind.annotation.ResponseStatus;
         + "These are not HTTP endpoints — the paths exist only to anchor each message schema in the generated OpenAPI document.")
 public interface TimeQualityMessagingController extends NoAuthController {
 
-    @Operation(operationId = "receiveTimeQualityResult", summary = "Time Quality Result [RabbitMQ: Monitor → Core]", description = "Message published by Time Quality Monitor and consumed by Core. "
-            + "Carries the NTP check outcome — overall status, measured drift, per-server details — "
-            + "for a specific time quality configuration profile.", extensions = @Extension(properties = @ExtensionProperty(name = "x-transport", value = "rabbitmq")))
+    @Operation(operationId = "receiveTimeQualityResult", summary = "Time Quality Result [RabbitMQ: Monitor → Core]",
+            description = "Message published by Time Quality Monitor and consumed by Core. "
+                    + "Carries the NTP check outcome — overall status, measured drift, per-server details — "
+                    + "for a specific time quality configuration profile.",
+            extensions = @Extension(properties = @ExtensionProperty(name = "x-transport", value = "rabbitmq")))
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Message accepted")})
     @PostMapping(path = "/result", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void receiveTimeQualityResult(@Valid @RequestBody TimeQualityResultMessage message);
 
-    @Operation(operationId = "receiveTimeQualityConfigRequest", summary = "Time Quality Config Request [RabbitMQ: Monitor → Core]", description = "Message sent by Time Quality Monitor to Core requesting a fresh snapshot of all active time quality "
-            + "configurations. Core responds by publishing a TimeQualityConfigSnapshot.", extensions = @Extension(properties = @ExtensionProperty(name = "x-transport", value = "rabbitmq")))
+    @Operation(operationId = "receiveTimeQualityConfigRequest",
+            summary = "Time Quality Config Request [RabbitMQ: Monitor → Core]",
+            description = "Message sent by Time Quality Monitor to Core requesting a fresh snapshot of all active time quality "
+                    + "configurations. Core responds by publishing a TimeQualityConfigSnapshot.",
+            extensions = @Extension(properties = @ExtensionProperty(name = "x-transport", value = "rabbitmq")))
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Message accepted")})
     @PostMapping(path = "/configRequest", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void receiveTimeQualityConfigRequest(@Valid @RequestBody TimeQualityConfigRequest message);
 
-    @Operation(operationId = "receiveTimeQualityConfigSnapshot", summary = "Time Quality Config Snapshot [RabbitMQ: Core → Monitor]", description = "Message published by Core and consumed by Time Quality Monitor. Carries a full snapshot of all active "
-            + "NTP-based time quality configurations; always a complete replacement, never a delta.", extensions = @Extension(properties = @ExtensionProperty(name = "x-transport", value = "rabbitmq")))
+    @Operation(operationId = "receiveTimeQualityConfigSnapshot",
+            summary = "Time Quality Config Snapshot [RabbitMQ: Core → Monitor]",
+            description = "Message published by Core and consumed by Time Quality Monitor. Carries a full snapshot of all active "
+                    + "NTP-based time quality configurations; always a complete replacement, never a delta.",
+            extensions = @Extension(properties = @ExtensionProperty(name = "x-transport", value = "rabbitmq")))
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Message accepted")})
     @PostMapping(path = "/configSnapshot", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)

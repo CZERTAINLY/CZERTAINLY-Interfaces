@@ -18,7 +18,8 @@ public class SecretDto extends NameAndUuidDto {
     @Schema(description = "Description of the secret", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Name and UUID of the vault profile where the secret is stored", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name and UUID of the vault profile where the secret is stored",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto sourceVaultProfile;
 
     @Schema(description = "State of the secret", requiredMode = Schema.RequiredMode.REQUIRED)

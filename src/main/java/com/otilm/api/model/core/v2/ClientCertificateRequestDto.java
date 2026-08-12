@@ -23,7 +23,8 @@ import lombok.ToString;
 @ToString
 public class ClientCertificateRequestDto {
 
-    @Schema(description = "RA Profile UUID. Required if CSR is not uploaded", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "RA Profile UUID. Required if CSR is not uploaded",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID raProfileUuid;
 
     @Schema(description = "Source certificate UUID to specify in case of renew/rekey operation")
@@ -67,7 +68,8 @@ public class ClientCertificateRequestDto {
     // Attributes
     // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(description = "List of RA Profile related Attributes to issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of RA Profile related Attributes to issue Certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> issueAttributes;
 
     @Schema(description = "List of Custom Attributes")

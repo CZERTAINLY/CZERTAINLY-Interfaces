@@ -18,15 +18,15 @@ by the Core from the Connector once the compliance check is completed.
 @Getter
 public class CertificateComplianceResultDto {
 
-    @Schema(description = "Name of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "Provider1"})
+    @Schema(description = "Name of the Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"Provider1"})
     private String connectorName;
 
     @Schema(description = "Name of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"RuleName"})
     private String ruleName;
 
-    @Schema(description = "Description of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "Description sample"})
+    @Schema(description = "Description of the rule", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"Description sample"})
     private String ruleDescription;
 
     @Schema(description = "Status of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"nok"})

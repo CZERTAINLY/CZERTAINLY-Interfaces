@@ -28,16 +28,19 @@ public class GeneralNameEntry {
     @NotNull(message = "SAN type is required")
     private GeneralNameType type;
 
-    @Schema(description = "SAN value; interpretation depends on type (IP address, DNS name, email, URI, etc.)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "SAN value; interpretation depends on type (IP address, DNS name, email, URI, etc.)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "SAN value is required")
     private String value;
 
-    @Schema(description = "OID of the otherName type; required when type is OTHER_NAME", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "OID of the otherName type; required when type is OTHER_NAME",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @NullableNotBlank(message = "otherNameOid must not be blank when type is OTHER_NAME")
     private String otherNameOid;
 
     @Schema(description = "ASN.1 encoding used for the otherName value string; required when type is OTHER_NAME "
-            + "because different OtherName OIDs carry differently-typed values (e.g. UPN → UTF8String, others may differ)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "because different OtherName OIDs carry differently-typed values (e.g. UPN → UTF8String, others may differ)",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ExtensionValueEncoding valueEncoding;
 
     @AssertTrue(message = "An otherNameOid and valueEncoding must be provided when type is OTHER_NAME")

@@ -14,13 +14,17 @@ import java.io.Serializable;
  * {@code RAW_SIGNING} is excluded — raw signing does not invoke a Signature Formatting Provider.
  * </p>
  */
-@Schema(name = "FormatDtbsInterface", description = "DTBS formatting request specific to the signing workflow type", type = "object", discriminatorProperty = "type", discriminatorMapping = {
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING, schema = TimestampingFormatDtbsRequestDto.class),
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING, schema = DocumentSigningFormatDtbsRequestDto.class),}, oneOf = {
-                TimestampingFormatDtbsRequestDto.class, DocumentSigningFormatDtbsRequestDto.class,})
+@Schema(name = "FormatDtbsInterface", description = "DTBS formatting request specific to the signing workflow type",
+        type = "object", discriminatorProperty = "type",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING,
+                        schema = TimestampingFormatDtbsRequestDto.class),
+                @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING,
+                        schema = DocumentSigningFormatDtbsRequestDto.class),},
+        oneOf = {TimestampingFormatDtbsRequestDto.class, DocumentSigningFormatDtbsRequestDto.class,})
 public interface FormatDtbsInterface extends Serializable {
 
-    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SigningWorkflowType.Codes.TIMESTAMPING})
+    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SigningWorkflowType.Codes.TIMESTAMPING})
     SigningWorkflowType getType();
 }

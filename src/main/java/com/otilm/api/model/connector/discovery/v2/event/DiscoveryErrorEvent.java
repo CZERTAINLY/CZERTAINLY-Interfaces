@@ -21,7 +21,8 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscoveryErrorEvent implements DiscoveryEvent {
 
-    @Schema(description = "Event type; this event's own discriminator field", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Event type; this event's own discriminator field",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "type is required")
     private DiscoveryEventType type = DiscoveryEventType.ERROR;
 
@@ -29,7 +30,8 @@ public class DiscoveryErrorEvent implements DiscoveryEvent {
     @NotNull(message = "code is required")
     private String code;
 
-    @Schema(description = "Human-readable error message — curated message text (no raw exception messages)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Human-readable error message — curated message text (no raw exception messages)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "message is required")
     private String message;
 }

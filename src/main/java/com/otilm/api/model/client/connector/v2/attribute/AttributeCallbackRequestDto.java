@@ -32,29 +32,35 @@ import lombok.ToString.Exclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AttributeCallbackRequestDto {
 
-    @Schema(description = "Provider interface the triggering schema belongs to. Core-stamped from /v2/info.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Provider interface the triggering schema belongs to. Core-stamped from /v2/info.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private ConnectorInterface connectorInterface;
 
-    @Schema(description = "Version of the provider interface. Core-stamped from /v2/info.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Version of the provider interface. Core-stamped from /v2/info.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String interfaceVersion;
 
-    @Schema(description = "Connector-global UUID of the attribute whose callback fired — the dispatch key.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Connector-global UUID of the attribute whose callback fired — the dispatch key.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     private UUID attributeUuid;
 
-    @Schema(description = "Name of the attribute whose callback fired. Informative / logging.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the attribute whose callback fired. Informative / logging.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String attributeName;
 
-    @Schema(description = "Route scope chain, credentials expanded inline by Core. Empty when the form has no parent scope.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Route scope chain, credentials expanded inline by Core. Empty when the form has no parent scope.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @Exclude
     @NotNull
     @Valid
     private List<ScopedAttributes> contextAttributes;
 
-    @Schema(description = "The dependsOn-named form values only, reference-typed values expanded inline by Core.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "The dependsOn-named form values only, reference-typed values expanded inline by Core.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @Exclude
     @NotNull
     @Valid

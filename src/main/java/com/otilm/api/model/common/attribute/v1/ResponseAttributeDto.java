@@ -22,15 +22,15 @@ public class ResponseAttributeDto {
     /**
      * Name of the Attribute, can be used as key for form field label text
      **/
-    @Schema(description = "Name of the Attribute", examples = {
-            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Attribute", examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**
      * Label of the Attribute, Can be used to display the field name in the User Interface
      **/
-    @Schema(description = "Label of the the Attribute", examples = {
-            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Label of the the Attribute", examples = {"Attribute Name"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String label;
 
     /**

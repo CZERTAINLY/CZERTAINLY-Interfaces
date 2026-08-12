@@ -35,7 +35,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v1/operations/tokens/{tokenInstanceUuid}")
 @Tag(name = "Cryptographic Operations Controller", description = "Cryptographic Operations Controller API")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 public interface CryptographicOperationsController extends AuthProtectedController {
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +45,9 @@ public interface CryptographicOperationsController extends AuthProtectedControll
 
     @Operation(summary = "List of cipher Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Attributes retrieved")})
-    @GetMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/cipher/{algorithm}/attributes", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/cipher/{algorithm}/attributes",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listCipherAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
@@ -54,10 +57,13 @@ public interface CryptographicOperationsController extends AuthProtectedControll
             throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Encrypt data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data encrypted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/encrypt", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data encrypted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/encrypt",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     EncryptDataResponseDto encryptData(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
@@ -66,10 +72,13 @@ public interface CryptographicOperationsController extends AuthProtectedControll
             @RequestBody CipherDataRequestDto request) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Decrypt data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data decrypted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/decrypt", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data decrypted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/decrypt",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     DecryptDataResponseDto decryptData(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
@@ -83,7 +92,9 @@ public interface CryptographicOperationsController extends AuthProtectedControll
 
     @Operation(summary = "List of signature Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Attributes retrieved")})
-    @GetMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/signature/{algorithm}/attributes", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+            path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/signature/{algorithm}/attributes",
+            produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listSignatureAttributes(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
@@ -93,10 +104,13 @@ public interface CryptographicOperationsController extends AuthProtectedControll
             throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Sign data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data signed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/sign", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data signed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/sign",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     SignDataResponseDto signData(@Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
             @Parameter(description = "Key UUID") @PathVariable String uuid,
@@ -104,10 +118,13 @@ public interface CryptographicOperationsController extends AuthProtectedControll
             @RequestBody SignDataRequestDto request) throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Verify data using a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Data decrypted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/verify", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Data decrypted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/tokenProfiles/{tokenProfileUuid}/keys/{uuid}/items/{keyItemUuid}/verify",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     VerifyDataResponseDto verifyData(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @Parameter(description = "Token Profile UUID") @PathVariable String tokenProfileUuid,
@@ -127,10 +144,13 @@ public interface CryptographicOperationsController extends AuthProtectedControll
             throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Generate random data")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Random data generated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/random", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Random data generated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/random", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     RandomDataResponseDto randomData(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid,
             @RequestBody RandomDataRequestDto request) throws ConnectorException, NotFoundException;

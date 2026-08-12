@@ -15,13 +15,16 @@ public class ApprovalStepDto extends ApprovalStepRequestDto {
     @Schema(description = "UUID of the Approval step", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID uuid;
 
-    @Schema(description = "Username of the responsible user to approve action in approval step", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Username of the responsible user to approve action in approval step",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String username;
 
-    @Schema(description = "Name of the responsible role of the users to approve action in approval step", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Name of the responsible role of the users to approve action in approval step",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String roleName;
 
-    @Schema(description = "Name of the responsible group of the users to approve action in approval step", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Name of the responsible group of the users to approve action in approval step",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String groupName;
 
     public ApprovalStepDto(UUID userUuid, UUID roleUuid, UUID groupUuid, String description, int order,

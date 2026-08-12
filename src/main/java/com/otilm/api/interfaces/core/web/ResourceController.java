@@ -33,8 +33,10 @@ public interface ResourceController extends AuthProtectedController {
     List<ResourceDto> listResources();
 
     @Operation(summary = "Retrieve filter fields that can be used for creating rule conditions and actions")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Filter fields retrieved"),
-            @ApiResponse(responseCode = "404", description = "Resource objects not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Filter fields retrieved"),
+            @ApiResponse(responseCode = "404", description = "Resource objects not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{resource}/filters/rules", produces = {"application/json"})
     List<SearchFieldDataByGroupDto> listResourceRuleFilterFields(
             @Parameter(description = "Resource") @PathVariable Resource resource,
@@ -45,7 +47,8 @@ public interface ResourceController extends AuthProtectedController {
     @GetMapping(path = "/{resource}/events", produces = {"application/json"})
     List<ResourceEventDto> listResourceEvents(@Parameter(description = "Resource") @PathVariable Resource resource);
 
-    @Operation(summary = "Retrieve a list of all events that can be triggered by all resources", description = "This endpoint returns a map of resource events, where the key is the event type and the value is a list of event details.")
+    @Operation(summary = "Retrieve a list of all events that can be triggered by all resources",
+            description = "This endpoint returns a map of resource events, where the key is the event type and the value is a list of event details.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Events retrieved")})
     @GetMapping(path = "/events", produces = {"application/json"})
     Map<ResourceEvent, List<ResourceEventDto>> listAllResourceEvents();

@@ -109,12 +109,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
         ```
         """)
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface ClientOperationController extends AuthProtectedController {
 
-    @Operation(summary = "Get issue certificate attributes", description = "Return the list of attributes the client must populate when requesting an issuance through this RA profile. The list reflects the certificate authority's current attribute schema.")
+    @Operation(summary = "Get issue certificate attributes",
+            description = "Return the list of attributes the client must populate when requesting an issuance through this RA profile. The list reflects the certificate authority's current attribute schema.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes list obtained")})
     @GetMapping(path = "/attributes/issue", produces = {"application/json"})
     List<BaseAttribute> listIssueCertificateAttributes(
@@ -122,10 +126,13 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws NotFoundException, ConnectorException;
 
-    @Operation(summary = "Validate issue certificate attributes", description = "Validate a candidate set of issuance attributes against this RA profile's schema before submitting an issuance request. Returns 422 with a list of error messages when the attributes are not acceptable.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @Operation(summary = "Validate issue certificate attributes",
+            description = "Validate a candidate set of issuance attributes against this RA profile's schema before submitting an issuance request. Returns 422 with a list of error messages when the attributes are not acceptable.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/attributes/issue/validate", consumes = {"application/json"}, produces = {"application/json"})
     void validateIssueCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
@@ -145,25 +152,34 @@ public interface ClientOperationController extends AuthProtectedController {
             Queued and issued asynchronously like `issueCertificate` — track the result through the
             certificate's state.
             """)
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Issuance request accepted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/certificates/{certificateUuid}/issue", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Issuance request accepted"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/certificates/{certificateUuid}/issue", consumes = {"application/json"},
+            produces = {"application/json"})
     ClientCertificateDataResponseDto issueExistingCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Issue request body. Required when cert state is REGISTERED (carries the operator's CSR, sign attributes as the RA profile requires, and — for challenge-protected registrations — the authorization secret); must be omitted when cert state is REQUESTED.", required = false) @RequestBody(required = false) @Valid ClientCertificateIssueRequestDto request)
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Issue request body. Required when cert state is REGISTERED (carries the operator's CSR, sign attributes as the RA profile requires, and — for challenge-protected registrations — the authorization secret); must be omitted when cert state is REQUESTED.",
+                    required = false) @RequestBody(required = false) @Valid ClientCertificateIssueRequestDto request)
             throws ConnectorException, CertificateException, NoSuchAlgorithmException, AlreadyExistException,
             CertificateRequestException, NotFoundException, AttributeException;
 
-    @Operation(summary = "Issue certificate", description = "Submit a new certificate signing request and request issuance through this RA profile. The request is validated, persisted, and queued; issuance runs asynchronously and an approval step may run first. This response returns only the new certificate's UUID — it never carries the signed certificate and does not indicate completion. Track the operation through the certificate's state.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Issuance request accepted"),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @Operation(summary = "Issue certificate",
+            description = "Submit a new certificate signing request and request issuance through this RA profile. The request is validated, persisted, and queued; issuance runs asynchronously and an approval step may run first. This response returns only the new certificate's UUID — it never carries the signed certificate and does not indicate completion. Track the operation through the certificate's state.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Issuance request accepted"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(path = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     ClientCertificateDataResponseDto issueCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
@@ -172,13 +188,17 @@ public interface ClientOperationController extends AuthProtectedController {
             throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException,
             CertificateOperationException, CertificateRequestException;
 
-    @Operation(summary = "Renew certificate", description = "Renew a certificate using its existing key pair. The original certificate stays in state `ISSUED`; a new certificate is created, queued, and issued asynchronously. This response returns only the new certificate's UUID — track the result through its state.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Renewal request accepted"),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/certificates/{certificateUuid}/renew", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @Operation(summary = "Renew certificate",
+            description = "Renew a certificate using its existing key pair. The original certificate stays in state `ISSUED`; a new certificate is created, queued, and issued asynchronously. This response returns only the new certificate's UUID — track the result through its state.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Renewal request accepted"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/certificates/{certificateUuid}/renew", consumes = {"application/json"},
+            produces = {"application/json"})
     ClientCertificateDataResponseDto renewCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
@@ -194,13 +214,17 @@ public interface ClientOperationController extends AuthProtectedController {
             rejected. Queued and issued asynchronously — track the result through the new
             certificate's state.
             """)
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Rekey request accepted"),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
-    @PostMapping(path = "/certificates/{certificateUuid}/rekey", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Rekey request accepted"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @PostMapping(path = "/certificates/{certificateUuid}/rekey", consumes = {"application/json"},
+            produces = {"application/json"})
     ClientCertificateDataResponseDto rekeyCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
@@ -209,7 +233,8 @@ public interface ClientOperationController extends AuthProtectedController {
             throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException,
             CertificateOperationException, CertificateRequestException;
 
-    @Operation(summary = "Get revocation attributes", description = "Return the list of attributes the client must populate when revoking a certificate through this RA profile.")
+    @Operation(summary = "Get revocation attributes",
+            description = "Return the list of attributes the client must populate when revoking a certificate through this RA profile.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes obtained")})
     @GetMapping(path = "/attributes/revoke", produces = {"application/json"})
     List<BaseAttribute> listRevokeCertificateAttributes(
@@ -217,10 +242,13 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws ConnectorException, NotFoundException;
 
-    @Operation(summary = "Validate revocation attributes", description = "Validate a candidate set of revocation attributes against this RA profile's schema before submitting a revocation request.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @Operation(summary = "Validate revocation attributes",
+            description = "Validate a candidate set of revocation attributes against this RA profile's schema before submitting a revocation request.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/attributes/revoke/validate", consumes = {"application/json"}, produces = {"application/json"})
     void validateRevokeCertificateAttributes(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
@@ -228,7 +256,8 @@ public interface ClientOperationController extends AuthProtectedController {
             @RequestBody List<RequestAttribute> attributes)
             throws ConnectorException, ValidationException, NotFoundException;
 
-    @Operation(summary = "Get registration attributes", description = "Return the list of attributes the client must populate when pre-registering a certificate through this RA profile. The list reflects the certificate authority's register-operation attribute schema.")
+    @Operation(summary = "Get registration attributes",
+            description = "Return the list of attributes the client must populate when pre-registering a certificate through this RA profile. The list reflects the certificate authority's register-operation attribute schema.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes obtained")})
     @GetMapping(path = "/attributes/register", produces = {"application/json"})
     List<BaseAttribute> listRegisterCertificateAttributes(
@@ -236,14 +265,20 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws ConnectorException, NotFoundException;
 
-    @Operation(summary = "Revoke certificate", description = "Revoke a certificate currently in state `ISSUED`. The request is accepted and queued; revocation runs through the authority and an approval step may run first. This response is returned before the authority call completes, so it does not indicate completion — the certificate ends in `REVOKED` if the authority completes the revocation immediately, or `PENDING_REVOKE` if completion is deferred and later confirmed. Track the result through its state.")
+    @Operation(summary = "Revoke certificate",
+            description = "Revoke a certificate currently in state `ISSUED`. The request is accepted and queued; revocation runs through the authority and an approval step may run first. This response is returned before the authority call completes, so it does not indicate completion — the certificate ends in `REVOKED` if the authority completes the revocation immediately, or `PENDING_REVOKE` if completion is deferred and later confirmed. Track the result through its state.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Revoke request accepted and queued — observe the certificate state for the outcome."),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Cannot perform operation revoke on certificate in state ...\"]")}))})
-    @PostMapping(path = "/certificates/{certificateUuid}/revoke", consumes = {"application/json"}, produces = {
-            "application/json"})
+            @ApiResponse(responseCode = "204",
+                    description = "Revoke request accepted and queued — observe the certificate state for the outcome."),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(
+                    array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {
+                            @ExampleObject(
+                                    value = "[\"Cannot perform operation revoke on certificate in state ...\"]")}))})
+    @PostMapping(path = "/certificates/{certificateUuid}/revoke", consumes = {"application/json"},
+            produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void revokeCertificate(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
@@ -262,14 +297,21 @@ public interface ClientOperationController extends AuthProtectedController {
             The body carries a Base64-encoded single certificate and optional certificate-level custom
             attributes.
             """)
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate finalized"),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "409", description = "Conflict", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Certificate is not in PENDING_ISSUE state\",\"Public key mismatch with certificate request\"]")})),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
-    @PostMapping(path = "/certificates/{certificateUuid}/issue/finalize", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Certificate finalized"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "409", description = "Conflict",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(
+                    array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {
+                            @ExampleObject(
+                                    value = "[\"Certificate is not in PENDING_ISSUE state\",\"Public key mismatch with certificate request\"]")})),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @PostMapping(path = "/certificates/{certificateUuid}/issue/finalize", consumes = {"application/json"},
+            produces = {"application/json"})
     CertificateDetailDto manuallyIssueCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
@@ -283,9 +325,11 @@ public interface ClientOperationController extends AuthProtectedController {
             revoke attributes from the original revoke request, transitions the certificate
             to `REVOKED`, and clears the data carried over from the original request.
             """)
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Revocation confirmed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Certificate is not in PENDING_REVOKE state\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Revocation confirmed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Certificate is not in PENDING_REVOKE state\"]")}))})
     @PostMapping(path = "/certificates/{certificateUuid}/revoke/confirm")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void manuallyConfirmRevoke(@Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
@@ -303,11 +347,15 @@ public interface ClientOperationController extends AuthProtectedController {
             pending state; it can then be resolved by letting it complete and finalizing/confirming, or
             by retrying the cancel later.
             """)
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Cancellation completed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Certificate is not in a pending state\",\"Authority refused to cancel: CA does not support cancellation\"]")}))})
-    @PostMapping(path = "/certificates/{certificateUuid}/cancel", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cancellation completed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(
+                    array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                    examples = {
+                            @ExampleObject(
+                                    value = "[\"Certificate is not in a pending state\",\"Authority refused to cancel: CA does not support cancellation\"]")}))})
+    @PostMapping(path = "/certificates/{certificateUuid}/cancel", consumes = {"application/json"},
+            produces = {"application/json"})
     CertificateDetailDto cancelPendingCertificateOperation(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
@@ -324,9 +372,12 @@ public interface ClientOperationController extends AuthProtectedController {
             a CA-side end-entity exists. Connector-side completion may be asynchronous and is tracked
             server-side.
             """)
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Registration request accepted"),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Invalid registration request", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Registration request accepted"),
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Invalid registration request",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))})
     @PostMapping(path = "/certificates/register", consumes = {"application/json"}, produces = {"application/json"})
     ClientCertificateDataResponseDto registerCertificate(
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,

@@ -17,12 +17,12 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class ConnectorSummaryDto extends NameAndUuidDto {
 
-    @Schema(description = "URL of the Connector", examples = {
-            "http://network-discovery-provider:8080"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL of the Connector", examples = {"http://network-discovery-provider:8080"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
 
-    @Schema(description = "Status of the Connector", examples = {
-            "CONNECTED"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Status of the Connector", examples = {"CONNECTED"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorStatus status;
 
     public ConnectorSummaryDto() {

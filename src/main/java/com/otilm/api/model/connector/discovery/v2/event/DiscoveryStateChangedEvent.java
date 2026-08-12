@@ -22,11 +22,13 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscoveryStateChangedEvent implements DiscoveryEvent {
 
-    @Schema(description = "Event type; this event's own discriminator field", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Event type; this event's own discriminator field",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "type is required")
     private DiscoveryEventType type = DiscoveryEventType.STATE_CHANGED;
 
-    @Schema(description = "Run state the connector is reporting; advisory, not authoritative", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Run state the connector is reporting; advisory, not authoritative",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "state is required")
     private DiscoveryRunState state;
 }

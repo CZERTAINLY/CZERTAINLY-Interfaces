@@ -13,8 +13,9 @@ public class ProxyRequestDto implements Named {
 
     @Schema(description = "Name of the Proxy", examples = {"MyProxy123"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
-    @Schema(description = "Detailed description of the Proxy", examples = {
-            "This proxy is used for connecting to external connectors in DMZ network"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Detailed description of the Proxy",
+            examples = {"This proxy is used for connecting to external connectors in DMZ network"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
     @Override

@@ -17,8 +17,9 @@ public class Challenge {
     /**
      * URL to which the response can be posted after the client completes the Challenge
      */
-    @Schema(description = "URL to which the response can be posted after the client completes the Challenge", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "https://some-server.com/api/v1/protocols/acme/chall/JHjhrt&6hf"})
+    @Schema(description = "URL to which the response can be posted after the client completes the Challenge",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"https://some-server.com/api/v1/protocols/acme/chall/JHjhrt&6hf"})
     private String url;
 
     /**
@@ -46,8 +47,8 @@ public class Challenge {
     /**
      * Random string generated using the SecureRandom class of JAVA to provide a cryptography random key
      */
-    @Schema(description = "Token for the Challenge", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "JGuyIUgkRGFYTER658ykjfYFur76fkFitur7FGHRiytrkfIruFF"})
+    @Schema(description = "Token for the Challenge", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"JGuyIUgkRGFYTER658ykjfYFur76fkFitur7FGHRiytrkfIruFF"})
     private String token;
 
     public ChallengeType getType() {

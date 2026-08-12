@@ -18,8 +18,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "AvailableOperations", description = "Per-RA-profile capability advertisement. Operators query this before invoking "
-        + "register/cancel/etc. to know which actions an authority supports.")
+@Schema(name = "AvailableOperations",
+        description = "Per-RA-profile capability advertisement. Operators query this before invoking "
+                + "register/cancel/etc. to know which actions an authority supports.")
 public class AvailableOperationsDto {
 
     @Schema(description = "List of operations the authority advertises for this RA profile.")

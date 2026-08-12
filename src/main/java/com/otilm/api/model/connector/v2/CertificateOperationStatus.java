@@ -26,8 +26,8 @@ public enum CertificateOperationStatus implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Operation status code", examples = {"inProgress", "completed",
-            "failed"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Operation status code", examples = {"inProgress", "completed", "failed"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

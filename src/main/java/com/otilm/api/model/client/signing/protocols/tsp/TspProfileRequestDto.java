@@ -15,21 +15,26 @@ import lombok.Data;
 
 @Data
 @VaultProfileRequiredForBasicPassword
-@Schema(name = "TspProfileRequestDto", description = "Request to create or update a TSP (Timestamping Protocol) Profile")
+@Schema(name = "TspProfileRequestDto",
+        description = "Request to create or update a TSP (Timestamping Protocol) Profile")
 public class TspProfileRequestDto implements VaultProfileConstrained {
 
     @NotBlank
     @ValidName
-    @Schema(description = "Name of the TSP Profile", requiredMode = Schema.RequiredMode.REQUIRED, example = "TSP-Profile-1")
+    @Schema(description = "Name of the TSP Profile", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "TSP-Profile-1")
     private String name;
 
-    @Schema(description = "Description of the TSP Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "TSP profile for production timestamping")
+    @Schema(description = "Description of the TSP Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "TSP profile for production timestamping")
     private String description;
 
-    @Schema(description = "UUID of the default Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
+    @Schema(description = "UUID of the default Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
     private UUID defaultSigningProfileUuid;
 
-    @Schema(description = "Vault profile that stores this profile's Basic credentials; required when Basic credentials are configured", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
+    @Schema(description = "Vault profile that stores this profile's Basic credentials; required when Basic credentials are configured",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "6b55de1c-844f-11ec-a8a3-0242ac120002")
     private UUID vaultProfileUuid;
 
     // During transitional period, the authentication methods may be empty. Once the consumers are migrated, tighten

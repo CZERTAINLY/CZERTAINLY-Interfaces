@@ -45,7 +45,8 @@ public interface CustomOidEntryController extends AuthProtectedController {
 
     @Operation(summary = "Edit an existing custom OID entry")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom OID entry updated")})
-    @PutMapping(path = "/{oid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{oid}", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     CustomOidEntryDetailResponseDto editCustomOidEntry(
             @Parameter(description = "OID identifier") @PathVariable String oid,
             @Valid @RequestBody CustomOidEntryUpdateRequestDto updateDto) throws NotFoundException;
@@ -65,16 +66,18 @@ public interface CustomOidEntryController extends AuthProtectedController {
 
     @Operation(summary = "List custom OID entries with filtering and pagination")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom OID entries retrieved")})
-    @PostMapping(path = "/list", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/list", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     CustomOidEntryListResponseDto listCustomOidEntries(@RequestBody SearchRequestDto searchRequestDto);
 
     @Operation(summary = "List built-in system OID entries, optionally filtered by category")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "System OID entries retrieved")})
     @GetMapping(path = "/system", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<CustomOidEntryDetailResponseDto> listSystemOidEntries(
-            @Parameter(description = "Optional OID category filter") @RequestParam(required = false) OidCategory category);
+    List<CustomOidEntryDetailResponseDto> listSystemOidEntries(@Parameter(
+            description = "Optional OID category filter") @RequestParam(required = false) OidCategory category);
 
-    @Operation(operationId = "getCustomOidEntrySearchableFields", summary = "Get searchable filter fields for custom OID entries")
+    @Operation(operationId = "getCustomOidEntrySearchableFields",
+            summary = "Get searchable filter fields for custom OID entries")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Searchable fields retrieved")})
     @GetMapping(path = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     List<SearchFieldDataByGroupDto> getSearchableInformation();

@@ -9,7 +9,8 @@ public class PlatformSettingsDto implements SettingsDto {
     @Schema(description = "Utils settings of the platform", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UtilsSettingsDto utils;
 
-    @Schema(description = "Settings applicable to all certificates in inventory by default", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Settings applicable to all certificates in inventory by default",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateSettingsDto certificates;
 
 }

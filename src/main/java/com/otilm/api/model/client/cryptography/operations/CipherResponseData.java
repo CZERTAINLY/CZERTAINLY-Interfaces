@@ -19,8 +19,8 @@ public class CipherResponseData {
     @Schema(description = "Base64 encoded encrypted/decrypted data", requiredMode = Schema.RequiredMode.REQUIRED)
     private String data;
 
-    @Schema(description = "Custom identifier of the data, that should be the same as in the request, if available", examples = {
-            "customId"})
+    @Schema(description = "Custom identifier of the data, that should be the same as in the request, if available",
+            examples = {"customId"})
     private String identifier;
 
     @Schema(description = "Additional details of the data, for example, the data type, error handling, etc.")

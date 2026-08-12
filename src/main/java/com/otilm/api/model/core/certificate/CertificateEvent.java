@@ -28,8 +28,8 @@ public enum CertificateEvent {
     ARCHIVE("Archive certificate"),
     UNARCHIVE("Unarchive certificate");
 
-    @Schema(description = "Certificate Event", examples = {
-            "Issue Certificate"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate Event", examples = {"Issue Certificate"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
 
     CertificateEvent(String code) {

@@ -18,7 +18,8 @@ public class RuleRequestDto {
     @Schema(description = "Resource associated with the rule", requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
-    @Schema(description = "List of UUIDs of existing conditions to add to the rule", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of UUIDs of existing conditions to add to the rule",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> conditionsUuids = new ArrayList<>();
 
 }

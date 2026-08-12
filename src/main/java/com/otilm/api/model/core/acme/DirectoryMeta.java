@@ -30,7 +30,8 @@ public class DirectoryMeta {
     /**
      * CAA record validation list of hostnames
      */
-    @Schema(description = "Array of CAA record validation servers", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"example1.com\", \"example2.com\"]")
+    @Schema(description = "Array of CAA record validation servers", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "[\"example1.com\", \"example2.com\"]")
     private String[] caaIdentities;
 
     public String getTermsOfService() {

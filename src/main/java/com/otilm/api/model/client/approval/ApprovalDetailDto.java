@@ -16,7 +16,8 @@ public class ApprovalDetailDto extends ApprovalDto {
     @Schema(description = "Description of the Approval", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "List of Approval steps related to this Approval", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of Approval steps related to this Approval",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ApprovalDetailStepDto> approvalSteps;
 
     public ApprovalDetailDto(final ApprovalDto approvalDto) {

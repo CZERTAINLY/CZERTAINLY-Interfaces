@@ -20,7 +20,8 @@ public class GenerateCsrResponseDto {
     @Schema(description = "CSR Metadata")
     private List<MetadataAttribute> metadata;
 
-    @Schema(description = "Type of the certificate expected to be issued", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Type of the certificate expected to be issued",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateType certificateType;
 
     @Schema(description = "List of Attributes to push Certificate", requiredMode = Schema.RequiredMode.REQUIRED)

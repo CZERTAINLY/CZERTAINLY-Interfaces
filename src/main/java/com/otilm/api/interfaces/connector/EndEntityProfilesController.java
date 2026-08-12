@@ -21,24 +21,27 @@ public interface EndEntityProfilesController extends AuthProtectedConnectorContr
     @GetMapping(produces = {"application/json"})
     @Operation(summary = "List available end entity profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End entities retrieved")})
-    List<NameAndIdDto> listEntityProfiles(
-            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance UUID") @PathVariable String uuid)
-            throws NotFoundException;
+    List<NameAndIdDto> listEntityProfiles(@Parameter(in = ParameterIn.PATH, name = "uuid",
+            description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @GetMapping(path = "/{endEntityProfileId}/certificateprofiles", produces = {"application/json"})
     @Operation(summary = "List available certificate profiles for given end entity profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate profiles retrieved")})
     List<NameAndIdDto> listCertificateProfiles(
-            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance UUID") @PathVariable String uuid,
-            @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id") @PathVariable Integer endEntityProfileId)
+            @Parameter(in = ParameterIn.PATH, name = "uuid",
+                    description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId",
+                    description = "End Entity Profile Id") @PathVariable Integer endEntityProfileId)
             throws NotFoundException;
 
     @GetMapping(path = "/{endEntityProfileId}/cas", produces = {"application/json"})
     @Operation(summary = "List available certification authorities for given end entity profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CAs retrieved")})
     List<NameAndIdDto> listCAsInProfile(
-            @Parameter(in = ParameterIn.PATH, name = "uuid", description = "Authority Instance UUID") @PathVariable String uuid,
-            @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId", description = "End Entity Profile Id") @PathVariable Integer endEntityProfileId)
+            @Parameter(in = ParameterIn.PATH, name = "uuid",
+                    description = "Authority Instance UUID") @PathVariable String uuid,
+            @Parameter(in = ParameterIn.PATH, name = "endEntityProfileId",
+                    description = "End Entity Profile Id") @PathVariable Integer endEntityProfileId)
             throws NotFoundException;
 
 }

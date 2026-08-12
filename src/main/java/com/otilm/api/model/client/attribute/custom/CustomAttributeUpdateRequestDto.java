@@ -27,39 +27,43 @@ public class CustomAttributeUpdateRequestDto {
     /**
      * Friendly name of the Attribute
      **/
-    @Schema(description = "Friendly name of the the Attribute", examples = {
-            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Friendly name of the the Attribute", examples = {"Attribute Name"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String label;
 
     /**
      * Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.
      **/
-    @Schema(description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.", defaultValue = "true")
+    @Schema(description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
+            defaultValue = "true")
     private boolean visible = true;
 
     /**
      * Group of the Attribute, used for the logical grouping of the Attribute
      **/
-    @Schema(description = "Group of the Attribute, used for the logical grouping of the Attribute", examples = {
-            "requiredAttributes"})
+    @Schema(description = "Group of the Attribute, used for the logical grouping of the Attribute",
+            examples = {"requiredAttributes"})
     private String group;
 
     /**
      * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
      **/
-    @Schema(description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.", defaultValue = "false")
+    @Schema(description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
+            defaultValue = "false")
     private boolean required = false;
 
     /**
      * Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.
      **/
-    @Schema(description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.", defaultValue = "false")
+    @Schema(description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.",
+            defaultValue = "false")
     private boolean readOnly = false;
 
     /**
      * Boolean determining if the Attribute contains list of values in the content
      **/
-    @Schema(description = "Boolean determining if the Attribute contains list of values in the content", defaultValue = "false")
+    @Schema(description = "Boolean determining if the Attribute contains list of values in the content",
+            defaultValue = "false")
     private boolean list = false;
 
     /**
@@ -86,6 +90,7 @@ public class CustomAttributeUpdateRequestDto {
     /**
      * Boolean determining if a list Attribute (when list = true) can have values other than predefined options
      **/
-    @Schema(description = "Boolean determining if a list Attribute can have values other than predefined options", defaultValue = "false")
+    @Schema(description = "Boolean determining if a list Attribute can have values other than predefined options",
+            defaultValue = "false")
     private boolean extensibleList = false;
 }

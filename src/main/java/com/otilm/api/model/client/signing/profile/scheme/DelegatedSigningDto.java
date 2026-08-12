@@ -15,10 +15,12 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class DelegatedSigningDto extends SigningSchemeDto {
 
-    @Schema(description = "Reference to the Connector used for delegated signing", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Reference to the Connector used for delegated signing",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto connector;
 
-    @Schema(description = "List of attributes provided by the Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of attributes provided by the Connector",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> attributes = new ArrayList<>();
 
     public DelegatedSigningDto() {

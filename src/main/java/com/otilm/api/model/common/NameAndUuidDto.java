@@ -12,8 +12,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class NameAndUuidDto implements Serializable, Loggable {
 
-    @Schema(description = "Object identifier", examples = {
-            "7b55ge1c-844f-11dc-a8a3-0242ac120002"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Object identifier", examples = {"7b55ge1c-844f-11dc-a8a3-0242ac120002"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected String uuid;
 
     @Schema(description = "Object Name", examples = {"Name"}, requiredMode = Schema.RequiredMode.REQUIRED)

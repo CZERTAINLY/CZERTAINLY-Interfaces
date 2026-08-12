@@ -16,8 +16,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "contentType", visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = BooleanAttributeContentV3.class, name = AttributeContentType.Codes.BOOLEAN),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "contentType",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BooleanAttributeContentV3.class, name = AttributeContentType.Codes.BOOLEAN),
         @JsonSubTypes.Type(value = CodeBlockAttributeContentV3.class, name = AttributeContentType.Codes.CODEBLOCK),
         @JsonSubTypes.Type(value = DateAttributeContentV3.class, name = AttributeContentType.Codes.DATE),
         @JsonSubTypes.Type(value = DateTimeAttributeContentV3.class, name = AttributeContentType.Codes.DATETIME),

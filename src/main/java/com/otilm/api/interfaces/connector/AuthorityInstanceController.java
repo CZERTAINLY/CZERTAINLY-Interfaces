@@ -76,25 +76,27 @@ public interface AuthorityInstanceController extends AuthProtectedConnectorContr
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Validate RA Profile attributes")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "RA Profile Attributes information validated")})
-    @PostMapping(path = "/{uuid}/raProfile/attributes/validate", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200", description = "RA Profile Attributes information validated")})
+    @PostMapping(path = "/{uuid}/raProfile/attributes/validate", consumes = {"application/json"},
+            produces = {"application/json"})
     void validateRAProfileAttributes(@Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody List<RequestAttribute> attributes) throws ValidationException, NotFoundException;
 
-    @Operation(summary = "Get the latest CRL for the Authority Instance", description = "Returns the latest CRL for the Authority Instance. "
-            + "If delta is true, the delta CRL is returned, otherwise the full CRL is returned. "
-            + "When the CRL is not available for Authority Instance, null data is returned.")
+    @Operation(summary = "Get the latest CRL for the Authority Instance",
+            description = "Returns the latest CRL for the Authority Instance. "
+                    + "If delta is true, the delta CRL is returned, otherwise the full CRL is returned. "
+                    + "When the CRL is not available for Authority Instance, null data is returned.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CRL retrieved")})
     @PostMapping(path = "/{uuid}/crl", consumes = {"application/json"}, produces = {"application/json"})
     CertificateRevocationListResponseDto getCrl(
             @Parameter(description = "Authority Instance UUID") @PathVariable String uuid,
             @RequestBody CertificateRevocationListRequestDto request) throws NotFoundException;
 
-    @Operation(summary = "Get the Authority Instance's certificate chain", description = "Returns the Authority Instance's certificate chain. The chain is returned as a list of "
-            + "Base64 encoded certificates, starting with the Authority Instance's certificate "
-            + "and ending with the root certificate, if available.")
+    @Operation(summary = "Get the Authority Instance's certificate chain",
+            description = "Returns the Authority Instance's certificate chain. The chain is returned as a list of "
+                    + "Base64 encoded certificates, starting with the Authority Instance's certificate "
+                    + "and ending with the root certificate, if available.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Authority Instance's certificate chain retrieved")})
     @PostMapping(path = "/{uuid}/caCertificates", consumes = {"application/json"}, produces = {"application/json"})

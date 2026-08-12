@@ -43,7 +43,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/v1/cmpProfiles")
 @Tag(name = "CMP Profile Management", description = "CMP Profile Management API")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 @Validated
 public interface CmpProfileController extends AuthProtectedController {
 
@@ -102,18 +103,24 @@ public interface CmpProfileController extends AuthProtectedController {
     @Operation(summary = "Delete multiple CMP Profiles")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CMP Profiles deleted")})
     @DeleteMapping(path = "/delete", consumes = {"application/json"}, produces = {"application/json"})
-    List<BulkActionMessageDto> bulkDeleteCmpProfile(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "CMP Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids);
+    List<BulkActionMessageDto> bulkDeleteCmpProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "CMP Profile UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids);
 
     @Operation(summary = "Force delete multiple CMP Profiles")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CMP Profiles forced to delete"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CMP Profiles forced to delete"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(path = "/delete/force", produces = {"application/json"})
-    List<BulkActionMessageDto> forceDeleteCmpProfiles(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "CMP Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids)
+    List<BulkActionMessageDto> forceDeleteCmpProfiles(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "CMP Profile UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids)
             throws NotFoundException, ValidationException;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -133,9 +140,10 @@ public interface CmpProfileController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "CMP Profiles enabled")})
     @PatchMapping(path = "/enable", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkEnableCmpProfile(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "CMP Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids);
+    void bulkEnableCmpProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "CMP Profile UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids);
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -154,9 +162,10 @@ public interface CmpProfileController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "CMP Profiles disabled")})
     @PatchMapping(path = "/disable", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void bulkDisableCmpProfile(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "CMP Profile UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids);
+    void bulkDisableCmpProfile(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "CMP Profile UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody @ValidUuidList List<String> cmpProfileUuids);
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------

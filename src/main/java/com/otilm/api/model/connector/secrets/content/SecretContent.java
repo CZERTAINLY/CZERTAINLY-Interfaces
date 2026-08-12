@@ -8,8 +8,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = BasicAuthSecretContent.class, name = SecretType.Codes.BASIC_AUTH),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BasicAuthSecretContent.class, name = SecretType.Codes.BASIC_AUTH),
         @JsonSubTypes.Type(value = ApiKeySecretContent.class, name = SecretType.Codes.API_KEY),
         @JsonSubTypes.Type(value = JwtTokenSecretContent.class, name = SecretType.Codes.JWT_TOKEN),
         @JsonSubTypes.Type(value = PrivateKeySecretContent.class, name = SecretType.Codes.PRIVATE_KEY),
@@ -21,8 +23,8 @@ import lombok.Data;
 public abstract class SecretContent implements SecretContentDto {
 
     @NotNull
-    @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SecretType.Codes.API_KEY})
+    @Schema(description = "Secret type", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SecretType.Codes.API_KEY})
     private final SecretType type;
 
     protected SecretContent() {

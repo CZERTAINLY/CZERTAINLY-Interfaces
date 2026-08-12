@@ -21,7 +21,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class CertificateOperationStatusResponseDto {
 
-    @Schema(description = "Operation status as known to the Authority Provider", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Operation status as known to the Authority Provider",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private CertificateOperationStatus status;
 
     @Schema(description = "Base64-encoded certificate content. Present when status=COMPLETED for issue/renew. "

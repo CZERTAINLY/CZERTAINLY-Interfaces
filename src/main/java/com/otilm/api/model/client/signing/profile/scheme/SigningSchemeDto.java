@@ -7,15 +7,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "signingScheme", visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = ManagedSigningDto.class, name = SigningScheme.Codes.MANAGED),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "signingScheme",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ManagedSigningDto.class, name = SigningScheme.Codes.MANAGED),
         @JsonSubTypes.Type(value = DelegatedSigningDto.class, name = SigningScheme.Codes.DELEGATED),})
 @Schema(implementation = SigningSchemeInterface.class)
 public abstract class SigningSchemeDto implements SigningSchemeInterface {
 
     @NotNull
-    @Schema(description = "Signing scheme", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SigningScheme.Codes.MANAGED})
+    @Schema(description = "Signing scheme", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SigningScheme.Codes.MANAGED})
     private final SigningScheme signingScheme;
 
     protected SigningSchemeDto(SigningScheme signingScheme) {

@@ -11,7 +11,8 @@ public class ExtensionDto {
 
     @NotBlank
     @ValidOid
-    @Schema(description = "OID of the extension", requiredMode = Schema.RequiredMode.REQUIRED, example = "1.3.6.1.5.5.7.1.1")
+    @Schema(description = "OID of the extension", requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "1.3.6.1.5.5.7.1.1")
     private String oid;
 
     @Schema(description = "Whether the extension is critical", requiredMode = Schema.RequiredMode.REQUIRED)

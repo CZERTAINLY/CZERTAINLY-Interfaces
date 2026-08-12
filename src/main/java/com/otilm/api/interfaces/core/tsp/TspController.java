@@ -30,19 +30,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @see <a href="https://www.rfc-editor.org/rfc/rfc3161">RFC 3161</a>
  */
 @RequestMapping("/v1/protocols/tsp/{tspProfileName}")
-@Tag(name = "TSP — by profile name", description = "RFC 3161 Timestamp Protocol endpoint. Routed by TSP Profile name. "
-        + "Always returns HTTP 200 with an application/timestamp-reply TimeStampResp; "
-        + "success and rejection are encoded in-band via PKIStatus per RFC 3161.")
+@Tag(name = "TSP — by profile name",
+        description = "RFC 3161 Timestamp Protocol endpoint. Routed by TSP Profile name. "
+                + "Always returns HTTP 200 with an application/timestamp-reply TimeStampResp; "
+                + "success and rejection are encoded in-band via PKIStatus per RFC 3161.")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "TimeStampResp returned. PKIStatus conveys the outcome: "
-                + "granted/grantedWithMods on success, rejection with PKIFailureInfo on failure.", content = @Content(mediaType = "application/timestamp-reply", schema = @Schema(type = "string", format = "binary")))})
+        @ApiResponse(responseCode = "200",
+                description = "TimeStampResp returned. PKIStatus conveys the outcome: "
+                        + "granted/grantedWithMods on success, rejection with PKIFailureInfo on failure.",
+                content = @Content(mediaType = "application/timestamp-reply",
+                        schema = @Schema(type = "string", format = "binary")))})
 public interface TspController extends InBandResponseController {
 
-    @Operation(summary = "Request a timestamp token", description = "Accepts a DER-encoded TimeStampReq and returns a DER-encoded TimeStampResp. "
-            + "Error conditions are encoded inside the response as PKIStatus rejection with PKIFailureInfo.", externalDocs = @ExternalDocumentation(description = "RFC 3161 — Internet X.509 PKI Time-Stamp Protocol", url = "https://www.rfc-editor.org/rfc/rfc3161"))
+    @Operation(summary = "Request a timestamp token",
+            description = "Accepts a DER-encoded TimeStampReq and returns a DER-encoded TimeStampResp. "
+                    + "Error conditions are encoded inside the response as PKIStatus rejection with PKIFailureInfo.",
+            externalDocs = @ExternalDocumentation(description = "RFC 3161 — Internet X.509 PKI Time-Stamp Protocol",
+                    url = "https://www.rfc-editor.org/rfc/rfc3161"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "TimeStampResp returned", content = @Content(mediaType = "application/timestamp-reply", schema = @Schema(type = "string", format = "binary")))})
+            @ApiResponse(responseCode = "200", description = "TimeStampResp returned",
+                    content = @Content(mediaType = "application/timestamp-reply",
+                            schema = @Schema(type = "string", format = "binary")))})
     @PostMapping(consumes = "application/timestamp-query", produces = "application/timestamp-reply")
     ResponseEntity<byte[]> timestamp(@Parameter(description = "TSP Profile name") @PathVariable String tspProfileName,
-            @RequestBody @Schema(description = "DER-encoded TimeStampReq", type = "string", format = "binary") byte[] request);
+            @RequestBody @Schema(description = "DER-encoded TimeStampReq", type = "string",
+                    format = "binary") byte[] request);
 }

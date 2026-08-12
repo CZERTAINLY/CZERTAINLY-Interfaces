@@ -26,30 +26,36 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CertificateRenewRequestDtoV3 extends AuthorityV3ScopedRequestDto {
 
-    @Schema(description = "Certificate signing request, Base64-encoded. Optional when reuseKey=true.", format = "byte", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Certificate signing request, Base64-encoded. Optional when reuseKey=true.", format = "byte",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String request;
 
     @Schema(description = "CSR format", defaultValue = "pkcs10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateRequestFormat format;
 
-    @Schema(description = "Base64 of cert to renew. Serial + issuer DN parsed from this constitute the cert identity at the CA.", format = "byte", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 of cert to renew. Serial + issuer DN parsed from this constitute the cert identity at the CA.",
+            format = "byte", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "existingCertificate is required for renew")
     private String existingCertificate;
 
-    @Schema(description = "When true, request (CSR) is optional. Proof-of-possession is delegated to the upstream CA's renewal policy.", defaultValue = "false", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "When true, request (CSR) is optional. Proof-of-possession is delegated to the upstream CA's renewal policy.",
+            defaultValue = "false", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private boolean reuseKey;
 
-    @Schema(description = "Renew-specific dynamic attributes (schema from shared /issue/attributes endpoint)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Renew-specific dynamic attributes (schema from shared /issue/attributes endpoint)",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Schema(description = "Optional connector-defined metadata returned by the original issue/renew/register response. "
-            + "Replayed here so a stateless connector can resolve the upstream end-entity without an extra lookup.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Replayed here so a stateless connector can resolve the upstream end-entity without an extra lookup.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> meta;
 
     @Schema(description = "Optional structured request content (typed RDNs, SANs, extensions). "
             + "Present ONLY when the connector advertises the CERTIFICATE_REQUEST_STRUCTURED feature flag. "
             + "When present it is the authoritative source of subject identity and extensions for this renewal; "
-            + "otherwise identity is derived from existingCertificate (serial + issuer DN) as documented above.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "otherwise identity is derived from existingCertificate (serial + issuer DN) as documented above.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     private CertificateRequestContent requestContent;
 

@@ -36,7 +36,8 @@ public class TimestampingWorkflowRequestDto extends WorkflowRequestDto {
     // --------------------------------------------------------------------------------
 
     @Schema(description = "UUID of the Signature Formatting Provider that constructs the data-to-be-signed (DTBS) for Timestamping. "
-            + "Required for ILM-managed signing; must be omitted for delegated signing.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Required for ILM-managed signing; must be omitted for delegated signing.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID signatureFormattingConnectorUuid;
 
     @Schema(description = "Attributes for the Signature Formatting Provider that control DTBS construction "
@@ -45,7 +46,8 @@ public class TimestampingWorkflowRequestDto extends WorkflowRequestDto {
     private List<RequestAttribute> signatureFormattingConnectorAttributes = new ArrayList<>();
 
     @Schema(description = "ETSI qualified electronic timestamp. "
-            + "Present only when ILM-managed signing is used; null for delegated signing.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Present only when ILM-managed signing is used; null for delegated signing.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean qualifiedTimestamp;
 
     @Schema(description = "UUID of the Time Quality Configuration that validates clock accuracy at signing time. "
@@ -59,18 +61,22 @@ public class TimestampingWorkflowRequestDto extends WorkflowRequestDto {
 
     @ValidOid
     @Schema(description = "Default TSA Policy ID under which the timestamp token is issued (OID format). "
-            + "Used for validation of both managed and delegated Timestamping.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1.2.3.4.5")
+            + "Used for validation of both managed and delegated Timestamping.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1.2.3.4.5")
     private String defaultPolicyId;
 
     @ValidOidList
     @Schema(description = "Set of TSA Policy IDs accepted as valid for incoming timestamp requests (OID format). "
-            + "Used for validation of both managed and delegated Timestamping.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"1.2.3.4.5\", \"1.2.3.4.6\"]")
+            + "Used for validation of both managed and delegated Timestamping.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"1.2.3.4.5\", \"1.2.3.4.6\"]")
     private List<String> allowedPolicyIds = new ArrayList<>();
 
-    @Schema(description = "List of digest algorithms that are accepted for timestamping. An empty list means that all digest algorithms are accepted.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"SHA-256\", \"SHA-384\"]")
+    @Schema(description = "List of digest algorithms that are accepted for timestamping. An empty list means that all digest algorithms are accepted.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"SHA-256\", \"SHA-384\"]")
     private List<DigestAlgorithm> allowedDigestAlgorithms = new ArrayList<>();
 
-    @Schema(description = "Whether to validate the timestamp token after it was issued.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Whether to validate the timestamp token after it was issued.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean validateTokenSignature;
 
     public TimestampingWorkflowRequestDto() {

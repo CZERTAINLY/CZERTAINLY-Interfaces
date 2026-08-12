@@ -17,7 +17,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @NoArgsConstructor
 public class SimplifiedRaProfileDto extends NameAndUuidDto {
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "Authority Instance UUID")

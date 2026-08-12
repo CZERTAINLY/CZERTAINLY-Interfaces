@@ -19,9 +19,11 @@ public class NotificationAttributeDto {
     @Schema(description = "Attribute content type", requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeContentType contentType;
 
-    @Schema(description = "Extracted values; scalar types carry raw data, complex types carry the human-readable reference string", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Extracted values; scalar types carry raw data, complex types carry the human-readable reference string",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<Object> values;
 
-    @Schema(description = "Metadata only: aggregate set of source objects that contributed any value to this attribute. NOT positionally paired with values — values are deduplicated independently of source accumulation", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Metadata only: aggregate set of source objects that contributed any value to this attribute. NOT positionally paired with values — values are deduplicated independently of source accumulation",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<NameAndUuidDto> sourceObjects;
 }

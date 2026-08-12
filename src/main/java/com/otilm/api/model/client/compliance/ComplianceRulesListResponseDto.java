@@ -7,16 +7,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ComplianceRulesListResponseDto {
-    @Schema(description = "Name of the Compliance Provider", examples = {
-            "Provider1"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Compliance Provider", examples = {"Provider1"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    @Schema(description = "UUID of the Compliance Provider", examples = {
-            "c35bc88c-d0ef-11ec-9d64-0242ac120003"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "UUID of the Compliance Provider", examples = {"c35bc88c-d0ef-11ec-9d64-0242ac120003"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Kind of the Compliance Provider", examples = {
-            "Kind1"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Kind of the Compliance Provider", examples = {"Kind1"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "Rules from Compliance Provider", requiredMode = Schema.RequiredMode.REQUIRED)

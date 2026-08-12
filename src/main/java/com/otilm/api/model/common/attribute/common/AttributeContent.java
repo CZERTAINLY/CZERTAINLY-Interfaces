@@ -8,8 +8,8 @@ import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 
-@Schema(description = "Attribute Content", type = "object", oneOf = {BaseAttributeContentV2.class,
-        BaseAttributeContentV3.class}
+@Schema(description = "Attribute Content", type = "object",
+        oneOf = {BaseAttributeContentV2.class, BaseAttributeContentV3.class}
 
 )
 @JsonDeserialize(using = AttributeContentDeserializer.class)

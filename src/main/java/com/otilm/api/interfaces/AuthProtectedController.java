@@ -20,24 +20,31 @@ import org.springframework.web.bind.annotation.RestController;
 @OpenAPIDefinition(servers = {@Server(url = "https://demo.otilm.com/api", description = "Platform Demo server")})
 @RestController
 @SecuritySchemes(value = {
-        @SecurityScheme(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME, type = SecuritySchemeType.HTTP, scheme = "Bearer", bearerFormat = "JWT"),
-        @SecurityScheme(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME, type = SecuritySchemeType.APIKEY, in = SecuritySchemeIn.HEADER, paramName = "ssl-client-cert", description = "Base64 encoded X.509 certificate passed in header"),
-        @SecurityScheme(name = OpenApiConfig.SESSION_SECURITY_SCHEME_NAME, type = SecuritySchemeType.APIKEY, in = SecuritySchemeIn.COOKIE, paramName = "session-id", // Name
-                                                                                                                                                                     // of
-                                                                                                                                                                     // the
-                                                                                                                                                                     // cookie
-                                                                                                                                                                     // containing
-                                                                                                                                                                     // the
-                                                                                                                                                                     // session
-                                                                                                                                                                     // ID
+        @SecurityScheme(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME, type = SecuritySchemeType.HTTP,
+                scheme = "Bearer", bearerFormat = "JWT"),
+        @SecurityScheme(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME, type = SecuritySchemeType.APIKEY,
+                in = SecuritySchemeIn.HEADER, paramName = "ssl-client-cert",
+                description = "Base64 encoded X.509 certificate passed in header"),
+        @SecurityScheme(name = OpenApiConfig.SESSION_SECURITY_SCHEME_NAME, type = SecuritySchemeType.APIKEY,
+                in = SecuritySchemeIn.COOKIE, paramName = "session-id", // Name
+                                                                        // of
+                                                                        // the
+                                                                        // cookie
+                                                                        // containing
+                                                                        // the
+                                                                        // session
+                                                                        // ID
                 description = "Session-based authentication with session ID stored in 'session-id' cookie"),})
-@SecurityRequirements(value = {@SecurityRequirement(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME),
+@SecurityRequirements(value = {
+        @SecurityRequirement(name = OpenApiConfig.BEARER_JWT_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.CERTIFICATE_SECURITY_SCHEME_NAME),
         @SecurityRequirement(name = OpenApiConfig.SESSION_SECURITY_SCHEME_NAME),})
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "400", description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
         @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema())),
-        @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))),
+        @ApiResponse(responseCode = "403", description = "Forbidden",
+                content = @Content(schema = @Schema(implementation = AuthenticationServiceExceptionDto.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)})
 public interface AuthProtectedController {
 }

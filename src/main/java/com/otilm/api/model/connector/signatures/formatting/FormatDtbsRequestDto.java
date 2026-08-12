@@ -14,8 +14,10 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
-@JsonSubTypes({@Type(value = TimestampingFormatDtbsRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type",
+        visible = true)
+@JsonSubTypes({
+        @Type(value = TimestampingFormatDtbsRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
         @Type(value = DocumentSigningFormatDtbsRequestDto.class, name = SigningWorkflowType.Codes.DOCUMENT_SIGNING),})
 @Schema(implementation = FormatDtbsInterface.class)
 public abstract class FormatDtbsRequestDto implements FormatDtbsInterface {
@@ -25,15 +27,18 @@ public abstract class FormatDtbsRequestDto implements FormatDtbsInterface {
     private final SigningWorkflowType type;
 
     @NotEmpty
-    @Schema(description = "Certificate chain where the first element is the signer certificate. Individual certificates are DER encoded X.509 certificates (represented as Base64 strings in the JSON transport).", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate chain where the first element is the signer certificate. Individual certificates are DER encoded X.509 certificates (represented as Base64 strings in the JSON transport).",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<byte[]> certificateChain;
 
     @NotNull
-    @Schema(description = "Data to be formatted into the protocol-specific data-to-be-signed bytes", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Data to be formatted into the protocol-specific data-to-be-signed bytes",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private byte[] data;
 
     @NotNull
-    @Schema(description = "Formatting-specific parameters (e.g. message imprint hash and algorithm, nonce, policy OID for TSA)", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Formatting-specific parameters (e.g. message imprint hash and algorithm, nonce, policy OID for TSA)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> formatAttributes;
 
     protected FormatDtbsRequestDto(SigningWorkflowType type) {

@@ -20,8 +20,8 @@ public class RequestAttributeDto {
     /**
      * Name of the Attribute
      **/
-    @Schema(description = "Name of the Attribute", examples = {
-            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Attribute", examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     /**

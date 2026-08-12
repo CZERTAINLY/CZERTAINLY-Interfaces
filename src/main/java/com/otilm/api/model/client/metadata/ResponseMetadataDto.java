@@ -11,10 +11,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-@Schema(description = "Request attribute to send attribute content for object", type = "object", discriminatorProperty = "version", discriminatorMapping = {
-        @DiscriminatorMapping(value = "v2", schema = ResponseMetadataV2.class),
-        @DiscriminatorMapping(value = "v3", schema = ResponseMetadataV3.class),}, oneOf = {ResponseMetadataV3.class,
-                ResponseMetadataV2.class})
+@Schema(description = "Request attribute to send attribute content for object", type = "object",
+        discriminatorProperty = "version",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = "v2", schema = ResponseMetadataV2.class),
+                @DiscriminatorMapping(value = "v3", schema = ResponseMetadataV3.class),},
+        oneOf = {ResponseMetadataV3.class, ResponseMetadataV2.class})
 public interface ResponseMetadataDto extends Serializable {
 
     @Schema(description = "Source Objects", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -30,15 +32,15 @@ public interface ResponseMetadataDto extends Serializable {
     /**
      * Name of the Attribute, can be used as key for form field label text
      **/
-    @Schema(description = "Name of the Attribute", examples = {
-            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Attribute", examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     String getName();
 
     /**
      * Label of the Attribute, Can be used to display the field name in the User Interface
      **/
-    @Schema(description = "Label of the the Attribute", examples = {
-            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Label of the the Attribute", examples = {"Attribute Name"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     String getLabel();
 
     /**
@@ -50,12 +52,12 @@ public interface ResponseMetadataDto extends Serializable {
     /**
      * Content Type of the Attribute
      **/
-    @Schema(description = "Content Type of the Attribute", examples = {
-            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Content Type of the Attribute", examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     AttributeContentType getContentType();
 
-    @Schema(description = "Version of the Attribute", examples = {
-            "Attribute"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Version of the Attribute", examples = {"Attribute"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     AttributeVersion getVersion();
 
 }

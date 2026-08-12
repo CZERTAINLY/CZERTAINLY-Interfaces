@@ -10,9 +10,11 @@ public class SecretVersionDto {
     @Schema(description = "Version number of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private int version;
 
-    @Schema(description = "Date and time when the secret version was created", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Date and time when the secret version was created",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private OffsetDateTime createdAt;
 
-    @Schema(description = "Fingerprint of the secret version, used for integrity verification", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Fingerprint of the secret version, used for integrity verification",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String fingerprint;
 }

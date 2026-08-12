@@ -15,18 +15,21 @@ public class NotificationProfileDetailDto {
     @Schema(description = "UUID of the Notification profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "Name of the Notification profile", examples = {
-            "NotificationProfile1"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Name of the Notification profile", examples = {"NotificationProfile1"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Description of the Notification profile", examples = {
-            "Detail description of the notification profile"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Description of the Notification profile",
+            examples = {"Detail description of the notification profile"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
-    @Schema(description = "Latest version of the Notification profile", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Latest version of the Notification profile", example = "1",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private int version;
 
-    @Schema(description = "Recipient type of notifications produced by profile", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Recipient type of notifications produced by profile",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private RecipientType recipientType;
 
     @Schema(description = "Recipients info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -35,16 +38,20 @@ public class NotificationProfileDetailDto {
     @Schema(description = "Notification instance info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private NameAndUuidDto notificationInstance;
 
-    @Schema(description = "Is notification profile sending internal notifications", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Is notification profile sending internal notifications",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean internalNotification;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED, type = "string", format = "duration", example = "P1DT12H")
+    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            type = "string", format = "duration", example = "P1DT12H")
     private Duration frequency;
 
-    @Schema(description = "Maximum number of repetitions of same notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Maximum number of repetitions of same notification",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer repetitions;
 
-    @Schema(description = "Notification data categories included in external notifications sent by this profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Notification data categories included in external notifications sent by this profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<NotificationDataCategory> eventDataCategories;
 }

@@ -20,7 +20,8 @@ public class CustomAttributeDefinitionDto extends AttributeDefinitionDto {
     /**
      * Boolean determining if the Attribute is required. If true, the Attribute must be provided.
      **/
-    @Schema(description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Boolean determining if the Attribute is required. If true, the Attribute must be provided.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean required;
 
 }

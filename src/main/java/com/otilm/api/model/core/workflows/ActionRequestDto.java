@@ -18,7 +18,8 @@ public class ActionRequestDto {
     @Schema(description = "Resource associated with the action", requiredMode = Schema.RequiredMode.REQUIRED)
     private Resource resource;
 
-    @Schema(description = "List of UUIDs of existing executions to add to the action", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of UUIDs of existing executions to add to the action",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> executionsUuids = new ArrayList<>();
 
 }

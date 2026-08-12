@@ -21,7 +21,8 @@ public class DiscoveryStatusResponseDto {
     @NotNull(message = "state is required")
     private DiscoveryRunState state;
 
-    @Schema(description = "Progress detail for the run; omitted when the connector cannot report progress", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Progress detail for the run; omitted when the connector cannot report progress",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private DiscoveryProgressDto progress;
 
     @Schema(description = "Run-wide highest item sequence assigned so far — never page-scoped. Consumers must "

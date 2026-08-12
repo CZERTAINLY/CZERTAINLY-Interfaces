@@ -11,45 +11,45 @@ public class Directory {
     /**
      * URL for the new Nonce. This url will be used by the ACME clients to request for new Nonce values.
      */
-    @Schema(description = "URL to get new Nonce", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://some-server.com/v1/protocols/acme/new-nonce"})
+    @Schema(description = "URL to get new Nonce", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://some-server.com/v1/protocols/acme/new-nonce"})
     private String newNonce;
 
     /**
      * URL for the new Account. This url will be used by the ACME clients to request for new Account registration.
      */
-    @Schema(description = "URL for the new Account", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://some-server.com/v1/protocols/acme/new-account"})
+    @Schema(description = "URL for the new Account", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://some-server.com/v1/protocols/acme/new-account"})
     private String newAccount;
 
     /**
      * URL for the new Order. This url will be used by the ACME clients to request for new Order
      */
-    @Schema(description = "URL for the new Order", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://some-server.com/v1/protocols/acme/new-order"})
+    @Schema(description = "URL for the new Order", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://some-server.com/v1/protocols/acme/new-order"})
     private String newOrder;
 
     /**
      * URL for the new Authorization. This url will be used by the ACME clients to request for new Authz request
      */
-    @Schema(description = "URL for the new Authorization", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://some-server.com/v1/protocols/acme/new-authz"})
+    @Schema(description = "URL for the new Authorization", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://some-server.com/v1/protocols/acme/new-authz"})
     private String newAuthz;
 
     /**
      * URL for revoking a Certificate. This url will be used by the ACME clients to request for new Certificate
      * revocation
      */
-    @Schema(description = "URL for revoking a certificate", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://some-server.com/v1/protocols/acme/revoke-cert"})
+    @Schema(description = "URL for revoking a certificate", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://some-server.com/v1/protocols/acme/revoke-cert"})
     private String revokeCert;
 
     /**
      * URL for changing the key of an Account. This url will be used by the ACME clients to request for a new key change
      * for an Account
      */
-    @Schema(description = " URL for changing the key of an Account", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://some-server.com/v1/protocols/acme/key-change"})
+    @Schema(description = " URL for changing the key of an Account", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://some-server.com/v1/protocols/acme/key-change"})
     private String keyChange;
 
     /**

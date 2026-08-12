@@ -16,33 +16,36 @@ public class CustomAttributeDefinitionDetailDto extends CustomAttributeDefinitio
     /**
      * Type of the Attribute. For the custom attribute, the type will always be "custom"
      */
-    @Schema(description = "Type of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "custom"}, defaultValue = "custom")
+    @Schema(description = "Type of the Attribute", requiredMode = Schema.RequiredMode.REQUIRED, examples = {"custom"},
+            defaultValue = "custom")
     private AttributeType type;
 
     /**
      * Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.
      **/
-    @Schema(description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.", defaultValue = "true")
+    @Schema(description = "Boolean determining if the Attribute is visible and can be displayed, otherwise it should be hidden to the user.",
+            defaultValue = "true")
     private boolean visible;
 
     /**
      * Group of the Attribute, used for the logical grouping of the Attribute
      **/
-    @Schema(description = "Group of the Attribute, used for the logical grouping of the Attribute", examples = {
-            "requiredAttributes"})
+    @Schema(description = "Group of the Attribute, used for the logical grouping of the Attribute",
+            examples = {"requiredAttributes"})
     private String group;
 
     /**
      * Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.
      **/
-    @Schema(description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.", defaultValue = "false")
+    @Schema(description = "Boolean determining if the Attribute is read only. If true, the Attribute content cannot be changed.",
+            defaultValue = "false")
     private boolean readOnly;
 
     /**
      * Boolean determining if the Attribute contains list of values in the content
      **/
-    @Schema(description = "Boolean determining if the Attribute contains list of values in the content", defaultValue = "false")
+    @Schema(description = "Boolean determining if the Attribute contains list of values in the content",
+            defaultValue = "false")
     private boolean list;
 
     /**

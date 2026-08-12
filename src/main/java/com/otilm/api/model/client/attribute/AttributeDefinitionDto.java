@@ -33,8 +33,8 @@ public class AttributeDefinitionDto implements Loggable {
     /**
      * Friendly name of the Attribute
      **/
-    @Schema(description = "Friendly name of the Attribute", examples = {
-            "Attribute Name"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Friendly name of the Attribute", examples = {"Attribute Name"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String label;
 
     /**

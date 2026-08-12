@@ -51,7 +51,8 @@ public class CertificateDto implements Loggable {
     @Schema(description = "Certificate signature algorithm", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String signatureAlgorithm;
 
-    @Schema(description = "Certificate alternative signature algorithm", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Certificate alternative signature algorithm",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String altSignatureAlgorithm;
 
     @Schema(description = "Indicator whether the certificate is hybrid", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -60,7 +61,8 @@ public class CertificateDto implements Loggable {
     @Schema(description = "Certificate key size", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer keySize;
 
-    @Schema(description = "Certificate key size of the alternative key", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Certificate key size of the alternative key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer altKeySize;
 
     @Schema(description = "State of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -99,10 +101,12 @@ public class CertificateDto implements Loggable {
     @Schema(description = "Private Key Availability", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean privateKeyAvailability;
 
-    @Schema(description = "Indicator whether CA is marked as trusted, set to null if certificate is not CA", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Indicator whether CA is marked as trusted, set to null if certificate is not CA",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean trustedCa;
 
-    @Schema(description = "Certificate is archived", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
+    @Schema(description = "Certificate is archived", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            defaultValue = "false")
     private boolean archived;
 
     public CertificateDto(UUID uuid, String commonName, String serialNumber, String issuerCommonName, String issuerDn,

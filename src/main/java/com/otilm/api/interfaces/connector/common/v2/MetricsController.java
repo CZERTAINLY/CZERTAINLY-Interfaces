@@ -70,11 +70,18 @@ public interface MetricsController extends AuthProtectedConnectorController {
     @Operation(summary = "Get metrics")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Metrics retrieved successfully", content = {
-                    @Content(mediaType = "application/openmetrics-text; version=1.0.0; charset=utf-8", schema = @Schema(type = "string", description = "[OpenMetrics v1.0.0 text format](https://prometheus.io/docs/specs/om/open_metrics_spec/#text-format)"), examples = {
-                            @ExampleObject("# TYPE http_requests_total counter\nhttp_requests_total{method=\"GET\"} 42")}),
-                    @Content(mediaType = "text/plain", schema = @Schema(type = "string", description = "[Legacy Prometheus 0.0.4 text format](https://github.com/Showmax/prometheus-docs/blob/master/content/docs/instrumenting/exposition_formats.md#format-version-004)"), examples = {
-                            @ExampleObject("# HELP http_requests_total Total requests\n# TYPE http_requests_total counter\nhttp_requests_total{method=\"GET\"} 42")})}),
-            @ApiResponse(responseCode = "503", description = "Service Unavailable. Metrics could not be retrieved", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class)))})
+                    @Content(mediaType = "application/openmetrics-text; version=1.0.0; charset=utf-8", schema = @Schema(
+                            type = "string",
+                            description = "[OpenMetrics v1.0.0 text format](https://prometheus.io/docs/specs/om/open_metrics_spec/#text-format)"),
+                            examples = {
+                                    @ExampleObject("# TYPE http_requests_total counter\nhttp_requests_total{method=\"GET\"} 42")}),
+                    @Content(mediaType = "text/plain", schema = @Schema(type = "string",
+                            description = "[Legacy Prometheus 0.0.4 text format](https://github.com/Showmax/prometheus-docs/blob/master/content/docs/instrumenting/exposition_formats.md#format-version-004)"),
+                            examples = {
+                                    @ExampleObject("# HELP http_requests_total Total requests\n# TYPE http_requests_total counter\nhttp_requests_total{method=\"GET\"} 42")})}),
+            @ApiResponse(responseCode = "503", description = "Service Unavailable. Metrics could not be retrieved",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     String getMetrics();
 
 }

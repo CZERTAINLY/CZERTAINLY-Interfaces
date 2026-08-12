@@ -13,10 +13,11 @@ public class EndpointDto extends NameAndUuidDto {
 
     @Schema(description = "Context of the Endpoint", examples = {"/v1"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String context;
-    @Schema(description = "Method to be used for the Endpoint", examples = {
-            "POST"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Method to be used for the Endpoint", examples = {"POST"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String method;
-    @Schema(description = "True if the Endpoint is required for implementation", example = "true", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "True if the Endpoint is required for implementation", example = "true",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean required;
 
     @Override

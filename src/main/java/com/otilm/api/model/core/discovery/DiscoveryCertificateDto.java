@@ -45,7 +45,8 @@ public class DiscoveryCertificateDto {
             + "false - Certificate was already available in the inventory", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean newlyDiscovered;
 
-    @Schema(description = "Indicator whether the discovery certificate has already been processed.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Indicator whether the discovery certificate has already been processed.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean processed;
 
     @Schema(description = "Error message in case of failed processing of the discovery certificate.")

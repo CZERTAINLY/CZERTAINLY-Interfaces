@@ -17,34 +17,41 @@ import lombok.Data;
 @Data
 public class NotificationProfileUpdateRequestDto {
 
-    @Schema(description = "Description of the Notification profile", examples = {
-            "Detail description of the notification profile"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Description of the Notification profile",
+            examples = {"Detail description of the notification profile"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
     @NotNull(message = "Recipient type is required")
-    @Schema(description = "Recipient type of notifications produced by profile", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Recipient type of notifications produced by profile",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private RecipientType recipientType;
 
-    @Schema(description = "Recipient UUIDs of notifications produced by profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Recipient UUIDs of notifications produced by profile",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<UUID> recipientUuids;
 
     @Schema(description = "Notification instance UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID notificationInstanceUuid;
 
-    @Schema(description = "Is notification profile sending internal notifications", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Is notification profile sending internal notifications",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean internalNotification;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     @ValidFrequency
-    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED, type = "string", format = "duration", example = "P1DT12H")
+    @Schema(description = "Frequency of repeated notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            type = "string", format = "duration", example = "P1DT12H")
     private Duration frequency;
 
     @Positive
-    @Schema(description = "Maximum number of repetitions of same notification", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Maximum number of repetitions of same notification",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer repetitions;
 
     @Schema(description = "Notification data categories included in external notifications sent by this profile. "
-            + "When updating, an absent field keeps the current value and an empty list disables enrichment", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "When updating, an absent field keeps the current value and an empty list disables enrichment",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<@NotNull NotificationDataCategory> eventDataCategories;
 
     @AssertTrue(message = "Recipient UUID is required when recipient type is not Owner, None, Default or Object")

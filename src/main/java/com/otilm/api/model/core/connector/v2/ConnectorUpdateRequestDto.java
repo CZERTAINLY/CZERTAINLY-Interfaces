@@ -21,16 +21,17 @@ public class ConnectorUpdateRequestDto {
 
     @NotNull
     @URL
-    @Schema(description = "URL of the Connector to connect", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "http://network-discovery-provider:8080"})
+    @Schema(description = "URL of the Connector to connect", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"http://network-discovery-provider:8080"})
     private String url;
 
     @NotNull
-    @Schema(description = "Type of authentication for the Connector", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "none"})
+    @Schema(description = "Type of authentication for the Connector", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"none"})
     private AuthType authType;
 
-    @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> authAttributes = new ArrayList<>();
 
     @Schema(description = "List of Custom Attributes", requiredMode = Schema.RequiredMode.REQUIRED)

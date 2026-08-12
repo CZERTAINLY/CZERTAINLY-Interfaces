@@ -22,36 +22,39 @@ public class ComplianceRuleDto {
     @Schema(description = "Compliance rule name", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "Sample rule description"})
+    @Schema(description = "Description of the compliance rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"Sample rule description"})
     private String description;
 
-    @Schema(description = "UUID of the group to which the rule belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
+    @Schema(description = "UUID of the group to which the rule belongs to",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "20354d7a-e4fe-47af-8ff6-187bca92f3f9")
     private UUID groupUuid;
 
-    @Schema(description = "Availability status of the compliance rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            ComplianceRuleAvailabilityStatus.Codes.AVAILABLE})
+    @Schema(description = "Availability status of the compliance rule", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {ComplianceRuleAvailabilityStatus.Codes.AVAILABLE})
     private ComplianceRuleAvailabilityStatus availabilityStatus;
 
-    @Schema(description = "Reason why compliance rule availability status is `Updated`", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Reason why compliance rule availability status is `Updated`",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String updatedReason;
 
-    @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            Resource.Codes.CERTIFICATE})
+    @Schema(description = "Resource of the rule", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {Resource.Codes.CERTIFICATE})
     private Resource resource;
 
-    @Schema(description = "Type of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "X.509"})
+    @Schema(description = "Type of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"X.509"})
     private String type;
 
-    @Schema(description = "Format of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED, examples = {
-            "pkcs7"})
+    @Schema(description = "Format of the resource object", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            examples = {"pkcs7"})
     private String format;
 
     @Schema(description = "Attributes of the rule", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> attributes = new ArrayList<>();
 
-    @Schema(description = "List of the compliance internal rule condition items", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of the compliance internal rule condition items",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ConditionItemDto> conditionItems;
 
 }

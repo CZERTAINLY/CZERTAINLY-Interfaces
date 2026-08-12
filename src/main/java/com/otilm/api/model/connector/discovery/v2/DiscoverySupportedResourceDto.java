@@ -29,7 +29,7 @@ public class DiscoverySupportedResourceDto {
             + "advertises applies to this resource; an empty list means none apply. These are "
             + "distinct and must not be normalized to one another. This list must not be used "
             + "to decide whether the connector streams: streaming is a property of the whole "
-            + "discovery interface, advertised once by the discoveryStreaming feature flag, "
-            + "never per resource.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "discovery interface, advertised once by the discoveryStreaming feature flag, " + "never per resource.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<DiscoveryResourceCapability> capabilities;
 }

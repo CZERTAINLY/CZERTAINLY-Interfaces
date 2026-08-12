@@ -28,16 +28,18 @@ import lombok.Data;
  * </p>
  */
 @Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = TimestampingWorkflowDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = TimestampingWorkflowDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
         @JsonSubTypes.Type(value = DocumentSigningWorkflowDto.class, name = SigningWorkflowType.Codes.DOCUMENT_SIGNING),
         @JsonSubTypes.Type(value = RawSigningWorkflowDto.class, name = SigningWorkflowType.Codes.RAW_SIGNING),})
 @Schema(implementation = WorkflowInterface.class)
 public abstract class WorkflowDto implements WorkflowInterface {
 
     @NotNull
-    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            SigningWorkflowType.Codes.TIMESTAMPING})
+    @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {SigningWorkflowType.Codes.TIMESTAMPING})
     private final SigningWorkflowType type;
 
     protected WorkflowDto(SigningWorkflowType type) {

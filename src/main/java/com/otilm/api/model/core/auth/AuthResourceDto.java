@@ -11,8 +11,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class AuthResourceDto extends NameAndUuidDto {
-    @Schema(description = "Resource Name", examples = {
-            "Name"}, requiredMode = Schema.RequiredMode.REQUIRED, implementation = Resource.class)
+    @Schema(description = "Resource Name", examples = {"Name"}, requiredMode = Schema.RequiredMode.REQUIRED,
+            implementation = Resource.class)
     private String name;
 
     @Schema(description = "Resource label", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -21,7 +21,8 @@ public class AuthResourceDto extends NameAndUuidDto {
     @Schema(description = "Listing Endpoint")
     private String listObjectsEndpoint;
 
-    @Schema(description = "If resource has Object access permissions. True = Yes, False = No", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "If resource has Object access permissions. True = Yes, False = No",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean objectAccess;
 
     @Schema(description = "List of Actions for the Resource", requiredMode = Schema.RequiredMode.REQUIRED)

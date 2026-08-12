@@ -39,8 +39,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/v1/entities")
 @Tag(name = "Entity Management", description = "Entity Management API")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface EntityInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Entity instances")
@@ -49,14 +51,16 @@ public interface EntityInstanceController extends AuthProtectedController {
     EntityInstanceResponseDto listEntityInstances(@RequestBody SearchRequestDto request);
 
     @Operation(operationId = "getEntitySearchableFields", summary = "Get Entities searchable fields information")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Entity searchable field information retrieved")})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200", description = "Entity searchable field information retrieved")})
     @GetMapping(path = "/search", produces = {"application/json"})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(summary = "Get Entity instance details")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority instance details retrieved"),
-            @ApiResponse(responseCode = "404", description = "Entity not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Authority instance details retrieved"),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{entityUuid}", produces = {"application/json"})
     EntityInstanceDto getEntityInstance(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid)
@@ -64,19 +68,25 @@ public interface EntityInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Add Entity instance")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Entity instance created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "404", description = "Connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+            @ApiResponse(responseCode = "201", description = "Entity instance created",
+                    content = @Content(schema = @Schema(implementation = UuidDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "404", description = "Connector not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createEntityInstance(@RequestBody EntityInstanceRequestDto request)
             throws AlreadyExistException, ConnectorException, AttributeException, NotFoundException;
 
     @Operation(summary = "Edit Entity instance")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Authority instance details updated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "404", description = "Entity or connector not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Authority instance details updated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "404", description = "Entity or connector not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PutMapping(path = "/{entityUuid}", consumes = {"application/json"}, produces = {"application/json"})
     EntityInstanceDto editEntityInstance(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,
@@ -84,26 +94,33 @@ public interface EntityInstanceController extends AuthProtectedController {
             throws ConnectorException, AttributeException, NotFoundException;
 
     @Operation(summary = "Delete Entity instance")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Entity instance deleted"),
-            @ApiResponse(responseCode = "404", description = "Entity not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Entity instance deleted"),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(path = "/{entityUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteEntityInstance(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid)
             throws ConnectorException, NotFoundException;
 
     @Operation(summary = "List Location Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Location attributes retrieved"),
-            @ApiResponse(responseCode = "404", description = "Entity not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Location attributes retrieved"),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{entityUuid}/attributes/location", produces = {"application/json"})
     List<BaseAttribute> listLocationAttributes(
             @Parameter(description = "Entity instance UUID") @PathVariable String entityUuid)
             throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Validate Location Attributes")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "404", description = "Entity not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "404", description = "Entity not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(path = "/{entityUuid}/attributes/location/validate", consumes = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void validateLocationAttributes(@Parameter(description = "Entity instance UUID") @PathVariable String entityUuid,

@@ -70,7 +70,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/v1/certificates")
 @Tag(name = "Certificate Inventory", description = "Certificate Inventory API")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 public interface CertificateController extends AuthProtectedController {
 
     @Operation(summary = "List Certificates")
@@ -102,20 +103,22 @@ public interface CertificateController extends AuthProtectedController {
 
     @Operation(summary = "Update Certificate Objects")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Certificate objects updated")})
-    @PatchMapping(path = "/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @PatchMapping(path = "/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void updateCertificateObjects(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid,
             @RequestBody CertificateUpdateObjectsDto request)
             throws NotFoundException, CertificateOperationException, ValidationException, AttributeException;
 
-    @Operation(summary = "Update Group and/or Owner for multiple Certificates", description = "In this operation, when the list of "
-            + "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will "
-            + "be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, "
-            + "the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches "
-            + "the filter criteria. To apply this change for all the Certificates in the inventory, "
-            + "provide an empty array \"[]\" for the value of \"filters\" in the request body")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate objects updated"),
+    @Operation(summary = "Update Group and/or Owner for multiple Certificates",
+            description = "In this operation, when the list of "
+                    + "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will "
+                    + "be applied only to the list of Certificate UUIDs provided. When the filter is provided in the request, "
+                    + "the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches "
+                    + "the filter criteria. To apply this change for all the Certificates in the inventory, "
+                    + "provide an empty array \"[]\" for the value of \"filters\" in the request body")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Certificate objects updated"),
             @ApiResponse(responseCode = "501", description = "Certificate objects update by filters not supported")})
     @PatchMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -123,19 +126,20 @@ public interface CertificateController extends AuthProtectedController {
             throws NotFoundException, NotSupportedException;
 
     @Operation(summary = "Upload a new Certificate")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Certificate accepted for processing of upload")})
-    @PostMapping(path = "/upload/async", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "202", description = "Certificate accepted for processing of upload")})
+    @PostMapping(path = "/upload/async", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
     FingerprintDto uploadAsync(@RequestBody UploadCertificateRequestDto request)
             throws AlreadyExistException, CertificateException;
 
     @Operation(summary = "Upload a new Certificate")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Certificate uploaded", content = @Content(schema = @Schema(implementation = UuidDto.class)))})
-    @PostMapping(path = "/upload", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+            @ApiResponse(responseCode = "201", description = "Certificate uploaded",
+                    content = @Content(schema = @Schema(implementation = UuidDto.class)))})
+    @PostMapping(path = "/upload", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request) throws AlreadyExistException,
             CertificateException, NoSuchAlgorithmException, NotFoundException, AttributeException;
 
@@ -145,14 +149,16 @@ public interface CertificateController extends AuthProtectedController {
             + "the list of UUIDs will be ignored and the change will be applied for the all the certificates that matches "
             + "the filter criteria. To apply this change for all the Certificates in the inventory, "
             + "provide an empty array \"[]\" for the value of \"filters\" in the request body")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificates deleted"),
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Certificates deleted"),
             @ApiResponse(responseCode = "501", description = "Certificate objects delete by filters not supported")})
-    @PostMapping(path = "/delete", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/delete", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     BulkOperationResponse bulkDeleteCertificate(@RequestBody RemoveCertificateDto request)
             throws NotFoundException, NotSupportedException;
 
-    @Operation(operationId = "getCertificateSearchableFields", summary = "Get Certificate searchable fields information")
+    @Operation(operationId = "getCertificateSearchableFields",
+            summary = "Get Certificate searchable fields information")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @GetMapping(path = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -175,7 +181,8 @@ public interface CertificateController extends AuthProtectedController {
      * resource Certificate.
      */
     @Deprecated(since = "2.16.0", forRemoval = true)
-    @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkCertificatesCompliance", deprecated = true)
+    @Operation(summary = "Initiate Certificate Compliance Check", operationId = "checkCertificatesCompliance",
+            deprecated = true)
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Compliance check initiated")})
     @PostMapping(path = "/compliance", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -192,39 +199,51 @@ public interface CertificateController extends AuthProtectedController {
             Returns the request-attribute definitions available for building a certificate request.
             Without `raProfileUuid`: the editable platform default request-attribute set.
             With `raProfileUuid`: the resolved request-attribute set for that RA profile.""")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
-            @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/csr/attributes", produces = {MediaType.APPLICATION_JSON_VALUE})
-    List<BaseAttribute> getCsrGenerationAttributes(
-            @Parameter(description = "RA Profile UUID — when provided, the response is the resolved request-attribute set for this RA profile") @RequestParam(required = false) UUID raProfileUuid)
+    List<BaseAttribute> getCsrGenerationAttributes(@Parameter(
+            description = "RA Profile UUID — when provided, the response is the resolved request-attribute set for this RA profile") @RequestParam(
+                    required = false) UUID raProfileUuid)
             throws NotFoundException, ConnectorException;
 
     @Operation(summary = "Get Certificate Content")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate content retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
-    @PostMapping(path = "/content", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
-    List<CertificateContentDto> getCertificateContent(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Certificate UUIDs", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<UUID> uuids);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Certificate content retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/content", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    List<CertificateContentDto> getCertificateContent(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Certificate UUIDs",
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
+                    @ExampleObject(
+                            value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<UUID> uuids);
 
     @Operation(summary = "Submit certificate request")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Certificate request submit, certificate created and ready to be issued")})
-    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+            @ApiResponse(responseCode = "200",
+                    description = "Certificate request submit, certificate created and ready to be issued")})
+    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     CertificateDetailDto submitCertificateRequest(@RequestBody ClientCertificateRequestDto request)
             throws ValidationException, ConnectorException, CertificateException, IOException, NoSuchAlgorithmException,
             InvalidKeyException, NoSuchProviderException, AttributeException, CertificateRequestException,
             NotFoundException;
 
-    @Operation(summary = "Get certificate chain", description = "Get certificate chain for the certificate with the given UUID. "
-            + "The certificate chain is returned in the order of the chain, with the first certificate "
-            + "being the certificate with the given UUID, up to the last identified certificate in the chain. "
-            + "If the certificate with the given UUID has status `NEW` or `REJECTED`, an empty list is returned.")
+    @Operation(summary = "Get certificate chain",
+            description = "Get certificate chain for the certificate with the given UUID. "
+                    + "The certificate chain is returned in the order of the chain, with the first certificate "
+                    + "being the certificate with the given UUID, up to the last identified certificate in the chain. "
+                    + "If the certificate with the given UUID has status `NEW` or `REJECTED`, an empty list is returned.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate chain retrieved")})
     @GetMapping(path = "/{uuid}/chain", produces = MediaType.APPLICATION_JSON_VALUE)
     CertificateChainResponseDto getCertificateChain(
@@ -241,8 +260,8 @@ public interface CertificateController extends AuthProtectedController {
             @RequestParam CertificateFormatEncoding encoding) throws NotFoundException, CertificateException;
 
     @Operation(summary = "List Certificates Approvals")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200", description = "List of all approvals for the certificate")})
     @GetMapping(path = "/{uuid}/approvals", produces = {MediaType.APPLICATION_JSON_VALUE})
     ApprovalResponseDto listCertificateApprovals(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid,
             final PaginationRequestDto paginationRequestDto);
@@ -274,8 +293,8 @@ public interface CertificateController extends AuthProtectedController {
     void bulkUnarchiveCertificate(@RequestBody List<UUID> uuids);
 
     @Operation(summary = "Get relations for a certificate")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Certificate relations retrieved successfully")})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200", description = "Certificate relations retrieved successfully")})
     @GetMapping("/{uuid}/relations")
     CertificateRelationsDto getCertificateRelations(@PathVariable UUID uuid) throws NotFoundException;
 
@@ -284,16 +303,18 @@ public interface CertificateController extends AuthProtectedController {
     @PatchMapping("/{uuid}/relations/{certificateUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void associateCertificates(@PathVariable @Parameter(description = "Certificate UUID") UUID uuid,
-            @PathVariable @Parameter(description = "UUID of certificate to associate the certificate with") UUID certificateUuid)
+            @PathVariable @Parameter(
+                    description = "UUID of certificate to associate the certificate with") UUID certificateUuid)
             throws NotFoundException;
 
     @Operation(summary = "Remove a source certificate association from the given certificate")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Certificate association removed successfully")})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "204", description = "Certificate association removed successfully")})
     @DeleteMapping("/{uuid}/relations/{certificateUuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeCertificateAssociation(@PathVariable @Parameter(description = "Certificate UUID") UUID uuid,
-            @PathVariable @Parameter(description = "UUID of certificate to disassociate the certificate with") UUID certificateUuid)
+            @PathVariable @Parameter(
+                    description = "UUID of certificate to disassociate the certificate with") UUID certificateUuid)
             throws NotFoundException;
 
 }

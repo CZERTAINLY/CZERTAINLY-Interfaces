@@ -32,6 +32,7 @@ public class SigningProfileListDto extends NameAndUuidDto {
     @Schema(description = "Whether the Signing Profile is enabled", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
-    @Schema(description = "List of enabled protocols on this Signing Profile.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of enabled protocols on this Signing Profile.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<SigningProtocol> enabledProtocols = new ArrayList<>();
 }

@@ -16,19 +16,20 @@ public class ConnectRequestDto {
 
     @NotNull
     @URL
-    @Schema(description = "URL of the Connector to connect", examples = {
-            "http://network-discovery-provicer:8080"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL of the Connector to connect", examples = {"http://network-discovery-provicer:8080"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
 
     @Schema(description = "UUID of the Connector. Mandatory if connection is needed for the same Connector")
     private String uuid;
 
     @NotNull
-    @Schema(description = "Type of authentication for the Connector", examples = {
-            "none"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type of authentication for the Connector", examples = {"none"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
 
-    @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of authentication Attributes. Required if the authentication type is not NONE",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> authAttributes;
 
     @Schema(description = "Proxy for message queue routing. "

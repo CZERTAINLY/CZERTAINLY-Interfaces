@@ -141,8 +141,12 @@ class DiscoveryV2SchemaGenerationTest {
     void discoveryDoesNotRewriteThePlatformWideResourceComponent() {
         String ownDescription = ModelConverters.getInstance().readAll(Resource.class).get("Resource").getDescription();
 
-        for (Class<?> discoveryRoot : new Class<?>[]{DiscoveredItemPayloadDto.class, DiscoveredCertificateDto.class,
-                DiscoveredKeyDto.class, DiscoveredItemDto.class, DiscoveryEvent.class}) {
+        for (Class<?> discoveryRoot : new Class<?>[]{
+                DiscoveredItemPayloadDto.class,
+                DiscoveredCertificateDto.class,
+                DiscoveredKeyDto.class,
+                DiscoveredItemDto.class,
+                DiscoveryEvent.class}) {
             Schema<?> resource = ModelConverters.getInstance().readAll(discoveryRoot).get("Resource");
             if (resource == null) {
                 continue;

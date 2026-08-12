@@ -31,7 +31,8 @@ public class ClientCertificateIssueRequestDto {
     // Key Related Parameters
     // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(description = "Certificate signing request encoded as Base64 string", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Certificate signing request encoded as Base64 string",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String request;
 
     @Schema(description = "Certificate signing request format", defaultValue = "pkcs10")
@@ -57,7 +58,8 @@ public class ClientCertificateIssueRequestDto {
     // Attributes
     // ------------------------------------------------------------------------------------------------------------------
 
-    @Schema(description = "List of RA Profile related Attributes to issue Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "List of RA Profile related Attributes to issue Certificate",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> attributes;
 
     @Schema(description = "List of Custom Attributes")
@@ -68,7 +70,8 @@ public class ClientCertificateIssueRequestDto {
     @EqualsAndHashCode.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Schema(description = "One-time authorization secret proving the caller may complete a pre-registered "
-            + "certificate. Write-only; ignored for certificates without an active registration.", accessMode = Schema.AccessMode.WRITE_ONLY)
+            + "certificate. Write-only; ignored for certificates without an active registration.",
+            accessMode = Schema.AccessMode.WRITE_ONLY)
     private String authorizationSecret;
 
     // Deliberate allowlist — only non-sensitive fields. Never append request (the CSR) or authorizationSecret.

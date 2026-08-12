@@ -15,26 +15,27 @@ import lombok.EqualsAndHashCode;
 @Schema(name = "ConnectorApiClientDtoV2", description = "Connector API client details (V2)")
 public class ConnectorApiClientDtoV2 implements ApiClientConnectorInfo {
 
-    @Schema(description = "Connector UUID", examples = {
-            "7b55ge1c-844f-11dc-a8a3-0242ac120002"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Connector UUID", examples = {"7b55ge1c-844f-11dc-a8a3-0242ac120002"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     protected String uuid;
 
     @Schema(description = "Connector Name", examples = {"Name"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     protected String name;
 
-    @Schema(description = "URL of the Connector", examples = {
-            "http://network-discovery-provider:8080"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "URL of the Connector", examples = {"http://network-discovery-provider:8080"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String url;
 
-    @Schema(description = "Status of the Connector", examples = {
-            "CONNECTED"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Status of the Connector", examples = {"CONNECTED"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ConnectorStatus status;
 
-    @Schema(description = "Type of authentication for the Connector", examples = {
-            "none"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type of authentication for the Connector", examples = {"none"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private AuthType authType;
 
-    @Schema(description = "List of Attributes for the authentication type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of Attributes for the authentication type",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> authAttributes;
 
     @Schema(description = "Proxy for message queue routing. "

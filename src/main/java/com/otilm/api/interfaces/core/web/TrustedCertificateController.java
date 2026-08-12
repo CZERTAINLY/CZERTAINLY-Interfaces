@@ -29,7 +29,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/trustedCertificates")
 @Tag(name = "Trusted Certificate Management", description = "Trusted Certificate Management API")
-@ApiResponses(value = @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))))
+@ApiResponses(value = @ApiResponse(responseCode = "404", description = "Not Found",
+        content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))))
 public interface TrustedCertificateController extends AuthProtectedController {
 
     @Operation(summary = "List Trusted Certificates")
@@ -45,9 +46,11 @@ public interface TrustedCertificateController extends AuthProtectedController {
 
     @Operation(summary = "Create a new Trusted Certificate")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "New Trusted Certificate created", content = @Content(schema = @Schema(implementation = UuidDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+            @ApiResponse(responseCode = "201", description = "New Trusted Certificate created",
+                    content = @Content(schema = @Schema(implementation = UuidDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
     ResponseEntity<?> createTrustedCertificate(@RequestBody TrustedCertificateRequestDto request)
             throws AlreadyExistException;

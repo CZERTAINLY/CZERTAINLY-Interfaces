@@ -13,12 +13,12 @@ import lombok.ToString;
 @ToString
 public class ResourceObjectDto implements Serializable, Loggable {
 
-    @Schema(description = "Resource of object", examples = {
-            Resource.Codes.CERTIFICATE}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Resource of object", examples = {Resource.Codes.CERTIFICATE},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected Resource resource;
 
-    @Schema(description = "Object UUID", examples = {
-            "2dcc528b-9e16-46c6-877e-74eae258173f"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Object UUID", examples = {"2dcc528b-9e16-46c6-877e-74eae258173f"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     protected UUID objectUuid;
 
     @Schema(description = "Object Name", examples = {"Name"}, requiredMode = Schema.RequiredMode.REQUIRED)

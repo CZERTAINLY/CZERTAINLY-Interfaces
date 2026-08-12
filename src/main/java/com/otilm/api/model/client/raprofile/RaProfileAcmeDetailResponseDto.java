@@ -11,7 +11,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class RaProfileAcmeDetailResponseDto extends NameAndUuidDto {
 
-    @Schema(description = "ACME availability flag - true = yes; false = no", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "ACME availability flag - true = yes; false = no",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean acmeAvailable;
 
     @Schema(description = "ACME Directory URL")

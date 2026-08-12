@@ -18,7 +18,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class RdnEntry {
 
-    @Schema(description = "RDN attribute type: a short code (e.g. \"CN\") or a dotted-decimal OID; resolved via the OID registry", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "RDN attribute type: a short code (e.g. \"CN\") or a dotted-decimal OID; resolved via the OID registry",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "RDN type is required")
     private String type;
 

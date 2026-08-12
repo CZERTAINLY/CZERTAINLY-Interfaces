@@ -33,13 +33,16 @@ public class LocationDto extends NameAndUuidDto {
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttribute> customAttributes;
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
-    @Schema(description = "If the location supports multiple Certificates", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "If the location supports multiple Certificates", defaultValue = "false",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean supportMultipleEntries;
 
-    @Schema(description = "If the location supports key management operations", defaultValue = "false", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "If the location supports key management operations", defaultValue = "false",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean supportKeyManagement;
 
     @Schema(description = "List of Certificates in Location", requiredMode = Schema.RequiredMode.REQUIRED)

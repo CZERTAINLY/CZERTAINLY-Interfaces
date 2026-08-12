@@ -10,8 +10,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 public class ProxyUpdateRequestDto {
 
-    @Schema(description = "Detailed description of the Proxy", examples = {
-            "This proxy is used for connecting to external connectors in DMZ network"}, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Detailed description of the Proxy",
+            examples = {"This proxy is used for connecting to external connectors in DMZ network"},
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
 
     @Override

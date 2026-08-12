@@ -16,7 +16,8 @@ import lombok.ToString;
 @ToString
 public class CertificateRevocationListRequestDto {
 
-    @Schema(description = "If true, the delta CRL is returned, otherwise the full CRL is returned", requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
+    @Schema(description = "If true, the delta CRL is returned, otherwise the full CRL is returned",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
     private boolean delta;
 
     @Schema(description = "List of RA Profiles attributes", requiredMode = Schema.RequiredMode.REQUIRED)

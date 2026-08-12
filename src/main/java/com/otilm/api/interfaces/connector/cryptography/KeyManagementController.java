@@ -28,7 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/cryptographyProvider/tokens/{uuid}/keys")
-@Tag(name = "Key Management", description = "Key Management API for cryptographic key management operations. Each key is managed by a specific token that is connected through the Token instance.")
+@Tag(name = "Key Management",
+        description = "Key Management API for cryptographic key management operations. Each key is managed by a specific token that is connected through the Token instance.")
 public interface KeyManagementController extends AuthProtectedConnectorController {
 
     @Operation(summary = "List of Attributes to create a Secret Key")
@@ -41,9 +42,11 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
             @Parameter(description = "Token instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Validate list of Attributes to create a Secret Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/secret/attributes/validate", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     /**
@@ -54,9 +57,11 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
             @RequestBody List<RequestAttribute> attributes) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Create a Secret Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Key created"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Key created"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/secret", consumes = {"application/json"}, produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance not found
@@ -74,9 +79,11 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
             @Parameter(description = "Token instance UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Validate list of Attributes to create a Key Pair")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Attributes validated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Attributes validated"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/pair/attributes/validate", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     /**
@@ -87,9 +94,11 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
             @RequestBody List<RequestAttribute> attributes) throws NotFoundException, ValidationException;
 
     @Operation(summary = "Create a Key Pair, Public and Private Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Key Pair created"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Key Pair created"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/pair", consumes = {"application/json"}, produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance not found
@@ -98,9 +107,11 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
             @RequestBody CreateKeyRequestDto request) throws NotFoundException;
 
     @Operation(summary = "List Keys for the Token instance")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Keys listed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Keys listed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance not found
@@ -109,9 +120,11 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
             throws NotFoundException;
 
     @Operation(summary = "Get details about the Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Key data retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Key data retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{keyUuid}", produces = {"application/json"})
     /**
      * @throws NotFoundException Token instance or Key not found
@@ -120,9 +133,11 @@ public interface KeyManagementController extends AuthProtectedConnectorControlle
             @Parameter(description = "Key UUID") @PathVariable String keyUuid) throws NotFoundException;
 
     @Operation(summary = "Destroy a Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Key destroyed"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)), examples = {
-                    @ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Key destroyed"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(path = "/{keyUuid}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     /**

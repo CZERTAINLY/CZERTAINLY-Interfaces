@@ -14,7 +14,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AcmeProfileDto extends NameAndUuidDto {
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
     @Schema(description = "ACME Profile description", examples = {"Sample description"})
@@ -35,11 +36,11 @@ public class AcmeProfileDto extends NameAndUuidDto {
     private Boolean termsOfServiceChangeDisable;
     @Schema(description = "Order validity", example = "36000")
     private Integer validity;
-    @Schema(description = "ACME Directory URL", examples = {
-            "https://some-server.com/api/v1/protocols/acme/profile1/directory"})
+    @Schema(description = "ACME Directory URL",
+            examples = {"https://some-server.com/api/v1/protocols/acme/profile1/directory"})
     private String directoryUrl;
-    @Schema(description = "Changes of Terms of Service URL", examples = {
-            "https://some-company.com/termsOfService/change"})
+    @Schema(description = "Changes of Terms of Service URL",
+            examples = {"https://some-company.com/termsOfService/change"})
     private String termsOfServiceChangeUrl;
     @Schema(description = "Require Contact information for new Account", example = "true")
     private Boolean requireContact;
@@ -52,7 +53,8 @@ public class AcmeProfileDto extends NameAndUuidDto {
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttribute> customAttributes;
 
-    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsDto certificateAssociations;
 
     @Override

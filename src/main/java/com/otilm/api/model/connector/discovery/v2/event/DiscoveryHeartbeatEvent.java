@@ -22,11 +22,13 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscoveryHeartbeatEvent implements DiscoveryEvent {
 
-    @Schema(description = "Event type; this event's own discriminator field", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Event type; this event's own discriminator field",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "type is required")
     private DiscoveryEventType type = DiscoveryEventType.HEARTBEAT;
 
-    @Schema(description = "Timestamp at which the connector sent this heartbeat", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Timestamp at which the connector sent this heartbeat",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "sentAt is required")
     private OffsetDateTime sentAt;
 }

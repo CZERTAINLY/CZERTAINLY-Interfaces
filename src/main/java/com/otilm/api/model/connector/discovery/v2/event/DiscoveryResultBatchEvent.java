@@ -24,7 +24,8 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscoveryResultBatchEvent implements DiscoveryEvent {
 
-    @Schema(description = "Event type; this event's own discriminator field", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Event type; this event's own discriminator field",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "type is required")
     private DiscoveryEventType type = DiscoveryEventType.RESULT_BATCH;
 

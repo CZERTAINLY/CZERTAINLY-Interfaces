@@ -28,23 +28,39 @@ import org.springframework.web.bind.annotation.RequestParam;
         + "bound with specific RA Profile and it can be used by the SCEP clients to request operations on their specific "
         + "URL. These operations are always specific only for the RA Profile.")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDocument.class))),
-        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDocument.class))),
-        @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDocument.class))),
+        @ApiResponse(responseCode = "400", description = "Bad Request",
+                content = @Content(mediaType = "application/problem+json",
+                        schema = @Schema(implementation = ProblemDocument.class))),
+        @ApiResponse(responseCode = "401", description = "Unauthorized",
+                content = @Content(mediaType = "application/problem+json",
+                        schema = @Schema(implementation = ProblemDocument.class))),
+        @ApiResponse(responseCode = "403", description = "Forbidden",
+                content = @Content(mediaType = "application/problem+json",
+                        schema = @Schema(implementation = ProblemDocument.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content)})
 public interface ScepRaProfileController extends NoAuthController {
 
-    @Operation(summary = "SCEP Get Operations", externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1", url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
+    @Operation(summary = "SCEP Get Operations",
+            externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1",
+                    url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operation executed", content = @Content(schema = @Schema(description = "Response structure defined in RFC 8894, section 4", type = "string", format = "binary")))})
+            @ApiResponse(responseCode = "200", description = "Operation executed",
+                    content = @Content(
+                            schema = @Schema(description = "Response structure defined in RFC 8894, section 4",
+                                    type = "string", format = "binary")))})
     @GetMapping
     ResponseEntity<Object> doGet(@PathVariable String raProfileName, @RequestParam String operation,
             @RequestParam(required = false) @Schema(description = "Base64 encoded CMS data") String message)
             throws ScepException;
 
-    @Operation(summary = "SCEP Post Operations", externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1", url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
+    @Operation(summary = "SCEP Post Operations",
+            externalDocs = @ExternalDocumentation(description = "RFC 8894, section 4.1",
+                    url = "https://datatracker.ietf.org/doc/html/rfc8894/#section-4.1"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operation executed", content = @Content(schema = @Schema(description = "Response structure defined in RFC 8894, section 4", type = "string", format = "binary")))})
+            @ApiResponse(responseCode = "200", description = "Operation executed",
+                    content = @Content(
+                            schema = @Schema(description = "Response structure defined in RFC 8894, section 4",
+                                    type = "string", format = "binary")))})
     @PostMapping(consumes = MediaType.ALL_VALUE)
     ResponseEntity<Object> doPost(@PathVariable String raProfileName, @RequestParam String operation,
             @RequestBody @Schema(description = "Binary CMS data", type = "string", format = "binary") byte[] request)

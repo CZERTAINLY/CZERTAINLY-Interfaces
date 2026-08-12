@@ -15,8 +15,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 public class CredentialDto extends NameAndUuidDto implements Serializable {
 
-    @Schema(description = "Credential Kind", examples = {
-            "SoftKeyStore, Basic, ApiKey, etc"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Credential Kind", examples = {"SoftKeyStore, Basic, ApiKey, etc"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
     @Schema(description = "List of Credential Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -25,7 +25,8 @@ public class CredentialDto extends NameAndUuidDto implements Serializable {
     @Schema(description = "List of Custom Attributes")
     private List<ResponseAttribute> customAttributes = new ArrayList<>();
 
-    @Schema(description = "Enabled flag - true = enabled; false = disabled", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Enabled flag - true = enabled; false = disabled",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Boolean enabled;
 
     @Schema(description = "UUID of Credential provider Connector", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

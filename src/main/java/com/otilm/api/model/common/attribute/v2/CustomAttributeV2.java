@@ -24,7 +24,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Custom attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.", type = "object")
+@Schema(description = "Custom attribute allows to store and transfer dynamic data. Its content can be edited and send in requests to store.",
+        type = "object")
 @JsonDeserialize
 @JsonSerialize
 public class CustomAttributeV2 extends CustomAttribute {

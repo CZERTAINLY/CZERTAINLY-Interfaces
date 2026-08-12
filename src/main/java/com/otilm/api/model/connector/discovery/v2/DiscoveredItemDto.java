@@ -35,11 +35,13 @@ public class DiscoveredItemDto {
     @Positive(message = "sequence must be positive")
     private Long sequence;
 
-    @Schema(description = "Connector-side natural key that Core uses to dedupe this item across drains and retries", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Connector-side natural key that Core uses to dedupe this item across drains and retries",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "uniqueRef is required")
     private String uniqueRef;
 
-    @Schema(description = "Resource-specific payload; its concrete type is selected by resource", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Resource-specific payload; its concrete type is selected by resource",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "payload is required")
     @Valid
     private DiscoveredItemPayloadDto payload;
@@ -48,10 +50,12 @@ public class DiscoveredItemDto {
     // own, and no other List<MetadataAttribute> meta field in this codebase cascades either
     // (e.g. CertificateSignRequestDtoV3#meta) — payload is the only nested DTO here that needs it.
     @Schema(description = "Item metadata (platform convention). Where an item was found (e.g. IP and port, "
-            + "file path, HSM slot) belongs here as typed, labeled entries, never in payload.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "file path, HSM slot) belongs here as typed, labeled entries, never in payload.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<MetadataAttribute> meta;
 
-    @Schema(description = "Timestamp at which the connector discovered this item", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Timestamp at which the connector discovered this item",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private OffsetDateTime discoveredAt;
 
     /**

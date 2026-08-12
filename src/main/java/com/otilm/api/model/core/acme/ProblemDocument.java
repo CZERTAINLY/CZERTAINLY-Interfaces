@@ -16,8 +16,8 @@ public class ProblemDocument implements Serializable {
     /**
      * Type of the problem.
      */
-    @Schema(description = "Type of the ACME problem", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "notFound"})
+    @Schema(description = "Type of the ACME problem", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"notFound"})
     private String type;
 
     /**
@@ -29,16 +29,16 @@ public class ProblemDocument implements Serializable {
     /**
      * Details of the problem. These statements should be understandable by the user.
      */
-    @Schema(description = "ACME problem details", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "Requested object is not found"})
+    @Schema(description = "ACME problem details", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"Requested object is not found"})
     private String detail;
 
     /**
      * URL of the changes if something needs to be approved. Used in ACME to notify the new instance of Terms of Service
      * to be agreed by the client to continue with the ACME operations
      */
-    @Schema(description = "URL of the changes if something needs to be approved", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "https://some-company.com/instances/changes"})
+    @Schema(description = "URL of the changes if something needs to be approved",
+            requiredMode = Schema.RequiredMode.REQUIRED, examples = {"https://some-company.com/instances/changes"})
     private String instance;
 
     /**

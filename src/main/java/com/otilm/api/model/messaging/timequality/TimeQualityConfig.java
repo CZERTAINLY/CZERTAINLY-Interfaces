@@ -16,13 +16,15 @@ import lombok.Data;
 
 @Data
 @ValidNtpMinReachable
-@Schema(name = "TimeQualityConfig", description = "NTP-based time quality configuration carried within a configuration snapshot")
+@Schema(name = "TimeQualityConfig",
+        description = "NTP-based time quality configuration carried within a configuration snapshot")
 // Compared to TimeQualityConfigurationDto, accuracy is intentionally missing. It is only relevant for `TSTInfo`
 // construction and has no bearing on time quality monitoring.
 public class TimeQualityConfig implements Serializable, NtpConfiguration {
 
     @NotNull
-    @Schema(description = "Unique identifier of the time quality configuration", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Unique identifier of the time quality configuration",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID id;
 
     @NotBlank
@@ -30,30 +32,36 @@ public class TimeQualityConfig implements Serializable, NtpConfiguration {
     private String name;
 
     @NotEmpty
-    @Schema(description = "List of NTP server addresses used for time quality checks", requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"pool.ntp.org\", \"time.google.com\"]")
+    @Schema(description = "List of NTP server addresses used for time quality checks",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "[\"pool.ntp.org\", \"time.google.com\"]")
     private List<@NotBlank String> ntpServers;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Interval between NTP checks, in ISO 8601 duration format", requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.5S")
+    @Schema(description = "Interval between NTP checks, in ISO 8601 duration format",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.5S")
     private Duration ntpCheckInterval;
 
     @Positive
-    @Schema(description = "Number of NTP samples to take per server during each check", requiredMode = Schema.RequiredMode.REQUIRED, example = "3")
+    @Schema(description = "Number of NTP samples to take per server during each check",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "3")
     private int ntpSamplesPerServer;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Timeout for the entire NTP check cycle, in ISO 8601 duration format", requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.1S")
+    @Schema(description = "Timeout for the entire NTP check cycle, in ISO 8601 duration format",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "PT0.1S")
     private Duration ntpCheckTimeout;
 
     @Positive
-    @Schema(description = "Minimum number of NTP servers that must be reachable for the check to be valid", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    @Schema(description = "Minimum number of NTP servers that must be reachable for the check to be valid",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     private int ntpServersMinReachable;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Maximum allowed clock drift from the NTP reference time, in ISO 8601 duration format", requiredMode = Schema.RequiredMode.REQUIRED, example = "PT1S")
+    @Schema(description = "Maximum allowed clock drift from the NTP reference time, in ISO 8601 duration format",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "PT1S")
     private Duration maxClockDrift;
 
     @Schema(description = "Whether to guard against leap second anomalies. When true, signing operations are blocked for approximately two seconds around midnight "

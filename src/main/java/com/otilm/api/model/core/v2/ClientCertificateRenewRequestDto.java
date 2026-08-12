@@ -37,7 +37,8 @@ public class ClientCertificateRenewRequestDto {
     @EqualsAndHashCode.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Schema(description = "One-time authorization secret for renewing a certificate that has an active "
-            + "registration. Write-only; ignored for certificates without one.", accessMode = Schema.AccessMode.WRITE_ONLY)
+            + "registration. Write-only; ignored for certificates without one.",
+            accessMode = Schema.AccessMode.WRITE_ONLY)
     private String authorizationSecret;
 
     // Deliberate allowlist — avoid leaking CSR/request or secrets via logs.

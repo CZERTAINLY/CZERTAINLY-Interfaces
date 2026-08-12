@@ -11,10 +11,12 @@ import lombok.Data;
 public class AuthenticationSettingsDto implements SettingsDto {
 
     @NotNull
-    @Schema(description = "Disable using localhost user for requests from localhost", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Disable using localhost user for requests from localhost",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean disableLocalhostUser = false;
 
     @NotNull
-    @Schema(description = "Map of OAuth2 providers settings where key is provider name", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Map of OAuth2 providers settings where key is provider name",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<String, OAuth2ProviderSettingsDto> oAuth2Providers = new HashMap<>();
 }

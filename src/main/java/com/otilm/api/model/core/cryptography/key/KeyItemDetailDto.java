@@ -46,7 +46,8 @@ public class KeyItemDetailDto extends NameAndUuidDto {
     @Schema(description = "Key Usages", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<KeyUsage> usage;
 
-    @Schema(description = "Boolean describing if the key is enabled or not", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Boolean describing if the key is enabled or not",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean enabled;
 
     @Schema(description = "Key State", requiredMode = Schema.RequiredMode.REQUIRED)

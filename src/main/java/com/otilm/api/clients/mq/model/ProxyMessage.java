@@ -31,19 +31,19 @@ import lombok.ToString;
 @Builder
 public class ProxyMessage implements Serializable {
 
-    @Schema(description = "Proxy instance identifier (subscription name)", examples = {"proxy-001",
-            "proxy-azure-west"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Proxy instance identifier (subscription name)", examples = {"proxy-001", "proxy-azure-west"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String proxyId;
 
     @Schema(description = "Correlation ID echoed from request for matching. "
-            + "Empty for fire-and-forget messages like health checks.", examples = {
-                    "550e8400-e29b-41d4-a716-446655440000"})
+            + "Empty for fire-and-forget messages like health checks.",
+            examples = {"550e8400-e29b-41d4-a716-446655440000"})
     private String correlationId;
 
     @Schema(description = "Message type for routing. Uses RabbitMQ topic exchange format with '.' as segment separator. "
-            + "'health.check' for health check messages, or echoed from request for connector responses.", examples = {
-                    "health.check", "GET.v1.health",
-                    "POST.v1.authorityProvider.authorities"}, requiredMode = Schema.RequiredMode.REQUIRED)
+            + "'health.check' for health check messages, or echoed from request for connector responses.",
+            examples = {"health.check", "GET.v1.health", "POST.v1.authorityProvider.authorities"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String messageType;
 
     @Schema(description = "Timestamp of message creation (ISO8601)")

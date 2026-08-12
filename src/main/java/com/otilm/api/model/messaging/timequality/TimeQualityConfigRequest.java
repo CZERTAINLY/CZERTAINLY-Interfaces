@@ -9,15 +9,18 @@ import java.util.UUID;
 import lombok.Data;
 
 @Data
-@Schema(name = "TimeQualityConfigRequest", description = "Sent by Time Quality Monitor to Core to request the current time quality configuration snapshot")
+@Schema(name = "TimeQualityConfigRequest",
+        description = "Sent by Time Quality Monitor to Core to request the current time quality configuration snapshot")
 public class TimeQualityConfigRequest implements Serializable {
 
     @NotNull
-    @Schema(description = "Unique correlation identifier carried back in the matching TimeQualityConfigSnapshot so the requester can pair the response with this request", requiredMode = Schema.RequiredMode.REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")
+    @Schema(description = "Unique correlation identifier carried back in the matching TimeQualityConfigSnapshot so the requester can pair the response with this request",
+            requiredMode = Schema.RequiredMode.REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")
     private UUID correlationId;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @Schema(description = "Timestamp when the config request was sent, in ISO 8601 UTC format", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Timestamp when the config request was sent, in ISO 8601 UTC format",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Instant requestedAt;
 }

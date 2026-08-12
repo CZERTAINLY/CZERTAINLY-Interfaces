@@ -21,14 +21,16 @@ import lombok.ToString;
 @Builder
 public class ConnectorAuth implements Serializable {
 
-    @Schema(description = "Authentication type", examples = {"NONE", "BASIC", "API_KEY", "BEARER", "JWT",
-            "CERTIFICATE"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Authentication type",
+            examples = {"NONE", "BASIC", "API_KEY", "BEARER", "JWT", "CERTIFICATE"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String type;
 
     @ToString.Exclude
     @Schema(description = "Authentication attributes based on type. " + "BASIC: {username, password}. "
             + "API_KEY: {headerName, apiKey}. " + "BEARER/JWT: {token}. "
-            + "CERTIFICATE: {keystore, keystorePassword, truststore, truststorePassword}", requiredMode = Schema.RequiredMode.REQUIRED)
+            + "CERTIFICATE: {keystore, keystorePassword, truststore, truststorePassword}",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<String, Object> attributes;
 
 }

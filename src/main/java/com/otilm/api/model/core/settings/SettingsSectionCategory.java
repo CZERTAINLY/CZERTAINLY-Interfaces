@@ -21,8 +21,8 @@ public enum SettingsSectionCategory implements IPlatformEnum {
         VALUES = values();
     }
 
-    @Schema(description = "Setting section category", examples = {
-            "platform"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Setting section category", examples = {"platform"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
 
     @Schema(description = "Name", examples = {"Utils"})

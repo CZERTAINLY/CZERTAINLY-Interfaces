@@ -22,7 +22,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class CertificateRevocationRequestDtoV3 extends AuthorityV3ScopedRequestDto {
 
-    @Schema(description = "Base64 of cert to revoke. Serial + issuer DN parsed from this constitute the cert identity at the CA.", format = "byte", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Base64 of cert to revoke. Serial + issuer DN parsed from this constitute the cert identity at the CA.",
+            format = "byte", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "certificate is required for revoke")
     private String certificate;
 

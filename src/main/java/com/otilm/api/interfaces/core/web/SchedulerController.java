@@ -37,46 +37,58 @@ public interface SchedulerController extends AuthProtectedController {
     ScheduledJobsResponseDto listScheduledJobs(@Parameter(in = ParameterIn.QUERY) PaginationRequestDto pagination);
 
     @Operation(summary = "Scheduled job detail")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Scheduled job detail retrieved"),
-            @ApiResponse(responseCode = "404", description = "Scheduled job not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Scheduled job detail retrieved"),
+            @ApiResponse(responseCode = "404", description = "Scheduled job not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}", produces = {"application/json"})
     ScheduledJobDetailDto getScheduledJobDetail(
             @Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Edit Scheduled job")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Scheduled job updated"),
-            @ApiResponse(responseCode = "404", description = "Scheduled job not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Scheduled job updated"),
+            @ApiResponse(responseCode = "404", description = "Scheduled job not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PutMapping(path = "/{uuid}", consumes = {"application/json"}, produces = {"application/json"})
     ScheduledJobDetailDto updateScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid,
             @RequestBody UpdateScheduledJob request) throws NotFoundException, SchedulerException;
 
     @Operation(summary = "Delete Scheduled job")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Scheduled job deleted"),
-            @ApiResponse(responseCode = "404", description = "Scheduled job not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Scheduled job deleted"),
+            @ApiResponse(responseCode = "404", description = "Scheduled job not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(path = "/{uuid}", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid)
             throws NotFoundException;
 
     @Operation(summary = "Scheduled job history")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Scheduled job history retrieved"),
-            @ApiResponse(responseCode = "404", description = "Scheduled job not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Scheduled job history retrieved"),
+            @ApiResponse(responseCode = "404", description = "Scheduled job not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}/history", produces = {"application/json"})
     ScheduledJobHistoryResponseDto getScheduledJobHistory(
             @Parameter(in = ParameterIn.QUERY) PaginationRequestDto pagination,
             @Parameter(description = "Scheduled job UUID") @PathVariable String uuid) throws NotFoundException;
 
     @Operation(summary = "Enabling of Scheduled job")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Scheduled job enabled"),
-            @ApiResponse(responseCode = "404", description = "Scheduled job not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Scheduled job enabled"),
+            @ApiResponse(responseCode = "404", description = "Scheduled job not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PatchMapping(path = "/{uuid}/enable")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void enableScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid)
             throws NotFoundException, SchedulerException;
 
     @Operation(summary = "Disabling of Scheduled job")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Scheduled job disabled"),
-            @ApiResponse(responseCode = "404", description = "Scheduled job not found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Scheduled job disabled"),
+            @ApiResponse(responseCode = "404", description = "Scheduled job not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PatchMapping(path = "/{uuid}/disable")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void disableScheduledJob(@Parameter(description = "Scheduled job UUID") @PathVariable String uuid)

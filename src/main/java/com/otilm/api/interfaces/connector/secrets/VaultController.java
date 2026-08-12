@@ -27,9 +27,14 @@ public interface VaultController extends AuthProtectedConnectorController {
 
     @PostMapping(path = "/vaults", consumes = {MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "Check connection to Vault Instance")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault instance connected"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class))),
-            @ApiResponse(responseCode = "503", description = "Service Unavailable", content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE, schema = @Schema(implementation = ProblemDetailExtended.class)))})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Vault instance connected"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "503", description = "Service Unavailable",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void checkVaultConnection(
             @Parameter(description = "Vault attributes") @RequestBody List<RequestAttribute> attributes)
@@ -42,8 +47,8 @@ public interface VaultController extends AuthProtectedConnectorController {
 
     @Operation(summary = "List Vault Profile Attributes")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Vault Profile Attributes retrieved")})
-    @PostMapping(path = "/vaultProfiles/attributes", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/vaultProfiles/attributes", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
     List<BaseAttribute> listVaultProfileAttributes(
             @Parameter(description = "Vault attributes") @RequestBody List<RequestAttribute> attributes)
             throws NotFoundException;

@@ -31,16 +31,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v1/operations")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "502", description = "Connector Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error", content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 @Tag(name = "Legacy Client Operations", description = "Client API for managing End Entities and Certificates")
 public interface ClientOperationController extends AuthProtectedController {
 
     @Operation(summary = "Issue Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate issued")})
-    @PostMapping(path = "/{raProfileName}/certificate/issue", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/{raProfileName}/certificate/issue", consumes = {"application/json"},
+            produces = {"application/json"})
     ClientCertificateSignResponseDto issueCertificate(
             @Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody LegacyClientCertificateSignRequestDto request) throws NotFoundException, CertificateException,
@@ -48,8 +51,8 @@ public interface ClientOperationController extends AuthProtectedController {
 
     @Operation(summary = "Revoke Certificate")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate revoked")})
-    @PostMapping(path = "/{raProfileName}/certificate/revoke", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/{raProfileName}/certificate/revoke", consumes = {"application/json"},
+            produces = {"application/json"})
     void revokeCertificate(@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @RequestBody LegacyClientCertificateRevocationDto request) throws NotFoundException, ConnectorException;
 
@@ -76,8 +79,8 @@ public interface ClientOperationController extends AuthProtectedController {
 
     @Operation(summary = "Edit End Entity")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "End Entity edited")})
-    @PostMapping(path = "/{raProfileName}/endentity/{username}", consumes = {"application/json"}, produces = {
-            "application/json"})
+    @PostMapping(path = "/{raProfileName}/endentity/{username}", consumes = {"application/json"},
+            produces = {"application/json"})
     void editEndEntity(@Parameter(description = "RA Profile name") @PathVariable String raProfileName,
             @Parameter(description = "Username") @PathVariable String username,
             @RequestBody ClientEditEndEntityRequestDto request) throws NotFoundException, ConnectorException;

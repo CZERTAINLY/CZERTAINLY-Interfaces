@@ -5,7 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Objects;
 
-@Schema(description = "Codeblock attribute content to store encoded snippets of programming language code", type = "object")
+@Schema(description = "Codeblock attribute content to store encoded snippets of programming language code",
+        type = "object")
 public class CodeBlockAttributeContentV2 extends BaseAttributeContentV2<CodeBlockAttributeContentData> {
 
     @Schema(description = "CodeBlock attribute content data", requiredMode = Schema.RequiredMode.REQUIRED)

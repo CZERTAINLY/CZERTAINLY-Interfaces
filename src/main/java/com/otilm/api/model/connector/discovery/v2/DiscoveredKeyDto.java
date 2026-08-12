@@ -52,7 +52,8 @@ public class DiscoveredKeyDto implements DiscoveredItemPayloadDto {
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private final Resource resource = Resource.CRYPTOGRAPHIC_KEY;
 
-    @Schema(description = "Key type: whether this is a public, private, secret, or split key", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Key type: whether this is a public, private, secret, or split key",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "type is required")
     private KeyType type;
 
@@ -73,6 +74,7 @@ public class DiscoveredKeyDto implements DiscoveredItemPayloadDto {
 
     @Schema(description = "Base64-encoded public key material. Absent for "
             + NoPrivateKeyMaterial.TYPES_WITHOUT_A_PUBLIC_PART_NAMES
-            + " discoveries, where only existence and intrinsic metadata are ever reported", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + " discoveries, where only existence and intrinsic metadata are ever reported",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String publicKey;
 }

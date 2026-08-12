@@ -11,8 +11,10 @@ import java.util.Objects;
 import lombok.Data;
 
 @Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "resource", visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.AUTHORITY),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "resource",
+        visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.AUTHORITY),
         @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.ENTITY),
         @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.LOCATION),
         @JsonSubTypes.Type(value = ResourceSimpleContentData.class, name = Resource.Codes.CREDENTIAL),

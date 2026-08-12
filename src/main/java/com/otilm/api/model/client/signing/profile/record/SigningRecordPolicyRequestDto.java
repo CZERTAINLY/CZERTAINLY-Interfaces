@@ -5,7 +5,8 @@ import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 @Data
-@Schema(name = "SigningRecordPolicyRequestDto", description = "Per-profile policy for what to record about each signing operation")
+@Schema(name = "SigningRecordPolicyRequestDto",
+        description = "Per-profile policy for what to record about each signing operation")
 public class SigningRecordPolicyRequestDto {
 
     @Schema(description = "Master switch: when false, no Signing Record is created at all for this profile, "
@@ -32,6 +33,7 @@ public class SigningRecordPolicyRequestDto {
     @Schema(description = "Delete the signed document after CSC API async retrieval succeeds")
     private boolean deleteAfterRetrieval;
 
-    @Schema(description = "Persistence-mode trade-off between latency and durability", defaultValue = "deferred_durable")
+    @Schema(description = "Persistence-mode trade-off between latency and durability",
+            defaultValue = "deferred_durable")
     private SigningRecordPersistenceMode persistenceMode = SigningRecordPersistenceMode.DEFERRED_DURABLE;
 }

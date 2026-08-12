@@ -17,7 +17,8 @@ public class SearchFilterRequestDto {
     private FilterFieldSource fieldSource;
 
     @Schema(description = "Field identifier of search filter. List of available fields with their identifiers can be retrieved from corresponding endpoint "
-            + "`GET /v1/{resource}/search`, e.g.: [**GET /v1/certificates/search**](../core-certificate/#tag/Certificate-Inventory/operation/getSearchableFieldInformation)", requiredMode = Schema.RequiredMode.REQUIRED)
+            + "`GET /v1/{resource}/search`, e.g.: [**GET /v1/certificates/search**](../core-certificate/#tag/Certificate-Inventory/operation/getSearchableFieldInformation)",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String fieldIdentifier;
 
     @Schema(description = "Condition for the search filter", requiredMode = Schema.RequiredMode.REQUIRED)

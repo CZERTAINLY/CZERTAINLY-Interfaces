@@ -15,7 +15,8 @@ public class KeyValueSecretContent extends SecretContent {
 
     @NotNull
     @ToString.Exclude
-    @Schema(description = "Key-Value pairs stored as the secret content, represented by JSON object", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Key-Value pairs stored as the secret content, represented by JSON object",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<String, Object> content;
 
     public KeyValueSecretContent() {

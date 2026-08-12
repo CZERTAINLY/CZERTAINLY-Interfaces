@@ -13,8 +13,8 @@ public enum RsaEncryptionScheme implements IPlatformEnum {
     PKCS1_v1_5("PKCS1-v1_5", "PKCS#1 v1.5", "Deterministic RSA encryption scheme"),
     OAEP("OAEP", "OAEP", "Optimal Asymmetric Encryption Padding");
 
-    @Schema(description = "Type of the RSA encryption scheme", examples = {
-            "OAEP"}, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type of the RSA encryption scheme", examples = {"OAEP"},
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private final String code;
     private final String label;
     private final String description;

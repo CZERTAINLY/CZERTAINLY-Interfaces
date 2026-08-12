@@ -27,6 +27,7 @@ public class ScepProfileDetailDto extends ScepProfileDto {
     private String intuneApplicationId;
 
     @Valid
-    @Schema(description = "Associations to set for certificates issued by the protocol", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Associations to set for certificates issued by the protocol",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private ProtocolCertificateAssociationsDto certificateAssociations;
 }

@@ -21,20 +21,25 @@ import lombok.Data;
 @Schema(description = "Core-side value-source binding onto a request-attribute definition; binds by attribute UUID (name fallback).")
 public class ValueSourceBindingDto {
 
-    @Schema(description = "UUID of the target attribute definition; primary binding key", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUID of the target attribute definition; primary binding key",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String attributeUuid;
 
-    @Schema(description = "Name of the target attribute definition; fallback binding key when the UUID is absent or rotated", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Name of the target attribute definition; fallback binding key when the UUID is absent or rotated",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String attributeName;
 
-    @Schema(description = "Value-source provider type to bind onto the target definition", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Value-source provider type to bind onto the target definition",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Value-source binding valueSourceType is required")
     private ValueSourceType valueSourceType;
 
-    @Schema(description = "Reference to a registered collection/source; used by collection-style value sources", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Reference to a registered collection/source; used by collection-style value sources",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String collectionRef;
 
-    @ArraySchema(arraySchema = @Schema(description = "Optional cascading dependency parameters (from other attributes)", requiredMode = Schema.RequiredMode.NOT_REQUIRED))
+    @ArraySchema(arraySchema = @Schema(description = "Optional cascading dependency parameters (from other attributes)",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @Valid
     private List<SourceParam> params;
 

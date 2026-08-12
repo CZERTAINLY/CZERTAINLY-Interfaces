@@ -33,13 +33,15 @@ public class UpdateUserRequestDto {
     @Schema(description = "Base64 content of the user certificate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String certificateData;
 
-    @Schema(description = "UUID of the existing certificate in the inventory. Mandatory if certificate data is not provided", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "UUID of the existing certificate in the inventory. Mandatory if certificate data is not provided",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String certificateUuid;
 
     @Schema(description = "List of Custom Attributes")
     private List<RequestAttribute> customAttributes;
 
-    @Schema(description = "List of Custom Attributes set for the user certificate, if a new certificate is uploaded. Ignored if the certificate already exists in the inventory (matched by UUID or fingerprint).", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "List of Custom Attributes set for the user certificate, if a new certificate is uploaded. Ignored if the certificate already exists in the inventory (matched by UUID or fingerprint).",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> certificateCustomAttributes;
 
     @Override

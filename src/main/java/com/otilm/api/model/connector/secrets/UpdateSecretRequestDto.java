@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 public class UpdateSecretRequestDto implements SecretOperationRequest {
 
     @NotBlank
-    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED, examples = {
-            "MyServerCredentials"})
+    @Schema(description = "Name of the secret", requiredMode = Schema.RequiredMode.REQUIRED,
+            examples = {"MyServerCredentials"})
     private String name;
 
     @Valid

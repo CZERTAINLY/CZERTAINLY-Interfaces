@@ -16,8 +16,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Setter
 @Getter
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", defaultImpl = DataAttributeV2.class, visible = true)
-@JsonSubTypes({@JsonSubTypes.Type(value = DataAttributeV2.class, name = AttributeType.Codes.DATA),
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type",
+        defaultImpl = DataAttributeV2.class, visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DataAttributeV2.class, name = AttributeType.Codes.DATA),
         @JsonSubTypes.Type(value = GroupAttributeV2.class, name = AttributeType.Codes.GROUP),
         @JsonSubTypes.Type(value = InfoAttributeV2.class, name = AttributeType.Codes.INFO),
         @JsonSubTypes.Type(value = MetadataAttributeV2.class, name = AttributeType.Codes.META),
