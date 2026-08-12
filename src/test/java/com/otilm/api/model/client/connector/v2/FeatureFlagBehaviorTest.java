@@ -20,7 +20,7 @@ class FeatureFlagBehaviorTest {
         assertEquals(FeatureFlag.FeatureFlagBehavior.INFORMATIONAL, FeatureFlag.OPEN_METRICS.getBehavior());
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.SECRET_VERSIONING.getBehavior());
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.SECRET_ROTATION.getBehavior());
-        assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.CONTENT_SIGNING.getBehavior());
+        assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.DOCUMENT_SIGNING.getBehavior());
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.TIMESTAMPING.getBehavior());
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.CERTIFICATE_REGISTRATION.getBehavior());
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.CERTIFICATE_STATUS_POLLING.getBehavior());

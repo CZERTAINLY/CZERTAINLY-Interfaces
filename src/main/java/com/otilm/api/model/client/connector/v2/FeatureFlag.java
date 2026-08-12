@@ -34,7 +34,7 @@ public enum FeatureFlag implements IPlatformEnum {
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SECRET)),
     SECRET_ROTATION("secretRotation", "Secret Rotation", "Supports triggering rotation of secrets",
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SECRET)),
-    CONTENT_SIGNING("contentSigning", "Content Signing", "Supports content signing workflows",
+    DOCUMENT_SIGNING("documentSigning", "Document Signing", "Supports document signing workflows",
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SIGNING, ConnectorInterface.SIGNATURE_FORMATTING)),
     TIMESTAMPING("timestamping", "Timestamping", "Supports timestamping of signatures", FeatureFlagBehavior.ENFORCED,
             List.of(ConnectorInterface.SIGNING, ConnectorInterface.SIGNATURE_FORMATTING)),

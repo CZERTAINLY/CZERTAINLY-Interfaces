@@ -16,7 +16,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
 @JsonSubTypes({@Type(value = TimestampingFormatDtbsRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
-        @Type(value = ContentSigningFormatDtbsRequestDto.class, name = SigningWorkflowType.Codes.CONTENT_SIGNING),})
+        @Type(value = DocumentSigningFormatDtbsRequestDto.class, name = SigningWorkflowType.Codes.DOCUMENT_SIGNING),})
 @Schema(implementation = FormatDtbsInterface.class)
 public abstract class FormatDtbsRequestDto implements FormatDtbsInterface {
 
