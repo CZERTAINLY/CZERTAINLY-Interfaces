@@ -21,9 +21,9 @@ import java.io.Serializable;
  */
 @Schema(name = "WorkflowRequestInterface", description = "Workflow configuration request specific to the signing workflow type", type = "object", discriminatorProperty = "type", discriminatorMapping = {
         @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING, schema = TimestampingWorkflowRequestDto.class),
-        @DiscriminatorMapping(value = SigningWorkflowType.Codes.CONTENT_SIGNING, schema = ContentSigningWorkflowRequestDto.class),
+        @DiscriminatorMapping(value = SigningWorkflowType.Codes.DOCUMENT_SIGNING, schema = DocumentSigningWorkflowRequestDto.class),
         @DiscriminatorMapping(value = SigningWorkflowType.Codes.RAW_SIGNING, schema = RawSigningWorkflowRequestDto.class),}, oneOf = {
-                TimestampingWorkflowRequestDto.class, ContentSigningWorkflowRequestDto.class,
+                TimestampingWorkflowRequestDto.class, DocumentSigningWorkflowRequestDto.class,
                 RawSigningWorkflowRequestDto.class,})
 public interface WorkflowRequestInterface extends Serializable {
 
