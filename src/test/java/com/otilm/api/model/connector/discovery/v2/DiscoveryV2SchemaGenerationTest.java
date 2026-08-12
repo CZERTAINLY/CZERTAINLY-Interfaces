@@ -212,8 +212,8 @@ class DiscoveryV2SchemaGenerationTest {
 
         Schema<?> page = resolved.referencedSchemas.get("PaginationResponseDtoDiscoveryItemDto");
         assertNotNull(page, "no page component was generated");
-        assertEquals(List.of("items", "itemsPerPage", "pageNumber", "totalPages", "totalItems"),
-                List.copyOf(page.getProperties().keySet()));
+        assertEquals(java.util.Set.of("items", "itemsPerPage", "pageNumber", "totalPages", "totalItems"),
+                page.getProperties().keySet(), "property order is not part of the OpenAPI contract, names are");
 
         Schema<?> payload = resolved.referencedSchemas.get("DiscoveredItemPayload");
         assertNotNull(payload, "the item payload union did not survive into the page's referenced schemas");

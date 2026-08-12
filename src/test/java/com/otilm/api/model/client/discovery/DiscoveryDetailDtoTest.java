@@ -38,7 +38,6 @@ class DiscoveryDetailDtoTest {
 
     @Test
     void roundTripsAllFourV2Fields() throws Exception {
-        // given
         DiscoveryResourceProgressDto keyProgress = new DiscoveryResourceProgressDto();
         keyProgress.setProcessed(3L);
         DiscoveryProgressDto progress = new DiscoveryProgressDto();
@@ -54,18 +53,16 @@ class DiscoveryDetailDtoTest {
         dto.setRunMessages(List.of("host 10.0.0.7 refused the connection", "slot 3 unreadable"));
         dto.setEffectiveCapabilities(List.of(DiscoveryResourceCapability.STOP_RESUME));
 
-        // when
         String json = mapper.writeValueAsString(dto);
         DiscoveryDetailDto back = mapper.readValue(json, DiscoveryDetailDto.class);
 
-        // then — the four properties the frontend generates its types from, by name: a round-trip
+        // the four properties the frontend generates its types from, by name: a round-trip
         // alone would survive a rename, since it renames both ends at once
         assertTrue(json.contains("\"resources\":"), json);
         assertTrue(json.contains("\"progress\":"), json);
         assertTrue(json.contains("\"runMessages\":"), json);
         assertTrue(json.contains("\"effectiveCapabilities\":"), json);
 
-        // and
         assertEquals(List.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY), back.getResources());
         assertEquals(11L, back.getProgress().getProcessed());
         assertEquals(40L, back.getProgress().getTotalEstimate());
@@ -78,7 +75,6 @@ class DiscoveryDetailDtoTest {
 
     @Test
     void resourceAndCapabilityValuesUseWireCodes() throws Exception {
-        // given
         DiscoveryResourceProgressDto certProgress = new DiscoveryResourceProgressDto();
         certProgress.setProcessed(1L);
         DiscoveryProgressDto progress = new DiscoveryProgressDto();
@@ -89,10 +85,9 @@ class DiscoveryDetailDtoTest {
         dto.setProgress(progress);
         dto.setEffectiveCapabilities(List.of(DiscoveryResourceCapability.STOP_RESUME));
 
-        // when
         String json = mapper.writeValueAsString(dto);
 
-        // then — codes on the resources list, on the byResource map keys, and on the capability
+        // codes on the resources list, on the byResource map keys, and on the capability
         assertTrue(json.contains("\"resources\":[\"keys\"]"), json);
         assertTrue(json.contains("\"certificates\""), json);
         assertTrue(json.contains("\"effectiveCapabilities\":[\"stopResume\"]"), json);
@@ -102,14 +97,13 @@ class DiscoveryDetailDtoTest {
 
     @Test
     void omitsV2FieldsForAV1Run() throws Exception {
-        // given — a run against a v1 connector: none of the four fields apply
+        // a run against a v1 connector: none of the four fields apply
         DiscoveryDetailDto dto = v1Run();
 
-        // when
         String json = mapper.writeValueAsString(dto);
         DiscoveryDetailDto back = mapper.readValue(json, DiscoveryDetailDto.class);
 
-        // then — absent from the payload entirely
+        // absent from the payload entirely
         assertFalse(json.contains("resources"), json);
         assertFalse(json.contains("progress"), json);
         assertFalse(json.contains("runMessages"), json);
@@ -122,8 +116,8 @@ class DiscoveryDetailDtoTest {
 
     @Test
     void keepsEmittingTheExistingNullableV1Fields() throws Exception {
-        // A class-level @JsonInclude(NON_NULL) would have been the lazy way to omit the new fields,
-        // and would have silently dropped these from every v1 response. Pin that it did not happen.
+        // @JsonInclude(NON_NULL) must stay field-scoped on the v2 additions: class-scoped it would
+        // silently drop these nullable v1 fields from every response.
         String json = mapper.writeValueAsString(v1Run());
 
         assertTrue(json.contains("\"message\":null"), json);

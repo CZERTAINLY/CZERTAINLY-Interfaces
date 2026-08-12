@@ -22,10 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * not a style question: it makes the pair unusable together, and it surfaces only once a consumer tries, in another
  * repository, after this one has published.
  *
- * <p>
- * This is a real regression, not a hypothetical. Renaming the client create request to {@code DiscoveryRequestDto}
- * collided with the long-standing connector-side {@code DiscoveryRequestDto} and broke Core's compile at exactly that
- * mapping method. The list projection is named {@code DiscoveryListDto} instead.
  */
 class DiscoveryDtoNameCollisionTest {
 

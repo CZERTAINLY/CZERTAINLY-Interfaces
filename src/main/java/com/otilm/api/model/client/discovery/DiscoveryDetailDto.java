@@ -69,32 +69,34 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
 
     @Schema(description = "Resource types this run targets, as resource wire codes (e.g. "
             + "\"certificates\", \"keys\"). Omitted for a run against a v1 connector, which "
-            + "has no notion of resource types and always discovers certificates only.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "has no notion of resource types and always discovers certificates only.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Resource> resources;
 
     @Schema(description = "Progress counters reported by the connector, with an optional per-resource "
             + "breakdown. Omitted when the run is against a v1 connector, or when the connector "
             + "reports no progress at all. Individual counters inside it are independently "
-            + "optional — a connector that cannot estimate a total still reports what it has "
-            + "processed.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "optional — a connector that cannot estimate a total still reports what it has " + "processed.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private DiscoveryProgressDto progress;
 
     @Schema(description = "Advisory messages collected over the run's lifetime — non-fatal connector "
             + "errors and per-phase failure reasons — newest last. Distinct from message, which "
             + "carries the single summary reason for the run's current status: entries here do "
-            + "not imply the run failed, and a run can accumulate them and still complete.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "not imply the run failed, and a run can accumulate them and still complete.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> runMessages;
 
-    @Schema(description = "Capabilities available on this run, so a client can decide whether the stop "
-            + "and resume operations exist at all without reasoning about connector feature "
-            + "flags itself. These are the connector's interface-level capabilities; narrowing "
-            + "them by the run's resource types arrives with the per-resource enforcement that "
-            + "needs it, and can only ever remove entries, never add them. Omitted for a run "
-            + "against a v1 connector, which supports none of them; an empty list says the same "
-            + "for a v2 connector.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Capabilities effective for this run: the intersection of what the connector's "
+            + "discovery interface supports across every resource type the run targets, so a "
+            + "client can decide whether the stop and resume operations exist for this run "
+            + "without reasoning about connector feature flags itself. A capability any targeted "
+            + "resource lacks is not listed. Omitted for a run against a v1 connector, which "
+            + "supports none of them; an empty list says the same for a v2 connector.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<DiscoveryResourceCapability> effectiveCapabilities;
 }

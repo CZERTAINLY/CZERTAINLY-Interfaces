@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.otilm.api.model.common.PaginationResponseDto;
+import com.otilm.api.model.common.attribute.v3.MetadataAttributeV3;
 import com.otilm.api.model.connector.discovery.v2.DiscoveredCertificateDto;
 import com.otilm.api.model.connector.discovery.v2.DiscoveredKeyDto;
 import com.otilm.api.model.core.auth.Resource;
@@ -18,6 +19,7 @@ import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,6 +54,9 @@ class DiscoveryItemPageTest {
         DiscoveryItemDto item = certificateItem();
         item.setDiscoveredAt(OffsetDateTime.of(2026, 8, 4, 10, 30, 0, 0, ZoneOffset.UTC));
         item.setProcessedError("key algorithm not supported");
+        MetadataAttributeV3 where = new MetadataAttributeV3();
+        where.setName("discoverySource");
+        item.setMeta(List.of(where));
         item.setNewlyDiscovered(true);
         item.setProcessed(true);
         item.setInventoryUuid(null);
@@ -88,6 +93,8 @@ class DiscoveryItemPageTest {
         assertEquals("key algorithm not supported", back.getItems().get(0).getProcessedError());
         assertNull(back.getItems().get(0).getInventoryUuid(),
                 "an item whose processing failed never produced an inventory object");
+        assertEquals("discoverySource", back.getItems().get(0).getMeta().get(0).getName(),
+                "the provider-reported location context must survive the round trip");
         assertTrue(back.getItems().get(0).isNewlyDiscovered());
         assertTrue(back.getItems().get(0).isProcessed());
 
@@ -96,6 +103,9 @@ class DiscoveryItemPageTest {
         JsonNode emitted = mapper.valueToTree(page).get("items").get(0);
         assertTrue(emitted.has("newlyDiscovered"), emitted.toString());
         assertTrue(emitted.has("processed"), emitted.toString());
+        // NON_NULL at class level: the schema promises absence, not null, for what never happened.
+        assertFalse(emitted.has("inventoryUuid"), emitted.toString());
+        assertTrue(emitted.has("meta"), emitted.toString());
     }
 
     /**
@@ -140,10 +150,9 @@ class DiscoveryItemPageTest {
     }
 
     /**
-     * Asserted inside the payload subtree, not against the whole document. A substring check for
-     * {@code "resource":"certificates"} anywhere in the JSON is satisfied by {@link DiscoveryItemDto#getResource()}, a
-     * different field — verified: it passes with {@code payload} set to null, so it proves nothing about the
-     * discriminator it is named for.
+     * Asserted inside the payload subtree, not against the whole document: a document-wide match for
+     * {@code "resource":"certificates"} is satisfied by the item-level derived {@code resource}, a different field, and
+     * so constrains nothing about the payload discriminator.
      */
     @Test
     void itemPayloadCarriesItsOwnResourceWireCode() throws Exception {

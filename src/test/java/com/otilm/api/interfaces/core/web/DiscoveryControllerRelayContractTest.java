@@ -44,7 +44,8 @@ class DiscoveryControllerRelayContractTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"listDiscoveryResources,/{connectorUuid}/resources",
+    @CsvSource({
+            "listDiscoveryResources,/{connectorUuid}/resources",
             "getDiscoveryAttributes,/{connectorUuid}/attributes",
             "getDiscoveryResourceAttributes,/{connectorUuid}/{resource}/attributes"})
     void relayIsAGetOnItsDocumentedPath(String name, String expectedPath) {

@@ -44,7 +44,6 @@ class DiscoveryDtoTest {
 
     @Test
     void roundTripsResourcesAndResourceAttributes() throws Exception {
-        // given
         RequestAttributeV2 attribute = new RequestAttributeV2();
         attribute.setName("keyStoreType");
         DiscoveryDto dto = new DiscoveryDto();
@@ -54,11 +53,9 @@ class DiscoveryDtoTest {
         dto.setResources(List.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY));
         dto.setResourceAttributes(Map.of(Resource.CRYPTOGRAPHIC_KEY, List.of(attribute)));
 
-        // when
         String json = mapper.writeValueAsString(dto);
         DiscoveryDto back = mapper.readValue(json, DiscoveryDto.class);
 
-        // then
         assertEquals(List.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY), back.getResources());
         assertTrue(back.getResourceAttributes().containsKey(Resource.CRYPTOGRAPHIC_KEY));
         assertEquals("keyStoreType", back.getResourceAttributes().get(Resource.CRYPTOGRAPHIC_KEY).get(0).getName());
@@ -66,15 +63,13 @@ class DiscoveryDtoTest {
 
     @Test
     void resourcesAndResourceAttributeKeysUseWireCodesNotEnumNames() throws Exception {
-        // given
         DiscoveryDto dto = new DiscoveryDto();
         dto.setResources(List.of(Resource.CRYPTOGRAPHIC_KEY));
         dto.setResourceAttributes(Map.of(Resource.CERTIFICATE, List.of()));
 
-        // when
         String json = mapper.writeValueAsString(dto);
 
-        // then — the wire carries codes under the published property names; the Java member names of
+        // the wire carries codes under the published property names; the Java member names of
         // neither the fields nor the enum may leak into the contract
         assertTrue(json.contains("\"resources\":[\"keys\"]"), json);
         assertTrue(json.contains("\"resourceAttributes\":{\"certificates\":[]}"), json);
@@ -84,35 +79,33 @@ class DiscoveryDtoTest {
 
     @Test
     void omitsV2FieldsWhenUnset() throws Exception {
-        // given — a create request that says nothing about resources
+        // a create request that says nothing about resources
         DiscoveryDto dto = new DiscoveryDto();
         dto.setName("nightly-scan");
         dto.setKind("IP-HostName");
 
-        // when
         String json = mapper.writeValueAsString(dto);
 
-        // then — absent, not null: a v1 consumer's request shape is unchanged
+        // absent, not null: a v1 consumer's request shape is unchanged
         assertFalse(json.contains("resources"), json);
         assertFalse(json.contains("resourceAttributes"), json);
     }
 
     @Test
     void v1OnlyPayloadStillDeserializesAndValidates() {
-        // when
         DiscoveryDto dto = assertDoesNotThrowDeserializing();
 
-        // then — the v1 fields survive
+        // the v1 fields survive
         assertEquals("nightly-scan", dto.getName());
         assertEquals("IP-HostName", dto.getKind());
         assertEquals(1, dto.getTriggers().size());
         assertEquals(UUID.fromString("b9b09548-a97c-4c6a-a06a-e4ee6fc2da98"), dto.getTriggers().get(0));
 
-        // and — the v2 fields are simply absent, never defaulted into something the caller did not ask for
+        // the v2 fields are simply absent, never defaulted into something the caller did not ask for
         assertNull(dto.getResources());
         assertNull(dto.getResourceAttributes());
 
-        // and — no constraint fires on a body that omits them
+        // no constraint fires on a body that omits them
         Set<ConstraintViolation<DiscoveryDto>> violations = VALIDATOR.validate(dto);
         assertTrue(violations.isEmpty(), "a v1-only create request must stay valid; violations: " + violations);
     }
