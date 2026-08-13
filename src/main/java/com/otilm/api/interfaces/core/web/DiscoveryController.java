@@ -47,15 +47,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Core-web discovery management: run CRUD plus the discovery v2 additions — a resource-agnostic item listing, three
- * connector-keyed relay endpoints and three run-lifecycle operations. Two rules are shared across those additions and
- * stated once here.
+ * connector-keyed relay endpoints and three run-lifecycle operations.
  *
  * <p>
  * <b>Connector-keyed relays.</b> {@link #listDiscoveryResources}, {@link #getDiscoveryAttributes} and
  * {@link #getDiscoveryResourceAttributes} describe a Discovery Provider before any run exists. They live on this
  * controller rather than {@code ConnectorController} because they are specific to one provider interface, while that
- * controller's attribute endpoints are generic across function groups and cannot express a resource dimension — the
- * same split {@code AuthorityInstanceController} already uses.
+ * controller's attribute endpoints are generic across function groups and cannot express a resource dimension.
  *
  * <p>
  * <b>Run-lifecycle legality.</b> Stop, resume and cancel share one legality matrix. Read {@code inProgress} as covering
@@ -72,8 +70,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Once a run reaches {@code processing} the Discovery Provider owns nothing and the remaining work is not abortable,
  * which is why all three are refused there as well as in a terminal status. Every refusal is a 422, whether the run's
  * status makes the operation illegal or the run's Provider does not support it at all — the same
- * {@code ValidationException} shape the platform uses for every other illegal state transition, such as cancelling a
- * certificate operation that is not pending.
+ * {@code ValidationException} shape the platform uses for every other illegal state transition.
  */
 @RequestMapping("/v1/discoveries")
 @Tag(name = "Discovery Management", description = "Discovery Management API")

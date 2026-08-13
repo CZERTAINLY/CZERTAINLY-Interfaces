@@ -36,7 +36,7 @@ class DiscoveryDtoNameCollisionTest {
     private static Set<String> typeNamesIn(Path packageDir) throws IOException {
         // Recursive on purpose. A nested package is a different import but not a different simple name, and a class
         // that needs one type from each side still cannot single-type-import two types called the same thing —
-        // which is the whole failure this guards. All twenty discovery v2 connector types live under `v2`, so
+        // which is the whole failure this guards. The discovery v2 connector types all live under `v2`, so
         // scanning the top level only would have left the guard blind to the package the feature actually grows in.
         try (Stream<Path> entries = Files.walk(packageDir)) {
             return entries

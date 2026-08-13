@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Covers the wire shape of {@code GET /v1/discoveries/{uuid}/items}, which returns
- * {@code PaginationResponseDto<DiscoveryItemDto>} — the same generic envelope eleven other core-web controllers already
- * page with, rather than a hand-rolled response DTO.
+ * {@code PaginationResponseDto<DiscoveryItemDto>} — the same generic envelope other core-web controllers already page
+ * with, rather than a hand-rolled response DTO.
  *
  * <p>
  * Worth testing despite the envelope being shared: nothing else in the platform puts a polymorphic payload inside it,
