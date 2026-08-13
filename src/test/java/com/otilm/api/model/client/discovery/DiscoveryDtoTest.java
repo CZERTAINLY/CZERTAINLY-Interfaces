@@ -111,4 +111,20 @@ class DiscoveryDtoTest {
         Set<ConstraintViolation<DiscoveryDto>> violations = VALIDATOR.validate(dto);
         assertTrue(violations.isEmpty(), "a v1-only create request must stay valid; violations: " + violations);
     }
+
+    /**
+     * The one bean-validated shape rule: @Size skips null, so only an explicit empty list can fire it. Everything
+     * connector-dependent (v2 requires the field, v1 refuses it) is Core's service boundary, not bean validation.
+     */
+    @Test
+    void explicitlyEmptyResourcesViolatesTheSizeConstraint() {
+        DiscoveryDto dto = new DiscoveryDto();
+        dto.setResources(List.of());
+
+        Set<ConstraintViolation<DiscoveryDto>> violations = VALIDATOR.validate(dto);
+        assertEquals(1, violations.size(),
+                "an explicit empty resources list must fail with exactly the @Size violation; got: " + violations);
+        assertTrue(violations.iterator().next().getMessage().contains("at least one resource type"),
+                "unexpected violation message: " + violations.iterator().next().getMessage());
+    }
 }

@@ -1,8 +1,10 @@
 package com.otilm.api.interfaces.core.web;
 
+import com.otilm.api.model.client.discovery.DiscoveryDto;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -148,6 +150,17 @@ class DiscoveryControllerContractTest {
         assertFalse(codes.contains("409"), "409 must not be documented on " + name
                 + " — the platform has no CONFLICT mapping for run state, refusals are 422");
         assertTrue(codes.contains("404"), "404 (Discovery not found) must be documented on " + name);
+    }
+
+    /**
+     * The jakarta constraints on {@link DiscoveryDto} are live only through this one token: without {@code @Valid} on
+     * the request body they document intent and enforce nothing.
+     */
+    @Test
+    void createRequestBodyIsBeanValidated() {
+        Parameter request = parameterOfType("createDiscovery", DiscoveryDto.class);
+        assertNotNull(request.getAnnotation(Valid.class),
+                "createDiscovery's request body must carry @Valid — the DTO's constraints are inert without it");
     }
 
     @Test

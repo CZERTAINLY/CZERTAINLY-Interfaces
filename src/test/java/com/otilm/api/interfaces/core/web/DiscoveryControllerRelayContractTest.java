@@ -1,13 +1,17 @@
 package com.otilm.api.interfaces.core.web;
 
 import com.otilm.api.model.core.auth.Resource;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -101,6 +106,27 @@ class DiscoveryControllerRelayContractTest {
         // codes instead of accepting any string; it binds by code, never by enum member name.
         assertNotNull(resource.getAnnotation(PathVariable.class),
                 "the resource must be a @PathVariable — it is a path segment, not a query param");
+    }
+
+    /**
+     * The two attribute relays exist only for Connectors implementing discovery v2, so each publishes the 422 a v1-only
+     * Connector answers. The resource listing never refuses: Core synthesizes the certificates entry for a v1
+     * Connector, so a documented 422 there would publish a refusal no implementation produces.
+     */
+    @Test
+    void attributeRelaysPublishTheV1RefusalAndTheListingDoesNot() {
+        assertTrue(documentedCodes("getDiscoveryAttributes").contains("422"),
+                "getDiscoveryAttributes must document 422 for a v1-only Connector");
+        assertTrue(documentedCodes("getDiscoveryResourceAttributes").contains("422"),
+                "getDiscoveryResourceAttributes must document 422 for a v1-only Connector");
+        assertFalse(documentedCodes("listDiscoveryResources").contains("422"),
+                "listDiscoveryResources cannot refuse — Core synthesizes the v1 entry instead");
+    }
+
+    private Set<String> documentedCodes(String name) {
+        ApiResponses responses = method(name).getAnnotation(ApiResponses.class);
+        assertNotNull(responses, "missing @ApiResponses on " + name);
+        return Arrays.stream(responses.value()).map(ApiResponse::responseCode).collect(Collectors.toSet());
     }
 
     /**

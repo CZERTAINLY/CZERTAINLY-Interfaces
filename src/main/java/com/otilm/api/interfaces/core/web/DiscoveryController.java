@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.security.cert.CertificateException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -157,7 +158,7 @@ public interface DiscoveryController extends AuthProtectedController {
             @ApiResponse(responseCode = "404", description = "Connector not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
-    ResponseEntity<?> createDiscovery(@RequestBody DiscoveryDto request) throws AlreadyExistException,
+    ResponseEntity<?> createDiscovery(@Valid @RequestBody DiscoveryDto request) throws AlreadyExistException,
             NotFoundException, CertificateException, InterruptedException, ConnectorException, AttributeException;
 
     @Operation(summary = "Delete Discovery")
@@ -216,8 +217,9 @@ public interface DiscoveryController extends AuthProtectedController {
      */
     @Operation(summary = "Get discoverable resources of a Discovery Provider",
             description = "Returns the resource types this Connector's discovery interface advertises, as "
-                    + "synced from the Connector. Empty for a Connector implementing only the v1 discovery "
-                    + "interface, which has no resource-type concept and always discovers certificates.")
+                    + "synced from the Connector. For a Connector implementing only the v1 discovery "
+                    + "interface, Core synthesizes the single entry \"certificates\" with no capabilities, "
+                    + "without calling the Connector — a client renders one shape for both generations.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Discoverable resources retrieved"),
             @ApiResponse(responseCode = "404", description = "Connector not found",
@@ -240,15 +242,20 @@ public interface DiscoveryController extends AuthProtectedController {
     @Operation(summary = "Get run-level Discovery Attributes from a Discovery Provider",
             description = "Relays the run-level attribute definitions from the Connector's discovery "
                     + "interface: the schema that configures a discovery run as a whole and applies to "
-                    + "every resource type the run targets.")
+                    + "every resource type the run targets. Exists only for Connectors implementing "
+                    + "discovery v2; for a v1 Connector, use the kind-scoped Connector attribute "
+                    + "endpoint, exactly as today.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Run-level Discovery Attributes received"),
             @ApiResponse(responseCode = "404", description = "Connector not found",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Connector does not implement the v2 discovery interface",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{connectorUuid}/attributes", produces = {"application/json"})
     List<BaseAttribute> getDiscoveryAttributes(
             @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid)
-            throws NotFoundException, ConnectorException;
+            throws ValidationException, NotFoundException, ConnectorException;
 
     /**
      * Relays the attribute schema refining one resource type from a Discovery Provider.
@@ -267,7 +274,9 @@ public interface DiscoveryController extends AuthProtectedController {
             @ApiResponse(responseCode = "200", description = "Per-resource Discovery Attributes received"),
             @ApiResponse(responseCode = "404", description = "Connector not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Resource is not discoverable by this Connector",
+            @ApiResponse(responseCode = "422",
+                    description = "Resource is not discoverable by this Connector, or the Connector does "
+                            + "not implement the v2 discovery interface",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{connectorUuid}/{resource}/attributes", produces = {"application/json"})

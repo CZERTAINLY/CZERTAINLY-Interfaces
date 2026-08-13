@@ -67,15 +67,17 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     // @JsonInclude(NON_NULL) rather than the class carrying it, so a v1 run's payload keeps
     // emitting its existing nullable fields (message, startTime, endTime, ...) exactly as before —
     // a class-level annotation would have silently changed the shape of every v1 response.
+    // resources and effectiveCapabilities are nonetheless always present: Core synthesizes both for a
+    // v1-connector run, so their NON_NULL only keeps a broken mapper's null off the wire as a loud
+    // absence rather than a quiet null.
 
     // The arraySchema indirection on the two typed lists is deliberate: a bare @Schema description on a
     // collection member lands on the items schema — a $ref to a shared component — and swagger-core hoists
     // it onto that component for every other API referencing it. arraySchema puts the text on the array.
-    @ArraySchema(arraySchema = @Schema(
-            description = "Resource types this run targets, as resource wire codes (e.g. "
-                    + "\"certificates\", \"keys\"). Omitted for a run against a v1 connector, which "
-                    + "has no notion of resource types and always discovers certificates only.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED))
+    @ArraySchema(arraySchema = @Schema(description = "Resource types this run targets, as resource wire codes (e.g. "
+            + "\"certificates\", \"keys\"). Always present: a run against a v1 connector reports "
+            + "[\"certificates\"], synthesized by Core, so a client never inspects the connector "
+            + "to learn what a run was after.", requiredMode = Schema.RequiredMode.REQUIRED))
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Resource> resources;
 
@@ -102,18 +104,18 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> runMessages;
 
-    @ArraySchema(
-            arraySchema = @Schema(
-                    description = "Capabilities effective for this run: the intersection of what the connector's "
-                            + "discovery interface supports across every resource type the run targets, so a "
-                            + "client can decide whether the stop and resume operations exist for this run "
-                            + "without reasoning about connector feature flags itself. A capability any targeted "
-                            + "resource lacks is not listed. Omitted for a run against a v1 connector, which "
-                            + "supports none of them; an empty list says the same for a v2 connector. Computed "
-                            + "from the connector's per-resource capabilities, where a null list is the "
-                            + "connector's shorthand for every capability it advertises — expanded before "
-                            + "intersecting, never treated as an empty set.",
-                    requiredMode = Schema.RequiredMode.NOT_REQUIRED))
+    @ArraySchema(arraySchema = @Schema(
+            description = "Capabilities effective for this run: the intersection of what the connector's "
+                    + "discovery interface supports across every resource type the run targets, so a "
+                    + "client can decide whether the stop and resume operations exist for this run "
+                    + "without reasoning about connector feature flags itself. A capability any targeted "
+                    + "resource lacks is not listed. Always present: empty means the run supports none "
+                    + "of them — true for every run against a v1 connector, and for a v2 run whose "
+                    + "targeted resources share no capability. Computed from the connector's "
+                    + "per-resource capabilities, where a null list is the connector's shorthand for "
+                    + "every capability it advertises — expanded before intersecting, never treated "
+                    + "as an empty set.",
+            requiredMode = Schema.RequiredMode.REQUIRED))
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<DiscoveryResourceCapability> effectiveCapabilities;
 }

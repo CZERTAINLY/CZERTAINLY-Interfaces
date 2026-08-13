@@ -5,6 +5,7 @@ import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -29,15 +30,17 @@ public class DiscoveryDto {
     @Schema(description = "List of triggers to be triggered after the discovery is finished, triggers will be evaluated in given order")
     private List<UUID> triggers;
 
-    // minItems documents what Core enforces at the service boundary; deliberately not a jakarta constraint,
-    // which would be inert here (no @Valid) and must never fire on an omitted field.
+    // @Size skips null by jakarta semantics, so an omitted field never fires it; only an explicit empty
+    // list does. The connector-dependent rules (a v2 connector requires the field, a v1 connector refuses
+    // it) stay at Core's service boundary, where the connector is known.
+    @Size(min = 1, message = "resources must name at least one resource type when supplied")
     @ArraySchema(minItems = 1,
             arraySchema = @Schema(
                     description = "Resource types this run should discover, as resource wire codes (e.g. "
-                            + "\"certificates\", \"keys\"). Omit for exactly today's v1 semantics: the run "
-                            + "discovers certificates only, whether the selected connector implements the v1 or "
-                            + "the v2 discovery interface. Supplying it requires a connector implementing "
-                            + "discovery v2; a v1 connector rejects the request.",
+                            + "\"certificates\", \"keys\"). Omit only for a run against a v1 connector, which "
+                            + "keeps exactly today's semantics: the run discovers certificates. A v2 connector "
+                            + "requires the field — Core rejects a request that omits it — and a v1 connector "
+                            + "rejects a request that supplies it: discovery has no resource dimension in v1.",
                     requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Resource> resources;
