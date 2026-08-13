@@ -82,7 +82,8 @@ public interface TokenController extends AuthProtectedConnectorController {
             @ApiResponse(responseCode = "422", description = "Request validation failed (errorCode VALIDATION_FAILED)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
-    @PostMapping(path = "/types", consumes = MediaType.APPLICATION_JSON_VALUE,
+
+    @PostMapping(path = "/keyRequestTypes", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<@NotNull KeyRequestType> listSupportedKeyRequestTypes(
             @RequestBody @Valid TokenProfileScopedRequestV2Dto request);
