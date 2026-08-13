@@ -283,14 +283,6 @@ public interface DiscoveryController extends AuthProtectedController {
                     description = "Resource type, identified by its wire code (e.g. \"certificates\", \"keys\")") @PathVariable Resource resource)
             throws ValidationException, NotFoundException, ConnectorException;
 
-    /**
-     * Suspends an in-progress run, keeping everything already staged and the Provider-side checkpoint needed to resume
-     * it.
-     *
-     * <p>
-     * <b>Legality:</b> legal only while the run is in progress; anything else answers 422. The full matrix for the
-     * three lifecycle operations is in this interface's Javadoc.
-     */
     @Operation(summary = "Stop Discovery",
             description = "Asks the Discovery Provider to suspend an in-progress run, keeping everything "
                     + "already staged and the Provider-side checkpoint needed to resume it. Legal only "
@@ -309,13 +301,6 @@ public interface DiscoveryController extends AuthProtectedController {
     void stopDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
             throws ValidationException, NotFoundException, ConnectorException;
 
-    /**
-     * Continues a stopped run from its Provider-side checkpoint.
-     *
-     * <p>
-     * <b>Legality:</b> legal only from the stopped status; anything else answers 422. The full matrix for the three
-     * lifecycle operations is in this interface's Javadoc.
-     */
     @Operation(summary = "Resume Discovery",
             description = "Asks the Discovery Provider to continue a stopped run from its checkpoint. "
                     + "Legal only from the stopped status. A Provider that has since lost the "
@@ -335,14 +320,6 @@ public interface DiscoveryController extends AuthProtectedController {
     void resumeDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
             throws ValidationException, NotFoundException, ConnectorException;
 
-    /**
-     * Abandons a run for good: the Discovery Provider releases it and the staged items are never processed.
-     * Irreversible — a cancelled run cannot be resumed.
-     *
-     * <p>
-     * <b>Legality:</b> legal while the run is in progress or stopped; anything else answers 422. The full matrix for
-     * the three lifecycle operations is in this interface's Javadoc.
-     */
     @Operation(summary = "Cancel Discovery",
             description = "Abandons a run for good: the Discovery Provider releases it and the items "
                     + "already staged are never processed. Legal while the run is in progress or "

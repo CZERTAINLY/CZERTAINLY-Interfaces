@@ -96,25 +96,35 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private DiscoveryProgressDto progress;
 
+    /**
+     * <b>Safety:</b> curated text only — a raw exception message must never pass through here; it can carry credentials
+     * or connection internals ({@code DiscoveryErrorEvent} states the same rule for the connector side).
+     *
+     * <p>
+     * <b>Relation to {@code message}:</b> {@code message} carries the single summary reason for the run's current
+     * status; entries here are advisory, accumulate over the run's lifetime, and a run can collect them and still
+     * complete.
+     */
     @Schema(description = "Advisory messages collected over the run's lifetime — non-fatal connector "
-            + "errors and per-phase failure reasons — newest last. Distinct from message, which "
-            + "carries the single summary reason for the run's current status: entries here do "
-            + "not imply the run failed, and a run can accumulate them and still complete. "
-            + "Curated message text; never a raw exception message.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "errors and per-phase failure reasons — newest last. Entries do not imply the run "
+            + "failed. Curated message text; never a raw exception message.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> runMessages;
 
+    /**
+     * <b>Aggregation:</b> computed from the connector's per-resource capabilities, where a null list is the connector's
+     * shorthand for every capability it advertises — expand it before intersecting, never treat it as an empty set.
+     *
+     * <p>
+     * <b>Presence:</b> synthesized as an empty list for a run against a v1 connector, which supports none of them.
+     */
     @ArraySchema(arraySchema = @Schema(
             description = "Capabilities effective for this run: the intersection of what the connector's "
-                    + "discovery interface supports across every resource type the run targets, so a "
-                    + "client can decide whether the stop and resume operations exist for this run "
-                    + "without reasoning about connector feature flags itself. A capability any targeted "
-                    + "resource lacks is not listed. Always present: empty means the run supports none "
-                    + "of them — true for every run against a v1 connector, and for a v2 run whose "
-                    + "targeted resources share no capability. Computed from the connector's "
-                    + "per-resource capabilities, where a null list is the connector's shorthand for "
-                    + "every capability it advertises — expanded before intersecting, never treated "
-                    + "as an empty set.",
+                    + "discovery interface supports across every resource type the run targets — a "
+                    + "capability any targeted resource lacks is not listed. Always present: empty "
+                    + "means the run supports none of them, so a client renders the stop and resume "
+                    + "controls from this list alone.",
             requiredMode = Schema.RequiredMode.REQUIRED))
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<DiscoveryResourceCapability> effectiveCapabilities;

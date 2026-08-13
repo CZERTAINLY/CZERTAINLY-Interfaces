@@ -5,6 +5,7 @@ import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class DiscoveryDto {
                             + "rejects a request that supplies it: discovery has no resource dimension in v1.",
                     requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<Resource> resources;
+    private List<@NotNull(message = "resources must not contain a null resource type") Resource> resources;
 
     @Schema(description = "Per-resource attributes, keyed by resource wire code, collected against the "
             + "per-resource attribute definitions the connector advertises. Omit for exactly "

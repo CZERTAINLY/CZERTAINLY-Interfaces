@@ -6,6 +6,7 @@ import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,8 +71,6 @@ class DiscoveryDtoTest {
 
         String json = mapper.writeValueAsString(dto);
 
-        // the wire carries codes under the published property names; the Java member names of
-        // neither the fields nor the enum may leak into the contract
         assertTrue(json.contains("\"resources\":[\"keys\"]"), json);
         assertTrue(json.contains("\"resourceAttributes\":{\"certificates\":[]}"), json);
         assertFalse(json.contains("CRYPTOGRAPHIC_KEY"), json);
@@ -111,8 +110,9 @@ class DiscoveryDtoTest {
     }
 
     /**
-     * The one bean-validated shape rule: @Size skips null, so only an explicit empty list can fire it. Everything
-     * connector-dependent (v2 requires the field, v1 refuses it) is Core's service boundary, not bean validation.
+     * The bean-validated shape rules: @Size skips null, so only an explicit empty list can fire it, and the
+     * type-use @NotNull rejects a null element. Everything connector-dependent (v2 requires the field, v1 refuses it)
+     * is Core's service boundary, not bean validation.
      */
     @Test
     void explicitlyEmptyResourcesViolatesTheSizeConstraint() {
@@ -123,6 +123,19 @@ class DiscoveryDtoTest {
         assertEquals(1, violations.size(),
                 "an explicit empty resources list must fail with exactly the @Size violation; got: " + violations);
         assertTrue(violations.iterator().next().getMessage().contains("at least one resource type"),
+                "unexpected violation message: " + violations.iterator().next().getMessage());
+    }
+
+    @Test
+    void nullResourceElementViolatesTheElementConstraint() {
+        DiscoveryDto dto = new DiscoveryDto();
+        // Arrays.asList, not List.of: the fixture must be able to hold the null the constraint rejects.
+        dto.setResources(Arrays.asList(Resource.CERTIFICATE, null));
+
+        Set<ConstraintViolation<DiscoveryDto>> violations = VALIDATOR.validate(dto);
+        assertEquals(1, violations.size(),
+                "a null element must fail with exactly the element @NotNull violation; got: " + violations);
+        assertTrue(violations.iterator().next().getMessage().contains("null resource type"),
                 "unexpected violation message: " + violations.iterator().next().getMessage());
     }
 }

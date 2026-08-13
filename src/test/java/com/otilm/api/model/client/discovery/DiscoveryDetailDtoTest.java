@@ -16,14 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Covers the discovery v2 additions to {@link DiscoveryDetailDto}: they round-trip, they disappear from the payload of
- * a v1 run instead of showing up as nulls, and every {@link Resource}-typed or {@link Resource}-keyed value they carry
- * travels as a wire code.
+ * Covers the discovery v2 additions to {@link DiscoveryDetailDto}: they round-trip, a v1 run's payload carries the
+ * synthesized always-present lists while the optional pair disappears instead of showing up as nulls, and every
+ * {@link Resource}-typed or {@link Resource}-keyed value they carry travels as a wire code.
  */
 class DiscoveryDetailDtoTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /** A run against a v1 connector, with resources and effectiveCapabilities exactly as Core synthesizes them. */
     private DiscoveryDetailDto v1Run() {
         DiscoveryDetailDto dto = new DiscoveryDetailDto();
         dto.setUuid("c2f685d4-6a3e-11ec-90d6-0242ac120003");
@@ -33,6 +34,8 @@ class DiscoveryDetailDtoTest {
         dto.setConnectorStatus(DiscoveryStatus.COMPLETED);
         dto.setConnectorUuid("b9b09548-a97c-4c6a-a06a-e4ee6fc2da98");
         dto.setConnectorName("network-discovery");
+        dto.setResources(List.of(Resource.CERTIFICATE));
+        dto.setEffectiveCapabilities(List.of());
         return dto;
     }
 
@@ -56,8 +59,7 @@ class DiscoveryDetailDtoTest {
         String json = mapper.writeValueAsString(dto);
         DiscoveryDetailDto back = mapper.readValue(json, DiscoveryDetailDto.class);
 
-        // the four properties the frontend generates its types from, by name: a round-trip
-        // alone would survive a rename, since it renames both ends at once
+        // pinned by literal name: a round-trip alone would survive a rename, since it renames both ends at once
         assertTrue(json.contains("\"resources\":"), json);
         assertTrue(json.contains("\"progress\":"), json);
         assertTrue(json.contains("\"runMessages\":"), json);
@@ -87,7 +89,6 @@ class DiscoveryDetailDtoTest {
 
         String json = mapper.writeValueAsString(dto);
 
-        // codes on the resources list, on the byResource map keys, and on the capability
         assertTrue(json.contains("\"resources\":[\"keys\"]"), json);
         assertTrue(json.contains("\"certificates\""), json);
         assertTrue(json.contains("\"effectiveCapabilities\":[\"stopResume\"]"), json);
@@ -96,21 +97,21 @@ class DiscoveryDetailDtoTest {
     }
 
     @Test
-    void omitsV2FieldsForAV1Run() throws Exception {
-        // a run against a v1 connector: none of the four fields apply
-        DiscoveryDetailDto dto = v1Run();
-
-        String json = mapper.writeValueAsString(dto);
+    void v1RunCarriesTheSynthesizedListsAndOmitsTheOptionalPair() throws Exception {
+        String json = mapper.writeValueAsString(v1Run());
         DiscoveryDetailDto back = mapper.readValue(json, DiscoveryDetailDto.class);
 
-        assertFalse(json.contains("resources"), json);
+        // the always-present pair, as Core synthesizes it for a run against a v1 connector
+        assertTrue(json.contains("\"resources\":[\"certificates\"]"), json);
+        assertTrue(json.contains("\"effectiveCapabilities\":[]"), json);
+        assertEquals(List.of(Resource.CERTIFICATE), back.getResources());
+        assertEquals(List.of(), back.getEffectiveCapabilities());
+
+        // the genuinely optional pair promises absence, not null
         assertFalse(json.contains("progress"), json);
         assertFalse(json.contains("runMessages"), json);
-        assertFalse(json.contains("effectiveCapabilities"), json);
-        assertNull(back.getResources());
         assertNull(back.getProgress());
         assertNull(back.getRunMessages());
-        assertNull(back.getEffectiveCapabilities());
     }
 
     @Test
