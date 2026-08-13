@@ -115,10 +115,10 @@ class DiscoveryV2SchemaGenerationTest {
         Map<String, Schema> viaStatus = ModelConverters.getInstance().readAll(DiscoveryStatusResponseDto.class);
         Map<String, Schema> viaDetail = ModelConverters.getInstance().readAll(DiscoveryDetailDto.class);
 
-        // The core-web run detail is the third entry point into the progress components, added by the
-        // discovery v2 core-web change; its field-level prose must not leak onto the shared components.
-        // DiscoveryProgressDto is the direct $ref target of the detail's progress field, so its description
-        // is compared against the status path's — a hoisted field description shows up exactly there.
+        // The core-web run detail is the third entry point into the progress components; its field-level
+        // prose must not leak onto the shared components. DiscoveryProgressDto is the direct $ref target
+        // of the detail's progress field, so its description is compared against the status path's — a
+        // hoisted field description shows up exactly there.
         assertTrue(resolvesProperty(viaDetail.get("DiscoveryProgressDto"), "byResource", viaDetail),
                 "DiscoveryProgressDto must carry byResource on the run-detail path");
         assertEquals(viaStatus.get("DiscoveryProgressDto").getDescription(),

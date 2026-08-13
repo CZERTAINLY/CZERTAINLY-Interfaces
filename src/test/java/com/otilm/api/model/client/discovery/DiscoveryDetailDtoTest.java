@@ -103,7 +103,6 @@ class DiscoveryDetailDtoTest {
         String json = mapper.writeValueAsString(dto);
         DiscoveryDetailDto back = mapper.readValue(json, DiscoveryDetailDto.class);
 
-        // absent from the payload entirely
         assertFalse(json.contains("resources"), json);
         assertFalse(json.contains("progress"), json);
         assertFalse(json.contains("runMessages"), json);

@@ -33,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * one of them has to fail a build rather than ship.
  *
  * <p>
- * Only the new members are asserted. The pre-existing ones are deliberately left alone: this change is additive, and a
- * test that swept every declared method would start failing the moment an unrelated endpoint was added.
+ * Only the new members are asserted. The pre-existing ones are deliberately left alone: the v2 extension is additive,
+ * and a test that swept every declared method would start failing the moment an unrelated endpoint was added.
  */
 class DiscoveryControllerContractTest {
 

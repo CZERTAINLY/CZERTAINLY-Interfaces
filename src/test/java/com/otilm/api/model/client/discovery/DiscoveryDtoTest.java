@@ -80,7 +80,6 @@ class DiscoveryDtoTest {
 
     @Test
     void omitsV2FieldsWhenUnset() throws Exception {
-        // a create request that says nothing about resources
         DiscoveryDto dto = new DiscoveryDto();
         dto.setName("nightly-scan");
         dto.setKind("IP-HostName");
@@ -97,7 +96,6 @@ class DiscoveryDtoTest {
         DiscoveryDto dto = assertDoesNotThrow(() -> mapper.readValue(V1_ONLY_PAYLOAD, DiscoveryDto.class),
                 "a v1-only create request must still deserialize");
 
-        // the v1 fields survive
         assertEquals("nightly-scan", dto.getName());
         assertEquals("IP-HostName", dto.getKind());
         assertEquals(1, dto.getTriggers().size());
