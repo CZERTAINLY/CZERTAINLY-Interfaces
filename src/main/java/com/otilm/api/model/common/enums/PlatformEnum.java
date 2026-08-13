@@ -13,6 +13,7 @@ import com.otilm.api.model.client.cryptography.key.KeyRequestType;
 import com.otilm.api.model.client.signing.profile.scheme.ManagedSigningType;
 import com.otilm.api.model.client.signing.profile.scheme.SigningScheme;
 import com.otilm.api.model.client.signing.profile.workflow.SigningWorkflowType;
+import com.otilm.api.model.client.signing.profile.workflow.timestamp.TimestampSourceType;
 import com.otilm.api.model.common.HealthStatus;
 import com.otilm.api.model.common.attribute.common.AttributeType;
 import com.otilm.api.model.common.attribute.common.AttributeVersion;
@@ -27,6 +28,8 @@ import com.otilm.api.model.common.enums.cryptography.KeyFormat;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.common.enums.cryptography.RsaEncryptionScheme;
 import com.otilm.api.model.common.enums.cryptography.RsaSignatureScheme;
+import com.otilm.api.model.common.signature.SignatureFamily;
+import com.otilm.api.model.common.signature.SignatureLevel;
 import com.otilm.api.model.connector.cryptography.enums.TokenInstanceStatus;
 import com.otilm.api.model.connector.secrets.SecretType;
 import com.otilm.api.model.connector.secrets.content.KeyStoreType;
@@ -78,7 +81,6 @@ import com.otilm.api.model.core.workflows.TriggerType;
 import com.otilm.api.model.scheduler.SchedulerJobExecutionStatus;
 import com.otilm.core.model.auth.ResourceAction;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.util.Arrays;
 
 @Schema(enumAsRef = true)
@@ -185,11 +187,14 @@ public enum PlatformEnum implements IPlatformEnum {
     SECRET_STATE(SecretState.class, "Secret State"),
 
     // Signing
+    SIGNATURE_FAMILY(SignatureFamily.class, "Signature Family"),
+    SIGNATURE_LEVEL(SignatureLevel.class, "Signature Level"),
     MANAGED_SIGNING_TYPE(ManagedSigningType.class, "Managed Signing Type"),
     QC_TYPE(QcType.class, "QC Type"),
     SIGNING_PROTOCOL(SigningProtocol.class, "Signing Protocol"),
     SIGNING_SCHEME(SigningScheme.class, "Signing Scheme"),
     SIGNING_WORKFLOW_TYPE(SigningWorkflowType.class, "Signing Workflow Type"),
+    TIMESTAMP_SOURCE_TYPE(TimestampSourceType.class, "Timestamp Source Type"),
     TSP_AUTHENTICATION_METHOD(TspAuthenticationMethod.class, "TSP Authentication Method"),
 
     ;
