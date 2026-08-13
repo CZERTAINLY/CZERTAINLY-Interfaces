@@ -1,7 +1,6 @@
-package com.otilm.api.model.connector.v2.cryptography.operations.data;
+package com.otilm.api.model.connector.cryptography.v2.operations.data;
 
 import com.otilm.api.model.connector.common.v2.OperationStatus;
-import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureResultItemV2Dto;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
