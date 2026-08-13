@@ -43,12 +43,12 @@ public final class PublicKeyDataV2Dto extends KeyDataV2Dto {
         return super.getType();
     }
 
-@Schema(description = "Base64-encoded DER SubjectPublicKeyInfo.", type = "string", format = "byte",
+    @Schema(description = "Base64-encoded DER SubjectPublicKeyInfo.", type = "string", format = "byte",
             requiredMode = Schema.RequiredMode.REQUIRED)
-@NotNull(message = "publicKeySpki is required")
-public byte[] getPublicKeySpki() {
-    return publicKeySpki == null ? null : publicKeySpki.clone();
-}
+    @NotNull(message = "publicKeySpki is required")
+    public byte[] getPublicKeySpki() {
+        return publicKeySpki == null ? null : publicKeySpki.clone();
+    }
 
     @JsonSetter("publicKeySpki")
     public void setPublicKeySpki(byte[] publicKeySpki) {
