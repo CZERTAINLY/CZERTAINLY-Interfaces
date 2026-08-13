@@ -9,6 +9,7 @@ import com.otilm.api.model.connector.discovery.v2.DiscoveryResourceCapability;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryStatus;
 import com.otilm.api.model.core.workflows.TriggerDto;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,36 +68,52 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     // emitting its existing nullable fields (message, startTime, endTime, ...) exactly as before —
     // a class-level annotation would have silently changed the shape of every v1 response.
 
-    @Schema(description = "Resource types this run targets, as resource wire codes (e.g. "
-            + "\"certificates\", \"keys\"). Omitted for a run against a v1 connector, which "
-            + "has no notion of resource types and always discovers certificates only.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    // The arraySchema indirection on the two typed lists is deliberate: a bare @Schema description on a
+    // collection member lands on the items schema — a $ref to a shared component — and swagger-core hoists
+    // it onto that component for every other API referencing it. arraySchema puts the text on the array.
+    @ArraySchema(arraySchema = @Schema(
+            description = "Resource types this run targets, as resource wire codes (e.g. "
+                    + "\"certificates\", \"keys\"). Omitted for a run against a v1 connector, which "
+                    + "has no notion of resource types and always discovers certificates only.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Resource> resources;
 
-    @Schema(description = "Progress counters reported by the connector, with an optional per-resource "
-            + "breakdown. Omitted when the run is against a v1 connector, or when the connector "
-            + "reports no progress at all. Individual counters inside it are independently "
-            + "optional — a connector that cannot estimate a total still reports what it has " + "processed.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    /**
+     * Progress counters reported by the connector, with an optional per-resource breakdown. Omitted when the run is
+     * against a v1 connector, or when the connector reports no progress at all. Individual counters inside it are
+     * independently optional — a connector that cannot estimate a total still reports what it has processed.
+     *
+     * <p>
+     * The prose lives here and not in {@code @Schema}: the field's schema is a {@code $ref} to
+     * {@code DiscoveryProgressDto}, shared with the connector-facing status response, and OpenAPI 3.0 cannot carry a
+     * description beside a {@code $ref} — swagger-core would hoist it onto the shared component
+     * ({@code progressComponentsAreIdenticalFromEveryEntryPoint} pins this).
+     */
+    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private DiscoveryProgressDto progress;
 
     @Schema(description = "Advisory messages collected over the run's lifetime — non-fatal connector "
             + "errors and per-phase failure reasons — newest last. Distinct from message, which "
             + "carries the single summary reason for the run's current status: entries here do "
-            + "not imply the run failed, and a run can accumulate them and still complete.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "not imply the run failed, and a run can accumulate them and still complete. "
+            + "Curated message text; never a raw exception message.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<String> runMessages;
 
-    @Schema(description = "Capabilities effective for this run: the intersection of what the connector's "
-            + "discovery interface supports across every resource type the run targets, so a "
-            + "client can decide whether the stop and resume operations exist for this run "
-            + "without reasoning about connector feature flags itself. A capability any targeted "
-            + "resource lacks is not listed. Omitted for a run against a v1 connector, which "
-            + "supports none of them; an empty list says the same for a v2 connector.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ArraySchema(
+            arraySchema = @Schema(
+                    description = "Capabilities effective for this run: the intersection of what the connector's "
+                            + "discovery interface supports across every resource type the run targets, so a "
+                            + "client can decide whether the stop and resume operations exist for this run "
+                            + "without reasoning about connector feature flags itself. A capability any targeted "
+                            + "resource lacks is not listed. Omitted for a run against a v1 connector, which "
+                            + "supports none of them; an empty list says the same for a v2 connector. Computed "
+                            + "from the connector's per-resource capabilities, where a null list is the "
+                            + "connector's shorthand for every capability it advertises — expanded before "
+                            + "intersecting, never treated as an empty set.",
+                    requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<DiscoveryResourceCapability> effectiveCapabilities;
 }

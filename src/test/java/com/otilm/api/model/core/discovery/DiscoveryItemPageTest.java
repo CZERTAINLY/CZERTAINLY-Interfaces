@@ -1,21 +1,20 @@
-package com.otilm.api.model.client.discovery;
+package com.otilm.api.model.core.discovery;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.otilm.api.model.client.discovery.DiscoveryCertificateResponseDto;
 import com.otilm.api.model.common.PaginationResponseDto;
 import com.otilm.api.model.common.attribute.v3.MetadataAttributeV3;
 import com.otilm.api.model.connector.discovery.v2.DiscoveredCertificateDto;
 import com.otilm.api.model.connector.discovery.v2.DiscoveredKeyDto;
 import com.otilm.api.model.core.auth.Resource;
-import com.otilm.api.model.core.discovery.DiscoveryItemDto;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,8 +48,8 @@ class DiscoveryItemPageTest {
         return item;
     }
 
-    @Test
-    void roundTripsPageOfItems() throws Exception {
+    /** {@link #certificateItem()} plus the processing state Core stamps on an item after attempting ingestion. */
+    private static DiscoveryItemDto processedItem() {
         DiscoveryItemDto item = certificateItem();
         item.setDiscoveredAt(OffsetDateTime.of(2026, 8, 4, 10, 30, 0, 0, ZoneOffset.UTC));
         item.setProcessedError("key algorithm not supported");
@@ -60,52 +59,99 @@ class DiscoveryItemPageTest {
         item.setNewlyDiscovered(true);
         item.setProcessed(true);
         item.setInventoryUuid(null);
+        return item;
+    }
 
+    private static PaginationResponseDto<DiscoveryItemDto> pageOf(DiscoveryItemDto... items) {
         PaginationResponseDto<DiscoveryItemDto> page = new PaginationResponseDto<>();
-        page.setItems(List.of(item));
+        page.setItems(List.of(items));
         page.setItemsPerPage(10);
         page.setPageNumber(0);
         page.setTotalPages(3);
         page.setTotalItems(21L);
+        return page;
+    }
 
-        String json = mapper.writeValueAsString(page);
-        PaginationResponseDto<DiscoveryItemDto> back = mapper
-                .readValue(json, new TypeReference<PaginationResponseDto<DiscoveryItemDto>>() {
-                });
+    private PaginationResponseDto<DiscoveryItemDto> roundTrip(PaginationResponseDto<DiscoveryItemDto> page)
+            throws Exception {
+        return mapper
+                .readValue(mapper.writeValueAsString(page),
+                        new TypeReference<PaginationResponseDto<DiscoveryItemDto>>() {
+                        });
+    }
+
+    @Test
+    void pagingNumbersSurviveTheRoundTrip() throws Exception {
+        PaginationResponseDto<DiscoveryItemDto> back = roundTrip(pageOf(processedItem()));
 
         assertEquals(10, back.getItemsPerPage());
         assertEquals(0, back.getPageNumber());
         assertEquals(3, back.getTotalPages());
         assertEquals(21L, back.getTotalItems());
+    }
 
-        // The item survives with its payload subtype intact. This is the part the shared envelope does not
-        // give us for free: T is erased, so the payload is resolved by its own discriminator, not by the page.
+    /**
+     * The part the shared envelope does not give us for free: {@code T} is erased, so the payload is resolved by its
+     * own discriminator, not by the page.
+     */
+    @Test
+    void payloadSubtypeResolvesInsideTheErasedGeneric() throws Exception {
+        PaginationResponseDto<DiscoveryItemDto> back = roundTrip(pageOf(processedItem()));
+
         assertEquals(1, back.getItems().size());
-        assertEquals(1L, back.getItems().get(0).getSequence());
-        assertEquals("10.0.0.7:443", back.getItems().get(0).getUniqueRef());
-        assertEquals(Resource.CERTIFICATE, back.getItems().get(0).getResource());
-        assertEquals("MIIBOgIBAAJBAK",
-                ((DiscoveredCertificateDto) back.getItems().get(0).getPayload()).getCertificateData());
+        DiscoveryItemDto item = back.getItems().get(0);
+        assertEquals(Resource.CERTIFICATE, item.getResource());
+        assertEquals("MIIBOgIBAAJBAK", ((DiscoveredCertificateDto) item.getPayload()).getCertificateData());
+    }
 
-        // Core's own processing state, the reason this is not the connector's DiscoveredItemDto: without it a
-        // failed key ingestion would be indistinguishable from a successful one in this listing.
-        assertEquals("6f1b8c1e-0000-4000-8000-000000000001", back.getItems().get(0).getUuid());
-        assertEquals("key algorithm not supported", back.getItems().get(0).getProcessedError());
-        assertNull(back.getItems().get(0).getInventoryUuid(),
-                "an item whose processing failed never produced an inventory object");
-        assertEquals("discoverySource", back.getItems().get(0).getMeta().get(0).getName(),
+    /**
+     * Core's own processing state, the reason this is not the connector's {@code DiscoveredItemDto}: without it a
+     * failed key ingestion would be indistinguishable from a successful one in this listing.
+     */
+    @Test
+    void coreProcessingStateSurvivesTheRoundTrip() throws Exception {
+        DiscoveryItemDto item = roundTrip(pageOf(processedItem())).getItems().get(0);
+
+        assertEquals("6f1b8c1e-0000-4000-8000-000000000001", item.getUuid());
+        assertEquals(1L, item.getSequence());
+        assertEquals("10.0.0.7:443", item.getUniqueRef());
+        assertEquals("key algorithm not supported", item.getProcessedError());
+        assertNull(item.getInventoryUuid(), "an item whose processing failed never produced an inventory object");
+        assertEquals("discoverySource", item.getMeta().get(0).getName(),
                 "the provider-reported location context must survive the round trip");
-        assertTrue(back.getItems().get(0).isNewlyDiscovered());
-        assertTrue(back.getItems().get(0).isProcessed());
+        assertTrue(item.isNewlyDiscovered());
+        assertTrue(item.isProcessed());
+    }
 
-        // Pinned as literal wire names too: both are Lombok-backed booleans, so a rename would fail as a
-        // compile error in this file rather than as an assertion, and a round-trip renames both ends at once.
-        JsonNode emitted = mapper.valueToTree(page).get("items").get(0);
+    /**
+     * Pinned as literal wire names: {@code newlyDiscovered} and {@code processed} are Lombok-backed booleans, so a
+     * rename would fail as a compile error elsewhere in this file rather than as an assertion, and a round-trip test
+     * renames both ends at once.
+     */
+    @Test
+    void processingStateFieldsArePinnedToTheirWireNames() {
+        JsonNode emitted = mapper.valueToTree(pageOf(processedItem())).get("items").get(0);
+
         assertTrue(emitted.has("newlyDiscovered"), emitted.toString());
         assertTrue(emitted.has("processed"), emitted.toString());
         // NON_NULL at class level: the schema promises absence, not null, for what never happened.
         assertFalse(emitted.has("inventoryUuid"), emitted.toString());
         assertTrue(emitted.has("meta"), emitted.toString());
+    }
+
+    /**
+     * A payload-less item is trivially buildable — no-args constructor plus setters is exactly the state a Core mapper
+     * passes through before populating one — so the derived getter's null branch is a real code path: no payload means
+     * no resource, and with class-level {@code NON_NULL} the serialized item carries no {@code resource} property even
+     * though the schema marks it required for every item Core actually publishes.
+     */
+    @Test
+    void payloadlessItemHasNoResource() {
+        DiscoveryItemDto empty = new DiscoveryItemDto();
+
+        assertNull(empty.getResource());
+        assertFalse(mapper.valueToTree(empty).has("resource"),
+                "the derived resource must stay out of the emitted JSON when there is no payload to derive it from");
     }
 
     /**
@@ -119,14 +165,7 @@ class DiscoveryItemPageTest {
      * populated, so the boxing never surfaces as a present-versus-null distinction either.
      */
     @Test
-    void pagingMembersSerializeUnderTheSameNamesAsTheCertificateListing() throws Exception {
-        PaginationResponseDto<DiscoveryItemDto> page = new PaginationResponseDto<>();
-        page.setItems(List.of(certificateItem()));
-        page.setItemsPerPage(10);
-        page.setPageNumber(0);
-        page.setTotalPages(3);
-        page.setTotalItems(21L);
-
+    void pagingMembersSerializeUnderTheSameNamesAsTheCertificateListing() {
         DiscoveryCertificateResponseDto certificates = new DiscoveryCertificateResponseDto();
         certificates.setCertificates(List.of());
         certificates.setItemsPerPage(10);
@@ -134,19 +173,16 @@ class DiscoveryItemPageTest {
         certificates.setTotalPages(3);
         certificates.setTotalItems(21L);
 
-        assertEquals(pagingMembersOf(certificates), pagingMembersOf(page),
+        assertEquals(pagingMembersOf(certificates), pagingMembersOf(pageOf(certificateItem())),
                 "the items listing must page under the same property names as the certificate listing");
     }
 
     /** Emitted property names other than the payload array, sorted. */
-    private String pagingMembersOf(Object dto) throws Exception {
+    private String pagingMembersOf(Object dto) {
         JsonNode root = mapper.valueToTree(dto);
-        return StreamSupport
-                .stream(((Iterable<String>) root::fieldNames).spliterator(), false)
-                .filter(name -> !root.get(name).isArray())
-                .collect(Collectors.toCollection(TreeSet::new))
-                .stream()
-                .collect(Collectors.joining(","));
+        List<String> names = new ArrayList<>();
+        root.fieldNames().forEachRemaining(names::add);
+        return names.stream().filter(name -> !root.get(name).isArray()).sorted().collect(Collectors.joining(","));
     }
 
     /**
@@ -155,7 +191,7 @@ class DiscoveryItemPageTest {
      * so constrains nothing about the payload discriminator.
      */
     @Test
-    void itemPayloadCarriesItsOwnResourceWireCode() throws Exception {
+    void itemPayloadCarriesItsOwnResourceWireCode() {
         DiscoveryItemDto keyItem = certificateItem();
         DiscoveredKeyDto keyPayload = new DiscoveredKeyDto();
         keyPayload.setFingerprint("2b:9c:...");
@@ -163,10 +199,7 @@ class DiscoveryItemPageTest {
         // No item-level resource to set: the accessor derives it from the payload, so the two disagreeing
         // is unrepresentable — swapping the payload above IS what makes this a key item.
 
-        PaginationResponseDto<DiscoveryItemDto> page = new PaginationResponseDto<>();
-        page.setItems(List.of(certificateItem(), keyItem));
-
-        JsonNode items = mapper.valueToTree(page).get("items");
+        JsonNode items = mapper.valueToTree(pageOf(certificateItem(), keyItem)).get("items");
         assertEquals("certificates", items.get(0).get("payload").get("resource").asText());
         assertEquals("keys", items.get(1).get("payload").get("resource").asText());
     }

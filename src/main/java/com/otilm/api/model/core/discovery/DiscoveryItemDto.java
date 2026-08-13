@@ -86,8 +86,11 @@ public class DiscoveryItemDto {
     // READ_ONLY, not just getter-only: a bare getter serializes but is unknown to deserialization, so a strict
     // mapper (FAIL_ON_UNKNOWN_PROPERTIES) would reject this DTO's own serialized form. READ_ONLY registers the
     // property and ignores it on input, so the derived value always wins.
+    // No @Schema description on purpose: Resource is a platform-wide schema component, and OpenAPI 3.0 cannot
+    // carry a description beside a $ref — swagger-core would hoist the text onto the shared component
+    // (discoveryDoesNotRewriteThePlatformWideResourceComponent pins this). The Javadoc above explains the property.
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Schema(description = "Resource type of this item", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     public Resource getResource() {
         return payload != null ? payload.getResource() : null;
     }

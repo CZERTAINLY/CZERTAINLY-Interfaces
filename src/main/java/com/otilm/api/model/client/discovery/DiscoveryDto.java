@@ -29,8 +29,6 @@ public class DiscoveryDto {
     @Schema(description = "List of triggers to be triggered after the discovery is finished, triggers will be evaluated in given order")
     private List<UUID> triggers;
 
-    // Null preserves the v1 request shape; Core validates supplied values at the service boundary.
-
     // minItems documents what Core enforces at the service boundary; deliberately not a jakarta constraint,
     // which would be inert here (no @Valid) and must never fire on an omitted field.
     @ArraySchema(minItems = 1,
@@ -48,7 +46,7 @@ public class DiscoveryDto {
             + "per-resource attribute definitions the connector advertises. Omit for exactly "
             + "today's v1 semantics: only the run-level attributes above are sent to the "
             + "connector. A key absent from this map means that resource is discovered with no "
-            + "refinement of its own, not that it is excluded — resources alone decides what a " + "run targets.",
+            + "refinement of its own, not that it is excluded — resources alone decides what a run targets.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, propertyNames = Resource.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<Resource, List<RequestAttribute>> resourceAttributes;

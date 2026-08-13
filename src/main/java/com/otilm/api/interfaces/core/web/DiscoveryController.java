@@ -5,6 +5,7 @@ import com.otilm.api.exception.AttributeException;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.NotFoundException;
 import com.otilm.api.exception.SchedulerException;
+import com.otilm.api.exception.ValidationException;
 import com.otilm.api.interfaces.AuthProtectedController;
 import com.otilm.api.model.client.certificate.DiscoveryResponseDto;
 import com.otilm.api.model.client.certificate.SearchRequestDto;
@@ -43,6 +44,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Core-web discovery management: run CRUD plus the discovery v2 additions — a resource-agnostic item listing, three
+ * connector-keyed relay endpoints and three run-lifecycle operations. Two rules are shared across those additions and
+ * stated once here.
+ *
+ * <p>
+ * <b>Connector-keyed relays.</b> {@link #listDiscoveryResources}, {@link #getDiscoveryAttributes} and
+ * {@link #getDiscoveryResourceAttributes} describe a Discovery Provider before any run exists. They live on this
+ * controller rather than {@code ConnectorController} because they are specific to one provider interface, while that
+ * controller's attribute endpoints are generic across function groups and cannot express a resource dimension — the
+ * same split {@code AuthorityInstanceController} already uses.
+ *
+ * <p>
+ * <b>Run-lifecycle legality.</b> Stop, resume and cancel share one legality matrix. Read {@code inProgress} as covering
+ * both the scanning and the incremental download phases, which interleave in discovery v2.
+ *
+ * <pre>
+ *            inProgress   stopped   processing   terminal
+ *   stop        legal       422        422         422
+ *   resume       422       legal       422         422
+ *   cancel      legal      legal       422         422
+ * </pre>
+ *
+ * <p>
+ * Once a run reaches {@code processing} the Discovery Provider owns nothing and the remaining work is not abortable,
+ * which is why all three are refused there as well as in a terminal status. Every refusal is a 422, whether the run's
+ * status makes the operation illegal or the run's Provider does not support it at all — the same
+ * {@code ValidationException} shape the platform uses for every other illegal state transition, such as cancelling a
+ * certificate operation that is not pending.
+ */
 @RequestMapping("/v1/discoveries")
 @Tag(name = "Discovery Management", description = "Discovery Management API")
 @ApiResponses(value = {
@@ -172,13 +203,16 @@ public interface DiscoveryController extends AuthProtectedController {
             SchedulerException, AttributeException, NotFoundException;
 
     /**
-     * The three endpoints below are keyed by <strong>connector</strong> UUID, not by the run UUID every other endpoint
-     * on this controller takes — they describe a Discovery Provider before any run exists. They live here rather than
-     * on {@code ConnectorController} because they are specific to one provider interface, while that controller's
-     * attribute endpoints are generic across function groups and cannot express a resource dimension; the same split
-     * {@code AuthorityInstanceController} already uses. Core authorizes all three against the {@code CONNECTOR}
-     * resource — object-level, the way {@code listAuthorityInstanceAttributes} is gated — never against
-     * {@code DISCOVERY}, which has no object access and would silently skip per-connector ACLs.
+     * Lists the resource types a Discovery Provider advertises.
+     *
+     * <p>
+     * <b>Keyed by connector UUID</b>, not by the run UUID the rest of this controller takes — see the interface Javadoc
+     * for why the three connector-keyed relays live here.
+     *
+     * <p>
+     * <b>Authorization:</b> gate on {@code Resource.CONNECTOR} — object-level, the way
+     * {@code listAuthorityInstanceAttributes} is gated — never on {@code DISCOVERY}, which has no object access, so
+     * gating there would silently skip per-connector ACLs.
      */
     @Operation(summary = "Get discoverable resources of a Discovery Provider",
             description = "Returns the resource types this Connector's discovery interface advertises, as "
@@ -193,6 +227,16 @@ public interface DiscoveryController extends AuthProtectedController {
             @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid)
             throws NotFoundException;
 
+    /**
+     * Relays the run-level attribute schema from a Discovery Provider.
+     *
+     * <p>
+     * <b>Keyed by connector UUID</b>, not by the run UUID the rest of this controller takes.
+     *
+     * <p>
+     * <b>Authorization:</b> gate on {@code Resource.CONNECTOR}, never on {@code DISCOVERY} — no object access there, so
+     * gating on it would silently skip per-connector ACLs.
+     */
     @Operation(summary = "Get run-level Discovery Attributes from a Discovery Provider",
             description = "Relays the run-level attribute definitions from the Connector's discovery "
                     + "interface: the schema that configures a discovery run as a whole and applies to "
@@ -206,6 +250,16 @@ public interface DiscoveryController extends AuthProtectedController {
             @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid)
             throws NotFoundException, ConnectorException;
 
+    /**
+     * Relays the attribute schema refining one resource type from a Discovery Provider.
+     *
+     * <p>
+     * <b>Keyed by connector UUID</b>, not by the run UUID the rest of this controller takes.
+     *
+     * <p>
+     * <b>Authorization:</b> gate on {@code Resource.CONNECTOR}, never on {@code DISCOVERY} — no object access there, so
+     * gating on it would silently skip per-connector ACLs.
+     */
     @Operation(summary = "Get per-resource Discovery Attributes from a Discovery Provider",
             description = "Relays the attribute definitions that refine discovery of one resource type "
                     + "from the Connector's discovery interface.")
@@ -221,84 +275,84 @@ public interface DiscoveryController extends AuthProtectedController {
             @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid,
             @Parameter(
                     description = "Resource type, identified by its wire code (e.g. \"certificates\", \"keys\")") @PathVariable Resource resource)
-            throws NotFoundException, ConnectorException;
+            throws ValidationException, NotFoundException, ConnectorException;
 
     /**
-     * Stop, resume and cancel below share one legality matrix, stated once here rather than three times in prose. Read
-     * {@code inProgress} as covering both the scanning and the incremental download phases, which interleave in
-     * discovery v2.
-     *
-     * <pre>
-     *            inProgress   stopped   processing   terminal
-     *   stop        legal       409        409         409
-     *   resume       409       legal       409         409
-     *   cancel      legal      legal       409         409
-     * </pre>
+     * Suspends an in-progress run, keeping everything already staged and the Provider-side checkpoint needed to resume
+     * it.
      *
      * <p>
-     * Once a run reaches {@code processing} the Discovery Provider owns nothing and the remaining work is not
-     * abortable, which is why all three are refused there as well as in a terminal status.
-     *
-     * <p>
-     * Every one of them requires a Discovery Provider implementing the v2 discovery interface. A run created against a
-     * v1 Provider answers 422, not 409: the request is not illegal for the run's status, it is unsupported by the
-     * Provider the run belongs to.
+     * <b>Legality:</b> legal only while the run is in progress; anything else answers 422. The full matrix for the
+     * three lifecycle operations is in this interface's Javadoc.
      */
     @Operation(summary = "Stop Discovery",
             description = "Asks the Discovery Provider to suspend an in-progress run, keeping everything "
                     + "already staged and the Provider-side checkpoint needed to resume it. Legal only "
-                    + "while the run is in progress; see the legality matrix on this interface.")
+                    + "while the run is in progress.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Discovery stopped"),
             @ApiResponse(responseCode = "404", description = "Discovery not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "409", description = "Discovery is not in progress, so it cannot be stopped",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Discovery Provider does not support stopping a run",
+            @ApiResponse(responseCode = "422",
+                    description = "Discovery is not in progress, or its Discovery Provider does not support "
+                            + "stopping a run",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(path = "/{uuid}/stop", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void stopDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
-            throws NotFoundException, ConnectorException;
+            throws ValidationException, NotFoundException, ConnectorException;
 
+    /**
+     * Continues a stopped run from its Provider-side checkpoint.
+     *
+     * <p>
+     * <b>Legality:</b> legal only from the stopped status; anything else answers 422. The full matrix for the three
+     * lifecycle operations is in this interface's Javadoc.
+     */
     @Operation(summary = "Resume Discovery",
             description = "Asks the Discovery Provider to continue a stopped run from its checkpoint. "
-                    + "Legal only from the stopped status; see the legality matrix on this interface. A "
-                    + "Provider that has since lost the checkpoint fails the run instead of restarting "
-                    + "it, so a resume is never silently a fresh scan.")
+                    + "Legal only from the stopped status. A Provider that has since lost the "
+                    + "checkpoint fails the run instead of restarting it, so a resume is never "
+                    + "silently a fresh scan.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Discovery resumed"),
             @ApiResponse(responseCode = "404", description = "Discovery not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "409", description = "Discovery is not stopped, so it cannot be resumed",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Discovery Provider does not support resuming a run",
+            @ApiResponse(responseCode = "422",
+                    description = "Discovery is not stopped, or its Discovery Provider does not support "
+                            + "resuming a run",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(path = "/{uuid}/resume", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void resumeDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
-            throws NotFoundException, ConnectorException;
+            throws ValidationException, NotFoundException, ConnectorException;
 
+    /**
+     * Abandons a run for good: the Discovery Provider releases it and the staged items are never processed.
+     * Irreversible — a cancelled run cannot be resumed.
+     *
+     * <p>
+     * <b>Legality:</b> legal while the run is in progress or stopped; anything else answers 422. The full matrix for
+     * the three lifecycle operations is in this interface's Javadoc.
+     */
     @Operation(summary = "Cancel Discovery",
             description = "Abandons a run for good: the Discovery Provider releases it and the items "
                     + "already staged are never processed. Legal while the run is in progress or "
-                    + "stopped; see the legality matrix on this interface. This is irreversible - a "
-                    + "cancelled run cannot be resumed.")
+                    + "stopped. This is irreversible - a cancelled run cannot be resumed.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Discovery cancelled"),
             @ApiResponse(responseCode = "404", description = "Discovery not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "409",
-                    description = "Discovery is neither in progress nor stopped, so it cannot be cancelled",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Discovery Provider does not support cancelling a run",
+            @ApiResponse(responseCode = "422",
+                    description = "Discovery is neither in progress nor stopped, or its Discovery Provider "
+                            + "does not support cancelling a run",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(path = "/{uuid}/cancel", produces = {"application/json"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void cancelDiscovery(@Parameter(description = "Discovery UUID") @PathVariable String uuid)
-            throws NotFoundException, ConnectorException;
+            throws ValidationException, NotFoundException, ConnectorException;
 
 }

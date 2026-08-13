@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -93,7 +94,8 @@ class DiscoveryDtoTest {
 
     @Test
     void v1OnlyPayloadStillDeserializesAndValidates() {
-        DiscoveryDto dto = assertDoesNotThrowDeserializing();
+        DiscoveryDto dto = assertDoesNotThrow(() -> mapper.readValue(V1_ONLY_PAYLOAD, DiscoveryDto.class),
+                "a v1-only create request must still deserialize");
 
         // the v1 fields survive
         assertEquals("nightly-scan", dto.getName());
@@ -108,13 +110,5 @@ class DiscoveryDtoTest {
         // no constraint fires on a body that omits them
         Set<ConstraintViolation<DiscoveryDto>> violations = VALIDATOR.validate(dto);
         assertTrue(violations.isEmpty(), "a v1-only create request must stay valid; violations: " + violations);
-    }
-
-    private DiscoveryDto assertDoesNotThrowDeserializing() {
-        try {
-            return mapper.readValue(V1_ONLY_PAYLOAD, DiscoveryDto.class);
-        } catch (Exception e) {
-            throw new AssertionError("a v1-only create request must still deserialize", e);
-        }
     }
 }

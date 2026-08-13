@@ -29,6 +29,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+// The description lives here, on the component itself, so it reads the same from every endpoint that references
+// it — a description on any referencing field would be hoisted over it (see the field comments below and
+// progressComponentsAreIdenticalFromEveryEntryPoint).
+@Schema(description = "Run-level progress of a discovery run: the run-wide counters, plus an optional "
+        + "per-resource breakdown.")
 public class DiscoveryProgressDto extends DiscoveryResourceProgressDto {
 
     // No description here on purpose. OpenAPI 3.0 cannot carry a description alongside a $ref, so

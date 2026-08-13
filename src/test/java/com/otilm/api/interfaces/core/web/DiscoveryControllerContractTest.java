@@ -139,10 +139,14 @@ class DiscoveryControllerContractTest {
     @ValueSource(strings = {"stopDiscovery", "resumeDiscovery", "cancelDiscovery"})
     void lifecycleOperationDocumentsTheLegalityMatrixOutcomes(String name) {
         Set<String> codes = documentedCodes(method(name));
-        // 409 is "illegal for this run's status", 422 is "the Provider cannot do it at all". A caller
-        // cannot tell those apart without both being published, so neither may be dropped.
-        assertTrue(codes.contains("409"), "409 (illegal in the run's current status) must be documented on " + name);
-        assertTrue(codes.contains("422"), "422 (Discovery Provider does not support it) must be documented on " + name);
+        // Every refusal is a 422 — an illegal status for the run and an unsupporting Provider alike —
+        // matching how the platform reports every other illegal state transition (ValidationException).
+        // 409 is pinned absent: Core's only CONFLICT mapping is AlreadyExistException, so a documented
+        // 409 here would be a contract no implementation can produce.
+        assertTrue(codes.contains("422"),
+                "422 (illegal status or unsupporting Provider) must be documented on " + name);
+        assertFalse(codes.contains("409"), "409 must not be documented on " + name
+                + " — the platform has no CONFLICT mapping for run state, refusals are 422");
         assertTrue(codes.contains("404"), "404 (Discovery not found) must be documented on " + name);
     }
 

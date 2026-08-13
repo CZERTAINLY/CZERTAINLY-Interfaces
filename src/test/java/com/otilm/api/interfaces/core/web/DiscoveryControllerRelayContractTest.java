@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -63,7 +64,7 @@ class DiscoveryControllerRelayContractTest {
      * notice.
      */
     @ParameterizedTest
-    @CsvSource({"listDiscoveryResources", "getDiscoveryAttributes", "getDiscoveryResourceAttributes"})
+    @ValueSource(strings = {"listDiscoveryResources", "getDiscoveryAttributes", "getDiscoveryResourceAttributes"})
     void everyPathPlaceholderIsBoundToAParameter(String name) {
         Method m = method(name);
         List<String> bindable = new ArrayList<>();

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * The client-facing and connector-facing discovery models must not share a simple type name.
+ * The Core-side and connector-facing discovery models must not share a simple type name.
  *
  * <p>
  * Core maps one onto the other — {@code DiscoveryServiceImpl} turns a client create request into a connector request —
@@ -22,10 +22,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * not a style question: it makes the pair unusable together, and it surfaces only once a consumer tries, in another
  * repository, after this one has published.
  *
+ * <p>
+ * Two Core-side packages are guarded, because both are imported alongside the connector types: the client model, and
+ * {@code model/core/discovery}, where {@code DiscoveryItemDto} lives — one connector-side name away from making
+ * {@code DiscoveryServiceImpl} unable to import its own item type.
  */
 class DiscoveryDtoNameCollisionTest {
 
     private static final Path CLIENT_MODEL = Path.of("src/main/java/com/otilm/api/model/client/discovery");
+    private static final Path CORE_MODEL = Path.of("src/main/java/com/otilm/api/model/core/discovery");
     private static final Path CONNECTOR_MODEL = Path.of("src/main/java/com/otilm/api/model/connector/discovery");
 
     private static Set<String> typeNamesIn(Path packageDir) throws IOException {
@@ -42,25 +47,30 @@ class DiscoveryDtoNameCollisionTest {
     }
 
     /**
-     * Guards the guard: if either package moves, {@link #typeNamesIn} would return nothing and the collision check
-     * below would pass by vacuously comparing two empty sets.
+     * Guards the guard: if any of the packages moves, {@link #typeNamesIn} would return nothing and the collision check
+     * below would pass by vacuously comparing empty sets.
      */
     @Test
-    void bothModelPackagesAreWhereThisTestExpects() throws IOException {
+    void allModelPackagesAreWhereThisTestExpects() throws IOException {
         assertTrue(Files.isDirectory(CLIENT_MODEL),
                 CLIENT_MODEL + " is missing; this test cannot see the client model");
+        assertTrue(Files.isDirectory(CORE_MODEL), CORE_MODEL + " is missing; this test cannot see the core model");
         assertTrue(Files.isDirectory(CONNECTOR_MODEL),
                 CONNECTOR_MODEL + " is missing; this test cannot see the connector model");
         assertFalse(typeNamesIn(CLIENT_MODEL).isEmpty(), "found no client discovery types");
+        assertFalse(typeNamesIn(CORE_MODEL).isEmpty(), "found no core discovery types");
         assertFalse(typeNamesIn(CONNECTOR_MODEL).isEmpty(), "found no connector discovery types");
     }
 
     @Test
-    void noClientDiscoveryTypeSharesItsNameWithAConnectorDiscoveryType() throws IOException {
+    void noCoreSideDiscoveryTypeSharesItsNameWithAConnectorDiscoveryType() throws IOException {
         Set<String> shared = new TreeSet<>(typeNamesIn(CLIENT_MODEL));
+        shared.addAll(typeNamesIn(CORE_MODEL));
         shared.retainAll(typeNamesIn(CONNECTOR_MODEL));
 
-        assertEquals(Set.of(), shared, "these names exist in both com.otilm.api.model.client.discovery and "
-                + "com.otilm.api.model.connector.discovery, so no class can import both: " + shared);
+        assertEquals(Set.of(), shared,
+                "these names exist both on the Core side (model.client.discovery or "
+                        + "model.core.discovery) and in com.otilm.api.model.connector.discovery, so no class can "
+                        + "import both: " + shared);
     }
 }

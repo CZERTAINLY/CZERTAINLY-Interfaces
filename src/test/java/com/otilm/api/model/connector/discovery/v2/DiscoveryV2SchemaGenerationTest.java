@@ -1,7 +1,9 @@
 package com.otilm.api.model.connector.discovery.v2;
 
 import com.otilm.api.interfaces.core.web.DiscoveryController;
+import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
 import com.otilm.api.model.core.auth.Resource;
+import com.otilm.api.model.core.discovery.DiscoveryItemDto;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -111,6 +113,22 @@ class DiscoveryV2SchemaGenerationTest {
     void progressComponentsAreIdenticalFromEveryEntryPoint() {
         Map<String, Schema> viaEvent = ModelConverters.getInstance().readAll(DiscoveryEvent.class);
         Map<String, Schema> viaStatus = ModelConverters.getInstance().readAll(DiscoveryStatusResponseDto.class);
+        Map<String, Schema> viaDetail = ModelConverters.getInstance().readAll(DiscoveryDetailDto.class);
+
+        // The core-web run detail is the third entry point into the progress components, added by the
+        // discovery v2 core-web change; its field-level prose must not leak onto the shared components.
+        // DiscoveryProgressDto is the direct $ref target of the detail's progress field, so its description
+        // is compared against the status path's — a hoisted field description shows up exactly there.
+        assertTrue(resolvesProperty(viaDetail.get("DiscoveryProgressDto"), "byResource", viaDetail),
+                "DiscoveryProgressDto must carry byResource on the run-detail path");
+        assertEquals(viaStatus.get("DiscoveryProgressDto").getDescription(),
+                viaDetail.get("DiscoveryProgressDto").getDescription(),
+                "DiscoveryProgressDto's description must not depend on being reached through the run detail");
+        Schema<?> leafViaDetail = viaDetail.get("DiscoveryResourceProgressDto");
+        assertNotNull(leafViaDetail, "the per-resource leaf component must be emitted on the run-detail path");
+        assertTrue(leafViaDetail.getDescription().startsWith("Progress counters"),
+                "the leaf must keep its own description on the run-detail path; was: "
+                        + leafViaDetail.getDescription());
 
         // If the event path emits the run-level component at all, it must be the whole thing.
         Schema<?> progressViaEvent = viaEvent.get("DiscoveryProgressDto");
@@ -150,7 +168,10 @@ class DiscoveryV2SchemaGenerationTest {
                 DiscoveredCertificateDto.class,
                 DiscoveredKeyDto.class,
                 DiscoveredItemDto.class,
-                DiscoveryEvent.class}) {
+                DiscoveryEvent.class,
+                DiscoverySupportedResourceDto.class,
+                DiscoveryItemDto.class,
+                DiscoveryDetailDto.class}) {
             Schema<?> resource = ModelConverters.getInstance().readAll(discoveryRoot).get("Resource");
             if (resource == null) {
                 continue;
