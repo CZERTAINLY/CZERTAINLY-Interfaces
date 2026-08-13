@@ -1,4 +1,4 @@
-package com.otilm.api.clients.v2;
+package com.otilm.api.clients.cryptography.v2;
 
 import com.otilm.api.clients.ApiClientConnectorInfo;
 import com.otilm.api.clients.BaseApiClient;

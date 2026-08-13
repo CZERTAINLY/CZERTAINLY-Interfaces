@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import com.otilm.api.clients.BaseApiClient;
+import com.otilm.api.clients.cryptography.v2.CryptographicOperationsApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorServerException;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
