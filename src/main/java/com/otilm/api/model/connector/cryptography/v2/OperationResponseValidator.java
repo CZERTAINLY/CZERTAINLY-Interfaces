@@ -7,6 +7,13 @@ import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dt
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.DecryptDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.EncryptDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.token.TokenStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.SynchronousResponse;
@@ -14,6 +21,7 @@ import com.otilm.api.model.core.cryptography.key.KeyUsage;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.validation.groups.Default;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -70,6 +78,25 @@ public final class OperationResponseValidator {
         }
     }
 
+    private static void requireMatchingSignatureIdentifiers(SignDataRequestV2Dto request,
+            SignDataResponseV2Dto response) {
+        if (request.getData() == null) {
+            throw new IllegalArgumentException("Signing request data is required");
+        }
+        Set<String> requestIdentifiers = request
+                .getData()
+                .stream()
+                .map(item -> item.getIdentifier())
+                .collect(Collectors.toSet());
+        List<String> responseIdentifiers = response.getSignatures().stream().map(item -> item.getIdentifier()).toList();
+        Set<String> uniqueResponseIdentifiers = new HashSet<>(responseIdentifiers);
+        if (uniqueResponseIdentifiers.size() != responseIdentifiers.size()
+                || !uniqueResponseIdentifiers.equals(requestIdentifiers)) {
+            throw new IllegalArgumentException(
+                    "Synchronous signing response identifiers must match request identifiers");
+        }
+    }
+
     public OperationValidationResult validateTokenStatus(TokenStatusResponseV2Dto response) {
         return validateBeanConstraints(response);
     }
@@ -102,24 +129,60 @@ public final class OperationResponseValidator {
 
     private OperationValidationResult validateOperationResponse(OperationExecutionMode mode, ResponseEntity<?> response,
             SynchronousBody synchronousBody) {
-        return validate(() -> {
-            requireExecutionMode(mode);
-            if (mode == OperationExecutionMode.SYNCHRONOUS) {
-                requireResponseStatus(response, HttpStatus.OK);
-                if (synchronousBody == SynchronousBody.REQUIRED) {
-                    validateBean(requireBody(response), SynchronousResponse.class);
-                } else {
-                    requireEmptyBody(response);
-                }
-            } else {
-                requireResponseStatus(response, HttpStatus.ACCEPTED);
-                validateBean(requireBody(response), AsynchronousResponse.class);
-            }
-        });
+        return validate(() -> validateOperationResponseConstraints(mode, response, synchronousBody));
     }
 
     public OperationValidationResult validateDestroyKeyStatus(KeyDestructionStatusResponseV2Dto response) {
         return validateBeanConstraints(response);
+    }
+
+    public OperationValidationResult validateEncrypt(EncryptDataResponseV2Dto response) {
+        return validateBeanConstraints(response);
+    }
+
+    public OperationValidationResult validateDecrypt(DecryptDataResponseV2Dto response) {
+        return validateBeanConstraints(response);
+    }
+
+    public OperationValidationResult validateVerify(VerifyDataResponseV2Dto response) {
+        return validateBeanConstraints(response);
+    }
+
+    public OperationValidationResult validateRandom(RandomDataResponseV2Dto response) {
+        return validateBeanConstraints(response);
+    }
+
+    public OperationValidationResult validateSignStatus(SignOperationStatusResponseV2Dto response) {
+        return validateBeanConstraints(response);
+    }
+
+    public OperationValidationResult validateSign(SignDataRequestV2Dto request,
+            ResponseEntity<SignDataResponseV2Dto> response) {
+        return validate(() -> {
+            if (request == null) {
+                throw new IllegalArgumentException("Signing request is required");
+            }
+            validateOperationResponseConstraints(request.getExecutionMode(), response, SynchronousBody.REQUIRED);
+            if (request.getExecutionMode() == OperationExecutionMode.SYNCHRONOUS) {
+                requireMatchingSignatureIdentifiers(request, requireBody(response));
+            }
+        });
+    }
+
+    private void validateOperationResponseConstraints(OperationExecutionMode mode, ResponseEntity<?> response,
+            SynchronousBody synchronousBody) {
+        requireExecutionMode(mode);
+        if (mode == OperationExecutionMode.SYNCHRONOUS) {
+            requireResponseStatus(response, HttpStatus.OK);
+            if (synchronousBody == SynchronousBody.REQUIRED) {
+                validateBean(requireBody(response), SynchronousResponse.class);
+            } else {
+                requireEmptyBody(response);
+            }
+        } else {
+            requireResponseStatus(response, HttpStatus.ACCEPTED);
+            validateBean(requireBody(response), AsynchronousResponse.class);
+        }
     }
 
     private OperationValidationResult validateBeanConstraints(Object response) {
