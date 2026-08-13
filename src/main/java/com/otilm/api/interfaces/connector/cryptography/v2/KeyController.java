@@ -8,9 +8,9 @@ import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationStatusResponseV2Dto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -102,7 +102,7 @@ public interface KeyController extends AuthProtectedConnectorController {
             @ApiResponse(responseCode = "404", description = "Operation is not tracked")})
     @PostMapping(path = "/destroy/status", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    KeyOperationStatusResponseV2Dto getDestroyKeyStatus(@RequestBody @Valid KeyOperationRequestV2Dto request);
+    KeyDestructionStatusResponseV2Dto getDestroyKeyStatus(@RequestBody @Valid KeyOperationRequestV2Dto request);
 
     @Operation(summary = "Cancel async key destruction",
             description = "Cancel an in-flight asynchronous key destruction")
