@@ -124,8 +124,8 @@ public interface DiscoveryController extends AuthProtectedController {
      * exactly as on the certificate listing. Both optional; omitted means no filter.
      *
      * <p>
-     * <b>Binding:</b> {@code resource} binds by wire code, never by Java enum member name — Core registers
-     * {@code IPlatformEnumConverterFactory} in its web configuration for every {@code IPlatformEnum} parameter.
+     * <b>Binding:</b> {@code resource} binds by wire code, never by Java enum member name — the implementation
+     * registers a wire-code binder for it (Core uses its per-controller {@code @InitBinder} editor pattern).
      */
     @Operation(summary = "List Discovered Items",
             description = "Returns one page of the items this Discovery staged, ordered by their run "
