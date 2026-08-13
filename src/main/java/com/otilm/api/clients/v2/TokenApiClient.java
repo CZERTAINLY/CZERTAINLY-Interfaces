@@ -22,6 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  * WebClient implementation of the connector-facing v2 stateless token API.
  */
 @Slf4j
+@SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class TokenApiClient extends BaseApiClient implements TokenSyncApiClient {
 
     private static final String BASE_PATH = "/v2/cryptographyProvider/tokens";

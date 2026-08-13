@@ -29,6 +29,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 /**
  * WebClient implementation of the connector-facing stateless cryptography v2 operations API.
  */
+@SuppressWarnings("java:S1075") // contract paths, not configurable URIs
 public class CryptographicOperationsApiClient extends BaseApiClient implements CryptographicOperationsSyncApiClient {
 
     private static final String BASE_PATH = "/v2/cryptographyProvider/operations";

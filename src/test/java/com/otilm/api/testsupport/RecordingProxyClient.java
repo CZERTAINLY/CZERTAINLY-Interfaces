@@ -36,7 +36,7 @@ public final class RecordingProxyClient implements ProxyClient {
     @SuppressWarnings("unchecked")
     public <T> T sendRequest(ApiClientConnectorInfo connector, String path, String method, Object body,
             Class<T> responseType) throws ConnectorException {
-        record(connector, path, method, body, responseType, false);
+        recordInvocation(connector, path, method, body, responseType, false);
         throwFailure();
         return (T) response;
     }
@@ -45,12 +45,12 @@ public final class RecordingProxyClient implements ProxyClient {
     @SuppressWarnings("unchecked")
     public <T> ResponseEntity<T> sendRequestForEntity(ApiClientConnectorInfo connector, String path, String method,
             Object body, Class<T> responseType) throws ConnectorException {
-        record(connector, path, method, body, responseType, true);
+        recordInvocation(connector, path, method, body, responseType, true);
         throwFailure();
         return (ResponseEntity<T>) entityResponse;
     }
 
-    private void record(ApiClientConnectorInfo connector, String path, String method, Object body,
+    private void recordInvocation(ApiClientConnectorInfo connector, String path, String method, Object body,
             Class<?> responseType, boolean entityResponse) {
         if (invocation != null) {
             throw new IllegalStateException("RecordingProxyClient supports one invocation per test");
