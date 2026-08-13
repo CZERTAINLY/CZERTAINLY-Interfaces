@@ -1,9 +1,15 @@
 package com.otilm.api.model.connector.discovery.v2;
 
+import com.otilm.api.interfaces.core.web.DiscoveryController;
+import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
 import com.otilm.api.model.core.auth.Resource;
+import com.otilm.api.model.core.discovery.DiscoveryItemDto;
+import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -107,6 +113,22 @@ class DiscoveryV2SchemaGenerationTest {
     void progressComponentsAreIdenticalFromEveryEntryPoint() {
         Map<String, Schema> viaEvent = ModelConverters.getInstance().readAll(DiscoveryEvent.class);
         Map<String, Schema> viaStatus = ModelConverters.getInstance().readAll(DiscoveryStatusResponseDto.class);
+        Map<String, Schema> viaDetail = ModelConverters.getInstance().readAll(DiscoveryDetailDto.class);
+
+        // The core-web run detail is the third entry point into the progress components; its field-level
+        // prose must not leak onto the shared components. DiscoveryProgressDto is the direct $ref target
+        // of the detail's progress field, so its description is compared against the status path's — a
+        // hoisted field description shows up exactly there.
+        assertTrue(resolvesProperty(viaDetail.get("DiscoveryProgressDto"), "byResource", viaDetail),
+                "DiscoveryProgressDto must carry byResource on the run-detail path");
+        assertEquals(viaStatus.get("DiscoveryProgressDto").getDescription(),
+                viaDetail.get("DiscoveryProgressDto").getDescription(),
+                "DiscoveryProgressDto's description must not depend on being reached through the run detail");
+        Schema<?> leafViaDetail = viaDetail.get("DiscoveryResourceProgressDto");
+        assertNotNull(leafViaDetail, "the per-resource leaf component must be emitted on the run-detail path");
+        assertTrue(leafViaDetail.getDescription().startsWith("Progress counters"),
+                "the leaf must keep its own description on the run-detail path; was: "
+                        + leafViaDetail.getDescription());
 
         // If the event path emits the run-level component at all, it must be the whole thing.
         Schema<?> progressViaEvent = viaEvent.get("DiscoveryProgressDto");
@@ -146,7 +168,10 @@ class DiscoveryV2SchemaGenerationTest {
                 DiscoveredCertificateDto.class,
                 DiscoveredKeyDto.class,
                 DiscoveredItemDto.class,
-                DiscoveryEvent.class}) {
+                DiscoveryEvent.class,
+                DiscoverySupportedResourceDto.class,
+                DiscoveryItemDto.class,
+                DiscoveryDetailDto.class}) {
             Schema<?> resource = ModelConverters.getInstance().readAll(discoveryRoot).get("Resource");
             if (resource == null) {
                 continue;
@@ -180,5 +205,40 @@ class DiscoveryV2SchemaGenerationTest {
             }
         }
         return false;
+    }
+
+    /**
+     * The discovered-items listing returns {@code PaginationResponseDto<DiscoveryItemDto>} rather than a
+     * listing-specific DTO. Resolved from the controller method's own generic return type, so the assertion tracks the
+     * published signature instead of a restatement of it.
+     *
+     * <p>
+     * Two things are worth pinning. The component name is what client generators turn into a type name, and it is
+     * derived from the type argument, so changing the element type silently renames the generated type. And the item's
+     * payload discriminator has to survive being nested inside an erased generic — nothing else in the platform puts a
+     * polymorphic type inside this envelope, so that combination is unproven anywhere else.
+     */
+    @Test
+    void itemsListingResolvesToAPageComponentKeepingThePayloadDiscriminator() throws Exception {
+        Method listing = DiscoveryController.class
+                .getDeclaredMethod("getDiscoveryItems", String.class, Resource.class, Boolean.class, int.class,
+                        int.class);
+
+        ResolvedSchema resolved = ModelConverters
+                .getInstance()
+                .resolveAsResolvedSchema(new AnnotatedType(listing.getGenericReturnType()).resolveAsRef(true));
+
+        assertEquals("#/components/schemas/PaginationResponseDtoDiscoveryItemDto", resolved.schema.get$ref(),
+                "the generated type name client generators see is derived from the element type");
+
+        Schema<?> page = resolved.referencedSchemas.get("PaginationResponseDtoDiscoveryItemDto");
+        assertNotNull(page, "no page component was generated");
+        assertEquals(java.util.Set.of("items", "itemsPerPage", "pageNumber", "totalPages", "totalItems"),
+                page.getProperties().keySet(), "property order is not part of the OpenAPI contract, names are");
+
+        Schema<?> payload = resolved.referencedSchemas.get("DiscoveredItemPayload");
+        assertNotNull(payload, "the item payload union did not survive into the page's referenced schemas");
+        assertNotNull(payload.getDiscriminator(), "the payload lost its discriminator inside the generic envelope");
+        assertEquals("resource", payload.getDiscriminator().getPropertyName());
     }
 }
