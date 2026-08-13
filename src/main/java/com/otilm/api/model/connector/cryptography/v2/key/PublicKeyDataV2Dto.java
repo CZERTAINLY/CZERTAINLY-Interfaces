@@ -148,13 +148,13 @@ public final class PublicKeyDataV2Dto extends KeyDataV2Dto {
             return PublicKeyFactory.createKey(spki);
         } catch (IOException | IllegalArgumentException standardFailure) {
             try {
-                return PublicKeyFactory.createKey(spki);
-            } catch (IOException | IllegalArgumentException legacyFailure) {
-                legacyFailure.addSuppressed(standardFailure);
-                if (legacyFailure instanceof IOException ioException) {
+                return org.bouncycastle.pqc.crypto.util.PublicKeyFactory.createKey(spki);
+            } catch (IOException | IllegalArgumentException pqcFailure) {
+                pqcFailure.addSuppressed(standardFailure);
+                if (pqcFailure instanceof IOException ioException) {
                     throw ioException;
                 }
-                throw new IOException("Unsupported or malformed SubjectPublicKeyInfo", legacyFailure);
+                throw new IOException("Unsupported or malformed SubjectPublicKeyInfo", pqcFailure);
             }
         }
     }

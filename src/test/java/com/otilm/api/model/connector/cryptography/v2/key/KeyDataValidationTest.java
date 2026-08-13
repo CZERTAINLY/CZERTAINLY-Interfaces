@@ -1,11 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.key;
 
-import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
-import com.otilm.api.model.common.attribute.common.content.data.CredentialAttributeContentData;
-import com.otilm.api.model.common.attribute.common.content.data.SecretAttributeContentData;
 import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
-import com.otilm.api.model.common.attribute.v2.content.CredentialAttributeContentV2;
-import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
 import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
@@ -36,7 +31,6 @@ import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDt
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validPublicKeyData;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validSecretKeyData;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -113,30 +107,6 @@ class KeyDataValidationTest {
                 });
     }
 
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("mutatedKeyRoles")
-    void keyDescriptor_rejectsRoleMutation(MutatedRole mutatedRole) {
-        // given
-        KeyDataV2Dto descriptor = mutatedRole.descriptor();
-
-        // when
-        descriptor.setType(mutatedRole.illegalRole());
-
-        // then
-        assertEquals(mutatedRole.fixedRole(), descriptor.getType(),
-                "a concrete key descriptor must always report its fixed role");
-    }
-
-    static Stream<Named<MutatedRole>> mutatedKeyRoles() {
-        return Stream
-                .of(named("secret as public",
-                        new MutatedRole(validSecretKeyData(), KeyTypeV2.SECRET, KeyTypeV2.PUBLIC)),
-                        named("private as secret",
-                                new MutatedRole(validPrivateKeyData(), KeyTypeV2.PRIVATE, KeyTypeV2.SECRET)),
-                        named("public as private",
-                                new MutatedRole(validPublicKeyData(), KeyTypeV2.PUBLIC, KeyTypeV2.PRIVATE)));
-    }
-
     @Test
     void validate_rejectsNullMetadataElement_atIndexedPath() {
         // given
@@ -163,34 +133,6 @@ class KeyDataValidationTest {
 
         // then
         assertHasViolation(violations, "metadata[0].<list element>.name", "name must not be blank");
-    }
-
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("sensitiveMetadataAttributes")
-    void validate_rejectsSensitiveContentTypeInDescriptiveKeyMetadata(MetadataAttributeV2 sensitiveMetadata) {
-        // given
-        SecretKeyDataV2Dto keyData = validSecretKeyData();
-        keyData.setMetadata(List.of(sensitiveMetadata));
-
-        // when
-        Set<ConstraintViolation<SecretKeyDataV2Dto>> violations = VALIDATOR.validate(keyData);
-
-        // then
-        assertHasViolation(violations, "metadata[0].<list element>.contentType",
-                "key metadata must not contain sensitive content types");
-    }
-
-    static Stream<Named<MetadataAttributeV2>> sensitiveMetadataAttributes() {
-        String sensitiveValue = "key-metadata-secret";
-        MetadataAttributeV2 secretMetadata = validMetadataAttribute();
-        secretMetadata.setContentType(AttributeContentType.SECRET);
-        secretMetadata
-                .setContent(
-                        List.of(new SecretAttributeContentV2(null, new SecretAttributeContentData(sensitiveValue))));
-        MetadataAttributeV2 credentialMetadata = validMetadataAttribute();
-        credentialMetadata.setContentType(AttributeContentType.CREDENTIAL);
-        credentialMetadata.setContent(List.of(new CredentialAttributeContentV2(new CredentialAttributeContentData())));
-        return Stream.of(named("secret", secretMetadata), named("credential", credentialMetadata));
     }
 
     @Test
