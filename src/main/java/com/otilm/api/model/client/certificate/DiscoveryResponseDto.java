@@ -1,6 +1,6 @@
 package com.otilm.api.model.client.certificate;
 
-import com.otilm.api.model.client.discovery.DiscoveryHistoryDto;
+import com.otilm.api.model.client.discovery.DiscoveryListDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class DiscoveryResponseDto {
     @Schema(description = "Discoveries", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<DiscoveryHistoryDto> discoveries;
+    private List<DiscoveryListDto> discoveries;
 
     @Schema(description = "Number of entries per page", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer itemsPerPage;
