@@ -126,7 +126,7 @@ public final class MetadataAttributeValidator
         // Ideally, the schemaVersion is declared on MetadataAttribute so we don't have to check for
         // MetadataAttributeV3.
         // However, the schemaVersion is intended to be used as serialization polymorphic discriminator, and must be
-        // marker in OpenAPI spec as required.
+        // marked in OpenAPI spec as required.
         if (attributeVersion != null && value instanceof MetadataAttributeV3 metadataV3
                 && metadataV3.getSchemaVersion() != null && metadataV3.getSchemaVersion() != attributeVersion) {
             addPropertyViolation(context, "schemaVersion", "schemaVersion must match version");
