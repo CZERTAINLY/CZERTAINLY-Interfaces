@@ -138,7 +138,7 @@ class KeyDataValidationTest {
     @Test
     void validate_hasNoViolations_forMatchingRsaSpki() throws Exception {
         // given
-        int declaredRsaLength = 1024;
+        int declaredRsaLength = 2048;
         byte[] rsaSpki = generateRsaSpki(declaredRsaLength);
         PublicKeyDataV2Dto keyData = validPublicKeyData();
         keyData.setAlgorithm(KeyAlgorithm.RSA);
@@ -203,7 +203,7 @@ class KeyDataValidationTest {
     @Test
     void validate_hasNoViolations_forUnknownAlgorithmWithParseablePublicSpki() throws Exception {
         // given
-        int actualRsaLength = 1024;
+        int actualRsaLength = 2048;
         byte[] parseableSpki = generateRsaSpki(actualRsaLength);
         PublicKeyDataV2Dto keyData = validPublicKeyData();
         keyData.setAlgorithm(KeyAlgorithm.UNKNOWN);
@@ -220,7 +220,7 @@ class KeyDataValidationTest {
     @Test
     void validate_rejectsSpki_forMismatchedDeclaredAlgorithm() throws Exception {
         // given
-        int actualRsaLength = 1024;
+        int actualRsaLength = 2048;
         byte[] rsaSpki = generateRsaSpki(actualRsaLength);
         PublicKeyDataV2Dto keyData = validPublicKeyData();
         keyData.setAlgorithm(KeyAlgorithm.ECDSA);
@@ -238,8 +238,8 @@ class KeyDataValidationTest {
     @Test
     void validate_rejectsSpki_forMismatchedDeclaredLength() throws Exception {
         // given
-        int actualRsaLength = 1024;
-        int mismatchedDeclaredLength = 2048;
+        int actualRsaLength = 2048;
+        int mismatchedDeclaredLength = 3072;
         byte[] rsaSpki = generateRsaSpki(actualRsaLength);
         PublicKeyDataV2Dto keyData = validPublicKeyData();
         keyData.setAlgorithm(KeyAlgorithm.RSA);
@@ -283,7 +283,7 @@ class KeyDataValidationTest {
     @Test
     void publicKeySpki_setterCopiesCallerOwnedBytesAndToStringRedactsThem() throws Exception {
         // given
-        int rsaLength = 1024;
+        int rsaLength = 2048;
         byte[] callerOwnedSpki = generateRsaSpki(rsaLength);
         byte[] expectedStoredSpki = callerOwnedSpki.clone();
         String firstBytesMarker = Arrays.toString(callerOwnedSpki);
