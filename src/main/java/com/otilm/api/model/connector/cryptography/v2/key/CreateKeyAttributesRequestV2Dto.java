@@ -14,7 +14,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class CreateKeyAttributesRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
-    @Schema(description = "Type of key whose creation attributes are requested", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type of key whose creation attributes are requested",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "keyRequestType is required")
     private KeyRequestType keyRequestType;
 }

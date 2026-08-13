@@ -25,7 +25,8 @@ public class CreateKeyRequestV2Dto extends TokenProfileScopedRequestV2Dto {
     @NotNull(message = "keyRequestType is required")
     private KeyRequestType keyRequestType;
 
-    @Schema(description = "Caller-selected execution mode. The connector must not switch modes implicitly.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Caller-selected execution mode. The connector must not switch modes implicitly.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "executionMode is required")
     private OperationExecutionMode executionMode;
 
@@ -41,5 +42,6 @@ public class CreateKeyRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
     @Schema(description = "Attributes to create the key", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "createKeyAttributes is required (may be empty list, but must be present)")
-    private List<@NotNull(message = "createKeyAttributes must not contain null entries") RequestAttribute> createKeyAttributes;
+    private List<@NotNull(
+            message = "createKeyAttributes must not contain null entries") RequestAttribute> createKeyAttributes;
 }

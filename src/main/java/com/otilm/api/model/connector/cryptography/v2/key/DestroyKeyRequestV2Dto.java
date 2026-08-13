@@ -16,7 +16,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class DestroyKeyRequestV2Dto extends KeyScopedRequestV2Dto {
 
-    @Schema(description = "Caller-selected execution mode. The connector must not switch modes implicitly.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Caller-selected execution mode. The connector must not switch modes implicitly.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "executionMode is required")
     private OperationExecutionMode executionMode;
 }

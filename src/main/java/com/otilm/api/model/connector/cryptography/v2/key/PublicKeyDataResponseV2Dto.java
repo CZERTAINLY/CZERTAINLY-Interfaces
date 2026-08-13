@@ -24,13 +24,15 @@ import lombok.ToString;
 public final class PublicKeyDataResponseV2Dto {
 
     @Schema(description = "Connector-defined opaque public-key handle. Metadata must identify the key durably—it must "
-            + "remain valid across connector restarts and sessions; ephemeral handles must not be used.", requiredMode = Schema.RequiredMode.REQUIRED)
+            + "remain valid across connector restarts and sessions; ephemeral handles must not be used.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "public key metadata is required and must not be empty")
     private List<@NotNull @ValidMetadataAttribute MetadataAttribute> keyMeta;
 
     @Valid
     @NotNull(message = "public key data is required")
-    @Schema(description = "Public-key descriptor, optionally carrying the public key as SPKI", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Public-key descriptor, optionally carrying the public key as SPKI",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private PublicKeyDataV2Dto keyData;
 
     @JsonAnySetter

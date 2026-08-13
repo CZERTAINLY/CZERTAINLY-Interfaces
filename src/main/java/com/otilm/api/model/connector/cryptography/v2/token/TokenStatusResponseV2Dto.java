@@ -19,7 +19,8 @@ public class TokenStatusResponseV2Dto {
     @NotNull(message = "status is required")
     private TokenStatusV2 status;
 
-    @Schema(description = "Optional provider-supplied detail explaining the token status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Optional provider-supplied detail explaining the token status",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String detail;
 
 }

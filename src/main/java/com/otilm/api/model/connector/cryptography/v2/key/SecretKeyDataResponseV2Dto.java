@@ -28,7 +28,8 @@ import lombok.ToString;
 public final class SecretKeyDataResponseV2Dto extends KeyCreationResponseV2Dto {
 
     @Override
-    @Schema(description = "Type of key requested and returned", requiredMode = Schema.RequiredMode.REQUIRED, allowableValues = KeyRequestType.Codes.SECRET)
+    @Schema(description = "Type of key requested and returned", requiredMode = Schema.RequiredMode.REQUIRED,
+            allowableValues = KeyRequestType.Codes.SECRET)
     public KeyRequestType getKeyRequestType() {
         return KeyRequestType.SECRET;
     }
@@ -36,15 +37,18 @@ public final class SecretKeyDataResponseV2Dto extends KeyCreationResponseV2Dto {
     @Valid
     @Null(message = "keyData must be absent for asynchronous execution", groups = AsynchronousResponse.class)
     @NotNull(message = "keyData is required for synchronous execution", groups = SynchronousResponse.class)
-    @Schema(description = "Created secret-key descriptor. Null on an asynchronous 202 response.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Created secret-key descriptor. Null on an asynchronous 202 response.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SecretKeyDataV2Dto keyData;
 
     @Schema(description = "Connector-defined key handle. Present on a synchronous 200 response. Metadata must identify "
             + "the key durably—it must remain valid across connector restarts and sessions; ephemeral handles must not "
             + "be used.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Null(message = "keyMeta must be absent for asynchronous execution", groups = AsynchronousResponse.class)
-    @NotEmpty(message = "keyMeta must contain at least one item for synchronous execution", groups = SynchronousResponse.class)
-    private List<@NotNull(message = "keyMeta must not contain null items") @ValidMetadataAttribute MetadataAttribute> keyMeta;
+    @NotEmpty(message = "keyMeta must contain at least one item for synchronous execution",
+            groups = SynchronousResponse.class)
+    private List<@NotNull(
+            message = "keyMeta must not contain null items") @ValidMetadataAttribute MetadataAttribute> keyMeta;
 
     @JsonAnySetter
     @Schema(hidden = true)

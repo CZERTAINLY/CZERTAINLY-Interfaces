@@ -17,7 +17,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class KeyOperationRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
-    @Schema(description = "Connector-defined metadata returned in the original 202 Accepted response", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Connector-defined metadata returned in the original 202 Accepted response",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "operationMeta is required and must not be empty")
     private List<@NotNull @ValidMetadataAttribute MetadataAttribute> operationMeta;
 }

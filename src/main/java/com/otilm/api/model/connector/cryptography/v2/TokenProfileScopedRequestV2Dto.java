@@ -20,7 +20,8 @@ public class TokenProfileScopedRequestV2Dto extends TokenScopedRequestV2Dto {
 
     @Schema(description = "Token profile attributes", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "tokenProfileAttributes is required (may be empty list, but must be present)")
-    private List<@NotNull(message = "tokenProfileAttributes must not contain null entries") RequestAttribute> tokenProfileAttributes;
+    private List<@NotNull(
+            message = "tokenProfileAttributes must not contain null entries") RequestAttribute> tokenProfileAttributes;
 
     @Schema(description = "Key usages selected on the token profile", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "keyUsages must contain at least one usage")

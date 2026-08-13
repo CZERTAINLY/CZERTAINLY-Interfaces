@@ -12,7 +12,8 @@ import java.util.Arrays;
 /**
  * Caller-selected completion mode for operations that support asynchronous execution.
  */
-@Schema(name = "OperationExecutionMode", enumAsRef = true, description = "Whether the connector must complete the operation inline or accept it for asynchronous processing")
+@Schema(name = "OperationExecutionMode", enumAsRef = true,
+        description = "Whether the connector must complete the operation inline or accept it for asynchronous processing")
 public enum OperationExecutionMode implements IPlatformEnum {
 
     SYNCHRONOUS("synchronous", "Synchronous", "Complete the operation before returning the response"),

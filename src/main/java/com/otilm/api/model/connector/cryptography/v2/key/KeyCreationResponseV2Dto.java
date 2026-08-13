@@ -10,7 +10,8 @@ import lombok.ToString;
  * Common contract for synchronous or asynchronous key-creation response envelopes.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "keyRequestType")
-@JsonSubTypes({@JsonSubTypes.Type(value = SecretKeyDataResponseV2Dto.class, name = KeyRequestType.Codes.SECRET),
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SecretKeyDataResponseV2Dto.class, name = KeyRequestType.Codes.SECRET),
         @JsonSubTypes.Type(value = KeyPairDataResponseV2Dto.class, name = KeyRequestType.Codes.KEY_PAIR)})
 @Schema(implementation = KeyCreationResponseInterface.class)
 @ToString(callSuper = true)
