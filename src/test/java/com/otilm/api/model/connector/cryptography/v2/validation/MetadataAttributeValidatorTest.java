@@ -96,6 +96,7 @@ class MetadataAttributeValidatorTest {
         // given
         int usableIntegerData = 42;
         MetadataAttributeV2 metadata = validMetadataAttribute();
+        metadata.setContentType(AttributeContentType.INTEGER);
         metadata.setContent(List.of(new IntegerAttributeContentV2(usableIntegerData)));
         KeyOperationRequestV2Dto request = requestWith(metadata);
 
@@ -104,6 +105,94 @@ class MetadataAttributeValidatorTest {
 
         // then
         assertTrue(violations.isEmpty());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("metadataWithMismatchedDtoVersion")
+    void validate_rejectsVersionThatDoesNotMatchMetadataDto(MetadataAttribute metadata) {
+        // given
+        KeyOperationRequestV2Dto request = requestWith(metadata);
+
+        // when
+        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+
+        // then
+        assertHasViolation(violations, indexedPath("version"), "version must match metadata attribute DTO");
+    }
+
+    static Stream<Named<MetadataAttribute>> metadataWithMismatchedDtoVersion() {
+        MetadataAttributeV2 v2MetadataDeclaringV3 = validMetadataAttribute();
+        v2MetadataDeclaringV3.setVersion(AttributeVersion.V3.getVersion());
+        MetadataAttributeV3 v3MetadataDeclaringV2 = validV3MetadataAttribute();
+        v3MetadataDeclaringV2.setVersion(AttributeVersion.V2.getVersion());
+        v3MetadataDeclaringV2.setSchemaVersion(AttributeVersion.V2);
+
+        return Stream
+                .of(named("V2 DTO declaring V3", v2MetadataDeclaringV3),
+                        named("V3 DTO declaring V2", v3MetadataDeclaringV2));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("metadataWithUnsupportedContentType")
+    void validate_rejectsContentTypeUnsupportedByAttributeVersion(MetadataAttribute metadata) {
+        // given
+        KeyOperationRequestV2Dto request = requestWith(metadata);
+
+        // when
+        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+
+        // then
+        assertHasViolation(violations, indexedPath("contentType"),
+                "contentType is not supported for attribute version");
+    }
+
+    static Stream<Named<MetadataAttribute>> metadataWithUnsupportedContentType() {
+        MetadataAttributeV2 v2MetadataWithV3OnlyContentType = validMetadataAttribute();
+        v2MetadataWithV3OnlyContentType.setContentType(AttributeContentType.RESOURCE);
+        MetadataAttributeV3 v3MetadataWithV2OnlyContentType = validV3MetadataAttribute();
+        v3MetadataWithV2OnlyContentType.setContentType(AttributeContentType.SECRET);
+
+        return Stream
+                .of(named("V2 resource content", v2MetadataWithV3OnlyContentType),
+                        named("V3 secret content", v3MetadataWithV2OnlyContentType));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("metadataWithMismatchedContent")
+    void validate_reportsIndexedPath_forContentThatDoesNotMatchTypeOrVersion(MetadataAttribute metadata) {
+        // given
+        KeyOperationRequestV2Dto request = requestWith(metadata);
+
+        // when
+        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+
+        // then
+        assertHasViolation(violations, indexedContentPath(1), "content must match contentType and attribute version");
+    }
+
+    static Stream<Named<MetadataAttribute>> metadataWithMismatchedContent() {
+        String usableContent = "usable";
+        MetadataAttributeV2 v2MetadataWithWrongContentType = validMetadataAttribute();
+        v2MetadataWithWrongContentType
+                .setContent(List.of(new StringAttributeContentV2(usableContent), usableIntegerContent()));
+        MetadataAttributeV2 v2MetadataWithV3Content = validMetadataAttribute();
+        v2MetadataWithV3Content
+                .setContent(List
+                        .of(new StringAttributeContentV2(usableContent), new StringAttributeContentV3(usableContent)));
+        MetadataAttributeV3 v3MetadataWithV2Content = validV3MetadataAttribute();
+        v3MetadataWithV2Content
+                .setContent(List
+                        .of(new StringAttributeContentV3(usableContent), new StringAttributeContentV2(usableContent)));
+
+        return Stream
+                .of(named("V2 content type mismatch", v2MetadataWithWrongContentType),
+                        named("V2 metadata with V3 content", v2MetadataWithV3Content),
+                        named("V3 metadata with V2 content", v3MetadataWithV2Content));
+    }
+
+    private static IntegerAttributeContentV2 usableIntegerContent() {
+        int usableIntegerData = 42;
+        return new IntegerAttributeContentV2(usableIntegerData);
     }
 
     @Test
@@ -275,6 +364,10 @@ class MetadataAttributeValidatorTest {
 
     private static String indexedPath(String nestedProperty) {
         return "operationMeta[0].<list element>." + nestedProperty;
+    }
+
+    private static String indexedContentPath(int index) {
+        return indexedPath("content[" + index + "].<list element>");
     }
 
     private static void assertHasViolation(Set<? extends ConstraintViolation<?>> violations, String path,
