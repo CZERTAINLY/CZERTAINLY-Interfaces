@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DiscoveryHistoryDto extends NameAndUuidDto {
+public class DiscoveryListDto extends NameAndUuidDto {
 
     @Schema(description = "Discovery Kind", examples = {"IP-HostName"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;

@@ -18,7 +18,11 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DiscoverySupportedResourceDto {
 
-    @Schema(description = "Resource type this entry describes", requiredMode = Schema.RequiredMode.REQUIRED)
+    // No @Schema description on purpose: Resource is a platform-wide schema component, and OpenAPI 3.0 cannot
+    // carry a description beside a $ref — swagger-core hoists a referencing field's description onto the
+    // referenced component, rewriting it for every other API that references Resource
+    // (discoveryDoesNotRewriteThePlatformWideResourceComponent pins this).
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "resource is required")
     private Resource resource;
 

@@ -108,9 +108,14 @@ public enum Operation implements IPlatformEnum {
     CONFIRM_REVOKE("confirmRevoke", "Confirm certificate revocation",
             "Operator-driven confirmation of an asynchronous revocation: the certificate moves "
                     + "from PENDING_REVOKE to REVOKED."),
-    CANCEL("cancel", "Cancel pending certificate operation",
-            "Cancel an in-flight asynchronous issuance or revocation. PENDING_ISSUE -> FAILED, "
-                    + "PENDING_REVOKE -> ISSUED."),
+    STOP("stop", "Stop discovery run",
+            "Suspend an in-progress discovery run, keeping already-staged items and the provider-side "
+                    + "checkpoint needed to resume it."),
+    RESUME("resume", "Resume discovery run", "Continue a stopped discovery run from its provider-side checkpoint."),
+    CANCEL("cancel", "Cancel operation",
+            "Cancel an in-flight operation: an asynchronous certificate issuance or revocation "
+                    + "(PENDING_ISSUE -> FAILED, PENDING_REVOKE -> ISSUED), or a discovery run, which is "
+                    + "abandoned for good."),
     GET_ASSOCIATIONS("getAssociations", "Get associations"),
     LIST_VERSIONS("listVersions", "List versions"),
     GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation instructions"),
