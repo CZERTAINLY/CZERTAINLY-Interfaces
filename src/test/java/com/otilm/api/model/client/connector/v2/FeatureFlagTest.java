@@ -22,6 +22,22 @@ class FeatureFlagTest {
     }
 
     @Test
+    void asynchronousFlag_declaresCryptographyCapability() {
+        // given
+        var asynchronousCode = "asynchronous";
+
+        // when
+        FeatureFlag flag = FeatureFlag.findByCode(asynchronousCode);
+
+        // then
+        assertEquals(FeatureFlag.ASYNCHRONOUS, flag);
+        assertEquals("Asynchronous", flag.getLabel());
+        assertEquals("Supports asynchronous operations", flag.getDescription());
+        assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, flag.getBehavior());
+        assertEquals(List.of(ConnectorInterface.CRYPTOGRAPHY), flag.getApplicableInterfaces());
+    }
+
+    @Test
     void findByCodeRoundTripsAllEntries() {
         for (FeatureFlag f : FeatureFlag.values()) {
             assertEquals(f, FeatureFlag.findByCode(f.getCode()));
