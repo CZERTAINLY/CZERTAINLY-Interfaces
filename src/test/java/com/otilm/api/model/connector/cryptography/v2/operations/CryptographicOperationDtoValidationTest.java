@@ -52,7 +52,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidCipherRequests")
     void cipherRequest_validateRejectsInvalidAttributesItemsAndIdentifiers(InvalidDto invalid) {
         // given
-        Object request = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);
@@ -114,7 +113,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidCipherResponses")
     void cipherResponse_validateRejectsInvalidItemsAndIdentifiers(InvalidDto invalid) {
         // given
-        Object response = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);
@@ -200,7 +198,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidRandomAttributes")
     void randomRequest_validateRejectsInvalidAttributeCollection(InvalidDto invalid) {
         // given
-        Object request = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);
@@ -225,7 +222,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidSignRequests")
     void signRequest_validateRejectsInvalidModeAttributesItemsAndIdentifiers(InvalidDto invalid) {
         // given
-        Object request = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);
@@ -287,7 +283,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidSignResponses")
     void signResponse_validateRejectsContradictoryOrInvalidExecutionModeShape(InvalidDto invalid) {
         // given
-        Object response = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);
@@ -340,7 +335,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidSignOperationRequests")
     void signOperationRequest_validateRejectsInvalidTrackingHandle(InvalidDto invalid) {
         // given
-        Object request = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);
@@ -370,7 +364,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidSignStatusResponses")
     void signStatusResponse_validateRejectsInvalidItemBatch(InvalidDto invalid) {
         // given
-        Object response = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);
@@ -496,7 +489,6 @@ class CryptographicOperationDtoValidationTest {
     @MethodSource("invalidVerifyResponses")
     void verifyResponse_validateRejectsInvalidItemsAndIdentifiers(InvalidDto invalid) {
         // given
-        Object response = invalid.dto();
 
         // when
         Set<ConstraintViolation<Object>> violations = validate(invalid);

@@ -21,7 +21,4 @@ public abstract sealed class KeyCreationStatusResponseV2Dto extends KeyOperation
         implements
             KeyCreationStatusResponseInterface
         permits SecretKeyOperationStatusResponseV2Dto, KeyPairOperationStatusResponseV2Dto {
-
-    @Override
-    public abstract KeyRequestType getKeyRequestType();
 }

@@ -77,6 +77,23 @@ public final class MetadataAttributeValidator
                 .addConstraintViolation();
     }
 
+    private static boolean hasValidContent(MetadataAttribute value, ConstraintValidatorContext context) {
+        List<?> content = value.getContent();
+        if (content == null || content.isEmpty()) {
+            addPropertyViolation(context, "content", "content is required and must not be empty");
+            return false;
+        }
+
+        boolean valid = true;
+        for (int index = 0; index < content.size(); index++) {
+            if (!isUsableContent(content.get(index))) {
+                addContentViolation(context, index);
+                valid = false;
+            }
+        }
+        return valid;
+    }
+
     @Override
     public boolean isValid(MetadataAttribute value, ConstraintValidatorContext context) {
         if (value == null) {
@@ -126,17 +143,8 @@ public final class MetadataAttributeValidator
             valid = false;
         }
 
-        List<?> content = value.getContent();
-        if (content == null || content.isEmpty()) {
-            addPropertyViolation(context, "content", "content is required and must not be empty");
+        if (!hasValidContent(value, context)) {
             valid = false;
-        } else {
-            for (int index = 0; index < content.size(); index++) {
-                if (!isUsableContent(content.get(index))) {
-                    addContentViolation(context, index);
-                    valid = false;
-                }
-            }
         }
 
         return valid;

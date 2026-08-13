@@ -19,7 +19,4 @@ public abstract sealed class KeyCreationResponseV2Dto extends KeyOperationRespon
         implements
             KeyCreationResponseInterface
         permits SecretKeyDataResponseV2Dto, KeyPairDataResponseV2Dto {
-
-    @Override
-    public abstract KeyRequestType getKeyRequestType();
 }
