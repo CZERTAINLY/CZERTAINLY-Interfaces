@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -39,6 +40,7 @@ public abstract sealed class KeyDataV2Dto permits SecretKeyDataV2Dto, PublicKeyD
 
     @Schema(description = "Role of the key", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "key type is required")
+    @Setter(AccessLevel.NONE)
     private KeyTypeV2 type;
 
     @Schema(description = "Cryptographic algorithm of the key", requiredMode = Schema.RequiredMode.REQUIRED)
