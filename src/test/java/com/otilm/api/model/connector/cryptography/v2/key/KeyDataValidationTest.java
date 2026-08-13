@@ -268,7 +268,7 @@ class KeyDataValidationTest {
     }
 
     static Stream<Named<byte[]>> invalidPublicKeyEncodings() throws Exception {
-        int rsaLength = 1024;
+        int rsaLength = 2048;
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(rsaLength);
         KeyPair keyPair = generator.generateKeyPair();
