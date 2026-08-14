@@ -83,7 +83,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(EncryptDataResponseV2Dto.class), "encryptData"), request, connector);
-        requireValid(responseValidator.validateEncrypt(response), connector);
+        requireValid(responseValidator.validateEncrypt(body, response), connector);
         return response;
     }
 
@@ -109,7 +109,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(DecryptDataResponseV2Dto.class), "decryptData"), request, connector);
-        requireValid(responseValidator.validateDecrypt(response), connector);
+        requireValid(responseValidator.validateDecrypt(body, response), connector);
         return response;
     }
 
@@ -181,7 +181,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(VerifyDataResponseV2Dto.class), "verifyData"), request, connector);
-        requireValid(responseValidator.validateVerify(response), connector);
+        requireValid(responseValidator.validateVerify(body, response), connector);
         return response;
     }
 
@@ -207,7 +207,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(RandomDataResponseV2Dto.class), "randomData"), request, connector);
-        requireValid(responseValidator.validateRandom(response), connector);
+        requireValid(responseValidator.validateRandom(body, response), connector);
         return response;
     }
 }

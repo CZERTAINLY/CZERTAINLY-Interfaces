@@ -65,6 +65,7 @@ class CryptographicOperationsApiClientTest {
     private static final String VERIFY_PATH = BASE_PATH + "/verify";
     private static final String RANDOM_PATH = BASE_PATH + "/random";
     private static final String ITEM_IDENTIFIER = "item-1";
+    private static final String DIFFERENT_ITEM_IDENTIFIER = "different-item";
     private static final byte[] ITEM_DATA = {1};
     private static final String VALID_ATTRIBUTE_LIST_JSON = """
             [
@@ -162,6 +163,21 @@ class CryptographicOperationsApiClientTest {
     }
 
     @Test
+    void encryptData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        String responseWithDifferentIdentifier = """
+                {"encryptedData":[{"data":"AQ==","identifier":"%s"}]}
+                """.formatted(DIFFERENT_ITEM_IDENTIFIER);
+        stubJsonResponse(ENCRYPT_PATH, HttpStatus.OK, responseWithDifferentIdentifier);
+
+        // when
+        Executable call = () -> client.encryptData(connector, cipherRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void decryptData_postsRequestAndReturnsDecryptedData() throws ConnectorException {
         // given
         String responseJson = """
@@ -183,6 +199,21 @@ class CryptographicOperationsApiClientTest {
         // given
         String responseWithoutDecryptedData = "{}";
         stubJsonResponse(DECRYPT_PATH, HttpStatus.OK, responseWithoutDecryptedData);
+
+        // when
+        Executable call = () -> client.decryptData(connector, cipherRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
+    void decryptData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        String responseWithDifferentIdentifier = """
+                {"decryptedData":[{"data":"AQ==","identifier":"%s"}]}
+                """.formatted(DIFFERENT_ITEM_IDENTIFIER);
+        stubJsonResponse(DECRYPT_PATH, HttpStatus.OK, responseWithDifferentIdentifier);
 
         // when
         Executable call = () -> client.decryptData(connector, cipherRequest());
@@ -320,6 +351,21 @@ class CryptographicOperationsApiClientTest {
     }
 
     @Test
+    void verifyData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        String responseWithDifferentIdentifier = """
+                {"verifications":[{"result":true,"identifier":"%s"}]}
+                """.formatted(DIFFERENT_ITEM_IDENTIFIER);
+        stubJsonResponse(VERIFY_PATH, HttpStatus.OK, responseWithDifferentIdentifier);
+
+        // when
+        Executable call = () -> client.verifyData(connector, verifyRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void randomData_postsRequestAndReturnsRandomData() throws ConnectorException {
         // given
         String responseJson = """
@@ -343,6 +389,21 @@ class CryptographicOperationsApiClientTest {
         // given
         String responseWithoutData = "{}";
         stubJsonResponse(RANDOM_PATH, HttpStatus.OK, responseWithoutData);
+
+        // when
+        Executable call = () -> client.randomData(connector, randomRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
+    void randomData_rejectsResponseWithDifferentLength() {
+        // given
+        String twoByteResponse = """
+                {"data":"AQI="}
+                """;
+        stubJsonResponse(RANDOM_PATH, HttpStatus.OK, twoByteResponse);
 
         // when
         Executable call = () -> client.randomData(connector, randomRequest());

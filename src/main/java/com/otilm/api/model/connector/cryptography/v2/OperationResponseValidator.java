@@ -8,13 +8,17 @@ import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dt
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.DecryptDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.EncryptDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.data.IdentifiedDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.token.TokenStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.SynchronousResponse;
@@ -79,22 +83,20 @@ public final class OperationResponseValidator {
         }
     }
 
-    private static void requireMatchingSignatureIdentifiers(SignDataRequestV2Dto request,
-            SignDataResponseV2Dto response) {
-        if (request.getData() == null) {
-            throw new IllegalArgumentException("Signing request data is required");
+    private static void requireMatchingIdentifiers(List<? extends IdentifiedDataV2Dto> requestItems,
+            List<? extends IdentifiedDataV2Dto> responseItems, String errorMessage) {
+        if (requestItems == null) {
+            throw new IllegalArgumentException("Request data is required");
         }
-        Set<String> requestIdentifiers = request
-                .getData()
+        Set<String> requestIdentifiers = requestItems
                 .stream()
-                .map(item -> item.getIdentifier())
+                .map(IdentifiedDataV2Dto::getIdentifier)
                 .collect(Collectors.toSet());
-        List<String> responseIdentifiers = response.getSignatures().stream().map(item -> item.getIdentifier()).toList();
+        List<String> responseIdentifiers = responseItems.stream().map(IdentifiedDataV2Dto::getIdentifier).toList();
         Set<String> uniqueResponseIdentifiers = new HashSet<>(responseIdentifiers);
         if (uniqueResponseIdentifiers.size() != responseIdentifiers.size()
                 || !uniqueResponseIdentifiers.equals(requestIdentifiers)) {
-            throw new IllegalArgumentException(
-                    "Synchronous signing response identifiers must match request identifiers");
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 
@@ -150,20 +152,44 @@ public final class OperationResponseValidator {
         return validateBeanConstraints(response);
     }
 
-    public OperationValidationResult validateEncrypt(EncryptDataResponseV2Dto response) {
-        return validateBeanConstraints(response);
+    public OperationValidationResult validateEncrypt(CipherDataRequestV2Dto request,
+            EncryptDataResponseV2Dto response) {
+        return validate(() -> {
+            requireRequest(request, "Encryption");
+            validateRequiredBean(response);
+            requireMatchingIdentifiers(request.getCipherData(), response.getEncryptedData(),
+                    "Encryption response identifiers must match request identifiers");
+        });
     }
 
-    public OperationValidationResult validateDecrypt(DecryptDataResponseV2Dto response) {
-        return validateBeanConstraints(response);
+    public OperationValidationResult validateDecrypt(CipherDataRequestV2Dto request,
+            DecryptDataResponseV2Dto response) {
+        return validate(() -> {
+            requireRequest(request, "Decryption");
+            validateRequiredBean(response);
+            requireMatchingIdentifiers(request.getCipherData(), response.getDecryptedData(),
+                    "Decryption response identifiers must match request identifiers");
+        });
     }
 
-    public OperationValidationResult validateVerify(VerifyDataResponseV2Dto response) {
-        return validateBeanConstraints(response);
+    public OperationValidationResult validateVerify(VerifyDataRequestV2Dto request, VerifyDataResponseV2Dto response) {
+        return validate(() -> {
+            requireRequest(request, "Verification");
+            validateRequiredBean(response);
+            requireMatchingIdentifiers(request.getData(), response.getVerifications(),
+                    "Verification response identifiers must match request identifiers");
+        });
     }
 
-    public OperationValidationResult validateRandom(RandomDataResponseV2Dto response) {
-        return validateBeanConstraints(response);
+    public OperationValidationResult validateRandom(RandomDataRequestV2Dto request, RandomDataResponseV2Dto response) {
+        return validate(() -> {
+            requireRequest(request, "Random-data");
+            validateRequiredBean(response);
+            if (response.getData().length != request.getLength()) {
+                throw new IllegalArgumentException("Connector returned " + response.getData().length
+                        + " random bytes; expected " + request.getLength());
+            }
+        });
     }
 
     public OperationValidationResult validateSignStatus(SignOperationStatusResponseV2Dto response) {
@@ -178,9 +204,16 @@ public final class OperationResponseValidator {
             }
             validateOperationResponseConstraints(request.getExecutionMode(), response, SynchronousBody.REQUIRED);
             if (request.getExecutionMode() == OperationExecutionMode.SYNCHRONOUS) {
-                requireMatchingSignatureIdentifiers(request, requireBody(response));
+                requireMatchingIdentifiers(request.getData(), requireBody(response).getSignatures(),
+                        "Synchronous signing response identifiers must match request identifiers");
             }
         });
+    }
+
+    private static void requireRequest(Object request, String operation) {
+        if (request == null) {
+            throw new IllegalArgumentException(operation + " request is required");
+        }
     }
 
     private void validateOperationResponseConstraints(OperationExecutionMode mode, ResponseEntity<?> response,
@@ -200,12 +233,14 @@ public final class OperationResponseValidator {
     }
 
     private OperationValidationResult validateBeanConstraints(Object response) {
-        return validate(() -> {
-            if (response == null) {
-                throw new IllegalArgumentException("Connector response body is required");
-            }
-            validateBean(response, Default.class);
-        });
+        return validate(() -> validateRequiredBean(response));
+    }
+
+    private void validateRequiredBean(Object response) {
+        if (response == null) {
+            throw new IllegalArgumentException("Connector response body is required");
+        }
+        validateBean(response, Default.class);
     }
 
     private OperationValidationResult validateResponseElements(List<?> response, String itemName) {

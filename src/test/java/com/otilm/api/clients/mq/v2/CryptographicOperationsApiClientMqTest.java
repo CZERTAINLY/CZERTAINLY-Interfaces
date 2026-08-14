@@ -60,6 +60,7 @@ class CryptographicOperationsApiClientMqTest {
     private static final String VERIFY_PATH = BASE_PATH + "/verify";
     private static final String RANDOM_PATH = BASE_PATH + "/random";
     private static final String ITEM_IDENTIFIER = "item-1";
+    private static final String DIFFERENT_ITEM_IDENTIFIER = "different-item";
     private static final byte[] ITEM_DATA = {1};
 
     @AutoClose
@@ -136,6 +137,20 @@ class CryptographicOperationsApiClientMqTest {
     }
 
     @Test
+    void encryptData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        EncryptDataResponseV2Dto response = new EncryptDataResponseV2Dto();
+        response.setEncryptedData(List.of(new CipherDataV2Dto(ITEM_DATA, DIFFERENT_ITEM_IDENTIFIER)));
+        proxyClient.respondWith(response);
+
+        // when
+        Executable call = () -> client.encryptData(connector, cipherRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void decryptData_delegatesPostAndReturnsDecryptedData() throws ConnectorException {
         // given
         CipherDataRequestV2Dto request = cipherRequest();
@@ -155,6 +170,20 @@ class CryptographicOperationsApiClientMqTest {
     void decryptData_rejectsInvalidResponse() {
         // given
         proxyClient.respondWith(new DecryptDataResponseV2Dto());
+
+        // when
+        Executable call = () -> client.decryptData(connector, cipherRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
+    void decryptData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        DecryptDataResponseV2Dto response = new DecryptDataResponseV2Dto();
+        response.setDecryptedData(List.of(new CipherDataV2Dto(ITEM_DATA, DIFFERENT_ITEM_IDENTIFIER)));
+        proxyClient.respondWith(response);
 
         // when
         Executable call = () -> client.decryptData(connector, cipherRequest());
@@ -283,6 +312,20 @@ class CryptographicOperationsApiClientMqTest {
     }
 
     @Test
+    void verifyData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        VerifyDataResponseV2Dto response = new VerifyDataResponseV2Dto();
+        response.setVerifications(List.of(new VerificationResponseItemV2Dto(true, DIFFERENT_ITEM_IDENTIFIER, null)));
+        proxyClient.respondWith(response);
+
+        // when
+        Executable call = () -> client.verifyData(connector, verifyRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void randomData_delegatesPostAndReturnsRandomData() throws ConnectorException {
         // given
         RandomDataRequestV2Dto request = randomRequest();
@@ -303,6 +346,21 @@ class CryptographicOperationsApiClientMqTest {
     void randomData_rejectsInvalidResponse() {
         // given
         proxyClient.respondWith(new RandomDataResponseV2Dto());
+
+        // when
+        Executable call = () -> client.randomData(connector, randomRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
+    void randomData_rejectsResponseWithDifferentLength() {
+        // given
+        byte[] twoByteResponse = {1, 2};
+        RandomDataResponseV2Dto response = new RandomDataResponseV2Dto();
+        response.setData(twoByteResponse);
+        proxyClient.respondWith(response);
 
         // when
         Executable call = () -> client.randomData(connector, randomRequest());
