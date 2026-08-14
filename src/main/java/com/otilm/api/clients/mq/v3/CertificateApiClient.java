@@ -35,10 +35,12 @@ public class CertificateApiClient implements CertificateSyncApiClient {
     private static final String BASE_PATH = "/v3/authorityProvider/certificates";
 
     private static final String PATH_ISSUE_ATTRIBUTES = BASE_PATH + "/issue/attributes";
+    private static final String PATH_REQUEST_ATTRIBUTES = BASE_PATH + "/request/attributes";
     private static final String PATH_ISSUE = BASE_PATH + "/issue";
     private static final String PATH_ISSUE_STATUS = BASE_PATH + "/issue/status";
     private static final String PATH_ISSUE_CANCEL = BASE_PATH + "/issue/cancel";
 
+    private static final String PATH_RENEW_ATTRIBUTES = BASE_PATH + "/renew/attributes";
     private static final String PATH_RENEW = BASE_PATH + "/renew";
 
     private static final String PATH_REVOKE_ATTRIBUTES = BASE_PATH + "/revoke/attributes";
@@ -51,6 +53,7 @@ public class CertificateApiClient implements CertificateSyncApiClient {
     private static final String PATH_REGISTER_STATUS = BASE_PATH + "/register/status";
     private static final String PATH_REGISTER_CANCEL = BASE_PATH + "/register/cancel";
 
+    private static final String PATH_IDENTIFY_ATTRIBUTES = BASE_PATH + "/identify/attributes";
     private static final String PATH_IDENTIFY = BASE_PATH + "/identify";
 
     private static final String HTTP_METHOD_POST = "POST";
@@ -68,6 +71,14 @@ public class CertificateApiClient implements CertificateSyncApiClient {
             CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
         BaseAttribute[] result = proxyClient
                 .sendRequest(connector, PATH_ISSUE_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
+        return Arrays.asList(result);
+    }
+
+    @Override
+    public List<BaseAttribute> listRequestAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_REQUEST_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
         return Arrays.asList(result);
     }
 
@@ -94,6 +105,14 @@ public class CertificateApiClient implements CertificateSyncApiClient {
     }
 
     // ---- Renew (status/cancel via /issue/*) ----
+
+    @Override
+    public List<BaseAttribute> listRenewAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_RENEW_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
+        return Arrays.asList(result);
+    }
 
     @Override
     public ResponseEntity<CertificateDataResponseDto> renew(ApiClientConnectorInfo connector,
@@ -170,6 +189,14 @@ public class CertificateApiClient implements CertificateSyncApiClient {
     }
 
     // ---- Identify ----
+
+    @Override
+    public List<BaseAttribute> listIdentifyAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        BaseAttribute[] result = proxyClient
+                .sendRequest(connector, PATH_IDENTIFY_ATTRIBUTES, HTTP_METHOD_POST, requestDto, BaseAttribute[].class);
+        return Arrays.asList(result);
+    }
 
     @Override
     public CertificateIdentificationResponseDto identify(ApiClientConnectorInfo connector,
