@@ -2,7 +2,7 @@ package com.otilm.api.model.client.signing.profile.validation;
 
 import com.otilm.api.model.client.signing.profile.SigningProfileRequestDto;
 import com.otilm.api.model.client.signing.profile.scheme.ManagedSigningRequestDto;
-import com.otilm.api.model.client.signing.profile.workflow.DocumentSigningWorkflowRequestDto;
+import com.otilm.api.model.client.signing.profile.workflow.ContentSigningWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowRequestDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -38,7 +38,7 @@ public class ManagedSignatureFormattingConnectorValidator
                         .addConstraintViolation();
                 valid = false;
             }
-        } else if (dto.getWorkflow() instanceof DocumentSigningWorkflowRequestDto dsw) {
+        } else if (dto.getWorkflow() instanceof ContentSigningWorkflowRequestDto dsw) {
             formattingConnectorUuid = dsw.getSignatureFormattingConnectorUuid();
         } else {
             return true;

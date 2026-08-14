@@ -77,43 +77,43 @@ class FormattingPolymorphicSerializationTest {
     }
 
     // -------------------------------------------------------------------------
-    // FormatDtbsRequestDto — DocumentSigningFormatDtbsRequestDto
+    // FormatDtbsRequestDto — ContentSigningFormatDtbsRequestDto
     // -------------------------------------------------------------------------
 
     @Test
-    void documentSigningFormatDtbsRequestDto_serializesDiscriminator() throws Exception {
-        DocumentSigningFormatDtbsRequestDto dto = new DocumentSigningFormatDtbsRequestDto();
+    void contentSigningFormatDtbsRequestDto_serializesDiscriminator() throws Exception {
+        ContentSigningFormatDtbsRequestDto dto = new ContentSigningFormatDtbsRequestDto();
         dto.setData(new byte[]{1, 2, 3});
 
         JsonNode json = mapper.valueToTree(dto);
 
-        assertEquals(SigningWorkflowType.Codes.DOCUMENT_SIGNING, json.get("type").asText());
+        assertEquals(SigningWorkflowType.Codes.CONTENT_SIGNING, json.get("type").asText());
     }
 
     @Test
-    void documentSigningFormatDtbsRequestDto_deserializesViaBaseClass() throws Exception {
+    void contentSigningFormatDtbsRequestDto_deserializesViaBaseClass() throws Exception {
         String json = """
                 {
-                  "type": "document_signing",
+                  "type": "content_signing",
                   "data": "AQID"
                 }
                 """;
 
         FormatDtbsRequestDto base = mapper.readValue(json, FormatDtbsRequestDto.class);
 
-        assertInstanceOf(DocumentSigningFormatDtbsRequestDto.class, base);
-        assertEquals(SigningWorkflowType.DOCUMENT_SIGNING, base.getType());
+        assertInstanceOf(ContentSigningFormatDtbsRequestDto.class, base);
+        assertEquals(SigningWorkflowType.CONTENT_SIGNING, base.getType());
     }
 
     @Test
-    void documentSigningFormatDtbsRequestDto_roundTrip() throws Exception {
-        DocumentSigningFormatDtbsRequestDto original = new DocumentSigningFormatDtbsRequestDto();
+    void contentSigningFormatDtbsRequestDto_roundTrip() throws Exception {
+        ContentSigningFormatDtbsRequestDto original = new ContentSigningFormatDtbsRequestDto();
         original.setData(new byte[]{4, 5, 6});
 
         String json = mapper.writeValueAsString(original);
         FormatDtbsRequestDto deserialized = mapper.readValue(json, FormatDtbsRequestDto.class);
 
-        assertInstanceOf(DocumentSigningFormatDtbsRequestDto.class, deserialized);
+        assertInstanceOf(ContentSigningFormatDtbsRequestDto.class, deserialized);
         assertEquals(original, deserialized);
     }
 
@@ -196,24 +196,24 @@ class FormattingPolymorphicSerializationTest {
     }
 
     // -------------------------------------------------------------------------
-    // FormatResponseRequestDto — DocumentSigningFormatResponseRequestDto
+    // FormatResponseRequestDto — ContentSigningFormatResponseRequestDto
     // -------------------------------------------------------------------------
 
     @Test
-    void documentSigningFormatResponseRequestDto_serializesDiscriminator() throws Exception {
-        DocumentSigningFormatResponseRequestDto dto = new DocumentSigningFormatResponseRequestDto();
+    void contentSigningFormatResponseRequestDto_serializesDiscriminator() throws Exception {
+        ContentSigningFormatResponseRequestDto dto = new ContentSigningFormatResponseRequestDto();
         dto.setSignature(new byte[]{1, 2, 3});
 
         JsonNode json = mapper.valueToTree(dto);
 
-        assertEquals(SigningWorkflowType.Codes.DOCUMENT_SIGNING, json.get("type").asText());
+        assertEquals(SigningWorkflowType.Codes.CONTENT_SIGNING, json.get("type").asText());
     }
 
     @Test
-    void documentSigningFormatResponseRequestDto_deserializesViaBaseClass() throws Exception {
+    void contentSigningFormatResponseRequestDto_deserializesViaBaseClass() throws Exception {
         String json = """
                 {
-                  "type": "document_signing",
+                  "type": "content_signing",
                   "signature": "AQID",
                   "dtbs": "BAUG"
                 }
@@ -221,20 +221,20 @@ class FormattingPolymorphicSerializationTest {
 
         FormatResponseRequestDto base = mapper.readValue(json, FormatResponseRequestDto.class);
 
-        assertInstanceOf(DocumentSigningFormatResponseRequestDto.class, base);
-        assertEquals(SigningWorkflowType.DOCUMENT_SIGNING, base.getType());
+        assertInstanceOf(ContentSigningFormatResponseRequestDto.class, base);
+        assertEquals(SigningWorkflowType.CONTENT_SIGNING, base.getType());
     }
 
     @Test
-    void documentSigningFormatResponseRequestDto_roundTrip() throws Exception {
-        DocumentSigningFormatResponseRequestDto original = new DocumentSigningFormatResponseRequestDto();
+    void contentSigningFormatResponseRequestDto_roundTrip() throws Exception {
+        ContentSigningFormatResponseRequestDto original = new ContentSigningFormatResponseRequestDto();
         original.setSignature(new byte[]{1, 2, 3});
         original.setDtbs(new byte[]{4, 5, 6});
 
         String json = mapper.writeValueAsString(original);
         FormatResponseRequestDto deserialized = mapper.readValue(json, FormatResponseRequestDto.class);
 
-        assertInstanceOf(DocumentSigningFormatResponseRequestDto.class, deserialized);
+        assertInstanceOf(ContentSigningFormatResponseRequestDto.class, deserialized);
         assertEquals(original, deserialized);
     }
 

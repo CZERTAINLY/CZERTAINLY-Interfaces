@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = SigningRecordPolicyValidator.class)
 @Documented
 public @interface ValidSigningRecordPolicy {
-    String message() default "recordSignedDocument is only valid for DOCUMENT_SIGNING and TIMESTAMPING workflows";
+    String message() default "recordSignedDocument is only valid for CONTENT_SIGNING and TIMESTAMPING workflows";
 
     Class<?>[] groups() default {};
 
