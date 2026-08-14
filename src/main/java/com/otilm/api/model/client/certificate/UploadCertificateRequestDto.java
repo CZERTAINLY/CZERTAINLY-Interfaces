@@ -16,4 +16,11 @@ public class UploadCertificateRequestDto {
 
     @Schema(description = "Custom Attributes for the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<RequestAttribute> customAttributes;
+
+    @Schema(description = "Identify-operation dynamic attributes, as listed by "
+            + "GET /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/identify for the "
+            + "certificate's RA profile. Consumed when the uploaded certificate is manually issued, which identifies "
+            + "it at the authority. Optional — an authority that offers no identify schema needs none.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<RequestAttribute> attributes;
 }

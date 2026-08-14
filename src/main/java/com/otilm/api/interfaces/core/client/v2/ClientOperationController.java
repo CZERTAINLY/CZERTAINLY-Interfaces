@@ -265,6 +265,24 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws ConnectorException, NotFoundException;
 
+    @Operation(summary = "Get renew certificate attributes",
+            description = "Return the list of attributes the client must populate when renewing or rekeying a certificate through this RA profile. The list reflects the certificate authority's renew-operation attribute schema; rekey is a renew at the authority, so the same schema applies. An authority that offers no renew schema yields an empty list — this is not an error.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes obtained")})
+    @GetMapping(path = "/attributes/renew", produces = {"application/json"})
+    List<BaseAttribute> listRenewCertificateAttributes(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
+            throws ConnectorException, NotFoundException;
+
+    @Operation(summary = "Get identify certificate attributes",
+            description = "Return the list of attributes the client must populate when identifying a certificate through this RA profile. The list reflects the certificate authority's identify-operation attribute schema. An authority that offers no identify schema yields an empty list — this is not an error.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes obtained")})
+    @GetMapping(path = "/attributes/identify", produces = {"application/json"})
+    List<BaseAttribute> listIdentifyCertificateAttributes(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
+            throws ConnectorException, NotFoundException;
+
     @Operation(summary = "Revoke certificate",
             description = "Revoke a certificate currently in state `ISSUED`. The request is accepted and queued; revocation runs through the authority and an approval step may run first. This response is returned before the authority call completes, so it does not indicate completion — the certificate ends in `REVOKED` if the authority completes the revocation immediately, or `PENDING_REVOKE` if completion is deferred and later confirmed. Track the result through its state.")
     @ApiResponses(value = {
