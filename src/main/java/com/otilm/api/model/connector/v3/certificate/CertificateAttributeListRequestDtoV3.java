@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-/** Body for the v3 issue/revoke/register attribute-schema-listing endpoints. */
+/**
+ * Body for the six v3 attribute-schema-listing endpoints: {@code /request/attributes}, {@code /issue/attributes},
+ * {@code /renew/attributes}, {@code /revoke/attributes}, {@code /register/attributes} and {@code /identify/attributes}.
+ */
 @Getter
 @Setter
 @ToString(callSuper = true)

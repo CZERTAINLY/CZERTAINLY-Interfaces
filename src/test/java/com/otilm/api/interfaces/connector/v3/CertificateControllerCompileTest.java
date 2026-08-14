@@ -1,5 +1,6 @@
 package com.otilm.api.interfaces.connector.v3;
 
+import com.otilm.api.model.client.attribute.RequestAttributeV3;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.v3.certificate.CertificateAttributeListRequestDtoV3;
 import com.otilm.api.model.connector.v3.certificate.CertificateDataResponseDto;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class CertificateControllerCompileTest {
@@ -24,6 +26,10 @@ class CertificateControllerCompileTest {
     /** Minimal mock impl — compilation alone proves the interface signatures are coherent. */
     static class Mock implements CertificateController {
         public List<BaseAttribute> listIssueAttributes(CertificateAttributeListRequestDtoV3 request) {
+            return List.of();
+        }
+
+        public List<BaseAttribute> listRequestAttributes(CertificateAttributeListRequestDtoV3 request) {
             return List.of();
         }
 
@@ -37,6 +43,10 @@ class CertificateControllerCompileTest {
 
         public ResponseEntity<Void> cancelIssue(CertificateOperationCancelRequestDtoV3 body) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        public List<BaseAttribute> listRenewAttributes(CertificateAttributeListRequestDtoV3 request) {
+            return List.of();
         }
 
         public ResponseEntity<CertificateDataResponseDto> renew(CertificateRenewRequestDtoV3 body) {
@@ -75,6 +85,10 @@ class CertificateControllerCompileTest {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
 
+        public List<BaseAttribute> listIdentifyAttributes(CertificateAttributeListRequestDtoV3 request) {
+            return List.of();
+        }
+
         public CertificateIdentificationResponseDto identify(CertificateIdentificationRequestDtoV3 body) {
             return new CertificateIdentificationResponseDto();
         }
@@ -83,5 +97,17 @@ class CertificateControllerCompileTest {
     @Test
     void mockImplementsInterface() {
         assertNotNull(new Mock());
+    }
+
+    @Test
+    void identificationRequestCarriesAttributes() {
+        CertificateIdentificationRequestDtoV3 request = new CertificateIdentificationRequestDtoV3();
+        RequestAttributeV3 attribute = new RequestAttributeV3();
+        attribute.setName("caProfile");
+
+        request.setAttributes(List.of(attribute));
+
+        assertEquals(1, request.getAttributes().size());
+        assertEquals("caProfile", ((RequestAttributeV3) request.getAttributes().get(0)).getName());
     }
 }
