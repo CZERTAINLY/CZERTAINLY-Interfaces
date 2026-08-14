@@ -69,7 +69,11 @@ public enum ResourceAction implements IPlatformEnum {
 
     // Digital Signing
     TIMESTAMP("timestamp", "Timestamp", AccessType.WRITE), // RFC 3161 Timestamping
-    ;
+
+    // Settings
+    // Branding is separated from UPDATE so that operators can delegate the platform's appearance without also handing
+    // over the utils service URL, certificate validation defaults and every other platform setting.
+    UPDATE_BRANDING("updateBranding", "Update branding", AccessType.WRITE);
 
     /**
      * Whether an action may be granted to a role that must not be able to change anything, so such a permission set can
