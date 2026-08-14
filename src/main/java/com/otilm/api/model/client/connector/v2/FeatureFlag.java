@@ -29,6 +29,8 @@ public enum FeatureFlag implements IPlatformEnum {
             FeatureFlagBehavior.INFORMATIONAL, null),
     OPEN_METRICS("openMetrics", "OpenMetrics", "Metrics are exposed in OpenMetrics format",
             FeatureFlagBehavior.INFORMATIONAL, List.of(ConnectorInterface.METRICS)),
+    ASYNCHRONOUS("asynchronous", "Asynchronous", "Supports asynchronous operations", FeatureFlagBehavior.ENFORCED,
+            List.of(ConnectorInterface.CRYPTOGRAPHY)),
     SECRET_VERSIONING("secretVersioning", "Secret Versioning",
             "Supports versioning of secrets, allowing to keep track of history of secrets.",
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SECRET)),

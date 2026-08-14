@@ -1,0 +1,48 @@
+package com.otilm.api.model.connector.cryptography.v2.operations;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.otilm.api.model.common.attribute.common.MetadataAttribute;
+import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.operations.validation.UniqueIdentifiers;
+import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
+import com.otilm.api.model.connector.cryptography.v2.validation.SynchronousResponse;
+import com.otilm.api.model.connector.cryptography.v2.validation.ValidMetadataAttribute;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * Response envelope for {@code POST /v2/cryptographyProvider/operations/sign}. Signatures are returned inline on a sync
+ * 200; on an async 202 they are absent and {@code signOperationMeta} is the tracking handle for the whole batch. A
+ * batch is tracked as one operation and has one tracking handle.
+ */
+@Getter
+@Setter
+@ToString
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Schema(name = "SignDataResponseV2Dto")
+public class SignDataResponseV2Dto {
+
+    @Schema(description = "Signatures, correlated to the request items by identifier. Populated on sync 200; "
+            + "null on async 202.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Null(message = "signatures must be absent for asynchronous execution", groups = AsynchronousResponse.class)
+    @NotEmpty(message = "signatures must contain at least one item for synchronous execution",
+            groups = SynchronousResponse.class)
+    @UniqueIdentifiers
+    private List<@NotNull(message = "signatures must not contain null items") @Valid SignatureDataV2Dto> signatures;
+
+    @Schema(description = "Connector-defined signing operation metadata. Present on async 202 as the tracking "
+            + "handle for the whole batch. Supply it to /operations/sign/status and /operations/sign/cancel.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Null(message = "signOperationMeta must be absent for synchronous execution", groups = SynchronousResponse.class)
+    @NotEmpty(message = "signOperationMeta must contain at least one item for asynchronous execution",
+            groups = AsynchronousResponse.class)
+    private List<@NotNull(
+            message = "signOperationMeta must not contain null items") @ValidMetadataAttribute MetadataAttribute> signOperationMeta;
+}
