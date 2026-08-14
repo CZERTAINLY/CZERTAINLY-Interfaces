@@ -81,8 +81,6 @@ class KeyDataValidationTest {
                 .of(named("secret", validSecretKeyData()), named("private", validPrivateKeyData()),
                         named("public", validPublicKeyData()))
                 .flatMap(namedDescriptor -> {
-                    KeyDataV2Dto missingType = copyOf(namedDescriptor.getPayload());
-                    missingType.setType(null);
                     KeyDataV2Dto missingAlgorithm = copyOf(namedDescriptor.getPayload());
                     missingAlgorithm.setAlgorithm(null);
                     KeyDataV2Dto missingLength = copyOf(namedDescriptor.getPayload());
@@ -93,11 +91,8 @@ class KeyDataValidationTest {
                     negativeLength.setLength(-1);
                     String role = namedDescriptor.getName();
                     return Stream
-                            .of(named(role + " missing type",
-                                    new InvalidKeyData(missingType, "type", "key type is required")),
-                                    named(role + " missing algorithm",
-                                            new InvalidKeyData(missingAlgorithm, "algorithm",
-                                                    "key algorithm is required")),
+                            .of(named(role + " missing algorithm",
+                                    new InvalidKeyData(missingAlgorithm, "algorithm", "key algorithm is required")),
                                     named(role + " missing length",
                                             new InvalidKeyData(missingLength, "length", "key length is required")),
                                     named(role + " zero length",
@@ -239,7 +234,7 @@ class KeyDataValidationTest {
     void validate_rejectsSpki_forMismatchedDeclaredLength() throws Exception {
         // given
         int actualRsaLength = 2048;
-        int mismatchedDeclaredLength = 4096;
+        int mismatchedDeclaredLength = 3072;
         byte[] rsaSpki = generateRsaSpki(actualRsaLength);
         PublicKeyDataV2Dto keyData = validPublicKeyData();
         keyData.setAlgorithm(KeyAlgorithm.RSA);

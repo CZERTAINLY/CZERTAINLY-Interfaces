@@ -4,6 +4,8 @@ import com.otilm.api.model.common.attribute.common.AttributeContent;
 import com.otilm.api.model.common.attribute.common.AttributeType;
 import com.otilm.api.model.common.attribute.common.AttributeVersion;
 import com.otilm.api.model.common.attribute.common.MetadataAttribute;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
+import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.otilm.api.model.common.attribute.v3.MetadataAttributeV3;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -66,10 +68,10 @@ public final class MetadataAttributeValidator
         context.buildConstraintViolationWithTemplate(message).addPropertyNode(property).addConstraintViolation();
     }
 
-    private static void addContentViolation(ConstraintValidatorContext context, int index) {
+    private static void addContentViolation(ConstraintValidatorContext context, int index, String message) {
         context.disableDefaultConstraintViolation();
         context
-                .buildConstraintViolationWithTemplate("content must contain a non-blank reference or usable data")
+                .buildConstraintViolationWithTemplate(message)
                 .addPropertyNode("content")
                 .addContainerElementNode("<list element>", List.class, 0)
                 .inIterable()
@@ -77,7 +79,8 @@ public final class MetadataAttributeValidator
                 .addConstraintViolation();
     }
 
-    private static boolean hasValidContent(MetadataAttribute value, ConstraintValidatorContext context) {
+    private static boolean hasValidContent(MetadataAttribute value, Class<?> expectedContentClass,
+            ConstraintValidatorContext context) {
         List<?> content = value.getContent();
         if (content == null || content.isEmpty()) {
             addPropertyViolation(context, "content", "content is required and must not be empty");
@@ -86,12 +89,31 @@ public final class MetadataAttributeValidator
 
         boolean valid = true;
         for (int index = 0; index < content.size(); index++) {
-            if (!isUsableContent(content.get(index))) {
-                addContentViolation(context, index);
+            Object item = content.get(index);
+            if (!isUsableContent(item)) {
+                addContentViolation(context, index, "content must contain a non-blank reference or usable data");
+                valid = false;
+            } else if (expectedContentClass != null && !expectedContentClass.isInstance(item)) {
+                addContentViolation(context, index, "content must match contentType and attribute version");
                 valid = false;
             }
         }
         return valid;
+    }
+
+    private static boolean matchesAttributeVersion(MetadataAttribute value, AttributeVersion attributeVersion) {
+        return switch (attributeVersion) {
+            case V2 -> value instanceof MetadataAttributeV2;
+            case V3 -> value instanceof MetadataAttributeV3;
+        };
+    }
+
+    private static Class<?> getExpectedContentClass(AttributeContentType contentType,
+            AttributeVersion attributeVersion) {
+        return switch (attributeVersion) {
+            case V2 -> contentType.getContentV2Class();
+            case V3 -> contentType.getContentV3Class();
+        };
     }
 
     @Override
@@ -121,6 +143,9 @@ public final class MetadataAttributeValidator
         if (attributeVersion == null) {
             addPropertyViolation(context, "version", "version is required and must be supported");
             valid = false;
+        } else if (!matchesAttributeVersion(value, attributeVersion)) {
+            addPropertyViolation(context, "version", "version must match metadata attribute DTO");
+            valid = false;
         }
 
         // Ideally, the schemaVersion is declared on MetadataAttribute so we don't have to check for
@@ -133,9 +158,17 @@ public final class MetadataAttributeValidator
             valid = false;
         }
 
-        if (value.getContentType() == null) {
+        AttributeContentType contentType = value.getContentType();
+        Class<?> expectedContentClass = null;
+        if (contentType == null) {
             addPropertyViolation(context, "contentType", "contentType is required");
             valid = false;
+        } else if (attributeVersion != null) {
+            expectedContentClass = getExpectedContentClass(contentType, attributeVersion);
+            if (expectedContentClass == null) {
+                addPropertyViolation(context, "contentType", "contentType is not supported for attribute version");
+                valid = false;
+            }
         }
 
         if (value.getProperties() == null) {
@@ -143,7 +176,7 @@ public final class MetadataAttributeValidator
             valid = false;
         }
 
-        if (!hasValidContent(value, context)) {
+        if (!hasValidContent(value, expectedContentClass, context)) {
             valid = false;
         }
 

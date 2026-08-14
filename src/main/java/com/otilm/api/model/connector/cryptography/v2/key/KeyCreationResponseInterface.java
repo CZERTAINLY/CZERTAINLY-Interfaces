@@ -21,7 +21,9 @@ public interface KeyCreationResponseInterface extends Serializable {
     @Schema(description = "Type of key requested and returned", requiredMode = Schema.RequiredMode.REQUIRED)
     KeyRequestType getKeyRequestType();
 
-    @Schema(description = "Connector-defined operation tracking metadata. Required and non-empty when ASYNCHRONOUS executionMode was requested in CreateKeyRequestV2Dto; absent when SYNCHRONOUS executionMode was requested.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Connector-defined operation tracking metadata. Required and non-empty in the initial "
+            + "response when ASYNCHRONOUS executionMode was requested in CreateKeyRequestV2Dto. Absent from the "
+            + "initial response when SYNCHRONOUS executionMode was requested and from a completed result nested in "
+            + "a status response.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     List<MetadataAttribute> getOperationMeta();
 }
