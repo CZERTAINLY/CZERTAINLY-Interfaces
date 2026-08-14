@@ -15,7 +15,6 @@ import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusRespon
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationStatusResponseV2Dto;
 import java.util.List;
 import javax.net.ssl.TrustManager;
 import org.springframework.http.HttpMethod;
@@ -113,7 +112,7 @@ public class KeyApiClient extends BaseApiClient implements KeySyncApiClient {
     }
 
     @Override
-    public KeyOperationStatusResponseV2Dto getDestroyKeyStatus(ApiClientConnectorInfo connector,
+    public KeyDestructionStatusResponseV2Dto getDestroyKeyStatus(ApiClientConnectorInfo connector,
             KeyOperationRequestV2Dto body) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
         KeyDestructionStatusResponseV2Dto response = processRequest(r -> requireBody(r

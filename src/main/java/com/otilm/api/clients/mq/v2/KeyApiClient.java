@@ -15,7 +15,6 @@ import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusRespon
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationStatusResponseV2Dto;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +39,14 @@ public class KeyApiClient implements KeySyncApiClient {
     public KeyApiClient(ProxyClient proxyClient, OperationResponseValidator responseValidator) {
         this.proxyClient = proxyClient;
         this.responseValidator = responseValidator;
+    }
+
+    private static void requireValid(OperationValidationResult validation, ApiClientConnectorInfo connector)
+            throws ConnectorException {
+        if (!validation.isValid()) {
+            IllegalArgumentException cause = validation.getCause();
+            throw new ConnectorException(cause.getMessage(), cause, connector);
+        }
     }
 
     @Override
@@ -88,7 +95,7 @@ public class KeyApiClient implements KeySyncApiClient {
     }
 
     @Override
-    public KeyOperationStatusResponseV2Dto getDestroyKeyStatus(ApiClientConnectorInfo connector,
+    public KeyDestructionStatusResponseV2Dto getDestroyKeyStatus(ApiClientConnectorInfo connector,
             KeyOperationRequestV2Dto request) throws ConnectorException {
         KeyDestructionStatusResponseV2Dto response = send(connector, DESTROY_STATUS_PATH, request,
                 KeyDestructionStatusResponseV2Dto.class);
@@ -117,14 +124,6 @@ public class KeyApiClient implements KeySyncApiClient {
             return proxyClient.sendRequestForEntity(connector, path, POST, body, responseType);
         } catch (RuntimeException e) {
             throw new ConnectorException("Key request failed for " + path, e, connector);
-        }
-    }
-
-    private static void requireValid(OperationValidationResult validation, ApiClientConnectorInfo connector)
-            throws ConnectorException {
-        if (!validation.isValid()) {
-            IllegalArgumentException cause = validation.getCause();
-            throw new ConnectorException(cause.getMessage(), cause, connector);
         }
     }
 }
