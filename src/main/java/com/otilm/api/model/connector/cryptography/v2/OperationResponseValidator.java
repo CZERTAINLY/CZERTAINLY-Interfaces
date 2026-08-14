@@ -3,6 +3,7 @@ package com.otilm.api.model.connector.cryptography.v2;
 import com.otilm.api.model.client.cryptography.key.KeyRequestType;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
+import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
@@ -113,9 +114,22 @@ public final class OperationResponseValidator {
         return validateResponseElements(response, "key request type");
     }
 
-    public OperationValidationResult validateCreateKey(OperationExecutionMode mode,
+    public OperationValidationResult validateCreateKey(CreateKeyRequestV2Dto request,
             ResponseEntity<? extends KeyCreationResponseV2Dto> response) {
-        return validateOperationResponse(mode, response, SynchronousBody.REQUIRED);
+        return validate(() -> {
+            if (request == null) {
+                throw new IllegalArgumentException("Key creation request is required");
+            }
+            if (request.getKeyRequestType() == null) {
+                throw new IllegalArgumentException("Key request type is required");
+            }
+            validateOperationResponseConstraints(request.getExecutionMode(), response, SynchronousBody.REQUIRED);
+            KeyRequestType responseType = requireBody(response).getKeyRequestType();
+            if (request.getKeyRequestType() != responseType) {
+                throw new IllegalArgumentException("Connector returned key request type " + responseType + "; expected "
+                        + request.getKeyRequestType());
+            }
+        });
     }
 
     public OperationValidationResult validateCreateKeyStatus(KeyCreationStatusResponseV2Dto response) {

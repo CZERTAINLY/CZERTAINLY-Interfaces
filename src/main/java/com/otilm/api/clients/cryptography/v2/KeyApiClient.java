@@ -73,7 +73,7 @@ public class KeyApiClient extends BaseApiClient implements KeySyncApiClient {
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(KeyCreationResponseV2Dto.class), "createKey"), request, connector);
-        requireValid(responseValidator.validateCreateKey(body.getExecutionMode(), response), connector);
+        requireValid(responseValidator.validateCreateKey(body, response), connector);
         return response;
     }
 

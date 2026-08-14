@@ -140,6 +140,20 @@ class KeyApiClientMqTest {
     }
 
     @Test
+    void createKey_rejectsMismatchedKeyRequestType() {
+        // given
+        CreateKeyRequestV2Dto keyPairRequest = createKeyRequest(KeyRequestType.KEY_PAIR,
+                OperationExecutionMode.SYNCHRONOUS);
+        proxyClient.respondWithEntity(ResponseEntity.ok(validSecretKeyDataResponse()));
+
+        // when
+        Executable call = () -> client.createKey(connector, keyPairRequest);
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void getCreateKeyStatus_delegatesPostAndReturnsStatus() throws ConnectorException {
         // given
         KeyOperationRequestV2Dto request = keyOperationRequest();
@@ -320,8 +334,12 @@ class KeyApiClientMqTest {
     }
 
     private static CreateKeyRequestV2Dto createKeyRequest(OperationExecutionMode mode) {
+        return createKeyRequest(KeyRequestType.SECRET, mode);
+    }
+
+    private static CreateKeyRequestV2Dto createKeyRequest(KeyRequestType keyRequestType, OperationExecutionMode mode) {
         CreateKeyRequestV2Dto request = withValidTokenProfileScope(new CreateKeyRequestV2Dto());
-        request.setKeyRequestType(KeyRequestType.SECRET);
+        request.setKeyRequestType(keyRequestType);
         request.setExecutionMode(mode);
         request.setKeyCreationId(KEY_CREATION_ID);
         request.setCreateKeyAttributes(List.of());

@@ -59,7 +59,7 @@ public class KeyApiClient implements KeySyncApiClient {
             CreateKeyRequestV2Dto request) throws ConnectorException {
         ResponseEntity<KeyCreationResponseV2Dto> response = sendEntity(connector, BASE_PATH, request,
                 KeyCreationResponseV2Dto.class);
-        requireValid(responseValidator.validateCreateKey(request.getExecutionMode(), response), connector);
+        requireValid(responseValidator.validateCreateKey(request, response), connector);
         return response;
     }
 

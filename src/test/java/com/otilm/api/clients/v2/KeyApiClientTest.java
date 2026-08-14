@@ -182,6 +182,27 @@ class KeyApiClientTest {
     }
 
     @Test
+    void createKey_rejectsMismatchedKeyRequestType() {
+        // given
+        String secretKeyResponse = """
+                {
+                  "keyRequestType": "secret",
+                  "keyData": {"type":"Secret","algorithm":"RSA","length":2048},
+                  "keyMeta": [%s]
+                }
+                """.formatted(VALID_METADATA_JSON);
+        CreateKeyRequestV2Dto keyPairRequest = createKeyRequest(KeyRequestType.KEY_PAIR,
+                OperationExecutionMode.SYNCHRONOUS);
+        stubJsonResponse(BASE_PATH, HttpStatus.OK, secretKeyResponse);
+
+        // when
+        Executable call = () -> client.createKey(connector, keyPairRequest);
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void getCreateKeyStatus_postsRequestAndReturnsStatus() throws ConnectorException {
         // given
         String responseJson = """
@@ -405,8 +426,12 @@ class KeyApiClientTest {
     }
 
     private static CreateKeyRequestV2Dto createKeyRequest(OperationExecutionMode mode) {
+        return createKeyRequest(KeyRequestType.SECRET, mode);
+    }
+
+    private static CreateKeyRequestV2Dto createKeyRequest(KeyRequestType keyRequestType, OperationExecutionMode mode) {
         CreateKeyRequestV2Dto request = withValidTokenProfileScope(new CreateKeyRequestV2Dto());
-        request.setKeyRequestType(KeyRequestType.SECRET);
+        request.setKeyRequestType(keyRequestType);
         request.setExecutionMode(mode);
         request.setKeyCreationId(KEY_CREATION_ID);
         request.setCreateKeyAttributes(List.of());
