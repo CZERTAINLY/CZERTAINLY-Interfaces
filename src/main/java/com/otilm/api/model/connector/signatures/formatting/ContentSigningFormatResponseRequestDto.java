@@ -7,11 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Response formatting request for the Content Signing workflow.
- *
- * <p>
- * No additional fields beyond the base at this time. Reserved for future content-signing-specific properties.
- * </p>
+ * Adds no fields beyond FormatResponseRequestDto; this subtype reserves the content-signing extension point.
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
