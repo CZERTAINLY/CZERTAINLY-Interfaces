@@ -2,6 +2,8 @@ package com.otilm.api.interfaces.core.web;
 
 import com.otilm.api.exception.NotFoundException;
 import com.otilm.api.interfaces.AuthProtectedController;
+import com.otilm.api.model.core.settings.BrandingSettingsDto;
+import com.otilm.api.model.core.settings.BrandingSettingsUpdateDto;
 import com.otilm.api.model.core.settings.EventSettingsDto;
 import com.otilm.api.model.core.settings.EventsSettingsDto;
 import com.otilm.api.model.core.settings.PlatformSettingsDto;
@@ -40,6 +42,24 @@ public interface SettingController extends AuthProtectedController {
     @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     void updatePlatformSettings(@Valid @RequestBody PlatformSettingsUpdateDto platformSettingsDto);
+
+    @Operation(summary = "Get platform branding")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Platform branding retrieved")})
+    @GetMapping(path = "/platform/branding", produces = MediaType.APPLICATION_JSON_VALUE)
+    BrandingSettingsDto getBrandingSettings();
+
+    /**
+     * Separate from {@link #updatePlatformSettings} so that branding can be gated by its own {@code UPDATE_BRANDING}
+     * action. Authorization is applied per method, so branding carried inside the platform update body would be
+     * writable by anyone holding plain {@code UPDATE} over settings — which is exactly the grant this action exists to
+     * split away. {@link PlatformSettingsUpdateDto} therefore has no branding field, while {@link PlatformSettingsDto}
+     * still returns one: the read is the same grant either way.
+     */
+    @Operation(summary = "Update platform branding")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Platform branding updated")})
+    @PutMapping(path = "/platform/branding", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    void updateBrandingSettings(@Valid @RequestBody BrandingSettingsUpdateDto brandingSettingsDto);
 
     @Operation(summary = "Get events settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification settings retrieved")})

@@ -15,8 +15,4 @@ public class PlatformSettingsUpdateDto implements SettingsDto {
     @Schema(description = "Settings applicable to all certificates in inventory by default")
     private CertificateSettingsUpdateDto certificates;
 
-    @Valid
-    @Schema(description = "Branding applied across the platform user interface")
-    private BrandingSettingsUpdateDto branding;
-
 }

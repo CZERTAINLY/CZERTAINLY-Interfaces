@@ -3,6 +3,7 @@ package com.otilm.api.model.core.settings;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
@@ -135,15 +136,18 @@ class BrandingSettingsUpdateDtoTest {
         assertEquals("lightLogo", violations.iterator().next().getPropertyPath().toString());
     }
 
-    /** Without the {@code @Valid} on the parent field, a malformed color would be persisted unchecked. */
+    /**
+     * Branding is deliberately absent from the platform update body. Authorization is applied per controller method, so
+     * a branding field here would be writable by anyone holding {@code SETTINGS} + {@code UPDATE} and the separate
+     * {@code UPDATE_BRANDING} action would gate nothing. The write lives on its own endpoint instead.
+     */
     @Test
-    void cascadesFromThePlatformSettingsUpdate() {
-        BrandingSettingsUpdateDto branding = new BrandingSettingsUpdateDto();
-        branding.setPrimaryColor("not-a-color");
-
-        PlatformSettingsUpdateDto parent = new PlatformSettingsUpdateDto();
-        parent.setBranding(branding);
-
-        assertFalse(VALIDATOR.validate(parent).isEmpty(), "@Valid must cascade into the branding sub-DTO");
+    void isNotReachableThroughThePlatformSettingsUpdate() {
+        assertTrue(
+                Arrays
+                        .stream(PlatformSettingsUpdateDto.class.getDeclaredFields())
+                        .filter(field -> !field.isSynthetic())
+                        .noneMatch(field -> BrandingSettingsUpdateDto.class.isAssignableFrom(field.getType())),
+                "branding must not be writable through the UPDATE-gated platform settings body");
     }
 }
