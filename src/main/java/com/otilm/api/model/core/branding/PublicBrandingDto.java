@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.branding;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.core.settings.BrandingTheme;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
@@ -12,10 +13,12 @@ import lombok.Data;
  * DTO would mean every field later added to platform settings is served to anonymous callers by default. Fields are
  * duplicated here so that widening this response is always an explicit act.
  * <p>
- * Nothing is omitted on {@code null}. The response has a fixed shape whether or not branding is configured, so a client
- * can read it once at startup without having to distinguish "absent" from "not yet loaded".
+ * {@code ALWAYS} rather than the inherited default: Core's web {@code ObjectMapper} serializes with {@code NON_NULL},
+ * which would drop every unset field here. A client reads this before it has any session, so the response keeps a fixed
+ * shape whether or not branding is configured — "no logo configured" and "response not understood" must not look alike.
  */
 @Data
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class PublicBrandingDto implements Serializable {
 
     @Schema(description = "Whether the operator has configured branding. When false, every other field is null and a "

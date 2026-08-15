@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.branding;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.core.settings.BrandingSettingsDto;
 import com.otilm.api.model.core.settings.BrandingTheme;
@@ -60,10 +61,16 @@ class PublicBrandingDtoTest {
     /**
      * A client reads this once before it has any session, so the response keeps a fixed shape rather than omitting
      * unset fields: "no logo configured" and "response not understood" must not look alike.
+     * <p>
+     * Serialized through a mapper configured the way Core's web {@code ObjectMapper} is — {@code NON_NULL} — rather
+     * than a default one. A default mapper already includes nulls, so it would pass whether or not the DTO declares
+     * {@code @JsonInclude(ALWAYS)}, and the production shape would be the only thing left untested.
      */
     @Test
-    void serializesUnsetBrandingAsExplicitNulls() throws Exception {
-        String json = mapper.writeValueAsString(new PublicBrandingDto());
+    void serializesUnsetBrandingAsExplicitNullsEvenWhenTheMapperOmitsNulls() throws Exception {
+        ObjectMapper nullOmittingMapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        String json = nullOmittingMapper.writeValueAsString(new PublicBrandingDto());
 
         assertTrue(json.contains("\"configured\":false"), json);
         for (String field : declaredFields(BrandingSettingsDto.class).keySet()) {
