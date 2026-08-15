@@ -123,6 +123,20 @@ class BrandingSettingsUpdateDtoTest {
         });
     }
 
+    /**
+     * The design's ceiling is a megabyte of image data. Encoding it inflates the string by a third, so a bound applied
+     * to the encoded form has to be derived from the decoded one rather than guessed, or logos the design allows are
+     * refused by the contract.
+     */
+    @Test
+    void theEncodedBoundLeavesRoomForAMegabyteOfImageData() {
+        int encoded = 4 * ((BrandingSettingsUpdateDto.LOGO_MAX_DECODED_BYTES + 2) / 3);
+
+        assertTrue(BrandingSettingsUpdateDto.LOGO_MAX_LENGTH > encoded,
+                "encoded bound must exceed the base64 expansion of the decoded bound plus the data URI prefix");
+        assertEquals(1024 * 1024, BrandingSettingsUpdateDto.LOGO_MAX_DECODED_BYTES);
+    }
+
     @Test
     void logosAreBoundedInSize() {
         String oversized = "data:image/png;base64," + "A".repeat(BrandingSettingsUpdateDto.LOGO_MAX_LENGTH);
