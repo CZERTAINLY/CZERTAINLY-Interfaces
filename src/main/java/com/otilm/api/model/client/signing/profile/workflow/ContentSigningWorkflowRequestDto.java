@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Document signing workflow configuration request embedded in a Signing Profile create/update request.
+ * Content signing workflow configuration request embedded in a Signing Profile create/update request.
  *
  * <p>
  * Both fields apply to ILM-managed signing only and must be omitted (or set to null) when the Signing Profile uses
@@ -19,21 +19,21 @@ import lombok.ToString;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(name = "DocumentSigningWorkflowRequestDto", description = "Document signing workflow configuration request")
+@Schema(name = "ContentSigningWorkflowRequestDto", description = "Content signing workflow configuration request")
 @ToString(callSuper = true)
-public class DocumentSigningWorkflowRequestDto extends WorkflowRequestDto {
+public class ContentSigningWorkflowRequestDto extends WorkflowRequestDto {
 
-    @Schema(description = "UUID of the Signature Formatting Provider that constructs the data-to-be-signed (DTBS) for Document signing. "
+    @Schema(description = "UUID of the Signature Formatting Provider that constructs the data-to-be-signed (DTBS) for Content signing. "
             + "Required for ILM-managed signing; must be omitted for delegated signing.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID signatureFormattingConnectorUuid;
 
     @Schema(description = "Attributes for the Signature Formatting Provider that control DTBS construction "
-            + "for the document signing workflow. " + "Applicable only when ILM-managed signing is used.",
+            + "for the content signing workflow. " + "Applicable only when ILM-managed signing is used.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> signatureFormattingConnectorAttributes = new ArrayList<>();
 
-    public DocumentSigningWorkflowRequestDto() {
-        super(SigningWorkflowType.DOCUMENT_SIGNING);
+    public ContentSigningWorkflowRequestDto() {
+        super(SigningWorkflowType.CONTENT_SIGNING);
     }
 }
