@@ -15,6 +15,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Schema(name = "KeyOperationRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class KeyOperationRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
     @Schema(description = "Connector-defined metadata returned in the original 202 Accepted response",

@@ -75,7 +75,8 @@ public abstract sealed class KeyDataV2Dto permits SecretKeyDataV2Dto, PublicKeyD
      */
     @Schema(name = "KeyDataV2",
             description = "Type-specific key descriptor. Secret and private keys never contain key material.",
-            type = "object", discriminatorProperty = "type",
+            type = "object", additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+            discriminatorProperty = "type",
             discriminatorMapping = {
                     @DiscriminatorMapping(value = "Secret", schema = SecretKeyDataV2Dto.class),
                     @DiscriminatorMapping(value = "Public", schema = PublicKeyDataV2Dto.class),

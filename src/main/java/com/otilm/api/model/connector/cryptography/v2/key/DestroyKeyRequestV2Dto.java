@@ -14,6 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Schema(name = "DestroyKeyRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class DestroyKeyRequestV2Dto extends KeyScopedRequestV2Dto {
 
     @Schema(description = "Caller-selected execution mode. The connector must not switch modes implicitly.",

@@ -25,6 +25,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Schema(name = "VerifyDataRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class VerifyDataRequestV2Dto extends KeyScopedRequestV2Dto {
 
     @Schema(description = "Signature attributes", requiredMode = Schema.RequiredMode.REQUIRED)

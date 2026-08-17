@@ -15,6 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Schema(name = "KeyScopedRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class KeyScopedRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
     @Schema(description = "Connector-defined metadata identifying the key, as returned when the key was created, "

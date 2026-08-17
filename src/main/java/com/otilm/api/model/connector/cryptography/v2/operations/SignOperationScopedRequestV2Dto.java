@@ -18,6 +18,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Schema(name = "SignOperationScopedRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class SignOperationScopedRequestV2Dto extends KeyScopedRequestV2Dto {
 
     @Schema(description = "Connector-defined signing operation metadata returned in the original sign data "

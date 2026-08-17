@@ -1,6 +1,7 @@
 package com.otilm.api.model.connector.cryptography.v2.key;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.otilm.api.model.client.cryptography.key.KeyRequestType;
@@ -19,7 +20,11 @@ import static org.junit.jupiter.api.Named.named;
 
 class CryptographyKeyJsonContractTest {
 
-    private final ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    private final ObjectMapper mapper = JsonMapper
+            .builder()
+            .findAndAddModules()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
 
     @Test
     void keyData_hasNoPublicTypeSetter() {

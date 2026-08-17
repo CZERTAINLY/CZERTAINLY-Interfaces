@@ -11,7 +11,8 @@ import java.util.List;
  * OpenAPI schema for the polymorphic {@link KeyCreationResponseV2Dto} hierarchy.
  */
 @Schema(name = "KeyCreationResponseInterface", description = "Key-creation response selected by key request type",
-        type = "object", discriminatorProperty = "keyRequestType",
+        type = "object", additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+        discriminatorProperty = "keyRequestType",
         discriminatorMapping = {
                 @DiscriminatorMapping(value = KeyRequestType.Codes.SECRET, schema = SecretKeyDataResponseV2Dto.class),
                 @DiscriminatorMapping(value = KeyRequestType.Codes.KEY_PAIR, schema = KeyPairDataResponseV2Dto.class)},

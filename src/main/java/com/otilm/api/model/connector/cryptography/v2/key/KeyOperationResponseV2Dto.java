@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.key;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.attribute.common.MetadataAttribute;
 import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
@@ -30,4 +31,10 @@ public class KeyOperationResponseV2Dto {
             groups = AsynchronousResponse.class)
     private List<@NotNull(
             message = "operationMeta must not contain null items") @ValidMetadataAttribute MetadataAttribute> operationMeta;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 key-operation response property: " + property);
+    }
 }

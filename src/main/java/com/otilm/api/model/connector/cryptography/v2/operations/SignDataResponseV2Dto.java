@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.operations;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.attribute.common.MetadataAttribute;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Schema(name = "SignDataResponseV2Dto")
+@Schema(name = "SignDataResponseV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class SignDataResponseV2Dto {
 
     @Schema(description = "Signatures, correlated to the request items by identifier. Populated on sync 200; "
@@ -45,4 +46,10 @@ public class SignDataResponseV2Dto {
             groups = AsynchronousResponse.class)
     private List<@NotNull(
             message = "operationMeta must not contain null items") @ValidMetadataAttribute MetadataAttribute> operationMeta;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 sign response property: " + property);
+    }
 }
