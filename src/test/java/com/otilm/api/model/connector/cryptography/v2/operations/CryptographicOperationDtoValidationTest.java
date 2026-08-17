@@ -295,7 +295,7 @@ class CryptographicOperationDtoValidationTest {
         SignDataResponseV2Dto synchronousWithoutSignatures = validSynchronousSignResponse();
         synchronousWithoutSignatures.setSignatures(null);
         SignDataResponseV2Dto synchronousWithTrackingMeta = validSynchronousSignResponse();
-        synchronousWithTrackingMeta.setSignOperationMeta(validMetadata());
+        synchronousWithTrackingMeta.setOperationMeta(validMetadata());
         SignDataResponseV2Dto synchronousNullItem = validSynchronousSignResponse();
         synchronousNullItem.setSignatures(Collections.singletonList(null));
         SignDataResponseV2Dto synchronousDuplicate = validSynchronousSignResponse();
@@ -303,18 +303,18 @@ class CryptographicOperationDtoValidationTest {
         SignDataResponseV2Dto asynchronousWithSignatures = validAsynchronousSignResponse();
         asynchronousWithSignatures.setSignatures(List.of(signatureItem("item-1")));
         SignDataResponseV2Dto asynchronousWithoutTrackingMeta = validAsynchronousSignResponse();
-        asynchronousWithoutTrackingMeta.setSignOperationMeta(null);
+        asynchronousWithoutTrackingMeta.setOperationMeta(null);
         SignDataResponseV2Dto asynchronousNullMeta = validAsynchronousSignResponse();
-        asynchronousNullMeta.setSignOperationMeta(Collections.singletonList(null));
+        asynchronousNullMeta.setOperationMeta(Collections.singletonList(null));
         SignDataResponseV2Dto asynchronousInvalidMeta = validAsynchronousSignResponse();
         MetadataAttributeV2 metadataWithoutName = validMetadataAttribute();
         metadataWithoutName.setName(null);
-        asynchronousInvalidMeta.setSignOperationMeta(List.of(metadataWithoutName));
+        asynchronousInvalidMeta.setOperationMeta(List.of(metadataWithoutName));
         return Stream
                 .of(invalid("sync missing signatures", synchronousWithoutSignatures, SynchronousResponse.class,
                         "signatures", "signatures must contain at least one item for synchronous execution"),
                         invalid("sync has tracking metadata", synchronousWithTrackingMeta, SynchronousResponse.class,
-                                "signOperationMeta", "signOperationMeta must be absent for synchronous execution"),
+                                "operationMeta", "operationMeta must be absent for synchronous execution"),
                         invalid("sync null item", synchronousNullItem, SynchronousResponse.class,
                                 "signatures[0].<list element>", "signatures must not contain null items"),
                         invalid("sync duplicate", synchronousDuplicate, SynchronousResponse.class,
@@ -323,12 +323,12 @@ class CryptographicOperationDtoValidationTest {
                         invalid("async has signatures", asynchronousWithSignatures, AsynchronousResponse.class,
                                 "signatures", "signatures must be absent for asynchronous execution"),
                         invalid("async missing tracking metadata", asynchronousWithoutTrackingMeta,
-                                AsynchronousResponse.class, "signOperationMeta",
-                                "signOperationMeta must contain at least one item for asynchronous execution"),
+                                AsynchronousResponse.class, "operationMeta",
+                                "operationMeta must contain at least one item for asynchronous execution"),
                         invalid("async null metadata", asynchronousNullMeta, AsynchronousResponse.class,
-                                "signOperationMeta[0].<list element>", "signOperationMeta must not contain null items"),
+                                "operationMeta[0].<list element>", "operationMeta must not contain null items"),
                         invalid("async invalid metadata", asynchronousInvalidMeta, AsynchronousResponse.class,
-                                "signOperationMeta[0].<list element>.name", "name must not be blank"));
+                                "operationMeta[0].<list element>.name", "name must not be blank"));
     }
 
     @ParameterizedTest(name = "{0}")
@@ -577,7 +577,7 @@ class CryptographicOperationDtoValidationTest {
 
     private static SignDataResponseV2Dto validAsynchronousSignResponse() {
         SignDataResponseV2Dto response = new SignDataResponseV2Dto();
-        response.setSignOperationMeta(validMetadata());
+        response.setOperationMeta(validMetadata());
         return response;
     }
 

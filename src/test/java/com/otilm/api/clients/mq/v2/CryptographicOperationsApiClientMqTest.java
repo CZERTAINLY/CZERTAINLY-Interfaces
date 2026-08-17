@@ -214,7 +214,7 @@ class CryptographicOperationsApiClientMqTest {
         // given
         SignDataRequestV2Dto request = signRequest(OperationExecutionMode.ASYNCHRONOUS);
         SignDataResponseV2Dto body = new SignDataResponseV2Dto();
-        body.setSignOperationMeta(validMetadata());
+        body.setOperationMeta(validMetadata());
         ResponseEntity<SignDataResponseV2Dto> response = ResponseEntity.accepted().body(body);
         proxyClient.respondWithEntity(response);
 

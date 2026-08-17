@@ -19,8 +19,8 @@ import lombok.ToString;
 
 /**
  * Response envelope for {@code POST /v2/cryptographyProvider/operations/sign}. Signatures are returned inline on a sync
- * 200; on an async 202 they are absent and {@code signOperationMeta} is the tracking handle for the whole batch. A
- * batch is tracked as one operation and has one tracking handle.
+ * 200; on an async 202 they are absent and {@code operationMeta} is the tracking handle for the whole batch. A batch is
+ * tracked as one operation and has one tracking handle.
  */
 @Getter
 @Setter
@@ -40,9 +40,9 @@ public class SignDataResponseV2Dto {
     @Schema(description = "Connector-defined signing operation metadata. Present on async 202 as the tracking "
             + "handle for the whole batch. Supply it to /operations/sign/status and /operations/sign/cancel.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @Null(message = "signOperationMeta must be absent for synchronous execution", groups = SynchronousResponse.class)
-    @NotEmpty(message = "signOperationMeta must contain at least one item for asynchronous execution",
+    @Null(message = "operationMeta must be absent for synchronous execution", groups = SynchronousResponse.class)
+    @NotEmpty(message = "operationMeta must contain at least one item for asynchronous execution",
             groups = AsynchronousResponse.class)
     private List<@NotNull(
-            message = "signOperationMeta must not contain null items") @ValidMetadataAttribute MetadataAttribute> signOperationMeta;
+            message = "operationMeta must not contain null items") @ValidMetadataAttribute MetadataAttribute> operationMeta;
 }

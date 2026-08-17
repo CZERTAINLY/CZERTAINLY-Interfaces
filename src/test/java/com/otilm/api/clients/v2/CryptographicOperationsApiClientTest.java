@@ -245,7 +245,7 @@ class CryptographicOperationsApiClientTest {
     void signData_returnsAsynchronousResponse() throws ConnectorException {
         // given
         String responseJson = """
-                {"signOperationMeta":[%s]}
+                {"operationMeta":[%s]}
                 """.formatted(VALID_METADATA_JSON);
         stubJsonResponse(SIGN_PATH, HttpStatus.ACCEPTED, responseJson);
 
@@ -256,7 +256,7 @@ class CryptographicOperationsApiClientTest {
         // then
         assertEquals(HttpStatus.ACCEPTED, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals("provider handle", result.getBody().getSignOperationMeta().get(0).getName());
+        assertEquals("provider handle", result.getBody().getOperationMeta().get(0).getName());
         verifySignRequest(OperationExecutionMode.ASYNCHRONOUS);
     }
 

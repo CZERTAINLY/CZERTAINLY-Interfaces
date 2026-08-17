@@ -501,7 +501,7 @@ class OperationResponseValidatorTest {
     static Stream<Named<SignCase>> signBodiesContradictingExecutionMode() {
         String identifier = "item-1";
         SignDataResponseV2Dto synchronousBodyWithOperationMetadata = synchronousSignBody(identifier);
-        synchronousBodyWithOperationMetadata.setSignOperationMeta(validMetadata());
+        synchronousBodyWithOperationMetadata.setOperationMeta(validMetadata());
         SignDataResponseV2Dto asynchronousBodyWithSignatures = asynchronousSignBody();
         asynchronousBodyWithSignatures.setSignatures(List.of(signatureItem(identifier)));
         return Stream
@@ -602,7 +602,7 @@ class OperationResponseValidatorTest {
 
     private static SignDataResponseV2Dto asynchronousSignBody() {
         SignDataResponseV2Dto response = new SignDataResponseV2Dto();
-        response.setSignOperationMeta(validMetadata());
+        response.setOperationMeta(validMetadata());
         return response;
     }
 
