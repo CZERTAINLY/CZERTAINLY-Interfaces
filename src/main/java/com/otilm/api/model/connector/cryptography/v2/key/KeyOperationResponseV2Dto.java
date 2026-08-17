@@ -25,7 +25,8 @@ public class KeyOperationResponseV2Dto {
 
     @Schema(description = "Connector-defined operation tracking metadata. Required and non-empty in the initial "
             + "response accepting asynchronous execution. Absent from a synchronous creation response and from a "
-            + "completed result nested in a status response.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "completed result nested in a status response. This handle must remain valid for the operation's entire tracking lifetime.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Null(message = "operationMeta must be absent for synchronous execution", groups = SynchronousResponse.class)
     @NotEmpty(message = "operationMeta must contain at least one item for asynchronous execution",
             groups = AsynchronousResponse.class)

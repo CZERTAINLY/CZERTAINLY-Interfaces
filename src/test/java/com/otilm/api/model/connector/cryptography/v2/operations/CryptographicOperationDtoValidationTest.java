@@ -4,6 +4,7 @@ import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.CipherDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureResultItemV2Dto;
@@ -344,18 +345,19 @@ class CryptographicOperationDtoValidationTest {
     }
 
     static Stream<Named<InvalidDto>> invalidSignOperationRequests() {
-        SignOperationScopedRequestV2Dto emptyMeta = validSignOperationRequest();
+        OperationTrackingRequestV2Dto emptyMeta = validSignOperationRequest();
         emptyMeta.setOperationMeta(List.of());
-        SignOperationScopedRequestV2Dto nullItem = validSignOperationRequest();
+        OperationTrackingRequestV2Dto nullItem = validSignOperationRequest();
         nullItem.setOperationMeta(Collections.singletonList(null));
-        SignOperationScopedRequestV2Dto invalidMeta = validSignOperationRequest();
+        OperationTrackingRequestV2Dto invalidMeta = validSignOperationRequest();
         MetadataAttributeV2 metadataWithoutName = validMetadataAttribute();
         metadataWithoutName.setName(null);
         invalidMeta.setOperationMeta(List.of(metadataWithoutName));
         return Stream
                 .of(invalid("empty metadata", emptyMeta, "operationMeta",
                         "operationMeta is required and must not be empty"),
-                        invalid("null metadata item", nullItem, "operationMeta[0].<list element>", "must not be null"),
+                        invalid("null metadata item", nullItem, "operationMeta[0].<list element>",
+                                "operationMeta must not contain null items"),
                         invalid("invalid metadata item", invalidMeta, "operationMeta[0].<list element>.name",
                                 "name must not be blank"));
     }
@@ -581,8 +583,8 @@ class CryptographicOperationDtoValidationTest {
         return response;
     }
 
-    private static SignOperationScopedRequestV2Dto validSignOperationRequest() {
-        SignOperationScopedRequestV2Dto request = withValidKeyScope(new SignOperationScopedRequestV2Dto());
+    private static OperationTrackingRequestV2Dto validSignOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }

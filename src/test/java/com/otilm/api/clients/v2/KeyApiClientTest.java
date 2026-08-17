@@ -13,13 +13,13 @@ import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2Dto;
@@ -383,8 +383,13 @@ class KeyApiClientTest {
     }
 
     private void verifyOperationRequest(String path) {
-        RequestPatternBuilder request = tokenProfileRequest(path)
-                .withRequestBody(WireMock.matchingJsonPath("$.operationMeta[0].name", WireMock.equalTo(METADATA_NAME)));
+        RequestPatternBuilder request = WireMock
+                .postRequestedFor(WireMock.urlEqualTo(path))
+                .withRequestBody(WireMock.matchingJsonPath("$.operationMeta[0].name", WireMock.equalTo(METADATA_NAME)))
+                .withRequestBody(WireMock.matchingJsonPath("$.tokenAttributes", WireMock.absent()))
+                .withRequestBody(WireMock.matchingJsonPath("$.tokenProfileAttributes", WireMock.absent()))
+                .withRequestBody(WireMock.matchingJsonPath("$.keyUsages", WireMock.absent()))
+                .withRequestBody(WireMock.matchingJsonPath("$.keyMeta", WireMock.absent()));
         mockServer.verify(request);
     }
 
@@ -445,8 +450,8 @@ class KeyApiClientTest {
         return request;
     }
 
-    private static KeyOperationRequestV2Dto keyOperationRequest() {
-        KeyOperationRequestV2Dto request = withValidTokenProfileScope(new KeyOperationRequestV2Dto());
+    private static OperationTrackingRequestV2Dto keyOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }

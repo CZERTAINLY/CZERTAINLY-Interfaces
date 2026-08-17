@@ -7,11 +7,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.CipherDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
@@ -76,11 +74,10 @@ class CryptographyDtoClosedContractTest {
                         dto("create-key-attributes request", CreateKeyAttributesRequestV2Dto.class),
                         dto("create-key request", CreateKeyRequestV2Dto.class),
                         dto("destroy-key request", DestroyKeyRequestV2Dto.class),
-                        dto("key-operation request", KeyOperationRequestV2Dto.class),
+                        dto("operation-tracking request", OperationTrackingRequestV2Dto.class),
                         dto("cipher-data request", CipherDataRequestV2Dto.class),
                         dto("random-data request", RandomDataRequestV2Dto.class),
                         dto("sign-data request", SignDataRequestV2Dto.class),
-                        dto("sign-operation-scoped request", SignOperationScopedRequestV2Dto.class),
                         dto("verify-data request", VerifyDataRequestV2Dto.class),
                         dto("cipher-data item", CipherDataV2Dto.class),
                         dto("signature-data item", SignatureDataV2Dto.class),

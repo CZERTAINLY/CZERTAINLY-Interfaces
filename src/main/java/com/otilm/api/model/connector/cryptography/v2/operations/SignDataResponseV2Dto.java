@@ -39,7 +39,8 @@ public class SignDataResponseV2Dto {
     private List<@NotNull(message = "signatures must not contain null items") @Valid SignatureDataV2Dto> signatures;
 
     @Schema(description = "Connector-defined signing operation metadata. Present on async 202 as the tracking "
-            + "handle for the whole batch. Supply it to /operations/sign/status and /operations/sign/cancel.",
+            + "handle for the whole batch. Supply it by itself to /operations/sign/status and "
+            + "/operations/sign/cancel. It must remain valid for the operation's entire tracking lifetime.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Null(message = "operationMeta must be absent for synchronous execution", groups = SynchronousResponse.class)
     @NotEmpty(message = "operationMeta must contain at least one item for asynchronous execution",

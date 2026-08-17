@@ -6,6 +6,7 @@ import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.DecryptDataResponseV2Dto;
@@ -14,7 +15,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -241,7 +241,7 @@ class CryptographicOperationsApiClientMqTest {
     @Test
     void getSignStatus_delegatesPostAndReturnsStatus() throws ConnectorException {
         // given
-        SignOperationScopedRequestV2Dto request = signOperationRequest();
+        OperationTrackingRequestV2Dto request = signOperationRequest();
         SignOperationStatusResponseV2Dto response = new SignOperationStatusResponseV2Dto();
         response
                 .setItems(List
@@ -271,7 +271,7 @@ class CryptographicOperationsApiClientMqTest {
     @Test
     void cancelSign_delegatesPostAndPreservesStatus() throws ConnectorException {
         // given
-        SignOperationScopedRequestV2Dto request = signOperationRequest();
+        OperationTrackingRequestV2Dto request = signOperationRequest();
         ResponseEntity<Void> response = ResponseEntity.noContent().build();
         proxyClient.respondWithEntity(response);
 
@@ -461,8 +461,8 @@ class CryptographicOperationsApiClientMqTest {
         return request;
     }
 
-    private static SignOperationScopedRequestV2Dto signOperationRequest() {
-        SignOperationScopedRequestV2Dto request = withValidKeyScope(new SignOperationScopedRequestV2Dto());
+    private static OperationTrackingRequestV2Dto signOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }

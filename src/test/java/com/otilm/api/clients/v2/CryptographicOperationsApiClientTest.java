@@ -12,6 +12,7 @@ import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.DecryptDataResponseV2Dto;
@@ -20,7 +21,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -485,7 +485,11 @@ class CryptographicOperationsApiClientTest {
                 .verify(WireMock
                         .postRequestedFor(WireMock.urlEqualTo(path))
                         .withRequestBody(WireMock
-                                .matchingJsonPath("$.operationMeta[0].name", WireMock.equalTo("provider handle"))));
+                                .matchingJsonPath("$.operationMeta[0].name", WireMock.equalTo("provider handle")))
+                        .withRequestBody(WireMock.matchingJsonPath("$.tokenAttributes", WireMock.absent()))
+                        .withRequestBody(WireMock.matchingJsonPath("$.tokenProfileAttributes", WireMock.absent()))
+                        .withRequestBody(WireMock.matchingJsonPath("$.keyUsages", WireMock.absent()))
+                        .withRequestBody(WireMock.matchingJsonPath("$.keyMeta", WireMock.absent())));
     }
 
     private void stubJsonResponse(String path, HttpStatus status, String body) {
@@ -528,8 +532,8 @@ class CryptographicOperationsApiClientTest {
         return request;
     }
 
-    private static SignOperationScopedRequestV2Dto signOperationRequest() {
-        SignOperationScopedRequestV2Dto request = withValidKeyScope(new SignOperationScopedRequestV2Dto());
+    private static OperationTrackingRequestV2Dto signOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }
