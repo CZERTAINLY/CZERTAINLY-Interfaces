@@ -10,30 +10,30 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Document signing workflow configuration embedded in a {@code SigningProfileDto}.
+ * Content signing workflow configuration embedded in a {@code SigningProfileDto}.
  *
  * <p>
  * Contains Signature Formatting Provider properties used by ILM-managed signing to construct the data-to-be-signed
- * (DTBS) for document signing operations. Both fields are null when delegated signing is used.
+ * (DTBS) for content signing operations. Both fields are null when delegated signing is used.
  * </p>
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Schema(name = "DocumentSigningWorkflowDto", description = "Document signing workflow configuration")
+@Schema(name = "ContentSigningWorkflowDto", description = "Content signing workflow configuration")
 @ToString(callSuper = true)
-public class DocumentSigningWorkflowDto extends WorkflowDto {
+public class ContentSigningWorkflowDto extends WorkflowDto {
 
-    @Schema(description = "Signature Formatting Provider that constructs the data-to-be-signed (DTBS) for Document signing. "
+    @Schema(description = "Signature Formatting Provider that constructs the data-to-be-signed (DTBS) for Content signing. "
             + "Present only when ILM-managed signing is used; null for delegated signing.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private NameAndUuidDto signatureFormattingConnector;
 
     @Schema(description = "Attributes configured on the Signature Formatting Provider that control DTBS construction "
-            + "for the document signing workflow. " + "Applicable only when ILM-managed signing is used.",
+            + "for the content signing workflow. " + "Applicable only when ILM-managed signing is used.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> signatureFormattingConnectorAttributes = new ArrayList<>();
 
-    public DocumentSigningWorkflowDto() {
-        super(SigningWorkflowType.DOCUMENT_SIGNING);
+    public ContentSigningWorkflowDto() {
+        super(SigningWorkflowType.CONTENT_SIGNING);
     }
 }

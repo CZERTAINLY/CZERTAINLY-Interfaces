@@ -27,7 +27,7 @@ public class SigningProfileRequestDto {
     private String name;
 
     @Schema(description = "Description of the Signing Profile", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
-            example = "Profile for document signing")
+            example = "Profile for content signing")
     private String description;
 
     @NotNull

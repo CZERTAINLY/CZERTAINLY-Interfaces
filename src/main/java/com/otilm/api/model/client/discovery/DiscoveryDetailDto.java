@@ -11,8 +11,8 @@ import com.otilm.api.model.core.discovery.DiscoveryStatus;
 import com.otilm.api.model.core.workflows.TriggerDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,10 +34,10 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     private String message;
 
     @Schema(description = "Date and time when Discovery started", nullable = true)
-    private Date startTime;
+    private OffsetDateTime startTime;
 
     @Schema(description = "Date and time when Discovery finished", nullable = true)
-    private Date endTime;
+    private OffsetDateTime endTime;
 
     @Schema(description = "Number of certificates that are discovered", defaultValue = "0")
     private Integer totalCertificatesDiscovered;
