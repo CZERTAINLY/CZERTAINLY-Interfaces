@@ -11,6 +11,7 @@ import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
 import com.otilm.api.testsupport.ValidatorFixture;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AutoClose;
@@ -383,6 +384,37 @@ class OperationResponseValidatorTest {
         SignDataRequestV2Dto request = signRequest(OperationExecutionMode.SYNCHRONOUS, identifier);
         request.setData(null);
         ResponseEntity<SignDataResponseV2Dto> response = synchronousSignResponse(identifier);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateSign(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateSign_rejectsNullRequestItem_forSynchronousExecution() {
+        // given
+        String identifier = "item-1";
+        SignDataRequestV2Dto request = signRequest(OperationExecutionMode.SYNCHRONOUS, identifier);
+        request.setData(Collections.singletonList(null));
+        ResponseEntity<SignDataResponseV2Dto> response = synchronousSignResponse(identifier);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateSign(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateSign_rejectsNullResponseItem_forSynchronousExecution() {
+        // given
+        String identifier = "item-1";
+        SignDataRequestV2Dto request = signRequest(OperationExecutionMode.SYNCHRONOUS, identifier);
+        SignDataResponseV2Dto body = new SignDataResponseV2Dto();
+        body.setSignatures(Collections.singletonList(null));
+        ResponseEntity<SignDataResponseV2Dto> response = ResponseEntity.ok(body);
 
         // when
         OperationValidationResult result = VALIDATOR.validateSign(request, response);

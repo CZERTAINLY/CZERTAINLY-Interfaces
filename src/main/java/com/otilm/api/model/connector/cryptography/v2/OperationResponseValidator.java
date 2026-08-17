@@ -88,6 +88,11 @@ public final class OperationResponseValidator {
         if (requestItems == null) {
             throw new IllegalArgumentException("Request data is required");
         }
+        if (responseItems == null) {
+            throw new IllegalArgumentException("Response data is required");
+        }
+        requireNonNullItems(requestItems, "Request data");
+        requireNonNullItems(responseItems, "Response data");
         Set<String> requestIdentifiers = requestItems
                 .stream()
                 .map(IdentifiedDataV2Dto::getIdentifier)
@@ -97,6 +102,14 @@ public final class OperationResponseValidator {
         if (uniqueResponseIdentifiers.size() != responseIdentifiers.size()
                 || !uniqueResponseIdentifiers.equals(requestIdentifiers)) {
             throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    private static void requireNonNullItems(List<? extends IdentifiedDataV2Dto> items, String itemSource) {
+        for (IdentifiedDataV2Dto item : items) {
+            if (item == null) {
+                throw new IllegalArgumentException(itemSource + " must not contain null items");
+            }
         }
     }
 
