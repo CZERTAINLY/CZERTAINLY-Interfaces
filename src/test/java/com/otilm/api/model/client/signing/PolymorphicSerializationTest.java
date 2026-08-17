@@ -17,8 +17,8 @@ import com.otilm.api.model.client.signing.profile.scheme.SigningSchemeDto;
 import com.otilm.api.model.client.signing.profile.scheme.SigningSchemeRequestDto;
 import com.otilm.api.model.client.signing.profile.scheme.StaticKeyManagedSigningDto;
 import com.otilm.api.model.client.signing.profile.scheme.StaticKeyManagedSigningRequestDto;
-import com.otilm.api.model.client.signing.profile.workflow.DocumentSigningWorkflowDto;
-import com.otilm.api.model.client.signing.profile.workflow.DocumentSigningWorkflowRequestDto;
+import com.otilm.api.model.client.signing.profile.workflow.ContentSigningWorkflowDto;
+import com.otilm.api.model.client.signing.profile.workflow.ContentSigningWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.RawSigningWorkflowDto;
 import com.otilm.api.model.client.signing.profile.workflow.RawSigningWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.SigningWorkflowType;
@@ -155,68 +155,68 @@ class PolymorphicSerializationTest {
     }
 
     // -------------------------------------------------------------------------
-    // DocumentSigningWorkflowDto
+    // ContentSigningWorkflowDto
     // -------------------------------------------------------------------------
 
     @Test
-    void documentSigningWorkflowConfigDto_serializesDiscriminator() throws Exception {
-        DocumentSigningWorkflowDto dto = new DocumentSigningWorkflowDto();
+    void contentSigningWorkflowConfigDto_serializesDiscriminator() throws Exception {
+        ContentSigningWorkflowDto dto = new ContentSigningWorkflowDto();
 
         JsonNode json = mapper.valueToTree(dto);
 
-        assertEquals(SigningWorkflowType.Codes.DOCUMENT_SIGNING, json.get("type").asText());
+        assertEquals(SigningWorkflowType.Codes.CONTENT_SIGNING, json.get("type").asText());
     }
 
     @Test
-    void documentSigningWorkflowConfigDto_deserializesViaBaseClass() throws Exception {
+    void contentSigningWorkflowConfigDto_deserializesViaBaseClass() throws Exception {
         String json = """
                 {
-                  "type": "document_signing"
+                  "type": "content_signing"
                 }
                 """;
 
         WorkflowDto base = mapper.readValue(json, WorkflowDto.class);
 
-        assertInstanceOf(DocumentSigningWorkflowDto.class, base);
-        assertEquals(SigningWorkflowType.DOCUMENT_SIGNING, base.getType());
+        assertInstanceOf(ContentSigningWorkflowDto.class, base);
+        assertEquals(SigningWorkflowType.CONTENT_SIGNING, base.getType());
     }
 
     @Test
-    void documentSigningWorkflowConfigRequestDto_serializesDiscriminator() throws Exception {
-        DocumentSigningWorkflowRequestDto dto = new DocumentSigningWorkflowRequestDto();
+    void contentSigningWorkflowConfigRequestDto_serializesDiscriminator() throws Exception {
+        ContentSigningWorkflowRequestDto dto = new ContentSigningWorkflowRequestDto();
         dto.setSignatureFormattingConnectorUuid(UUID.fromString("11111111-2222-3333-4444-555555555555"));
 
         JsonNode json = mapper.valueToTree(dto);
 
-        assertEquals(SigningWorkflowType.Codes.DOCUMENT_SIGNING, json.get("type").asText());
+        assertEquals(SigningWorkflowType.Codes.CONTENT_SIGNING, json.get("type").asText());
     }
 
     @Test
-    void documentSigningWorkflowConfigRequestDto_roundTrip() throws Exception {
-        DocumentSigningWorkflowRequestDto original = new DocumentSigningWorkflowRequestDto();
+    void contentSigningWorkflowConfigRequestDto_roundTrip() throws Exception {
+        ContentSigningWorkflowRequestDto original = new ContentSigningWorkflowRequestDto();
         original.setSignatureFormattingConnectorUuid(UUID.fromString("11111111-2222-3333-4444-555555555555"));
 
         String json = mapper.writeValueAsString(original);
         WorkflowRequestDto deserialized = mapper.readValue(json, WorkflowRequestDto.class);
 
-        assertInstanceOf(DocumentSigningWorkflowRequestDto.class, deserialized);
+        assertInstanceOf(ContentSigningWorkflowRequestDto.class, deserialized);
         assertEquals(original, deserialized);
     }
 
     @Test
-    void documentSigningWorkflowConfigRequestDto_deserializesViaBaseClass() throws Exception {
+    void contentSigningWorkflowConfigRequestDto_deserializesViaBaseClass() throws Exception {
         String json = """
                 {
-                  "type": "document_signing",
+                  "type": "content_signing",
                   "signatureFormattingConnectorUuid": "11111111-2222-3333-4444-555555555555"
                 }
                 """;
 
         WorkflowRequestDto base = mapper.readValue(json, WorkflowRequestDto.class);
 
-        assertInstanceOf(DocumentSigningWorkflowRequestDto.class, base);
-        DocumentSigningWorkflowRequestDto result = (DocumentSigningWorkflowRequestDto) base;
-        assertEquals(SigningWorkflowType.DOCUMENT_SIGNING, result.getType());
+        assertInstanceOf(ContentSigningWorkflowRequestDto.class, base);
+        ContentSigningWorkflowRequestDto result = (ContentSigningWorkflowRequestDto) base;
+        assertEquals(SigningWorkflowType.CONTENT_SIGNING, result.getType());
         assertEquals(UUID.fromString("11111111-2222-3333-4444-555555555555"),
                 result.getSignatureFormattingConnectorUuid());
     }

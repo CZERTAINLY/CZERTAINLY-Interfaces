@@ -26,8 +26,8 @@ import lombok.Data;
         visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = TimestampingWorkflowRequestDto.class, name = SigningWorkflowType.Codes.TIMESTAMPING),
-        @JsonSubTypes.Type(value = DocumentSigningWorkflowRequestDto.class,
-                name = SigningWorkflowType.Codes.DOCUMENT_SIGNING),
+        @JsonSubTypes.Type(value = ContentSigningWorkflowRequestDto.class,
+                name = SigningWorkflowType.Codes.CONTENT_SIGNING),
         @JsonSubTypes.Type(value = RawSigningWorkflowRequestDto.class, name = SigningWorkflowType.Codes.RAW_SIGNING),})
 @Schema(implementation = WorkflowRequestInterface.class)
 public abstract class WorkflowRequestDto implements WorkflowRequestInterface {
