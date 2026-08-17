@@ -52,14 +52,15 @@ public interface KeyController extends AuthProtectedConnectorController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listCreateKeyAttributes(@RequestBody @Valid CreateKeyAttributesRequestV2Dto request);
 
-    @Operation(summary = "Create key",
-            description = "Create a secret key or key pair using the request discriminator and caller-selected execution mode (synchronous 200 or asynchronous 202)")
+    @Operation(summary = "Create key", description = "Create a secret key or key pair synchronously or asynchronously")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Created synchronously"),
+            @ApiResponse(responseCode = "200",
+                    description = "Created synchronously, or existing equivalent operation returned synchronously"),
             @ApiResponse(responseCode = "202",
-                    description = "Creation accepted asynchronously; body carries operationMeta tracking handle"),
+                    description = "Creation accepted asynchronously, or equivalent operation replayed asynchronously; "
+                            + "body carries the original operationMeta tracking handle"),
             @ApiResponse(responseCode = "409",
-                    description = "Connector detected reuse of keyCreationId with materially different creation data (RESOURCE_ALREADY_EXISTS)")})
+                    description = "keyCreationId reused with a non-equivalent request (RESOURCE_ALREADY_EXISTS)")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<KeyCreationResponseV2Dto> createKey(@RequestBody @Valid CreateKeyRequestV2Dto request);
 
