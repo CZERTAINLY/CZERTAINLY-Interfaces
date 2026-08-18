@@ -10,7 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * How a signing operation was initiated. The {@code gateEligible} flag marks which values a Signing Profile may offer.
+ * How a signing operation was initiated. The {@code enableableOnProfile} flag marks which values a Signing Profile may
+ * list in its enabled protocols.
  */
 @Schema(enumAsRef = true,
         description = "How a signing operation was initiated. Some values name a client protocol that a Signing "
@@ -24,21 +25,23 @@ public enum SigningProtocol implements IPlatformEnum {
             "In-process timestamp issuance by the signing engine, recorded but never reachable by a client", false);
 
     private static final SigningProtocol[] VALUES;
+    private static final List<SigningProtocol> ENABLEABLE_ON_PROFILE;
 
     static {
         VALUES = values();
+        ENABLEABLE_ON_PROFILE = Arrays.stream(VALUES).filter(SigningProtocol::isEnableableOnProfile).toList();
     }
 
     private final String code;
     private final String label;
     private final String description;
-    private final boolean gateEligible;
+    private final boolean enableableOnProfile;
 
-    SigningProtocol(String code, String label, String description, boolean gateEligible) {
+    SigningProtocol(String code, String label, String description, boolean enableableOnProfile) {
         this.code = code;
         this.label = label;
         this.description = description;
-        this.gateEligible = gateEligible;
+        this.enableableOnProfile = enableableOnProfile;
     }
 
     @JsonCreator
@@ -67,12 +70,12 @@ public enum SigningProtocol implements IPlatformEnum {
         return this.description;
     }
 
-    public boolean isGateEligible() {
-        return this.gateEligible;
+    public boolean isEnableableOnProfile() {
+        return this.enableableOnProfile;
     }
 
-    public static List<SigningProtocol> gateEligibleValues() {
-        return Arrays.stream(VALUES).filter(SigningProtocol::isGateEligible).toList();
+    public static List<SigningProtocol> enableableValues() {
+        return ENABLEABLE_ON_PROFILE;
     }
 
     public static class Codes {

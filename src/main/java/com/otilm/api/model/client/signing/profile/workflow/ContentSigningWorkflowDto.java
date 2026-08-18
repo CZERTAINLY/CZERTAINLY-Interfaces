@@ -22,11 +22,8 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(name = "ContentSigningWorkflowDto",
-        description = "Content signing workflow configuration. The signatureFormattingConnector, family, maxLevel "
-                + "and timestampSource fields are populated only when ILM-managed signing is used, and are null for "
-                + "delegated signing. A timestampSource is present whenever maxLevel is TIMESTAMPED or higher. The validation "
-                + "material that LONG_TERM and ARCHIVAL embed is fetched by the Signature Formatting Provider and is "
-                + "not configured here.")
+        description = "Content signing workflow configuration. The validation material that LONG_TERM and ARCHIVAL "
+                + "embed is fetched by the Signature Formatting Provider and is not configured here.")
 @ToString(callSuper = true)
 public class ContentSigningWorkflowDto extends WorkflowDto {
 

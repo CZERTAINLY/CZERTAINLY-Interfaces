@@ -51,15 +51,15 @@ class SigningProtocolTest {
     /** INTERNAL_TSA records issuance the platform makes on its own, so it must never be offered as enableable. */
     @Test
     void inProcessIssuanceIsNotEnableableOnAProfile() {
-        assertFalse(SigningProtocol.INTERNAL_TSA.isGateEligible());
-        assertFalse(SigningProtocol.gateEligibleValues().contains(SigningProtocol.INTERNAL_TSA));
+        assertFalse(SigningProtocol.INTERNAL_TSA.isEnableableOnProfile());
+        assertFalse(SigningProtocol.enableableValues().contains(SigningProtocol.INTERNAL_TSA));
     }
 
     @Test
     void clientProtocolsAreEnableableOnAProfile() {
-        assertTrue(SigningProtocol.TSP.isGateEligible());
-        assertTrue(SigningProtocol.CSC_API.isGateEligible());
-        assertEquals(List.of(SigningProtocol.CSC_API, SigningProtocol.TSP), SigningProtocol.gateEligibleValues());
+        assertTrue(SigningProtocol.TSP.isEnableableOnProfile());
+        assertTrue(SigningProtocol.CSC_API.isEnableableOnProfile());
+        assertEquals(List.of(SigningProtocol.CSC_API, SigningProtocol.TSP), SigningProtocol.enableableValues());
     }
 
     @Test

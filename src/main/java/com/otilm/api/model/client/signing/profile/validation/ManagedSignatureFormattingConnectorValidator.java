@@ -92,7 +92,7 @@ public class ManagedSignatureFormattingConnectorValidator
         boolean connectorAbsent = rejectOnDelegatedWorkflow(context, "signatureFormattingConnectorUuid",
                 workflow.getSignatureFormattingConnectorUuid());
         boolean attributesAbsent = rejectOnDelegatedWorkflow(context, "signatureFormattingConnectorAttributes",
-                emptyToNull(workflow.getSignatureFormattingConnectorAttributes()));
+                workflow.getSignatureFormattingConnectorAttributes());
         boolean familyAbsent = rejectOnDelegatedWorkflow(context, "family", workflow.getFamily());
         boolean maxLevelAbsent = rejectOnDelegatedWorkflow(context, "maxLevel", workflow.getMaxLevel());
         boolean sourceAbsent = rejectOnDelegatedWorkflow(context, "timestampSource", workflow.getTimestampSource());
@@ -100,8 +100,8 @@ public class ManagedSignatureFormattingConnectorValidator
     }
 
     /** The attribute list defaults to an empty one, so only a populated list counts as the caller having set it. */
-    private static Object emptyToNull(List<?> values) {
-        return values == null || values.isEmpty() ? null : values;
+    private boolean rejectOnDelegatedWorkflow(ConstraintValidatorContext context, String property, List<?> values) {
+        return values == null || values.isEmpty() || rejectOnDelegatedWorkflow(context, property, (Object) values);
     }
 
     private boolean rejectOnDelegatedWorkflow(ConstraintValidatorContext context, String property, Object value) {

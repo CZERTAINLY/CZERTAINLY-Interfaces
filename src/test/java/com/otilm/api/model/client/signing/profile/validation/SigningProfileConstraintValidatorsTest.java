@@ -290,7 +290,7 @@ class SigningProfileConstraintValidatorsTest {
                 "workflow.defaultPolicyId"));
     }
 
-    // --- ContentSigningWorkflowValidator ---
+    // --- ManagedSignatureFormattingConnectorValidator: content signing ---
 
     /** Levels above SIGNED need timestamps, and a profile that cannot get them would fail at signing time instead. */
     @Test
@@ -305,14 +305,6 @@ class SigningProfileConstraintValidatorsTest {
     }
 
     @Test
-    void levelBNeedsNoTimestampSource() {
-        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
-                .validate(profileRequest(managedScheme(), contentSigningWorkflow(SignatureLevel.SIGNED)));
-
-        assertFalse(hasViolationOn(violations, "workflow.timestampSource"));
-    }
-
-    @Test
     void aTimestampedLevelWithASourceIsAccepted() {
         ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.ARCHIVAL);
         workflow.setTimestampSource(new InternalTimestampSourceRequestDto(UUID.randomUUID()));
@@ -321,6 +313,18 @@ class SigningProfileConstraintValidatorsTest {
                 .validate(profileRequest(managedScheme(), workflow));
 
         assertFalse(hasViolationOn(violations, "workflow.timestampSource"));
+    }
+
+    /** Without the {@code @Valid} cascade on the field, the source's own rules never run at profile level. */
+    @Test
+    void aTimestampSourceMissingItsProfileIsRejected() {
+        ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.ARCHIVAL);
+        workflow.setTimestampSource(new InternalTimestampSourceRequestDto(null));
+
+        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
+                .validate(profileRequest(managedScheme(), workflow));
+
+        assertTrue(hasViolationOn(violations, "workflow.timestampSource.signingProfileUuid"));
     }
 
     @Test
@@ -424,22 +428,22 @@ class SigningProfileConstraintValidatorsTest {
     }
 
     @Test
-    void aManagedProfileAboveSignedNeedsATimestampSource() {
-        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
-                .validate(profileRequest(managedScheme(), contentSigningWorkflow(SignatureLevel.TIMESTAMPED)));
-
-        assertTrue(hasViolationOn(violations, "workflow.timestampSource"));
-    }
-
-    @Test
-    void aManagedProfileAboveSignedIsAcceptedWithATimestampSource() {
-        ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.ARCHIVAL);
+    void aDelegatedProfileCarryingATimestampSourceIsRejected() {
+        ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
         workflow.setTimestampSource(new InternalTimestampSourceRequestDto(UUID.randomUUID()));
 
-        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
-                .validate(profileRequest(managedScheme(), workflow));
+        assertTrue(hasViolationOn(validator.validate(profileRequest(delegatedScheme(), workflow)),
+                "workflow.timestampSource"));
+    }
 
-        assertFalse(hasViolationOn(violations, "workflow.timestampSource"));
+    /** The cap is enforced at signing time whoever formats the signature, so it is the one field delegated may set. */
+    @Test
+    void aDelegatedProfileCarryingADocumentSizeCapIsAccepted() {
+        ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
+        workflow.setDocumentSizeCap(1L);
+
+        assertFalse(hasViolationOn(validator.validate(profileRequest(delegatedScheme(), workflow)),
+                "workflow.documentSizeCap"));
     }
 
     /** SIGNED embeds no timestamp, so it is the one level that needs no source. */
@@ -460,10 +464,15 @@ class SigningProfileConstraintValidatorsTest {
                 .validate(profileRequest(managedScheme(), workflow));
 
         assertTrue(hasViolationOn(violations, "workflow.documentSizeCap"));
+    }
 
+    @Test
+    void aPositiveDocumentSizeCapIsAccepted() {
+        ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.SIGNED);
         workflow.setDocumentSizeCap(1L);
 
-        violations = validator.validate(profileRequest(managedScheme(), workflow));
+        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
+                .validate(profileRequest(managedScheme(), workflow));
 
         assertFalse(hasViolationOn(violations, "workflow.documentSizeCap"));
     }

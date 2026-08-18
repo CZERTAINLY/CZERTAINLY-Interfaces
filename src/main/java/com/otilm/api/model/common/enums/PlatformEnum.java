@@ -187,10 +187,10 @@ public enum PlatformEnum implements IPlatformEnum {
     SECRET_STATE(SecretState.class, "Secret State"),
 
     // Signing
-    SIGNATURE_FAMILY(SignatureFamily.class, "Signature Family"),
-    SIGNATURE_LEVEL(SignatureLevel.class, "Signature Level"),
     MANAGED_SIGNING_TYPE(ManagedSigningType.class, "Managed Signing Type"),
     QC_TYPE(QcType.class, "QC Type"),
+    SIGNATURE_FAMILY(SignatureFamily.class, "Signature Family"),
+    SIGNATURE_LEVEL(SignatureLevel.class, "Signature Level"),
     SIGNING_PROTOCOL(SigningProtocol.class, "Signing Protocol"),
     SIGNING_SCHEME(SigningScheme.class, "Signing Scheme"),
     SIGNING_WORKFLOW_TYPE(SigningWorkflowType.class, "Signing Workflow Type"),
