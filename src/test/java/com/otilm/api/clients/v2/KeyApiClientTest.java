@@ -80,6 +80,29 @@ class KeyApiClientTest {
               "content": ["provider-key-1"]
             }
             """;
+    private static final String VALID_TRACKING_REQUEST_JSON = """
+            {
+              "operationMeta": [{
+                "uuid": "00000000-0000-0000-0000-000000000001",
+                "name": "provider handle",
+                "version": 2,
+                "type": "meta",
+                "content": [{
+                  "reference": "provider-key-1",
+                  "data": "provider-key-1"
+                }],
+                "contentType": "string",
+                "properties": {
+                  "label": null,
+                  "visible": true,
+                  "group": null,
+                  "global": false,
+                  "overwrite": false,
+                  "protectionLevel": "none"
+                }
+              }]
+            }
+            """;
 
     @AutoClose
     private static final ValidatorFixture VALIDATORS = new ValidatorFixture();
@@ -383,13 +406,12 @@ class KeyApiClientTest {
     }
 
     private void verifyOperationRequest(String path) {
+        boolean ignoreArrayOrder = false;
+        boolean ignoreExtraElements = false;
         RequestPatternBuilder request = WireMock
                 .postRequestedFor(WireMock.urlEqualTo(path))
-                .withRequestBody(WireMock.matchingJsonPath("$.operationMeta[0].name", WireMock.equalTo(METADATA_NAME)))
-                .withRequestBody(WireMock.matchingJsonPath("$.tokenAttributes", WireMock.absent()))
-                .withRequestBody(WireMock.matchingJsonPath("$.tokenProfileAttributes", WireMock.absent()))
-                .withRequestBody(WireMock.matchingJsonPath("$.keyUsages", WireMock.absent()))
-                .withRequestBody(WireMock.matchingJsonPath("$.keyMeta", WireMock.absent()));
+                .withRequestBody(
+                        WireMock.equalToJson(VALID_TRACKING_REQUEST_JSON, ignoreArrayOrder, ignoreExtraElements));
         mockServer.verify(request);
     }
 
