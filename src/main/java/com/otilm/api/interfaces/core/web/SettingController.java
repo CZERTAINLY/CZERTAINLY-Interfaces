@@ -43,7 +43,10 @@ public interface SettingController extends AuthProtectedController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     void updatePlatformSettings(@Valid @RequestBody PlatformSettingsUpdateDto platformSettingsDto);
 
-    @Operation(summary = "Get platform branding")
+    @Operation(summary = "Get platform branding",
+            description = "Reads the branding category of the platform settings. Branding is also returned by "
+                    + "`GET /v1/settings/platform`; only the write is split onto a dedicated endpoint, because reading "
+                    + "it takes the same grant either way.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Platform branding retrieved")})
     @GetMapping(path = "/platform/branding", produces = MediaType.APPLICATION_JSON_VALUE)
     BrandingSettingsDto getBrandingSettings();
@@ -55,7 +58,12 @@ public interface SettingController extends AuthProtectedController {
      * split away. {@link PlatformSettingsUpdateDto} therefore has no branding field, while {@link PlatformSettingsDto}
      * still returns one: the read is the same grant either way.
      */
-    @Operation(summary = "Update platform branding")
+    @Operation(summary = "Update platform branding",
+            description = "The only way to write branding. It is deliberately absent from the "
+                    + "`PUT /v1/settings/platform` body: authorization is applied per endpoint, so branding carried "
+                    + "in that body would be writable by anyone holding plain `UPDATE` over settings, and the "
+                    + "narrower `UPDATE_BRANDING` action that gates this endpoint would grant nothing extra. The "
+                    + "request carries the full desired state — a field left out clears that part of the branding.")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Platform branding updated")})
     @PutMapping(path = "/platform/branding", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
