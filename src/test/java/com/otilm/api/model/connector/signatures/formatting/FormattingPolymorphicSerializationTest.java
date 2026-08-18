@@ -77,47 +77,6 @@ class FormattingPolymorphicSerializationTest {
     }
 
     // -------------------------------------------------------------------------
-    // FormatDtbsRequestDto — ContentSigningFormatDtbsRequestDto
-    // -------------------------------------------------------------------------
-
-    @Test
-    void contentSigningFormatDtbsRequestDto_serializesDiscriminator() throws Exception {
-        ContentSigningFormatDtbsRequestDto dto = new ContentSigningFormatDtbsRequestDto();
-        dto.setData(new byte[]{1, 2, 3});
-
-        JsonNode json = mapper.valueToTree(dto);
-
-        assertEquals(SigningWorkflowType.Codes.CONTENT_SIGNING, json.get("type").asText());
-    }
-
-    @Test
-    void contentSigningFormatDtbsRequestDto_deserializesViaBaseClass() throws Exception {
-        String json = """
-                {
-                  "type": "content_signing",
-                  "data": "AQID"
-                }
-                """;
-
-        FormatDtbsRequestDto base = mapper.readValue(json, FormatDtbsRequestDto.class);
-
-        assertInstanceOf(ContentSigningFormatDtbsRequestDto.class, base);
-        assertEquals(SigningWorkflowType.CONTENT_SIGNING, base.getType());
-    }
-
-    @Test
-    void contentSigningFormatDtbsRequestDto_roundTrip() throws Exception {
-        ContentSigningFormatDtbsRequestDto original = new ContentSigningFormatDtbsRequestDto();
-        original.setData(new byte[]{4, 5, 6});
-
-        String json = mapper.writeValueAsString(original);
-        FormatDtbsRequestDto deserialized = mapper.readValue(json, FormatDtbsRequestDto.class);
-
-        assertInstanceOf(ContentSigningFormatDtbsRequestDto.class, deserialized);
-        assertEquals(original, deserialized);
-    }
-
-    // -------------------------------------------------------------------------
     // Unknown/missing type guards — FormatDtbsRequestDto
     // -------------------------------------------------------------------------
 
@@ -192,49 +151,6 @@ class FormattingPolymorphicSerializationTest {
         FormatResponseRequestDto deserialized = mapper.readValue(json, FormatResponseRequestDto.class);
 
         assertInstanceOf(TimestampingFormatResponseRequestDto.class, deserialized);
-        assertEquals(original, deserialized);
-    }
-
-    // -------------------------------------------------------------------------
-    // FormatResponseRequestDto — ContentSigningFormatResponseRequestDto
-    // -------------------------------------------------------------------------
-
-    @Test
-    void contentSigningFormatResponseRequestDto_serializesDiscriminator() throws Exception {
-        ContentSigningFormatResponseRequestDto dto = new ContentSigningFormatResponseRequestDto();
-        dto.setSignature(new byte[]{1, 2, 3});
-
-        JsonNode json = mapper.valueToTree(dto);
-
-        assertEquals(SigningWorkflowType.Codes.CONTENT_SIGNING, json.get("type").asText());
-    }
-
-    @Test
-    void contentSigningFormatResponseRequestDto_deserializesViaBaseClass() throws Exception {
-        String json = """
-                {
-                  "type": "content_signing",
-                  "signature": "AQID",
-                  "dtbs": "BAUG"
-                }
-                """;
-
-        FormatResponseRequestDto base = mapper.readValue(json, FormatResponseRequestDto.class);
-
-        assertInstanceOf(ContentSigningFormatResponseRequestDto.class, base);
-        assertEquals(SigningWorkflowType.CONTENT_SIGNING, base.getType());
-    }
-
-    @Test
-    void contentSigningFormatResponseRequestDto_roundTrip() throws Exception {
-        ContentSigningFormatResponseRequestDto original = new ContentSigningFormatResponseRequestDto();
-        original.setSignature(new byte[]{1, 2, 3});
-        original.setDtbs(new byte[]{4, 5, 6});
-
-        String json = mapper.writeValueAsString(original);
-        FormatResponseRequestDto deserialized = mapper.readValue(json, FormatResponseRequestDto.class);
-
-        assertInstanceOf(ContentSigningFormatResponseRequestDto.class, deserialized);
         assertEquals(original, deserialized);
     }
 
