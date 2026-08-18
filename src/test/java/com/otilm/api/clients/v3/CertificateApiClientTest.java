@@ -181,6 +181,7 @@ class CertificateApiClientTest {
         List<BaseAttribute> attributes = client.listRenewAttributes(connector, attributeListRequest());
 
         Assertions.assertEquals(1, attributes.size());
+        Assertions.assertInstanceOf(DataAttributeV3.class, attributes.get(0));
         Assertions.assertEquals("validityOverride", ((DataAttributeV3) attributes.get(0)).getName());
     }
 

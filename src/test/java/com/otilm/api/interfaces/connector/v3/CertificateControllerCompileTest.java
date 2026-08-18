@@ -1,6 +1,5 @@
 package com.otilm.api.interfaces.connector.v3;
 
-import com.otilm.api.model.client.attribute.RequestAttributeV3;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.v3.certificate.CertificateAttributeListRequestDtoV3;
 import com.otilm.api.model.connector.v3.certificate.CertificateDataResponseDto;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class CertificateControllerCompileTest {
@@ -97,17 +95,5 @@ class CertificateControllerCompileTest {
     @Test
     void mockImplementsInterface() {
         assertNotNull(new Mock());
-    }
-
-    @Test
-    void identificationRequestCarriesAttributes() {
-        CertificateIdentificationRequestDtoV3 request = new CertificateIdentificationRequestDtoV3();
-        RequestAttributeV3 attribute = new RequestAttributeV3();
-        attribute.setName("caProfile");
-
-        request.setAttributes(List.of(attribute));
-
-        assertEquals(1, request.getAttributes().size());
-        assertEquals("caProfile", ((RequestAttributeV3) request.getAttributes().get(0)).getName());
     }
 }

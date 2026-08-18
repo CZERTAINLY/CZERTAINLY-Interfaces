@@ -31,7 +31,7 @@ public class CertificateSignRequestDtoV3 extends AuthorityV3ScopedRequestDto {
     @Schema(description = "CSR format", defaultValue = "pkcs10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateRequestFormat format;
 
-    @Schema(description = "Issue-specific dynamic attributes (from shared /issue/attributes schema endpoint)",
+    @Schema(description = "Issue-specific dynamic attributes (schema from /issue/attributes)",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestAttribute> attributes;
 
