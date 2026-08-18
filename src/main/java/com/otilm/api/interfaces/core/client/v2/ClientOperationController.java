@@ -205,7 +205,7 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRenewRequestDto request)
             throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException,
-            CertificateOperationException, CertificateRequestException;
+            CertificateOperationException, CertificateRequestException, ConnectorException, AttributeException;
 
     @Operation(summary = "Rekey Certificate", description = """
             Request a replacement certificate with a new key pair but the same subject and
@@ -231,7 +231,7 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRekeyRequestDto request)
             throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException,
-            CertificateOperationException, CertificateRequestException;
+            CertificateOperationException, CertificateRequestException, ConnectorException, AttributeException;
 
     @Operation(summary = "Get revocation attributes",
             description = "Return the list of attributes the client must populate when revoking a certificate through this RA profile.")
