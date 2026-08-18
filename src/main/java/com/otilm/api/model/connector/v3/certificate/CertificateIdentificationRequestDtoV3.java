@@ -21,5 +21,6 @@ public class CertificateIdentificationRequestDtoV3 extends AuthorityV3ScopedRequ
 
     @Schema(description = "Identify-specific dynamic attributes (schema from /identify/attributes)",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ToString.Exclude
     private List<RequestAttribute> attributes;
 }

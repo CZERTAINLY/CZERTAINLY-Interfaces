@@ -4,6 +4,7 @@ import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * Class representing new certificate upload request
@@ -22,5 +23,6 @@ public class UploadCertificateRequestDto {
             + "certificate's RA profile. Consumed when the uploaded certificate is manually issued, which identifies "
             + "it at the authority. Optional — an authority that offers no identify schema needs none.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ToString.Exclude
     private List<RequestAttribute> attributes;
 }
