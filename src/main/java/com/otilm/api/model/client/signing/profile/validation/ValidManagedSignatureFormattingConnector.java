@@ -11,14 +11,14 @@ import java.lang.annotation.Target;
 
 /**
  * Class-level constraint that ensures {@code workflow.signatureFormattingConnectorUuid} is non-null whenever the
- * signing profile uses ILM-managed signing with a Timestamping or Document Signing workflow.
+ * signing profile uses ILM-managed signing with a Timestamping or Content Signing workflow.
  */
 @Constraint(validatedBy = ManagedSignatureFormattingConnectorValidator.class)
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ValidManagedSignatureFormattingConnector {
-    String message() default "signatureFormattingConnectorUuid must be provided when using ILM-managed signing with a Timestamping or Document Signing workflow";
+    String message() default "signatureFormattingConnectorUuid must be provided when using ILM-managed signing with a Timestamping or Content Signing workflow";
 
     Class<?>[] groups() default {};
 

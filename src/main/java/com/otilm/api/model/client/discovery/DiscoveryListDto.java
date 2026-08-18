@@ -3,7 +3,7 @@ package com.otilm.api.model.client.discovery;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.discovery.DiscoveryStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,10 +18,10 @@ public class DiscoveryListDto extends NameAndUuidDto {
     private DiscoveryStatus status;
 
     @Schema(description = "Date and time when Discovery started", nullable = true)
-    private Date startTime;
+    private OffsetDateTime startTime;
 
     @Schema(description = "Date and time when Discovery finished", nullable = true)
-    private Date endTime;
+    private OffsetDateTime endTime;
 
     @Schema(description = "Number of certificates that are discovered", defaultValue = "0")
     private Integer totalCertificatesDiscovered;
