@@ -89,7 +89,8 @@ public interface KeyController extends AuthProtectedConnectorController {
             + "(synchronous 200 or asynchronous 202). After accepting asynchronous destruction, the connector must "
             + "reject new cryptographic operations for that key")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Destroyed synchronously"),
+            @ApiResponse(responseCode = "200",
+                    description = "Destroyed synchronously; body contains an empty key-operation response"),
             @ApiResponse(responseCode = "202",
                     description = "Destruction accepted asynchronously; body carries "
                             + "operationMeta tracking handle")})

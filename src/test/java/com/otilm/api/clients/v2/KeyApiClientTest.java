@@ -43,7 +43,6 @@ import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDt
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -251,7 +250,8 @@ class KeyApiClientTest {
     @Test
     void destroyKey_returnsSynchronousResponse() throws ConnectorException {
         // given
-        stubBodilessResponse(DESTROY_PATH, HttpStatus.OK);
+        String responseJson = "{}";
+        stubJsonResponse(DESTROY_PATH, HttpStatus.OK, responseJson);
 
         // when
         ResponseEntity<KeyOperationResponseV2Dto> result = client
@@ -259,7 +259,7 @@ class KeyApiClientTest {
 
         // then
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertNull(result.getBody());
+        assertNotNull(result.getBody());
         verifyDestroyRequest(OperationExecutionMode.SYNCHRONOUS);
     }
 

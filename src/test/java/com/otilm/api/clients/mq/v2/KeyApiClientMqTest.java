@@ -200,7 +200,8 @@ class KeyApiClientMqTest {
     void destroyKey_returnsSynchronousResponse() throws ConnectorException {
         // given
         DestroyKeyRequestV2Dto request = destroyKeyRequest(OperationExecutionMode.SYNCHRONOUS);
-        ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok().build();
+        KeyOperationResponseV2Dto body = new KeyOperationResponseV2Dto();
+        ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok(body);
         proxyClient.respondWithEntity(response);
 
         // when

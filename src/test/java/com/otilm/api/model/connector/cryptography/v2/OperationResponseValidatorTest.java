@@ -211,10 +211,24 @@ class OperationResponseValidatorTest {
     }
 
     @Test
-    void validateDestroy_rejectsBody_forSynchronousExecution() {
+    void validateDestroy_rejectsMissingBody_forSynchronousExecution() {
+        // given
+        OperationExecutionMode mode = OperationExecutionMode.SYNCHRONOUS;
+        ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok().build();
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateDestroy(mode, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateDestroy_rejectsOperationMetadata_forSynchronousExecution() {
         // given
         OperationExecutionMode mode = OperationExecutionMode.SYNCHRONOUS;
         KeyOperationResponseV2Dto body = new KeyOperationResponseV2Dto();
+        body.setOperationMeta(validMetadata());
         ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok(body);
 
         // when
@@ -484,7 +498,8 @@ class OperationResponseValidatorTest {
     static Stream<Named<DestroyKeyCase>> validDestroyKeyResponses() {
         return Stream
                 .of(named("synchronous",
-                        new DestroyKeyCase(OperationExecutionMode.SYNCHRONOUS, ResponseEntity.ok().build())),
+                        new DestroyKeyCase(OperationExecutionMode.SYNCHRONOUS,
+                                ResponseEntity.ok(new KeyOperationResponseV2Dto()))),
                         named("asynchronous", new DestroyKeyCase(OperationExecutionMode.ASYNCHRONOUS,
                                 asynchronousDestroyKeyResponse())));
     }
