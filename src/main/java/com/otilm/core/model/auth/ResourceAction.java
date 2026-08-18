@@ -23,6 +23,9 @@ public enum ResourceAction implements IPlatformEnum {
     UPDATE("update", "Update", AccessType.WRITE),
     DELETE("delete", "Delete", AccessType.WRITE),
 
+    // Posting comments on an object; a capability of its own, grantable to users who cannot update the object
+    COMMENT("comment", "Comment", AccessType.WRITE),
+
     // Default change state actions that allows also reverse action (disable/deactivate)
     ENABLE("enable", "Enable", AccessType.WRITE),
     ACTIVATE("activate", "Activate", AccessType.WRITE),
