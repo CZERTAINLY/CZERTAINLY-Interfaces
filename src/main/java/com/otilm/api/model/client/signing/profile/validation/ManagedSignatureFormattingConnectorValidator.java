@@ -15,6 +15,8 @@ public class ManagedSignatureFormattingConnectorValidator
         implements
             ConstraintValidator<ValidManagedSignatureFormattingConnector, SigningProfileRequestDto> {
 
+    private static final String WORKFLOW_NODE = "workflow";
+
     @Override
     public boolean isValid(SigningProfileRequestDto dto, ConstraintValidatorContext context) {
         if (dto == null || dto.getSigningScheme() == null || dto.getWorkflow() == null) {
@@ -35,7 +37,7 @@ public class ManagedSignatureFormattingConnectorValidator
                 context
                         .buildConstraintViolationWithTemplate(
                                 "timeQualityConfigurationUuid must be provided when qualifiedTimestamp is true")
-                        .addPropertyNode("workflow")
+                        .addPropertyNode(WORKFLOW_NODE)
                         .addPropertyNode("timeQualityConfigurationUuid")
                         .addConstraintViolation();
                 valid = false;
@@ -44,7 +46,8 @@ public class ManagedSignatureFormattingConnectorValidator
             formattingConnectorUuid = dsw.getSignatureFormattingConnectorUuid();
             boolean familyPresent = requireOnManagedWorkflow(context, "family", dsw.getFamily());
             boolean maxLevelPresent = requireOnManagedWorkflow(context, "maxLevel", dsw.getMaxLevel());
-            valid = familyPresent && maxLevelPresent && requireTimestampSourceAboveSigned(context, dsw) && valid;
+            boolean sourcePresent = requireTimestampSourceAboveSigned(context, dsw);
+            valid = familyPresent && maxLevelPresent && sourcePresent;
         } else {
             return true;
         }
@@ -53,7 +56,7 @@ public class ManagedSignatureFormattingConnectorValidator
             context.disableDefaultConstraintViolation();
             context
                     .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                    .addPropertyNode("workflow")
+                    .addPropertyNode(WORKFLOW_NODE)
                     .addPropertyNode("signatureFormattingConnectorUuid")
                     .addConstraintViolation();
             valid = false;
@@ -75,7 +78,7 @@ public class ManagedSignatureFormattingConnectorValidator
         context
                 .buildConstraintViolationWithTemplate(
                         "timestampSource is required when maxLevel is TIMESTAMPED or higher")
-                .addPropertyNode("workflow")
+                .addPropertyNode(WORKFLOW_NODE)
                 .addPropertyNode("timestampSource")
                 .addConstraintViolation();
         return false;
@@ -111,7 +114,7 @@ public class ManagedSignatureFormattingConnectorValidator
         context.disableDefaultConstraintViolation();
         context
                 .buildConstraintViolationWithTemplate(property + " must be omitted for delegated signing")
-                .addPropertyNode("workflow")
+                .addPropertyNode(WORKFLOW_NODE)
                 .addPropertyNode(property)
                 .addConstraintViolation();
         return false;
@@ -124,7 +127,7 @@ public class ManagedSignatureFormattingConnectorValidator
         context.disableDefaultConstraintViolation();
         context
                 .buildConstraintViolationWithTemplate(property + " is required for ILM-managed signing")
-                .addPropertyNode("workflow")
+                .addPropertyNode(WORKFLOW_NODE)
                 .addPropertyNode(property)
                 .addConstraintViolation();
         return false;

@@ -359,6 +359,19 @@ class SigningProfileConstraintValidatorsTest {
         assertTrue(hasViolationOn(violations, "workflow.maxLevel"));
     }
 
+    /** The timestamp-source check runs even when an earlier field is missing, so one round trip names every problem. */
+    @Test
+    void aManagedProfileMissingFamilyStillReportsTheMissingTimestampSource() {
+        ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.ARCHIVAL);
+        workflow.setFamily(null);
+
+        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
+                .validate(profileRequest(managedScheme(), workflow));
+
+        assertTrue(hasViolationOn(violations, "workflow.family"));
+        assertTrue(hasViolationOn(violations, "workflow.timestampSource"));
+    }
+
     /** Delegated signing does no formatting here, so none of the signature parameters apply to it. */
     @Test
     void aDelegatedProfileNeedsNoSignatureParameters() {
