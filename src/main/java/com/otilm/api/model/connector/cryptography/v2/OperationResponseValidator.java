@@ -77,17 +77,16 @@ public final class OperationResponseValidator {
         return response.getBody();
     }
 
-    private static void requireEmptyBody(ResponseEntity<?> response) {
-        if (response.getBody() != null) {
-            throw new IllegalArgumentException("Connector response body must be empty");
-        }
-    }
-
     private static void requireMatchingIdentifiers(List<? extends IdentifiedDataV2Dto> requestItems,
             List<? extends IdentifiedDataV2Dto> responseItems, String errorMessage) {
         if (requestItems == null) {
             throw new IllegalArgumentException("Request data is required");
         }
+        if (responseItems == null) {
+            throw new IllegalArgumentException("Response data is required");
+        }
+        requireNonNullItems(requestItems, "Request data");
+        requireNonNullItems(responseItems, "Response data");
         Set<String> requestIdentifiers = requestItems
                 .stream()
                 .map(IdentifiedDataV2Dto::getIdentifier)
@@ -97,6 +96,14 @@ public final class OperationResponseValidator {
         if (uniqueResponseIdentifiers.size() != responseIdentifiers.size()
                 || !uniqueResponseIdentifiers.equals(requestIdentifiers)) {
             throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    private static void requireNonNullItems(List<? extends IdentifiedDataV2Dto> items, String itemSource) {
+        for (IdentifiedDataV2Dto item : items) {
+            if (item == null) {
+                throw new IllegalArgumentException(itemSource + " must not contain null items");
+            }
         }
     }
 
@@ -125,7 +132,7 @@ public final class OperationResponseValidator {
             if (request.getKeyRequestType() == null) {
                 throw new IllegalArgumentException("Key request type is required");
             }
-            validateOperationResponseConstraints(request.getExecutionMode(), response, SynchronousBody.REQUIRED);
+            validateOperationResponseConstraints(request.getExecutionMode(), response);
             KeyRequestType responseType = requireBody(response).getKeyRequestType();
             if (request.getKeyRequestType() != responseType) {
                 throw new IllegalArgumentException("Connector returned key request type " + responseType + "; expected "
@@ -140,12 +147,12 @@ public final class OperationResponseValidator {
 
     public OperationValidationResult validateDestroy(OperationExecutionMode mode,
             ResponseEntity<KeyOperationResponseV2Dto> response) {
-        return validateOperationResponse(mode, response, SynchronousBody.EMPTY);
+        return validateOperationResponse(mode, response);
     }
 
-    private OperationValidationResult validateOperationResponse(OperationExecutionMode mode, ResponseEntity<?> response,
-            SynchronousBody synchronousBody) {
-        return validate(() -> validateOperationResponseConstraints(mode, response, synchronousBody));
+    private OperationValidationResult validateOperationResponse(OperationExecutionMode mode,
+            ResponseEntity<?> response) {
+        return validate(() -> validateOperationResponseConstraints(mode, response));
     }
 
     public OperationValidationResult validateDestroyKeyStatus(KeyDestructionStatusResponseV2Dto response) {
@@ -202,7 +209,7 @@ public final class OperationResponseValidator {
             if (request == null) {
                 throw new IllegalArgumentException("Signing request is required");
             }
-            validateOperationResponseConstraints(request.getExecutionMode(), response, SynchronousBody.REQUIRED);
+            validateOperationResponseConstraints(request.getExecutionMode(), response);
             if (request.getExecutionMode() == OperationExecutionMode.SYNCHRONOUS) {
                 requireMatchingIdentifiers(request.getData(), requireBody(response).getSignatures(),
                         "Synchronous signing response identifiers must match request identifiers");
@@ -216,16 +223,11 @@ public final class OperationResponseValidator {
         }
     }
 
-    private void validateOperationResponseConstraints(OperationExecutionMode mode, ResponseEntity<?> response,
-            SynchronousBody synchronousBody) {
+    private void validateOperationResponseConstraints(OperationExecutionMode mode, ResponseEntity<?> response) {
         requireExecutionMode(mode);
         if (mode == OperationExecutionMode.SYNCHRONOUS) {
             requireResponseStatus(response, HttpStatus.OK);
-            if (synchronousBody == SynchronousBody.REQUIRED) {
-                validateBean(requireBody(response), SynchronousResponse.class);
-            } else {
-                requireEmptyBody(response);
-            }
+            validateBean(requireBody(response), SynchronousResponse.class);
         } else {
             requireResponseStatus(response, HttpStatus.ACCEPTED);
             validateBean(requireBody(response), AsynchronousResponse.class);
@@ -267,10 +269,5 @@ public final class OperationResponseValidator {
                     .collect(Collectors.joining(", "));
             throw new IllegalArgumentException("Connector response validation failed: " + details);
         }
-    }
-
-    private enum SynchronousBody {
-        REQUIRED,
-        EMPTY
     }
 }

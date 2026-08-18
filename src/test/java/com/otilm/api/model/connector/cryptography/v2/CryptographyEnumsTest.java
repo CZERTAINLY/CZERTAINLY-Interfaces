@@ -140,9 +140,9 @@ class CryptographyEnumsTest {
                                         ValidationException.class)),
                         named("operation status",
                                 new UnknownWireCode(OperationStatus.class, unknownCode, ValidationException.class)),
-                        named("key role",
+                        named("key type",
                                 new UnknownWireCode(KeyTypeV2.class, unknownCode, IllegalArgumentException.class)),
-                        named("legacy split key role",
+                        named("legacy split key type",
                                 new UnknownWireCode(KeyTypeV2.class, "Split", IllegalArgumentException.class)),
                         named("token status",
                                 new UnknownWireCode(TokenStatusV2.class, unknownCode, ValidationException.class)));

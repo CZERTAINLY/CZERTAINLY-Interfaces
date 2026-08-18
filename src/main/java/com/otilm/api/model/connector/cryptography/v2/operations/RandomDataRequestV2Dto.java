@@ -19,6 +19,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(name = "RandomDataRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class RandomDataRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
     public static final int MAX_LENGTH = 1_048_576;
