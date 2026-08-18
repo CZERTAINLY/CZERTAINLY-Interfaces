@@ -4,6 +4,7 @@ import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
@@ -13,8 +14,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BrandingSettingsUpdateDtoTest {
@@ -124,8 +127,84 @@ class BrandingSettingsUpdateDtoTest {
     }
 
     /**
-     * The design's ceiling is a megabyte of image data. Encoding it inflates the string by a third, so a bound applied
-     * to the encoded form has to be derived from the decoded one rather than guessed, or logos the design allows are
+     * Base64 encodes three bytes as four characters, so a payload whose length is not a multiple of four, or whose
+     * padding falls anywhere but the end of the final quartet, cannot be decoded at all. Each of these is accepted by a
+     * naive "base64 characters followed by optional padding" pattern and then throws out of
+     * {@link Base64.Decoder#decode(String)} — which is the wrong place to find out. The decoder is asserted here as
+     * well so that a sample cannot quietly stop being a malformed one.
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "data:image/png;base64,A",
+            "data:image/png;base64,AAAAA",
+            "data:image/png;base64,A=",
+            "data:image/png;base64,AA=",
+            "data:image/png;base64,A===",
+            "data:image/png;base64,AAA==",
+            "data:image/png;base64,AAAA=",
+            "data:image/png;base64,=",
+            "data:image/png;base64,==",
+            "data:image/png;base64,A=AA",
+            "data:image/png;base64,AA==AAAA"})
+    void bothLogoSlotsRejectBase64ThatCannotBeDecoded(String candidate) {
+        String payload = candidate.substring(candidate.indexOf(',') + 1);
+        assertThrows(IllegalArgumentException.class, () -> Base64.getDecoder().decode(payload),
+                "sample decodes, so it is not a malformed-base64 case: " + candidate);
+
+        logoSetters().forEach(setter -> {
+            BrandingSettingsUpdateDto dto = new BrandingSettingsUpdateDto();
+            setter.accept(dto, candidate);
+
+            assertFalse(VALIDATOR.validate(dto).isEmpty(), "accepted undecodable logo " + candidate);
+        });
+    }
+
+    /** The other half of the same rule: every well-formed quartet count, padded or not, is still accepted. */
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "data:image/png;base64,AAAA",
+            "data:image/png;base64,AAAAAAAA",
+            "data:image/png;base64,AAA=",
+            "data:image/png;base64,AA==",
+            "data:image/png;base64,AAAAAAA=",
+            "data:image/png;base64,AAAAAA==",
+            "data:image/png;base64,AB+/"})
+    void bothLogoSlotsAcceptEveryWellFormedQuartetCount(String candidate) {
+        String payload = candidate.substring(candidate.indexOf(',') + 1);
+        assertDoesNotThrow(() -> Base64.getDecoder().decode(payload),
+                "sample does not decode, so it is not a well-formed case: " + candidate);
+
+        logoSetters().forEach(setter -> {
+            BrandingSettingsUpdateDto dto = new BrandingSettingsUpdateDto();
+            setter.accept(dto, candidate);
+
+            assertTrue(VALIDATOR.validate(dto).isEmpty(), "rejected decodable logo " + candidate);
+        });
+    }
+
+    /**
+     * {@link Base64.Decoder} tolerates a final quartet left unpadded, but the contract does not: padding is required by
+     * RFC 4648, every encoder a browser or a client library reaches for emits it, and accepting both forms would mean
+     * the same logo has two representations for Core to store and compare. Stricter than the decoder is the safe
+     * direction — the contract can only refuse payloads Core would have accepted, never the reverse.
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {"data:image/png;base64,AA", "data:image/png;base64,AAA"})
+    void bothLogoSlotsRejectAnUnpaddedFinalQuartetEvenThoughTheDecoderAcceptsIt(String candidate) {
+        String payload = candidate.substring(candidate.indexOf(',') + 1);
+        assertDoesNotThrow(() -> Base64.getDecoder().decode(payload));
+
+        logoSetters().forEach(setter -> {
+            BrandingSettingsUpdateDto dto = new BrandingSettingsUpdateDto();
+            setter.accept(dto, candidate);
+
+            assertFalse(VALIDATOR.validate(dto).isEmpty(), "accepted unpadded logo " + candidate);
+        });
+    }
+
+    /**
+     * Logo image data is limited to one mebibyte. Base64 inflates it by a third, so the bound applied to the encoded
+     * form has to be derived from the decoded one rather than guessed, or a logo inside the one-mebibyte limit is
      * refused by the contract.
      */
     @Test

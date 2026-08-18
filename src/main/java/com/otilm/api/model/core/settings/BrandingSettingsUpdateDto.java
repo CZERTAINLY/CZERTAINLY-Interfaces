@@ -20,19 +20,29 @@ public class BrandingSettingsUpdateDto implements Serializable {
 
     /**
      * A base64 data URI rather than bare base64, so the media type travels with the payload and a client can hand the
-     * value straight to an {@code <img>} element. The alternation is not nested, so the pattern stays linear on the
-     * long inputs a logo produces.
+     * value straight to an {@code <img>} element.
+     * <p>
+     * The payload is matched a quartet at a time rather than as a run of base64 characters with optional padding: only
+     * a length that is a multiple of four, with padding solely in the final quartet, is decodable, and {@code "A"},
+     * {@code "A="} or {@code "AAAA="} would otherwise pass validation and then fail
+     * {@link java.util.Base64.Decoder#decode(String)} in Core. Neither quantifier is nested inside another, so the
+     * pattern stays linear on the long inputs a logo produces.
      */
-    public static final String LOGO_REGEX = "^data:image/(png|svg\\+xml);base64,[A-Za-z0-9+/]+={0,2}$";
+    public static final String LOGO_REGEX = "^data:image/(png|svg\\+xml);base64,"
+            + "(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
     public static final String LOGO_VALIDATION_MESSAGE = "Logo must be a base64 data URI with media type image/png or image/svg+xml.";
 
-    /** The ceiling the design puts on a logo file. Core enforces it on the decoded bytes, which is the real limit. */
+    /**
+     * A logo is limited to one mebibyte of image data. Core enforces the limit exactly, on the decoded bytes, which is
+     * where the real cost lies.
+     */
     public static final int LOGO_MAX_DECODED_BYTES = 1024 * 1024;
 
     /**
-     * The same ceiling expressed on the encoded string, which is all Bean Validation can see: base64 spends four
-     * characters per three bytes, plus room for the data URI prefix. A coarse guard that keeps an oversized payload
-     * from being decoded at all — Core still checks the exact decoded size, since this bound necessarily rounds up.
+     * The same one-mebibyte limit expressed on the encoded string, which is all Bean Validation can see: base64 spends
+     * four characters per three bytes, plus room for the data URI prefix. A coarse guard that keeps an oversized
+     * payload from being decoded at all — Core still checks the exact decoded size, since this bound necessarily rounds
+     * up.
      */
     public static final int LOGO_MAX_LENGTH = 32 + 4 * ((LOGO_MAX_DECODED_BYTES + 2) / 3);
 
