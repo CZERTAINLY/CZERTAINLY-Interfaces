@@ -7,6 +7,7 @@ import com.otilm.api.interfaces.client.v2.CryptographicOperationsSyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationValidationResult;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
@@ -16,7 +17,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -105,7 +105,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
 
     @Override
     public SignOperationStatusResponseV2Dto getSignStatus(ApiClientConnectorInfo connector,
-            SignOperationScopedRequestV2Dto request) throws ConnectorException {
+            OperationTrackingRequestV2Dto request) throws ConnectorException {
         SignOperationStatusResponseV2Dto response = send(connector, SIGN_STATUS_PATH, request,
                 SignOperationStatusResponseV2Dto.class);
         requireValid(responseValidator.validateSignStatus(response), connector);
@@ -113,7 +113,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
     }
 
     @Override
-    public ResponseEntity<Void> cancelSign(ApiClientConnectorInfo connector, SignOperationScopedRequestV2Dto request)
+    public ResponseEntity<Void> cancelSign(ApiClientConnectorInfo connector, OperationTrackingRequestV2Dto request)
             throws ConnectorException {
         return sendEntity(connector, SIGN_CANCEL_PATH, request, Void.class);
     }

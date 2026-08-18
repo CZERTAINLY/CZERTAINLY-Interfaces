@@ -15,8 +15,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
  *
  * <p>
  * The two never meet, so a connector that registers no converter gets a 400 on every call that uses a real wire code.
- * {@code Resource} on {@code GET /v2/discoveryProvider/{resource}/attributes}, bound by
- * {@code DiscoveryMetadataController#listResourceAttributes}, is the case this library ships today.
+ * That applies to every {@link IPlatformEnum}-typed path variable this library declares.
  *
  * <p>
  * Registering this one factory covers every current and future {@link IPlatformEnum} implementation, so none of them

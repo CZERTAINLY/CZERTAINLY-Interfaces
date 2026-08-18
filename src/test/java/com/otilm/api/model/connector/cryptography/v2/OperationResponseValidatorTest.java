@@ -11,6 +11,7 @@ import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
 import com.otilm.api.testsupport.ValidatorFixture;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AutoClose;
@@ -210,10 +211,24 @@ class OperationResponseValidatorTest {
     }
 
     @Test
-    void validateDestroy_rejectsBody_forSynchronousExecution() {
+    void validateDestroy_rejectsMissingBody_forSynchronousExecution() {
+        // given
+        OperationExecutionMode mode = OperationExecutionMode.SYNCHRONOUS;
+        ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok().build();
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateDestroy(mode, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateDestroy_rejectsOperationMetadata_forSynchronousExecution() {
         // given
         OperationExecutionMode mode = OperationExecutionMode.SYNCHRONOUS;
         KeyOperationResponseV2Dto body = new KeyOperationResponseV2Dto();
+        body.setOperationMeta(validMetadata());
         ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok(body);
 
         // when
@@ -391,6 +406,37 @@ class OperationResponseValidatorTest {
         assertInvalid(result);
     }
 
+    @Test
+    void validateSign_rejectsNullRequestItem_forSynchronousExecution() {
+        // given
+        String identifier = "item-1";
+        SignDataRequestV2Dto request = signRequest(OperationExecutionMode.SYNCHRONOUS, identifier);
+        request.setData(Collections.singletonList(null));
+        ResponseEntity<SignDataResponseV2Dto> response = synchronousSignResponse(identifier);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateSign(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateSign_rejectsNullResponseItem_forSynchronousExecution() {
+        // given
+        String identifier = "item-1";
+        SignDataRequestV2Dto request = signRequest(OperationExecutionMode.SYNCHRONOUS, identifier);
+        SignDataResponseV2Dto body = new SignDataResponseV2Dto();
+        body.setSignatures(Collections.singletonList(null));
+        ResponseEntity<SignDataResponseV2Dto> response = ResponseEntity.ok(body);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateSign(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
     static Stream<Named<CreateKeyCase>> validCreateKeyResponses() {
         return Stream
                 .of(named("synchronous",
@@ -452,7 +498,8 @@ class OperationResponseValidatorTest {
     static Stream<Named<DestroyKeyCase>> validDestroyKeyResponses() {
         return Stream
                 .of(named("synchronous",
-                        new DestroyKeyCase(OperationExecutionMode.SYNCHRONOUS, ResponseEntity.ok().build())),
+                        new DestroyKeyCase(OperationExecutionMode.SYNCHRONOUS,
+                                ResponseEntity.ok(new KeyOperationResponseV2Dto()))),
                         named("asynchronous", new DestroyKeyCase(OperationExecutionMode.ASYNCHRONOUS,
                                 asynchronousDestroyKeyResponse())));
     }
@@ -501,7 +548,7 @@ class OperationResponseValidatorTest {
     static Stream<Named<SignCase>> signBodiesContradictingExecutionMode() {
         String identifier = "item-1";
         SignDataResponseV2Dto synchronousBodyWithOperationMetadata = synchronousSignBody(identifier);
-        synchronousBodyWithOperationMetadata.setSignOperationMeta(validMetadata());
+        synchronousBodyWithOperationMetadata.setOperationMeta(validMetadata());
         SignDataResponseV2Dto asynchronousBodyWithSignatures = asynchronousSignBody();
         asynchronousBodyWithSignatures.setSignatures(List.of(signatureItem(identifier)));
         return Stream
@@ -602,7 +649,7 @@ class OperationResponseValidatorTest {
 
     private static SignDataResponseV2Dto asynchronousSignBody() {
         SignDataResponseV2Dto response = new SignDataResponseV2Dto();
-        response.setSignOperationMeta(validMetadata());
+        response.setOperationMeta(validMetadata());
         return response;
     }
 

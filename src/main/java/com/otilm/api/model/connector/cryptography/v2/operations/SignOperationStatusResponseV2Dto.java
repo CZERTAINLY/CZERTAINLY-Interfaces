@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.operations;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureResultItemV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.validation.UniqueIdentifiers;
@@ -24,7 +25,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Schema(name = "SignOperationStatusResponseV2Dto")
+@Schema(name = "SignOperationStatusResponseV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class SignOperationStatusResponseV2Dto {
 
     @Schema(description = "Per-item results, one per item of the original sign request, correlated by identifier",
@@ -32,4 +33,10 @@ public class SignOperationStatusResponseV2Dto {
     @NotEmpty(message = "items must contain at least one item")
     @UniqueIdentifiers
     private List<@NotNull(message = "items must not contain null entries") @Valid SignatureResultItemV2Dto> items;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 sign status response property: " + property);
+    }
 }

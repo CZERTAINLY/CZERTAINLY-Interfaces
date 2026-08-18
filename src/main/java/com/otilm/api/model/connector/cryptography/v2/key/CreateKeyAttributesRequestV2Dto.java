@@ -12,6 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Schema(name = "CreateKeyAttributesRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class CreateKeyAttributesRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
     @Schema(description = "Type of key whose creation attributes are requested",

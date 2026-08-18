@@ -75,6 +75,26 @@ class ErrorCodeTest {
     }
 
     @Test
+    void connectorDocumentHandlingEntries() {
+        ErrorCode[] documentCodes = {
+                ErrorCode.DOCUMENT_MALFORMED,
+                ErrorCode.DOCUMENT_TOO_LARGE,
+                ErrorCode.SIGNATURE_NOT_FOUND,
+                ErrorCode.PARAMETER_UNSUPPORTED};
+
+        for (ErrorCode code : documentCodes) {
+            assertEquals(ProblemTypeCategory.CONNECTOR, code.getCategory(), code.name() + " category");
+            assertNull(code.getInterfaceCode(), code.name() + " interfaceCode");
+            assertFalse(code.isRetryable(), code.name() + " retryable");
+        }
+
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.DOCUMENT_MALFORMED.getStatus());
+        assertEquals(HttpStatus.PAYLOAD_TOO_LARGE, ErrorCode.DOCUMENT_TOO_LARGE.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.SIGNATURE_NOT_FOUND.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.PARAMETER_UNSUPPORTED.getStatus());
+    }
+
+    @Test
     void retryableTrueOnlyForTransientCodes() {
         // Transient infrastructure / rate-limit recovery → retryable
         assertTrue(ErrorCode.REQUEST_TIMEOUT.isRetryable());
@@ -93,5 +113,9 @@ class ErrorCodeTest {
         assertFalse(ErrorCode.UNAUTHORIZED.isRetryable());
         assertFalse(ErrorCode.FORBIDDEN.isRetryable());
         assertFalse(ErrorCode.CHECKPOINT_LOST.isRetryable());
+        assertFalse(ErrorCode.DOCUMENT_MALFORMED.isRetryable());
+        assertFalse(ErrorCode.DOCUMENT_TOO_LARGE.isRetryable());
+        assertFalse(ErrorCode.SIGNATURE_NOT_FOUND.isRetryable());
+        assertFalse(ErrorCode.PARAMETER_UNSUPPORTED.isRetryable());
     }
 }
