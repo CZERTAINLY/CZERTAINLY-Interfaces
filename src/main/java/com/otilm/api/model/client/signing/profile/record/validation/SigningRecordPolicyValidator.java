@@ -2,7 +2,7 @@ package com.otilm.api.model.client.signing.profile.record.validation;
 
 import com.otilm.api.model.client.signing.profile.SigningProfileRequestDto;
 import com.otilm.api.model.client.signing.profile.record.SigningRecordPolicyRequestDto;
-import com.otilm.api.model.client.signing.profile.workflow.DocumentSigningWorkflowRequestDto;
+import com.otilm.api.model.client.signing.profile.workflow.ContentSigningWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.WorkflowRequestDto;
 import jakarta.validation.ConstraintValidator;
@@ -28,7 +28,7 @@ public class SigningRecordPolicyValidator
             return true;
         }
 
-        boolean isSupportedWorkflow = wf instanceof DocumentSigningWorkflowRequestDto
+        boolean isSupportedWorkflow = wf instanceof ContentSigningWorkflowRequestDto
                 || wf instanceof TimestampingWorkflowRequestDto;
         if (!isSupportedWorkflow) {
             ctx.disableDefaultConstraintViolation();
