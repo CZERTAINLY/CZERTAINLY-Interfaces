@@ -15,7 +15,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Sync contract shared by REST and MQ clients for stateless cryptography v2 key creation.
+ * Sync contract shared by REST and MQ clients for stateless cryptography v2 key operations.
  */
 public interface KeySyncApiClient {
 
