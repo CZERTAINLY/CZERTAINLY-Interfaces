@@ -10,7 +10,7 @@ import com.otilm.api.exception.ValidationException;
 import com.otilm.api.interfaces.AuthProtectedController;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.certificate.CancelPendingCertificateRequestDto;
-import com.otilm.api.model.client.certificate.UploadCertificateRequestDto;
+import com.otilm.api.model.client.certificate.ManuallyIssueCertificateRequestDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.core.certificate.CertificateDetailDto;
@@ -312,8 +312,8 @@ public interface ClientOperationController extends AuthProtectedController {
             (mandatory); the subject DN should match (warning only — some CAs canonicalise it); and the
             uploaded certificate must verify against the RA profile's authority (mandatory).
 
-            The body carries a Base64-encoded single certificate and optional certificate-level custom
-            attributes.
+            The body carries a Base64-encoded single certificate, optional certificate-level custom
+            attributes, and optional identify-operation attributes for the authority's verification.
             """)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate finalized"),
@@ -334,7 +334,7 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-            @RequestBody UploadCertificateRequestDto request) throws NotFoundException, CertificateException,
+            @RequestBody ManuallyIssueCertificateRequestDto request) throws NotFoundException, CertificateException,
             AlreadyExistException, ConnectorException, AttributeException;
 
     @Operation(summary = "Confirm an asynchronous certificate revocation", description = """
