@@ -91,8 +91,8 @@ public interface ContentSigningFormattingController extends AuthProtectedConnect
                     + "It also returns the formattingContext needed to complete the signature once the signature value "
                     + "comes back. This is the only operation whose request varies by family. The connector MUST put "
                     + "the supplied signingTime into the signature, not its own clock. It MUST also embed the digest "
-                    + "of the document it was given. That lets the platform verify, before signing, that these bytes "
-                    + "commit to the document the user authorized.",
+                    + "of the document it was given, and echo that same digest in documentDigest. The platform "
+                    + "compares that echo against the digest the user authorized before it releases the signing key.",
             operationId = "computeDtbs")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Data-to-be-signed bytes computed"),
