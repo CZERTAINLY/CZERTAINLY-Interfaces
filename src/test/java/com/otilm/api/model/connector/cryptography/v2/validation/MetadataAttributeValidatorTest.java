@@ -12,7 +12,7 @@ import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
 import com.otilm.api.model.common.attribute.v3.MetadataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.content.IntegerAttributeContentV3;
 import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -27,7 +27,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validMetadataAttribute;
-import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.withValidTokenProfileScope;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Named.named;
 
@@ -40,10 +39,10 @@ class MetadataAttributeValidatorTest {
     @Test
     void validate_hasNoViolations_forValidMetadataAttribute() {
         // given
-        KeyOperationRequestV2Dto request = requestWith(validMetadataAttribute());
+        OperationTrackingRequestV2Dto request = requestWith(validMetadataAttribute());
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertTrue(violations.isEmpty());
@@ -53,10 +52,10 @@ class MetadataAttributeValidatorTest {
     void validate_hasNoViolations_forSupportedV3MetadataAttribute() {
         // given
         MetadataAttributeV3 supportedV3Metadata = validV3MetadataAttribute();
-        KeyOperationRequestV2Dto request = requestWith(supportedV3Metadata);
+        OperationTrackingRequestV2Dto request = requestWith(supportedV3Metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertTrue(violations.isEmpty());
@@ -68,10 +67,10 @@ class MetadataAttributeValidatorTest {
         String canonicalUuidWithUppercaseHex = "00000000-0000-0000-0000-00000000000A";
         MetadataAttributeV2 metadata = validMetadataAttribute();
         metadata.setUuid(canonicalUuidWithUppercaseHex);
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertTrue(violations.isEmpty());
@@ -82,10 +81,10 @@ class MetadataAttributeValidatorTest {
         // given
         MetadataAttributeV3 metadata = validV3MetadataAttribute();
         metadata.setSchemaVersion(AttributeVersion.V2);
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, "operationMeta[0].<list element>.schemaVersion",
@@ -99,10 +98,10 @@ class MetadataAttributeValidatorTest {
         MetadataAttributeV2 metadata = validMetadataAttribute();
         metadata.setContentType(AttributeContentType.INTEGER);
         metadata.setContent(List.of(new IntegerAttributeContentV2(usableIntegerData)));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertTrue(violations.isEmpty());
@@ -112,10 +111,10 @@ class MetadataAttributeValidatorTest {
     @MethodSource("metadataWithMismatchedDtoVersion")
     void validate_rejectsVersionThatDoesNotMatchMetadataDto(MetadataAttribute metadata) {
         // given
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, indexedPath("version"), "version must match metadata attribute DTO");
@@ -137,10 +136,10 @@ class MetadataAttributeValidatorTest {
     @MethodSource("metadataWithUnsupportedContentType")
     void validate_rejectsContentTypeUnsupportedByAttributeVersion(MetadataAttribute metadata) {
         // given
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, indexedPath("contentType"),
@@ -166,10 +165,10 @@ class MetadataAttributeValidatorTest {
         int usableIntegerData = 42;
         MetadataAttributeV2 metadata = validMetadataAttribute(); // String
         metadata.setContent(List.of(new IntegerAttributeContentV2(usableIntegerData)));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertTrue(violations.isEmpty());
@@ -181,10 +180,10 @@ class MetadataAttributeValidatorTest {
         int usableIntegerData = 42;
         MetadataAttributeV3 metadata = validV3MetadataAttribute();
         metadata.setContent(List.of(new IntegerAttributeContentV3(usableIntegerData)));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, indexedPath("content[0].<list element>"),
@@ -197,10 +196,10 @@ class MetadataAttributeValidatorTest {
         String usableContent = "usable";
         MetadataAttributeV2 metadata = validMetadataAttribute();
         metadata.setContent(List.of(new StringAttributeContentV3(usableContent)));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, indexedPath("content[0].<list element>"),
@@ -213,10 +212,10 @@ class MetadataAttributeValidatorTest {
         String usableContent = "usable";
         MetadataAttributeV3 metadata = validV3MetadataAttribute();
         metadata.setContent(List.of(new StringAttributeContentV2(usableContent)));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertTrue(violations.isEmpty());
@@ -238,10 +237,10 @@ class MetadataAttributeValidatorTest {
     @MethodSource("invalidMetadataProperties")
     void validate_hasExpectedViolation_forInvalidMetadataProperty(InvalidMetadata invalidMetadata) {
         // given
-        KeyOperationRequestV2Dto request = requestWith(invalidMetadata.metadata());
+        OperationTrackingRequestV2Dto request = requestWith(invalidMetadata.metadata());
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, indexedPath(invalidMetadata.path()), invalidMetadata.message());
@@ -287,10 +286,10 @@ class MetadataAttributeValidatorTest {
         // given
         MetadataAttributeV2 metadata = validMetadataAttribute();
         metadata.setContent(List.of(new StringAttributeContentV2("usable"), content));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, "operationMeta[0].<list element>.content[1].<list element>",
@@ -311,10 +310,10 @@ class MetadataAttributeValidatorTest {
         MetadataAttributeV2 metadata = validMetadataAttribute();
         List incorrectlyTypedContent = List.of(new StringAttributeContentV2("usable"), "not attribute content");
         metadata.setContent(incorrectlyTypedContent);
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, "operationMeta[0].<list element>.content[1].<list element>",
@@ -326,10 +325,10 @@ class MetadataAttributeValidatorTest {
         // given
         MetadataAttributeV2 metadata = validMetadataAttribute();
         metadata.setContent(java.util.Arrays.asList(new StringAttributeContentV2("usable"), null));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertHasViolation(violations, "operationMeta[0].<list element>.content[1].<list element>",
@@ -342,10 +341,10 @@ class MetadataAttributeValidatorTest {
         // given
         MetadataAttributeV2 metadata = validMetadataAttribute();
         metadata.setContent(List.of(content));
-        KeyOperationRequestV2Dto request = requestWith(metadata);
+        OperationTrackingRequestV2Dto request = requestWith(metadata);
 
         // when
-        Set<ConstraintViolation<KeyOperationRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<ConstraintViolation<OperationTrackingRequestV2Dto>> violations = VALIDATOR.validate(request);
 
         // then
         assertTrue(violations.isEmpty());
@@ -383,8 +382,8 @@ class MetadataAttributeValidatorTest {
         return named(name, new InvalidMetadata(metadata, path, message));
     }
 
-    private static KeyOperationRequestV2Dto requestWith(MetadataAttribute metadata) {
-        KeyOperationRequestV2Dto request = withValidTokenProfileScope(new KeyOperationRequestV2Dto());
+    private static OperationTrackingRequestV2Dto requestWith(MetadataAttribute metadata) {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(List.of(metadata));
         return request;
     }

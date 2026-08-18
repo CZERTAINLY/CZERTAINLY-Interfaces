@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.operations.data;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
@@ -22,6 +23,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@Schema(name = "SignatureResultItemV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class SignatureResultItemV2Dto implements IdentifiedDataV2Dto {
 
     @Schema(description = "Identifier of the corresponding item in the original sign request", examples = {"customId"},
@@ -41,6 +43,12 @@ public class SignatureResultItemV2Dto implements IdentifiedDataV2Dto {
     @Schema(description = "Failure or cancellation detail when status=FAILED or CANCELLED — curated message text (no raw exception messages)",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String reason;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 signature result property: " + property);
+    }
 
     @JsonIgnore
     @Schema(hidden = true)

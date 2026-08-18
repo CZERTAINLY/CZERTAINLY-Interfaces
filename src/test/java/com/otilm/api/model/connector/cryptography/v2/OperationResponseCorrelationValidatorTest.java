@@ -11,6 +11,7 @@ import com.otilm.api.model.connector.cryptography.v2.operations.data.CipherDataV
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.VerificationResponseItemV2Dto;
 import com.otilm.api.testsupport.ValidatorFixture;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AutoClose;
@@ -63,6 +64,20 @@ class OperationResponseCorrelationValidatorTest {
     }
 
     @Test
+    void validateEncrypt_rejectsNullRequestItem() {
+        // given
+        CipherDataRequestV2Dto request = new CipherDataRequestV2Dto();
+        request.setCipherData(Collections.singletonList(null));
+        EncryptDataResponseV2Dto response = encryptResponse(FIRST_IDENTIFIER);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateEncrypt(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
     void validateDecrypt_acceptsMatchingIdentifiers_inDifferentOrder() {
         // given
         CipherDataRequestV2Dto request = cipherRequest(FIRST_IDENTIFIER, SECOND_IDENTIFIER);
@@ -89,6 +104,20 @@ class OperationResponseCorrelationValidatorTest {
     }
 
     @Test
+    void validateDecrypt_rejectsNullRequestItem() {
+        // given
+        CipherDataRequestV2Dto request = new CipherDataRequestV2Dto();
+        request.setCipherData(Collections.singletonList(null));
+        DecryptDataResponseV2Dto response = decryptResponse(FIRST_IDENTIFIER);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateDecrypt(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
     void validateVerify_acceptsMatchingIdentifiers_inDifferentOrder() {
         // given
         VerifyDataRequestV2Dto request = verifyRequest(FIRST_IDENTIFIER, SECOND_IDENTIFIER);
@@ -106,6 +135,20 @@ class OperationResponseCorrelationValidatorTest {
         // given
         VerifyDataRequestV2Dto request = verifyRequest(FIRST_IDENTIFIER);
         VerifyDataResponseV2Dto response = verifyResponse(DIFFERENT_IDENTIFIER);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateVerify(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateVerify_rejectsNullRequestItem() {
+        // given
+        VerifyDataRequestV2Dto request = new VerifyDataRequestV2Dto();
+        request.setData(Collections.singletonList(null));
+        VerifyDataResponseV2Dto response = verifyResponse(FIRST_IDENTIFIER);
 
         // when
         OperationValidationResult result = VALIDATOR.validateVerify(request, response);
