@@ -7,8 +7,10 @@ import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 @Schema(enumAsRef = true)
 public enum Resource implements IPlatformEnum {
@@ -66,6 +68,9 @@ public enum Resource implements IPlatformEnum {
     APPROVAL_PROFILE("approvalProfiles", "Approval profile"),
     APPROVAL(Codes.APPROVAL, "Approval"),
 
+    // COMMENTS
+    COMMENT(Codes.COMMENT, "Comment"),
+
     // NOTIFICATIONS
     NOTIFICATION_PROFILE("notificationProfiles", "Notification profile"),
     NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
@@ -117,6 +122,13 @@ public enum Resource implements IPlatformEnum {
             .of(Resource.RA_PROFILE, Resource.TOKEN_PROFILE, Resource.VAULT_PROFILE);
     private static final EnumSet<Resource> approvalProfilesAssignable = EnumSet
             .of(Resource.RA_PROFILE, Resource.VAULT_PROFILE);
+    private static final EnumSet<Resource> commentableResources = EnumSet
+            .of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY, Resource.TOKEN, Resource.DISCOVERY, Resource.SECRET,
+                    Resource.VAULT, Resource.AUTHORITY, Resource.ENTITY, Resource.LOCATION, Resource.CONNECTOR,
+                    Resource.APPROVAL, Resource.RA_PROFILE, Resource.VAULT_PROFILE, Resource.COMPLIANCE_PROFILE,
+                    Resource.APPROVAL_PROFILE, Resource.NOTIFICATION_PROFILE, Resource.SIGNING_PROFILE,
+                    Resource.TOKEN_PROFILE, Resource.ACME_PROFILE, Resource.SCEP_PROFILE, Resource.CMP_PROFILE,
+                    Resource.TSP_PROFILE);
 
     static {
         VALUES = values();
@@ -205,6 +217,18 @@ public enum Resource implements IPlatformEnum {
         return approvalProfilesAssignable.contains(this);
     }
 
+    /**
+     * Whether comment threads can be attached to objects of this resource. The set is the single source of truth: core
+     * validates comment requests against it and registers the COMMENT action for exactly these resources.
+     */
+    public boolean commentable() {
+        return commentableResources.contains(this);
+    }
+
+    public static Set<Resource> getCommentableResources() {
+        return Collections.unmodifiableSet(commentableResources);
+    }
+
     @JsonCreator
     public static Resource findByCode(String code) {
         return Arrays
@@ -221,6 +245,7 @@ public enum Resource implements IPlatformEnum {
     public static class Codes {
         public static final String AUTHORITY = "authorities";
         public static final String APPROVAL = "approvals";
+        public static final String COMMENT = "comments";
         public static final String RA_PROFILE = "raProfiles";
         public static final String CERTIFICATE = "certificates";
         public static final String CERTIFICATE_REQUEST = "certificateRequests";
