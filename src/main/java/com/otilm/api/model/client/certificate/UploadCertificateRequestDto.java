@@ -26,5 +26,5 @@ public class UploadCertificateRequestDto {
             + "manually issued, which identifies it at the authority. Optional — an authority that offers no "
             + "identify schema needs none.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @ToString.Exclude
-    private List<RequestAttribute> attributes;
+    private List<RequestAttribute> identifyAttributes;
 }
