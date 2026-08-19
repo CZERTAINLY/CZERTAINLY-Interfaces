@@ -12,7 +12,7 @@ import java.util.Arrays;
  * The signature family a signature belongs to. v1 ships the four AdES families; future content kinds arrive as
  * additional families rather than as a separate workflow type.
  */
-@Schema(enumAsRef = true)
+@Schema(enumAsRef = true, description = "Signature family, naming the standard and document format a signature follows")
 public enum SignatureFamily implements IPlatformEnum {
 
     PADES(Codes.PADES, "PAdES", "PDF Advanced Electronic Signatures, ETSI EN 319 142", "PAdES"),
