@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/v2/discoveryProvider")
 @Tag(name = "Discovery Metadata v2",
-        description = "Stateless discovery v2 metadata surface: which resource types and capabilities "
-                + "this connector supports, and the attribute schema for configuring a run.")
+        description = "Stateless discovery v2 metadata surface: which resource types this connector "
+                + "supports, and the attribute schema for configuring a run.")
 public interface DiscoveryMetadataController extends AuthProtectedConnectorController {
 
     @Operation(summary = "List supported resources",
-            description = "Returns the resource types this connector can discover, and which capabilities "
-                    + "it supports for each.")
-    @ApiResponses(@ApiResponse(responseCode = "200",
-            description = "Supported resources and per-resource capabilities retrieved"))
+            description = "Returns the resource types this connector can discover. Whether a concrete run "
+                    + "can be stopped and resumed is not declared here: the connector states it per run, "
+                    + "in the initiate response's stoppable field.")
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "Supported resources retrieved"))
     @GetMapping(path = "/resources", produces = MediaType.APPLICATION_JSON_VALUE)
     List<DiscoverySupportedResourceDto> listSupportedResources();
 

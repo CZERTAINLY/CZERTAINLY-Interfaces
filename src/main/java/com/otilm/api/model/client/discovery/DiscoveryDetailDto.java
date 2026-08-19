@@ -5,7 +5,6 @@ import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.client.metadata.MetadataResponseDto;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.connector.discovery.v2.DiscoveryProgressDto;
-import com.otilm.api.model.connector.discovery.v2.DiscoveryResourceCapability;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryStatus;
 import com.otilm.api.model.core.workflows.TriggerDto;
@@ -67,7 +66,7 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     // @JsonInclude(NON_NULL) rather than the class carrying it, so a v1 run's payload keeps
     // emitting its existing nullable fields (message, startTime, endTime, ...) exactly as before —
     // a class-level annotation would have silently changed the shape of every v1 response.
-    // resources and effectiveCapabilities are nonetheless always present: Core synthesizes both for a
+    // resources and stoppable are nonetheless always present: Core synthesizes both for a
     // v1-connector run, so their NON_NULL only keeps a broken mapper's null off the wire as a loud
     // absence rather than a quiet null.
 
@@ -113,19 +112,15 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     private List<String> runMessages;
 
     /**
-     * <b>Aggregation:</b> computed from the connector's per-resource capabilities, where a null list is the connector's
-     * shorthand for every capability it advertises — expand it before intersecting, never treat it as an empty set.
-     *
-     * <p>
-     * <b>Presence:</b> synthesized as an empty list for a run against a v1 connector, which supports none of them.
+     * <b>Presence:</b> synthesized as {@code false} for a run against a v1 connector, which cannot stop; for a v2 run
+     * whose connector left it undeclared at initiate, synthesized from the interface-level {@code discoveryStopResume}
+     * flag.
      */
-    @ArraySchema(arraySchema = @Schema(
-            description = "Capabilities effective for this run: the intersection of what the connector's "
-                    + "discovery interface supports across every resource type the run targets — a "
-                    + "capability any targeted resource lacks is not listed. Always present: empty "
-                    + "means the run supports none of them, so a client renders the stop and resume "
-                    + "controls from this list alone.",
-            requiredMode = Schema.RequiredMode.REQUIRED))
+    @Schema(description = "Whether this run can be stopped and later resumed, as declared by the connector "
+            + "when the run was initiated (refreshed on resume). Always present; false for runs "
+            + "against v1 connectors. A client renders the stop and resume controls from this flag "
+            + "alone; the connector may still refuse a stop at runtime past the point of no return.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<DiscoveryResourceCapability> effectiveCapabilities;
+    private Boolean stoppable;
 }

@@ -94,12 +94,9 @@ class DiscoveryApiClientTest {
 
         Assertions.assertEquals(2, result.size());
         Assertions.assertEquals(Resource.CERTIFICATE, result.get(0).getResource());
+        // Entry 1 still carries the retired per-resource "capabilities" field: a connector built against
+        // the earlier contract draft must keep connecting, so the reader tolerates and ignores it.
         Assertions.assertEquals(Resource.CRYPTOGRAPHIC_KEY, result.get(1).getResource());
-        // Absent (entry 0) vs empty (entry 1) capabilities are contractually distinct, and a client
-        // round-trip is where a careless deserializer would normalize one into the other.
-        Assertions.assertNull(result.get(0).getCapabilities());
-        Assertions.assertNotNull(result.get(1).getCapabilities());
-        Assertions.assertTrue(result.get(1).getCapabilities().isEmpty());
     }
 
     /**

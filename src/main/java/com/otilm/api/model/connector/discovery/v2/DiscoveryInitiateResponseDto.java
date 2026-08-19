@@ -26,4 +26,12 @@ public class DiscoveryInitiateResponseDto {
             + "run outright if this exceeds the cap.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @ToString.Exclude
     private List<MetadataAttribute> meta;
+
+    @Schema(description = "Whether this run can be stopped and later resumed. Declared per run because "
+            + "checkpointability may depend on the resources scanned and the scan parameters, not only on "
+            + "the connector as a whole. Core snapshots the value onto the run and renders the stop and "
+            + "resume controls from it; the connector may still refuse a stop at runtime past the point "
+            + "of no return. Absent means undeclared — Core then gates on the discoveryStopResume feature "
+            + "flag alone. A resume response refreshes the snapshot.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean stoppable;
 }

@@ -213,10 +213,10 @@ public interface DiscoveryController extends AuthProtectedController {
      * gating there would silently skip per-connector ACLs.
      */
     @Operation(summary = "Get discoverable resources of a Discovery Provider",
-            description = "Returns the resource types this Connector's discovery interface advertises, as "
-                    + "synced from the Connector. For a Connector implementing only the v1 discovery "
-                    + "interface, Core synthesizes the single entry \"certificates\" with no capabilities, "
-                    + "without calling the Connector — a client renders one shape for both generations.")
+            description = "Returns the resource types this Connector's discovery interface supports, "
+                    + "relayed live from the Connector. For a Connector implementing only the v1 discovery "
+                    + "interface, Core synthesizes the single entry \"certificates\" without calling the "
+                    + "Connector — a client renders one shape for both generations.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Discoverable resources retrieved"),
             @ApiResponse(responseCode = "404", description = "Connector not found",
