@@ -50,6 +50,7 @@ public class CertificateRegistrationRequestDtoV3 extends AuthorityV3ScopedReques
     private CertificateRequestContent requestContent;
 
     @Schema(description = "Register-specific dynamic attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ToString.Exclude
     private List<RequestAttribute> attributes;
 
     /**

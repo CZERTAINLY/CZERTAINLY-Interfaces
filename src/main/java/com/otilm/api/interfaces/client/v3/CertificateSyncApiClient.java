@@ -37,6 +37,9 @@ public interface CertificateSyncApiClient {
     List<BaseAttribute> listIssueAttributes(ApiClientConnectorInfo connector,
             CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException;
 
+    List<BaseAttribute> listRequestAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException;
+
     ResponseEntity<CertificateDataResponseDto> issue(ApiClientConnectorInfo connector,
             CertificateSignRequestDtoV3 requestDto) throws ConnectorException;
 
@@ -47,6 +50,9 @@ public interface CertificateSyncApiClient {
             CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException;
 
     // ---- Renew (status/cancel via /issue/*) ----
+
+    List<BaseAttribute> listRenewAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException;
 
     ResponseEntity<CertificateDataResponseDto> renew(ApiClientConnectorInfo connector,
             CertificateRenewRequestDtoV3 requestDto) throws ConnectorException;
@@ -80,6 +86,9 @@ public interface CertificateSyncApiClient {
             CertificateOperationCancelRequestDtoV3 requestDto) throws ConnectorException;
 
     // ---- Identify ----
+
+    List<BaseAttribute> listIdentifyAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException;
 
     CertificateIdentificationResponseDto identify(ApiClientConnectorInfo connector,
             CertificateIdentificationRequestDtoV3 requestDto) throws ConnectorException;

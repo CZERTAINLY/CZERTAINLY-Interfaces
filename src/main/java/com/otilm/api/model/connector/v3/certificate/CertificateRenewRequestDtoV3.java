@@ -42,8 +42,9 @@ public class CertificateRenewRequestDtoV3 extends AuthorityV3ScopedRequestDto {
             defaultValue = "false", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private boolean reuseKey;
 
-    @Schema(description = "Renew-specific dynamic attributes (schema from shared /issue/attributes endpoint)",
+    @Schema(description = "Renew-specific dynamic attributes (schema from /renew/attributes)",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ToString.Exclude
     private List<RequestAttribute> attributes;
 
     @Schema(description = "Optional connector-defined metadata returned by the original issue/renew/register response. "
