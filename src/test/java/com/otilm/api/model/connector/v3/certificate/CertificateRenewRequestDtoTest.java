@@ -1,8 +1,12 @@
 package com.otilm.api.model.connector.v3.certificate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.otilm.api.model.client.attribute.RequestAttributeV3;
+import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
+import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
 import com.otilm.api.model.core.enums.CertificateRequestFormat;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,6 +34,18 @@ class CertificateRenewRequestDtoTest {
         assertEquals("MIICij...", back.getRequest());
         assertEquals("MIIBkjCCATs...", back.getExistingCertificate());
         assertEquals(false, back.isReuseKey());
+    }
+
+    @Test
+    void toStringOmitsAttributeValues() {
+        CertificateRenewRequestDtoV3 dto = new CertificateRenewRequestDtoV3();
+        dto
+                .setAttributes(List
+                        .of(new RequestAttributeV3(UUID.randomUUID(), "validityOverride", AttributeContentType.STRING,
+                                List.of(new StringAttributeContentV3("sentinel-value")))));
+
+        assertFalse(dto.toString().contains("sentinel-value"),
+                "renew attribute values must not appear in toString (@ToString.Exclude)");
     }
 
     @Test

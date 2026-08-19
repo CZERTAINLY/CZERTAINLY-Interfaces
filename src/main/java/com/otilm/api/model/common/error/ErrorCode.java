@@ -41,6 +41,17 @@ public enum ErrorCode {
     ATTRIBUTE_DEFINITION_NOT_FOUND(ProblemTypeCategory.CONNECTOR, null, "Attribute definition not found",
             HttpStatus.NOT_FOUND, false),
 
+    // Document handling — raised by the content-signing formatting contract.
+    DOCUMENT_MALFORMED(ProblemTypeCategory.CONNECTOR, null, "Document cannot be parsed as the declared format",
+            HttpStatus.UNPROCESSABLE_ENTITY, false),
+    DOCUMENT_TOO_LARGE(ProblemTypeCategory.CONNECTOR, null, "Document exceeds the size the connector accepts",
+            HttpStatus.PAYLOAD_TOO_LARGE, false),
+    SIGNATURE_NOT_FOUND(ProblemTypeCategory.CONNECTOR, null, "Document contains no signature this operation can act on",
+            HttpStatus.UNPROCESSABLE_ENTITY, false),
+    PARAMETER_UNSUPPORTED(ProblemTypeCategory.CONNECTOR, null,
+            "Requested parameter or signature family is not supported by this connector",
+            HttpStatus.UNPROCESSABLE_ENTITY, false),
+
     // CONNECTOR + AUTHORITY — interface-specific
     CSR_MALFORMED(ProblemTypeCategory.CONNECTOR, ConnectorInterface.AUTHORITY, "CSR malformed",
             HttpStatus.UNPROCESSABLE_ENTITY, false),

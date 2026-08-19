@@ -32,6 +32,7 @@ public class CertificateRevocationRequestDtoV3 extends AuthorityV3ScopedRequestD
     private CertificateRevocationReason reason;
 
     @Schema(description = "Revoke-specific dynamic attributes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ToString.Exclude
     private List<RequestAttribute> attributes;
 
     @Schema(description = "Optional connector-defined metadata. Populated when Core has the original issue meta. "

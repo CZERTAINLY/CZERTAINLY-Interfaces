@@ -394,6 +394,31 @@ public interface RAProfileManagementController extends AuthProtectedController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws ConnectorException, NotFoundException;
 
+    @Operation(summary = "Get renew Certificate Attributes", operationId = "listRaProfileRenewCertificateAttributes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Renew certificate attributes list obtained"),
+            @ApiResponse(responseCode = "404", description = "RA Profile not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/renew",
+            produces = {"application/json"})
+    List<BaseAttribute> listRenewCertificateAttributes(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
+            throws ConnectorException, NotFoundException;
+
+    @Operation(summary = "Get identify Certificate Attributes",
+            operationId = "listRaProfileIdentifyCertificateAttributes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Identify certificate attributes list obtained"),
+            @ApiResponse(responseCode = "404", description = "RA Profile not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/identify",
+            produces = {"application/json"})
+    List<BaseAttribute> listIdentifyCertificateAttributes(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
+            throws ConnectorException, NotFoundException;
+
     /**
      * @deprecated As of release 2.16.0. Replaced by {@link ComplianceController#checkResourceObjectsCompliance} with
      * resource Certificate.

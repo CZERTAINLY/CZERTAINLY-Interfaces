@@ -16,6 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Schema(name = "TokenProfileScopedRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class TokenProfileScopedRequestV2Dto extends TokenScopedRequestV2Dto {
 
     @Schema(description = "Token profile attributes", requiredMode = Schema.RequiredMode.REQUIRED)

@@ -1,8 +1,10 @@
 package com.otilm.api.model.core.v2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.enums.CertificateRequestFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +32,11 @@ public class ClientCertificateRenewRequestDto {
     @Schema(description = "Certificate signing request format", defaultValue = "pkcs10")
     @Builder.Default
     private CertificateRequestFormat format = CertificateRequestFormat.PKCS10;
+
+    @Schema(description = "Renew-specific dynamic attributes, as listed by "
+            + "GET /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/renew. "
+            + "Optional — an authority that offers no renew schema needs none.")
+    private List<RequestAttribute> attributes;
 
     // Format (@Size/@Pattern) is enforced at registration, not here: on the verify path a malformed secret
     // must fail the challenge identically to a wrong one, so no format constraint is applied (no format oracle).

@@ -10,7 +10,7 @@ import com.otilm.api.exception.ValidationException;
 import com.otilm.api.interfaces.AuthProtectedController;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.certificate.CancelPendingCertificateRequestDto;
-import com.otilm.api.model.client.certificate.UploadCertificateRequestDto;
+import com.otilm.api.model.client.certificate.ManuallyIssueCertificateRequestDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.core.certificate.CertificateDetailDto;
@@ -205,7 +205,7 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRenewRequestDto request)
             throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException,
-            CertificateOperationException, CertificateRequestException;
+            CertificateOperationException, CertificateRequestException, ConnectorException, AttributeException;
 
     @Operation(summary = "Rekey Certificate", description = """
             Request a replacement certificate with a new key pair but the same subject and
@@ -231,7 +231,7 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
             @RequestBody ClientCertificateRekeyRequestDto request)
             throws NotFoundException, CertificateException, IOException, NoSuchAlgorithmException, InvalidKeyException,
-            CertificateOperationException, CertificateRequestException;
+            CertificateOperationException, CertificateRequestException, ConnectorException, AttributeException;
 
     @Operation(summary = "Get revocation attributes",
             description = "Return the list of attributes the client must populate when revoking a certificate through this RA profile.")
@@ -265,6 +265,24 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
             throws ConnectorException, NotFoundException;
 
+    @Operation(summary = "Get renew certificate attributes",
+            description = "Return the list of attributes the client must populate when renewing or rekeying a certificate through this RA profile. The list reflects the certificate authority's renew-operation attribute schema; rekey is a renew at the authority, so the same schema applies. An authority that offers no renew schema yields an empty list — this is not an error.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes obtained")})
+    @GetMapping(path = "/attributes/renew", produces = {"application/json"})
+    List<BaseAttribute> listRenewCertificateAttributes(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
+            throws ConnectorException, NotFoundException;
+
+    @Operation(summary = "Get identify certificate attributes",
+            description = "Return the list of attributes the client must populate when identifying a certificate through this RA profile. The list reflects the certificate authority's identify-operation attribute schema. An authority that offers no identify schema yields an empty list — this is not an error.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Attributes obtained")})
+    @GetMapping(path = "/attributes/identify", produces = {"application/json"})
+    List<BaseAttribute> listIdentifyCertificateAttributes(
+            @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
+            @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid)
+            throws ConnectorException, NotFoundException;
+
     @Operation(summary = "Revoke certificate",
             description = "Revoke a certificate currently in state `ISSUED`. The request is accepted and queued; revocation runs through the authority and an approval step may run first. This response is returned before the authority call completes, so it does not indicate completion — the certificate ends in `REVOKED` if the authority completes the revocation immediately, or `PENDING_REVOKE` if completion is deferred and later confirmed. Track the result through its state.")
     @ApiResponses(value = {
@@ -294,8 +312,8 @@ public interface ClientOperationController extends AuthProtectedController {
             (mandatory); the subject DN should match (warning only — some CAs canonicalise it); and the
             uploaded certificate must verify against the RA profile's authority (mandatory).
 
-            The body carries a Base64-encoded single certificate and optional certificate-level custom
-            attributes.
+            The body carries a Base64-encoded single certificate, optional certificate-level custom
+            attributes, and optional identify-operation attributes for the authority's verification.
             """)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate finalized"),
@@ -316,7 +334,7 @@ public interface ClientOperationController extends AuthProtectedController {
             @Parameter(description = "Authority Instance UUID") @PathVariable String authorityUuid,
             @Parameter(description = "RA Profile UUID") @PathVariable String raProfileUuid,
             @Parameter(description = "Certificate UUID") @PathVariable String certificateUuid,
-            @RequestBody UploadCertificateRequestDto request) throws NotFoundException, CertificateException,
+            @RequestBody ManuallyIssueCertificateRequestDto request) throws NotFoundException, CertificateException,
             AlreadyExistException, ConnectorException, AttributeException;
 
     @Operation(summary = "Confirm an asynchronous certificate revocation", description = """

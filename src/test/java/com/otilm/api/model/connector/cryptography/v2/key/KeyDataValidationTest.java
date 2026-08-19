@@ -334,7 +334,7 @@ class KeyDataValidationTest {
     private record InvalidKeyData(KeyDataV2Dto keyData, String path, String message) {
     }
 
-    private record MutatedRole(KeyDataV2Dto descriptor, KeyTypeV2 fixedRole, KeyTypeV2 illegalRole) {
+    private record MutatedType(KeyDataV2Dto descriptor, KeyTypeV2 fixedType, KeyTypeV2 illegalType) {
     }
 
     private record PqcAlgorithm(String generatorName, KeyAlgorithm declaredAlgorithm) {

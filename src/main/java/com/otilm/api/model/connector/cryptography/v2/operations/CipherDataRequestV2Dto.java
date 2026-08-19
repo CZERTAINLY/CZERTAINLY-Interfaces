@@ -19,6 +19,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
+@Schema(name = "CipherDataRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class CipherDataRequestV2Dto extends KeyScopedRequestV2Dto {
 
     @Schema(description = "Batch-wide cipher settings.", requiredMode = Schema.RequiredMode.REQUIRED)

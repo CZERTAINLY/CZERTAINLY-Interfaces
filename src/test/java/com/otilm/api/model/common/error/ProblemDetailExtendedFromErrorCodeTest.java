@@ -21,6 +21,17 @@ class ProblemDetailExtendedFromErrorCodeTest {
     }
 
     @Test
+    void documentHandlingCodesEmitOneStable2SegmentUri() {
+        ProblemDetailExtended tooLarge = ProblemDetailExtended
+                .fromErrorCode(ErrorCode.DOCUMENT_TOO_LARGE, "detail", null, "corr-4");
+        assertEquals("https://docs.otilm.com/problems/connector/DOCUMENT_TOO_LARGE", tooLarge.getType().toString());
+
+        ProblemDetailExtended notFound = ProblemDetailExtended
+                .fromErrorCode(ErrorCode.SIGNATURE_NOT_FOUND, "detail", null, "corr-5");
+        assertEquals("https://docs.otilm.com/problems/connector/SIGNATURE_NOT_FOUND", notFound.getType().toString());
+    }
+
+    @Test
     void connectorAuthorityEmits3SegmentUri() {
         ProblemDetailExtended pd = ProblemDetailExtended
                 .fromErrorCode(ErrorCode.CSR_MALFORMED, "detail", null, "corr-3");
