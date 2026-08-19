@@ -16,6 +16,7 @@ public class ManagedSignatureFormattingConnectorValidator
             ConstraintValidator<ValidManagedSignatureFormattingConnector, SigningProfileRequestDto> {
 
     private static final String WORKFLOW_NODE = "workflow";
+    private static final String TIMESTAMP_SOURCE_PROPERTY = "timestampSource";
 
     @Override
     public boolean isValid(SigningProfileRequestDto dto, ConstraintValidatorContext context) {
@@ -71,13 +72,14 @@ public class ManagedSignatureFormattingConnectorValidator
             if (!sourcePresent) {
                 return true;
             }
-            addWorkflowViolation(context, "timestampSource", "timestampSource must be omitted when maxLevel is SIGNED");
+            addWorkflowViolation(context, TIMESTAMP_SOURCE_PROPERTY,
+                    "timestampSource must be omitted when maxLevel is SIGNED");
             return false;
         }
         if (sourcePresent) {
             return true;
         }
-        addWorkflowViolation(context, "timestampSource",
+        addWorkflowViolation(context, TIMESTAMP_SOURCE_PROPERTY,
                 "timestampSource is required when maxLevel is TIMESTAMPED or higher");
         return false;
     }
@@ -96,7 +98,8 @@ public class ManagedSignatureFormattingConnectorValidator
                 workflow.getSignatureFormattingConnectorAttributes());
         boolean familyAbsent = rejectOnDelegatedWorkflow(context, "family", workflow.getFamily());
         boolean maxLevelAbsent = rejectOnDelegatedWorkflow(context, "maxLevel", workflow.getMaxLevel());
-        boolean sourceAbsent = rejectOnDelegatedWorkflow(context, "timestampSource", workflow.getTimestampSource());
+        boolean sourceAbsent = rejectOnDelegatedWorkflow(context, TIMESTAMP_SOURCE_PROPERTY,
+                workflow.getTimestampSource());
         return connectorAbsent && attributesAbsent && familyAbsent && maxLevelAbsent && sourceAbsent;
     }
 
