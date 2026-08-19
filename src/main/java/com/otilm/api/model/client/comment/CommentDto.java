@@ -4,13 +4,12 @@ import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.auth.Resource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.UUID;
 import lombok.Data;
 
 @Data
-@Schema(name = "CommentDto", description = "A comment on an object. Thread roots carry resolution state and replies; "
-        + "replies carry neither.")
+@Schema(name = "CommentDto", description = "A comment on an object. Thread roots carry resolution state and a reply "
+        + "count; replies carry neither.")
 public class CommentDto {
 
     @Schema(description = "Comment UUID", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -48,7 +47,7 @@ public class CommentDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private OffsetDateTime resolvedAt;
 
-    @Schema(description = "Replies to this thread root in creation order; thread roots only",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<CommentDto> replies;
+    @Schema(description = "Number of replies in the thread; thread roots only. The replies themselves are paged "
+            + "separately.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Long replyCount;
 }

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CommentResponseDto extends PaginationResponseDto {
 
-    @Schema(description = "Thread roots on the requested page, each carrying its replies",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Comments on the requested page: thread roots for the object listing, replies for the "
+            + "thread listing", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<CommentDto> comments;
 }

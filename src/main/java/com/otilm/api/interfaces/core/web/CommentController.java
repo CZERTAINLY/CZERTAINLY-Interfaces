@@ -10,7 +10,9 @@ import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.scheduler.PaginationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,31 +37,58 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface CommentController extends AuthProtectedController {
 
     @Operation(summary = "List comment threads for an object",
-            description = "Pages over thread roots; each root carries its replies.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Comment threads retrieved")})
+            description = "Pages over thread roots; each root carries its reply count. Replies are paged separately.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Comment threads retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{resource}/{objectUuid}", produces = {"application/json"})
     CommentResponseDto listComments(
             @Parameter(description = "Resource", required = true) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid,
             PaginationRequestDto pagination) throws NotFoundException;
 
+    @Operation(summary = "List replies of a comment thread",
+            description = "Pages over the thread root's replies in creation order.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Thread replies retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @GetMapping(path = "/{uuid}/replies", produces = {"application/json"})
+    CommentResponseDto listReplies(@Parameter(description = "Comment UUID") @PathVariable UUID uuid,
+            PaginationRequestDto pagination) throws NotFoundException;
+
     @Operation(summary = "Post a comment or a reply on an object",
             description = "A request without parentUuid starts a new thread; with parentUuid it replies to that "
                     + "thread root. Threads are one level deep.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Comment created")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Comment created"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{resource}/{objectUuid}", consumes = {"application/json"}, produces = {"application/json"})
     CommentDto createComment(@Parameter(description = "Resource", required = true) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid,
             @Valid @RequestBody CommentCreateRequestDto request) throws NotFoundException;
 
     @Operation(summary = "Resolve a comment thread", description = "Thread roots only.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Comment thread resolved")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Comment thread resolved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(path = "/{uuid}/resolve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void resolveComment(@Parameter(description = "Comment UUID") @PathVariable UUID uuid) throws NotFoundException;
 
     @Operation(summary = "Reopen a resolved comment thread", description = "Thread roots only.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Comment thread reopened")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Comment thread reopened"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(path = "/{uuid}/unresolve")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void unresolveComment(@Parameter(description = "Comment UUID") @PathVariable UUID uuid) throws NotFoundException;
