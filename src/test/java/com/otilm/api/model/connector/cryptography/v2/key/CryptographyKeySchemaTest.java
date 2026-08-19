@@ -32,6 +32,7 @@ class CryptographyKeySchemaTest {
 
         // then
         assertDiscriminator(union, contract.discriminatorProperty(), contract.mapping());
+        assertEquals(Boolean.FALSE, union.getAdditionalProperties());
         assertEquals(contract.members(), oneOfReferences(union));
         contract
                 .members()
@@ -59,7 +60,7 @@ class CryptographyKeySchemaTest {
     }
 
     @Test
-    void keyDataSchema_publishesClosedDiscriminatedUnionWithRequiredRoleFields() {
+    void keyDataSchema_publishesClosedDiscriminatedUnionWithRequiredTypeFields() {
         // given
         Map<String, Schema> schemas = ModelConverters.getInstance().readAll(KeyDataV2Dto.class);
 
@@ -72,6 +73,9 @@ class CryptographyKeySchemaTest {
                         .of("Secret", "#/components/schemas/SecretKeyDataV2Dto", "Public",
                                 "#/components/schemas/PublicKeyDataV2Dto", "Private",
                                 "#/components/schemas/PrivateKeyDataV2Dto"));
+        assertEquals(Boolean.FALSE, union.getAdditionalProperties());
+        assertTrue(schemas.containsKey("KeyTypeV2"), "KeyTypeV2 enum schema must be generated");
+        assertFalse(schemas.containsKey("KeyRoleV2"), "legacy KeyRoleV2 enum schema must not be generated");
         assertEquals(Set.of("SecretKeyDataV2Dto", "PublicKeyDataV2Dto", "PrivateKeyDataV2Dto"), oneOfReferences(union));
         for (String subtype : Set.of("SecretKeyDataV2Dto", "PublicKeyDataV2Dto", "PrivateKeyDataV2Dto")) {
             assertTrue(resolvesRequiredProperty(schemas.get(subtype), "type", schemas), subtype + " requires type");

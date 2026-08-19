@@ -7,9 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 
 /**
- * Key roles supported by the v2 connector contract.
+ * Key types supported by the v2 connector contract.
  */
-@Schema(name = "KeyRoleV2", description = "Key role supported by the v2 connector contract", enumAsRef = true)
+@Schema(name = "KeyTypeV2", description = "Key type supported by the v2 connector contract", enumAsRef = true)
 public enum KeyTypeV2 {
     SECRET("Secret"),
     PUBLIC("Public"),
@@ -30,8 +30,8 @@ public enum KeyTypeV2 {
     public static KeyTypeV2 findByCode(String code) {
         return Arrays
                 .stream(values())
-                .filter(role -> role.code.equals(code))
+                .filter(type -> type.code.equals(code))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown v2 key role: " + code));
+                .orElseThrow(() -> new IllegalArgumentException("Unknown v2 key type: " + code));
     }
 }

@@ -24,6 +24,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(name = "SignDataRequestV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class SignDataRequestV2Dto extends KeyScopedRequestV2Dto {
 
     @Schema(description = "Caller-selected execution mode. The connector must not switch modes implicitly.",

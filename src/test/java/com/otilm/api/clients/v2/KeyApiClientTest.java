@@ -13,13 +13,13 @@ import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2Dto;
@@ -43,7 +43,6 @@ import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDt
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -79,6 +78,29 @@ class KeyApiClientTest {
               "version": 2,
               "properties": {},
               "content": ["provider-key-1"]
+            }
+            """;
+    private static final String VALID_TRACKING_REQUEST_JSON = """
+            {
+              "operationMeta": [{
+                "uuid": "00000000-0000-0000-0000-000000000001",
+                "name": "provider handle",
+                "version": 2,
+                "type": "meta",
+                "content": [{
+                  "reference": "provider-key-1",
+                  "data": "provider-key-1"
+                }],
+                "contentType": "string",
+                "properties": {
+                  "label": null,
+                  "visible": true,
+                  "group": null,
+                  "global": false,
+                  "overwrite": false,
+                  "protectionLevel": "none"
+                }
+              }]
             }
             """;
 
@@ -251,7 +273,8 @@ class KeyApiClientTest {
     @Test
     void destroyKey_returnsSynchronousResponse() throws ConnectorException {
         // given
-        stubBodilessResponse(DESTROY_PATH, HttpStatus.OK);
+        String responseJson = "{}";
+        stubJsonResponse(DESTROY_PATH, HttpStatus.OK, responseJson);
 
         // when
         ResponseEntity<KeyOperationResponseV2Dto> result = client
@@ -259,7 +282,7 @@ class KeyApiClientTest {
 
         // then
         assertEquals(HttpStatus.OK, result.getStatusCode());
-        assertNull(result.getBody());
+        assertNotNull(result.getBody());
         verifyDestroyRequest(OperationExecutionMode.SYNCHRONOUS);
     }
 
@@ -383,8 +406,12 @@ class KeyApiClientTest {
     }
 
     private void verifyOperationRequest(String path) {
-        RequestPatternBuilder request = tokenProfileRequest(path)
-                .withRequestBody(WireMock.matchingJsonPath("$.operationMeta[0].name", WireMock.equalTo(METADATA_NAME)));
+        boolean ignoreArrayOrder = false;
+        boolean ignoreExtraElements = false;
+        RequestPatternBuilder request = WireMock
+                .postRequestedFor(WireMock.urlEqualTo(path))
+                .withRequestBody(
+                        WireMock.equalToJson(VALID_TRACKING_REQUEST_JSON, ignoreArrayOrder, ignoreExtraElements));
         mockServer.verify(request);
     }
 
@@ -445,8 +472,8 @@ class KeyApiClientTest {
         return request;
     }
 
-    private static KeyOperationRequestV2Dto keyOperationRequest() {
-        KeyOperationRequestV2Dto request = withValidTokenProfileScope(new KeyOperationRequestV2Dto());
+    private static OperationTrackingRequestV2Dto keyOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }

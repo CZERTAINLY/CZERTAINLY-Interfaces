@@ -3,13 +3,13 @@ package com.otilm.api.interfaces.connector.cryptography.v2;
 import com.otilm.api.interfaces.connector.common.v2.AuthProtectedConnectorController;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.common.error.ProblemDetailExtended;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,35 +52,36 @@ public interface KeyController extends AuthProtectedConnectorController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listCreateKeyAttributes(@RequestBody @Valid CreateKeyAttributesRequestV2Dto request);
 
-    @Operation(summary = "Create key",
-            description = "Create a secret key or key pair using the request discriminator and caller-selected execution mode (synchronous 200 or asynchronous 202)")
+    @Operation(summary = "Create key", description = "Create a secret key or key pair synchronously or asynchronously")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Created synchronously"),
+            @ApiResponse(responseCode = "200",
+                    description = "Created synchronously, or existing equivalent operation returned synchronously"),
             @ApiResponse(responseCode = "202",
-                    description = "Creation accepted asynchronously; body carries operationMeta tracking handle"),
+                    description = "Creation accepted asynchronously, or equivalent operation replayed asynchronously; "
+                            + "body carries the original operationMeta tracking handle"),
             @ApiResponse(responseCode = "409",
-                    description = "Connector detected reuse of keyCreationId with materially different creation data (RESOURCE_ALREADY_EXISTS)")})
+                    description = "keyCreationId reused with a non-equivalent request (RESOURCE_ALREADY_EXISTS)")})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<KeyCreationResponseV2Dto> createKey(@RequestBody @Valid CreateKeyRequestV2Dto request);
 
     @Operation(summary = "Get async key creation status",
-            description = "Get status of an async secret key or key pair creation")
+            description = "Get status of an async secret key or key pair creation using only its tracking handle")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Key creation status retrieved"),
             @ApiResponse(responseCode = "404", description = "Operation is not tracked")})
     @PostMapping(path = "/create/status", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    KeyCreationStatusResponseV2Dto getCreateKeyStatus(@RequestBody @Valid KeyOperationRequestV2Dto request);
+    KeyCreationStatusResponseV2Dto getCreateKeyStatus(@RequestBody @Valid OperationTrackingRequestV2Dto request);
 
     @Operation(summary = "Cancel async key creation",
-            description = "Cancel an in-flight async secret key or key pair creation")
+            description = "Cancel an in-flight async secret key or key pair creation using only its tracking handle")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Aborted"),
             @ApiResponse(responseCode = "404", description = "Operation not tracked"),
             @ApiResponse(responseCode = "422",
                     description = "Refused — operation is already terminal or past point of no return")})
     @PostMapping(path = "/create/cancel", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Void> cancelCreateKey(@RequestBody @Valid KeyOperationRequestV2Dto request);
+    ResponseEntity<Void> cancelCreateKey(@RequestBody @Valid OperationTrackingRequestV2Dto request);
 
     // ---- Destroy ----
 
@@ -88,7 +89,8 @@ public interface KeyController extends AuthProtectedConnectorController {
             + "(synchronous 200 or asynchronous 202). After accepting asynchronous destruction, the connector must "
             + "reject new cryptographic operations for that key")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Destroyed synchronously; response body is empty"),
+            @ApiResponse(responseCode = "200",
+                    description = "Destroyed synchronously; body contains an empty key-operation response"),
             @ApiResponse(responseCode = "202",
                     description = "Destruction accepted asynchronously; body carries "
                             + "operationMeta tracking handle")})
@@ -96,21 +98,22 @@ public interface KeyController extends AuthProtectedConnectorController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<KeyOperationResponseV2Dto> destroyKey(@RequestBody @Valid DestroyKeyRequestV2Dto request);
 
-    @Operation(summary = "Get async key destruction status", description = "Get status of an async key destruction")
+    @Operation(summary = "Get async key destruction status",
+            description = "Get status of an async key destruction using only its tracking handle")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Key destruction status retrieved"),
             @ApiResponse(responseCode = "404", description = "Operation is not tracked")})
     @PostMapping(path = "/destroy/status", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    KeyDestructionStatusResponseV2Dto getDestroyKeyStatus(@RequestBody @Valid KeyOperationRequestV2Dto request);
+    KeyDestructionStatusResponseV2Dto getDestroyKeyStatus(@RequestBody @Valid OperationTrackingRequestV2Dto request);
 
     @Operation(summary = "Cancel async key destruction",
-            description = "Cancel an in-flight asynchronous key destruction")
+            description = "Cancel an in-flight asynchronous key destruction using only its tracking handle")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Aborted"),
             @ApiResponse(responseCode = "404", description = "Operation not tracked; cancellation outcome is unknown"),
             @ApiResponse(responseCode = "422",
                     description = "Refused — operation is already terminal or past point of no return")})
     @PostMapping(path = "/destroy/cancel", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Void> cancelDestroyKey(@RequestBody @Valid KeyOperationRequestV2Dto request);
+    ResponseEntity<Void> cancelDestroyKey(@RequestBody @Valid OperationTrackingRequestV2Dto request);
 }

@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.operations;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.VerificationResponseItemV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.validation.UniqueIdentifiers;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,7 +18,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Schema(name = "VerifyDataResponseV2Dto")
+@Schema(name = "VerifyDataResponseV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class VerifyDataResponseV2Dto {
 
     @Schema(description = "Verification results, correlated to the request items by identifier",
@@ -26,4 +27,10 @@ public class VerifyDataResponseV2Dto {
     @UniqueIdentifiers
     private List<@NotNull(
             message = "verifications must not contain null items") @Valid VerificationResponseItemV2Dto> verifications;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 verify response property: " + property);
+    }
 }

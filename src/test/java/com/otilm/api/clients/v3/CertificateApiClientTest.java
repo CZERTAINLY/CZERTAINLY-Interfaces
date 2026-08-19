@@ -5,7 +5,10 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorProblemException;
+import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import com.otilm.api.model.common.error.ErrorCode;
+import com.otilm.api.model.connector.v3.certificate.CertificateAttributeListRequestDtoV3;
 import com.otilm.api.model.connector.v3.certificate.CertificateDataResponseDto;
 import com.otilm.api.model.connector.v3.certificate.CertificateOperationCancelRequestDtoV3;
 import com.otilm.api.model.connector.v3.certificate.CertificateSignRequestDtoV3;
@@ -144,5 +147,76 @@ class CertificateApiClientTest {
         Assertions.assertEquals(ErrorCode.CSR_MALFORMED, ex.getProblemDetail().getErrorCode());
         Assertions.assertFalse(ex.getProblemDetail().isRetryable());
         Assertions.assertEquals(connector, ex.getConnector());
+    }
+
+    @Test
+    void listRequestAttributes_returnsSchema() throws ConnectorException {
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/certificates/request/attributes")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(schemaJson("commonName"))));
+
+        List<BaseAttribute> attributes = client.listRequestAttributes(connector, attributeListRequest());
+
+        Assertions.assertEquals(1, attributes.size());
+        Assertions.assertInstanceOf(DataAttributeV3.class, attributes.get(0));
+        Assertions.assertEquals("commonName", ((DataAttributeV3) attributes.get(0)).getName());
+    }
+
+    @Test
+    void listRenewAttributes_returnsSchema() throws ConnectorException {
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/certificates/renew/attributes")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody(schemaJson("validityOverride"))));
+
+        List<BaseAttribute> attributes = client.listRenewAttributes(connector, attributeListRequest());
+
+        Assertions.assertEquals(1, attributes.size());
+        Assertions.assertInstanceOf(DataAttributeV3.class, attributes.get(0));
+        Assertions.assertEquals("validityOverride", ((DataAttributeV3) attributes.get(0)).getName());
+    }
+
+    @Test
+    void listIdentifyAttributes_emptyArrayReturnsEmptyList() throws ConnectorException {
+        mockServer
+                .stubFor(WireMock
+                        .post("/v3/authorityProvider/certificates/identify/attributes")
+                        .willReturn(WireMock
+                                .aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                                .withBody("[]")));
+
+        Assertions.assertTrue(client.listIdentifyAttributes(connector, attributeListRequest()).isEmpty());
+    }
+
+    private static String schemaJson(String name) {
+        return """
+                [
+                  {
+                    "uuid": "11111111-1111-1111-1111-111111111111",
+                    "name": "%s",
+                    "type": "data",
+                    "contentType": "string",
+                    "version": 3
+                  }
+                ]
+                """.formatted(name);
+    }
+
+    private static CertificateAttributeListRequestDtoV3 attributeListRequest() {
+        CertificateAttributeListRequestDtoV3 request = new CertificateAttributeListRequestDtoV3();
+        request.setAuthorityAttributes(List.of());
+        request.setRaProfileAttributes(List.of());
+        return request;
     }
 }

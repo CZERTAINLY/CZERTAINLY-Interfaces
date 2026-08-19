@@ -9,7 +9,7 @@ import java.io.Serializable;
 /** OpenAPI schema for the polymorphic {@link KeyCreationStatusResponseV2Dto} hierarchy. */
 @Schema(name = "KeyCreationStatusResponseInterface",
         description = "Status of an asynchronous key-creation operation selected by key request type", type = "object",
-        discriminatorProperty = "keyRequestType",
+        additionalProperties = Schema.AdditionalPropertiesValue.FALSE, discriminatorProperty = "keyRequestType",
         discriminatorMapping = {
                 @DiscriminatorMapping(value = KeyRequestType.Codes.SECRET,
                         schema = SecretKeyOperationStatusResponseV2Dto.class),

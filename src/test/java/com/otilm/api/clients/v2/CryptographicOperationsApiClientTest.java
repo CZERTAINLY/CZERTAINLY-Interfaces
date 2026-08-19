@@ -12,6 +12,7 @@ import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.DecryptDataResponseV2Dto;
@@ -20,7 +21,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -87,6 +87,29 @@ class CryptographicOperationsApiClientTest {
               "version": 2,
               "properties": {},
               "content": ["provider-key-1"]
+            }
+            """;
+    private static final String VALID_TRACKING_REQUEST_JSON = """
+            {
+              "operationMeta": [{
+                "uuid": "00000000-0000-0000-0000-000000000001",
+                "name": "provider handle",
+                "version": 2,
+                "type": "meta",
+                "content": [{
+                  "reference": "provider-key-1",
+                  "data": "provider-key-1"
+                }],
+                "contentType": "string",
+                "properties": {
+                  "label": null,
+                  "visible": true,
+                  "group": null,
+                  "global": false,
+                  "overwrite": false,
+                  "protectionLevel": "none"
+                }
+              }]
             }
             """;
 
@@ -245,7 +268,7 @@ class CryptographicOperationsApiClientTest {
     void signData_returnsAsynchronousResponse() throws ConnectorException {
         // given
         String responseJson = """
-                {"signOperationMeta":[%s]}
+                {"operationMeta":[%s]}
                 """.formatted(VALID_METADATA_JSON);
         stubJsonResponse(SIGN_PATH, HttpStatus.ACCEPTED, responseJson);
 
@@ -256,7 +279,7 @@ class CryptographicOperationsApiClientTest {
         // then
         assertEquals(HttpStatus.ACCEPTED, result.getStatusCode());
         assertNotNull(result.getBody());
-        assertEquals("provider handle", result.getBody().getSignOperationMeta().get(0).getName());
+        assertEquals("provider handle", result.getBody().getOperationMeta().get(0).getName());
         verifySignRequest(OperationExecutionMode.ASYNCHRONOUS);
     }
 
@@ -481,11 +504,13 @@ class CryptographicOperationsApiClientTest {
     }
 
     private void verifyOperationMetadataRequest(String path) {
+        boolean ignoreArrayOrder = false;
+        boolean ignoreExtraElements = false;
         mockServer
                 .verify(WireMock
                         .postRequestedFor(WireMock.urlEqualTo(path))
                         .withRequestBody(WireMock
-                                .matchingJsonPath("$.operationMeta[0].name", WireMock.equalTo("provider handle"))));
+                                .equalToJson(VALID_TRACKING_REQUEST_JSON, ignoreArrayOrder, ignoreExtraElements)));
     }
 
     private void stubJsonResponse(String path, HttpStatus status, String body) {
@@ -528,8 +553,8 @@ class CryptographicOperationsApiClientTest {
         return request;
     }
 
-    private static SignOperationScopedRequestV2Dto signOperationRequest() {
-        SignOperationScopedRequestV2Dto request = withValidKeyScope(new SignOperationScopedRequestV2Dto());
+    private static OperationTrackingRequestV2Dto signOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }

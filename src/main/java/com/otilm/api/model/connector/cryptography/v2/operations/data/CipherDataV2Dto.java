@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.operations.data;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(name = "CipherDataV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class CipherDataV2Dto implements IdentifiedDataV2Dto {
 
     @Schema(description = "Plaintext or a self-contained encrypted representation, depending on the operation "
@@ -31,4 +33,10 @@ public class CipherDataV2Dto implements IdentifiedDataV2Dto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "identifier is required")
     private String identifier;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 cipher data property: " + property);
+    }
 }

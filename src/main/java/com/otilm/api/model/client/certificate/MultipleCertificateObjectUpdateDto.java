@@ -1,5 +1,6 @@
 package com.otilm.api.model.client.certificate;
 
+import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.core.logging.Loggable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
@@ -20,6 +21,14 @@ public class MultipleCertificateObjectUpdateDto implements Loggable {
 
     @Schema(description = "RA Profile UUID (set to empty string to remove certificate from RA profile)")
     private String raProfileUuid;
+
+    @Schema(description = "Identify-operation dynamic attributes, as listed by "
+            + "GET /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/identify for the target "
+            + "RA profile. Used only when raProfileUuid assigns a new RA profile, which identifies each certificate "
+            + "at its authority. Applies to every certificate in the batch: the request carries a single "
+            + "raProfileUuid, so one authority and one identify schema govern the whole update. Optional — an "
+            + "authority that offers no identify schema needs none.")
+    private List<RequestAttribute> attributes;
 
     @Schema(description = "List of Certificate UUIDs")
     private List<String> certificateUuids;

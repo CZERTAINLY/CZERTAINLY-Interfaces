@@ -11,7 +11,11 @@ import java.io.Serializable;
  *
  * <p>
  * The concrete subtype is determined by the {@code type} discriminator ({@link SigningWorkflowType}).
- * {@code RAW_SIGNING} is excluded — raw signing does not invoke a Signature Formatting Provider.
+ * </p>
+ *
+ * <p>
+ * {@link SigningWorkflowType#TIMESTAMPING} is the only workflow this union carries. {@code RAW_SIGNING} invokes no
+ * formatting provider at all, and {@code CONTENT_SIGNING} is served by the Content Signing Formatting contract instead.
  * </p>
  */
 @Schema(name = "FormatResponseInterface",
@@ -19,10 +23,8 @@ import java.io.Serializable;
         discriminatorProperty = "type",
         discriminatorMapping = {
                 @DiscriminatorMapping(value = SigningWorkflowType.Codes.TIMESTAMPING,
-                        schema = TimestampingFormatResponseRequestDto.class),
-                @DiscriminatorMapping(value = SigningWorkflowType.Codes.CONTENT_SIGNING,
-                        schema = ContentSigningFormatResponseRequestDto.class),},
-        oneOf = {TimestampingFormatResponseRequestDto.class, ContentSigningFormatResponseRequestDto.class,})
+                        schema = TimestampingFormatResponseRequestDto.class),},
+        oneOf = {TimestampingFormatResponseRequestDto.class,})
 public interface FormatResponseInterface extends Serializable {
 
     @Schema(description = "Signing workflow type", requiredMode = Schema.RequiredMode.REQUIRED,

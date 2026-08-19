@@ -25,7 +25,11 @@ public enum ConnectorInterface implements IPlatformEnum {
     NOTIFICATION("notification", "Notification", InterfaceCategory.FUNCTIONAL),
     SECRET("secret", "Secret", InterfaceCategory.FUNCTIONAL),
     SIGNATURE_FORMATTING("signatureFormatting", "Signature Formatting", InterfaceCategory.FUNCTIONAL),
-    SIGNING("signing", "Signing", InterfaceCategory.FUNCTIONAL);
+    // Content-signing formatting
+    CADES_FORMATTING("cadesFormatting", "CAdES Formatting", InterfaceCategory.FUNCTIONAL),
+    JADES_FORMATTING("jadesFormatting", "JAdES Formatting", InterfaceCategory.FUNCTIONAL),
+    PADES_FORMATTING("padesFormatting", "PAdES Formatting", InterfaceCategory.FUNCTIONAL),
+    XADES_FORMATTING("xadesFormatting", "XAdES Formatting", InterfaceCategory.FUNCTIONAL);
 
     /**
      * Groups a connector interface as a common baseline interface (info/health/metrics/attributes) or a
