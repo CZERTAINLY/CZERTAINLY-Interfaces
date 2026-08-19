@@ -65,7 +65,7 @@ public enum Resource implements IPlatformEnum {
     CRYPTOGRAPHIC_KEY(Codes.CRYPTOGRAPHIC_KEY, "Key", false, true, true, true),
 
     // APPROVALS
-    APPROVAL_PROFILE("approvalProfiles", "Approval profile"),
+    APPROVAL_PROFILE(Codes.APPROVAL_PROFILE, "Approval profile"),
     APPROVAL(Codes.APPROVAL, "Approval"),
 
     // COMMENTS
@@ -245,6 +245,7 @@ public enum Resource implements IPlatformEnum {
     public static class Codes {
         public static final String AUTHORITY = "authorities";
         public static final String APPROVAL = "approvals";
+        public static final String APPROVAL_PROFILE = "approvalProfiles";
         public static final String COMMENT = "comments";
         public static final String NOTIFICATION_PROFILE = "notificationProfiles";
         public static final String RA_PROFILE = "raProfiles";
