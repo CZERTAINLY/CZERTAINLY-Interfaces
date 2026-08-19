@@ -33,6 +33,7 @@ public class CertificateSignRequestDtoV3 extends AuthorityV3ScopedRequestDto {
 
     @Schema(description = "Issue-specific dynamic attributes (schema from /issue/attributes)",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ToString.Exclude
     private List<RequestAttribute> attributes;
 
     @Schema(description = "Connector-defined metadata. On issue against a prior registration, "
