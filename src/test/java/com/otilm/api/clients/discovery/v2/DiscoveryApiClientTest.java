@@ -185,7 +185,7 @@ class DiscoveryApiClientTest {
                                 .aResponse()
                                 .withStatus(202)
                                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                                .withBody("{\"meta\":[]}")));
+                                .withBody("{\"meta\":[],\"stoppable\":true}")));
 
         DiscoveryInitiateRequestDto request = new DiscoveryInitiateRequestDto();
         request.setRunId(RUN_ID);
@@ -195,6 +195,7 @@ class DiscoveryApiClientTest {
 
         Assertions.assertNotNull(response.getMeta());
         Assertions.assertTrue(response.getMeta().isEmpty());
+        Assertions.assertEquals(Boolean.TRUE, response.getStoppable());
     }
 
     /** Pins the run-request body shape (the DTO shared by status, stop, resume and cancel). */
@@ -285,6 +286,8 @@ class DiscoveryApiClientTest {
 
         Assertions.assertNotNull(response.getMeta());
         Assertions.assertTrue(response.getMeta().isEmpty());
+        // The stub omits stoppable: absent must decode as null (undeclared), never a defaulted false.
+        Assertions.assertNull(response.getStoppable());
     }
 
     @Test

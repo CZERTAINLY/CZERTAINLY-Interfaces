@@ -117,9 +117,11 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
      * flag.
      */
     @Schema(description = "Whether this run can be stopped and later resumed, as declared by the connector "
-            + "when the run was initiated (refreshed on resume). Always present; false for runs "
-            + "against v1 connectors. A client renders the stop and resume controls from this flag "
-            + "alone; the connector may still refuse a stop at runtime past the point of no return.",
+            + "at initiate (refreshed on resume) or derived by Core from the discoveryStopResume "
+            + "feature flag when the connector left it undeclared. Always present; false for runs "
+            + "against v1 connectors. This flag says whether the run has the capability; the run "
+            + "status decides which control is currently valid (stop while in progress, resume "
+            + "while stopped). The connector may still refuse a stop at runtime past the point of " + "no return.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean stoppable;

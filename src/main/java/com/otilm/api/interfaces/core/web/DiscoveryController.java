@@ -224,7 +224,7 @@ public interface DiscoveryController extends AuthProtectedController {
     @GetMapping(path = "/{connectorUuid}/resources", produces = {"application/json"})
     List<DiscoverySupportedResourceDto> listDiscoveryResources(
             @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid)
-            throws NotFoundException;
+            throws NotFoundException, ConnectorException;
 
     /**
      * Relays the run-level attribute schema from a Discovery Provider.

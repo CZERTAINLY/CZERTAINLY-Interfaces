@@ -93,7 +93,7 @@ class DiscoveryDetailDtoTest {
     }
 
     @Test
-    void v1RunCarriesTheSynthesizedListsAndOmitsTheOptionalPair() throws Exception {
+    void v1RunCarriesTheSynthesizedFieldsAndOmitsTheOptionalPair() throws Exception {
         String json = mapper.writeValueAsString(v1Run());
         DiscoveryDetailDto back = mapper.readValue(json, DiscoveryDetailDto.class);
 
