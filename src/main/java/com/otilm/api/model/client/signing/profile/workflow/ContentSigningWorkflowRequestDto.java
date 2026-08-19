@@ -47,7 +47,8 @@ public class ContentSigningWorkflowRequestDto extends WorkflowRequestDto {
 
     @Valid
     @Schema(description = "Source of the timestamps embedded at level TIMESTAMPED and above. "
-            + "Required when maxLevel is TIMESTAMPED or higher; must be omitted for delegated signing.",
+            + "Required when maxLevel is TIMESTAMPED or higher, and must be omitted when maxLevel is SIGNED, "
+            + "which embeds no timestamp. Must be omitted for delegated signing.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private TimestampSourceRequestDto timestampSource;
 

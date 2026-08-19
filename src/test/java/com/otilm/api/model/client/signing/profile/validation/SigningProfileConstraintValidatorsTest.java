@@ -44,6 +44,10 @@ class SigningProfileConstraintValidatorsTest {
         return violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals(path));
     }
 
+    private <T> boolean hasViolationWithMessage(Set<ConstraintViolation<T>> violations, String message) {
+        return violations.stream().anyMatch(v -> v.getMessage().equals(message));
+    }
+
     private StaticKeyManagedSigningRequestDto managedScheme() {
         StaticKeyManagedSigningRequestDto scheme = new StaticKeyManagedSigningRequestDto();
         scheme.setCertificateUuid(UUID.randomUUID());
@@ -466,6 +470,31 @@ class SigningProfileConstraintValidatorsTest {
                 .validate(profileRequest(managedScheme(), contentSigningWorkflow(SignatureLevel.SIGNED)));
 
         assertFalse(hasViolationOn(violations, "workflow.timestampSource"));
+    }
+
+    /** A source at SIGNED would never be invoked, so storing it is the same mistake as omitting a needed one. */
+    @Test
+    void aManagedProfileAtSignedCarryingATimestampSourceIsRejected() {
+        ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.SIGNED);
+        workflow.setTimestampSource(new InternalTimestampSourceRequestDto(UUID.randomUUID()));
+
+        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
+                .validate(profileRequest(managedScheme(), workflow));
+
+        assertTrue(hasViolationOn(violations, "workflow.timestampSource"));
+        assertTrue(hasViolationWithMessage(violations, "timestampSource must be omitted when maxLevel is SIGNED"));
+    }
+
+    /** Delegated signing rejects the source on its own grounds, so maxLevel never gets a say. */
+    @Test
+    void aDelegatedProfileAtNoLevelCarryingATimestampSourceIsRejectedAsDelegated() {
+        ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
+        workflow.setTimestampSource(new InternalTimestampSourceRequestDto(UUID.randomUUID()));
+
+        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
+                .validate(profileRequest(delegatedScheme(), workflow));
+
+        assertTrue(hasViolationWithMessage(violations, "timestampSource must be omitted for delegated signing"));
     }
 
     @Test
