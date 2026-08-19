@@ -33,11 +33,12 @@ public class DiscoveryInitiateResponseDto {
      * Declared per run because checkpointability may depend on the resources scanned and the scan parameters, not only
      * on the connector. Core snapshots the value onto the run and renders the stop and resume controls from it.
      */
-    @Schema(description = "Whether this run can be stopped and later resumed. May only narrow the "
-            + "discoveryStopResume feature flag, never widen it: true without the flag advertised is a "
-            + "contract violation and Core clamps the run to not-stoppable. Absent means undeclared — "
-            + "Core gates on the flag alone. Each resume response replaces the value; omitting it "
-            + "reverts the run to flag-gating. The connector may still refuse a stop at runtime past "
-            + "the point of no return.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Whether this run can be stopped and later resumed.\n\n"
+            + "**Feature gate:** may only narrow the discoveryStopResume feature flag, never widen it — "
+            + "true without the flag advertised is a contract violation and Core clamps the run to "
+            + "not-stoppable.\n\n" + "**Absent:** undeclared — Core gates on the flag alone.\n\n"
+            + "**Refresh:** each resume response replaces the value; omitting it reverts the run to "
+            + "flag-gating.\n\n" + "**Runtime:** the connector may still refuse a stop past the point of no return.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean stoppable;
 }
