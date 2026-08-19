@@ -112,16 +112,16 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     private List<String> runMessages;
 
     /**
-     * <b>Presence:</b> synthesized as {@code false} for a run against a v1 connector, which cannot stop; for a v2 run
-     * whose connector left it undeclared at initiate, synthesized from the interface-level {@code discoveryStopResume}
-     * flag.
+     * <b>Provenance:</b> declared by the connector at initiate and refreshed on resume; derived by Core from the
+     * interface-level {@code discoveryStopResume} flag when the connector left it undeclared.
+     *
+     * <p>
+     * <b>Presence:</b> synthesized as {@code false} for a run against a v1 connector, which cannot stop.
      */
-    @Schema(description = "Whether this run can be stopped and later resumed, as declared by the connector "
-            + "at initiate (refreshed on resume) or derived by Core from the discoveryStopResume "
-            + "feature flag when the connector left it undeclared. Always present; false for runs "
-            + "against v1 connectors. This flag says whether the run has the capability; the run "
-            + "status decides which control is currently valid (stop while in progress, resume "
-            + "while stopped). The connector may still refuse a stop at runtime past the point of " + "no return.",
+    @Schema(description = "Whether this run can be stopped and later resumed. Always present; false for "
+            + "runs against v1 connectors. This flag says whether the run has the capability; the run "
+            + "status decides which control is currently valid (stop while in progress, resume while "
+            + "stopped). The connector may still refuse a stop at runtime past the point of no return.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean stoppable;

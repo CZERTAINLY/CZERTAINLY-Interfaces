@@ -29,15 +29,15 @@ public class DiscoveryInitiateResponseDto {
     @ToString.Exclude
     private List<MetadataAttribute> meta;
 
-    @Schema(description = "Whether this run can be stopped and later resumed. Declared per run because "
-            + "checkpointability may depend on the resources scanned and the scan parameters, not only on "
-            + "the connector as a whole. Core snapshots the value onto the run and renders the stop and "
-            + "resume controls from it; the connector may still refuse a stop at runtime past the point "
-            + "of no return. The declaration can only narrow the interface-level discoveryStopResume "
-            + "feature flag, never widen it: true from a connector that does not advertise the flag is a "
-            + "contract violation, and Core clamps the run to not-stoppable. Absent means undeclared — "
-            + "Core then gates on the flag alone. Each resume response replaces the snapshot the same "
-            + "way: a resume that omits the field reverts the run to flag-gating; the initiate-time "
-            + "declaration is not retained.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    /**
+     * Declared per run because checkpointability may depend on the resources scanned and the scan parameters, not only
+     * on the connector. Core snapshots the value onto the run and renders the stop and resume controls from it.
+     */
+    @Schema(description = "Whether this run can be stopped and later resumed. May only narrow the "
+            + "discoveryStopResume feature flag, never widen it: true without the flag advertised is a "
+            + "contract violation and Core clamps the run to not-stoppable. Absent means undeclared — "
+            + "Core gates on the flag alone. Each resume response replaces the value; omitting it "
+            + "reverts the run to flag-gating. The connector may still refuse a stop at runtime past "
+            + "the point of no return.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean stoppable;
 }
