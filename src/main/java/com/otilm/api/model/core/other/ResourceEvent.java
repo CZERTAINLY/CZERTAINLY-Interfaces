@@ -13,6 +13,7 @@ import com.otilm.api.model.common.events.data.CertificateExpiringEventData;
 import com.otilm.api.model.common.events.data.CertificateNotCompliantEventData;
 import com.otilm.api.model.common.events.data.CertificateRegisteredEventData;
 import com.otilm.api.model.common.events.data.CertificateStatusChangedEventData;
+import com.otilm.api.model.common.events.data.CommentEventData;
 import com.otilm.api.model.common.events.data.DiscoveryFinishedEventData;
 import com.otilm.api.model.common.events.data.EventData;
 import com.otilm.api.model.common.events.data.ScheduledJobFinishedEventData;
@@ -62,6 +63,14 @@ public enum ResourceEvent implements IPlatformEnum {
     APPROVAL_CLOSED(Codes.APPROVAL_CLOSED, "Approval closed",
             "Event after approval was closed informing about the result of approval process", Resource.APPROVAL,
             ApprovalEventData.class, false),
+
+    // Comment
+    COMMENT_CREATED(Codes.COMMENT_CREATED, "Comment created",
+            "Event when a comment or reply is posted on an object, with the host resource, object and comment detail",
+            Resource.COMMENT, List.of(Resource.GROUP), CommentEventData.class, false),
+    COMMENT_RESOLVED(Codes.COMMENT_RESOLVED, "Comment resolved",
+            "Event when a comment thread is resolved, with the host resource, object, thread and resolving actor",
+            Resource.COMMENT, List.of(Resource.GROUP), CommentEventData.class, false),
 
     // Scheduler
     SCHEDULED_JOB_FINISHED(Codes.SCHEDULED_JOB_FINISHED, "Scheduled job finished",
@@ -147,6 +156,8 @@ public enum ResourceEvent implements IPlatformEnum {
 
         public static final String APPROVAL_REQUESTED = "approval_requested";
         public static final String APPROVAL_CLOSED = "approval_closed";
+        public static final String COMMENT_CREATED = "comment_created";
+        public static final String COMMENT_RESOLVED = "comment_resolved";
 
         public static final String SCHEDULED_JOB_FINISHED = "scheduled_job_finished";
         public static final String CERTIFICATE_NOT_COMPLIANT = "certificate_not_compliant";
