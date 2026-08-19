@@ -72,7 +72,7 @@ public enum Resource implements IPlatformEnum {
     COMMENT(Codes.COMMENT, "Comment"),
 
     // NOTIFICATIONS
-    NOTIFICATION_PROFILE("notificationProfiles", "Notification profile"),
+    NOTIFICATION_PROFILE(Codes.NOTIFICATION_PROFILE, "Notification profile"),
     NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // WORKFLOWS
@@ -246,6 +246,7 @@ public enum Resource implements IPlatformEnum {
         public static final String AUTHORITY = "authorities";
         public static final String APPROVAL = "approvals";
         public static final String COMMENT = "comments";
+        public static final String NOTIFICATION_PROFILE = "notificationProfiles";
         public static final String RA_PROFILE = "raProfiles";
         public static final String CERTIFICATE = "certificates";
         public static final String CERTIFICATE_REQUEST = "certificateRequests";
