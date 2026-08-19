@@ -69,7 +69,8 @@ public enum ResourceEvent implements IPlatformEnum {
             "Event when a comment or reply is posted on an object, with the host resource, object and comment detail",
             Resource.COMMENT, List.of(Resource.GROUP), CommentEventData.class, false),
     COMMENT_RESOLVED(Codes.COMMENT_RESOLVED, "Comment resolved",
-            "Event when a comment thread is resolved, with the host resource, object, thread and resolving actor",
+            "Event when a comment thread is resolved or reopened, with the host resource, object, thread and acting "
+                    + "user; the resolved flag in the payload distinguishes the two",
             Resource.COMMENT, List.of(Resource.GROUP), CommentEventData.class, false),
 
     // Scheduler

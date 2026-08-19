@@ -42,15 +42,19 @@ public class CommentEventData implements EventData {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String body;
 
-    @Schema(description = "UUID of the resolving user; populated by the resolved event only",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Whether the thread is resolved after the change; populated by the comment_resolved event "
+            + "to distinguish resolving from reopening", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean resolved;
+
+    @Schema(description = "UUID of the user who changed the resolution state; populated by the comment_resolved "
+            + "event only", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID resolvedByUuid;
 
-    @Schema(description = "Username of the resolving user; populated by the resolved event only",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Username of the user who changed the resolution state; populated by the comment_resolved "
+            + "event only", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String resolvedByUsername;
 
-    @Schema(description = "Resolution timestamp; populated by the resolved event only",
+    @Schema(description = "Timestamp of the resolution state change; populated by the comment_resolved event only",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private OffsetDateTime resolvedAt;
 }
