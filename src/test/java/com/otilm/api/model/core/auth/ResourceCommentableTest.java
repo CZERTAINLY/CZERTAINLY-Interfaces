@@ -1,5 +1,7 @@
 package com.otilm.api.model.core.auth;
 
+import java.util.EnumSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,12 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ResourceCommentableTest {
 
+    private static final Set<Resource> SUPPORTED = EnumSet
+            .of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY, Resource.TOKEN, Resource.DISCOVERY, Resource.SECRET,
+                    Resource.VAULT, Resource.AUTHORITY, Resource.ENTITY, Resource.LOCATION, Resource.CONNECTOR,
+                    Resource.APPROVAL, Resource.RA_PROFILE, Resource.VAULT_PROFILE, Resource.COMPLIANCE_PROFILE,
+                    Resource.APPROVAL_PROFILE, Resource.NOTIFICATION_PROFILE, Resource.SIGNING_PROFILE,
+                    Resource.TOKEN_PROFILE, Resource.ACME_PROFILE, Resource.SCEP_PROFILE, Resource.CMP_PROFILE,
+                    Resource.TSP_PROFILE);
+
     @Test
-    void commentableResourcesContainExactlyTheRoundOneSet() {
-        assertEquals(22, Resource.getCommentableResources().size());
-        assertTrue(Resource.getCommentableResources().contains(Resource.APPROVAL));
-        assertFalse(Resource.getCommentableResources().contains(Resource.CERTIFICATE_REQUEST));
-        assertFalse(Resource.getCommentableResources().contains(Resource.COMMENT));
+    void commentableResourcesContainExactlyTheSupportedSet() {
+        assertEquals(SUPPORTED, Resource.getCommentableResources());
         assertTrue(Resource.CERTIFICATE.commentable());
         assertFalse(Resource.USER.commentable());
     }

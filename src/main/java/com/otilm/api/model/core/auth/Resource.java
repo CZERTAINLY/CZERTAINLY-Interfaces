@@ -225,6 +225,10 @@ public enum Resource implements IPlatformEnum {
         return commentableResources.contains(this);
     }
 
+    /**
+     * The authoritative set of resources comment threads can be attached to. The returned set is immutable; making a
+     * new resource commentable means extending {@code commentableResources}, never mutating this view.
+     */
     public static Set<Resource> getCommentableResources() {
         return Collections.unmodifiableSet(commentableResources);
     }
