@@ -42,7 +42,9 @@ public interface DiscoveryOperationController extends AuthProtectedConnectorCont
                     + "runId again with an identical payload MUST be answered idempotently with another 202.")
     @ApiResponses({
             @ApiResponse(responseCode = "202",
-                    description = "Run accepted; meta carries the connector's opaque run handle, replayed on every subsequent lifecycle call"),
+                    description = "Run accepted; meta carries the connector's opaque run handle, replayed on every "
+                            + "subsequent lifecycle call, and stoppable, when present, declares whether this run "
+                            + "can be stopped and resumed"),
             @ApiResponse(responseCode = "422",
                     description = "One or more requested resources or attributes are unsupported or invalid (errorCode VALIDATION_FAILED)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
@@ -121,7 +123,7 @@ public interface DiscoveryOperationController extends AuthProtectedConnectorCont
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class))),
             @ApiResponse(responseCode = "422",
-                    description = "Run cannot be stopped: unsupported capability for its resource types, or not in a stoppable state (errorCode OPERATION_PAST_POINT_OF_NO_RETURN)",
+                    description = "Run cannot be stopped: past the point of no return, or the connector cannot checkpoint this run (errorCode OPERATION_PAST_POINT_OF_NO_RETURN). Core's own gate rejects stops for runs whose effective stoppability is false before they reach the connector, so this refusal is the connector's runtime authority",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/stop", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -134,7 +136,8 @@ public interface DiscoveryOperationController extends AuthProtectedConnectorCont
                     + "connector never restarts numbering for a resumed run.")
     @ApiResponses({
             @ApiResponse(responseCode = "202",
-                    description = "Resume accepted; meta carries the connector's (possibly updated) opaque run handle"),
+                    description = "Resume accepted; meta carries the connector's (possibly updated) opaque run handle, "
+                            + "and stoppable, when present, re-declares whether the resumed run can be stopped again"),
             @ApiResponse(responseCode = "404",
                     description = "Run not tracked by the connector (errorCode OPERATION_NOT_TRACKED)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
