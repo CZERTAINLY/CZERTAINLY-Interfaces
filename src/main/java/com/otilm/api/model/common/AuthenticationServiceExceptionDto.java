@@ -30,8 +30,13 @@ public class AuthenticationServiceExceptionDto {
         this.statusCode = statusCode;
     }
 
+    /**
+     * Falls back to {@code 400} only when no status was set — a payload deserialized from the authentication service
+     * may omit the field, and callers such as {@code ExceptionHandlingAdvice} pass the result straight to
+     * {@code ResponseEntity.status(...)}, which rejects null.
+     */
     public Integer getStatusCode() {
-        return statusCode = HttpStatus.BAD_REQUEST.value();
+        return statusCode != null ? statusCode : HttpStatus.BAD_REQUEST.value();
     }
 
     public void setStatusCode(Integer statusCode) {
