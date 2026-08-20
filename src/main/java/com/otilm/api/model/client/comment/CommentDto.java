@@ -31,10 +31,6 @@ public class CommentDto {
     @Schema(description = "Comment body as verbatim Markdown source", requiredMode = Schema.RequiredMode.REQUIRED)
     private String body;
 
-    @Schema(description = "UUID of the thread root when this comment is a reply; null on thread roots",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private UUID parentUuid;
-
     @Schema(description = "Whether the thread is resolved; thread roots only",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean resolved;
