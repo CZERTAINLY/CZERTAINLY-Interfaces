@@ -19,6 +19,8 @@ public enum Operation implements IPlatformEnum {
     FORCE_DELETE("forceDelete", "Force delete"),
     ADD("add", "Add"),
     REMOVE("remove", "Remove"),
+    RESOLVE("resolve", "Resolve"),
+    UNRESOLVE("unresolve", "Unresolve"),
     REQUEST("request", "Request"),
     REGISTER("register", "Register"),
     ENABLE("enable", "Enable"),
