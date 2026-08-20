@@ -94,12 +94,9 @@ class DiscoveryApiClientTest {
 
         Assertions.assertEquals(2, result.size());
         Assertions.assertEquals(Resource.CERTIFICATE, result.get(0).getResource());
+        // Entry 1 still carries the retired per-resource "capabilities" field: a connector built against
+        // the earlier contract draft must keep connecting, so the reader tolerates and ignores it.
         Assertions.assertEquals(Resource.CRYPTOGRAPHIC_KEY, result.get(1).getResource());
-        // Absent (entry 0) vs empty (entry 1) capabilities are contractually distinct, and a client
-        // round-trip is where a careless deserializer would normalize one into the other.
-        Assertions.assertNull(result.get(0).getCapabilities());
-        Assertions.assertNotNull(result.get(1).getCapabilities());
-        Assertions.assertTrue(result.get(1).getCapabilities().isEmpty());
     }
 
     /**
@@ -188,7 +185,7 @@ class DiscoveryApiClientTest {
                                 .aResponse()
                                 .withStatus(202)
                                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                                .withBody("{\"meta\":[]}")));
+                                .withBody("{\"meta\":[],\"stoppable\":true}")));
 
         DiscoveryInitiateRequestDto request = new DiscoveryInitiateRequestDto();
         request.setRunId(RUN_ID);
@@ -198,6 +195,7 @@ class DiscoveryApiClientTest {
 
         Assertions.assertNotNull(response.getMeta());
         Assertions.assertTrue(response.getMeta().isEmpty());
+        Assertions.assertEquals(Boolean.TRUE, response.getStoppable());
     }
 
     /** Pins the run-request body shape (the DTO shared by status, stop, resume and cancel). */
@@ -288,6 +286,8 @@ class DiscoveryApiClientTest {
 
         Assertions.assertNotNull(response.getMeta());
         Assertions.assertTrue(response.getMeta().isEmpty());
+        // The stub omits stoppable: absent must decode as null (undeclared), never a defaulted false.
+        Assertions.assertNull(response.getStoppable());
     }
 
     @Test

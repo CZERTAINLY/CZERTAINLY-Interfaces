@@ -5,7 +5,6 @@ import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.client.metadata.MetadataResponseDto;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.connector.discovery.v2.DiscoveryProgressDto;
-import com.otilm.api.model.connector.discovery.v2.DiscoveryResourceCapability;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryStatus;
 import com.otilm.api.model.core.workflows.TriggerDto;
@@ -63,17 +62,14 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "List of associated triggers", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerDto> triggers = new ArrayList<>();
 
-    // The four fields below are the discovery v2 additions. Each is individually annotated
-    // @JsonInclude(NON_NULL) rather than the class carrying it, so a v1 run's payload keeps
-    // emitting its existing nullable fields (message, startTime, endTime, ...) exactly as before —
-    // a class-level annotation would have silently changed the shape of every v1 response.
-    // resources and effectiveCapabilities are nonetheless always present: Core synthesizes both for a
-    // v1-connector run, so their NON_NULL only keeps a broken mapper's null off the wire as a loud
-    // absence rather than a quiet null.
+    // The four fields below are the discovery v2 additions, each individually @JsonInclude(NON_NULL) so a
+    // v1 run's payload keeps its existing shape — a class-level annotation would have silently changed
+    // every v1 response. resources and stoppable are still always present (Core synthesizes them for
+    // v1-connector runs); their NON_NULL only turns a broken mapper's null into a loud absence.
 
-    // The arraySchema indirection on the two typed lists is deliberate: a bare @Schema description on a
-    // collection member lands on the items schema — a $ref to a shared component — and swagger-core hoists
-    // it onto that component for every other API referencing it. arraySchema puts the text on the array.
+    // The arraySchema indirection is deliberate: a bare @Schema description on a collection member lands
+    // on the items schema — a $ref to a shared component — and swagger-core hoists it onto that component
+    // for every other API referencing it. arraySchema puts the text on the array.
     @ArraySchema(arraySchema = @Schema(description = "Resource types this run targets, as resource wire codes (e.g. "
             + "\"certificates\", \"keys\"). Always present: a run against a v1 connector reports "
             + "[\"certificates\"], synthesized by Core, so a client never inspects the connector "
@@ -87,10 +83,8 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
      * independently optional — a connector that cannot estimate a total still reports what it has processed.
      *
      * <p>
-     * The prose lives here and not in {@code @Schema}: the field's schema is a {@code $ref} to
-     * {@code DiscoveryProgressDto}, shared with the connector-facing status response, and OpenAPI 3.0 cannot carry a
-     * description beside a {@code $ref} — swagger-core would hoist it onto the shared component
-     * ({@code progressComponentsAreIdenticalFromEveryEntryPoint} pins this).
+     * The prose lives here and not in {@code @Schema} for the hoisting reason in the comment above
+     * ({@code progressComponentsAreIdenticalFromEveryEntryPoint} pins it).
      */
     @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -113,19 +107,17 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     private List<String> runMessages;
 
     /**
-     * <b>Aggregation:</b> computed from the connector's per-resource capabilities, where a null list is the connector's
-     * shorthand for every capability it advertises — expand it before intersecting, never treat it as an empty set.
+     * <b>Provenance:</b> declared by the connector at initiate and refreshed on resume; derived by Core from the
+     * interface-level {@code discoveryStopResume} flag when the connector left it undeclared.
      *
      * <p>
-     * <b>Presence:</b> synthesized as an empty list for a run against a v1 connector, which supports none of them.
+     * <b>Presence:</b> synthesized as {@code false} for a run against a v1 connector, which cannot stop.
      */
-    @ArraySchema(arraySchema = @Schema(
-            description = "Capabilities effective for this run: the intersection of what the connector's "
-                    + "discovery interface supports across every resource type the run targets — a "
-                    + "capability any targeted resource lacks is not listed. Always present: empty "
-                    + "means the run supports none of them, so a client renders the stop and resume "
-                    + "controls from this list alone.",
-            requiredMode = Schema.RequiredMode.REQUIRED))
+    @Schema(description = "Whether this run can be stopped and later resumed. Always present; false for "
+            + "runs against v1 connectors. This flag says whether the run has the capability; the run "
+            + "status decides which control is currently valid (stop while in progress, resume while "
+            + "stopped). The connector may still refuse a stop at runtime past the point of no return.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<DiscoveryResourceCapability> effectiveCapabilities;
+    private Boolean stoppable;
 }

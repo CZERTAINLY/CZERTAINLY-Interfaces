@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.discovery.v2;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.attribute.common.MetadataAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscoveryInitiateResponseDto {
 
     // Excluded from toString for the same reason the request side excludes it: meta is an opaque
@@ -26,4 +28,17 @@ public class DiscoveryInitiateResponseDto {
             + "run outright if this exceeds the cap.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @ToString.Exclude
     private List<MetadataAttribute> meta;
+
+    /**
+     * Declared per run because checkpointability may depend on the resources scanned and the scan parameters, not only
+     * on the connector. Core snapshots the value onto the run and renders the stop and resume controls from it.
+     */
+    @Schema(description = "Whether this run can be stopped and later resumed.\n\n"
+            + "**Feature gate:** may only narrow the discoveryStopResume feature flag, never widen it — "
+            + "true without the flag advertised is a contract violation and Core clamps the run to "
+            + "not-stoppable.\n\n" + "**Absent:** undeclared — Core gates on the flag alone.\n\n"
+            + "**Refresh:** each resume response replaces the value; omitting it reverts the run to "
+            + "flag-gating.\n\n" + "**Runtime:** the connector may still refuse a stop past the point of no return.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean stoppable;
 }

@@ -205,7 +205,7 @@ public interface DiscoveryController extends AuthProtectedController {
      *
      * <p>
      * <b>Keyed by connector UUID</b>, not by the run UUID the rest of this controller takes — see the interface Javadoc
-     * for why the three connector-keyed relays live here.
+     * for why the three connector-keyed relays live here. These rules cover all three relays:
      *
      * <p>
      * <b>Authorization:</b> gate on {@code Resource.CONNECTOR} — object-level, the way
@@ -213,10 +213,10 @@ public interface DiscoveryController extends AuthProtectedController {
      * gating there would silently skip per-connector ACLs.
      */
     @Operation(summary = "Get discoverable resources of a Discovery Provider",
-            description = "Returns the resource types this Connector's discovery interface advertises, as "
-                    + "synced from the Connector. For a Connector implementing only the v1 discovery "
-                    + "interface, Core synthesizes the single entry \"certificates\" with no capabilities, "
-                    + "without calling the Connector — a client renders one shape for both generations.")
+            description = "Returns the resource types this Connector's discovery interface supports, "
+                    + "relayed live from the Connector. For a Connector implementing only the v1 discovery "
+                    + "interface, Core synthesizes the single entry \"certificates\" without calling the "
+                    + "Connector — a client renders one shape for both generations.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Discoverable resources retrieved"),
             @ApiResponse(responseCode = "404", description = "Connector not found",
@@ -224,17 +224,11 @@ public interface DiscoveryController extends AuthProtectedController {
     @GetMapping(path = "/{connectorUuid}/resources", produces = {"application/json"})
     List<DiscoverySupportedResourceDto> listDiscoveryResources(
             @Parameter(description = "Discovery Provider Connector UUID") @PathVariable String connectorUuid)
-            throws NotFoundException;
+            throws NotFoundException, ConnectorException;
 
     /**
-     * Relays the run-level attribute schema from a Discovery Provider.
-     *
-     * <p>
-     * <b>Keyed by connector UUID</b>, not by the run UUID the rest of this controller takes.
-     *
-     * <p>
-     * <b>Authorization:</b> gate on {@code Resource.CONNECTOR}, never on {@code DISCOVERY} — no object access there, so
-     * gating on it would silently skip per-connector ACLs.
+     * Relays the run-level attribute schema from a Discovery Provider. Connector-keyed relay — keying and authorization
+     * rules on {@link #listDiscoveryResources}.
      */
     @Operation(summary = "Get run-level Discovery Attributes from a Discovery Provider",
             description = "Relays the run-level attribute definitions from the Connector's discovery "
@@ -255,14 +249,8 @@ public interface DiscoveryController extends AuthProtectedController {
             throws ValidationException, NotFoundException, ConnectorException;
 
     /**
-     * Relays the attribute schema refining one resource type from a Discovery Provider.
-     *
-     * <p>
-     * <b>Keyed by connector UUID</b>, not by the run UUID the rest of this controller takes.
-     *
-     * <p>
-     * <b>Authorization:</b> gate on {@code Resource.CONNECTOR}, never on {@code DISCOVERY} — no object access there, so
-     * gating on it would silently skip per-connector ACLs.
+     * Relays the attribute schema refining one resource type from a Discovery Provider. Connector-keyed relay — keying
+     * and authorization rules on {@link #listDiscoveryResources}.
      */
     @Operation(summary = "Get per-resource Discovery Attributes from a Discovery Provider",
             description = "Relays the attribute definitions that refine discovery of one resource type "
