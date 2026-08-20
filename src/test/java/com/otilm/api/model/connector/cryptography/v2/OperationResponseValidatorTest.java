@@ -1,13 +1,17 @@
 package com.otilm.api.model.connector.cryptography.v2;
 
+import com.otilm.api.model.client.cryptography.key.KeyRequestType;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
+import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.KeyPairDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
 import com.otilm.api.testsupport.ValidatorFixture;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AutoClose;
@@ -19,6 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validMetadata;
+import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validPrivateKeyDataResponse;
+import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validPublicKeyDataResponse;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validSecretKeyDataResponse;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.withValidTokenProfileScope;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,18 +42,18 @@ class OperationResponseValidatorTest {
     @MethodSource("validCreateKeyResponses")
     void validateCreateKey_acceptsValidResponse_forExecutionMode(CreateKeyCase testCase) {
         // given
-        OperationExecutionMode mode = testCase.mode();
+        CreateKeyRequestV2Dto request = createKeyRequest(KeyRequestType.SECRET, testCase.mode());
         ResponseEntity<? extends KeyCreationResponseV2Dto> response = testCase.response();
 
         // when
-        OperationValidationResult result = VALIDATOR.validateCreateKey(mode, response);
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
 
         // then
         assertValid(result);
     }
 
     @Test
-    void validateCreateKey_rejectsMissingExecutionMode() {
+    void validateCreateKey_rejectsMissingRequest() {
         // given
         ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
 
@@ -59,12 +65,38 @@ class OperationResponseValidatorTest {
     }
 
     @Test
-    void validateCreateKey_rejectsMissingResponse() {
+    void validateCreateKey_rejectsMissingExecutionMode() {
         // given
-        OperationExecutionMode mode = OperationExecutionMode.SYNCHRONOUS;
+        CreateKeyRequestV2Dto request = createKeyRequest(KeyRequestType.SECRET, null);
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
 
         // when
-        OperationValidationResult result = VALIDATOR.validateCreateKey(mode, null);
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateCreateKey_rejectsMissingKeyRequestType() {
+        // given
+        CreateKeyRequestV2Dto request = createKeyRequest(null, OperationExecutionMode.SYNCHRONOUS);
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateCreateKey_rejectsMissingResponse() {
+        // given
+        CreateKeyRequestV2Dto request = createKeyRequest(KeyRequestType.SECRET, OperationExecutionMode.SYNCHRONOUS);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, null);
 
         // then
         assertInvalid(result);
@@ -74,11 +106,11 @@ class OperationResponseValidatorTest {
     @MethodSource("createKeyResponsesWithContradictingStatus")
     void validateCreateKey_rejectsStatusContradictingExecutionMode(CreateKeyCase testCase) {
         // given
-        OperationExecutionMode mode = testCase.mode();
+        CreateKeyRequestV2Dto request = createKeyRequest(KeyRequestType.SECRET, testCase.mode());
         ResponseEntity<? extends KeyCreationResponseV2Dto> response = testCase.response();
 
         // when
-        OperationValidationResult result = VALIDATOR.validateCreateKey(mode, response);
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
 
         // then
         assertInvalid(result);
@@ -88,11 +120,11 @@ class OperationResponseValidatorTest {
     @MethodSource("createKeyResponsesWithoutBody")
     void validateCreateKey_rejectsMissingBody_forExecutionMode(CreateKeyCase testCase) {
         // given
-        OperationExecutionMode mode = testCase.mode();
+        CreateKeyRequestV2Dto request = createKeyRequest(KeyRequestType.SECRET, testCase.mode());
         ResponseEntity<? extends KeyCreationResponseV2Dto> response = testCase.response();
 
         // when
-        OperationValidationResult result = VALIDATOR.validateCreateKey(mode, response);
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
 
         // then
         assertInvalid(result);
@@ -102,11 +134,25 @@ class OperationResponseValidatorTest {
     @MethodSource("createKeyBodiesContradictingExecutionMode")
     void validateCreateKey_rejectsBodyContradictingExecutionMode(CreateKeyCase testCase) {
         // given
-        OperationExecutionMode mode = testCase.mode();
+        CreateKeyRequestV2Dto request = createKeyRequest(KeyRequestType.SECRET, testCase.mode());
         ResponseEntity<? extends KeyCreationResponseV2Dto> response = testCase.response();
 
         // when
-        OperationValidationResult result = VALIDATOR.validateCreateKey(mode, response);
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("createKeyResponsesWithMismatchedKeyRequestType")
+    void validateCreateKey_rejectsMismatchedKeyRequestType(CreateKeyTypeMismatchCase testCase) {
+        // given
+        CreateKeyRequestV2Dto request = createKeyRequest(testCase.requestType(), testCase.mode());
+        ResponseEntity<? extends KeyCreationResponseV2Dto> response = testCase.response();
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
 
         // then
         assertInvalid(result);
@@ -165,10 +211,24 @@ class OperationResponseValidatorTest {
     }
 
     @Test
-    void validateDestroy_rejectsBody_forSynchronousExecution() {
+    void validateDestroy_rejectsMissingBody_forSynchronousExecution() {
+        // given
+        OperationExecutionMode mode = OperationExecutionMode.SYNCHRONOUS;
+        ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok().build();
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateDestroy(mode, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateDestroy_rejectsOperationMetadata_forSynchronousExecution() {
         // given
         OperationExecutionMode mode = OperationExecutionMode.SYNCHRONOUS;
         KeyOperationResponseV2Dto body = new KeyOperationResponseV2Dto();
+        body.setOperationMeta(validMetadata());
         ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok(body);
 
         // when
@@ -346,6 +406,37 @@ class OperationResponseValidatorTest {
         assertInvalid(result);
     }
 
+    @Test
+    void validateSign_rejectsNullRequestItem_forSynchronousExecution() {
+        // given
+        String identifier = "item-1";
+        SignDataRequestV2Dto request = signRequest(OperationExecutionMode.SYNCHRONOUS, identifier);
+        request.setData(Collections.singletonList(null));
+        ResponseEntity<SignDataResponseV2Dto> response = synchronousSignResponse(identifier);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateSign(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateSign_rejectsNullResponseItem_forSynchronousExecution() {
+        // given
+        String identifier = "item-1";
+        SignDataRequestV2Dto request = signRequest(OperationExecutionMode.SYNCHRONOUS, identifier);
+        SignDataResponseV2Dto body = new SignDataResponseV2Dto();
+        body.setSignatures(Collections.singletonList(null));
+        ResponseEntity<SignDataResponseV2Dto> response = ResponseEntity.ok(body);
+
+        // when
+        OperationValidationResult result = VALIDATOR.validateSign(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
     static Stream<Named<CreateKeyCase>> validCreateKeyResponses() {
         return Stream
                 .of(named("synchronous",
@@ -387,10 +478,28 @@ class OperationResponseValidatorTest {
                                         ResponseEntity.accepted().body(asynchronousBodyWithKeyData))));
     }
 
+    static Stream<Named<CreateKeyTypeMismatchCase>> createKeyResponsesWithMismatchedKeyRequestType() {
+        return Stream
+                .of(named("synchronous secret request receives key pair",
+                        new CreateKeyTypeMismatchCase(KeyRequestType.SECRET, OperationExecutionMode.SYNCHRONOUS,
+                                ResponseEntity.ok(synchronousCreateKeyPairBody()))),
+                        named("asynchronous secret request receives key pair",
+                                new CreateKeyTypeMismatchCase(KeyRequestType.SECRET,
+                                        OperationExecutionMode.ASYNCHRONOUS,
+                                        ResponseEntity.accepted().body(asynchronousCreateKeyPairBody()))),
+                        named("synchronous key-pair request receives secret key",
+                                new CreateKeyTypeMismatchCase(KeyRequestType.KEY_PAIR,
+                                        OperationExecutionMode.SYNCHRONOUS, synchronousCreateKeyResponse())),
+                        named("asynchronous key-pair request receives secret key",
+                                new CreateKeyTypeMismatchCase(KeyRequestType.KEY_PAIR,
+                                        OperationExecutionMode.ASYNCHRONOUS, asynchronousCreateKeyResponse())));
+    }
+
     static Stream<Named<DestroyKeyCase>> validDestroyKeyResponses() {
         return Stream
                 .of(named("synchronous",
-                        new DestroyKeyCase(OperationExecutionMode.SYNCHRONOUS, ResponseEntity.ok().build())),
+                        new DestroyKeyCase(OperationExecutionMode.SYNCHRONOUS,
+                                ResponseEntity.ok(new KeyOperationResponseV2Dto()))),
                         named("asynchronous", new DestroyKeyCase(OperationExecutionMode.ASYNCHRONOUS,
                                 asynchronousDestroyKeyResponse())));
     }
@@ -439,7 +548,7 @@ class OperationResponseValidatorTest {
     static Stream<Named<SignCase>> signBodiesContradictingExecutionMode() {
         String identifier = "item-1";
         SignDataResponseV2Dto synchronousBodyWithOperationMetadata = synchronousSignBody(identifier);
-        synchronousBodyWithOperationMetadata.setSignOperationMeta(validMetadata());
+        synchronousBodyWithOperationMetadata.setOperationMeta(validMetadata());
         SignDataResponseV2Dto asynchronousBodyWithSignatures = asynchronousSignBody();
         asynchronousBodyWithSignatures.setSignatures(List.of(signatureItem(identifier)));
         return Stream
@@ -483,6 +592,28 @@ class OperationResponseValidatorTest {
         return body;
     }
 
+    private static KeyPairDataResponseV2Dto synchronousCreateKeyPairBody() {
+        KeyPairDataResponseV2Dto body = new KeyPairDataResponseV2Dto();
+        body.setPublicKeyData(validPublicKeyDataResponse());
+        body.setPrivateKeyData(validPrivateKeyDataResponse());
+        body.setKeyPairMeta(validMetadata());
+        return body;
+    }
+
+    private static KeyPairDataResponseV2Dto asynchronousCreateKeyPairBody() {
+        KeyPairDataResponseV2Dto body = new KeyPairDataResponseV2Dto();
+        body.setOperationMeta(validMetadata());
+        return body;
+    }
+
+    private static CreateKeyRequestV2Dto createKeyRequest(KeyRequestType keyRequestType,
+            OperationExecutionMode executionMode) {
+        CreateKeyRequestV2Dto request = new CreateKeyRequestV2Dto();
+        request.setKeyRequestType(keyRequestType);
+        request.setExecutionMode(executionMode);
+        return request;
+    }
+
     private static ResponseEntity<KeyOperationResponseV2Dto> asynchronousDestroyKeyResponse() {
         return ResponseEntity.accepted().body(asynchronousDestroyKeyBody());
     }
@@ -518,7 +649,7 @@ class OperationResponseValidatorTest {
 
     private static SignDataResponseV2Dto asynchronousSignBody() {
         SignDataResponseV2Dto response = new SignDataResponseV2Dto();
-        response.setSignOperationMeta(validMetadata());
+        response.setOperationMeta(validMetadata());
         return response;
     }
 
@@ -537,6 +668,10 @@ class OperationResponseValidatorTest {
     }
 
     private record CreateKeyCase(OperationExecutionMode mode,
+            ResponseEntity<? extends KeyCreationResponseV2Dto> response) {
+    }
+
+    private record CreateKeyTypeMismatchCase(KeyRequestType requestType, OperationExecutionMode mode,
             ResponseEntity<? extends KeyCreationResponseV2Dto> response) {
     }
 

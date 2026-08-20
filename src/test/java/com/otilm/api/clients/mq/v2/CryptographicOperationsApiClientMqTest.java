@@ -6,6 +6,7 @@ import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.DecryptDataResponseV2Dto;
@@ -14,7 +15,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -60,6 +60,7 @@ class CryptographicOperationsApiClientMqTest {
     private static final String VERIFY_PATH = BASE_PATH + "/verify";
     private static final String RANDOM_PATH = BASE_PATH + "/random";
     private static final String ITEM_IDENTIFIER = "item-1";
+    private static final String DIFFERENT_ITEM_IDENTIFIER = "different-item";
     private static final byte[] ITEM_DATA = {1};
 
     @AutoClose
@@ -136,6 +137,20 @@ class CryptographicOperationsApiClientMqTest {
     }
 
     @Test
+    void encryptData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        EncryptDataResponseV2Dto response = new EncryptDataResponseV2Dto();
+        response.setEncryptedData(List.of(new CipherDataV2Dto(ITEM_DATA, DIFFERENT_ITEM_IDENTIFIER)));
+        proxyClient.respondWith(response);
+
+        // when
+        Executable call = () -> client.encryptData(connector, cipherRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void decryptData_delegatesPostAndReturnsDecryptedData() throws ConnectorException {
         // given
         CipherDataRequestV2Dto request = cipherRequest();
@@ -155,6 +170,20 @@ class CryptographicOperationsApiClientMqTest {
     void decryptData_rejectsInvalidResponse() {
         // given
         proxyClient.respondWith(new DecryptDataResponseV2Dto());
+
+        // when
+        Executable call = () -> client.decryptData(connector, cipherRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
+    void decryptData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        DecryptDataResponseV2Dto response = new DecryptDataResponseV2Dto();
+        response.setDecryptedData(List.of(new CipherDataV2Dto(ITEM_DATA, DIFFERENT_ITEM_IDENTIFIER)));
+        proxyClient.respondWith(response);
 
         // when
         Executable call = () -> client.decryptData(connector, cipherRequest());
@@ -185,7 +214,7 @@ class CryptographicOperationsApiClientMqTest {
         // given
         SignDataRequestV2Dto request = signRequest(OperationExecutionMode.ASYNCHRONOUS);
         SignDataResponseV2Dto body = new SignDataResponseV2Dto();
-        body.setSignOperationMeta(validMetadata());
+        body.setOperationMeta(validMetadata());
         ResponseEntity<SignDataResponseV2Dto> response = ResponseEntity.accepted().body(body);
         proxyClient.respondWithEntity(response);
 
@@ -212,7 +241,7 @@ class CryptographicOperationsApiClientMqTest {
     @Test
     void getSignStatus_delegatesPostAndReturnsStatus() throws ConnectorException {
         // given
-        SignOperationScopedRequestV2Dto request = signOperationRequest();
+        OperationTrackingRequestV2Dto request = signOperationRequest();
         SignOperationStatusResponseV2Dto response = new SignOperationStatusResponseV2Dto();
         response
                 .setItems(List
@@ -242,7 +271,7 @@ class CryptographicOperationsApiClientMqTest {
     @Test
     void cancelSign_delegatesPostAndPreservesStatus() throws ConnectorException {
         // given
-        SignOperationScopedRequestV2Dto request = signOperationRequest();
+        OperationTrackingRequestV2Dto request = signOperationRequest();
         ResponseEntity<Void> response = ResponseEntity.noContent().build();
         proxyClient.respondWithEntity(response);
 
@@ -283,6 +312,20 @@ class CryptographicOperationsApiClientMqTest {
     }
 
     @Test
+    void verifyData_rejectsResponseWithDifferentIdentifier() {
+        // given
+        VerifyDataResponseV2Dto response = new VerifyDataResponseV2Dto();
+        response.setVerifications(List.of(new VerificationResponseItemV2Dto(true, DIFFERENT_ITEM_IDENTIFIER, null)));
+        proxyClient.respondWith(response);
+
+        // when
+        Executable call = () -> client.verifyData(connector, verifyRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void randomData_delegatesPostAndReturnsRandomData() throws ConnectorException {
         // given
         RandomDataRequestV2Dto request = randomRequest();
@@ -303,6 +346,21 @@ class CryptographicOperationsApiClientMqTest {
     void randomData_rejectsInvalidResponse() {
         // given
         proxyClient.respondWith(new RandomDataResponseV2Dto());
+
+        // when
+        Executable call = () -> client.randomData(connector, randomRequest());
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
+    void randomData_rejectsResponseWithDifferentLength() {
+        // given
+        byte[] twoByteResponse = {1, 2};
+        RandomDataResponseV2Dto response = new RandomDataResponseV2Dto();
+        response.setData(twoByteResponse);
+        proxyClient.respondWith(response);
 
         // when
         Executable call = () -> client.randomData(connector, randomRequest());
@@ -403,8 +461,8 @@ class CryptographicOperationsApiClientMqTest {
         return request;
     }
 
-    private static SignOperationScopedRequestV2Dto signOperationRequest() {
-        SignOperationScopedRequestV2Dto request = withValidKeyScope(new SignOperationScopedRequestV2Dto());
+    private static OperationTrackingRequestV2Dto signOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }

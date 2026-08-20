@@ -6,6 +6,7 @@ import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.interfaces.client.v2.KeySyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationValidationResult;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
@@ -13,9 +14,7 @@ import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationStatusResponseV2Dto;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +41,14 @@ public class KeyApiClient implements KeySyncApiClient {
         this.responseValidator = responseValidator;
     }
 
+    private static void requireValid(OperationValidationResult validation, ApiClientConnectorInfo connector)
+            throws ConnectorException {
+        if (!validation.isValid()) {
+            IllegalArgumentException cause = validation.getCause();
+            throw new ConnectorException(cause.getMessage(), cause, connector);
+        }
+    }
+
     @Override
     public List<BaseAttribute> listCreateKeyAttributes(ApiClientConnectorInfo connector,
             CreateKeyAttributesRequestV2Dto request) throws ConnectorException {
@@ -59,13 +66,13 @@ public class KeyApiClient implements KeySyncApiClient {
             CreateKeyRequestV2Dto request) throws ConnectorException {
         ResponseEntity<KeyCreationResponseV2Dto> response = sendEntity(connector, BASE_PATH, request,
                 KeyCreationResponseV2Dto.class);
-        requireValid(responseValidator.validateCreateKey(request.getExecutionMode(), response), connector);
+        requireValid(responseValidator.validateCreateKey(request, response), connector);
         return response;
     }
 
     @Override
     public KeyCreationStatusResponseV2Dto getCreateKeyStatus(ApiClientConnectorInfo connector,
-            KeyOperationRequestV2Dto request) throws ConnectorException {
+            OperationTrackingRequestV2Dto request) throws ConnectorException {
         KeyCreationStatusResponseV2Dto response = send(connector, CREATE_STATUS_PATH, request,
                 KeyCreationStatusResponseV2Dto.class);
         requireValid(responseValidator.validateCreateKeyStatus(response), connector);
@@ -73,7 +80,7 @@ public class KeyApiClient implements KeySyncApiClient {
     }
 
     @Override
-    public ResponseEntity<Void> cancelCreateKey(ApiClientConnectorInfo connector, KeyOperationRequestV2Dto request)
+    public ResponseEntity<Void> cancelCreateKey(ApiClientConnectorInfo connector, OperationTrackingRequestV2Dto request)
             throws ConnectorException {
         return sendEntity(connector, CREATE_CANCEL_PATH, request, Void.class);
     }
@@ -88,8 +95,8 @@ public class KeyApiClient implements KeySyncApiClient {
     }
 
     @Override
-    public KeyOperationStatusResponseV2Dto getDestroyKeyStatus(ApiClientConnectorInfo connector,
-            KeyOperationRequestV2Dto request) throws ConnectorException {
+    public KeyDestructionStatusResponseV2Dto getDestroyKeyStatus(ApiClientConnectorInfo connector,
+            OperationTrackingRequestV2Dto request) throws ConnectorException {
         KeyDestructionStatusResponseV2Dto response = send(connector, DESTROY_STATUS_PATH, request,
                 KeyDestructionStatusResponseV2Dto.class);
         requireValid(responseValidator.validateDestroyKeyStatus(response), connector);
@@ -97,8 +104,8 @@ public class KeyApiClient implements KeySyncApiClient {
     }
 
     @Override
-    public ResponseEntity<Void> cancelDestroyKey(ApiClientConnectorInfo connector, KeyOperationRequestV2Dto request)
-            throws ConnectorException {
+    public ResponseEntity<Void> cancelDestroyKey(ApiClientConnectorInfo connector,
+            OperationTrackingRequestV2Dto request) throws ConnectorException {
         return sendEntity(connector, DESTROY_CANCEL_PATH, request, Void.class);
     }
 
@@ -117,14 +124,6 @@ public class KeyApiClient implements KeySyncApiClient {
             return proxyClient.sendRequestForEntity(connector, path, POST, body, responseType);
         } catch (RuntimeException e) {
             throw new ConnectorException("Key request failed for " + path, e, connector);
-        }
-    }
-
-    private static void requireValid(OperationValidationResult validation, ApiClientConnectorInfo connector)
-            throws ConnectorException {
-        if (!validation.isValid()) {
-            IllegalArgumentException cause = validation.getCause();
-            throw new ConnectorException(cause.getMessage(), cause, connector);
         }
     }
 }

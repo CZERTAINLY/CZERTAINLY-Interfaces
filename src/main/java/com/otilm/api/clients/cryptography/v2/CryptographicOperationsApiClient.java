@@ -7,6 +7,7 @@ import com.otilm.api.interfaces.client.v2.CryptographicOperationsSyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationValidationResult;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
@@ -16,7 +17,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -83,7 +83,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(EncryptDataResponseV2Dto.class), "encryptData"), request, connector);
-        requireValid(responseValidator.validateEncrypt(response), connector);
+        requireValid(responseValidator.validateEncrypt(body, response), connector);
         return response;
     }
 
@@ -109,7 +109,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(DecryptDataResponseV2Dto.class), "decryptData"), request, connector);
-        requireValid(responseValidator.validateDecrypt(response), connector);
+        requireValid(responseValidator.validateDecrypt(body, response), connector);
         return response;
     }
 
@@ -139,7 +139,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
 
     @Override
     public SignOperationStatusResponseV2Dto getSignStatus(ApiClientConnectorInfo connector,
-            SignOperationScopedRequestV2Dto body) throws ConnectorException {
+            OperationTrackingRequestV2Dto body) throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
         SignOperationStatusResponseV2Dto response = processRequest(r -> requireBody(r
                 .uri(connector.getUrl() + SIGN_STATUS_PATH)
@@ -151,7 +151,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
     }
 
     @Override
-    public ResponseEntity<Void> cancelSign(ApiClientConnectorInfo connector, SignOperationScopedRequestV2Dto body)
+    public ResponseEntity<Void> cancelSign(ApiClientConnectorInfo connector, OperationTrackingRequestV2Dto body)
             throws ConnectorException {
         WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
         return processRequest(r -> requireResponse(
@@ -181,7 +181,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(VerifyDataResponseV2Dto.class), "verifyData"), request, connector);
-        requireValid(responseValidator.validateVerify(response), connector);
+        requireValid(responseValidator.validateVerify(body, response), connector);
         return response;
     }
 
@@ -207,7 +207,7 @@ public class CryptographicOperationsApiClient extends BaseApiClient implements C
                 .bodyValue(body)
                 .retrieve()
                 .toEntity(RandomDataResponseV2Dto.class), "randomData"), request, connector);
-        requireValid(responseValidator.validateRandom(response), connector);
+        requireValid(responseValidator.validateRandom(body, response), connector);
         return response;
     }
 }

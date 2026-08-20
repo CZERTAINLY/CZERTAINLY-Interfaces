@@ -7,6 +7,7 @@ import com.otilm.api.interfaces.client.v2.CryptographicOperationsSyncApiClient;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.OperationValidationResult;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
@@ -16,7 +17,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -65,7 +65,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
     public EncryptDataResponseV2Dto encryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto request)
             throws ConnectorException {
         EncryptDataResponseV2Dto response = send(connector, ENCRYPT_PATH, request, EncryptDataResponseV2Dto.class);
-        requireValid(responseValidator.validateEncrypt(response), connector);
+        requireValid(responseValidator.validateEncrypt(request, response), connector);
         return response;
     }
 
@@ -82,7 +82,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
     public DecryptDataResponseV2Dto decryptData(ApiClientConnectorInfo connector, CipherDataRequestV2Dto request)
             throws ConnectorException {
         DecryptDataResponseV2Dto response = send(connector, DECRYPT_PATH, request, DecryptDataResponseV2Dto.class);
-        requireValid(responseValidator.validateDecrypt(response), connector);
+        requireValid(responseValidator.validateDecrypt(request, response), connector);
         return response;
     }
 
@@ -105,7 +105,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
 
     @Override
     public SignOperationStatusResponseV2Dto getSignStatus(ApiClientConnectorInfo connector,
-            SignOperationScopedRequestV2Dto request) throws ConnectorException {
+            OperationTrackingRequestV2Dto request) throws ConnectorException {
         SignOperationStatusResponseV2Dto response = send(connector, SIGN_STATUS_PATH, request,
                 SignOperationStatusResponseV2Dto.class);
         requireValid(responseValidator.validateSignStatus(response), connector);
@@ -113,7 +113,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
     }
 
     @Override
-    public ResponseEntity<Void> cancelSign(ApiClientConnectorInfo connector, SignOperationScopedRequestV2Dto request)
+    public ResponseEntity<Void> cancelSign(ApiClientConnectorInfo connector, OperationTrackingRequestV2Dto request)
             throws ConnectorException {
         return sendEntity(connector, SIGN_CANCEL_PATH, request, Void.class);
     }
@@ -131,7 +131,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
     public VerifyDataResponseV2Dto verifyData(ApiClientConnectorInfo connector, VerifyDataRequestV2Dto request)
             throws ConnectorException {
         VerifyDataResponseV2Dto response = send(connector, VERIFY_PATH, request, VerifyDataResponseV2Dto.class);
-        requireValid(responseValidator.validateVerify(response), connector);
+        requireValid(responseValidator.validateVerify(request, response), connector);
         return response;
     }
 
@@ -148,7 +148,7 @@ public class CryptographicOperationsApiClient implements CryptographicOperations
     public RandomDataResponseV2Dto randomData(ApiClientConnectorInfo connector, RandomDataRequestV2Dto request)
             throws ConnectorException {
         RandomDataResponseV2Dto response = send(connector, RANDOM_PATH, request, RandomDataResponseV2Dto.class);
-        requireValid(responseValidator.validateRandom(response), connector);
+        requireValid(responseValidator.validateRandom(request, response), connector);
         return response;
     }
 

@@ -36,10 +36,34 @@ public enum FeatureFlag implements IPlatformEnum {
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SECRET)),
     SECRET_ROTATION("secretRotation", "Secret Rotation", "Supports triggering rotation of secrets",
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SECRET)),
-    DOCUMENT_SIGNING("documentSigning", "Document Signing", "Supports document signing workflows",
-            FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SIGNING, ConnectorInterface.SIGNATURE_FORMATTING)),
+    CONTENT_SIGNING("contentSigning", "Content Signing", "Supports content signing workflows",
+            FeatureFlagBehavior.ENFORCED,
+            List
+                    .of(ConnectorInterface.PADES_FORMATTING, ConnectorInterface.XADES_FORMATTING,
+                            ConnectorInterface.CADES_FORMATTING, ConnectorInterface.JADES_FORMATTING)),
+    LEVEL_TIMESTAMPED("levelTimestamped", "Level Timestamped",
+            "Reaches the TIMESTAMPED level for the family interface it is declared on, by implementing the signature timestamp imprint and embed pair. The SIGNED level is implied by contentSigning itself",
+            FeatureFlagBehavior.ENFORCED,
+            List
+                    .of(ConnectorInterface.PADES_FORMATTING, ConnectorInterface.XADES_FORMATTING,
+                            ConnectorInterface.CADES_FORMATTING, ConnectorInterface.JADES_FORMATTING),
+            CONTENT_SIGNING),
+    LEVEL_LONG_TERM("levelLongTerm", "Level Long Term",
+            "Reaches the LONG_TERM level for the family interface it is declared on, by implementing extendToLevel with its own fetching. A connector without it answers 422 on that operation. Requires levelTimestamped",
+            FeatureFlagBehavior.ENFORCED,
+            List
+                    .of(ConnectorInterface.PADES_FORMATTING, ConnectorInterface.XADES_FORMATTING,
+                            ConnectorInterface.CADES_FORMATTING, ConnectorInterface.JADES_FORMATTING),
+            LEVEL_TIMESTAMPED),
+    LEVEL_ARCHIVAL("levelArchival", "Level Archival",
+            "Reaches the ARCHIVAL level for the family interface it is declared on, by implementing the archive timestamp imprint and embed pair. Requires levelLongTerm",
+            FeatureFlagBehavior.ENFORCED,
+            List
+                    .of(ConnectorInterface.PADES_FORMATTING, ConnectorInterface.XADES_FORMATTING,
+                            ConnectorInterface.CADES_FORMATTING, ConnectorInterface.JADES_FORMATTING),
+            LEVEL_LONG_TERM),
     TIMESTAMPING("timestamping", "Timestamping", "Supports timestamping of signatures", FeatureFlagBehavior.ENFORCED,
-            List.of(ConnectorInterface.SIGNING, ConnectorInterface.SIGNATURE_FORMATTING)),
+            List.of(ConnectorInterface.SIGNATURE_FORMATTING)),
     CERTIFICATE_REGISTRATION("certificateRegistration", "Certificate Registration",
             "Supports pre-registering a certificate's identity (Subject DN, SAN, extensions) at the upstream CA before a CSR exists",
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.AUTHORITY)),
@@ -75,14 +99,21 @@ public enum FeatureFlag implements IPlatformEnum {
     private final String description;
     private final FeatureFlagBehavior behavior;
     private final List<ConnectorInterface> applicableInterfaces;
+    private final FeatureFlag prerequisite;
 
     FeatureFlag(String code, String label, String description, FeatureFlagBehavior behavior,
             List<ConnectorInterface> applicableInterfaces) {
+        this(code, label, description, behavior, applicableInterfaces, null);
+    }
+
+    FeatureFlag(String code, String label, String description, FeatureFlagBehavior behavior,
+            List<ConnectorInterface> applicableInterfaces, FeatureFlag prerequisite) {
         this.code = code;
         this.label = label;
         this.description = description;
         this.behavior = behavior;
         this.applicableInterfaces = applicableInterfaces;
+        this.prerequisite = prerequisite;
     }
 
     @Override
@@ -107,6 +138,24 @@ public enum FeatureFlag implements IPlatformEnum {
 
     public List<ConnectorInterface> getApplicableInterfaces() {
         return applicableInterfaces;
+    }
+
+    /**
+     * The flag this one requires, or null where it stands alone.
+     *
+     * <p>
+     * Signature levels form a prefix ladder: a connector that reaches a rung necessarily reaches every rung below it,
+     * so a rung declared without its prerequisite describes a capability that cannot exist. The SIGNED rung has no flag
+     * of its own — {@link #CONTENT_SIGNING} is what declares it.
+     * </p>
+     *
+     * <p>
+     * The chain is advisory today. Nothing rejects an advertisement that skips a rung, so a consumer that needs the
+     * guarantee checks it here rather than assuming ingestion already did.
+     * </p>
+     */
+    public FeatureFlag getPrerequisite() {
+        return prerequisite;
     }
 
     @JsonCreator

@@ -77,47 +77,6 @@ class FormattingPolymorphicSerializationTest {
     }
 
     // -------------------------------------------------------------------------
-    // FormatDtbsRequestDto — DocumentSigningFormatDtbsRequestDto
-    // -------------------------------------------------------------------------
-
-    @Test
-    void documentSigningFormatDtbsRequestDto_serializesDiscriminator() throws Exception {
-        DocumentSigningFormatDtbsRequestDto dto = new DocumentSigningFormatDtbsRequestDto();
-        dto.setData(new byte[]{1, 2, 3});
-
-        JsonNode json = mapper.valueToTree(dto);
-
-        assertEquals(SigningWorkflowType.Codes.DOCUMENT_SIGNING, json.get("type").asText());
-    }
-
-    @Test
-    void documentSigningFormatDtbsRequestDto_deserializesViaBaseClass() throws Exception {
-        String json = """
-                {
-                  "type": "document_signing",
-                  "data": "AQID"
-                }
-                """;
-
-        FormatDtbsRequestDto base = mapper.readValue(json, FormatDtbsRequestDto.class);
-
-        assertInstanceOf(DocumentSigningFormatDtbsRequestDto.class, base);
-        assertEquals(SigningWorkflowType.DOCUMENT_SIGNING, base.getType());
-    }
-
-    @Test
-    void documentSigningFormatDtbsRequestDto_roundTrip() throws Exception {
-        DocumentSigningFormatDtbsRequestDto original = new DocumentSigningFormatDtbsRequestDto();
-        original.setData(new byte[]{4, 5, 6});
-
-        String json = mapper.writeValueAsString(original);
-        FormatDtbsRequestDto deserialized = mapper.readValue(json, FormatDtbsRequestDto.class);
-
-        assertInstanceOf(DocumentSigningFormatDtbsRequestDto.class, deserialized);
-        assertEquals(original, deserialized);
-    }
-
-    // -------------------------------------------------------------------------
     // Unknown/missing type guards — FormatDtbsRequestDto
     // -------------------------------------------------------------------------
 
@@ -192,49 +151,6 @@ class FormattingPolymorphicSerializationTest {
         FormatResponseRequestDto deserialized = mapper.readValue(json, FormatResponseRequestDto.class);
 
         assertInstanceOf(TimestampingFormatResponseRequestDto.class, deserialized);
-        assertEquals(original, deserialized);
-    }
-
-    // -------------------------------------------------------------------------
-    // FormatResponseRequestDto — DocumentSigningFormatResponseRequestDto
-    // -------------------------------------------------------------------------
-
-    @Test
-    void documentSigningFormatResponseRequestDto_serializesDiscriminator() throws Exception {
-        DocumentSigningFormatResponseRequestDto dto = new DocumentSigningFormatResponseRequestDto();
-        dto.setSignature(new byte[]{1, 2, 3});
-
-        JsonNode json = mapper.valueToTree(dto);
-
-        assertEquals(SigningWorkflowType.Codes.DOCUMENT_SIGNING, json.get("type").asText());
-    }
-
-    @Test
-    void documentSigningFormatResponseRequestDto_deserializesViaBaseClass() throws Exception {
-        String json = """
-                {
-                  "type": "document_signing",
-                  "signature": "AQID",
-                  "dtbs": "BAUG"
-                }
-                """;
-
-        FormatResponseRequestDto base = mapper.readValue(json, FormatResponseRequestDto.class);
-
-        assertInstanceOf(DocumentSigningFormatResponseRequestDto.class, base);
-        assertEquals(SigningWorkflowType.DOCUMENT_SIGNING, base.getType());
-    }
-
-    @Test
-    void documentSigningFormatResponseRequestDto_roundTrip() throws Exception {
-        DocumentSigningFormatResponseRequestDto original = new DocumentSigningFormatResponseRequestDto();
-        original.setSignature(new byte[]{1, 2, 3});
-        original.setDtbs(new byte[]{4, 5, 6});
-
-        String json = mapper.writeValueAsString(original);
-        FormatResponseRequestDto deserialized = mapper.readValue(json, FormatResponseRequestDto.class);
-
-        assertInstanceOf(DocumentSigningFormatResponseRequestDto.class, deserialized);
         assertEquals(original, deserialized);
     }
 

@@ -38,6 +38,19 @@ public interface CertificateController extends AuthProtectedConnectorController 
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listIssueAttributes(@RequestBody @Valid CertificateAttributeListRequestDtoV3 request);
 
+    @Operation(summary = "List certificate request attributes",
+            description = "List the dynamic-attribute schema describing the certificate request identity "
+                    + "(subject RDNs, SANs, extensions) this authority expects. Optional endpoint — see responses.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Schema retrieved; an empty array means nothing to list"),
+            @ApiResponse(responseCode = "404",
+                    description = "Endpoint not served by this connector — Core resolves an empty schema"),
+            @ApiResponse(responseCode = "501",
+                    description = "Connector declines to offer a schema (ErrorCode.OPERATION_NOT_SUPPORTED) — Core resolves an empty schema")})
+    @PostMapping(path = "/request/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<BaseAttribute> listRequestAttributes(@RequestBody @Valid CertificateAttributeListRequestDtoV3 request);
+
     @Operation(summary = "Issue certificate", description = "Issue a certificate (sync 200 or async 202)")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Issued synchronously"),
@@ -65,6 +78,18 @@ public interface CertificateController extends AuthProtectedConnectorController 
     ResponseEntity<Void> cancelIssue(@RequestBody @Valid CertificateOperationCancelRequestDtoV3 request);
 
     // ---- Renew (status/cancel via /issue/*) ----
+
+    @Operation(summary = "List renew operation attributes",
+            description = "List dynamic attributes for renew. Optional endpoint — see responses.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Schema retrieved; an empty array means nothing to list"),
+            @ApiResponse(responseCode = "404",
+                    description = "Endpoint not served by this connector — Core resolves an empty schema"),
+            @ApiResponse(responseCode = "501",
+                    description = "Connector declines to offer a schema (ErrorCode.OPERATION_NOT_SUPPORTED) — Core resolves an empty schema")})
+    @PostMapping(path = "/renew/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<BaseAttribute> listRenewAttributes(@RequestBody @Valid CertificateAttributeListRequestDtoV3 request);
 
     @Operation(summary = "Renew certificate", description = "Renew a certificate (sync 200 or async 202)")
     @ApiResponses({
@@ -145,6 +170,18 @@ public interface CertificateController extends AuthProtectedConnectorController 
     ResponseEntity<Void> cancelRegister(@RequestBody @Valid CertificateOperationCancelRequestDtoV3 request);
 
     // ---- Identify ----
+
+    @Operation(summary = "List identify operation attributes",
+            description = "List dynamic attributes for identify. Optional endpoint — see responses.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Schema retrieved; an empty array means nothing to list"),
+            @ApiResponse(responseCode = "404",
+                    description = "Endpoint not served by this connector — Core resolves an empty schema"),
+            @ApiResponse(responseCode = "501",
+                    description = "Connector declines to offer a schema (ErrorCode.OPERATION_NOT_SUPPORTED) — Core resolves an empty schema")})
+    @PostMapping(path = "/identify/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<BaseAttribute> listIdentifyAttributes(@RequestBody @Valid CertificateAttributeListRequestDtoV3 request);
 
     @Operation(summary = "Identify certificate",
             description = "Identify a certificate at the upstream CA (always synchronous)")

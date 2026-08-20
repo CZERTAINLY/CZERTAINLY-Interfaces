@@ -6,13 +6,13 @@ import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import com.otilm.api.model.connector.cryptography.v2.OperationResponseValidator;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyDestructionStatusResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2Dto;
@@ -140,9 +140,23 @@ class KeyApiClientMqTest {
     }
 
     @Test
+    void createKey_rejectsMismatchedKeyRequestType() {
+        // given
+        CreateKeyRequestV2Dto keyPairRequest = createKeyRequest(KeyRequestType.KEY_PAIR,
+                OperationExecutionMode.SYNCHRONOUS);
+        proxyClient.respondWithEntity(ResponseEntity.ok(validSecretKeyDataResponse()));
+
+        // when
+        Executable call = () -> client.createKey(connector, keyPairRequest);
+
+        // then
+        assertValidationFailure(call);
+    }
+
+    @Test
     void getCreateKeyStatus_delegatesPostAndReturnsStatus() throws ConnectorException {
         // given
-        KeyOperationRequestV2Dto request = keyOperationRequest();
+        OperationTrackingRequestV2Dto request = keyOperationRequest();
         SecretKeyOperationStatusResponseV2Dto response = new SecretKeyOperationStatusResponseV2Dto();
         response.setStatus(OperationStatus.IN_PROGRESS);
         proxyClient.respondWith(response);
@@ -170,7 +184,7 @@ class KeyApiClientMqTest {
     @Test
     void cancelCreateKey_delegatesPostAndPreservesStatus() throws ConnectorException {
         // given
-        KeyOperationRequestV2Dto request = keyOperationRequest();
+        OperationTrackingRequestV2Dto request = keyOperationRequest();
         ResponseEntity<Void> response = ResponseEntity.noContent().build();
         proxyClient.respondWithEntity(response);
 
@@ -186,7 +200,8 @@ class KeyApiClientMqTest {
     void destroyKey_returnsSynchronousResponse() throws ConnectorException {
         // given
         DestroyKeyRequestV2Dto request = destroyKeyRequest(OperationExecutionMode.SYNCHRONOUS);
-        ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok().build();
+        KeyOperationResponseV2Dto body = new KeyOperationResponseV2Dto();
+        ResponseEntity<KeyOperationResponseV2Dto> response = ResponseEntity.ok(body);
         proxyClient.respondWithEntity(response);
 
         // when
@@ -230,7 +245,7 @@ class KeyApiClientMqTest {
     @Test
     void getDestroyKeyStatus_delegatesPostAndReturnsStatus() throws ConnectorException {
         // given
-        KeyOperationRequestV2Dto request = keyOperationRequest();
+        OperationTrackingRequestV2Dto request = keyOperationRequest();
         KeyDestructionStatusResponseV2Dto response = new KeyDestructionStatusResponseV2Dto();
         response.setStatus(OperationStatus.IN_PROGRESS);
         proxyClient.respondWith(response);
@@ -258,7 +273,7 @@ class KeyApiClientMqTest {
     @Test
     void cancelDestroyKey_delegatesPostAndPreservesStatus() throws ConnectorException {
         // given
-        KeyOperationRequestV2Dto request = keyOperationRequest();
+        OperationTrackingRequestV2Dto request = keyOperationRequest();
         ResponseEntity<Void> response = ResponseEntity.noContent().build();
         proxyClient.respondWithEntity(response);
 
@@ -320,8 +335,12 @@ class KeyApiClientMqTest {
     }
 
     private static CreateKeyRequestV2Dto createKeyRequest(OperationExecutionMode mode) {
+        return createKeyRequest(KeyRequestType.SECRET, mode);
+    }
+
+    private static CreateKeyRequestV2Dto createKeyRequest(KeyRequestType keyRequestType, OperationExecutionMode mode) {
         CreateKeyRequestV2Dto request = withValidTokenProfileScope(new CreateKeyRequestV2Dto());
-        request.setKeyRequestType(KeyRequestType.SECRET);
+        request.setKeyRequestType(keyRequestType);
         request.setExecutionMode(mode);
         request.setKeyCreationId(KEY_CREATION_ID);
         request.setCreateKeyAttributes(List.of());
@@ -335,8 +354,8 @@ class KeyApiClientMqTest {
         return request;
     }
 
-    private static KeyOperationRequestV2Dto keyOperationRequest() {
-        KeyOperationRequestV2Dto request = withValidTokenProfileScope(new KeyOperationRequestV2Dto());
+    private static OperationTrackingRequestV2Dto keyOperationRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }

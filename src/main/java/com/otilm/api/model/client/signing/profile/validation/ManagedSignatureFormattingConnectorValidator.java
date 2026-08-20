@@ -2,16 +2,21 @@ package com.otilm.api.model.client.signing.profile.validation;
 
 import com.otilm.api.model.client.signing.profile.SigningProfileRequestDto;
 import com.otilm.api.model.client.signing.profile.scheme.ManagedSigningRequestDto;
-import com.otilm.api.model.client.signing.profile.workflow.DocumentSigningWorkflowRequestDto;
+import com.otilm.api.model.client.signing.profile.workflow.ContentSigningWorkflowRequestDto;
 import com.otilm.api.model.client.signing.profile.workflow.TimestampingWorkflowRequestDto;
+import com.otilm.api.model.common.signature.SignatureLevel;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ManagedSignatureFormattingConnectorValidator
         implements
             ConstraintValidator<ValidManagedSignatureFormattingConnector, SigningProfileRequestDto> {
+
+    private static final String WORKFLOW_NODE = "workflow";
+    private static final String TIMESTAMP_SOURCE_PROPERTY = "timestampSource";
 
     @Override
     public boolean isValid(SigningProfileRequestDto dto, ConstraintValidatorContext context) {
@@ -19,7 +24,7 @@ public class ManagedSignatureFormattingConnectorValidator
             return true;
         }
         if (!(dto.getSigningScheme() instanceof ManagedSigningRequestDto)) {
-            return true;
+            return validateDelegatedWorkflow(dto, context);
         }
 
         boolean valid = true;
@@ -29,30 +34,106 @@ public class ManagedSignatureFormattingConnectorValidator
         if (dto.getWorkflow() instanceof TimestampingWorkflowRequestDto tsw) {
             formattingConnectorUuid = tsw.getSignatureFormattingConnectorUuid();
             if (Boolean.TRUE.equals(tsw.getQualifiedTimestamp()) && tsw.getTimeQualityConfigurationUuid() == null) {
-                context.disableDefaultConstraintViolation();
-                context
-                        .buildConstraintViolationWithTemplate(
-                                "timeQualityConfigurationUuid must be provided when qualifiedTimestamp is true")
-                        .addPropertyNode("workflow")
-                        .addPropertyNode("timeQualityConfigurationUuid")
-                        .addConstraintViolation();
+                addWorkflowViolation(context, "timeQualityConfigurationUuid",
+                        "timeQualityConfigurationUuid must be provided when qualifiedTimestamp is true");
                 valid = false;
             }
-        } else if (dto.getWorkflow() instanceof DocumentSigningWorkflowRequestDto dsw) {
+        } else if (dto.getWorkflow() instanceof ContentSigningWorkflowRequestDto dsw) {
             formattingConnectorUuid = dsw.getSignatureFormattingConnectorUuid();
+            boolean familyPresent = requireOnManagedWorkflow(context, "family", dsw.getFamily());
+            boolean maxLevelPresent = requireOnManagedWorkflow(context, "maxLevel", dsw.getMaxLevel());
+            boolean sourceConsistent = validateTimestampSource(context, dsw);
+            valid = familyPresent && maxLevelPresent && sourceConsistent;
         } else {
             return true;
         }
 
         if (formattingConnectorUuid == null) {
-            context.disableDefaultConstraintViolation();
-            context
-                    .buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                    .addPropertyNode("workflow")
-                    .addPropertyNode("signatureFormattingConnectorUuid")
-                    .addConstraintViolation();
+            addWorkflowViolation(context, "signatureFormattingConnectorUuid",
+                    context.getDefaultConstraintMessageTemplate());
             valid = false;
         }
         return valid;
+    }
+
+    /**
+     * Levels above SIGNED embed at least one timestamp, so the profile has to say where those timestamps come from, and
+     * SIGNED embeds none, so a source there would never be invoked. Both directions are rejected for the same reason:
+     * the profile must not store configuration the platform does not honour. The check lives here rather than on the
+     * workflow itself because it applies to ILM-managed signing only.
+     */
+    private boolean validateTimestampSource(ConstraintValidatorContext context,
+            ContentSigningWorkflowRequestDto workflow) {
+        if (workflow.getMaxLevel() == null) {
+            return true;
+        }
+        boolean sourcePresent = workflow.getTimestampSource() != null;
+        if (workflow.getMaxLevel() == SignatureLevel.SIGNED) {
+            if (!sourcePresent) {
+                return true;
+            }
+            addWorkflowViolation(context, TIMESTAMP_SOURCE_PROPERTY,
+                    "timestampSource must be omitted when maxLevel is SIGNED");
+            return false;
+        }
+        if (sourcePresent) {
+            return true;
+        }
+        addWorkflowViolation(context, TIMESTAMP_SOURCE_PROPERTY,
+                "timestampSource is required when maxLevel is TIMESTAMPED or higher");
+        return false;
+    }
+
+    /**
+     * Delegated signing formats the signature outside the platform, so the ILM-managed fields have no effect. Rejecting
+     * them names the mistake at the field the caller set, rather than storing configuration the platform never honours.
+     */
+    private boolean validateDelegatedWorkflow(SigningProfileRequestDto dto, ConstraintValidatorContext context) {
+        if (!(dto.getWorkflow() instanceof ContentSigningWorkflowRequestDto workflow)) {
+            return true;
+        }
+        boolean connectorAbsent = rejectOnDelegatedWorkflow(context, "signatureFormattingConnectorUuid",
+                workflow.getSignatureFormattingConnectorUuid());
+        boolean attributesAbsent = rejectOnDelegatedWorkflow(context, "signatureFormattingConnectorAttributes",
+                workflow.getSignatureFormattingConnectorAttributes());
+        boolean familyAbsent = rejectOnDelegatedWorkflow(context, "family", workflow.getFamily());
+        boolean maxLevelAbsent = rejectOnDelegatedWorkflow(context, "maxLevel", workflow.getMaxLevel());
+        boolean sourceAbsent = rejectOnDelegatedWorkflow(context, TIMESTAMP_SOURCE_PROPERTY,
+                workflow.getTimestampSource());
+        return connectorAbsent && attributesAbsent && familyAbsent && maxLevelAbsent && sourceAbsent;
+    }
+
+    /** The attribute list defaults to an empty one, so only a populated list counts as the caller having set it. */
+    private boolean rejectOnDelegatedWorkflow(ConstraintValidatorContext context, String property, List<?> values) {
+        if (values == null || values.isEmpty()) {
+            return true;
+        }
+        return rejectOnDelegatedWorkflow(context, property, (Object) values);
+    }
+
+    private boolean rejectOnDelegatedWorkflow(ConstraintValidatorContext context, String property, Object value) {
+        if (value == null) {
+            return true;
+        }
+        addWorkflowViolation(context, property, property + " must be omitted for delegated signing");
+        return false;
+    }
+
+    private boolean requireOnManagedWorkflow(ConstraintValidatorContext context, String property, Object value) {
+        if (value != null) {
+            return true;
+        }
+        addWorkflowViolation(context, property, property + " is required for ILM-managed signing");
+        return false;
+    }
+
+    /** Every violation this validator raises names the offending workflow property, so they all share one shape. */
+    private void addWorkflowViolation(ConstraintValidatorContext context, String property, String message) {
+        context.disableDefaultConstraintViolation();
+        context
+                .buildConstraintViolationWithTemplate(message)
+                .addPropertyNode(WORKFLOW_NODE)
+                .addPropertyNode(property)
+                .addConstraintViolation();
     }
 }

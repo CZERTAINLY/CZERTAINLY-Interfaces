@@ -1,12 +1,14 @@
 package com.otilm.api.model.connector.cryptography.v2.key;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.otilm.api.model.client.cryptography.key.KeyRequestType;
 import com.otilm.api.model.connector.common.v2.OperationStatus;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Named;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,7 +20,24 @@ import static org.junit.jupiter.api.Named.named;
 
 class CryptographyKeyJsonContractTest {
 
-    private final ObjectMapper mapper = JsonMapper.builder().findAndAddModules().build();
+    private final ObjectMapper mapper = JsonMapper
+            .builder()
+            .findAndAddModules()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
+
+    @Test
+    void keyData_hasNoPublicTypeSetter() {
+        // given
+        String discriminatorSetterName = "setType";
+
+        // when
+        Executable findDiscriminatorSetter = () -> KeyDataV2Dto.class
+                .getMethod(discriminatorSetterName, KeyTypeV2.class);
+
+        // then
+        assertThrows(NoSuchMethodException.class, findDiscriminatorSetter);
+    }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("creationResponses")

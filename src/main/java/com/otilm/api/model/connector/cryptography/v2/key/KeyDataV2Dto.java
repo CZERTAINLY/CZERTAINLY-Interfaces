@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -37,8 +38,9 @@ import lombok.ToString;
 @Schema(implementation = KeyDataV2Dto.OpenApiView.class)
 public abstract sealed class KeyDataV2Dto permits SecretKeyDataV2Dto, PublicKeyDataV2Dto, PrivateKeyDataV2Dto {
 
-    @Schema(description = "Role of the key", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type of the key", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "key type is required")
+    @Setter(AccessLevel.NONE)
     private KeyTypeV2 type;
 
     @Schema(description = "Cryptographic algorithm of the key", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -69,11 +71,12 @@ public abstract sealed class KeyDataV2Dto permits SecretKeyDataV2Dto, PublicKeyD
     }
 
     /**
-     * OpenAPI schema for role-specific key descriptors.
+     * OpenAPI schema for type-specific key descriptors.
      */
     @Schema(name = "KeyDataV2",
-            description = "Role-specific key descriptor. Secret and private keys never contain key material.",
-            type = "object", discriminatorProperty = "type",
+            description = "Type-specific key descriptor. Secret and private keys never contain key material.",
+            type = "object", additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+            discriminatorProperty = "type",
             discriminatorMapping = {
                     @DiscriminatorMapping(value = "Secret", schema = SecretKeyDataV2Dto.class),
                     @DiscriminatorMapping(value = "Public", schema = PublicKeyDataV2Dto.class),

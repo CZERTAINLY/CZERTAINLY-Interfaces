@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.operations.data;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(name = "VerificationResponseItemV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class VerificationResponseItemV2Dto implements IdentifiedDataV2Dto {
 
     @Schema(description = "Whether the signature is valid", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -33,4 +35,10 @@ public class VerificationResponseItemV2Dto implements IdentifiedDataV2Dto {
     @Schema(description = "Additional result details")
     @ToString.Exclude
     private Object details;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 verification result property: " + property);
+    }
 }
