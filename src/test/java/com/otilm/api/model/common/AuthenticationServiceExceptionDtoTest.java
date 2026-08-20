@@ -19,8 +19,8 @@ class AuthenticationServiceExceptionDtoTest {
     }
 
     /**
-     * The getter used to assign to its own field, so reading it both returned the wrong value and destroyed the stored
-     * one. A second read is what distinguishes a wrong return value from a mutating one.
+     * A getter that assigns to its own field both returns the wrong value and destroys the stored one, so a second read
+     * is what distinguishes a wrong return value from a mutating one.
      */
     @Test
     void getStatusCode_isStableAcrossRepeatedReads() {
@@ -33,8 +33,8 @@ class AuthenticationServiceExceptionDtoTest {
     }
 
     /**
-     * A payload deserialized from the authentication service may omit the field, and callers pass the result to
-     * {@code ResponseEntity.status(...)}, which rejects null — so an unset status still has to yield a usable code.
+     * An unset status must still yield a usable code; {@link AuthenticationServiceExceptionDto#getStatusCode()} carries
+     * why.
      */
     @Test
     void getStatusCode_fallsBackToBadRequestWhenUnset() {
