@@ -3,6 +3,7 @@ package com.otilm.api.model.common.signature.parameters.pades;
 import com.otilm.api.model.common.signature.SignatureParameterGroup;
 import com.otilm.api.model.common.signature.parameters.RequestParameterGroup;
 import com.otilm.api.model.common.signature.parameters.pades.validation.ImageAndMimeTypeTogether;
+import com.otilm.api.model.common.signature.parameters.pades.validation.StampImageSize;
 import com.otilm.api.model.common.validation.NullableNotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -48,11 +49,11 @@ public class PadesVisibleSignatureDto {
 
     @ToString.Exclude
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_CONTENT)
-    @Size(min = 1, max = 262144, message = "image must be between 1 and 262144 bytes")
-    @Schema(description = "Stamp image drawn in the signature, base64-encoded in JSON. At most 256 KiB decoded. The "
-            + "maxLength below counts base64 characters, so it is the stricter of the two caps. Always resolved "
-            + "bytes: this contract carries no reference, no identifier and no path.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @StampImageSize(max = 262144)
+    // 349528 base64 characters carry the 262144 decoded bytes above.
+    @Schema(description = "Stamp image drawn in the signature, base64-encoded in JSON. At most 256 KiB decoded. "
+            + "Always resolved bytes: this contract carries no reference, no identifier and no path.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, minLength = 4, maxLength = 349528)
     private byte[] image;
 
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_CONTENT)

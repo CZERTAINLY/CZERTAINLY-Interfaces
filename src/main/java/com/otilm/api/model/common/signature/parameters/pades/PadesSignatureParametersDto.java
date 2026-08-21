@@ -75,10 +75,11 @@ public class PadesSignatureParametersDto extends SignatureParametersDto {
 
     @ToString.Exclude
     @RequestParameterGroup(SignatureParameterGroup.SIGNED_ATTRIBUTES)
-    @Size(max = 10, message = "claimedRoles must contain at most 10 roles")
+    @Size(min = 1, max = 10, message = "claimedRoles must contain between 1 and 10 roles")
     @Schema(description = "Roles the signer claims, bound into the signature as a signed attribute. Claimed only: a "
-            + "certified role would be an attribute certificate, which this contract does not carry.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"Head of Legal\"]")
+            + "certified role would be an attribute certificate, which this contract does not carry. Omit the field "
+            + "to inherit; an empty list is refused.", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            example = "[\"Head of Legal\"]")
     private List<@NotNull(message = "claimedRoles must not contain null items") @Size(max = 256,
             message = "each claimed role must be at most 256 characters") @NullableNotBlank(
                     message = "each claimed role must not be blank") String> claimedRoles;

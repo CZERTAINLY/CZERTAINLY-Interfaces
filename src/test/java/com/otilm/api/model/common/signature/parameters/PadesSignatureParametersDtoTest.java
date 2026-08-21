@@ -137,6 +137,21 @@ class PadesSignatureParametersDtoTest {
         assertTrue(VALIDATOR.validate(atTheCap).isEmpty());
     }
 
+    /**
+     * Absence is the only way to say "no roles", so reading an empty list as absence would bind the profile's roles
+     * into a signature whose caller asked for none.
+     */
+    @Test
+    void anEmptyClaimedRolesListIsRejected() {
+        PadesSignatureParametersDto parameters = new PadesSignatureParametersDto();
+        parameters.setClaimedRoles(List.of());
+
+        Set<ConstraintViolation<PadesSignatureParametersDto>> violations = VALIDATOR.validate(parameters);
+
+        assertEquals(1, violations.size());
+        assertEquals("claimedRoles must contain between 1 and 10 roles", violations.iterator().next().getMessage());
+    }
+
     /** {@code List.of} rejects a null item itself, so only a null-tolerant list reaches the element constraint. */
     @Test
     void aNullClaimedRoleIsRejected() {
