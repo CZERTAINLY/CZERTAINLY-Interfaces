@@ -61,7 +61,7 @@ public interface SecretManagementController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of secrets retrieved")})
     @PostMapping(path = "/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<SecretDto> listSecrets(@RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<SecretDto> listSecrets(@Valid @RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Get secret details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret details retrieved")})

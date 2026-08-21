@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public interface CbomController extends AuthProtectedController {
     @Operation(summary = "List CBOMs")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of available CBOMs")})
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<CbomDto> listCboms(@RequestBody SearchRequestDto request);
+    PaginationResponseDto<CbomDto> listCboms(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(summary = "CBOM detail")
     @ApiResponses(value = {

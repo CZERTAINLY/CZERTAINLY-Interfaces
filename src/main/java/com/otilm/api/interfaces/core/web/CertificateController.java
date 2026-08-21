@@ -77,7 +77,7 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "List Certificates")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the certificates")})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateResponseDto listCertificates(@RequestBody CertificateSearchRequestDto request);
+    CertificateResponseDto listCertificates(@Valid @RequestBody CertificateSearchRequestDto request);
 
     @Operation(summary = "Get Certificate Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})

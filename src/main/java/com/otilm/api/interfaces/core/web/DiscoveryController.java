@@ -85,7 +85,7 @@ public interface DiscoveryController extends AuthProtectedController {
     @Operation(summary = "List Discovery")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of available Discoveries")})
     @PostMapping(path = "/list", produces = {"application/json"})
-    DiscoveryResponseDto listDiscoveries(@RequestBody SearchRequestDto request);
+    DiscoveryResponseDto listDiscoveries(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(summary = "Discovery Details")
     @ApiResponses(value = {

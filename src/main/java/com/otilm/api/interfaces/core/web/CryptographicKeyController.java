@@ -34,6 +34,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -71,7 +72,7 @@ public interface CryptographicKeyController extends AuthProtectedController {
     @Operation(summary = "List cryptographic keys")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the cryptographic keys")})
     @PostMapping(path = "/keys", produces = MediaType.APPLICATION_JSON_VALUE)
-    CryptographicKeyResponseDto listCryptographicKeys(@RequestBody SearchRequestDto request);
+    CryptographicKeyResponseDto listCryptographicKeys(@Valid @RequestBody SearchRequestDto request);
 
     // -----------------------------------------------------------------------------------------------------------------
 
