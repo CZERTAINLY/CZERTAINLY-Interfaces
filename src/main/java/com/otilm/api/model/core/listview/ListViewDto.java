@@ -35,11 +35,11 @@ public class ListViewDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean defaultView;
 
-    @Schema(description = "Filters stored with the view. Returned as stored, but not applied when the view is used.",
+    @Schema(description = "Filters the view applies. Absent or empty means the view shows the whole inventory.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<SearchFilterRequestDto> filters;
 
-    @Schema(description = "Ordering stored with the view. Returned as stored, but not applied when the view is used.",
+    @Schema(description = "Ordering the view applies. Absent means the endpoint's own default ordering.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SearchSortRequestDto sort;
 }

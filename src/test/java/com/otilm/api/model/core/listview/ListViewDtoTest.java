@@ -47,9 +47,8 @@ class ListViewDtoTest {
     }
 
     @Test
-    void roundTripsTheDeferredFilterAndSortSlots() throws Exception {
-        // given — filters and sort are stored but not applied yet; the shape has to survive so enabling them later is
-        // additive rather than a migration of every stored view
+    void roundTripsTheFiltersAndOrderingAViewApplies() throws Exception {
+        // given — a view restores its slice of the inventory, so its filters and ordering travel with its columns
         var dto = new ListViewDto();
         dto.setName("Revoked, newest first");
         dto.setResource(Resource.CRYPTOGRAPHIC_KEY);

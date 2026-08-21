@@ -14,9 +14,8 @@ import lombok.Data;
  * Mutable part of a list view. The resource a view belongs to is fixed at creation and therefore absent here.
  *
  * <p>
- * {@code filters} and {@code sort} are part of the stored shape from the outset but are not applied yet: a view
- * restores columns only. Carrying them now means turning them on later adds behaviour instead of migrating every stored
- * view.
+ * A view restores its columns, its filters and its ordering together. Switching to a view is meant to read as "show me
+ * this slice of the inventory", not "keep my current filter but change the headings", so all three are applied as one.
  */
 @Data
 public class ListViewUpdateRequestDto {
@@ -38,12 +37,12 @@ public class ListViewUpdateRequestDto {
     private boolean defaultView;
 
     @Valid
-    @Schema(description = "Filters stored with the view. Accepted and returned unchanged, but not applied when the "
-            + "view is used.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Filters the view applies. Absent or empty means the view applies no filter of its own and "
+            + "shows the whole inventory.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<SearchFilterRequestDto> filters;
 
     @Valid
-    @Schema(description = "Ordering stored with the view. Accepted and returned unchanged, but not applied when the "
-            + "view is used.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Ordering the view applies. Absent means the view falls back to the endpoint's own default "
+            + "ordering.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SearchSortRequestDto sort;
 }
