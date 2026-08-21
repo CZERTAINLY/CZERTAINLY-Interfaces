@@ -7,6 +7,7 @@ import com.otilm.api.model.core.search.FilterFieldSource;
 import com.otilm.api.model.core.search.SortDirection;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.Validator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -146,6 +147,32 @@ class SearchRequestDtoTest {
         // then
         assertEquals(1, violations.size());
         assertEquals("columns[0].fieldSource", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
+    void rejectsANullColumnEntry() {
+        // given — cascaded validation skips null elements, so a null entry has to be rejected by the element
+        // constraint or "{\"columns\":[null]}" would count as a valid projection
+        var dto = new SearchRequestDto();
+        dto.setColumns(Collections.singletonList(null));
+
+        // when
+        var violations = VALIDATOR.validate(dto);
+
+        // then
+        assertEquals(1, violations.size());
+        assertEquals("columns[0].<list element>", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
+    void readsBackANullColumnEntryRatherThanDroppingIt() throws Exception {
+        // given — the wire form the constraint above exists to catch
+        var back = mapper.readValue("{\"columns\":[null]}", SearchRequestDto.class);
+
+        // then — Jackson keeps the null, so validation is the only thing standing between it and the service
+        assertEquals(1, back.getColumns().size());
+        assertNull(back.getColumns().get(0));
+        assertFalse(VALIDATOR.validate(back).isEmpty());
     }
 
     @Test

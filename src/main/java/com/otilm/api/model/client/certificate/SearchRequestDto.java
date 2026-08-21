@@ -3,6 +3,7 @@ package com.otilm.api.model.client.certificate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.Data;
 
@@ -29,5 +30,5 @@ public class SearchRequestDto {
     @Schema(description = "Fields to return as columns. When omitted, the response carries the endpoint's full "
             + "default shape, unchanged from before this field existed. Requesting attribute-sourced fields adds "
             + "their values to each returned object.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<SearchColumnRequestDto> columns;
+    private List<@NotNull SearchColumnRequestDto> columns;
 }

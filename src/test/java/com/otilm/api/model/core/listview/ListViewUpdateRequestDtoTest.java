@@ -7,6 +7,7 @@ import com.otilm.api.model.core.search.FilterFieldSource;
 import com.otilm.api.model.core.search.SortDirection;
 import com.otilm.api.testsupport.ValidatorFixture;
 import jakarta.validation.Validator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,6 +62,37 @@ class ListViewUpdateRequestDtoTest {
                 back.getColumns().stream().map(ListViewColumnDto::getFieldIdentifier).toList());
         assertEquals(SortDirection.ASC, back.getSort().getDirection());
         assertTrue(VALIDATOR.validate(back).isEmpty());
+    }
+
+    @Test
+    void rejectsANullColumnEntry() {
+        // given — @NotEmpty rejects an empty list but permits [null], and cascaded validation skips null elements
+        var dto = new ListViewUpdateRequestDto();
+        dto.setName("Expiry watch");
+        dto.setColumns(Collections.singletonList(null));
+
+        // when
+        var violations = VALIDATOR.validate(dto);
+
+        // then
+        assertEquals(1, violations.size());
+        assertEquals("columns[0].<list element>", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
+    void rejectsANullFilterEntry() {
+        // given
+        var dto = new ListViewUpdateRequestDto();
+        dto.setName("Expiry watch");
+        dto.setColumns(List.of(new ListViewColumnDto(FilterFieldSource.PROPERTY, "commonName", null)));
+        dto.setFilters(Collections.singletonList(null));
+
+        // when
+        var violations = VALIDATOR.validate(dto);
+
+        // then
+        assertEquals(1, violations.size());
+        assertEquals("filters[0].<list element>", violations.iterator().next().getPropertyPath().toString());
     }
 
     @Test
