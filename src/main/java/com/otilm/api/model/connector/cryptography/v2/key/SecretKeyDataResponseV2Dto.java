@@ -7,6 +7,7 @@ import com.otilm.api.model.common.attribute.common.MetadataAttribute;
 import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.SynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.ValidMetadataAttribute;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -41,9 +42,10 @@ public final class SecretKeyDataResponseV2Dto extends KeyCreationResponseV2Dto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SecretKeyDataV2Dto keyData;
 
-    @Schema(description = "Connector-defined key handle. Present on a synchronous 200 response. Metadata must identify "
-            + "the key durably—it must remain valid across connector restarts and sessions; ephemeral handles must not "
-            + "be used.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ArraySchema(arraySchema = @Schema(description = "Connector-defined key handle. Present on a synchronous 200 "
+            + "response. Metadata must identify the key durably—it must remain valid across connector restarts and "
+            + "sessions; ephemeral handles must not be used.", requiredMode = Schema.RequiredMode.NOT_REQUIRED),
+            minItems = 1)
     @Null(message = "keyMeta must be absent for asynchronous execution", groups = AsynchronousResponse.class)
     @NotEmpty(message = "keyMeta must contain at least one item for synchronous execution",
             groups = SynchronousResponse.class)

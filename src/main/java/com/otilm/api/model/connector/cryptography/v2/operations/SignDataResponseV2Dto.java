@@ -8,6 +8,7 @@ import com.otilm.api.model.connector.cryptography.v2.operations.validation.Uniqu
 import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.SynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.ValidMetadataAttribute;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,18 +31,22 @@ import lombok.ToString;
 @Schema(name = "SignDataResponseV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class SignDataResponseV2Dto {
 
-    @Schema(description = "Signatures, correlated to the request items by identifier. Populated on sync 200; "
-            + "null on async 202.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ArraySchema(
+            arraySchema = @Schema(
+                    description = "Signatures, correlated to the request items by identifier. "
+                            + "Populated on sync 200; null on async 202.",
+                    requiredMode = Schema.RequiredMode.NOT_REQUIRED),
+            minItems = 1)
     @Null(message = "signatures must be absent for asynchronous execution", groups = AsynchronousResponse.class)
     @NotEmpty(message = "signatures must contain at least one item for synchronous execution",
             groups = SynchronousResponse.class)
     @UniqueIdentifiers
     private List<@NotNull(message = "signatures must not contain null items") @Valid SignatureDataV2Dto> signatures;
 
-    @Schema(description = "Connector-defined signing operation metadata. Present on async 202 as the tracking "
-            + "handle for the whole batch. Supply it by itself to /operations/sign/status and "
+    @ArraySchema(arraySchema = @Schema(description = "Connector-defined signing operation metadata. Present on async "
+            + "202 as the tracking handle for the whole batch. Supply it by itself to /operations/sign/status and "
             + "/operations/sign/cancel. It must remain valid for the operation's entire tracking lifetime.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED), minItems = 1)
     @Null(message = "operationMeta must be absent for synchronous execution", groups = SynchronousResponse.class)
     @NotEmpty(message = "operationMeta must contain at least one item for asynchronous execution",
             groups = AsynchronousResponse.class)

@@ -8,6 +8,7 @@ import com.otilm.api.model.common.attribute.common.MetadataAttribute;
 import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.SynchronousResponse;
 import com.otilm.api.model.connector.cryptography.v2.validation.ValidMetadataAttribute;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.AssertTrue;
@@ -57,9 +58,9 @@ public final class KeyPairDataResponseV2Dto extends KeyCreationResponseV2Dto {
     @NotNull(message = "privateKeyData is required for synchronous execution", groups = SynchronousResponse.class)
     private PrivateKeyDataResponseV2Dto privateKeyData;
 
-    @Schema(description = "Connector-defined metadata for the pair as a whole. Required on a synchronous 200 and in "
-            + "a completed asynchronous creation-status result; absent from the initial asynchronous 202.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @ArraySchema(arraySchema = @Schema(description = "Connector-defined metadata for the pair as a whole. Required on "
+            + "a synchronous 200 and in a completed asynchronous creation-status result; absent from the initial "
+            + "asynchronous 202.", requiredMode = Schema.RequiredMode.NOT_REQUIRED), minItems = 1)
     @Null(message = "keyPairMeta must be absent for asynchronous execution", groups = AsynchronousResponse.class)
     @NotEmpty(message = "keyPairMeta must contain at least one item for synchronous execution",
             groups = SynchronousResponse.class)

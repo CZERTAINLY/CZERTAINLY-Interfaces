@@ -47,7 +47,7 @@ public abstract sealed class KeyDataV2Dto permits SecretKeyDataV2Dto, PublicKeyD
     @NotNull(message = "key algorithm is required")
     private KeyAlgorithm algorithm;
 
-    @Schema(description = "Bit length of the key", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Bit length of the key", requiredMode = Schema.RequiredMode.REQUIRED, minimum = "1")
     @NotNull(message = "key length is required")
     @Positive(message = "key length must be positive")
     private Integer length;
