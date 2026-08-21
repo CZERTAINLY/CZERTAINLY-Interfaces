@@ -48,7 +48,7 @@ public class PadesVisibleSignatureDto {
 
     @ToString.Exclude
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_CONTENT)
-    @Size(max = 262144, message = "image must be at most 262144 bytes")
+    @Size(min = 1, max = 262144, message = "image must be between 1 and 262144 bytes")
     @Schema(description = "Stamp image drawn in the signature, base64-encoded in JSON. At most 256 KiB decoded. The "
             + "maxLength below counts base64 characters, so it is the stricter of the two caps. Always resolved "
             + "bytes: this contract carries no reference, no identifier and no path.",

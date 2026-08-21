@@ -85,6 +85,15 @@ class PadesVisibleSignatureDtoTest {
         assertFalse(valid(oversizedImage));
     }
 
+    /** Every sibling rejects present-but-empty; a stamp with no pixels would fail at render time, not at the door. */
+    @Test
+    void anEmptyStampImageIsRejected() {
+        PadesVisibleSignatureDto emptyImage = stamp();
+        emptyImage.setImage(new byte[0]);
+
+        assertFalse(valid(emptyImage));
+    }
+
     /** Lombok renders a byte[] field byte by byte, so an unexcluded image would print 256 KiB into a log line. */
     @Test
     void theStampBytesStayOutOfToString() {

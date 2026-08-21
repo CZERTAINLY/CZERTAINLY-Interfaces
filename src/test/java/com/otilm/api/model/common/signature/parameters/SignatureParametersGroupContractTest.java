@@ -1,6 +1,7 @@
 package com.otilm.api.model.common.signature.parameters;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.otilm.api.model.common.signature.AnotherPackageParameterFixture;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.SignatureParameterGroup;
 import jakarta.validation.Valid;
@@ -30,8 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * and nothing else.
  */
 class SignatureParametersGroupContractTest {
-
-    private static final String PARAMETERS_PACKAGE = "com.otilm.api.model.common.signature.parameters";
 
     private static final String DISCRIMINATOR = "family";
 
@@ -104,6 +103,16 @@ class SignatureParametersGroupContractTest {
         assertTrue(problems.get(0).contains("forgottenNestedParameter"), problems.get(0));
     }
 
+    /** The fixtures above are nested here, so only a type from elsewhere exercises the out-of-package branch. */
+    @Test
+    void theSweepSeesThroughAParameterObjectFromAnotherPackage() {
+        List<String> problems = new ArrayList<>();
+        classify(OutOfPackageFixture.class, SignatureFamily.PADES, "fixture", problems,
+                EnumSet.noneOf(SignatureParameterGroup.class));
+        assertEquals(1, problems.size(), String.join("\n", problems));
+        assertTrue(problems.get(0).contains("nested.forgottenParameter"), problems.get(0));
+    }
+
     /** The over-correction guard: a collection of values is still one parameter, so the group stays on the field. */
     @Test
     void theSweepStillTreatsACollectionOfValuesAsALeaf() {
@@ -157,12 +166,16 @@ class SignatureParametersGroupContractTest {
 
     /**
      * A nested parameter object, as opposed to a value: nesting is a readability device, so containers hold no group of
-     * their own. Enums are values even though they live in the same package.
+     * their own. Container-ness follows the type, not where it is declared, so a parameter object reused from another
+     * package is still recursed into. Enums are values, and so is anything declared by the JDK or Jakarta.
      */
     private static boolean isContainer(Class<?> type) {
+        if (type.isPrimitive() || type.isEnum() || type.isArray()) {
+            return false;
+        }
         String packageName = type.getPackageName();
-        return !type.isEnum()
-                && (packageName.equals(PARAMETERS_PACKAGE) || packageName.startsWith(PARAMETERS_PACKAGE + "."));
+        return !packageName.startsWith("java.") && !packageName.startsWith("javax.")
+                && !packageName.startsWith("jakarta.");
     }
 
     /**
@@ -245,5 +258,11 @@ class SignatureParametersGroupContractTest {
     private static final class CollectionOfValuesFixture {
 
         List<String> values;
+    }
+
+    private static final class OutOfPackageFixture {
+
+        @Valid
+        AnotherPackageParameterFixture nested;
     }
 }
