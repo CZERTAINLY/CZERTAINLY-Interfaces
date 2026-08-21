@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +95,16 @@ class SignatureParametersSchemaGenerationTest {
         assertEquals(1, placement.get("page").getMinimum().intValue());
         assertNotNull(placement.get("zoom").getMaximum(), "zoom publishes no upper bound");
         assertEquals(1000, placement.get("zoom").getMaximum().intValue());
+
+        for (String field : List.of("originX", "originY")) {
+            assertEquals(BigDecimal.ZERO, placement.get(field).getMinimum(), field + " publishes no floor");
+            assertEquals(Boolean.FALSE, placement.get(field).getExclusiveMinimum(),
+                    field + " must admit the page edge");
+        }
+        for (String field : List.of("width", "height", "zoom")) {
+            assertEquals(BigDecimal.ZERO, placement.get(field).getMinimum(), field + " publishes no floor");
+            assertEquals(Boolean.TRUE, placement.get(field).getExclusiveMinimum(), field + " must not admit zero");
+        }
     }
 
     /**

@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.parameters.pades.PadesSignatureParametersDto;
+import com.otilm.api.model.common.signature.parameters.pades.PadesVisibleSignatureDto;
+import com.otilm.api.model.common.signature.parameters.pades.PadesVisibleSignaturePlacementDto;
 import com.otilm.api.model.connector.signatures.contentsigning.common.ComputeDtbsRequestDto;
 import com.otilm.api.model.connector.signatures.contentsigning.common.InlineDocumentTransferDto;
 import jakarta.validation.ConstraintViolation;
@@ -105,5 +107,27 @@ class PadesComputeDtbsRequestDtoTest {
 
         assertEquals(1, violations.size());
         assertEquals("signatureParameters.reason", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    /**
+     * A {@code @Valid} missing on any nested container silences every constraint below it, so the request validates
+     * clean with a page number no PDF has.
+     */
+    @Test
+    void validationCascadesToTheDeepestParameter() {
+        PadesComputeDtbsRequestDto request = padesRequest();
+        PadesVisibleSignaturePlacementDto placement = new PadesVisibleSignaturePlacementDto();
+        placement.setPage(0);
+        PadesVisibleSignatureDto visibleSignature = new PadesVisibleSignatureDto();
+        visibleSignature.setPlacement(placement);
+        PadesSignatureParametersDto parameters = new PadesSignatureParametersDto();
+        parameters.setVisibleSignature(visibleSignature);
+        request.setSignatureParameters(parameters);
+
+        Set<ConstraintViolation<PadesComputeDtbsRequestDto>> violations = VALIDATOR.validate(request);
+
+        assertEquals(1, violations.size());
+        assertEquals("signatureParameters.visibleSignature.placement.page",
+                violations.iterator().next().getPropertyPath().toString());
     }
 }

@@ -64,8 +64,9 @@ public class PadesSignatureParametersDto extends SignatureParametersDto {
     private String signerName;
 
     @RequestParameterGroup(SignatureParameterGroup.SIGNATURE_SCOPE)
-    @Schema(description = "Whether the signature certifies the document or approves a revision of it",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Whether the signature certifies the document or approves a revision of it. Absent is "
+            + "unspecified: on a request the Signing Profile's default decides, and in the effective parameters it "
+            + "means revision. Certification is never inferred.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private PadesSignatureScope signatureScope;
 
     @RequestParameterGroup(SignatureParameterGroup.SIGNED_ATTRIBUTES)

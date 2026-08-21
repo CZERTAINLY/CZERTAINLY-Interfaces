@@ -7,9 +7,8 @@ import com.otilm.api.model.common.signature.parameters.pades.validation.QuarterT
 import com.otilm.api.model.common.validation.NullableNotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,25 +49,25 @@ public class PadesVisibleSignaturePlacementDto {
     private Integer page;
 
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_PLACEMENT)
-    @PositiveOrZero(message = "originX must not be negative")
+    @DecimalMin(value = "0", message = "originX must not be negative")
     @Schema(description = "Distance from the left edge of the page to the left edge of the signature, in PDF points",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "20")
     private Float originX;
 
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_PLACEMENT)
-    @PositiveOrZero(message = "originY must not be negative")
+    @DecimalMin(value = "0", message = "originY must not be negative")
     @Schema(description = "Distance from the top edge of the page to the top edge of the signature, in PDF points",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "30")
     private Float originY;
 
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_PLACEMENT)
-    @Positive(message = "width must be greater than zero")
+    @DecimalMin(value = "0", inclusive = false, message = "width must be greater than zero")
     @Schema(description = "Width of the signature, in PDF points", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             example = "180")
     private Float width;
 
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_PLACEMENT)
-    @Positive(message = "height must be greater than zero")
+    @DecimalMin(value = "0", inclusive = false, message = "height must be greater than zero")
     @Schema(description = "Height of the signature, in PDF points", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             example = "60")
     private Float height;
@@ -90,7 +89,7 @@ public class PadesVisibleSignaturePlacementDto {
     private VerticalAlignment alignmentVertical;
 
     @RequestParameterGroup(SignatureParameterGroup.VISIBLE_SIGNATURE_PLACEMENT)
-    @Positive(message = "zoom must be greater than zero")
+    @DecimalMin(value = "0", inclusive = false, message = "zoom must be greater than zero")
     @DecimalMax(value = "1000", message = "zoom must be at most 1000 percent")
     @Schema(description = "Size of the anchored signature as a percentage of its natural size, where 100 is natural "
             + "size. Belongs to the anchor mode; an explicit width and height leave nothing to scale.",
