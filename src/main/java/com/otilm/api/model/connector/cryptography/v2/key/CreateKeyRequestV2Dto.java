@@ -38,7 +38,7 @@ public class CreateKeyRequestV2Dto extends TokenProfileScopedRequestV2Dto {
             original result. Non-equivalent reuse returns RESOURCE_ALREADY_EXISTS (HTTP 409).
             """, requiredMode = Schema.RequiredMode.REQUIRED, minLength = 1, maxLength = 256)
     @NotBlank(message = "keyCreationId is required")
-    @Size(min = 1, max = 256, message = "keyCreationId must not exceed 256 characters")
+    @Size(min = 1, max = 256, message = "keyCreationId must contain between 1 and 256 characters")
     private String keyCreationId;
 
     @Schema(description = "Attributes to create the key", requiredMode = Schema.RequiredMode.REQUIRED)
