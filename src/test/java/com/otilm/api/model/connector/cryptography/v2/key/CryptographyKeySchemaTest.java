@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Named.named;
 
@@ -23,21 +24,24 @@ class CryptographyKeySchemaTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("creationUnions")
-    void keyCreationSchema_publishesClosedDiscriminatedUnion(UnionContract contract) {
+    void keyCreationSchema_publishesDiscriminatedUnionWithOpenCompleteParent(UnionContract contract) {
         // given
-        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(contract.root());
+        Map<String, Schema> schemas = openApi31Schemas(contract.root());
 
         // when
         Schema<?> union = schemas.get(contract.schemaName());
 
         // then
         assertDiscriminator(union, contract.discriminatorProperty(), contract.mapping());
-        assertEquals(Boolean.FALSE, union.getAdditionalProperties());
+        assertNull(union.getAdditionalProperties(), "union parent must not close over properties declared by its arms");
+        assertNull(union.getRequired(), "concrete union arms own their required properties");
+        assertNotNull(union.getProperties(), "union parent properties must be generated from its getters");
+        assertEquals(contract.parentProperties(), union.getProperties().keySet());
         assertEquals(contract.members(), oneOfReferences(union));
         contract
                 .members()
-                .forEach(member -> assertFalse(Boolean.TRUE.equals(schemas.get(member).getAdditionalProperties()),
-                        member + " must not permit additional properties"));
+                .forEach(member -> assertEquals(Boolean.FALSE, schemas.get(member).getAdditionalProperties(),
+                        member + " must remain closed"));
     }
 
     static Stream<Named<UnionContract>> creationUnions() {
@@ -48,21 +52,23 @@ class CryptographyKeySchemaTest {
                                 Map
                                         .of("secret", "#/components/schemas/SecretKeyDataResponseV2Dto", "keyPair",
                                                 "#/components/schemas/KeyPairDataResponseV2Dto"),
+                                Set.of("keyRequestType", "operationMeta"),
                                 Set.of("SecretKeyDataResponseV2Dto", "KeyPairDataResponseV2Dto"))),
                         named("creation status", new UnionContract(KeyCreationStatusResponseV2Dto.class,
                                 "KeyCreationStatusResponseInterface", "keyRequestType",
                                 Map
                                         .of("secret", "#/components/schemas/SecretKeyOperationStatusResponseV2Dto",
                                                 "keyPair", "#/components/schemas/KeyPairOperationStatusResponseV2Dto"),
+                                Set.of("keyRequestType", "status", "reason", "result"),
                                 Set
                                         .of("SecretKeyOperationStatusResponseV2Dto",
                                                 "KeyPairOperationStatusResponseV2Dto"))));
     }
 
     @Test
-    void keyDataSchema_publishesClosedDiscriminatedUnionWithRequiredTypeFields() {
+    void keyDataSchema_publishesDiscriminatedUnionWithOpenCompleteParent() {
         // given
-        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(KeyDataV2Dto.class);
+        Map<String, Schema> schemas = openApi31Schemas(KeyDataV2Dto.class);
 
         // when
         Schema<?> union = schemas.get("KeyDataV2");
@@ -73,7 +79,10 @@ class CryptographyKeySchemaTest {
                         .of("Secret", "#/components/schemas/SecretKeyDataV2Dto", "Public",
                                 "#/components/schemas/PublicKeyDataV2Dto", "Private",
                                 "#/components/schemas/PrivateKeyDataV2Dto"));
-        assertEquals(Boolean.FALSE, union.getAdditionalProperties());
+        assertNull(union.getAdditionalProperties(), "union parent must allow properties declared by its arms");
+        assertNull(union.getRequired(), "concrete key-data arms own their required properties");
+        assertNotNull(union.getProperties(), "union parent properties must be generated from its getters");
+        assertEquals(Set.of("type", "algorithm", "length", "metadata"), union.getProperties().keySet());
         assertTrue(schemas.containsKey("KeyTypeV2"), "KeyTypeV2 enum schema must be generated");
         assertFalse(schemas.containsKey("KeyRoleV2"), "legacy KeyRoleV2 enum schema must not be generated");
         assertEquals(Set.of("SecretKeyDataV2Dto", "PublicKeyDataV2Dto", "PrivateKeyDataV2Dto"), oneOfReferences(union));
@@ -90,7 +99,7 @@ class CryptographyKeySchemaTest {
     @Test
     void publicKeySchema_requiresByteFormattedSpki() {
         // given
-        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(PublicKeyDataV2Dto.class);
+        Map<String, Schema> schemas = openApi31Schemas(PublicKeyDataV2Dto.class);
         Schema<?> publicKey = schemas.get("PublicKeyDataV2Dto");
 
         // when
@@ -107,7 +116,7 @@ class CryptographyKeySchemaTest {
     @MethodSource("closedEnvelopeSchemas")
     void keyEnvelopeSchema_publishesAdditionalPropertiesFalse(SchemaContract contract) {
         // given
-        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(contract.root());
+        Map<String, Schema> schemas = openApi31Schemas(contract.root());
 
         // when
         Schema<?> schema = schemas.get(contract.schemaName());
@@ -134,6 +143,10 @@ class CryptographyKeySchemaTest {
 
     private static Named<SchemaContract> schema(String name, Class<?> root, String schemaName) {
         return named(name, new SchemaContract(root, schemaName));
+    }
+
+    private static Map<String, Schema> openApi31Schemas(Class<?> root) {
+        return ModelConverters.getInstance(true).readAll(root);
     }
 
     private static void assertDiscriminator(Schema<?> schema, String property, Map<String, String> mapping) {
@@ -198,7 +211,7 @@ class CryptographyKeySchemaTest {
     }
 
     private record UnionContract(Class<?> root, String schemaName, String discriminatorProperty,
-            Map<String, String> mapping, Set<String> members) {
+            Map<String, String> mapping, Set<String> parentProperties, Set<String> members) {
     }
 
     private record SchemaContract(Class<?> root, String schemaName) {
