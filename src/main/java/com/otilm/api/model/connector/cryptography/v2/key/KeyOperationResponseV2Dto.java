@@ -25,7 +25,7 @@ import lombok.ToString;
 public class KeyOperationResponseV2Dto {
 
     @ArraySchema(arraySchema = @Schema(description = "Connector-defined operation tracking metadata. Required and "
-            + "non-empty in the initial response accepting asynchronous execution. Absent from a synchronous creation "
+            + "non-empty in the initial response accepting asynchronous execution. Absent from a synchronous "
             + "response and from a completed result nested in a status response. This handle must remain valid for the "
             + "operation's entire tracking lifetime.", requiredMode = Schema.RequiredMode.NOT_REQUIRED), minItems = 1)
     @Null(message = "operationMeta must be absent for synchronous execution", groups = SynchronousResponse.class)

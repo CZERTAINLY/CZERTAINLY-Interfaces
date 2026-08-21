@@ -38,7 +38,7 @@ public final class SecretKeyDataResponseV2Dto extends KeyCreationResponseV2Dto {
     @Valid
     @Null(message = "keyData must be absent for asynchronous execution", groups = AsynchronousResponse.class)
     @NotNull(message = "keyData is required for synchronous execution", groups = SynchronousResponse.class)
-    @Schema(description = "Created secret-key descriptor. Null on an asynchronous 202 response.",
+    @Schema(description = "Created secret-key descriptor. Absent on an asynchronous 202 response.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SecretKeyDataV2Dto keyData;
 

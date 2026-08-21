@@ -34,7 +34,7 @@ public class SignDataResponseV2Dto {
     @ArraySchema(
             arraySchema = @Schema(
                     description = "Signatures, correlated to the request items by identifier. "
-                            + "Populated on sync 200; null on async 202.",
+                            + "Populated on sync 200; absent on async 202.",
                     requiredMode = Schema.RequiredMode.NOT_REQUIRED),
             minItems = 1)
     @Null(message = "signatures must be absent for asynchronous execution", groups = AsynchronousResponse.class)

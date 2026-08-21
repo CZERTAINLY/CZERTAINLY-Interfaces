@@ -44,14 +44,14 @@ public final class KeyPairDataResponseV2Dto extends KeyCreationResponseV2Dto {
         return KeyRequestType.KEY_PAIR;
     }
 
-    @Schema(description = "Data of the public key. Populated on sync 200; null on async 202.",
+    @Schema(description = "Data of the public key. Populated on sync 200; absent on async 202.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     @Null(message = "publicKeyData must be absent for asynchronous execution", groups = AsynchronousResponse.class)
     @NotNull(message = "publicKeyData is required for synchronous execution", groups = SynchronousResponse.class)
     private PublicKeyDataResponseV2Dto publicKeyData;
 
-    @Schema(description = "Data of the private key. Populated on sync 200; null on async 202.",
+    @Schema(description = "Data of the private key. Populated on sync 200; absent on async 202.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Valid
     @Null(message = "privateKeyData must be absent for asynchronous execution", groups = AsynchronousResponse.class)
