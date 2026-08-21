@@ -60,7 +60,9 @@ public interface KeyController extends AuthProtectedConnectorController {
                     description = "Creation accepted asynchronously, or equivalent operation replayed asynchronously; "
                             + "body carries the original operationMeta tracking handle"),
             @ApiResponse(responseCode = "409",
-                    description = "keyCreationId reused with a non-equivalent request (RESOURCE_ALREADY_EXISTS)")})
+                    description = "keyCreationId reused with a non-equivalent request (RESOURCE_ALREADY_EXISTS)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<KeyCreationResponseV2Dto> createKey(@RequestBody @Valid CreateKeyRequestV2Dto request);
 
