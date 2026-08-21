@@ -84,6 +84,7 @@ public enum Resource implements IPlatformEnum {
     RESOURCE("resources", "Resource"),
     RESOURCE_EVENT("resourceEvents", "Resource Event"),
     SEARCH_FILTER("searchFilters", "Search Filter"),
+    LIST_VIEW("listViews", "List view"),
     CRYPTOGRAPHIC_KEY_ITEM("keyItems", "Key item"),
     PLATFORM_ENUM("platformEnums", "Platform enumerator"),
     NOTIFICATION("notifications", "Notification"),
