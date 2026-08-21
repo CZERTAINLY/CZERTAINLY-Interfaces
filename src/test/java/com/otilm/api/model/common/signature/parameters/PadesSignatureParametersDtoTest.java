@@ -11,6 +11,7 @@ import com.otilm.api.model.common.signature.parameters.pades.PadesVisibleSignatu
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -101,9 +102,11 @@ class PadesSignatureParametersDtoTest {
 
     @Test
     void theCapsOnEveryTextParameterAreEnforced() {
-        Stream
-                .of("reason", "location", "contactInfo", "signerName")
-                .forEach(field -> assertFalse(VALIDATOR.validate(overLongText(field)).isEmpty(), field));
+        Stream.of("reason", "location", "contactInfo", "signerName").forEach(field -> {
+            Set<ConstraintViolation<PadesSignatureParametersDto>> violations = VALIDATOR.validate(overLongText(field));
+            assertEquals(1, violations.size(), field);
+            assertEquals(field, violations.iterator().next().getPropertyPath().toString());
+        });
     }
 
     private static PadesSignatureParametersDto overLongText(String field) {
@@ -113,7 +116,8 @@ class PadesSignatureParametersDtoTest {
             case "reason" -> parameters.setReason(tooLong);
             case "location" -> parameters.setLocation(tooLong);
             case "contactInfo" -> parameters.setContactInfo(tooLong);
-            default -> parameters.setSignerName(tooLong);
+            case "signerName" -> parameters.setSignerName(tooLong);
+            default -> throw new IllegalArgumentException("unknown text parameter " + field);
         }
         return parameters;
     }
@@ -131,6 +135,18 @@ class PadesSignatureParametersDtoTest {
         PadesSignatureParametersDto atTheCap = new PadesSignatureParametersDto();
         atTheCap.setClaimedRoles(List.of("a", "b", "c", "d", "e", "f", "g", "h", "i", "j"));
         assertTrue(VALIDATOR.validate(atTheCap).isEmpty());
+    }
+
+    /** {@code List.of} rejects a null item itself, so only a null-tolerant list reaches the element constraint. */
+    @Test
+    void aNullClaimedRoleIsRejected() {
+        PadesSignatureParametersDto parameters = new PadesSignatureParametersDto();
+        parameters.setClaimedRoles(Arrays.asList("Head of Legal", null));
+
+        Set<ConstraintViolation<PadesSignatureParametersDto>> violations = VALIDATOR.validate(parameters);
+
+        assertEquals(1, violations.size());
+        assertEquals("claimedRoles must not contain null items", violations.iterator().next().getMessage());
     }
 
     /** The whole request prints no caller content by construction, and these parameters carry text and an address. */

@@ -47,6 +47,14 @@ class PadesComputeDtbsRequestDtoTest {
         assertTrue(VALIDATOR.validate(request).isEmpty());
     }
 
+    /** Non-Java connectors read the key, so it must appear even when the platform sends no parameters. */
+    @Test
+    void theAbsentParametersStillAppearOnTheWire() throws Exception {
+        String json = mapper.writeValueAsString(padesRequest());
+
+        assertTrue(json.contains("\"signatureParameters\":null"), json);
+    }
+
     @Test
     void theParametersRoundTripThroughTheRequestUnion() throws Exception {
         PadesComputeDtbsRequestDto request = padesRequest();

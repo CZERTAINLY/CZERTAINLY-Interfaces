@@ -13,13 +13,7 @@ import lombok.ToString;
  * PAdES variant of the {@code computeDtbs} request.
  *
  * <p>
- * PAdES is always enveloped, so there is no packaging choice to express. Nor does the digest-only document transfer
- * arrive here: laying out an incremental revision needs the document itself.
- * </p>
- *
- * <p>
- * The refusal is deliberate. A silently dropped parameter would produce a signature that does not say what the caller
- * asked for.
+ * PAdES is always enveloped, so there is no packaging choice to express.
  * </p>
  */
 @Getter
