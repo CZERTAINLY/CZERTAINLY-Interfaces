@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * OpenAPI schema for the polymorphic {@link KeyCreationResponseV2Dto} hierarchy.
  */
-@Schema(name = "KeyCreationResponseInterface", description = "Key-creation response selected by key request type",
+@Schema(name = "KeyCreationResponse", description = "Key-creation response selected by key request type",
         type = "object", discriminatorProperty = "keyRequestType",
         discriminatorMapping = {
                 @DiscriminatorMapping(value = KeyRequestType.Codes.SECRET, schema = SecretKeyDataResponseV2Dto.class),

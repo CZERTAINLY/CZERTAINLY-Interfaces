@@ -47,15 +47,14 @@ class CryptographyKeySchemaTest {
     static Stream<Named<UnionContract>> creationUnions() {
         return Stream
                 .of(named("creation response",
-                        new UnionContract(KeyCreationResponseV2Dto.class, "KeyCreationResponseInterface",
-                                "keyRequestType",
+                        new UnionContract(KeyCreationResponseV2Dto.class, "KeyCreationResponse", "keyRequestType",
                                 Map
                                         .of("secret", "#/components/schemas/SecretKeyDataResponseV2Dto", "keyPair",
                                                 "#/components/schemas/KeyPairDataResponseV2Dto"),
                                 Set.of("keyRequestType", "operationMeta"),
                                 Set.of("SecretKeyDataResponseV2Dto", "KeyPairDataResponseV2Dto"))),
                         named("creation status", new UnionContract(KeyCreationStatusResponseV2Dto.class,
-                                "KeyCreationStatusResponseInterface", "keyRequestType",
+                                "KeyCreationStatusResponse", "keyRequestType",
                                 Map
                                         .of("secret", "#/components/schemas/SecretKeyOperationStatusResponseV2Dto",
                                                 "keyPair", "#/components/schemas/KeyPairOperationStatusResponseV2Dto"),

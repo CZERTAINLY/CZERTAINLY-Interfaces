@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 
 /** OpenAPI schema for the polymorphic {@link KeyCreationStatusResponseV2Dto} hierarchy. */
-@Schema(name = "KeyCreationStatusResponseInterface",
+@Schema(name = "KeyCreationStatusResponse",
         description = "Status of an asynchronous key-creation operation selected by key request type", type = "object",
         discriminatorProperty = "keyRequestType",
         discriminatorMapping = {
