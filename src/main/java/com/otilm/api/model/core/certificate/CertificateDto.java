@@ -7,6 +7,7 @@ import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.otilm.api.model.core.certificate.group.GroupDto;
 import com.otilm.api.model.core.compliance.ComplianceStatus;
 import com.otilm.api.model.core.logging.Loggable;
+import com.otilm.api.model.core.search.AttributeProjectable;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CertificateDto implements Loggable {
+public class CertificateDto implements Loggable, AttributeProjectable {
     @Schema(description = "UUID of the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
@@ -114,9 +115,7 @@ public class CertificateDto implements Loggable {
     private boolean archived;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Schema(description = "Values of the attribute-sourced fields requested as columns, keyed by field source and "
-            + "then by field identifier. Present only when the listing request asked for attribute-sourced columns; "
-            + "a field the object has no value for is absent rather than empty.",
+    @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 

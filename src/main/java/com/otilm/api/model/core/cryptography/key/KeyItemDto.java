@@ -8,6 +8,7 @@ import com.otilm.api.model.common.enums.cryptography.KeyFormat;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.core.certificate.group.GroupDto;
 import com.otilm.api.model.core.compliance.ComplianceStatus;
+import com.otilm.api.model.core.search.AttributeProjectable;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
@@ -24,7 +25,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class KeyItemDto extends NameAndUuidDto {
+public class KeyItemDto extends NameAndUuidDto implements AttributeProjectable {
 
     @Schema(description = "Description of the Key", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
@@ -89,9 +90,7 @@ public class KeyItemDto extends NameAndUuidDto {
     private ComplianceStatus complianceStatus;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Schema(description = "Values of the attribute-sourced fields requested as columns, keyed by field source and "
-            + "then by field identifier. Present only when the listing request asked for attribute-sourced columns; "
-            + "a field the object has no value for is absent rather than empty.",
+    @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 }

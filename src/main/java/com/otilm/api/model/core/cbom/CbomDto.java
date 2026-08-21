@@ -1,12 +1,18 @@
 package com.otilm.api.model.core.cbom;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
+import com.otilm.api.model.core.search.AttributeProjectable;
+import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.Data;
 
 @Data
-public class CbomDto {
+public class CbomDto implements AttributeProjectable {
     @Schema(description = "UUID of a CBOM record", requiredMode = Schema.RequiredMode.REQUIRED)
     private UUID uuid;
 
@@ -42,4 +48,9 @@ public class CbomDto {
 
     @Schema(description = "Total number of assets", requiredMode = Schema.RequiredMode.REQUIRED)
     private int totalAssets;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 }
