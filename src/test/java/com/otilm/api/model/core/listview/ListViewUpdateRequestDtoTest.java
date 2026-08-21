@@ -2,7 +2,6 @@ package com.otilm.api.model.core.listview;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.otilm.api.model.client.certificate.SearchColumnRequestDto;
 import com.otilm.api.model.client.certificate.SearchSortRequestDto;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import com.otilm.api.model.core.search.SortDirection;
@@ -31,7 +30,7 @@ class ListViewUpdateRequestDtoTest {
         // given — the update shape has no resource, so an edit cannot repoint a view at a different catalogue
         var dto = new ListViewUpdateRequestDto();
         dto.setName("Expiry watch");
-        dto.setColumns(List.of(new SearchColumnRequestDto(FilterFieldSource.PROPERTY, "commonName")));
+        dto.setColumns(List.of(new ListViewColumnDto(FilterFieldSource.PROPERTY, "commonName", null)));
 
         // when
         Map<String, Object> properties = mapper.readValue(mapper.writeValueAsString(dto), new TypeReference<>() {
@@ -49,8 +48,8 @@ class ListViewUpdateRequestDtoTest {
         dto.setName("Expiry watch v2");
         dto
                 .setColumns(List
-                        .of(new SearchColumnRequestDto(FilterFieldSource.CUSTOM, "department"),
-                                new SearchColumnRequestDto(FilterFieldSource.PROPERTY, "commonName")));
+                        .of(new ListViewColumnDto(FilterFieldSource.CUSTOM, "department", null),
+                                new ListViewColumnDto(FilterFieldSource.PROPERTY, "commonName", null)));
         dto.setSort(new SearchSortRequestDto(FilterFieldSource.PROPERTY, "notAfter", SortDirection.ASC));
 
         // when
@@ -59,7 +58,7 @@ class ListViewUpdateRequestDtoTest {
         // then
         assertEquals("Expiry watch v2", back.getName());
         assertEquals(List.of("department", "commonName"),
-                back.getColumns().stream().map(SearchColumnRequestDto::getFieldIdentifier).toList());
+                back.getColumns().stream().map(ListViewColumnDto::getFieldIdentifier).toList());
         assertEquals(SortDirection.ASC, back.getSort().getDirection());
         assertTrue(VALIDATOR.validate(back).isEmpty());
     }

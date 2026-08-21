@@ -1,7 +1,6 @@
 package com.otilm.api.model.core.listview;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.otilm.api.model.client.certificate.SearchColumnRequestDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import com.otilm.api.testsupport.ValidatorFixture;
@@ -78,7 +77,7 @@ class ListViewRequestDtoTest {
         // given — a column naming no field cannot be resolved against the catalogue
         var violations = VALIDATOR
                 .validate(request("Expiry watch", Resource.CERTIFICATE,
-                        new SearchColumnRequestDto(FilterFieldSource.PROPERTY, null)));
+                        new ListViewColumnDto(FilterFieldSource.PROPERTY, null, null)));
 
         // then
         assertEquals(Set.of("columns[0].fieldIdentifier"), paths(violations));
@@ -98,7 +97,7 @@ class ListViewRequestDtoTest {
         assertEquals("commonName", back.getColumns().get(0).getFieldIdentifier());
     }
 
-    private static ListViewRequestDto request(String name, Resource resource, SearchColumnRequestDto... columns) {
+    private static ListViewRequestDto request(String name, Resource resource, ListViewColumnDto... columns) {
         var dto = new ListViewRequestDto();
         dto.setName(name);
         dto.setResource(resource);
@@ -106,8 +105,8 @@ class ListViewRequestDtoTest {
         return dto;
     }
 
-    private static SearchColumnRequestDto column(String fieldIdentifier) {
-        return new SearchColumnRequestDto(FilterFieldSource.PROPERTY, fieldIdentifier);
+    private static ListViewColumnDto column(String fieldIdentifier) {
+        return new ListViewColumnDto(FilterFieldSource.PROPERTY, fieldIdentifier, null);
     }
 
     private static Set<String> paths(Set<? extends ConstraintViolation<?>> violations) {

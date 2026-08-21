@@ -1,6 +1,5 @@
 package com.otilm.api.model.core.listview;
 
-import com.otilm.api.model.client.certificate.SearchColumnRequestDto;
 import com.otilm.api.model.client.certificate.SearchFilterRequestDto;
 import com.otilm.api.model.client.certificate.SearchSortRequestDto;
 import com.otilm.api.model.core.auth.Resource;
@@ -30,7 +29,7 @@ public class ListViewDto {
 
     @Schema(description = "Columns of the view, in display order. Columns whose field is no longer in the resource's "
             + "catalogue are omitted.", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<SearchColumnRequestDto> columns;
+    private List<ListViewColumnDto> columns;
 
     @Schema(description = "Whether this view applies when the listing is opened", defaultValue = "false",
             requiredMode = Schema.RequiredMode.REQUIRED)

@@ -1,7 +1,6 @@
 package com.otilm.api.model.core.listview;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.otilm.api.model.client.certificate.SearchColumnRequestDto;
 import com.otilm.api.model.client.certificate.SearchFilterRequestDto;
 import com.otilm.api.model.client.certificate.SearchSortRequestDto;
 import com.otilm.api.model.core.auth.Resource;
@@ -29,9 +28,9 @@ class ListViewDtoTest {
         dto.setResource(Resource.CERTIFICATE);
         dto
                 .setColumns(List
-                        .of(new SearchColumnRequestDto(FilterFieldSource.PROPERTY, "commonName"),
-                                new SearchColumnRequestDto(FilterFieldSource.PROPERTY, "notAfter"),
-                                new SearchColumnRequestDto(FilterFieldSource.CUSTOM, "department")));
+                        .of(new ListViewColumnDto(FilterFieldSource.PROPERTY, "commonName", null),
+                                new ListViewColumnDto(FilterFieldSource.PROPERTY, "notAfter", null),
+                                new ListViewColumnDto(FilterFieldSource.CUSTOM, "department", null)));
         dto.setDefaultView(true);
 
         // when
@@ -42,7 +41,7 @@ class ListViewDtoTest {
         assertEquals(Resource.CERTIFICATE, back.getResource());
         assertTrue(back.isDefaultView());
         assertEquals(List.of("commonName", "notAfter", "department"),
-                back.getColumns().stream().map(SearchColumnRequestDto::getFieldIdentifier).toList());
+                back.getColumns().stream().map(ListViewColumnDto::getFieldIdentifier).toList());
         assertNull(back.getFilters());
         assertNull(back.getSort());
     }
@@ -54,7 +53,7 @@ class ListViewDtoTest {
         var dto = new ListViewDto();
         dto.setName("Revoked, newest first");
         dto.setResource(Resource.CRYPTOGRAPHIC_KEY);
-        dto.setColumns(List.of(new SearchColumnRequestDto(FilterFieldSource.PROPERTY, "name")));
+        dto.setColumns(List.of(new ListViewColumnDto(FilterFieldSource.PROPERTY, "name", null)));
         dto
                 .setFilters(List
                         .of(new SearchFilterRequestDto(FilterFieldSource.PROPERTY, "state",

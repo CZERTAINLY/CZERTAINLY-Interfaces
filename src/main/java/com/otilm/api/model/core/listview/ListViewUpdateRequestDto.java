@@ -1,6 +1,5 @@
 package com.otilm.api.model.core.listview;
 
-import com.otilm.api.model.client.certificate.SearchColumnRequestDto;
 import com.otilm.api.model.client.certificate.SearchFilterRequestDto;
 import com.otilm.api.model.client.certificate.SearchSortRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,7 +30,7 @@ public class ListViewUpdateRequestDto {
     @NotEmpty
     @Valid
     @Schema(description = "Columns of the view, in display order", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<SearchColumnRequestDto> columns;
+    private List<ListViewColumnDto> columns;
 
     @Schema(description = "Whether this view applies when the listing is opened. At most one view per user and "
             + "resource is the default; marking a view default clears the flag on the previous one.",
