@@ -1,14 +1,18 @@
 package com.otilm.api.model.core.certificate;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.client.raprofile.SimplifiedRaProfileDto;
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.otilm.api.model.core.certificate.group.GroupDto;
 import com.otilm.api.model.core.compliance.ComplianceStatus;
 import com.otilm.api.model.core.logging.Loggable;
+import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -108,6 +112,13 @@ public class CertificateDto implements Loggable {
     @Schema(description = "Certificate is archived", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             defaultValue = "false")
     private boolean archived;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "Values of the attribute-sourced fields requested as columns, keyed by field source and "
+            + "then by field identifier. Present only when the listing request asked for attribute-sourced columns; "
+            + "a field the object has no value for is absent rather than empty.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 
     public CertificateDto(UUID uuid, String commonName, String serialNumber, String issuerCommonName, String issuerDn,
             String subjectDn, Date notBefore, Date notAfter, String publicKeyAlgorithm, String altPublicKeyAlgorithm,

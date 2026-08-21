@@ -1,14 +1,18 @@
 package com.otilm.api.model.core.cryptography.key;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.common.enums.cryptography.KeyFormat;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.core.certificate.group.GroupDto;
 import com.otilm.api.model.core.compliance.ComplianceStatus;
+import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,4 +87,11 @@ public class KeyItemDto extends NameAndUuidDto {
 
     @Schema(description = "Key compliance status", requiredMode = Schema.RequiredMode.REQUIRED)
     private ComplianceStatus complianceStatus;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "Values of the attribute-sourced fields requested as columns, keyed by field source and "
+            + "then by field identifier. Present only when the listing request asked for attribute-sourced columns; "
+            + "a field the object has no value for is absent rather than empty.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 }
