@@ -5,6 +5,7 @@ import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.signing.SigningProtocol;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -51,6 +52,14 @@ public class SigningRecordDto extends NameAndUuidDto {
     @Schema(description = "Captured request metadata (JSON), if recorded",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String requestMetadataJson;
+
+    @Schema(description = "Serials of the timestamp tokens this operation traces to: the tokens a content "
+            + "signature embedded, or the single serial a timestamp record was issued under. Lower-case hex, the "
+            + "form a Certificate publishes its serialNumber in. Always recorded, whatever the Signing Record "
+            + "policy says: the recordRequestMetadata toggle does not gate it, so the trace to the timestamp "
+            + "records survives. Empty when the operation embedded no timestamp token.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<String> timestampTokenSerials;
 
     @Schema(description = "Time the signed document was first served via CSC retrieval, if any",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
