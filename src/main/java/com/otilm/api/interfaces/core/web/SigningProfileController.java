@@ -205,6 +205,8 @@ public interface SigningProfileController extends AuthProtectedController {
     @Operation(operationId = "listSignatureFormattingConnectorAttributes",
             summary = "Get formatting attribute descriptors from a Signature Formatting Provider",
             description = "Queries the Signature Formatting Provider for its available formatting attribute descriptors with connector default values. "
+                    + "Serves the timestamping workflow only. Content-signing formatting attributes are declared per operation "
+                    + "under the Content Signing Formatting contract and are not returned here. "
                     + "The signingProfileUuid parameter is used for authorization only and does not affect the returned descriptors.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Formatting attribute descriptors retrieved"),
