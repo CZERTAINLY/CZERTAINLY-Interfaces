@@ -18,10 +18,6 @@ class AuthenticationServiceExceptionDtoTest {
         assertEquals(HttpStatus.FORBIDDEN.value(), dto.getStatusCode());
     }
 
-    /**
-     * A getter that assigns to its own field both returns the wrong value and destroys the stored one, so a second read
-     * is what distinguishes a wrong return value from a mutating one.
-     */
     @Test
     void getStatusCode_isStableAcrossRepeatedReads() {
         AuthenticationServiceExceptionDto dto = new AuthenticationServiceExceptionDto(
@@ -29,13 +25,10 @@ class AuthenticationServiceExceptionDtoTest {
 
         dto.getStatusCode();
 
+        // the second read is what separates a wrong return value from a mutating one
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), dto.getStatusCode());
     }
 
-    /**
-     * An unset status must still yield a usable code; {@link AuthenticationServiceExceptionDto#getStatusCode()} carries
-     * why.
-     */
     @Test
     void getStatusCode_fallsBackToBadRequestWhenUnset() {
         assertEquals(HttpStatus.BAD_REQUEST.value(), new AuthenticationServiceExceptionDto().getStatusCode());

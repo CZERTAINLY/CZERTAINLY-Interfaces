@@ -32,8 +32,8 @@ public class AuthenticationServiceExceptionDto {
 
     /**
      * Falls back to {@code 400} only when no status was set — a payload deserialized from the authentication service
-     * may omit the field, and callers such as {@code ExceptionHandlingAdvice} pass the result straight to
-     * {@code ResponseEntity.status(...)}, which rejects null.
+     * may omit the field, and callers pass the result straight to a Spring {@code ResponseEntity} status, which unboxes
+     * it.
      */
     public Integer getStatusCode() {
         return statusCode != null ? statusCode : HttpStatus.BAD_REQUEST.value();
