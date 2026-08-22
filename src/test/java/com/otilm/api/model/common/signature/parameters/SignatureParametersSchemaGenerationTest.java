@@ -80,6 +80,8 @@ class SignatureParametersSchemaGenerationTest {
         }
         assertEquals(Integer.valueOf(10), pades.get("claimedRoles").getMaxItems(),
                 "claimedRoles publishes no cap on how many roles it carries");
+        assertEquals(Integer.valueOf(1), pades.get("claimedRoles").getMinItems(),
+                "claimedRoles publishes no floor, so an empty list reads as legal");
         assertEquals(Integer.valueOf(256), pades.get("claimedRoles").getItems().getMaxLength(),
                 "claimedRoles publishes no cap on a single role");
 
