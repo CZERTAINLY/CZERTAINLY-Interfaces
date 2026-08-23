@@ -7,6 +7,14 @@ import com.otilm.api.model.client.signing.profile.workflow.timestamp.TimestampSo
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.SignatureLevel;
+import com.otilm.api.model.common.signature.SignatureParameterGroup;
+import com.otilm.api.model.common.signature.parameters.pades.PadesSignatureParametersDto;
+import com.otilm.api.model.common.signature.parameters.pades.PadesVisibleSignatureDto;
+import com.otilm.api.model.common.signature.parameters.pades.PadesVisibleSignaturePlacementDto;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContentSigningWorkflowDtoTest {
+
+    private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -66,7 +76,7 @@ class ContentSigningWorkflowDtoTest {
 
     /** A delegated-signing profile carries none of these fields. */
     @Test
-    void allFourFieldsAreOptionalOnTheWire() throws Exception {
+    void everyIlmManagedFieldIsOptionalOnTheWire() throws Exception {
         WorkflowRequestDto decoded = mapper.readValue("{\"type\":\"content_signing\"}", WorkflowRequestDto.class);
 
         ContentSigningWorkflowRequestDto workflow = assertInstanceOf(ContentSigningWorkflowRequestDto.class, decoded);
@@ -74,6 +84,8 @@ class ContentSigningWorkflowDtoTest {
         assertNull(workflow.getMaxLevel());
         assertNull(workflow.getTimestampSource());
         assertNull(workflow.getDocumentSizeCap());
+        assertNull(workflow.getAllowedRequestParameterGroups());
+        assertNull(workflow.getDefaultSignatureParameters());
     }
 
     @Test
@@ -82,5 +94,87 @@ class ContentSigningWorkflowDtoTest {
 
         assertTrue(json.contains("\"family\":\"pades\""), json);
         assertTrue(json.contains("\"maxLevel\":\"archival\""), json);
+    }
+
+    @Test
+    void theAllowListAndTheDefaultsRoundTripThroughTheWorkflowUnion() throws Exception {
+        ContentSigningWorkflowRequestDto original = fullyConfiguredRequest();
+        original.setAllowedRequestParameterGroups(Set.of(SignatureParameterGroup.SIGNATURE_CONTEXT));
+        PadesSignatureParametersDto defaults = new PadesSignatureParametersDto();
+        defaults.setReason("Contract approval");
+        original.setDefaultSignatureParameters(defaults);
+
+        String json = mapper.writeValueAsString(original);
+        WorkflowRequestDto decoded = mapper.readValue(json, WorkflowRequestDto.class);
+
+        ContentSigningWorkflowRequestDto workflow = assertInstanceOf(ContentSigningWorkflowRequestDto.class, decoded);
+        assertEquals(Set.of(SignatureParameterGroup.SIGNATURE_CONTEXT), workflow.getAllowedRequestParameterGroups());
+        PadesSignatureParametersDto pades = assertInstanceOf(PadesSignatureParametersDto.class,
+                workflow.getDefaultSignatureParameters());
+        assertEquals("Contract approval", pades.getReason());
+    }
+
+    /** The defaults are the same class the request sends, so they stay self-describing inside the profile too. */
+    @Test
+    void theDefaultsCarryTheirOwnFamilyOnTheWire() throws Exception {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        request.setAllowedRequestParameterGroups(Set.of(SignatureParameterGroup.VISIBLE_SIGNATURE_CONTENT));
+        request.setDefaultSignatureParameters(new PadesSignatureParametersDto());
+
+        String json = mapper.writeValueAsString(request);
+
+        assertEquals(2, json.split("\"family\":\"pades\"", -1).length - 1, json);
+        assertTrue(json.contains("\"visible_signature_content\""), json);
+    }
+
+    /**
+     * The defaults are the operator's configuration rather than a caller's input, so nothing else applies the field
+     * caps to them; only this cascade holds them to the same contract a request obeys.
+     */
+    @Test
+    void validationCascadesIntoTheDefaults() {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        PadesSignatureParametersDto defaults = new PadesSignatureParametersDto();
+        defaults.setReason("r".repeat(513));
+        request.setDefaultSignatureParameters(defaults);
+
+        Set<ConstraintViolation<ContentSigningWorkflowRequestDto>> violations = VALIDATOR.validate(request);
+
+        assertEquals(1, violations.size());
+        assertEquals("defaultSignatureParameters.reason", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    /** A {@code @Valid} missing on any nested container silences every constraint below it. */
+    @Test
+    void validationCascadesToTheDeepestDefault() {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        PadesVisibleSignaturePlacementDto placement = new PadesVisibleSignaturePlacementDto();
+        placement.setPage(0);
+        PadesVisibleSignatureDto visibleSignature = new PadesVisibleSignatureDto();
+        visibleSignature.setPlacement(placement);
+        PadesSignatureParametersDto defaults = new PadesSignatureParametersDto();
+        defaults.setVisibleSignature(visibleSignature);
+        request.setDefaultSignatureParameters(defaults);
+
+        Set<ConstraintViolation<ContentSigningWorkflowRequestDto>> violations = VALIDATOR.validate(request);
+
+        assertEquals(1, violations.size());
+        assertEquals("defaultSignatureParameters.visibleSignature.placement.page",
+                violations.iterator().next().getPropertyPath().toString());
+    }
+
+    /**
+     * The two fields are orthogonal: a default outside the allow-list is an operator-fixed value, not a
+     * misconfiguration, so nothing in the contract may refuse it.
+     */
+    @Test
+    void aDefaultForAGroupOutsideTheAllowListValidates() {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        request.setAllowedRequestParameterGroups(Set.of());
+        PadesSignatureParametersDto defaults = new PadesSignatureParametersDto();
+        defaults.setReason("Fixed by the operator");
+        request.setDefaultSignatureParameters(defaults);
+
+        assertTrue(VALIDATOR.validate(request).isEmpty());
     }
 }
