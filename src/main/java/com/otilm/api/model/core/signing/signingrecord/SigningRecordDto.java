@@ -53,13 +53,12 @@ public class SigningRecordDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String requestMetadataJson;
 
-    @Schema(description = "Serials of the timestamp tokens this operation traces to: the tokens a content "
-            + "signature embedded, or the single serial a timestamp record was issued under. Lower-case hex, the "
-            + "form a Certificate publishes its serialNumber in. Always recorded, whatever the Signing Record "
-            + "policy says: the recordRequestMetadata toggle does not gate it, so the trace to the timestamp "
-            + "records survives. Empty when the operation embedded no timestamp token.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private List<String> timestampTokenSerials;
+    @Schema(description = "Serial numbers of the timestamp tokens this operation traces to: for a content signature "
+            + "the tokens embedded in the signature, for a timestamp record its own serial number. The protocol "
+            + "field tells the two apart. Unpadded lower-case hex, no 0x prefix and no leading zeros. Present on "
+            + "every Signing Record that exists. Empty when the operation embedded no timestamp token, as a content "
+            + "signature at level SIGNED does.", example = "[\"2a\"]", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<String> timestampTokenSerialNumbers;
 
     @Schema(description = "Time the signed document was first served via CSC retrieval, if any",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
