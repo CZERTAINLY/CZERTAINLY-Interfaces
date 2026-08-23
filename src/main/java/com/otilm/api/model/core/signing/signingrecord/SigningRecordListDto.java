@@ -35,8 +35,8 @@ public class SigningRecordListDto extends NameAndUuidDto {
 
     @Schema(description = "Serial numbers of the timestamp tokens this operation traces to: for a content signature "
             + "the tokens embedded in the signature, for a timestamp record its own serial number. The protocol "
-            + "field tells the two apart. Unpadded lower-case hex, no 0x prefix and no leading zeros. Present on "
-            + "every Signing Record that exists. Empty when the operation embedded no timestamp token, as a content "
-            + "signature at level SIGNED does.", example = "[\"2a\"]", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "field tells the two apart. Unpadded lower-case hex, no 0x prefix and no leading zeros. Empty when "
+            + "the operation embedded no timestamp token, as a content signature at level SIGNED does.",
+            example = "[\"2a\"]", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> timestampTokenSerialNumbers;
 }
