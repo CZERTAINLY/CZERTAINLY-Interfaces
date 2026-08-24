@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,7 @@ public interface LocationManagementController extends AuthProtectedController {
     @Operation(summary = "List Locations")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Locations retrieved")})
     @PostMapping(path = "/locations", produces = {"application/json"})
-    LocationsResponseDto listLocations(@RequestBody SearchRequestDto request);
+    LocationsResponseDto listLocations(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(operationId = "getLocationSearchableFields", summary = "Get Locations searchable fields information")
     @ApiResponses(value = {

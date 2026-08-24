@@ -50,7 +50,7 @@ public interface VaultProfileController extends AuthProtectedController {
     @Operation(summary = "List Vault Profiles")
     @ApiResponse(responseCode = "200", description = "List of Vault Profiles retrieved")
     @PostMapping(path = "/vaultProfiles/list", consumes = {"application/json"}, produces = {"application/json"})
-    PaginationResponseDto<VaultProfileDto> listVaultProfiles(@RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<VaultProfileDto> listVaultProfiles(@Valid @RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Get details of a Vault Profile")
     @ApiResponse(responseCode = "200", description = "Vault Profile details retrieved")

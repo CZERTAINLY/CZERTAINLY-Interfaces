@@ -74,7 +74,7 @@ public interface SigningProfileController extends AuthProtectedController {
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<SigningProfileListDto> listSigningProfiles(@RequestBody SearchRequestDto request);
+    PaginationResponseDto<SigningProfileListDto> listSigningProfiles(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(operationId = "getSigningProfile",
             summary = "Details of a Signing Profile. If no specific version is provided, the latest version will be returned.")
@@ -240,7 +240,7 @@ public interface SigningProfileController extends AuthProtectedController {
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     PaginationResponseDto<SigningRecordListDto> listSigningRecordsForSigningProfile(
             @Parameter(description = "Signing Profile UUID") @PathVariable UUID uuid,
-            @RequestBody SearchRequestDto request) throws NotFoundException;
+            @Valid @RequestBody SearchRequestDto request) throws NotFoundException;
 
     // -----------------------------------------------------------------------------------------------------------------
     // Protocols

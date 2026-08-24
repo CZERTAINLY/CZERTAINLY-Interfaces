@@ -70,7 +70,7 @@ public interface VaultInstanceController extends AuthProtectedController {
     @Operation(summary = "List Vault instances")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Vault instances retrieved")})
     @PostMapping(path = "/list", produces = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<VaultInstanceDto> listVaultInstances(@RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<VaultInstanceDto> listVaultInstances(@Valid @RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Delete a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault instance deleted")})

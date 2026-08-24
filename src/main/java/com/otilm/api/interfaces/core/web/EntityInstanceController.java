@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +49,7 @@ public interface EntityInstanceController extends AuthProtectedController {
     @Operation(summary = "List Entity instances")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Entity instances")})
     @PostMapping(path = "/list", produces = {"application/json"})
-    EntityInstanceResponseDto listEntityInstances(@RequestBody SearchRequestDto request);
+    EntityInstanceResponseDto listEntityInstances(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(operationId = "getEntitySearchableFields", summary = "Get Entities searchable fields information")
     @ApiResponses(

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public interface AuditLogController extends AuthProtectedController {
     @Operation(summary = "List Audit logs")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of audit logs")})
     @PostMapping(produces = {"application/json"})
-    AuditLogResponseDto listAuditLogs(@RequestBody SearchRequestDto requestDto);
+    AuditLogResponseDto listAuditLogs(@Valid @RequestBody SearchRequestDto requestDto);
 
     @Operation(summary = "Export Audit logs")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Export of audit logs")})
