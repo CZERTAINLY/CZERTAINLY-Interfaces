@@ -46,12 +46,14 @@ public abstract class PlatformBaseApiClient {
             if (customServiceUrl != null) {
                 client = WebClient
                         .builder()
+                        .codecs(ApiClientCodecs::pinToJackson2)
                         .filter(ExchangeFilterFunction.ofResponseProcessor(getHttpExceptionHandler()))
                         .baseUrl(customServiceUrl)
                         .build();
             } else {
                 client = WebClient
                         .builder()
+                        .codecs(ApiClientCodecs::pinToJackson2)
                         .filter(ExchangeFilterFunction.ofResponseProcessor(PlatformBaseApiClient::handleHttpExceptions))
                         .baseUrl(getServiceUrl())
                         .build();

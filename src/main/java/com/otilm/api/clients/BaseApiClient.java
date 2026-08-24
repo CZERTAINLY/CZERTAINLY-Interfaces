@@ -401,10 +401,10 @@ public abstract class BaseApiClient {
     }
 
     private static WebClient buildWebClient(HttpClient httpClient, ClientTuning tuning) {
-        ExchangeStrategies strategies = ExchangeStrategies
-                .builder()
-                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize()))
-                .build();
+        ExchangeStrategies strategies = ExchangeStrategies.builder().codecs(codecs -> {
+            codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize());
+            ApiClientCodecs.pinToJackson2(codecs);
+        }).build();
         return WebClient
                 .builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
