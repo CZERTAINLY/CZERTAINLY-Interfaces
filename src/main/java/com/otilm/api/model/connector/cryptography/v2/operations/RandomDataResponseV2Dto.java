@@ -1,0 +1,29 @@
+package com.otilm.api.model.connector.cryptography.v2.operations;
+
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * Response from {@code POST /v2/cryptographyProvider/operations/random}. Always synchronous.
+ */
+@Getter
+@Setter
+@ToString
+@Schema(name = "RandomDataResponseV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
+public class RandomDataResponseV2Dto {
+
+    @Schema(description = "Random generated data", format = "byte", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotEmpty(message = "data is required and must not be empty")
+    @ToString.Exclude
+    private byte[] data;
+
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 random response property: " + property);
+    }
+}

@@ -64,6 +64,12 @@ public class ClientCertificateRekeyRequestDto {
     @Schema(description = "Alternative Signature Attributes. If not provided, existing alternative attributes will be used to generate the new CSR")
     private List<RequestAttribute> altSignatureAttributes;
 
+    @Schema(description = "Rekey dynamic attributes. Rekey is a renew at the authority — there is no separate rekey "
+            + "operation on the connector contract — so this uses the renew schema, as listed by "
+            + "GET /v2/operations/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/renew. "
+            + "Distinct from signatureAttributes/altSignatureAttributes, which configure CSR signing, not the CA operation.")
+    private List<RequestAttribute> attributes;
+
     // Format (@Size/@Pattern) is enforced at registration, not here: on the verify path a malformed secret
     // must fail the challenge identically to a wrong one, so no format constraint is applied (no format oracle).
     @ToString.Exclude

@@ -10,8 +10,16 @@ import java.util.Arrays;
 
 @Schema(enumAsRef = true)
 public enum KeyRequestType implements IPlatformEnum {
-    SECRET("secret", "Secret key"),
-    KEY_PAIR("keyPair", "Key pair");
+    SECRET(Codes.SECRET, "Secret key"),
+    KEY_PAIR(Codes.KEY_PAIR, "Key pair");
+
+    public static final class Codes {
+        public static final String SECRET = "secret";
+        public static final String KEY_PAIR = "keyPair";
+
+        private Codes() {
+        }
+    }
 
     private static final KeyRequestType[] VALUES;
 

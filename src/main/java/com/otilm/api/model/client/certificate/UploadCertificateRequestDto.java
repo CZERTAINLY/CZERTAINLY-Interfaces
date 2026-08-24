@@ -4,6 +4,7 @@ import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * Class representing new certificate upload request
@@ -15,5 +16,6 @@ public class UploadCertificateRequestDto {
     private String certificate;
 
     @Schema(description = "Custom Attributes for the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
+    @ToString.Exclude
     private List<RequestAttribute> customAttributes;
 }
