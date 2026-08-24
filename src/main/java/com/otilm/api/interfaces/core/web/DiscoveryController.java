@@ -47,8 +47,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Core-web discovery management: run CRUD plus the discovery v2 additions — a resource-agnostic item listing, three
- * connector-keyed relay endpoints and three run-lifecycle operations.
+ * Core-web discovery management: run CRUD plus the discovery v2 additions — a resource-agnostic item listing, a paged
+ * run-messages listing, three connector-keyed relay endpoints and three run-lifecycle operations.
  *
  * <p>
  * <b>Connector-keyed relays.</b> {@link #listDiscoveryResources}, {@link #getDiscoveryAttributes} and
@@ -147,16 +147,15 @@ public interface DiscoveryController extends AuthProtectedController {
             @RequestParam(required = false, defaultValue = "0") int pageNumber) throws NotFoundException;
 
     /**
-     * The run's advisory message log, paged rather than carried on the detail.
+     * The run's advisory message log, paged rather than carried on the detail — see
+     * {@link com.otilm.api.model.client.discovery.DiscoveryDetailDto#getRunMessageCount()} for why it is counted there
+     * and read here.
      *
      * <p>
-     * <b>Why it is not a field on the detail:</b> a client polls the detail while a run is live, and a log bounded only
-     * by "large" would ride along on every poll. {@code runMessageCount} on the detail lets a client badge the log
-     * without reading it.
-     *
-     * <p>
-     * <b>Ordering is oldest-first</b>, by when each problem was first seen. The entry that explains a run is usually
-     * the one that started it, so the first page is the useful page — the opposite of a tail-first log.
+     * <b>Ordering is oldest-first</b>, in the order the platform recorded each problem, and stable across pages. The
+     * entry that explains a run is usually the one that started it, so the first page is the useful page — the opposite
+     * of a tail-first log. Deliberately not specified as "by timestamp": every message written in one tick shares a
+     * transaction-start time, so a timestamp is not a total order and paging on it would drop or repeat rows.
      */
     @Operation(summary = "List Discovery Run Messages",
             description = "Returns one page of the advisory messages a Discovery run collected, oldest first. "

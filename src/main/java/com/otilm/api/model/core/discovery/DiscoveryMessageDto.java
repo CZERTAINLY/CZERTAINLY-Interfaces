@@ -19,10 +19,9 @@ import lombok.ToString;
  * {@code firstSeenAt} keeps pointing at when the problem started, which is usually what an operator is looking for.
  *
  * <p>
- * <b>Curated text only.</b> {@code message} is written by the platform for a person to read. It never carries a raw
- * exception message, a stack frame, a file path or connection internals, and it never forwards prose a Discovery
- * Provider authored — the same rule {@code DiscoveryErrorEvent} states for the connector side of the contract. What a
- * connector contributes is {@code code}, a value from a closed vocabulary, never free text.
+ * <b>Curated text only</b>, the same rule {@code DiscoveryErrorEvent} states for the connector side of the contract:
+ * what a connector contributes to an entry here is {@code code}, from a closed vocabulary, never its own prose. The
+ * constraint on {@code message} itself is on that field.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
@@ -32,10 +31,7 @@ import lombok.ToString;
 @ToString
 public class DiscoveryMessageDto {
 
-    /**
-     * Assigned by the platform, never by a Discovery Provider. A connector supplies {@code code}; what that code means
-     * for the run is the platform's to decide, so a connector cannot escalate its own report.
-     */
+    /** See {@link DiscoveryMessageSeverity} for why this is the platform's to assign and not a connector's. */
     // No @Schema description on purpose: DiscoveryMessageSeverity is a schema component of its own, and OpenAPI 3.0
     // cannot carry a description beside a $ref -- swagger-core would hoist the text onto the shared component.
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)

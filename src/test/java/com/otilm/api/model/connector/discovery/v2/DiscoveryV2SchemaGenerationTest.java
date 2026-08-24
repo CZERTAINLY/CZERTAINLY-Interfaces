@@ -4,6 +4,7 @@ import com.otilm.api.interfaces.core.web.DiscoveryController;
 import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
+import com.otilm.api.model.core.discovery.DiscoveryMessageSeverity;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -240,5 +241,49 @@ class DiscoveryV2SchemaGenerationTest {
         assertNotNull(payload, "the item payload union did not survive into the page's referenced schemas");
         assertNotNull(payload.getDiscriminator(), "the payload lost its discriminator inside the generic envelope");
         assertEquals("resource", payload.getDiscriminator().getPropertyName());
+    }
+
+    /**
+     * The run-messages listing, resolved the same way and for the same two reasons: the component name is what client
+     * generators turn into a type name, and the severity enum reaches a client through the erased generic.
+     *
+     * <p>
+     * The severity assertion is the one with history behind it. {@code DiscoveryMessageDto} omits a description on its
+     * {@code severity} field deliberately, because OpenAPI 3.0 cannot carry one beside a {@code $ref} and swagger-core
+     * hoists it onto the shared component instead — the same failure
+     * {@link #discoveryDoesNotRewriteThePlatformWideResourceComponent} pins for {@code Resource}. A comment saying so
+     * is not a guard; this is.
+     */
+    @Test
+    void runMessagesListingResolvesToAPageKeepingTheSeverityComponentIntact() throws Exception {
+        String ownDescription = ModelConverters
+                .getInstance()
+                .readAll(DiscoveryMessageSeverity.class)
+                .get("DiscoveryMessageSeverity")
+                .getDescription();
+
+        Method listing = DiscoveryController.class
+                .getDeclaredMethod("getDiscoveryRunMessages", String.class, int.class, int.class);
+
+        ResolvedSchema resolved = ModelConverters
+                .getInstance()
+                .resolveAsResolvedSchema(new AnnotatedType(listing.getGenericReturnType()).resolveAsRef(true));
+
+        assertEquals("#/components/schemas/PaginationResponseDtoDiscoveryMessageDto", resolved.schema.get$ref(),
+                "the generated type name client generators see is derived from the element type");
+
+        Schema<?> page = resolved.referencedSchemas.get("PaginationResponseDtoDiscoveryMessageDto");
+        assertNotNull(page, "no page component was generated");
+        assertEquals(java.util.Set.of("items", "itemsPerPage", "pageNumber", "totalPages", "totalItems"),
+                page.getProperties().keySet(), "property order is not part of the OpenAPI contract, names are");
+
+        Schema<?> severity = resolved.referencedSchemas.get("DiscoveryMessageSeverity");
+        assertNotNull(severity, "the severity enum did not survive into the page's referenced schemas");
+        assertEquals(ownDescription, severity.getDescription(),
+                "reaching DiscoveryMessageSeverity through the listing must not change its description: a "
+                        + "description on the referencing field gets hoisted onto the shared component, because "
+                        + "OpenAPI 3.0 cannot carry one beside a $ref");
+        assertEquals(java.util.List.of("info", "warning", "error"), severity.getEnum(),
+                "the enum ships its wire codes, not its Java member names");
     }
 }

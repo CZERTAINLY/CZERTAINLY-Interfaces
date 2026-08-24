@@ -102,8 +102,7 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
      * still complete.
      *
      * <p>
-     * Primitive and REQUIRED: a run with nothing to report has none, which is 0 rather than absent. Runs against a v1
-     * Discovery Provider always report 0 — the log is a v2 construct.
+     * Primitive and REQUIRED: a run with nothing to report has none, which is 0 rather than absent.
      */
     @Schema(description = "How many distinct advisory messages this run collected, as counted by the run messages "
             + "listing. Repeated problems are aggregated, so this counts kinds of problem rather than occurrences. "
