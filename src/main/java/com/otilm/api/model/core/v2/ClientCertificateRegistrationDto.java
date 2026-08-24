@@ -85,9 +85,9 @@ public class ClientCertificateRegistrationDto {
 
     @Schema(description = "Optional UUID of an existing certificate this registration succeeds. When set, the "
             + "placeholder is linked to that certificate as its predecessor through a pending relation, "
-            + "resolved at issuance to renewal, rekey or replacement by comparing the issued certificate's "
-            + "subject and key with the source's. Completion runs through the standard issue flow, gated "
-            + "by this registration's own challenge; the source's own renew and rekey are unaffected. "
+            + "classified at issuance as renewal, rekey or replacement. Completion runs through the "
+            + "standard issue flow, gated by this registration's own challenge when one was supplied; "
+            + "the source's own renew and rekey are unaffected. "
             + "When omitted, the registration is a standalone placeholder completed by issue.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID sourceCertificateUuid;
