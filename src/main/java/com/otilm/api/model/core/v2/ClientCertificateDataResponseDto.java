@@ -2,8 +2,10 @@ package com.otilm.api.model.core.v2;
 
 import com.otilm.api.model.common.UuidDto;
 import com.otilm.api.model.core.logging.Loggable;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
@@ -28,11 +30,21 @@ public class ClientCertificateDataResponseDto implements Loggable {
     @Schema(description = "UUID of Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
+    @ArraySchema(arraySchema = @Schema(
+            description = "Request-attribute policy warnings raised while validating an externally supplied CSR "
+                    + "under lenient request validation. Empty under strict, where a violation is rejected with "
+                    + "422 instead of accepted with warnings. Protocol flows (ACME, SCEP, CMP, EST) have "
+                    + "RFC-shaped responses with nowhere to carry warnings, so for them the warnings stay in the "
+                    + "log only.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED))
+    private List<String> requestAttributeWarnings = new ArrayList<>();
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("certificateData", certificateData)
                 .append("certificateUuid", uuid)
+                .append("requestAttributeWarnings", requestAttributeWarnings)
                 .toString();
     }
 
