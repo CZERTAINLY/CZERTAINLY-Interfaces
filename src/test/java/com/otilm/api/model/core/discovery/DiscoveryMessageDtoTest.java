@@ -72,21 +72,15 @@ class DiscoveryMessageDtoTest {
     }
 
     @Test
-    void problemSeenOnceCarriesBothTimestamps() throws Exception {
-        // lastSeenAt equal to firstSeenAt, never absent: a client rendering a time range must not have to
-        // special-case the single-occurrence entry, which is the common one on a healthy run.
-        OffsetDateTime seen = OffsetDateTime.of(2026, 8, 24, 9, 15, 0, 0, ZoneOffset.UTC);
-        DiscoveryMessageDto dto = new DiscoveryMessageDto();
-        dto.setSeverity(DiscoveryMessageSeverity.ERROR);
-        dto.setCode("CONNECTOR_ERROR");
-        dto.setMessage("The Discovery Provider reported a problem reaching one host");
-        dto.setOccurrences(1L);
-        dto.setFirstSeenAt(seen);
-        dto.setLastSeenAt(seen);
+    void everyRequiredFieldIsEmittedEvenWhenUnset() {
+        // No class-level NON_NULL here, deliberately: every field is REQUIRED, so an unset one must surface as an
+        // explicit null a contract test or a client can see, rather than vanishing as an absent key.
+        String json = mapper.valueToTree(new DiscoveryMessageDto()).toString();
 
-        DiscoveryMessageDto back = mapper.readValue(mapper.writeValueAsString(dto), DiscoveryMessageDto.class);
-
-        assertEquals(1L, back.getOccurrences());
-        assertEquals(back.getFirstSeenAt(), back.getLastSeenAt());
+        assertTrue(json.contains("\"severity\":null"), json);
+        assertTrue(json.contains("\"code\":null"), json);
+        assertTrue(json.contains("\"message\":null"), json);
+        assertTrue(json.contains("\"firstSeenAt\":null"), json);
+        assertTrue(json.contains("\"lastSeenAt\":null"), json);
     }
 }

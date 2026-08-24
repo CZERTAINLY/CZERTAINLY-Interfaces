@@ -1,6 +1,5 @@
 package com.otilm.api.model.core.discovery;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,8 @@ import lombok.ToString;
  * what a connector contributes to an entry here is {@code code}, from a closed vocabulary, never its own prose. The
  * constraint on {@code message} itself is on that field.
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+// No class-level NON_NULL, unlike its siblings: every field here is REQUIRED, so there is no optional field for
+// it to hide and it could only turn a mapping bug that left one unset into a silently absent key.
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
