@@ -13,6 +13,7 @@ import org.springframework.http.codec.HttpMessageReader;
 import org.springframework.http.codec.HttpMessageWriter;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 
 /**
  * Tests for Jackson 2 codec contract, which Spring Framework 7 would otherwise resolve to Jackson 3.
@@ -62,11 +63,15 @@ class ApiClientCodecsTest {
         ClientTuning tuning = new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(35), 20,
                 Duration.ofSeconds(10), readCap);
 
-        Jackson2JsonDecoder decoder = jsonDecoder(BaseApiClient.connectorExchangeStrategies(tuning).messageReaders());
+        ExchangeStrategies strategies = BaseApiClient.connectorExchangeStrategies(tuning);
+        Jackson2JsonDecoder decoder = jsonDecoder(strategies.messageReaders());
 
         Assertions
                 .assertSame(ApiClientCodecs.objectMapper(), decoder.getObjectMapper(),
                         "connector clients must decode through the pinned Jackson 2 codec");
+        Assertions
+                .assertSame(ApiClientCodecs.objectMapper(), jsonEncoder(strategies.messageWriters()).getObjectMapper(),
+                        "connector clients must encode through the pinned Jackson 2 codec");
         Assertions
                 .assertEquals(readCap, decoder.getMaxInMemorySize(),
                         "the tuned read cap must reach the pinned decoder");
@@ -74,16 +79,21 @@ class ApiClientCodecsTest {
 
     @Test
     void platformClientsPinJacksonAndShareTheConnectorReadCap() {
-        Jackson2JsonDecoder decoder = jsonDecoder(PlatformBaseApiClient.exchangeStrategies().messageReaders());
+        ExchangeStrategies strategies = PlatformBaseApiClient.exchangeStrategies();
+        Jackson2JsonDecoder decoder = jsonDecoder(strategies.messageReaders());
 
         Assertions
                 .assertSame(ApiClientCodecs.objectMapper(), decoder.getObjectMapper(),
                         "platform clients must decode through the pinned Jackson 2 codec");
         Assertions
+                .assertSame(ApiClientCodecs.objectMapper(), jsonEncoder(strategies.messageWriters()).getObjectMapper(),
+                        "platform clients must encode through the pinned Jackson 2 codec");
+        Assertions
                 .assertEquals(ClientTuning.DEFAULT_MAX_IN_MEMORY, decoder.getMaxInMemorySize(),
                         "platform clients share the connector read cap");
     }
 
+    /** {@code StringDecoder} claims {@code application/json} too, so selection is by decoder type. */
     private static Jackson2JsonDecoder jsonDecoder(final List<HttpMessageReader<?>> readers) {
         return readers
                 .stream()
