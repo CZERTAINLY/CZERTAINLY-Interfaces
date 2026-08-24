@@ -37,10 +37,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v2/cryptographyProvider/keys")
 @Tag(name = "Key Management v2",
         description = "Key operations scoped by token, token-profile and key metadata supplied in requests")
-@ApiResponses(@ApiResponse(responseCode = "422",
-        description = "Request validation failed (errorCode VALIDATION_FAILED)",
-        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
-                schema = @Schema(implementation = ProblemDetailExtended.class))))
+@ApiResponses({
+        @ApiResponse(responseCode = "400",
+                description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
+                        + "unknown properties, and values outside the published enum values",
+                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                        schema = @Schema(implementation = ProblemDetailExtended.class))),
+        @ApiResponse(responseCode = "422",
+                description = "Request body was read successfully but violates a field validation rule "
+                        + "(errorCode VALIDATION_FAILED)",
+                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                        schema = @Schema(implementation = ProblemDetailExtended.class)))})
 public interface KeyController extends AuthProtectedConnectorController {
 
     // ---- Create ----
