@@ -1,9 +1,13 @@
 package com.otilm.api.model.common.attribute.v3.mapping;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.otilm.api.model.core.certificate.GeneralNameType;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -198,6 +202,112 @@ class MappedFieldSerializationTest {
         assertEquals("2.5.29.37", result.getExtensionOid());
         assertTrue(result.isCriticalOverridable());
         assertEquals(1, result.getOrder());
+    }
+
+    // -------------------------------------------------------------------------
+    // KeyUsageMappedField
+    // -------------------------------------------------------------------------
+
+    @Test
+    void keyUsageMappedField_serializesDiscriminator() {
+        KeyUsageMappedField field = new KeyUsageMappedField();
+        field.setFieldType(FieldType.KEY_USAGE);
+
+        JsonNode json = mapper.valueToTree(field);
+
+        assertEquals(FieldType.Codes.KEY_USAGE, json.get("fieldType").asText());
+    }
+
+    @Test
+    void keyUsageMappedField_deserializesViaBaseClass() throws Exception {
+        String json = """
+                {
+                  "fieldType": "keyUsage",
+                  "order": 2,
+                  "source": "csr"
+                }
+                """;
+
+        MappedField base = mapper.readValue(json, MappedField.class);
+
+        assertInstanceOf(KeyUsageMappedField.class, base);
+        assertEquals(FieldType.KEY_USAGE, base.getFieldType());
+        assertEquals(2, base.getOrder());
+        assertEquals(FieldSource.CSR, base.getSource());
+    }
+
+    @Test
+    void keyUsageMappedField_roundTrip() throws Exception {
+        KeyUsageMappedField original = new KeyUsageMappedField();
+        original.setFieldType(FieldType.KEY_USAGE);
+        original.setOrder(2);
+
+        String json = mapper.writeValueAsString(original);
+        MappedField deserialized = mapper.readValue(json, MappedField.class);
+
+        assertInstanceOf(KeyUsageMappedField.class, deserialized);
+        assertEquals(FieldType.KEY_USAGE, deserialized.getFieldType());
+        assertEquals(2, deserialized.getOrder());
+    }
+
+    // -------------------------------------------------------------------------
+    // ExtendedKeyUsageMappedField
+    // -------------------------------------------------------------------------
+
+    @Test
+    void extendedKeyUsageMappedField_serializesDiscriminator() {
+        ExtendedKeyUsageMappedField field = new ExtendedKeyUsageMappedField();
+        field.setFieldType(FieldType.EXTENDED_KEY_USAGE);
+
+        JsonNode json = mapper.valueToTree(field);
+
+        assertEquals(FieldType.Codes.EXTENDED_KEY_USAGE, json.get("fieldType").asText());
+    }
+
+    @Test
+    void extendedKeyUsageMappedField_deserializesViaBaseClass() throws Exception {
+        String json = """
+                {
+                  "fieldType": "extendedKeyUsage"
+                }
+                """;
+
+        MappedField base = mapper.readValue(json, MappedField.class);
+
+        assertInstanceOf(ExtendedKeyUsageMappedField.class, base);
+        assertEquals(FieldType.EXTENDED_KEY_USAGE, base.getFieldType());
+    }
+
+    @Test
+    void extendedKeyUsageMappedField_roundTrip() throws Exception {
+        ExtendedKeyUsageMappedField original = new ExtendedKeyUsageMappedField();
+        original.setFieldType(FieldType.EXTENDED_KEY_USAGE);
+        original.setSource(FieldSource.CSR);
+
+        String json = mapper.writeValueAsString(original);
+        MappedField deserialized = mapper.readValue(json, MappedField.class);
+
+        assertInstanceOf(ExtendedKeyUsageMappedField.class, deserialized);
+        assertEquals(FieldType.EXTENDED_KEY_USAGE, deserialized.getFieldType());
+        assertEquals(FieldSource.CSR, deserialized.getSource());
+    }
+
+    // -------------------------------------------------------------------------
+    // Registration completeness
+    // -------------------------------------------------------------------------
+
+    @Test
+    void everyFieldTypeCodeHasARegisteredSubtype() {
+        JsonSubTypes subTypes = MappedField.class.getAnnotation(JsonSubTypes.class);
+        Set<String> registered = Arrays
+                .stream(subTypes.value())
+                .map(JsonSubTypes.Type::name)
+                .collect(Collectors.toSet());
+
+        for (FieldType fieldType : FieldType.values()) {
+            assertTrue(registered.contains(fieldType.getCode()),
+                    "no MappedField subtype registered for fieldType " + fieldType.getCode());
+        }
     }
 
     // -------------------------------------------------------------------------

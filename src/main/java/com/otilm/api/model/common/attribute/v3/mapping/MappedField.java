@@ -16,9 +16,16 @@ import lombok.Data;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RdnMappedField.class, name = FieldType.Codes.RDN),
         @JsonSubTypes.Type(value = SanMappedField.class, name = FieldType.Codes.SAN),
-        @JsonSubTypes.Type(value = ExtensionMappedField.class, name = FieldType.Codes.EXTENSION)})
+        @JsonSubTypes.Type(value = ExtensionMappedField.class, name = FieldType.Codes.EXTENSION),
+        @JsonSubTypes.Type(value = KeyUsageMappedField.class, name = FieldType.Codes.KEY_USAGE),
+        @JsonSubTypes.Type(value = ExtendedKeyUsageMappedField.class, name = FieldType.Codes.EXTENDED_KEY_USAGE)})
 @Schema(description = "Describes a single target field within an object; concrete type is determined by fieldType",
-        subTypes = {RdnMappedField.class, SanMappedField.class, ExtensionMappedField.class})
+        subTypes = {
+                RdnMappedField.class,
+                SanMappedField.class,
+                ExtensionMappedField.class,
+                KeyUsageMappedField.class,
+                ExtendedKeyUsageMappedField.class})
 public abstract class MappedField implements Serializable {
 
     @Schema(description = "Field type, determines the concrete subtype", requiredMode = Schema.RequiredMode.REQUIRED)
