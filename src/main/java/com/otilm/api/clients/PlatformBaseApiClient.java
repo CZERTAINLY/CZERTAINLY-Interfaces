@@ -68,7 +68,7 @@ public abstract class PlatformBaseApiClient {
     };
 
     static Mono<ClientResponse> handleHttpExceptions(final ClientResponse clientResponse) {
-        if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {
+        if (clientResponse.statusCode().isSameCodeAs(HttpStatus.UNPROCESSABLE_ENTITY)) {
             return clientResponse
                     .bodyToMono(ERROR_LIST_TYPE_REF)
                     .flatMap(body -> Mono
