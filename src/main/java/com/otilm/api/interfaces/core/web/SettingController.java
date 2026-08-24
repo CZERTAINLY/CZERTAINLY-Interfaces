@@ -2,6 +2,8 @@ package com.otilm.api.interfaces.core.web;
 
 import com.otilm.api.exception.NotFoundException;
 import com.otilm.api.interfaces.AuthProtectedController;
+import com.otilm.api.model.core.settings.BrandingSettingsDto;
+import com.otilm.api.model.core.settings.BrandingSettingsUpdateDto;
 import com.otilm.api.model.core.settings.EventSettingsDto;
 import com.otilm.api.model.core.settings.EventsSettingsDto;
 import com.otilm.api.model.core.settings.PlatformSettingsDto;
@@ -17,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/settings")
 @Tag(name = "Settings", description = "Settings API")
@@ -40,6 +44,33 @@ public interface SettingController extends AuthProtectedController {
     @PutMapping(path = "/platform", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     void updatePlatformSettings(@Valid @RequestBody PlatformSettingsUpdateDto platformSettingsDto);
+
+    @Operation(summary = "Get platform branding",
+            description = "Reads the branding category of the platform settings. Branding is also returned by "
+                    + "`GET /v1/settings/platform`; only the write is split onto a dedicated endpoint, because reading "
+                    + "it takes the same grant either way.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Platform branding retrieved")})
+    @GetMapping(path = "/platform/branding", produces = MediaType.APPLICATION_JSON_VALUE)
+    BrandingSettingsDto getBrandingSettings();
+
+    /**
+     * Separate from {@link #updatePlatformSettings} so that branding can be gated by its own {@code UPDATE_BRANDING}
+     * action. Authorization is applied per method, so branding carried inside the platform update body would be
+     * writable by anyone holding plain {@code UPDATE} over settings — which is exactly the grant this action exists to
+     * split away. {@link PlatformSettingsUpdateDto} therefore has no branding field, while {@link PlatformSettingsDto}
+     * still returns one: the read is the same grant either way.
+     */
+    @Operation(summary = "Update platform branding",
+            description = "The only way to write branding. It is deliberately absent from the "
+                    + "`PUT /v1/settings/platform` body: authorization is applied per endpoint, so branding carried "
+                    + "in that body would be writable by anyone holding plain `UPDATE` over settings, and the "
+                    + "narrower `UPDATE_BRANDING` action that gates this endpoint would grant nothing extra. The "
+                    + "request carries the full desired state — a field left out clears that part of the branding.")
+    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Platform branding updated")})
+    @PutMapping(path = "/platform/branding", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void updateBrandingSettings(@Valid @RequestBody BrandingSettingsUpdateDto brandingSettingsDto);
 
     @Operation(summary = "Get events settings")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Notification settings retrieved")})

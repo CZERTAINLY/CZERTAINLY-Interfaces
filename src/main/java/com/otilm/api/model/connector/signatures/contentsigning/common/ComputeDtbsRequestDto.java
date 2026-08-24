@@ -22,15 +22,15 @@ import lombok.ToString;
  * Abstract base of the {@code computeDtbs} request, the one operation whose payload varies by family.
  *
  * <p>
- * Everything the connector needs to build the data-to-be-signed bytes arrives here, including {@code signingTime}: the
- * connector never reads its own clock, because a signature's time must be the one the platform recorded, not the one
- * the connector replica happened to observe.
+ * Everything the connector needs to build the data-to-be-signed bytes arrives here, including {@code signingTime}. The
+ * connector never reads its own clock. A signature's time must be the one the platform recorded, not the one a
+ * connector replica observed.
  * </p>
  *
  * <p>
- * The union resolves on the inherited {@code family} property; see {@link ComputeDtbsInterface} for why the
- * discriminator sits inside the object. Each subtype fixes that property to its own family and publishes no typed
- * parameters of its own yet.
+ * The union resolves on the inherited {@code family} property. {@link ComputeDtbsInterface} explains why the
+ * discriminator sits inside the object. Each subtype fixes that property to its own family and carries whatever typed
+ * parameters that family defines.
  * </p>
  */
 @Getter
