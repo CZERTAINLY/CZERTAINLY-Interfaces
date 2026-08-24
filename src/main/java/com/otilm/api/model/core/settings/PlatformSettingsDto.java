@@ -13,4 +13,8 @@ public class PlatformSettingsDto implements SettingsDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CertificateSettingsDto certificates;
 
+    @Schema(description = "Branding applied across the platform user interface",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private BrandingSettingsDto branding;
+
 }
