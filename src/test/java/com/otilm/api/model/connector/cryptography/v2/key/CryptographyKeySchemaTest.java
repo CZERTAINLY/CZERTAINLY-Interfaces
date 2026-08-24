@@ -1,6 +1,5 @@
 package com.otilm.api.model.connector.cryptography.v2.key;
 
-import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.otilm.api.testsupport.OpenApiSchemaTestSupport.openApi31Schemas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -142,10 +142,6 @@ class CryptographyKeySchemaTest {
 
     private static Named<SchemaContract> schema(String name, Class<?> root, String schemaName) {
         return named(name, new SchemaContract(root, schemaName));
-    }
-
-    private static Map<String, Schema> openApi31Schemas(Class<?> root) {
-        return ModelConverters.getInstance(true).readAll(root);
     }
 
     private static void assertDiscriminator(Schema<?> schema, String property, Map<String, String> mapping) {

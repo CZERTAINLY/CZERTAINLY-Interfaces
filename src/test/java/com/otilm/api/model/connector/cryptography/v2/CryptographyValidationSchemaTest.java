@@ -9,7 +9,6 @@ import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
 import java.math.BigDecimal;
 import java.util.Map;
@@ -19,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.otilm.api.testsupport.OpenApiSchemaTestSupport.openApi31Schemas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,7 +31,7 @@ class CryptographyValidationSchemaTest {
         // given
         int minimumLength = 1;
         int maximumLength = 256;
-        Map<String, Schema> schemas = schemas(CreateKeyRequestV2Dto.class);
+        Map<String, Schema> schemas = openApi31Schemas(CreateKeyRequestV2Dto.class);
 
         // when
         Schema<?> keyCreationId = property(schemas, CreateKeyRequestV2Dto.class, "keyCreationId");
@@ -46,7 +46,7 @@ class CryptographyValidationSchemaTest {
         // given
         BigDecimal minimumLength = BigDecimal.ONE;
         BigDecimal maximumLength = BigDecimal.valueOf(RandomDataRequestV2Dto.MAX_LENGTH);
-        Map<String, Schema> schemas = schemas(RandomDataRequestV2Dto.class);
+        Map<String, Schema> schemas = openApi31Schemas(RandomDataRequestV2Dto.class);
 
         // when
         Schema<?> length = property(schemas, RandomDataRequestV2Dto.class, "length");
@@ -61,7 +61,7 @@ class CryptographyValidationSchemaTest {
     void keyDataSchema_publishesPositiveLength(Class<?> keyDataType) {
         // given
         BigDecimal minimumLength = BigDecimal.ONE;
-        Map<String, Schema> schemas = schemas(keyDataType);
+        Map<String, Schema> schemas = openApi31Schemas(keyDataType);
 
         // when
         Schema<?> length = property(schemas, keyDataType, "length");
@@ -81,7 +81,7 @@ class CryptographyValidationSchemaTest {
     void responseSchema_publishesMinItemsWithoutRequiringConditionalProperty(SchemaPropertyContract contract) {
         // given
         int minimumItems = 1;
-        Map<String, Schema> schemas = schemas(contract.type());
+        Map<String, Schema> schemas = openApi31Schemas(contract.type());
         Schema<?> response = schemas.get(contract.type().getSimpleName());
 
         // when
@@ -108,10 +108,6 @@ class CryptographyValidationSchemaTest {
 
     private static Named<SchemaPropertyContract> responseProperty(String name, Class<?> type, String property) {
         return named(name, new SchemaPropertyContract(type, property));
-    }
-
-    private static Map<String, Schema> schemas(Class<?> root) {
-        return ModelConverters.getInstance().readAll(root);
     }
 
     private static Schema<?> property(Map<String, Schema> schemas, Class<?> type, String property) {
