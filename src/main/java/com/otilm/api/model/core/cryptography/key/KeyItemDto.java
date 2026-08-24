@@ -93,4 +93,21 @@ public class KeyItemDto extends NameAndUuidDto implements AttributeProjectable {
     @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
+
+    /**
+     * The all-arguments signature as it stood before {@code attributeValues} was added, kept so that adding an optional
+     * projection field stays source- and binary-compatible for callers that construct this DTO positionally. Leaves
+     * {@code attributeValues} unset; use the setter or the generated all-arguments constructor to populate it.
+     */
+    @Deprecated(since = "2.20.0")
+    @SuppressWarnings("java:S107")
+    public KeyItemDto(String description, OffsetDateTime creationTime, String keyWrapperUuid, String tokenProfileUuid,
+            String tokenProfileName, String tokenInstanceUuid, String tokenInstanceName, String owner, String ownerUuid,
+            List<GroupDto> groups, int associations, String keyReferenceUuid, KeyType type, KeyAlgorithm keyAlgorithm,
+            KeyFormat format, int length, List<KeyUsage> usage, boolean enabled, KeyState state,
+            ComplianceStatus complianceStatus) {
+        this(description, creationTime, keyWrapperUuid, tokenProfileUuid, tokenProfileName, tokenInstanceUuid,
+                tokenInstanceName, owner, ownerUuid, groups, associations, keyReferenceUuid, type, keyAlgorithm, format,
+                length, usage, enabled, state, complianceStatus, null);
+    }
 }
