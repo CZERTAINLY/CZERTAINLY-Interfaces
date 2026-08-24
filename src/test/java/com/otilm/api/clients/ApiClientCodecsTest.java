@@ -60,10 +60,8 @@ class ApiClientCodecsTest {
     @Test
     void connectorClientsPinJacksonAndCarryTheTunedReadCap() {
         int readCap = 7 * 1024 * 1024;
-        ClientTuning tuning = new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(35), 20,
-                Duration.ofSeconds(10), readCap);
 
-        ExchangeStrategies strategies = BaseApiClient.connectorExchangeStrategies(tuning);
+        ExchangeStrategies strategies = BaseApiClient.connectorExchangeStrategies(tuningWithReadCap(readCap));
         Jackson2JsonDecoder decoder = jsonDecoder(strategies.messageReaders());
 
         Assertions
@@ -91,6 +89,35 @@ class ApiClientCodecsTest {
         Assertions
                 .assertEquals(ClientTuning.DEFAULT_MAX_IN_MEMORY, decoder.getMaxInMemorySize(),
                         "platform clients share the connector read cap");
+    }
+
+    @Test
+    void connectorReadCapSurvivesPlatformStrategiesBuiltLater() {
+        int connectorCap = 7 * 1024 * 1024;
+        ExchangeStrategies connector = BaseApiClient.connectorExchangeStrategies(tuningWithReadCap(connectorCap));
+
+        PlatformBaseApiClient.exchangeStrategies();
+
+        Assertions
+                .assertEquals(connectorCap, jsonDecoder(connector.messageReaders()).getMaxInMemorySize(),
+                        "building the platform strategies must not rewrite the connector's read cap");
+    }
+
+    @Test
+    void platformReadCapSurvivesConnectorStrategiesBuiltLater() {
+        int differingConnectorCap = 7 * 1024 * 1024;
+        ExchangeStrategies platform = PlatformBaseApiClient.exchangeStrategies();
+
+        BaseApiClient.connectorExchangeStrategies(tuningWithReadCap(differingConnectorCap));
+
+        Assertions
+                .assertEquals(ClientTuning.DEFAULT_MAX_IN_MEMORY,
+                        jsonDecoder(platform.messageReaders()).getMaxInMemorySize(),
+                        "building the connector strategies must not rewrite the platform's read cap");
+    }
+
+    private static ClientTuning tuningWithReadCap(final int readCap) {
+        return new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(35), 20, Duration.ofSeconds(10), readCap);
     }
 
     /** {@code StringDecoder} claims {@code application/json} too, so selection is by decoder type. */
