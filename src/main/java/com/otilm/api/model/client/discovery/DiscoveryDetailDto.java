@@ -91,20 +91,25 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     private DiscoveryProgressDto progress;
 
     /**
-     * <b>Safety:</b> curated text only — a raw exception message must never pass through here; it can carry credentials
-     * or connection internals ({@code DiscoveryErrorEvent} states the same rule for the connector side).
+     * A count rather than the log itself. The messages are their own paged resource
+     * ({@code GET /v1/discoveries/{uuid}/messages}), because a client polls this detail while a run is live and a log
+     * bounded only by "large" would ride along on every poll. The count is enough to badge the log without reading it,
+     * and it is what tells a client whether the log is worth opening at all.
      *
      * <p>
      * <b>Relation to {@code message}:</b> {@code message} carries the single summary reason for the run's current
-     * status; entries here are advisory, accumulate over the run's lifetime, and a run can collect them and still
-     * complete.
+     * status; the messages this counts are advisory, accumulate over the run's lifetime, and a run can collect them and
+     * still complete.
+     *
+     * <p>
+     * Primitive and REQUIRED: a run with nothing to report has none, which is 0 rather than absent. Runs against a v1
+     * Discovery Provider always report 0 — the log is a v2 construct.
      */
-    @Schema(description = "Advisory messages collected over the run's lifetime — non-fatal connector "
-            + "errors and per-phase failure reasons — newest last. Entries do not imply the run "
-            + "failed. Curated message text; never a raw exception message.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> runMessages;
+    @Schema(description = "How many distinct advisory messages this run collected, as counted by the run messages "
+            + "listing. Repeated problems are aggregated, so this counts kinds of problem rather than occurrences. "
+            + "A non-zero count does not imply the run failed. Always 0 for runs against a v1 Discovery Provider.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private long runMessageCount;
 
     /**
      * <b>Provenance:</b> declared by the connector at initiate and refreshed on resume; derived by Core from the

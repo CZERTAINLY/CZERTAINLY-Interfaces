@@ -19,6 +19,7 @@ import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.discovery.v2.DiscoverySupportedResourceDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
+import com.otilm.api.model.core.discovery.DiscoveryMessageDto;
 import com.otilm.api.model.core.scheduler.ScheduleDiscoveryDto;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -142,6 +143,32 @@ public interface DiscoveryController extends AuthProtectedController {
                     description = "Resource type to list, identified by its wire code (e.g. \"certificates\", \"keys\"); omit to list every resource type this run discovered") @RequestParam(
                             required = false) Resource resource,
             @RequestParam(required = false) Boolean newlyDiscovered,
+            @RequestParam(required = false, defaultValue = "10") int itemsPerPage,
+            @RequestParam(required = false, defaultValue = "0") int pageNumber) throws NotFoundException;
+
+    /**
+     * The run's advisory message log, paged rather than carried on the detail.
+     *
+     * <p>
+     * <b>Why it is not a field on the detail:</b> a client polls the detail while a run is live, and a log bounded only
+     * by "large" would ride along on every poll. {@code runMessageCount} on the detail lets a client badge the log
+     * without reading it.
+     *
+     * <p>
+     * <b>Ordering is oldest-first</b>, by when each problem was first seen. The entry that explains a run is usually
+     * the one that started it, so the first page is the useful page — the opposite of a tail-first log.
+     */
+    @Operation(summary = "List Discovery Run Messages",
+            description = "Returns one page of the advisory messages a Discovery run collected, oldest first. "
+                    + "Repeated problems are aggregated into a single entry carrying an occurrence count rather than "
+                    + "repeated per occurrence. Messages are advisory: collecting them does not imply the run failed.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Discovery run messages retrieved"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/{uuid}/messages", produces = {"application/json"})
+    PaginationResponseDto<DiscoveryMessageDto> getDiscoveryRunMessages(
+            @Parameter(description = "Discovery UUID") @PathVariable String uuid,
             @RequestParam(required = false, defaultValue = "10") int itemsPerPage,
             @RequestParam(required = false, defaultValue = "0") int pageNumber) throws NotFoundException;
 

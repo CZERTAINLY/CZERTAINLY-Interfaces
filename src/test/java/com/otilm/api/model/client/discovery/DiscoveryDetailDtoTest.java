@@ -16,8 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Covers the discovery v2 additions to {@link DiscoveryDetailDto}: they round-trip, a v1 run's payload carries the
- * synthesized always-present fields while the optional pair disappears instead of showing up as nulls, and every
- * {@link Resource}-typed or {@link Resource}-keyed value they carry travels as a wire code.
+ * synthesized always-present fields while the optional one disappears instead of showing up as null, the run's message
+ * log is counted here rather than carried here, and every {@link Resource}-typed or {@link Resource}-keyed value they
+ * carry travels as a wire code.
  */
 class DiscoveryDetailDtoTest {
 
@@ -52,7 +53,7 @@ class DiscoveryDetailDtoTest {
         dto.setStatus(DiscoveryStatus.STOPPED);
         dto.setResources(List.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY));
         dto.setProgress(progress);
-        dto.setRunMessages(List.of("host 10.0.0.7 refused the connection", "slot 3 unreadable"));
+        dto.setRunMessageCount(2L);
         dto.setStoppable(true);
 
         String json = mapper.writeValueAsString(dto);
@@ -61,7 +62,7 @@ class DiscoveryDetailDtoTest {
         // pinned by literal name: a round-trip alone would survive a rename, since it renames both ends at once
         assertTrue(json.contains("\"resources\":"), json);
         assertTrue(json.contains("\"progress\":"), json);
-        assertTrue(json.contains("\"runMessages\":"), json);
+        assertTrue(json.contains("\"runMessageCount\":"), json);
         assertTrue(json.contains("\"stoppable\":"), json);
 
         assertEquals(List.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY), back.getResources());
@@ -69,9 +70,19 @@ class DiscoveryDetailDtoTest {
         assertEquals(40L, back.getProgress().getTotalEstimate());
         assertEquals("scanning", back.getProgress().getPhase());
         assertEquals(3L, back.getProgress().getByResource().get(Resource.CRYPTOGRAPHIC_KEY).getProcessed());
-        assertEquals(List.of("host 10.0.0.7 refused the connection", "slot 3 unreadable"), back.getRunMessages());
+        assertEquals(2L, back.getRunMessageCount());
         assertEquals(Boolean.TRUE, back.getStoppable());
         assertEquals(DiscoveryStatus.STOPPED, back.getStatus());
+    }
+
+    @Test
+    void runMessagesAreNotCarriedOnTheDetail() throws Exception {
+        // The log is its own paged resource. A client polls this detail while a run is live, so shipping a
+        // bounded-but-large log on every poll would be waste -- the count is what the detail owes a client.
+        String json = mapper.writeValueAsString(v1Run());
+
+        assertFalse(json.contains("runMessages\""), json);
+        assertTrue(json.contains("\"runMessageCount\":"), json);
     }
 
     @Test
@@ -93,21 +104,24 @@ class DiscoveryDetailDtoTest {
     }
 
     @Test
-    void v1RunCarriesTheSynthesizedFieldsAndOmitsTheOptionalPair() throws Exception {
+    void v1RunCarriesTheSynthesizedFieldsAndOmitsTheOptionalOne() throws Exception {
         String json = mapper.writeValueAsString(v1Run());
         DiscoveryDetailDto back = mapper.readValue(json, DiscoveryDetailDto.class);
 
-        // the always-present pair, as Core synthesizes it for a run against a v1 connector
+        // the always-present values, as Core synthesizes them for a run against a v1 connector
         assertTrue(json.contains("\"resources\":[\"certificates\"]"), json);
         assertTrue(json.contains("\"stoppable\":false"), json);
         assertEquals(List.of(Resource.CERTIFICATE), back.getResources());
         assertEquals(Boolean.FALSE, back.getStoppable());
 
-        // the genuinely optional pair promises absence, not null
+        // A v1 run has no message log at all, which is a count of zero rather than an absent field: the
+        // primitive is what stops "no messages" and "not reported" being the same value on the wire.
+        assertTrue(json.contains("\"runMessageCount\":0"), json);
+        assertEquals(0L, back.getRunMessageCount());
+
+        // progress is the one genuinely optional field, and it promises absence rather than null
         assertFalse(json.contains("progress"), json);
-        assertFalse(json.contains("runMessages"), json);
         assertNull(back.getProgress());
-        assertNull(back.getRunMessages());
     }
 
     @Test
