@@ -20,7 +20,7 @@ public class CryptographicAssetVerdictDto {
     @Schema(description = "When the verdict was last evaluated", requiredMode = Schema.RequiredMode.REQUIRED)
     private OffsetDateTime evaluatedAt;
 
-    @Schema(description = "Rule findings behind the verdict, one entry per failed rule; empty when nothing failed",
+    @Schema(description = "Rule findings behind the verdict, one entry per failed rule; absent when no rule failed",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<String> reasons;
 }

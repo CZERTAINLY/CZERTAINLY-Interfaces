@@ -84,7 +84,7 @@ class CryptographicAssetControllerContractTest {
     }
 
     @Test
-    void theDetailIsAGetByUuid() throws NoSuchMethodException {
+    void theDetailIsAGetByUuid() {
         Method detail = method("getCryptographicAsset");
         GetMapping mapping = detail.getAnnotation(GetMapping.class);
         assertNotNull(mapping, "detail must be a GET");

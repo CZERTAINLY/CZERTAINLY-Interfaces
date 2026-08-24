@@ -34,8 +34,10 @@ public interface StatisticsController extends AuthProtectedController {
                     defaultValue = SigningRecordStatisticsPeriod.Codes.LAST_7D) SigningRecordStatisticsPeriod period);
 
     /**
-     * Gated by {@code ResourceAction.LIST} on {@code Resource.CBOM_ASSET} — the dashboard aggregates only what the
-     * asset list already exposes, so it deliberately rides on the list permission instead of a gate of its own.
+     * Gated by {@code ResourceAction.LIST} on {@code Resource.CBOM_ASSET}, as ratified for the inventory: the dashboard
+     * deliberately shares the list permission rather than a gate of its own. Note the sync-completeness block
+     * additionally reveals document-level sync counts — documents whose assets are not yet listed — which the ruling
+     * accepts.
      */
     @Operation(operationId = "getCryptographicAssetStatistics",
             summary = "Get Cryptographic Asset Inventory dashboard statistics",

@@ -23,7 +23,7 @@ public class CryptographicAssetSourceDto {
     private int version;
 
     @Schema(description = "Tool or scan that produced the source CBOM (e.g.: CBOM-Lens)",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String source;
 
     @Schema(description = "Cryptographic properties of the component as this source declared them. Keys follow the "
