@@ -67,13 +67,23 @@ class CryptographicAssetIdentityAbsenceContractTest {
     void theSweepCatchesAViolatingField() {
         List<String> problems = new ArrayList<>();
         sweep(ViolatingFixture.class, problems);
-        assertEquals(2, problems.size(), String.join("\n", problems));
+        assertEquals(3, problems.size(), String.join("\n", problems));
         assertTrue(problems.stream().anyMatch(p -> p.contains("identityKey")), String.join("\n", problems));
         assertTrue(problems.stream().anyMatch(p -> p.contains("fingerprint")), String.join("\n", problems));
+        assertTrue(problems.stream().anyMatch(p -> p.contains("class schema") && p.contains("identity")),
+                String.join("\n", problems));
     }
 
     private static void sweep(Class<?> type, List<String> problems) {
         for (Class<?> current = type; current != null && current != Object.class; current = current.getSuperclass()) {
+            Schema classSchema = current.getAnnotation(Schema.class);
+            if (classSchema != null) {
+                reportBannedTokens(current.getSimpleName() + " class schema description", classSchema.description(),
+                        problems);
+                for (String example : classSchema.examples()) {
+                    reportBannedTokens(current.getSimpleName() + " class schema example", example, problems);
+                }
+            }
             for (Field field : current.getDeclaredFields()) {
                 if (field.isSynthetic() || Modifier.isStatic(field.getModifiers())) {
                     continue;
@@ -110,6 +120,7 @@ class CryptographicAssetIdentityAbsenceContractTest {
     }
 
     /** Default access on purpose: a private field would trip Sonar's unused-private-field rule (java:S1068). */
+    @Schema(description = "keyed by identity")
     private static final class ViolatingFixture {
 
         String identityKey;
