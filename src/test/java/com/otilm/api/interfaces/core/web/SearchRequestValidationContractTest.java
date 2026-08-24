@@ -99,7 +99,7 @@ class SearchRequestValidationContractTest {
     @Test
     void scansTheControllersItClaimsTo() {
         // a scan that quietly matched nothing would pass the assertion above forever
-        assertTrue(controllers().stream().anyMatch(c -> c.equals(CertificateController.class)),
+        assertTrue(controllers().contains(CertificateController.class),
                 "the scan missed CertificateController, so it is not reading the compiled controllers");
         assertTrue(controllers().size() > 30, "expected the scan to see every controller in the package");
     }
@@ -107,10 +107,7 @@ class SearchRequestValidationContractTest {
     @Test
     void reachesControllersInNestedPackages() {
         // ConnectorController v2 lives one package down; a non-recursive walk would skip it
-        assertTrue(
-                controllers()
-                        .stream()
-                        .anyMatch(c -> c.getName().equals("com.otilm.api.interfaces.core.web.v2.ConnectorController")),
+        assertTrue(controllers().contains(com.otilm.api.interfaces.core.web.v2.ConnectorController.class),
                 "the scan does not descend into nested controller packages");
     }
 
