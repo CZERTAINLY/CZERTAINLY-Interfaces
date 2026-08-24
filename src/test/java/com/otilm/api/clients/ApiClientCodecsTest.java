@@ -15,9 +15,7 @@ import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 
 /**
- * Guards the Jackson 2 codec contract that outbound clients depend on, which Spring Framework 7 would otherwise resolve
- * to Jackson 3. Assertions compare mapper identity against {@link ApiClientCodecs#objectMapper()}, which only the seam
- * installs.
+ * Tests for Jackson 2 codec contract, which Spring Framework 7 would otherwise resolve to Jackson 3.
  */
 class ApiClientCodecsTest {
 
@@ -86,10 +84,6 @@ class ApiClientCodecsTest {
                         "platform clients share the connector read cap");
     }
 
-    /**
-     * The first Jackson 2 decoder registered. {@code StringDecoder} claims {@code application/json} too, so selection
-     * is by decoder type.
-     */
     private static Jackson2JsonDecoder jsonDecoder(final List<HttpMessageReader<?>> readers) {
         return readers
                 .stream()

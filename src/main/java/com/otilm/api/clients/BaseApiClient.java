@@ -400,9 +400,6 @@ public abstract class BaseApiClient {
                 .responseTimeout(tuning.responseTimeout());
     }
 
-    /**
-     * The exchange strategies every connector client is built on: the Jackson 2 pin and {@code tuning}'s read cap.
-     */
     static ExchangeStrategies connectorExchangeStrategies(final ClientTuning tuning) {
         return ExchangeStrategies.builder().codecs(codecs -> {
             codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize());

@@ -42,11 +42,6 @@ public abstract class PlatformBaseApiClient {
 
     }
 
-    /**
-     * The exchange strategies both platform clients are built on: the Jackson 2 pin and the connector fleet's read cap.
-     * Platform clients have no tuning surface, so the cap stays at {@link ClientTuning#DEFAULT_MAX_IN_MEMORY} where a
-     * connector would follow configuration (core#1961).
-     */
     static ExchangeStrategies exchangeStrategies() {
         return ExchangeStrategies.builder().codecs(codecs -> {
             codecs.defaultCodecs().maxInMemorySize(ClientTuning.DEFAULT_MAX_IN_MEMORY);

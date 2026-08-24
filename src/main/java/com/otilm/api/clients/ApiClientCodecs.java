@@ -11,18 +11,11 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
  */
 public final class ApiClientCodecs {
 
-    /**
-     * The mapper shared by every codec registered here. Codec instances stay per-call, because Spring's
-     * {@code initCodec} writes {@code maxInMemorySize} onto the instance it is handed.
-     */
     private static final ObjectMapper OBJECT_MAPPER = Jackson2ObjectMapperBuilder.json().build();
 
     private ApiClientCodecs() {
     }
 
-    /**
-     * The mapper {@link #configureJsonCodecs(ClientCodecConfigurer)} installs, for tests to assert identity against.
-     */
     static ObjectMapper objectMapper() {
         return OBJECT_MAPPER;
     }

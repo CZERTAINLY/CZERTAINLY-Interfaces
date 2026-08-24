@@ -715,10 +715,6 @@ class DiscoveryApiClientTest {
      * A throwaway {@code WebClient} with its own small read cap, because the shared
      * {@code BaseApiClient.prepareWebClient()} singleton cannot be re-tuned per test — see
      * {@code results_oversizedResponse_failsInsteadOfBuffering}.
-     *
-     * <p>
-     * It pins the JSON codecs like production, so the oversized-JSON tests stay representative after the Framework 7
-     * bump.
      */
     private DiscoveryApiClient smallCapClient(int maxInMemorySize) {
         ExchangeStrategies strategies = ExchangeStrategies.builder().codecs(c -> {
