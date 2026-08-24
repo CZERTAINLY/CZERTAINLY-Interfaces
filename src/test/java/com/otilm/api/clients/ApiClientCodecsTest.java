@@ -10,9 +10,8 @@ import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 
 /**
- * Pins the codec contract every outbound client depends on. The check cannot fail on the Spring Framework 6 line, where
- * Jackson 2 is what {@code defaultCodecs()} picks anyway; it exists to fail on Framework 7, where the default silently
- * becomes Jackson 3 and our DTO serializer annotations stop being seen.
+ * Guards the Jackson 2 codec contract that outbound clients depend on, which Spring Framework 7 would otherwise resolve
+ * to Jackson 3.
  */
 class ApiClientCodecsTest {
 
