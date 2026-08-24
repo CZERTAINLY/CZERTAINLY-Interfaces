@@ -6,6 +6,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.otilm.api.clients.ApiClientCodecs;
 import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorProblemException;
@@ -714,15 +715,17 @@ class DiscoveryApiClientTest {
      * A throwaway {@code WebClient} with its own small read cap, because the shared
      * {@code BaseApiClient.prepareWebClient()} singleton cannot be re-tuned per test — see
      * {@code results_oversizedResponse_failsInsteadOfBuffering}.
+     *
+     * <p>
+     * It pins the JSON codecs like production, so the oversized-JSON tests stay representative after the Framework 7
+     * bump.
      */
     private DiscoveryApiClient smallCapClient(int maxInMemorySize) {
-        WebClient smallCapWebClient = WebClient
-                .builder()
-                .exchangeStrategies(ExchangeStrategies
-                        .builder()
-                        .codecs(c -> c.defaultCodecs().maxInMemorySize(maxInMemorySize))
-                        .build())
-                .build();
+        ExchangeStrategies strategies = ExchangeStrategies.builder().codecs(c -> {
+            c.defaultCodecs().maxInMemorySize(maxInMemorySize);
+            ApiClientCodecs.configureJsonCodecs(c);
+        }).build();
+        WebClient smallCapWebClient = WebClient.builder().exchangeStrategies(strategies).build();
         return new DiscoveryApiClient(smallCapWebClient, null);
     }
 

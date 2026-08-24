@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -41,19 +42,31 @@ public abstract class PlatformBaseApiClient {
 
     }
 
+    /**
+     * The exchange strategies both platform clients are built on: the Jackson 2 pin and the connector fleet's read cap.
+     * Platform clients have no tuning surface, so the cap stays at {@link ClientTuning#DEFAULT_MAX_IN_MEMORY} where a
+     * connector would follow configuration (core#1961).
+     */
+    static ExchangeStrategies exchangeStrategies() {
+        return ExchangeStrategies.builder().codecs(codecs -> {
+            codecs.defaultCodecs().maxInMemorySize(ClientTuning.DEFAULT_MAX_IN_MEMORY);
+            ApiClientCodecs.configureJsonCodecs(codecs);
+        }).build();
+    }
+
     public WebClient getClient(final String customServiceUrl) {
         if (client == null) {
             if (customServiceUrl != null) {
                 client = WebClient
                         .builder()
-                        .codecs(ApiClientCodecs::pinToJackson2)
+                        .exchangeStrategies(exchangeStrategies())
                         .filter(ExchangeFilterFunction.ofResponseProcessor(getHttpExceptionHandler()))
                         .baseUrl(customServiceUrl)
                         .build();
             } else {
                 client = WebClient
                         .builder()
-                        .codecs(ApiClientCodecs::pinToJackson2)
+                        .exchangeStrategies(exchangeStrategies())
                         .filter(ExchangeFilterFunction.ofResponseProcessor(PlatformBaseApiClient::handleHttpExceptions))
                         .baseUrl(getServiceUrl())
                         .build();

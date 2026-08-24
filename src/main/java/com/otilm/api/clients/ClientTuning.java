@@ -30,7 +30,7 @@ public record ClientTuning(Duration connectTimeout, Duration responseTimeout, in
     /**
      * 16 MiB: generous for attribute/status/CRL payloads, bounded against an oversized or malicious connector response.
      */
-    private static final int DEFAULT_MAX_IN_MEMORY = 16 * 1024 * 1024;
+    static final int DEFAULT_MAX_IN_MEMORY = 16 * 1024 * 1024;
 
     public ClientTuning {
         requirePositive(connectTimeout, "connectTimeout");

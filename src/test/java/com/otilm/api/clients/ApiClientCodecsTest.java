@@ -1,55 +1,120 @@
 package com.otilm.api.clients;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.codec.Decoder;
 import org.springframework.http.codec.ClientCodecConfigurer;
 import org.springframework.http.codec.DecoderHttpMessageReader;
 import org.springframework.http.codec.EncoderHttpMessageWriter;
+import org.springframework.http.codec.HttpMessageReader;
+import org.springframework.http.codec.HttpMessageWriter;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
 
 /**
  * Guards the Jackson 2 codec contract that outbound clients depend on, which Spring Framework 7 would otherwise resolve
- * to Jackson 3.
+ * to Jackson 3. Assertions compare mapper identity against {@link ApiClientCodecs#objectMapper()}, which only the seam
+ * installs.
  */
 class ApiClientCodecsTest {
 
     @Test
-    void pinsTheJsonDecoderToJackson2() {
+    void overridesAJsonDecoderThatWasAlreadyConfigured() {
         ClientCodecConfigurer codecs = ClientCodecConfigurer.create();
+        ObjectMapper foreign = new ObjectMapper();
+        codecs.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(foreign));
 
-        ApiClientCodecs.pinToJackson2(codecs);
+        ApiClientCodecs.configureJsonCodecs(codecs);
 
-        boolean pinned = codecs
-                .getReaders()
-                .stream()
-                .filter(DecoderHttpMessageReader.class::isInstance)
-                .map(reader -> ((DecoderHttpMessageReader<?>) reader).getDecoder())
-                .anyMatch(Jackson2JsonDecoder.class::isInstance);
-
-        Assertions.assertTrue(pinned, "no Jackson 2 JSON decoder is registered: " + decoderTypes(codecs));
+        Assertions
+                .assertSame(ApiClientCodecs.objectMapper(), jsonDecoder(codecs.getReaders()).getObjectMapper(),
+                        "the seam must install its own Jackson 2 decoder");
     }
 
     @Test
-    void pinsTheJsonEncoderToJackson2() {
+    void overridesAJsonEncoderThatWasAlreadyConfigured() {
         ClientCodecConfigurer codecs = ClientCodecConfigurer.create();
+        ObjectMapper foreign = new ObjectMapper();
+        codecs.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(foreign));
 
-        ApiClientCodecs.pinToJackson2(codecs);
+        ApiClientCodecs.configureJsonCodecs(codecs);
 
-        boolean pinned = codecs
-                .getWriters()
+        Assertions
+                .assertSame(ApiClientCodecs.objectMapper(), jsonEncoder(codecs.getWriters()).getObjectMapper(),
+                        "the seam must install its own Jackson 2 encoder");
+    }
+
+    @Test
+    void buildsTheCodecsOnACallerSuppliedMapper() {
+        ClientCodecConfigurer codecs = ClientCodecConfigurer.create();
+        ObjectMapper caller = new ObjectMapper();
+
+        ApiClientCodecs.configureJsonCodecs(codecs, caller);
+
+        Assertions.assertSame(caller, jsonDecoder(codecs.getReaders()).getObjectMapper(), "decoder mapper");
+        Assertions.assertSame(caller, jsonEncoder(codecs.getWriters()).getObjectMapper(), "encoder mapper");
+    }
+
+    @Test
+    void connectorClientsPinJacksonAndCarryTheTunedReadCap() {
+        int readCap = 7 * 1024 * 1024;
+        ClientTuning tuning = new ClientTuning(Duration.ofSeconds(3), Duration.ofSeconds(35), 20,
+                Duration.ofSeconds(10), readCap);
+
+        Jackson2JsonDecoder decoder = jsonDecoder(BaseApiClient.connectorExchangeStrategies(tuning).messageReaders());
+
+        Assertions
+                .assertSame(ApiClientCodecs.objectMapper(), decoder.getObjectMapper(),
+                        "connector clients must decode through the pinned Jackson 2 codec");
+        Assertions
+                .assertEquals(readCap, decoder.getMaxInMemorySize(),
+                        "the tuned read cap must reach the pinned decoder");
+    }
+
+    @Test
+    void platformClientsPinJacksonAndShareTheConnectorReadCap() {
+        Jackson2JsonDecoder decoder = jsonDecoder(PlatformBaseApiClient.exchangeStrategies().messageReaders());
+
+        Assertions
+                .assertSame(ApiClientCodecs.objectMapper(), decoder.getObjectMapper(),
+                        "platform clients must decode through the pinned Jackson 2 codec");
+        Assertions
+                .assertEquals(ClientTuning.DEFAULT_MAX_IN_MEMORY, decoder.getMaxInMemorySize(),
+                        "platform clients share the connector read cap");
+    }
+
+    /**
+     * The first Jackson 2 decoder registered. {@code StringDecoder} claims {@code application/json} too, so selection
+     * is by decoder type.
+     */
+    private static Jackson2JsonDecoder jsonDecoder(final List<HttpMessageReader<?>> readers) {
+        return readers
+                .stream()
+                .filter(DecoderHttpMessageReader.class::isInstance)
+                .map(reader -> ((DecoderHttpMessageReader<?>) reader).getDecoder())
+                .filter(Jackson2JsonDecoder.class::isInstance)
+                .map(Jackson2JsonDecoder.class::cast)
+                .findFirst()
+                .orElseThrow(
+                        () -> new AssertionError("no Jackson 2 JSON decoder is registered: " + decoderTypes(readers)));
+    }
+
+    private static Jackson2JsonEncoder jsonEncoder(final List<HttpMessageWriter<?>> writers) {
+        return writers
                 .stream()
                 .filter(EncoderHttpMessageWriter.class::isInstance)
                 .map(writer -> ((EncoderHttpMessageWriter<?>) writer).getEncoder())
-                .anyMatch(Jackson2JsonEncoder.class::isInstance);
-
-        Assertions.assertTrue(pinned, "no Jackson 2 JSON encoder is registered");
+                .filter(Jackson2JsonEncoder.class::isInstance)
+                .map(Jackson2JsonEncoder.class::cast)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("no Jackson 2 JSON encoder is registered"));
     }
 
-    private static String decoderTypes(final ClientCodecConfigurer codecs) {
-        return codecs
-                .getReaders()
+    private static String decoderTypes(final List<HttpMessageReader<?>> readers) {
+        return readers
                 .stream()
                 .filter(DecoderHttpMessageReader.class::isInstance)
                 .map(reader -> ((DecoderHttpMessageReader<?>) reader).getDecoder())

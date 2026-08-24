@@ -400,16 +400,22 @@ public abstract class BaseApiClient {
                 .responseTimeout(tuning.responseTimeout());
     }
 
-    private static WebClient buildWebClient(HttpClient httpClient, ClientTuning tuning) {
-        ExchangeStrategies strategies = ExchangeStrategies.builder().codecs(codecs -> {
+    /**
+     * The exchange strategies every connector client is built on: the Jackson 2 pin and {@code tuning}'s read cap.
+     */
+    static ExchangeStrategies connectorExchangeStrategies(final ClientTuning tuning) {
+        return ExchangeStrategies.builder().codecs(codecs -> {
             codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize());
-            ApiClientCodecs.pinToJackson2(codecs);
+            ApiClientCodecs.configureJsonCodecs(codecs);
         }).build();
+    }
+
+    private static WebClient buildWebClient(HttpClient httpClient, ClientTuning tuning) {
         return WebClient
                 .builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .filter(ExchangeFilterFunction.ofResponseProcessor(BaseApiClient::handleHttpExceptions))
-                .exchangeStrategies(strategies)
+                .exchangeStrategies(connectorExchangeStrategies(tuning))
                 .build();
     }
 
