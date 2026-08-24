@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.token;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Schema(name = "TokenStatusResponseV2Dto")
+@Schema(name = "TokenStatusResponseV2Dto", additionalProperties = Schema.AdditionalPropertiesValue.FALSE)
 public class TokenStatusResponseV2Dto {
 
     @Schema(description = "Token status", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -23,4 +24,9 @@ public class TokenStatusResponseV2Dto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String detail;
 
+    @JsonAnySetter
+    @Schema(hidden = true)
+    public void rejectUnknownProperty(String property, Object ignoredValue) {
+        throw new IllegalArgumentException("Unsupported v2 token status response property: " + property);
+    }
 }

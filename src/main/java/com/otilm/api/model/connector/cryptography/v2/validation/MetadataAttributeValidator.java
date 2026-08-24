@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.validation;
 
+import com.otilm.api.model.client.attribute.BaseAttributeContentDtoV3;
 import com.otilm.api.model.common.attribute.common.AttributeContent;
 import com.otilm.api.model.common.attribute.common.AttributeType;
 import com.otilm.api.model.common.attribute.common.AttributeVersion;
@@ -93,7 +94,8 @@ public final class MetadataAttributeValidator
             if (!isUsableContent(item)) {
                 addContentViolation(context, index, "content must contain a non-blank reference or usable data");
                 valid = false;
-            } else if (expectedContentClass != null && !expectedContentClass.isInstance(item)) {
+            } else if (item instanceof BaseAttributeContentDtoV3 && expectedContentClass != null
+                    && !expectedContentClass.isInstance(item)) {
                 addContentViolation(context, index, "content must match contentType and attribute version");
                 valid = false;
             }

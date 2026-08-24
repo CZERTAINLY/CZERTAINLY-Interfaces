@@ -1,5 +1,6 @@
 package com.otilm.api.model.client.certificate;
 
+import com.otilm.api.model.client.attribute.RequestAttribute;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;
@@ -17,6 +18,12 @@ public class CertificateUpdateObjectsDto {
 
     @Schema(description = "RA Profile UUID (set to empty string to remove certificate from RA profile)")
     private String raProfileUuid;
+
+    @Schema(description = "Identify-operation dynamic attributes, as listed by "
+            + "GET /v1/authorities/{authorityUuid}/raProfiles/{raProfileUuid}/attributes/identify for the target "
+            + "RA profile. Used only when raProfileUuid assigns a new RA profile, which identifies the certificate "
+            + "at its authority. Optional — an authority that offers no identify schema needs none.")
+    private List<RequestAttribute> attributes;
 
     @Schema(description = "Mark CA certificate as trusted")
     private Boolean trustedCa;

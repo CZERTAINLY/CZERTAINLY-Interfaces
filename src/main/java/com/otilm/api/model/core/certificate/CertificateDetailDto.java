@@ -84,6 +84,12 @@ public class CertificateDetailDto extends CertificateDto {
     @Schema(description = "List of register attributes: the connector's register-operation attributes submitted when the certificate was pre-registered")
     private List<ResponseAttribute> registerAttributes = new ArrayList<>();
 
+    @Schema(description = "List of renew attributes: the connector's renew-operation attributes submitted when this certificate was created by renewing or rekeying its predecessor")
+    private List<ResponseAttribute> renewAttributes = new ArrayList<>();
+
+    @Schema(description = "List of identify attributes: the connector's identify-operation attributes submitted when the certificate was identified at its authority")
+    private List<ResponseAttribute> identifyAttributes = new ArrayList<>();
+
     @Schema(description = "List of request attributes submitted at registration: the operator-supplied request-attribute values that shaped the pre-registered identity")
     private List<ResponseAttribute> registrationRequestAttributes = new ArrayList<>();
 

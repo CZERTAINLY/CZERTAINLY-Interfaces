@@ -46,10 +46,13 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
     private static final String CERTIFICATE_BASE_CONTEXT = "/v3/authorityProvider/certificates";
 
     private static final String CERTIFICATE_ISSUE_ATTRIBUTES_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/issue/attributes";
+    private static final String CERTIFICATE_REQUEST_ATTRIBUTES_CONTEXT = CERTIFICATE_BASE_CONTEXT
+            + "/request/attributes";
     private static final String CERTIFICATE_ISSUE_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/issue";
     private static final String CERTIFICATE_ISSUE_STATUS_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/issue/status";
     private static final String CERTIFICATE_ISSUE_CANCEL_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/issue/cancel";
 
+    private static final String CERTIFICATE_RENEW_ATTRIBUTES_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/renew/attributes";
     private static final String CERTIFICATE_RENEW_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/renew";
 
     private static final String CERTIFICATE_REVOKE_ATTRIBUTES_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/revoke/attributes";
@@ -63,6 +66,8 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
     private static final String CERTIFICATE_REGISTER_STATUS_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/register/status";
     private static final String CERTIFICATE_REGISTER_CANCEL_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/register/cancel";
 
+    private static final String CERTIFICATE_IDENTIFY_ATTRIBUTES_CONTEXT = CERTIFICATE_BASE_CONTEXT
+            + "/identify/attributes";
     private static final String CERTIFICATE_IDENTIFY_CONTEXT = CERTIFICATE_BASE_CONTEXT + "/identify";
 
     public CertificateApiClient(WebClient webClient, TrustManager[] defaultTrustManagers) {
@@ -82,6 +87,18 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
                 .body(Mono.just(requestDto), CertificateAttributeListRequestDtoV3.class)
                 .retrieve()
                 .toEntityList(BaseAttribute.class), "listIssueAttributes"), request, connector);
+    }
+
+    @Override
+    public List<BaseAttribute> listRequestAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+
+        return processRequest(r -> requireBody(r
+                .uri(connector.getUrl() + CERTIFICATE_REQUEST_ATTRIBUTES_CONTEXT)
+                .body(Mono.just(requestDto), CertificateAttributeListRequestDtoV3.class)
+                .retrieve()
+                .toEntityList(BaseAttribute.class), "listRequestAttributes"), request, connector);
     }
 
     @Override
@@ -121,6 +138,18 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
     }
 
     // ---- Renew (status/cancel via /issue/*) ----
+
+    @Override
+    public List<BaseAttribute> listRenewAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+
+        return processRequest(r -> requireBody(r
+                .uri(connector.getUrl() + CERTIFICATE_RENEW_ATTRIBUTES_CONTEXT)
+                .body(Mono.just(requestDto), CertificateAttributeListRequestDtoV3.class)
+                .retrieve()
+                .toEntityList(BaseAttribute.class), "listRenewAttributes"), request, connector);
+    }
 
     @Override
     public ResponseEntity<CertificateDataResponseDto> renew(ApiClientConnectorInfo connector,
@@ -237,6 +266,18 @@ public class CertificateApiClient extends BaseApiClient implements CertificateSy
     }
 
     // ---- Identify ----
+
+    @Override
+    public List<BaseAttribute> listIdentifyAttributes(ApiClientConnectorInfo connector,
+            CertificateAttributeListRequestDtoV3 requestDto) throws ConnectorException {
+        WebClient.RequestBodyUriSpec request = prepareRequest(HttpMethod.POST, connector, true);
+
+        return processRequest(r -> requireBody(r
+                .uri(connector.getUrl() + CERTIFICATE_IDENTIFY_ATTRIBUTES_CONTEXT)
+                .body(Mono.just(requestDto), CertificateAttributeListRequestDtoV3.class)
+                .retrieve()
+                .toEntityList(BaseAttribute.class), "listIdentifyAttributes"), request, connector);
+    }
 
     @Override
     public CertificateIdentificationResponseDto identify(ApiClientConnectorInfo connector,

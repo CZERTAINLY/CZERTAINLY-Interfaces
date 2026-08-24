@@ -264,37 +264,31 @@ class DiscoveryV2ResponseDtoTest {
     }
 
     @Test
-    void supportedResourceDistinguishesOmittedEmptyAndPopulatedCapabilities() throws Exception {
-        DiscoverySupportedResourceDto omitted = new DiscoverySupportedResourceDto();
-        omitted.setResource(Resource.CERTIFICATE);
-        // capabilities intentionally left unset: means "all interface-level feature flags apply".
+    void supportedResourceRoundTripsAsResourceOnly() throws Exception {
+        DiscoverySupportedResourceDto dto = new DiscoverySupportedResourceDto();
+        dto.setResource(Resource.CERTIFICATE);
 
-        DiscoverySupportedResourceDto empty = new DiscoverySupportedResourceDto();
-        empty.setResource(Resource.CRYPTOGRAPHIC_KEY);
-        empty.setCapabilities(List.of());
+        String json = mapper.writeValueAsString(dto);
 
-        DiscoverySupportedResourceDto populated = new DiscoverySupportedResourceDto();
-        populated.setResource(Resource.CERTIFICATE);
-        populated.setCapabilities(List.of(DiscoveryResourceCapability.STOP_RESUME));
+        assertEquals(Resource.CERTIFICATE, mapper.readValue(json, DiscoverySupportedResourceDto.class).getResource());
+    }
 
-        String omittedJson = mapper.writeValueAsString(omitted);
-        String emptyJson = mapper.writeValueAsString(empty);
-        String populatedJson = mapper.writeValueAsString(populated);
+    @Test
+    void initiateResponseDistinguishesUndeclaredAndDeclaredStoppability() throws Exception {
+        // Undeclared (null) means Core falls back to the interface-level flag; it must stay off the wire
+        // rather than serialize as null, so a tolerant reader sees a clean absence.
+        DiscoveryInitiateResponseDto undeclared = new DiscoveryInitiateResponseDto();
 
-        assertFalse(omittedJson.contains("\"capabilities\""), "omitted capabilities must not appear as null");
-        assertTrue(emptyJson.contains("\"capabilities\":[]"), "empty capabilities must serialize as an empty array");
-        assertTrue(populatedJson.contains("\"capabilities\":[\"stopResume\"]"));
+        DiscoveryInitiateResponseDto declared = new DiscoveryInitiateResponseDto();
+        declared.setStoppable(false);
 
-        DiscoverySupportedResourceDto omittedBack = mapper.readValue(omittedJson, DiscoverySupportedResourceDto.class);
-        DiscoverySupportedResourceDto emptyBack = mapper.readValue(emptyJson, DiscoverySupportedResourceDto.class);
-        DiscoverySupportedResourceDto populatedBack = mapper
-                .readValue(populatedJson, DiscoverySupportedResourceDto.class);
+        String undeclaredJson = mapper.writeValueAsString(undeclared);
+        String declaredJson = mapper.writeValueAsString(declared);
 
-        assertNull(omittedBack.getCapabilities(),
-                "null capabilities (all flags apply) must not be normalized to empty");
-        assertTrue(emptyBack.getCapabilities().isEmpty(),
-                "empty capabilities (no flags apply) must not be normalized to null");
-        assertEquals(List.of(DiscoveryResourceCapability.STOP_RESUME), populatedBack.getCapabilities());
+        assertFalse(undeclaredJson.contains("\"stoppable\""), "undeclared stoppable must not appear as null");
+        assertTrue(declaredJson.contains("\"stoppable\":false"));
+        assertNull(mapper.readValue(undeclaredJson, DiscoveryInitiateResponseDto.class).getStoppable());
+        assertEquals(Boolean.FALSE, mapper.readValue(declaredJson, DiscoveryInitiateResponseDto.class).getStoppable());
     }
 
     @Test

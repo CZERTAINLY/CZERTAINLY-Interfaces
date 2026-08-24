@@ -4,6 +4,7 @@ import com.otilm.api.interfaces.connector.common.v2.AuthProtectedConnectorContro
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.common.error.ProblemDetailExtended;
 import com.otilm.api.model.connector.cryptography.v2.KeyScopedRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.OperationTrackingRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.DecryptDataResponseV2Dto;
@@ -12,7 +13,6 @@ import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
@@ -95,23 +95,25 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<SignDataResponseV2Dto> signData(@RequestBody @Valid SignDataRequestV2Dto request);
 
-    @Operation(summary = "Get async sign operation status", description = "Get status of an async sign batch.")
+    @Operation(summary = "Get async sign operation status",
+            description = "Get status of an async sign batch using only its tracking handle.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sign operation status retrieved"),
             @ApiResponse(responseCode = "404", description = "Operation is not tracked")})
     @PostMapping(path = "/sign/status", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    SignOperationStatusResponseV2Dto getSignStatus(@RequestBody @Valid SignOperationScopedRequestV2Dto request);
+    SignOperationStatusResponseV2Dto getSignStatus(@RequestBody @Valid OperationTrackingRequestV2Dto request);
 
     @Operation(summary = "Cancel async sign operation",
-            description = "Cancel an in-flight asynchronous sign batch. Individual items cannot be cancelled separately")
+            description = "Cancel an in-flight asynchronous sign batch using only its tracking handle. Individual "
+                    + "items cannot be cancelled separately")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Aborted"),
             @ApiResponse(responseCode = "404", description = "Operation not tracked; cancellation outcome is unknown"),
             @ApiResponse(responseCode = "422",
                     description = "Refused — operation is already terminal or past point of no return")})
     @PostMapping(path = "/sign/cancel", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Void> cancelSign(@RequestBody @Valid SignOperationScopedRequestV2Dto request);
+    ResponseEntity<Void> cancelSign(@RequestBody @Valid OperationTrackingRequestV2Dto request);
 
     // ---- Verify ----
 

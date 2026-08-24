@@ -10,8 +10,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Class-level constraint that ensures {@code workflow.signatureFormattingConnectorUuid} is non-null whenever the
- * signing profile uses ILM-managed signing with a Timestamping or Content Signing workflow.
+ * Class-level constraint that checks a Signing Profile's workflow against its signing scheme: ILM-managed signing must
+ * carry the fields the platform needs, and delegated signing must omit the ones it would never honour. Each violation
+ * is reported on its own property path.
  */
 @Constraint(validatedBy = ManagedSignatureFormattingConnectorValidator.class)
 @Target(ElementType.TYPE)

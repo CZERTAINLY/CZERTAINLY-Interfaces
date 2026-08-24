@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = "Signature Formatting Provider",
         description = "Signature Formatting Provider API defines operations for protocol-specific formatting of digital signing requests. "
                 + "The provider is stateless and handles the conversion between raw signing material and "
-                + "protocol-specific formats (e.g. TSA TimeStampToken, AdES signature containers).")
+                + "protocol-specific formats (e.g. TSA TimeStampToken). It serves the timestamping workflow; AdES "
+                + "content-signature formatting is served by the Content Signing Formatting contract at "
+                + "/v1/signatureProvider/contentSigning.")
 public interface SignatureFormattingController extends AuthProtectedConnectorController {
 
     @Operation(summary = "List Formatting Attributes", operationId = "listFormattingAttributes")

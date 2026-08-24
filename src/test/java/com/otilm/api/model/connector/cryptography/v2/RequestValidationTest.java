@@ -6,11 +6,9 @@ import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.operations.SignOperationScopedRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.CipherDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
@@ -61,10 +59,9 @@ class RequestValidationTest {
                         named("key scope", validKeyScope()),
                         named("create-key attributes", validCreateKeyAttributesRequest()),
                         named("create key", validCreateKeyRequest()), named("destroy key", validDestroyKeyRequest()),
-                        named("key operation status/cancel", validKeyOperationRequest()),
+                        named("operation status/cancel", validOperationTrackingRequest()),
                         named("cipher operation", validCipherRequest()),
                         named("random operation", validRandomRequest()), named("sign operation", validSignRequest()),
-                        named("sign status/cancel", validSignOperationRequest()),
                         named("verify operation", validVerifyRequest()));
     }
 
@@ -108,8 +105,8 @@ class RequestValidationTest {
                                 "keyCreationId", "keyCreationId is required"),
                         invalidRequest("destroy execution mode", validDestroyKeyRequest(),
                                 DestroyKeyRequestV2Dto::setExecutionMode, "executionMode", "executionMode is required"),
-                        invalidRequest("operation metadata", validKeyOperationRequest(),
-                                KeyOperationRequestV2Dto::setOperationMeta, "operationMeta",
+                        invalidRequest("operation metadata", validOperationTrackingRequest(),
+                                OperationTrackingRequestV2Dto::setOperationMeta, "operationMeta",
                                 "operationMeta is required and must not be empty"));
     }
 
@@ -139,9 +136,9 @@ class RequestValidationTest {
         emptyKeyMetadata.setKeyMeta(List.of());
         KeyScopedRequestV2Dto nullKeyMetadata = validKeyScope();
         nullKeyMetadata.setKeyMeta(Collections.singletonList(null));
-        KeyOperationRequestV2Dto emptyOperationMetadata = validKeyOperationRequest();
+        OperationTrackingRequestV2Dto emptyOperationMetadata = validOperationTrackingRequest();
         emptyOperationMetadata.setOperationMeta(List.of());
-        KeyOperationRequestV2Dto nullOperationMetadata = validKeyOperationRequest();
+        OperationTrackingRequestV2Dto nullOperationMetadata = validOperationTrackingRequest();
         nullOperationMetadata.setOperationMeta(Collections.singletonList(null));
         CreateKeyRequestV2Dto nullCreationAttribute = validCreateKeyRequest();
         nullCreationAttribute.setCreateKeyAttributes(Collections.singletonList(null));
@@ -170,7 +167,7 @@ class RequestValidationTest {
                                         "operationMeta is required and must not be empty")),
                         named("null operation metadata element",
                                 new InvalidRequest(nullOperationMetadata, "operationMeta[0].<list element>",
-                                        "must not be null")),
+                                        "operationMeta must not contain null items")),
                         named("null creation attribute element",
                                 new InvalidRequest(nullCreationAttribute, "createKeyAttributes[0].<list element>",
                                         "createKeyAttributes must not contain null entries")));
@@ -248,8 +245,7 @@ class RequestValidationTest {
     static Stream<Named<KeyScopedRequestV2Dto>> requestsWithInvalidKeyMetadata() {
         return Stream
                 .of(named("destroy key", validDestroyKeyRequest()), named("cipher", validCipherRequest()),
-                        named("sign", validSignRequest()), named("sign status/cancel", validSignOperationRequest()),
-                        named("verify", validVerifyRequest()));
+                        named("sign", validSignRequest()), named("verify", validVerifyRequest()));
     }
 
     private static TokenScopedRequestV2Dto validTokenScope() {
@@ -288,8 +284,8 @@ class RequestValidationTest {
         return request;
     }
 
-    private static KeyOperationRequestV2Dto validKeyOperationRequest() {
-        KeyOperationRequestV2Dto request = withValidTokenProfileScope(new KeyOperationRequestV2Dto());
+    private static OperationTrackingRequestV2Dto validOperationTrackingRequest() {
+        OperationTrackingRequestV2Dto request = new OperationTrackingRequestV2Dto();
         request.setOperationMeta(validMetadata());
         return request;
     }
@@ -313,12 +309,6 @@ class RequestValidationTest {
         request.setExecutionMode(OperationExecutionMode.SYNCHRONOUS);
         request.setSignatureAttributes(List.of());
         request.setData(List.of(new SignatureDataV2Dto(new byte[]{1}, "item-1")));
-        return request;
-    }
-
-    private static SignOperationScopedRequestV2Dto validSignOperationRequest() {
-        SignOperationScopedRequestV2Dto request = withValidKeyScope(new SignOperationScopedRequestV2Dto());
-        request.setOperationMeta(validMetadata());
         return request;
     }
 

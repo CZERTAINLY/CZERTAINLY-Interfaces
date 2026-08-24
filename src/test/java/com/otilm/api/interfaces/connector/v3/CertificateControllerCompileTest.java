@@ -27,6 +27,10 @@ class CertificateControllerCompileTest {
             return List.of();
         }
 
+        public List<BaseAttribute> listRequestAttributes(CertificateAttributeListRequestDtoV3 request) {
+            return List.of();
+        }
+
         public ResponseEntity<CertificateDataResponseDto> issue(CertificateSignRequestDtoV3 body) {
             return ResponseEntity.ok(new CertificateDataResponseDto());
         }
@@ -37,6 +41,10 @@ class CertificateControllerCompileTest {
 
         public ResponseEntity<Void> cancelIssue(CertificateOperationCancelRequestDtoV3 body) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        public List<BaseAttribute> listRenewAttributes(CertificateAttributeListRequestDtoV3 request) {
+            return List.of();
         }
 
         public ResponseEntity<CertificateDataResponseDto> renew(CertificateRenewRequestDtoV3 body) {
@@ -73,6 +81,10 @@ class CertificateControllerCompileTest {
 
         public ResponseEntity<Void> cancelRegister(CertificateOperationCancelRequestDtoV3 body) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        public List<BaseAttribute> listIdentifyAttributes(CertificateAttributeListRequestDtoV3 request) {
+            return List.of();
         }
 
         public CertificateIdentificationResponseDto identify(CertificateIdentificationRequestDtoV3 body) {
