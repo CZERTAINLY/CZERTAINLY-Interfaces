@@ -731,7 +731,7 @@ public abstract class BaseApiClient {
      * success.
      */
     private static Mono<ClientResponse> handleLegacyErrorResponse(ClientResponse clientResponse) {
-        if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {
+        if (clientResponse.statusCode().isSameCodeAs(HttpStatus.UNPROCESSABLE_ENTITY)) {
             return clientResponse
                     .bodyToMono(ERROR_LIST_TYPE_REF)
                     .defaultIfEmpty(List.of("Connector returned 422 with an empty body"))
