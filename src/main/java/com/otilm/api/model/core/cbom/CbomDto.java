@@ -42,4 +42,12 @@ public class CbomDto {
 
     @Schema(description = "Total number of assets", requiredMode = Schema.RequiredMode.REQUIRED)
     private int totalAssets;
+
+    @Schema(description = "State of the cryptographic asset sync for this CBOM record; absent when the platform has "
+            + "not attempted an asset sync for it", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private CbomAssetSyncState assetSyncState;
+
+    @Schema(description = "When the cryptographic asset sync last completed for this CBOM record",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private OffsetDateTime assetSyncedAt;
 }
