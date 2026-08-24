@@ -53,8 +53,8 @@ public class ContentSigningWorkflowRequestDto extends WorkflowRequestDto {
     private TimestampSourceRequestDto timestampSource;
 
     @Positive
-    @Schema(description = "Largest document accepted for signing, in bytes. Enforced when a signing request arrives, "
-            + "under both ILM-managed and delegated signing. When omitted, no profile-level cap applies.",
+    @Schema(description = "Largest document accepted for signing, in bytes. Enforced when an ILM-managed "
+            + "signing request arrives. When omitted, no profile-level cap applies.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "5242880")
     private Long documentSizeCap;
 

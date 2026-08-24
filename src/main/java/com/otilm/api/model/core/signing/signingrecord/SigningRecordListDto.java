@@ -5,6 +5,7 @@ import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.signing.SigningProtocol;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.Instant;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -31,4 +32,11 @@ public class SigningRecordListDto extends NameAndUuidDto {
             + "This timestamp is set by the platform and is independent of the cryptographic signing time.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private Instant createdAt;
+
+    @Schema(description = "Serial numbers of the timestamp tokens this operation traces to: for a content signature "
+            + "the tokens embedded in the signature, for a timestamp record its own serial number. The protocol "
+            + "field tells the two apart. Unpadded lower-case hex, no 0x prefix and no leading zeros. Empty when "
+            + "the operation embedded no timestamp token, as a content signature at level SIGNED does.",
+            example = "[\"2a\"]", requiredMode = Schema.RequiredMode.REQUIRED)
+    private List<String> timestampTokenSerialNumbers;
 }
