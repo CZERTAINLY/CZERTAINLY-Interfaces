@@ -2,11 +2,16 @@ package com.otilm.core.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
 import com.otilm.api.config.serializer.AttributeContentDeserializer;
 import com.otilm.api.config.serializer.BaseAttributeDeserializer;
 import com.otilm.api.exception.ValidationError;
@@ -72,6 +77,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 public class AttributeDefinitionUtils {
+
+    private static final JsonSchemaFactory JSON_SCHEMA_FACTORY = JsonSchemaFactory
+            .getInstance(SpecVersion.VersionFlag.V202012);
 
     private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = JsonMapper
             .builder()
@@ -457,9 +465,52 @@ public class AttributeDefinitionUtils {
                 case REGEXP -> validateRegexpConstraint(contents, constraint, contentType, errors, label);
                 case RANGE -> validateRangeConstraint(contents, constraint, contentType, errors, label);
                 case DATETIME -> validateDateTimeConstraint(contents, constraint, contentType, errors, label);
+                case JSON_SCHEMA -> validateJsonSchemaConstraint(contents, constraint, contentType, errors, label);
             }
         }
         return errors;
+    }
+
+    private static void validateJsonSchemaConstraint(List<? extends AttributeContent> contents,
+            BaseAttributeConstraint<?> constraint, AttributeContentType contentType, List<ValidationError> errors,
+            String label) {
+        if (!contentType.equals(AttributeContentType.STRING) && !contentType.equals(AttributeContentType.TEXT)) {
+            errors
+                    .add(ValidationError
+                            .create("Invalid Attribute Constraint Type and Attribute Content Type. JSON Schema can be validated only for STRING and TEXT"));
+            return;
+        }
+        JsonSchema schema;
+        try {
+            schema = JSON_SCHEMA_FACTORY.getSchema(ATTRIBUTES_OBJECT_MAPPER.readTree((String) constraint.getData()));
+        } catch (Exception e) {
+            errors
+                    .add(ValidationError
+                            .create("JSON Schema constraint of attribute {} does not carry a valid JSON Schema document",
+                                    label));
+            return;
+        }
+        for (AttributeContent value : contents) {
+            JsonNode document;
+            try {
+                document = ATTRIBUTES_OBJECT_MAPPER.readTree((String) value.getData());
+            } catch (Exception e) {
+                errors
+                        .add(ValidationError
+                                .create("Value of attribute {} violates the attribute's JSON Schema constraint: content is not well-formed JSON",
+                                        label));
+                continue;
+            }
+            for (ValidationMessage violation : schema.validate(document)) {
+                String reason = constraint.getErrorMessage() != null
+                        ? constraint.getErrorMessage()
+                        : violation.getMessage();
+                errors
+                        .add(ValidationError
+                                .create("Value of attribute {} violates the attribute's JSON Schema constraint: {} (at {})",
+                                        label, reason, violation.getInstanceLocation()));
+            }
+        }
     }
 
     private static void validateRangeConstraint(List<? extends AttributeContent> contents,

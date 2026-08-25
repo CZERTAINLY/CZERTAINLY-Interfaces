@@ -14,6 +14,7 @@ import com.otilm.api.model.common.attribute.common.callback.AttributeValueTarget
 import com.otilm.api.model.common.attribute.common.callback.RequestAttributeCallback;
 import com.otilm.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.otilm.api.model.common.attribute.common.constraint.DateTimeAttributeConstraint;
+import com.otilm.api.model.common.attribute.common.constraint.JsonSchemaAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RangeAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.data.DateTimeAttributeConstraintData;
@@ -1270,5 +1271,110 @@ class AttributeDefinitionUtilsTest {
 
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaPass() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\",\"required\":[\"sequence\"]}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"sequence\":[{\"boolean\":true}]}");
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaFail_namesThePath() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"type\":\"object\",\"properties\":{\"sequence\":{\"type\":\"array\",\"minItems\":2}},\"required\":[\"sequence\"]}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"sequence\":[{\"boolean\":true}]}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+        String message = exception.getErrors().get(0).getErrorDescription();
+        Assertions.assertTrue(message.contains("JSON Schema constraint"), message);
+        Assertions.assertTrue(message.contains("$.sequence"), message);
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaFail_usesTheAuthorsErrorMessage() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"array\"}");
+        ((JsonSchemaAttributeConstraint) definition.getConstraints().get(0))
+                .setErrorMessage("workers only on this profile");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(
+                        exception.getErrors().get(0).getErrorDescription().contains("workers only on this profile"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsNonJsonContent() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "MAYBAf8CAQA=");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("not well-formed JSON"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsMismatchedContentType() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        definition.setContentType(AttributeContentType.INTEGER);
+        RequestAttributeV2 attribute = new RequestAttributeV2();
+        attribute.setName(definition.getName());
+        attribute.setUuid(UUID.fromString(definition.getUuid()));
+        attribute.setContent(List.of(new IntegerAttributeContentV2(4)));
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("STRING and TEXT"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaWithBrokenSchemaDocumentDegradesToError() {
+        DataAttributeV2 definition = jsonSchemaDefinition("this is not json");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
+        JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
+        constraint.setData(schemaDocument);
+
+        DataAttributeV2 definition = new DataAttributeV2();
+        definition.setName("jsonAttribute");
+        definition.setUuid("2f6c1b10-0000-4000-8000-000000000042");
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.STRING);
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+        return definition;
+    }
+
+    private static RequestAttributeV2 stringAttribute(DataAttributeV2 definition, String value) {
+        RequestAttributeV2 attribute = new RequestAttributeV2();
+        attribute.setName(definition.getName());
+        attribute.setUuid(UUID.fromString(definition.getUuid()));
+        attribute.setContent(List.of(new StringAttributeContentV2(value)));
+        return attribute;
     }
 }
