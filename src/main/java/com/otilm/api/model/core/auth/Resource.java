@@ -36,6 +36,7 @@ public enum Resource implements IPlatformEnum {
     ACME_PROFILE(Codes.ACME_PROFILE, "ACME Profile", true, true),
 
     CBOM(Codes.CBOM, "CBOM"),
+    CBOM_ASSET(Codes.CBOM_ASSET, "CBOM Asset"),
 
     // SCEP
     SCEP_PROFILE(Codes.SCEP_PROFILE, "SCEP Profile", true, true),
@@ -280,6 +281,7 @@ public enum Resource implements IPlatformEnum {
         public static final String VAULT_PROFILE = "vaultProfiles";
         public static final String SECRET = "secrets";
         public static final String CBOM = "cboms";
+        public static final String CBOM_ASSET = "cbomAssets";
         public static final String SIGNING_PROFILE = "signingProfiles";
         public static final String TSP_PROFILE = "tspProfiles";
         public static final String TSP_PROFILE_BASIC_CREDENTIAL = "tspProfileBasicCredentials";

@@ -50,6 +50,18 @@ public class CbomDto implements AttributeProjectable {
     private int totalAssets;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "State of the cryptographic asset sync for this CBOM record; pending until the first sync "
+            + "attempt considers it. Platform versions predating the asset sync omit the field.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private CbomAssetSyncState assetSyncState;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "When this record last successfully reached the synced state; later failed attempts "
+            + "neither advance nor clear it. Platform versions predating the asset sync omit the field.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private OffsetDateTime assetSyncedAt;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
