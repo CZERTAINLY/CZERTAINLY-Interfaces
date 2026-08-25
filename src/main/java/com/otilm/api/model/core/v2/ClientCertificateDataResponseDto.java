@@ -33,9 +33,7 @@ public class ClientCertificateDataResponseDto implements Loggable {
     @ArraySchema(arraySchema = @Schema(
             description = "Request-attribute policy warnings raised while validating an externally supplied CSR "
                     + "under lenient request validation. Empty under strict, where a violation is rejected with "
-                    + "422 instead of accepted with warnings. Protocol flows (ACME, SCEP, CMP, EST) have "
-                    + "RFC-shaped responses with nowhere to carry warnings, so for them the warnings stay in the "
-                    + "log only.",
+                    + "422 instead of accepted with warnings.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     private List<String> requestAttributeWarnings = new ArrayList<>();
 

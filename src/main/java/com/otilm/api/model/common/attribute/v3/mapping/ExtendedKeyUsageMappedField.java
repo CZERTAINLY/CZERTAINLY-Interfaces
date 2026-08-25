@@ -6,12 +6,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Maps an attribute to the Extended Key Usage extension (2.5.29.37).
+ * Maps an attribute to the Extended Key Usage extension.
  *
  * <p>
- * The target carries no properties: the extension OID is fixed, its criticality comes from the OID registry, and the
- * purposes are the attribute's content, each resolving against the OIDs registered under
- * {@link com.otilm.api.model.core.oid.OidCategory#EXTENDED_KEY_USAGE}. The attribute must be a list.
+ * The target carries no properties: the OID is fixed at 2.5.29.37, criticality comes from the OID registry, and the
+ * attribute must be a list of purposes registered under
+ * {@link com.otilm.api.model.core.oid.OidCategory#EXTENDED_KEY_USAGE}.
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

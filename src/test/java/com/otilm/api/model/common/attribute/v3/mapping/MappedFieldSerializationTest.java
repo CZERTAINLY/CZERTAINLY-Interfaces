@@ -292,10 +292,6 @@ class MappedFieldSerializationTest {
         assertEquals(FieldSource.CSR, deserialized.getSource());
     }
 
-    // -------------------------------------------------------------------------
-    // Registration completeness
-    // -------------------------------------------------------------------------
-
     @Test
     void everyFieldTypeCodeHasARegisteredSubtype() {
         JsonSubTypes subTypes = MappedField.class.getAnnotation(JsonSubTypes.class);
