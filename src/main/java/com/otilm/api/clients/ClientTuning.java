@@ -11,9 +11,6 @@ import java.time.Duration;
  * these values from configuration; {@link #defaults()} backs tests and any caller that does not tune.
  *
  * <p>
- * {@code maxInMemorySize} is not yet settable by any deployment surface, tracked in core#1961.
- *
- * <p>
  * {@code maxConnections} is <em>per remote host</em> (Reactor-Netty pools per destination), not a global cap, so it is
  * sized against the per-connector concurrent load rather than a single queue's listener concurrency.
  *
@@ -30,7 +27,7 @@ public record ClientTuning(Duration connectTimeout, Duration responseTimeout, in
     /**
      * 16 MiB: generous for attribute/status/CRL payloads, bounded against an oversized or malicious connector response.
      */
-    private static final int DEFAULT_MAX_IN_MEMORY = 16 * 1024 * 1024;
+    static final int DEFAULT_MAX_IN_MEMORY = 16 * 1024 * 1024;
 
     public ClientTuning {
         requirePositive(connectTimeout, "connectTimeout");

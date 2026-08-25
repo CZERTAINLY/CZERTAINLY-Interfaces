@@ -6,6 +6,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.otilm.api.clients.ApiClientCodecs;
 import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.exception.ConnectorProblemException;
@@ -716,13 +717,11 @@ class DiscoveryApiClientTest {
      * {@code results_oversizedResponse_failsInsteadOfBuffering}.
      */
     private DiscoveryApiClient smallCapClient(int maxInMemorySize) {
-        WebClient smallCapWebClient = WebClient
-                .builder()
-                .exchangeStrategies(ExchangeStrategies
-                        .builder()
-                        .codecs(c -> c.defaultCodecs().maxInMemorySize(maxInMemorySize))
-                        .build())
-                .build();
+        ExchangeStrategies strategies = ExchangeStrategies.builder().codecs(c -> {
+            c.defaultCodecs().maxInMemorySize(maxInMemorySize);
+            ApiClientCodecs.configureJsonCodecs(c);
+        }).build();
+        WebClient smallCapWebClient = WebClient.builder().exchangeStrategies(strategies).build();
         return new DiscoveryApiClient(smallCapWebClient, null);
     }
 
