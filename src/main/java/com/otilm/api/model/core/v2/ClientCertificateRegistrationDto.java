@@ -84,9 +84,11 @@ public class ClientCertificateRegistrationDto {
     private Set<UUID> groupUuids;
 
     @Schema(description = "Optional UUID of an existing certificate this registration succeeds. When set, the "
-            + "registration is a pre-registered successor of the source certificate: renewing the source "
-            + "certificate is gated by this registration's challenge and completes into the registered "
-            + "successor. When omitted, the registration is a standalone placeholder completed by issue.",
+            + "placeholder is linked to that certificate as its predecessor through a pending relation, "
+            + "classified at issuance as renewal, rekey or replacement. Completion runs through the "
+            + "standard issue flow, gated by this registration's own challenge when one was supplied; "
+            + "the source's own renew and rekey are unaffected. "
+            + "When omitted, the registration is a standalone placeholder completed by issue.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private UUID sourceCertificateUuid;
 
@@ -98,8 +100,7 @@ public class ClientCertificateRegistrationDto {
     @Schema(description = "Authorization secret (challenge) that gates completion of this pre-registered "
             + "certificate. Write-only and optional — the operator supplies it to opt the registration "
             + "into challenge-gated issuance; the platform never generates one. Challenge verification "
-            + "gates issue of this pre-registered certificate, rekey of it after issuance, and — when "
-            + "registered as a successor (sourceCertificateUuid) — renew of the source certificate.",
+            + "gates issue of this pre-registered certificate, and renew and rekey of it once issued.",
             accessMode = Schema.AccessMode.WRITE_ONLY, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String authorizationSecret;
 
