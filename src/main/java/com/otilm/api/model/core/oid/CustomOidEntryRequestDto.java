@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.oid;
 
+import com.otilm.api.model.common.validation.OidFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -14,7 +15,7 @@ public class CustomOidEntryRequestDto extends CustomOidEntryUpdateRequestDto imp
     @Schema(description = "Object Identifier (OID) in dot notation (e.g., 1.2.840.113549.1.1.1)",
             requiredMode = Schema.RequiredMode.REQUIRED, example = "1.2.840.113549.1.1.1")
     @NotBlank
-    @Pattern(regexp = "^[0-2](\\.(0|[1-9]\\d*)){1,50}$", message = "Invalid OID format")
+    @Pattern(regexp = OidFormat.REGEX, message = OidFormat.MESSAGE)
     private String oid;
 
 }

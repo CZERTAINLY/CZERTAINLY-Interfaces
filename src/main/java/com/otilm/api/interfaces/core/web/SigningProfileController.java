@@ -16,6 +16,7 @@ import com.otilm.api.model.common.BulkActionMessageDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.PaginationResponseDto;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import com.otilm.api.model.common.validation.OidFormat;
 import com.otilm.api.model.core.certificate.CertificateDto;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import com.otilm.api.model.core.signing.SigningProtocol;
@@ -31,10 +32,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -51,6 +56,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ApiResponses(value = {
         @ApiResponse(responseCode = "404", description = "Not Found",
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+@Validated
 public interface SigningProfileController extends AuthProtectedController {
 
     @Operation(operationId = "listSigningProfileSearchableFields", summary = "List search filters for Signing Profiles")
@@ -186,7 +192,16 @@ public interface SigningProfileController extends AuthProtectedController {
             @Parameter(description = "Signing Workflow Type") @RequestParam SigningWorkflowType signingWorkflowType,
             @Parameter(
                     description = "When true and signingWorkflowType is TIMESTAMPING, restricts results to certificates that satisfy ETSI EN 319 421 qualified timestamp requirements") @RequestParam(
-                            required = false, defaultValue = "false") boolean qualifiedTimestamp);
+                            required = false, defaultValue = "false") boolean qualifiedTimestamp,
+            @Parameter(
+                    description = "When true and signingWorkflowType is CONTENT_SIGNING or RAW_SIGNING, restricts results to certificates carrying the nonRepudiation key-usage bit.") @RequestParam(
+                            required = false, defaultValue = "false") boolean requireNonRepudiation,
+            @Parameter(
+                    description = "When signingWorkflowType is CONTENT_SIGNING or RAW_SIGNING, restricts results to certificates carrying all of these extended key usage OIDs, in dot notation.",
+                    array = @ArraySchema(
+                            schema = @Schema(pattern = OidFormat.REGEX, example = "1.3.6.1.5.5.7.3.36"))) @RequestParam(
+                                    required = false) Set<@NotBlank @Pattern(regexp = OidFormat.REGEX,
+                                            message = OidFormat.MESSAGE) String> requiredExtendedKeyUsageOids);
 
     @Operation(operationId = "listSignatureAttributesForCertificate",
             summary = "Get signing operation attribute descriptors for a certificate",
