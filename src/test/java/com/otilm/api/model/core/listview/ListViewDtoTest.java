@@ -21,7 +21,7 @@ class ListViewDtoTest {
 
     @Test
     void roundTripsAViewThatStoresColumnsOnly() throws Exception {
-        // given — what this round actually persists: a name, a resource and an ordered column set
+        // given — a persisted view carries a name, a resource and an ordered column set
         var dto = new ListViewDto();
         dto.setUuid("f0f0d6a2-2a3e-11ee-be56-0242ac120002");
         dto.setName("Expiry watch");
@@ -71,7 +71,6 @@ class ListViewDtoTest {
 
     @Test
     void defaultsToNotBeingTheDefaultView() {
-        // given — a freshly constructed view claims nothing about being the default
         assertFalse(new ListViewDto().isDefaultView());
     }
 

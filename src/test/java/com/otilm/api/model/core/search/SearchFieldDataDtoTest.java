@@ -34,8 +34,8 @@ class SearchFieldDataDtoTest {
     }
 
     @Test
-    void roundTripsAnAttributeFieldThatMayBeShownButNotSortedYet() throws Exception {
-        // given — attribute-sourced fields report sortable=false until attribute ORDER BY lands
+    void roundTripsAnAttributeFieldThatIsDisplayableButNotSortable() throws Exception {
+        // given — attribute-sourced fields are displayable but not sortable
         var dto = new SearchFieldDataDto();
         dto.setFieldIdentifier("department");
         dto.setFieldLabel("Department");

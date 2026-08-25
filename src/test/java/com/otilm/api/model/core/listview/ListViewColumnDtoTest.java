@@ -66,6 +66,16 @@ class ListViewColumnDtoTest {
     }
 
     @Test
+    void rejectsABlankHeading() {
+        // given — a whitespace-only heading would pin a blank column title instead of falling back to the catalogue
+        var violations = VALIDATOR.validate(new ListViewColumnDto(FilterFieldSource.CUSTOM, "department", "   "));
+
+        // then
+        assertEquals(1, violations.size());
+        assertEquals("label", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
     void keepsTheHeadingOutOfColumnIdentity() {
         // given — a view stores identifiers; two entries for the same field are the same column however it is headed
         var plain = new ListViewColumnDto(FilterFieldSource.CUSTOM, "department", null);

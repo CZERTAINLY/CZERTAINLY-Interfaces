@@ -95,9 +95,9 @@ public class KeyItemDto extends NameAndUuidDto implements AttributeProjectable {
     private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 
     /**
-     * The all-arguments signature as it stood before {@code attributeValues} was added, kept so that adding an optional
-     * projection field stays source- and binary-compatible for callers that construct this DTO positionally. Leaves
-     * {@code attributeValues} unset; use the setter or the generated all-arguments constructor to populate it.
+     * Compatibility constructor for callers that construct this DTO positionally, so that adding the optional
+     * {@code attributeValues} field stays source- and binary-compatible. Leaves {@code attributeValues} unset; use the
+     * setter or the generated all-arguments constructor to populate it.
      *
      * @deprecated retained only for compatibility with callers compiled against a release before
      * {@code attributeValues} existed; new code sets the field explicitly.

@@ -40,7 +40,7 @@ class AttributeProjectableTest {
     @ParameterizedTest
     @MethodSource("listings")
     void omitsProjectedValuesWhenNoColumnsWereRequested(Supplier<AttributeProjectable> factory) throws Exception {
-        // given — the compatibility path every one of the seven listings has to keep
+        // given — the compatibility path every supported listing has to keep
         var dto = factory.get();
 
         // then

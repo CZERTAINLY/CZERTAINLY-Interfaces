@@ -2,7 +2,9 @@ package com.otilm.api.model.core.listview;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.otilm.api.model.client.certificate.SearchFilterRequestDto;
 import com.otilm.api.model.client.certificate.SearchSortRequestDto;
+import com.otilm.api.model.core.search.FilterConditionOperator;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import com.otilm.api.model.core.search.SortDirection;
 import com.otilm.api.testsupport.ValidatorFixture;
@@ -11,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
@@ -93,6 +96,37 @@ class ListViewUpdateRequestDtoTest {
         // then
         assertEquals(1, violations.size());
         assertEquals("filters[0].<list element>", violations.iterator().next().getPropertyPath().toString());
+    }
+
+    @Test
+    void rejectsAFilterThatAddressesNoField() {
+        // given — a filter with no source, identifier or condition cannot be applied to a listing
+        var dto = new ListViewUpdateRequestDto();
+        dto.setName("Expiry watch");
+        dto.setColumns(List.of(new ListViewColumnDto(FilterFieldSource.PROPERTY, "commonName", null)));
+        dto.setFilters(List.of(new SearchFilterRequestDto()));
+
+        // when
+        var violations = VALIDATOR.validate(dto);
+
+        // then
+        assertEquals(Set.of("filters[0].fieldSource", "filters[0].fieldIdentifier", "filters[0].condition"),
+                violations.stream().map(v -> v.getPropertyPath().toString()).collect(Collectors.toSet()));
+    }
+
+    @Test
+    void acceptsAFilterWithoutAValue() {
+        // given — operators such as EMPTY address a field but carry no value
+        var dto = new ListViewUpdateRequestDto();
+        dto.setName("Expiry watch");
+        dto.setColumns(List.of(new ListViewColumnDto(FilterFieldSource.PROPERTY, "commonName", null)));
+        dto
+                .setFilters(List
+                        .of(new SearchFilterRequestDto(FilterFieldSource.PROPERTY, "commonName",
+                                FilterConditionOperator.EMPTY, null)));
+
+        // then
+        assertTrue(VALIDATOR.validate(dto).isEmpty());
     }
 
     @Test

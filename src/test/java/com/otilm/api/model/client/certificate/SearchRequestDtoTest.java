@@ -29,7 +29,7 @@ class SearchRequestDtoTest {
 
     @Test
     void omitsSortAndColumnsWhenUnset() throws Exception {
-        // given — a request built the way every caller predating this change builds one
+        // given — a request with neither sort nor columns keeps the existing wire shape
         var dto = new SearchRequestDto();
         dto.setFilters(List.of(filter()));
 
@@ -166,7 +166,7 @@ class SearchRequestDtoTest {
 
     @Test
     void readsBackANullColumnEntryRatherThanDroppingIt() throws Exception {
-        // given — the wire form the constraint above exists to catch
+        // given — a null column entry survives deserialization, so validation must be what rejects it
         var back = mapper.readValue("{\"columns\":[null]}", SearchRequestDto.class);
 
         // then — Jackson keeps the null, so validation is the only thing standing between it and the service
@@ -197,6 +197,17 @@ class SearchRequestDtoTest {
         assertFalse(one.equals(otherSource));
         assertEquals(new SearchSortRequestDto(FilterFieldSource.PROPERTY, "notAfter", SortDirection.ASC),
                 new SearchSortRequestDto(FilterFieldSource.PROPERTY, "notAfter", SortDirection.ASC));
+    }
+
+    @Test
+    void leavesTheLegacyFilterListUncascaded() {
+        // given — filters carry constraints for stored views, but this shape has never cascaded into them, so a
+        // request an existing client sends today must keep validating
+        var dto = new SearchRequestDto();
+        dto.setFilters(List.of(new SearchFilterRequestDto()));
+
+        // then
+        assertTrue(VALIDATOR.validate(dto).isEmpty());
     }
 
     private static SearchFilterRequestDto filter() {

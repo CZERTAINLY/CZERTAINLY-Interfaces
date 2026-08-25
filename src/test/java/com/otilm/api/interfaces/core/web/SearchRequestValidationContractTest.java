@@ -20,11 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Every listing endpoint takes a {@link SearchRequestDto}, and that shape now carries bean-validation constraints on
- * its sort and column fields. Spring runs none of them unless the body parameter is annotated {@code @Valid} as well as
- * {@code @RequestBody}, so a constraint added to the shape is inert on any endpoint that forgot it — the request binds,
- * the service is invoked, and a sort naming no field reaches the query builder as if it were well formed. The scan
- * below fails the build instead of letting a new listing endpoint reintroduce that gap.
+ * Every {@link SearchRequestDto} body must carry {@code @Valid}, because the constraints on the shape are inert without
+ * it. The compiled controllers are scanned so that a listing endpoint cannot omit it.
  */
 class SearchRequestValidationContractTest {
 
@@ -98,22 +95,19 @@ class SearchRequestValidationContractTest {
 
     @Test
     void scansTheControllersItClaimsTo() {
-        // a scan that quietly matched nothing would pass the assertion above forever
         assertTrue(controllers().contains(CertificateController.class),
-                "the scan missed CertificateController, so it is not reading the compiled controllers");
+                "the scan missed CertificateController, so a scan matching nothing would report every body validated");
         assertTrue(controllers().size() > 30, "expected the scan to see every controller in the package");
     }
 
     @Test
     void reachesControllersInNestedPackages() {
-        // ConnectorController v2 lives one package down; a non-recursive walk would skip it
         assertTrue(controllers().contains(com.otilm.api.interfaces.core.web.v2.ConnectorController.class),
                 "the scan does not descend into nested controller packages");
     }
 
     @Test
     void ignoresBodiesThatAreNotSearchRequests() {
-        // the rule is scoped to the search shape, so an unrelated body must not be swept in
         Method create = Arrays
                 .stream(ListViewController.class.getDeclaredMethods())
                 .filter(m -> m.getName().equals("createView"))
