@@ -29,7 +29,7 @@ public final class KeyPairOperationStatusResponseV2Dto extends KeyCreationStatus
 
     @Valid
     @ConvertGroup(to = SynchronousResponse.class)
-    @Schema(description = "Created key-pair result. Present only when status is COMPLETED.",
+    @Schema(description = "Created key-pair result. Present only when status is `completed`.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private KeyPairDataResponseV2Dto result;
 
