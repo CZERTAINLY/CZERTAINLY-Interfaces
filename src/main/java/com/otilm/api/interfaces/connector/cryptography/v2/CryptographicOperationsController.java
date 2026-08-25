@@ -42,43 +42,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v2/cryptographyProvider/operations")
 @Tag(name = "Cryptographic Operations v2",
         description = "Cryptographic operations scoped by token, token-profile and key metadata supplied in requests")
-@ApiResponses({
-        @ApiResponse(responseCode = "400",
-                description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
-                        + "unknown properties, and values outside the published enum values",
-                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
-                        schema = @Schema(implementation = ProblemDetailExtended.class))),
-        @ApiResponse(responseCode = "422",
-                description = "Request body was read successfully but violates a field validation rule "
-                        + "(errorCode VALIDATION_FAILED)",
-                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
-                        schema = @Schema(implementation = ProblemDetailExtended.class)))})
+@ApiResponses(@ApiResponse(responseCode = "400",
+        description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
+                + "unknown properties, and values outside the published enum values",
+        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                schema = @Schema(implementation = ProblemDetailExtended.class))))
 public interface CryptographicOperationsController extends AuthProtectedConnectorController {
 
     // ---- Cipher ----
 
     @Operation(summary = "List encryption attributes",
             description = "Returns the encryption parameter schema supported by the connector for the supplied token, profile and key context")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Encryption attributes retrieved"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Encryption attributes retrieved"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/encrypt/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listEncryptAttributes(@RequestBody @Valid KeyScopedRequestV2Dto request);
 
     @Operation(summary = "Encrypt data", description = "Encrypt data with the given key (always synchronous)")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Data encrypted"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Data encrypted"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/encrypt", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     EncryptDataResponseV2Dto encryptData(@RequestBody @Valid CipherDataRequestV2Dto request);
 
     @Operation(summary = "List decryption attributes",
             description = "Returns the decryption parameter schema supported by the connector for the supplied token, profile and key context")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Decryption attributes retrieved"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Decryption attributes retrieved"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/decrypt/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listDecryptAttributes(@RequestBody @Valid KeyScopedRequestV2Dto request);
 
     @Operation(summary = "Decrypt data", description = "Decrypt data with the given key (always synchronous)")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Data decrypted"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Data decrypted"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/decrypt", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     DecryptDataResponseV2Dto decryptData(@RequestBody @Valid CipherDataRequestV2Dto request);
@@ -87,7 +105,13 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
 
     @Operation(summary = "List signing attributes",
             description = "Returns the signing parameter schema supported by the connector for the supplied token, profile and key context")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Signing attributes retrieved"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Signing attributes retrieved"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/sign/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listSignAttributes(@RequestBody @Valid KeyScopedRequestV2Dto request);
@@ -97,7 +121,12 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Signed synchronously"),
             @ApiResponse(responseCode = "202",
-                    description = "Signing accepted asynchronously; body carries operationMeta tracking handle for the batch")})
+                    description = "Signing accepted asynchronously; body carries operationMeta tracking handle for the batch"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/sign", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<SignDataResponseV2Dto> signData(@RequestBody @Valid SignDataRequestV2Dto request);
@@ -106,7 +135,12 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
             description = "Get status of an async sign batch using only its tracking handle.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sign operation status retrieved"),
-            @ApiResponse(responseCode = "404", description = "Operation is not tracked")})
+            @ApiResponse(responseCode = "404", description = "Operation is not tracked"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/sign/status", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     SignOperationStatusResponseV2Dto getSignStatus(@RequestBody @Valid OperationTrackingRequestV2Dto request);
@@ -126,13 +160,25 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
 
     @Operation(summary = "List verification attributes",
             description = "Returns the verification parameter schema supported by the connector for the supplied token, profile and key context")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Verification attributes retrieved"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Verification attributes retrieved"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/verify/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listVerifyAttributes(@RequestBody @Valid KeyScopedRequestV2Dto request);
 
     @Operation(summary = "Verify data", description = "Verify signatures with the given key (always synchronous)")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Signatures verified"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Signatures verified"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/verify", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     VerifyDataResponseV2Dto verifyData(@RequestBody @Valid VerifyDataRequestV2Dto request);
@@ -141,13 +187,25 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
 
     @Operation(summary = "List random generator attributes",
             description = "Random generator attribute schema given token context")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Random generator attributes retrieved"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Random generator attributes retrieved"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/random/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listRandomAttributes(@RequestBody @Valid TokenProfileScopedRequestV2Dto request);
 
     @Operation(summary = "Generate random data", description = "Generate random data on the token (always synchronous)")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Random data generated"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Random data generated"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/random", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     RandomDataResponseV2Dto randomData(@RequestBody @Valid RandomDataRequestV2Dto request);

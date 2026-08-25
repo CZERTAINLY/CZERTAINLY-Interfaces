@@ -37,24 +37,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v2/cryptographyProvider/keys")
 @Tag(name = "Key Management v2",
         description = "Key operations scoped by token, token-profile and key metadata supplied in requests")
-@ApiResponses({
-        @ApiResponse(responseCode = "400",
-                description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
-                        + "unknown properties, and values outside the published enum values",
-                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
-                        schema = @Schema(implementation = ProblemDetailExtended.class))),
-        @ApiResponse(responseCode = "422",
-                description = "Request body was read successfully but violates a field validation rule "
-                        + "(errorCode VALIDATION_FAILED)",
-                content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
-                        schema = @Schema(implementation = ProblemDetailExtended.class)))})
+@ApiResponses(@ApiResponse(responseCode = "400",
+        description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
+                + "unknown properties, and values outside the published enum values",
+        content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                schema = @Schema(implementation = ProblemDetailExtended.class))))
 public interface KeyController extends AuthProtectedConnectorController {
 
     // ---- Create ----
 
     @Operation(summary = "List key creation attributes",
             description = "List attributes for creating the requested key type. Definitions must not contain resolved credentials or secret values.")
-    @ApiResponses(@ApiResponse(responseCode = "200", description = "Schema retrieved"))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Schema retrieved"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/create/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listCreateKeyAttributes(@RequestBody @Valid CreateKeyAttributesRequestV2Dto request);
@@ -69,6 +69,11 @@ public interface KeyController extends AuthProtectedConnectorController {
             @ApiResponse(responseCode = "409",
                     description = "keyCreationId reused with a non-equivalent request (RESOURCE_ALREADY_EXISTS)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<KeyCreationResponseV2Dto> createKey(@RequestBody @Valid CreateKeyRequestV2Dto request);
@@ -77,7 +82,12 @@ public interface KeyController extends AuthProtectedConnectorController {
             description = "Get status of an async secret key or key pair creation using only its tracking handle")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Key creation status retrieved"),
-            @ApiResponse(responseCode = "404", description = "Operation is not tracked")})
+            @ApiResponse(responseCode = "404", description = "Operation is not tracked"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/create/status", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     KeyCreationStatusResponseV2Dto getCreateKeyStatus(@RequestBody @Valid OperationTrackingRequestV2Dto request);
@@ -102,7 +112,12 @@ public interface KeyController extends AuthProtectedConnectorController {
                     description = "Destroyed synchronously; body contains an empty key-operation response"),
             @ApiResponse(responseCode = "202",
                     description = "Destruction accepted asynchronously; body carries "
-                            + "operationMeta tracking handle")})
+                            + "operationMeta tracking handle"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/destroy", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<KeyOperationResponseV2Dto> destroyKey(@RequestBody @Valid DestroyKeyRequestV2Dto request);
@@ -111,7 +126,12 @@ public interface KeyController extends AuthProtectedConnectorController {
             description = "Get status of an async key destruction using only its tracking handle")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Key destruction status retrieved"),
-            @ApiResponse(responseCode = "404", description = "Operation is not tracked")})
+            @ApiResponse(responseCode = "404", description = "Operation is not tracked"),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/destroy/status", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     KeyDestructionStatusResponseV2Dto getDestroyKeyStatus(@RequestBody @Valid OperationTrackingRequestV2Dto request);
