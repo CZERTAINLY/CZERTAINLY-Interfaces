@@ -76,7 +76,7 @@ class ApiClientCodecsTest {
     }
 
     @Test
-    void platformClientsPinJacksonAndShareTheConnectorReadCap() {
+    void platformClientsPinJacksonAndCapAtTheDefaultReadCap() {
         ExchangeStrategies strategies = PlatformBaseApiClient.exchangeStrategies();
         Jackson2JsonDecoder decoder = jsonDecoder(strategies.messageReaders());
 
@@ -88,7 +88,7 @@ class ApiClientCodecsTest {
                         "platform clients must encode through the pinned Jackson 2 codec");
         Assertions
                 .assertEquals(ClientTuning.DEFAULT_MAX_IN_MEMORY, decoder.getMaxInMemorySize(),
-                        "platform clients share the connector read cap");
+                        "platform clients cap at the default read cap");
     }
 
     @Test

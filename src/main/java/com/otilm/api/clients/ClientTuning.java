@@ -11,9 +11,6 @@ import java.time.Duration;
  * these values from configuration; {@link #defaults()} backs tests and any caller that does not tune.
  *
  * <p>
- * {@code maxInMemorySize} is not yet settable by any deployment surface, tracked in core#1961.
- *
- * <p>
  * {@code maxConnections} is <em>per remote host</em> (Reactor-Netty pools per destination), not a global cap, so it is
  * sized against the per-connector concurrent load rather than a single queue's listener concurrency.
  *
