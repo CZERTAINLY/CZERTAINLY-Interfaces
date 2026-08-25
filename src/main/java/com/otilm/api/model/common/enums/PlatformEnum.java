@@ -36,6 +36,7 @@ import com.otilm.api.model.connector.secrets.content.KeyStoreType;
 import com.otilm.api.model.core.acme.AccountStatus;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.authority.CertificateRevocationReason;
+import com.otilm.api.model.core.cbom.CbomAssetSyncState;
 import com.otilm.api.model.core.certificate.CertificateFormat;
 import com.otilm.api.model.core.certificate.CertificateFormatEncoding;
 import com.otilm.api.model.core.certificate.CertificateKeyUsage;
@@ -53,6 +54,8 @@ import com.otilm.api.model.core.compliance.ComplianceStatus;
 import com.otilm.api.model.core.connector.AuthType;
 import com.otilm.api.model.core.connector.ConnectorStatus;
 import com.otilm.api.model.core.connector.FunctionGroupCode;
+import com.otilm.api.model.core.cryptoasset.CryptographicAssetType;
+import com.otilm.api.model.core.cryptoasset.PqcVerdict;
 import com.otilm.api.model.core.cryptography.key.KeyState;
 import com.otilm.api.model.core.cryptography.key.KeyUsage;
 import com.otilm.api.model.core.discovery.DiscoveryStatus;
@@ -71,6 +74,7 @@ import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import com.otilm.api.model.core.search.FilterConditionOperator;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import com.otilm.api.model.core.search.FilterFieldType;
+import com.otilm.api.model.core.search.SortDirection;
 import com.otilm.api.model.core.secret.SecretState;
 import com.otilm.api.model.core.settings.SettingsSection;
 import com.otilm.api.model.core.signing.SigningProtocol;
@@ -91,6 +95,7 @@ public enum PlatformEnum implements IPlatformEnum {
     FILTER_CONDITION_OPERATOR(FilterConditionOperator.class, "Filter condition operator"),
     FILTER_FIELD_TYPE(FilterFieldType.class, "Filter field type"),
     FILTER_FIELD_SOURCE(FilterFieldSource.class, "Filter field source"),
+    SORT_DIRECTION(SortDirection.class, "Sort direction"),
     SETTINGS_SECTION(SettingsSection.class, "Settings section"),
 
     // connectors
@@ -196,6 +201,11 @@ public enum PlatformEnum implements IPlatformEnum {
     SIGNING_WORKFLOW_TYPE(SigningWorkflowType.class, "Signing Workflow Type"),
     TIMESTAMP_SOURCE_TYPE(TimestampSourceType.class, "Timestamp Source Type"),
     TSP_AUTHENTICATION_METHOD(TspAuthenticationMethod.class, "TSP Authentication Method"),
+
+    // CBOM
+    CBOM_ASSET_SYNC_STATE(CbomAssetSyncState.class, "CBOM asset sync state"),
+    CRYPTOGRAPHIC_ASSET_TYPE(CryptographicAssetType.class, "Cryptographic asset type"),
+    PQC_VERDICT(PqcVerdict.class, "PQC readiness verdict"),
 
     ;
 

@@ -1,6 +1,7 @@
 package com.otilm.api.interfaces.core.web;
 
 import com.otilm.api.interfaces.AuthProtectedController;
+import com.otilm.api.model.client.dashboard.CryptographicAssetStatisticsDto;
 import com.otilm.api.model.client.dashboard.SigningRecordStatisticsDto;
 import com.otilm.api.model.client.dashboard.SigningRecordStatisticsPeriod;
 import com.otilm.api.model.client.dashboard.StatisticsDto;
@@ -31,4 +32,20 @@ public interface StatisticsController extends AuthProtectedController {
             description = "Time window for the volume-over-time series (the count badges and breakdowns are window-independent)") @RequestParam(
                     value = "period", required = false,
                     defaultValue = SigningRecordStatisticsPeriod.Codes.LAST_7D) SigningRecordStatisticsPeriod period);
+
+    /**
+     * Gated by {@code ResourceAction.LIST} on {@code Resource.CBOM_ASSET} per the action set proposed on
+     * interfaces#874: the dashboard deliberately shares the list permission rather than a gate of its own. Note the
+     * sync-completeness block additionally reveals document-level sync counts — documents whose assets are not yet
+     * listed — which that proposal accepts.
+     */
+    @Operation(operationId = "getCryptographicAssetStatistics",
+            summary = "Get Cryptographic Asset Inventory dashboard statistics",
+            description = "Returns count badges, distribution maps and the sync-completeness block for the "
+                    + "cross-CBOM cryptographic asset inventory. Counts are computed over deduplicated assets, so an "
+                    + "asset referenced by several CBOM documents counts once.")
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200", description = "Cryptographic asset statistics retrieved")})
+    @GetMapping(path = "/cbomAssets", produces = {"application/json"})
+    CryptographicAssetStatisticsDto getCryptographicAssetStatistics();
 }

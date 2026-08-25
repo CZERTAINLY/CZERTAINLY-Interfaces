@@ -56,7 +56,7 @@ public interface TspProfileController extends AuthProtectedController {
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<TspProfileListDto> listTspProfiles(@RequestBody SearchRequestDto request);
+    PaginationResponseDto<TspProfileListDto> listTspProfiles(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(operationId = "getTspProfile", summary = "Details of a TSP Profile")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "TSP Profile details retrieved")})
