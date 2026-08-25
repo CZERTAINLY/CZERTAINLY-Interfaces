@@ -43,10 +43,10 @@ class CryptographicAssetControllerContractTest {
     }
 
     @Test
-    void theControllerLivesUnderTheCbomAssetsPath() {
+    void theControllerLivesUnderTheCryptoAssetsPath() {
         RequestMapping mapping = CryptographicAssetController.class.getAnnotation(RequestMapping.class);
         assertNotNull(mapping, "missing @RequestMapping");
-        assertArrayEquals(new String[]{"/v1/cbomAssets"}, mapping.value());
+        assertArrayEquals(new String[]{"/v1/cryptoAssets"}, mapping.value());
 
         Tag tag = CryptographicAssetController.class.getAnnotation(Tag.class);
         assertNotNull(tag, "missing @Tag");
@@ -117,8 +117,8 @@ class CryptographicAssetControllerContractTest {
     }
 
     @Test
-    void theResourceIsRegisteredAsCbomAssets() {
-        assertEquals("cbomAssets", Resource.CBOM_ASSET.getCode());
-        assertEquals(Resource.CBOM_ASSET, Resource.findByCode("cbomAssets"));
+    void theResourceIsRegisteredAsCryptoAssets() {
+        assertEquals("cryptoAssets", Resource.CRYPTO_ASSET.getCode());
+        assertEquals(Resource.CRYPTO_ASSET, Resource.findByCode("cryptoAssets"));
     }
 }

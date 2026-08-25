@@ -47,7 +47,7 @@ public abstract sealed class KeyDataV2Dto permits SecretKeyDataV2Dto, PublicKeyD
     @NotNull(message = "key algorithm is required")
     private KeyAlgorithm algorithm;
 
-    @Schema(description = "Bit length of the key", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Bit length of the key", requiredMode = Schema.RequiredMode.REQUIRED, minimum = "1")
     @NotNull(message = "key length is required")
     @Positive(message = "key length must be positive")
     private Integer length;
@@ -75,8 +75,7 @@ public abstract sealed class KeyDataV2Dto permits SecretKeyDataV2Dto, PublicKeyD
      */
     @Schema(name = "KeyDataV2",
             description = "Type-specific key descriptor. Secret and private keys never contain key material.",
-            type = "object", additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
-            discriminatorProperty = "type",
+            type = "object", discriminatorProperty = "type",
             discriminatorMapping = {
                     @DiscriminatorMapping(value = "Secret", schema = SecretKeyDataV2Dto.class),
                     @DiscriminatorMapping(value = "Public", schema = PublicKeyDataV2Dto.class),

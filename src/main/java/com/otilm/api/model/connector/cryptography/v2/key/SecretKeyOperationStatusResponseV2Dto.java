@@ -29,7 +29,7 @@ public final class SecretKeyOperationStatusResponseV2Dto extends KeyCreationStat
 
     @Valid
     @ConvertGroup(to = SynchronousResponse.class)
-    @Schema(description = "Created secret-key result. Present only when status is COMPLETED.",
+    @Schema(description = "Created secret-key result. Present only when status is `completed`.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SecretKeyDataResponseV2Dto result;
 

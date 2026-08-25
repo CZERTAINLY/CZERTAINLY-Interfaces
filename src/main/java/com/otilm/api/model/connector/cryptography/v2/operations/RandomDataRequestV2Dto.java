@@ -24,8 +24,8 @@ public class RandomDataRequestV2Dto extends TokenProfileScopedRequestV2Dto {
 
     public static final int MAX_LENGTH = 1_048_576;
 
-    @Schema(description = "Number of random bytes to generate, capped at 1 MiB", maximum = "" + MAX_LENGTH,
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Number of random bytes to generate, capped at 1 MiB", minimum = "1",
+            maximum = "" + MAX_LENGTH, requiredMode = Schema.RequiredMode.REQUIRED)
     @Positive(message = "length must be greater than zero")
     @Max(value = MAX_LENGTH, message = "length must not exceed 1 MiB")
     private int length;
