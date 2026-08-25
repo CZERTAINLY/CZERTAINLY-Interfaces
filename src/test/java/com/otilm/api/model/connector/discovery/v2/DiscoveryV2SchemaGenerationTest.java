@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -277,10 +278,15 @@ class DiscoveryV2SchemaGenerationTest {
 
         Schema<?> severity = resolved.referencedSchemas.get("DiscoveryMessageSeverity");
         assertNotNull(severity, "the severity enum did not survive into the page's referenced schemas");
+        // Null on both sides under this repo's enum pattern -- the @Schema description sits on the enum's code
+        // field, not on the type, so the component carries none. That is what makes the equality meaningful
+        // rather than vacuous: a description added on the referencing field would be hoisted onto the shared
+        // component, turning this side non-null while a standalone read stays null.
+        assertNull(ownDescription, "DiscoveryMessageSeverity is expected to carry no component-level description");
         assertEquals(ownDescription, severity.getDescription(),
-                "reaching DiscoveryMessageSeverity through the listing must not change its description: a "
-                        + "description on the referencing field gets hoisted onto the shared component, because "
-                        + "OpenAPI 3.0 cannot carry one beside a $ref");
+                "reaching DiscoveryMessageSeverity through the listing must not give it a description: one on the "
+                        + "referencing field gets hoisted onto the shared component, because OpenAPI 3.0 cannot "
+                        + "carry a description beside a $ref");
         assertEquals(List.of("info", "warning", "error"), severity.getEnum(),
                 "the enum ships its wire codes, not its Java member names");
     }

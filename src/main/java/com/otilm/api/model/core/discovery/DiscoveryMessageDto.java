@@ -58,7 +58,7 @@ public class DiscoveryMessageDto {
 
     // Primitive: every message exists because something happened at least once, so a box would invent an absent
     // state the contract says cannot occur.
-    @Schema(description = "How many times this problem occurred during the run. At least 1.",
+    @Schema(description = "How many times this problem occurred during the run. At least 1.", minimum = "1",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private long occurrences;
 
