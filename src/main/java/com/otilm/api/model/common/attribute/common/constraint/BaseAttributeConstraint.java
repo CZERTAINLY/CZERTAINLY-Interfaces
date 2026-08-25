@@ -18,7 +18,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RegexpAttributeConstraint.class, name = AttributeConstraintType.Codes.REGEXP),
         @JsonSubTypes.Type(value = RangeAttributeConstraint.class, name = AttributeConstraintType.Codes.RANGE),
-        @JsonSubTypes.Type(value = DateTimeAttributeConstraint.class, name = AttributeConstraintType.Codes.DATETIME)})
+        @JsonSubTypes.Type(value = DateTimeAttributeConstraint.class, name = AttributeConstraintType.Codes.DATETIME),
+        @JsonSubTypes.Type(value = JsonSchemaAttributeConstraint.class,
+                name = AttributeConstraintType.Codes.JSON_SCHEMA)})
 @Schema(implementation = BaseAttributeConstraintDto.class)
 public class BaseAttributeConstraint<T extends Serializable> extends AttributeConstraint {
     @Schema(description = "Description of the constraint")
