@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Read-only inventory of cryptographic assets aggregated and deduplicated across every stored CBOM document. Assets
  * enter the inventory only through the document sync, so the surface is deliberately list and detail only — there is no
  * write operation to expose. Listing and the searchable-fields sibling are gated by {@code ResourceAction.LIST} and the
- * detail by {@code ResourceAction.DETAIL} on {@code Resource.CBOM_ASSET} — the action set proposed on interfaces#874
+ * detail by {@code ResourceAction.DETAIL} on {@code Resource.CRYPTO_ASSET} — the action set proposed on interfaces#874
  * (the resource itself is ratified); the inventory dashboard on the statistics API deliberately shares the same LIST
  * action.
  *
@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Error responses deliberately use the legacy {@link ErrorMessageDto} model to match the other core web controllers;
  * the platform-wide move to problem-detail responses replaces them together, not one controller at a time.
  */
-@RequestMapping("/v1/cbomAssets")
+@RequestMapping("/v1/cryptoAssets")
 @Tag(name = "Cryptographic Asset Inventory", description = "Cryptographic Asset Inventory API")
 public interface CryptographicAssetController extends AuthProtectedController {
 

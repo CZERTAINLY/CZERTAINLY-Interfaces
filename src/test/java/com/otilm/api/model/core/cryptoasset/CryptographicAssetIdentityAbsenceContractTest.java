@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * pattern, allowableValues) at class, field, getter and parameter level; operation names, operationIds, class and
  * method mapping paths, response descriptions with their content schemas and example objects, parameter annotations
  * with their nested schemas, and tags of the inventory controller and the statistics operation; the three inventory
- * enums and the CBOM_ASSET resource entry as served by the enums API. Fixtures prove each dimension fails on a
+ * enums and the CRYPTO_ASSET resource entry as served by the enums API. Fixtures prove each dimension fails on a
  * violation instead of passing silently. What no static sweep can reach — the searchable-fields catalogue core
  * populates at runtime — is guarded core-side; the operation's own prose states the keys are never offered.
  */
@@ -102,11 +102,11 @@ class CryptographicAssetIdentityAbsenceContractTest {
     @Test
     void theResourceEntryCarriesNoBannedToken() {
         List<String> problems = new ArrayList<>();
-        reportBannedTokens("Resource.CBOM_ASSET name", Resource.CBOM_ASSET.name(), problems);
-        reportBannedTokens("Resource.CBOM_ASSET code", Resource.CBOM_ASSET.getCode(), problems);
-        reportBannedTokens("Resource.CBOM_ASSET label", Resource.CBOM_ASSET.getLabel(), problems);
-        if (Resource.CBOM_ASSET.getDescription() != null) {
-            reportBannedTokens("Resource.CBOM_ASSET description", Resource.CBOM_ASSET.getDescription(), problems);
+        reportBannedTokens("Resource.CRYPTO_ASSET name", Resource.CRYPTO_ASSET.name(), problems);
+        reportBannedTokens("Resource.CRYPTO_ASSET code", Resource.CRYPTO_ASSET.getCode(), problems);
+        reportBannedTokens("Resource.CRYPTO_ASSET label", Resource.CRYPTO_ASSET.getLabel(), problems);
+        if (Resource.CRYPTO_ASSET.getDescription() != null) {
+            reportBannedTokens("Resource.CRYPTO_ASSET description", Resource.CRYPTO_ASSET.getDescription(), problems);
         }
         assertTrue(problems.isEmpty(), String.join("\n", problems));
     }
