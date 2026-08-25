@@ -34,7 +34,7 @@ public interface StatisticsController extends AuthProtectedController {
                     defaultValue = SigningRecordStatisticsPeriod.Codes.LAST_7D) SigningRecordStatisticsPeriod period);
 
     /**
-     * Gated by {@code ResourceAction.LIST} on {@code Resource.CBOM_ASSET} per the action set proposed on
+     * Gated by {@code ResourceAction.LIST} on {@code Resource.CRYPTO_ASSET} per the action set proposed on
      * interfaces#874: the dashboard deliberately shares the list permission rather than a gate of its own. Note the
      * sync-completeness block additionally reveals document-level sync counts — documents whose assets are not yet
      * listed — which that proposal accepts.
@@ -46,6 +46,6 @@ public interface StatisticsController extends AuthProtectedController {
                     + "asset referenced by several CBOM documents counts once.")
     @ApiResponses(
             value = {@ApiResponse(responseCode = "200", description = "Cryptographic asset statistics retrieved")})
-    @GetMapping(path = "/cbomAssets", produces = {"application/json"})
+    @GetMapping(path = "/cryptoAssets", produces = {"application/json"})
     CryptographicAssetStatisticsDto getCryptographicAssetStatistics();
 }
