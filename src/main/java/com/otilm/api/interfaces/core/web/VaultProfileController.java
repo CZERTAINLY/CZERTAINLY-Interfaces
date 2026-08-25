@@ -17,7 +17,9 @@ import com.otilm.api.model.core.vaultprofile.VaultProfileRequestDto;
 import com.otilm.api.model.core.vaultprofile.VaultProfileUpdateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -48,7 +50,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface VaultProfileController extends AuthProtectedController {
 
     @Operation(summary = "List Vault Profiles")
-    @ApiResponse(responseCode = "200", description = "List of Vault Profiles retrieved")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of Vault Profiles retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/vaultProfiles/list", consumes = {"application/json"}, produces = {"application/json"})
     PaginationResponseDto<VaultProfileDto> listVaultProfiles(@Valid @RequestBody SearchRequestDto searchRequest);
 

@@ -6,9 +6,11 @@ import com.otilm.api.model.core.listview.ListViewDto;
 import com.otilm.api.model.core.listview.ListViewRequestDto;
 import com.otilm.api.model.core.listview.ListViewUpdateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +21,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -85,13 +89,9 @@ class ListViewControllerContractTest {
         assertEquals(0, listing.getAnnotation(GetMapping.class).path().length, "listing sits on the base path");
         assertEquals(List.class, listing.getReturnType());
 
-        RequestParam resource = (RequestParam) Arrays
-                .stream(listing.getParameters()[0].getAnnotations())
-                .filter(RequestParam.class::isInstance)
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("listViews takes no @RequestParam"));
+        RequestParam resource = parameterOfType(listing, Resource.class).getAnnotation(RequestParam.class);
+        assertNotNull(resource, "listViews takes no @RequestParam");
         assertFalse(resource.required(), "the resource filter must stay optional so a bare GET lists every view");
-        assertEquals(Resource.class, listing.getParameters()[0].getType());
     }
 
     @Test
@@ -102,7 +102,7 @@ class ListViewControllerContractTest {
         assertEquals(0, mapping.path().length, "creation sits on the base path");
         assertEquals(ListViewRequestDto.class, creation.getParameterTypes()[0]);
         assertEquals(ListViewDto.class, creation.getReturnType());
-        assertTrue(hasValid(creation), "the create body must be bean-validated");
+        assertTrue(bodyIsValidated(creation, ListViewRequestDto.class), "the create body must be bean-validated");
     }
 
     @Test
@@ -116,7 +116,30 @@ class ListViewControllerContractTest {
         // the update shape omits the resource, so an edit cannot repoint a view at another catalogue
         assertEquals(ListViewUpdateRequestDto.class, edit.getParameterTypes()[1]);
         assertEquals(ListViewDto.class, edit.getReturnType());
-        assertTrue(hasValid(edit), "the update body must be bean-validated");
+        assertTrue(bodyIsValidated(edit, ListViewUpdateRequestDto.class), "the update body must be bean-validated");
+        assertNull(parameterOfType(edit, String.class).getAnnotation(Valid.class),
+                "@Valid belongs on the body, not on the UUID path variable");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"createView", "editView"})
+    void documentsTheValidationFailureOnEveryValidatedBody(String name) {
+        // given — both write bodies are bean-validated, so 422 is a reachable response and belongs in the document
+        ApiResponses responses = method(name).getAnnotation(ApiResponses.class);
+        assertNotNull(responses, "missing @ApiResponses on " + name);
+        assertTrue(Arrays.stream(responses.value()).anyMatch(response -> "422".equals(response.responseCode())),
+                name + " can reject an invalid body but does not document the 422");
+    }
+
+    @Test
+    void namesEveryHttpBoundParameterExplicitly() {
+        // given — an implementation compiled without -parameters loses the inferred names, so they are pinned here
+        assertEquals("resource",
+                parameterOfType(method("listViews"), Resource.class).getAnnotation(RequestParam.class).name());
+        assertEquals("uuid",
+                parameterOfType(method("editView"), String.class).getAnnotation(PathVariable.class).value());
+        assertEquals("uuid",
+                parameterOfType(method("deleteView"), String.class).getAnnotation(PathVariable.class).value());
     }
 
     @Test
@@ -130,11 +153,17 @@ class ListViewControllerContractTest {
         assertEquals(HttpStatus.NO_CONTENT, deletion.getAnnotation(ResponseStatus.class).value());
     }
 
-    private static boolean hasValid(Method method) {
+    private static Parameter parameterOfType(Method method, Class<?> type) {
         return Arrays
-                .stream(method.getParameterAnnotations())
-                .flatMap(Arrays::stream)
-                .anyMatch(Valid.class::isInstance);
+                .stream(method.getParameters())
+                .filter(parameter -> parameter.getType().equals(type))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError(
+                        method.getName() + " takes no " + type.getSimpleName() + " parameter"));
+    }
+
+    private static boolean bodyIsValidated(Method method, Class<?> bodyType) {
+        return parameterOfType(method, bodyType).getAnnotation(Valid.class) != null;
     }
 
     private Method method(String name) {

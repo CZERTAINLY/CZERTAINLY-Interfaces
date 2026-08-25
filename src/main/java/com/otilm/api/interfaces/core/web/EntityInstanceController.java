@@ -47,7 +47,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface EntityInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Entity instances")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Entity instances")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of Entity instances"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {"application/json"})
     EntityInstanceResponseDto listEntityInstances(@Valid @RequestBody SearchRequestDto request);
 

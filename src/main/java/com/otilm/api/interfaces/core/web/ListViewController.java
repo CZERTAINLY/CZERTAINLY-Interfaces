@@ -10,7 +10,9 @@ import com.otilm.api.model.core.listview.ListViewRequestDto;
 import com.otilm.api.model.core.listview.ListViewUpdateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -40,13 +42,16 @@ public interface ListViewController extends AuthProtectedController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of views")})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<ListViewDto> listViews(@Parameter(description = "Return only views of this resource") @RequestParam(
-            required = false) Resource resource);
+            name = "resource", required = false) Resource resource);
 
     @Operation(summary = "Create a view for logged user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "View created"),
             @ApiResponse(responseCode = "409", description = "View of that name already exists for the resource",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ListViewDto createView(@Valid @RequestBody ListViewRequestDto request) throws AlreadyExistException;
 
@@ -56,10 +61,13 @@ public interface ListViewController extends AuthProtectedController {
             @ApiResponse(responseCode = "404", description = "View not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             @ApiResponse(responseCode = "409", description = "View of that name already exists for the resource",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(path = "/{uuid}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    ListViewDto editView(@Parameter(description = "View UUID") @PathVariable String uuid,
+    ListViewDto editView(@Parameter(description = "View UUID") @PathVariable("uuid") String uuid,
             @Valid @RequestBody ListViewUpdateRequestDto request) throws NotFoundException, AlreadyExistException;
 
     @Operation(summary = "Delete a view of logged user")
@@ -69,5 +77,5 @@ public interface ListViewController extends AuthProtectedController {
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @DeleteMapping(path = "/{uuid}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteView(@Parameter(description = "View UUID") @PathVariable String uuid) throws NotFoundException;
+    void deleteView(@Parameter(description = "View UUID") @PathVariable("uuid") String uuid) throws NotFoundException;
 }

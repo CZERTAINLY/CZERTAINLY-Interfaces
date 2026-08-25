@@ -1,6 +1,7 @@
 package com.otilm.api.interfaces.core.web;
 
 import com.otilm.api.model.client.certificate.SearchRequestDto;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -21,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Every {@link SearchRequestDto} body must carry {@code @Valid}, because the constraints on the shape are inert without
- * it. The compiled controllers are scanned so that a listing endpoint cannot omit it.
+ * it, and must document the 422 it can now return. The compiled controllers are scanned so that a listing endpoint
+ * cannot omit either.
  */
 class SearchRequestValidationContractTest {
 
@@ -49,6 +51,32 @@ class SearchRequestValidationContractTest {
         assertTrue(bodies >= 17, "expected the scan to reach every listing endpoint, found only " + bodies);
         assertEquals(List.of(), unvalidated,
                 "these listing endpoints bind a search request without validating it: " + unvalidated);
+    }
+
+    @Test
+    void everyValidatedSearchOperationDocumentsTheValidationFailure() {
+        List<String> undocumented = new ArrayList<>();
+
+        for (Class<?> controller : controllers()) {
+            for (Method method : controller.getDeclaredMethods()) {
+                boolean takesSearchBody = Arrays
+                        .stream(method.getParameters())
+                        .anyMatch(SearchRequestValidationContractTest::isSearchRequestBody);
+                if (takesSearchBody && !documentsUnprocessableEntity(method)) {
+                    undocumented.add(controller.getSimpleName() + "." + method.getName());
+                }
+            }
+        }
+
+        assertEquals(List.of(), undocumented,
+                "these listing endpoints validate a search request without documenting the 422 it can return: "
+                        + undocumented);
+    }
+
+    private static boolean documentsUnprocessableEntity(Method method) {
+        ApiResponses responses = method.getAnnotation(ApiResponses.class);
+        return responses != null
+                && Arrays.stream(responses.value()).anyMatch(response -> "422".equals(response.responseCode()));
     }
 
     private static boolean isSearchRequestBody(Parameter parameter) {

@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.listview;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.client.certificate.SearchFilterRequestDto;
 import com.otilm.api.model.client.certificate.SearchSortRequestDto;
 import com.otilm.api.model.core.auth.Resource;
@@ -35,10 +36,12 @@ public class ListViewDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean defaultView;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "Filters the view applies. Absent or empty means the view shows the whole inventory.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<SearchFilterRequestDto> filters;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "Ordering the view applies. Absent means the endpoint's own default ordering.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private SearchSortRequestDto sort;

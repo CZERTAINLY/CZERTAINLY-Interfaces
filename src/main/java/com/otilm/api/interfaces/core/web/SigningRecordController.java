@@ -45,7 +45,11 @@ public interface SigningRecordController extends AuthProtectedController {
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(operationId = "listSigningRecords", summary = "List of Signing Records")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Signing Records retrieved")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Signing Records retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
     PaginationResponseDto<SigningRecordListDto> listSigningRecords(@Valid @RequestBody SearchRequestDto request);
 

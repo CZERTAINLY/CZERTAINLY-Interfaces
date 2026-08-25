@@ -53,7 +53,11 @@ import org.springframework.web.bind.annotation.RestController;
 public interface LocationManagementController extends AuthProtectedController {
 
     @Operation(summary = "List Locations")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Locations retrieved")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Locations retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/locations", produces = {"application/json"})
     LocationsResponseDto listLocations(@Valid @RequestBody SearchRequestDto request);
 

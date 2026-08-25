@@ -75,7 +75,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface CertificateController extends AuthProtectedController {
 
     @Operation(summary = "List Certificates")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the certificates")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of all the certificates"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     CertificateResponseDto listCertificates(@Valid @RequestBody CertificateSearchRequestDto request);
 

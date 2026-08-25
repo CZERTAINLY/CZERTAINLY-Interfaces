@@ -70,7 +70,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
     @Operation(summary = "List cryptographic keys")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of all the cryptographic keys")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of all the cryptographic keys"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/keys", produces = MediaType.APPLICATION_JSON_VALUE)
     CryptographicKeyResponseDto listCryptographicKeys(@Valid @RequestBody SearchRequestDto request);
 
