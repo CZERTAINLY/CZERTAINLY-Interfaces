@@ -152,7 +152,11 @@ public interface CryptographicOperationsController extends AuthProtectedConnecto
             @ApiResponse(responseCode = "204", description = "Aborted"),
             @ApiResponse(responseCode = "404", description = "Operation not tracked; cancellation outcome is unknown"),
             @ApiResponse(responseCode = "422",
-                    description = "Refused — operation is already terminal or past point of no return")})
+                    description = "Cancellation cannot be processed: the operation is already terminal or past the "
+                            + "point of no return (errorCode OPERATION_PAST_POINT_OF_NO_RETURN), or the request body "
+                            + "violates a field validation rule (errorCode VALIDATION_FAILED)",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/sign/cancel", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Void> cancelSign(@RequestBody @Valid OperationTrackingRequestV2Dto request);
 
