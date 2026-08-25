@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.search;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.enums.PlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,7 +33,25 @@ public class SearchFieldDataDto {
     @Schema(description = "Multivalue flag. true = yes, false = no")
     private Boolean multiValue;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "Whether the field may be requested as a column of the listing. true = yes, false = no",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean displayable;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "Whether the listing may be ordered by the field. true = yes, false = no",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean sortable;
+
     public Boolean isMultiValue() {
         return multiValue;
+    }
+
+    public Boolean isDisplayable() {
+        return displayable;
+    }
+
+    public Boolean isSortable() {
+        return sortable;
     }
 }

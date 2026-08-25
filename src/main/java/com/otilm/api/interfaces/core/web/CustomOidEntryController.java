@@ -11,6 +11,10 @@ import com.otilm.api.model.core.oid.OidCategory;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,10 +69,14 @@ public interface CustomOidEntryController extends AuthProtectedController {
     void bulkDeleteCustomOidEntry(@RequestBody List<String> oids);
 
     @Operation(summary = "List custom OID entries with filtering and pagination")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Custom OID entries retrieved")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Custom OID entries retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    CustomOidEntryListResponseDto listCustomOidEntries(@RequestBody SearchRequestDto searchRequestDto);
+    CustomOidEntryListResponseDto listCustomOidEntries(@Valid @RequestBody SearchRequestDto searchRequestDto);
 
     @Operation(summary = "List built-in system OID entries, optionally filtered by category")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "System OID entries retrieved")})

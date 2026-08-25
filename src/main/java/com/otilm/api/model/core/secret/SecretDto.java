@@ -1,16 +1,21 @@
 package com.otilm.api.model.core.secret;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.otilm.api.model.connector.secrets.SecretType;
 import com.otilm.api.model.core.compliance.ComplianceStatus;
+import com.otilm.api.model.core.search.AttributeProjectable;
+import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import java.util.Map;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SecretDto extends NameAndUuidDto {
+public class SecretDto extends NameAndUuidDto implements AttributeProjectable {
 
     @Schema(description = "Type of the secret", requiredMode = Schema.RequiredMode.REQUIRED)
     private SecretType type;
@@ -40,4 +45,8 @@ public class SecretDto extends NameAndUuidDto {
     @Schema(description = "Secret compliance status", requiredMode = Schema.RequiredMode.REQUIRED)
     private ComplianceStatus complianceStatus;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 }
