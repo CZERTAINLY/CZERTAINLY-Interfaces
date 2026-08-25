@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.cbom;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -43,12 +44,15 @@ public class CbomDto {
     @Schema(description = "Total number of assets", requiredMode = Schema.RequiredMode.REQUIRED)
     private int totalAssets;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "State of the cryptographic asset sync for this CBOM record; pending until the first sync "
             + "attempt considers it. Platform versions predating the asset sync omit the field.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private CbomAssetSyncState assetSyncState;
 
-    @Schema(description = "When the cryptographic asset sync last completed for this CBOM record",
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "When this record last successfully reached the synced state; later failed attempts "
+            + "neither advance nor clear it. Platform versions predating the asset sync omit the field.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private OffsetDateTime assetSyncedAt;
 }

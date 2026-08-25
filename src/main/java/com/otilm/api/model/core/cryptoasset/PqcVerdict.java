@@ -17,11 +17,13 @@ public enum PqcVerdict implements IPlatformEnum {
 
     READY(Codes.READY, "PQC ready", "The asset withstands a cryptographically relevant quantum computer"),
     NOT_READY(Codes.NOT_READY, "Not PQC ready", "The asset relies on cryptography a quantum computer breaks"),
+    NOT_APPLICABLE(Codes.NOT_APPLICABLE, "Not applicable", "Post-quantum migration does not apply to the asset"),
     UNKNOWN(Codes.UNKNOWN, "Unknown", "The rule set cannot classify the asset from the recorded properties");
 
     public static class Codes {
         public static final String READY = "ready";
         public static final String NOT_READY = "notReady";
+        public static final String NOT_APPLICABLE = "notApplicable";
         public static final String UNKNOWN = "unknown";
 
         private Codes() {

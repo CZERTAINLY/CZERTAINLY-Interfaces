@@ -37,4 +37,14 @@ class CbomDtoTest {
         Assertions.assertNull(back.getAssetSyncState());
         Assertions.assertNull(back.getAssetSyncedAt());
     }
+
+    @Test
+    void absentAssetSyncFieldsAreOmittedFromJson() throws Exception {
+        CbomDto dto = new CbomDto();
+        dto.setSerialNumber("urn:x");
+        dto.setVersion(1);
+        JsonNode json = mapper.readTree(mapper.writeValueAsString(dto));
+        Assertions.assertFalse(json.has("assetSyncState"), "absent sync state must be omitted, not null");
+        Assertions.assertFalse(json.has("assetSyncedAt"), "absent sync time must be omitted, not null");
+    }
 }

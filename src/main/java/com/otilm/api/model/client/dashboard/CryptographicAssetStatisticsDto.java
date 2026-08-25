@@ -17,7 +17,8 @@ public class CryptographicAssetStatisticsDto {
     @Schema(description = "Total number of deduplicated cryptographic assets in the inventory")
     private Long totalAssets;
 
-    @Schema(description = "Number of CBOM documents contributing assets to the inventory")
+    @Schema(description = "Number of CBOM documents that contributed at least one asset to the inventory; "
+            + "documents whose assets are not yet synced do not count")
     private Long sourceCbomCount;
 
     @Schema(description = "Asset count by asset type. Keys are CryptographicAssetType codes; every type is present, "
@@ -29,12 +30,19 @@ public class CryptographicAssetStatisticsDto {
     private Map<String, Long> statByPqcVerdict;
 
     @Schema(description = "Asset count by algorithm family, limited to the top-N families by count. Use "
-            + "distinctAlgorithmFamilyCount for the total; assets with no family are grouped under \"Unassigned\"")
+            + "distinctAlgorithmFamilyCount for the total number of families; assets with no family are counted in "
+            + "unassignedAssetCount and never occupy a slot here")
     private Map<String, Long> statByAlgorithmFamily;
 
-    @Schema(description = "Number of distinct algorithm families across the inventory. Lets the client render a "
-            + "\"+k more\" overflow beyond the top-N entries in statByAlgorithmFamily")
+    @Schema(description = "Number of distinct algorithm families across the inventory, excluding assets with no "
+            + "family. Lets the client render a \"+k more\" overflow beyond the top-N entries in "
+            + "statByAlgorithmFamily")
     private Long distinctAlgorithmFamilyCount;
+
+    @Schema(description = "Number of assets with no algorithm family, which is common: the family concept does not "
+            + "apply to most related-crypto-material. Never counted in statByAlgorithmFamily or "
+            + "distinctAlgorithmFamilyCount")
+    private Long unassignedAssetCount;
 
     @Schema(description = "How completely the inventory reflects the stored CBOM documents")
     private CryptographicAssetSyncCompletenessDto syncCompleteness;

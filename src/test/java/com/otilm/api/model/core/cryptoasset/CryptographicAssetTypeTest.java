@@ -17,7 +17,7 @@ class CryptographicAssetTypeTest {
         Assertions
                 .assertEquals(CryptographicAssetType.RELATED_CRYPTO_MATERIAL,
                         CryptographicAssetType.findByCode("related-crypto-material"));
-        Assertions.assertEquals(CryptographicAssetType.UNCLASSIFIED, CryptographicAssetType.findByCode("unclassified"));
+        Assertions.assertEquals(CryptographicAssetType.UNROUTABLE, CryptographicAssetType.findByCode("unroutable"));
     }
 
     @Test
@@ -35,7 +35,7 @@ class CryptographicAssetTypeTest {
     @Test
     void deserializesFromWireCode() throws Exception {
         Assertions
-                .assertEquals(CryptographicAssetType.UNCLASSIFIED,
-                        mapper.readValue("\"unclassified\"", CryptographicAssetType.class));
+                .assertEquals(CryptographicAssetType.UNROUTABLE,
+                        mapper.readValue("\"unroutable\"", CryptographicAssetType.class));
     }
 }

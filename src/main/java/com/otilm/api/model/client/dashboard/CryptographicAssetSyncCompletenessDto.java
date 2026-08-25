@@ -1,5 +1,6 @@
 package com.otilm.api.model.client.dashboard;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -12,13 +13,14 @@ import lombok.Data;
 @Data
 @Schema(name = "CryptographicAssetSyncCompletenessDto",
         description = "Coverage of the cryptographic asset sync across stored CBOM documents")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CryptographicAssetSyncCompletenessDto {
 
     @Schema(description = "CBOM document count by asset sync state. Keys are CbomAssetSyncState codes; every state "
             + "is present, with 0 when none")
     private Map<String, Long> cbomStatBySyncState;
 
-    @Schema(description = "When a cryptographic asset sync last completed for any document; absent until the first "
-            + "sync completes")
+    @Schema(description = "The most recent time any record successfully reached the synced state; absent until the "
+            + "first record does")
     private OffsetDateTime lastCompletedSyncAt;
 }

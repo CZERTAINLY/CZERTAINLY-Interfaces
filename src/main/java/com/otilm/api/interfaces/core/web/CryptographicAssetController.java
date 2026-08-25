@@ -28,8 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Read-only inventory of cryptographic assets aggregated and deduplicated across every stored CBOM document. Assets
  * enter the inventory only through the document sync, so the surface is deliberately list and detail only — there is no
  * write operation to expose. Listing and the searchable-fields sibling are gated by {@code ResourceAction.LIST} and the
- * detail by {@code ResourceAction.DETAIL} on {@code Resource.CBOM_ASSET}; the inventory dashboard on the statistics API
- * deliberately shares the same LIST action.
+ * detail by {@code ResourceAction.DETAIL} on {@code Resource.CBOM_ASSET} — the action set proposed on interfaces#874
+ * (the resource itself is ratified); the inventory dashboard on the statistics API deliberately shares the same LIST
+ * action.
  *
  * <p>
  * Error responses deliberately use the legacy {@link ErrorMessageDto} model to match the other core web controllers;
@@ -42,15 +43,18 @@ public interface CryptographicAssetController extends AuthProtectedController {
     @Operation(summary = "List cryptographic assets",
             description = "Returns one page of the deduplicated cross-CBOM asset inventory, narrowed by the "
                     + "supplied filters. Rows are ordered by name ascending, then UUID ascending; the order is "
-                    + "fixed and not client-selectable, so paging stays stable between requests.")
+                    + "fixed and not client-selectable, so ties are deterministic within a deployment. Page "
+                    + "numbering is positional, so a sync landing between requests can shift rows across page "
+                    + "boundaries.")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of cryptographic assets")})
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     PaginationResponseDto<CryptographicAssetDto> listCryptographicAssets(@RequestBody SearchRequestDto request);
 
     @Operation(summary = "Cryptographic asset detail",
-            description = "Returns the asset with its verdict provenance, the source CBOM documents that reference "
-                    + "it including per-source payloads and occurrence evidence, and the object identifiers "
-                    + "producers recorded for it, refuted ones included.")
+            description = "Returns the asset with its verdict provenance, its normalized properties, the elected "
+                    + "representative payload beside the source CBOM documents that reference it — per-source "
+                    + "payloads and occurrence evidence included — and the object identifiers producers recorded "
+                    + "for it, refuted ones included.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cryptographic asset details retrieved"),
             @ApiResponse(responseCode = "404", description = "Cryptographic asset not found",
@@ -62,7 +66,8 @@ public interface CryptographicAssetController extends AuthProtectedController {
     @Operation(operationId = "getCryptographicAssetSearchableFields",
             summary = "Get cryptographic asset searchable fields information",
             description = "Returns the fields the list operation accepts in its filters, grouped by field source. "
-                    + "Only the fields listed here are filterable.")
+                    + "Only the fields listed here are filterable; the platform's internal deduplication keys are "
+                    + "never offered as fields.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Cryptographic asset searchable field information retrieved")})

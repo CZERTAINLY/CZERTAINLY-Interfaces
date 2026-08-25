@@ -4,9 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * An object identifier a producer attached to an asset. Provably wrong OIDs are kept rather than dropped — they are the
- * only record that a producer is unreliable, and free-text search still matches them — so the refuted flag is what lets
- * a client label such a match instead of presenting it as fact.
+ * An object identifier a producer attached to an asset. Provably wrong entries are kept rather than dropped — they are
+ * the only record that a producer is unreliable — but the default OID and free-text search excludes them; they are
+ * reachable only through an explicit opt-in, and this flag is what lets a client label such an entry instead of
+ * presenting it as fact.
  */
 @Data
 public class CryptographicAssetOidDto {

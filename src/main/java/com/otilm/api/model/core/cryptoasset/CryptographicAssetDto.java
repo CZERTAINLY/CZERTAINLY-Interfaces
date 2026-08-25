@@ -31,4 +31,8 @@ public class CryptographicAssetDto {
     @Schema(description = "Total number of occurrence evidence entries recorded across all source CBOMs",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private long occurrenceCount;
+
+    @Schema(description = "True when sources make contradicting claims about this asset that are quarantined "
+            + "pending reconciliation", requiredMode = Schema.RequiredMode.REQUIRED)
+    private boolean quarantined;
 }

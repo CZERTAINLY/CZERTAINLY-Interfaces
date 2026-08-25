@@ -13,6 +13,7 @@ class PqcVerdictTest {
     void findByCode_resolvesWireCode() {
         Assertions.assertEquals(PqcVerdict.READY, PqcVerdict.findByCode("ready"));
         Assertions.assertEquals(PqcVerdict.NOT_READY, PqcVerdict.findByCode("notReady"));
+        Assertions.assertEquals(PqcVerdict.NOT_APPLICABLE, PqcVerdict.findByCode("notApplicable"));
         Assertions.assertEquals(PqcVerdict.UNKNOWN, PqcVerdict.findByCode("unknown"));
     }
 
@@ -24,6 +25,7 @@ class PqcVerdictTest {
     @Test
     void serializesToWireCode() throws Exception {
         Assertions.assertEquals("\"notReady\"", mapper.writeValueAsString(PqcVerdict.NOT_READY));
+        Assertions.assertEquals("\"notApplicable\"", mapper.writeValueAsString(PqcVerdict.NOT_APPLICABLE));
     }
 
     @Test
