@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ErrorCodeTest {
@@ -40,8 +41,8 @@ class ErrorCodeTest {
         }
         assertEquals(HttpStatus.BAD_GATEWAY, ErrorCode.UPSTREAM_ERROR.getStatus());
         assertEquals(HttpStatus.UNAUTHORIZED, ErrorCode.CREDENTIAL_INVALID.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.POLICY_VIOLATION.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.OPERATION_PAST_POINT_OF_NO_RETURN.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.POLICY_VIOLATION.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.OPERATION_PAST_POINT_OF_NO_RETURN.getStatus());
         assertEquals(HttpStatus.NOT_FOUND, ErrorCode.OPERATION_NOT_TRACKED.getStatus());
     }
 
@@ -58,12 +59,12 @@ class ErrorCodeTest {
             assertEquals(ConnectorInterface.AUTHORITY, code.getInterfaceCode(), code.name() + " interfaceCode");
             assertFalse(code.isRetryable(), code.name() + " retryable");
         }
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.CSR_MALFORMED.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.REVOCATION_NOT_ALLOWED.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.REGISTRATION_NOT_FOUND.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.CSR_MALFORMED.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.REVOCATION_NOT_ALLOWED.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.REGISTRATION_NOT_FOUND.getStatus());
         assertEquals(HttpStatus.NOT_FOUND, ErrorCode.RENEWAL_SOURCE_NOT_FOUND.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.CSR_SUBJECT_MISMATCH.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.CERTIFICATE_MISMATCH.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.CSR_SUBJECT_MISMATCH.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.CERTIFICATE_MISMATCH.getStatus());
     }
 
     @Test
@@ -88,17 +89,17 @@ class ErrorCodeTest {
             assertFalse(code.isRetryable(), code.name() + " retryable");
         }
 
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.DOCUMENT_MALFORMED.getStatus());
-        assertEquals(HttpStatus.PAYLOAD_TOO_LARGE, ErrorCode.DOCUMENT_TOO_LARGE.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.SIGNATURE_NOT_FOUND.getStatus());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.PARAMETER_UNSUPPORTED.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.DOCUMENT_MALFORMED.getStatus());
+        assertEquals(HttpStatus.CONTENT_TOO_LARGE, ErrorCode.DOCUMENT_TOO_LARGE.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.SIGNATURE_NOT_FOUND.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.PARAMETER_UNSUPPORTED.getStatus());
     }
 
     @Test
     void connectorContextMismatchEntry() {
         assertEquals(ProblemTypeCategory.CONNECTOR, ErrorCode.CONTEXT_MISMATCH.getCategory());
         assertNull(ErrorCode.CONTEXT_MISMATCH.getInterfaceCode());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.CONTEXT_MISMATCH.getStatus());
+        assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, ErrorCode.CONTEXT_MISMATCH.getStatus());
         assertFalse(ErrorCode.CONTEXT_MISMATCH.isRetryable());
     }
 
@@ -126,5 +127,16 @@ class ErrorCodeTest {
         assertFalse(ErrorCode.SIGNATURE_NOT_FOUND.isRetryable());
         assertFalse(ErrorCode.PARAMETER_UNSUPPORTED.isRetryable());
         assertFalse(ErrorCode.CONTEXT_MISMATCH.isRetryable());
+    }
+
+    /**
+     * Guards against a code being declared with a deprecated {@link HttpStatus} constant. Where two constants share a
+     * code, {@code resolve} returns the one declared first, which is always the non-deprecated spelling.
+     */
+    @Test
+    void everyStatusIsTheConstantHttpStatusResolvesTo() {
+        for (ErrorCode code : ErrorCode.values()) {
+            assertSame(HttpStatus.resolve(code.getStatus().value()), code.getStatus(), code.name());
+        }
     }
 }
