@@ -10,11 +10,14 @@ import com.otilm.api.model.core.cryptoasset.CryptographicAssetDto;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.MediaType;
@@ -42,13 +45,18 @@ public interface CryptographicAssetController extends AuthProtectedController {
 
     @Operation(summary = "List cryptographic assets",
             description = "Returns one page of the deduplicated cross-CBOM asset inventory, narrowed by the "
-                    + "supplied filters. Rows are ordered by name ascending, then UUID ascending; the order is "
-                    + "fixed and not client-selectable, so ties are deterministic within a deployment. Page "
+                    + "supplied filters. When no sort is supplied, rows are ordered by name ascending, then UUID "
+                    + "ascending — a deterministic default within a deployment; a supplied sort reorders the whole "
+                    + "result set before paging, on the fields the searchable-fields operation marks sortable. Page "
                     + "numbering is positional, so a sync landing between requests can shift rows across page "
                     + "boundaries.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of cryptographic assets")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of cryptographic assets"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<CryptographicAssetDto> listCryptographicAssets(@RequestBody SearchRequestDto request);
+    PaginationResponseDto<CryptographicAssetDto> listCryptographicAssets(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(summary = "Cryptographic asset detail",
             description = "Returns the asset with its verdict provenance, its normalized properties, the elected "

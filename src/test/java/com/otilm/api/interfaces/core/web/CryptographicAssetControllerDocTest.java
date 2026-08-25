@@ -82,7 +82,9 @@ class CryptographicAssetControllerDocTest {
 
     /**
      * Error responses on this controller deliberately use the legacy {@link ErrorMessageDto} model to match the rest of
-     * the core web surface; this pins that every method-level error response actually declares it.
+     * the core web surface; this pins that every method-level error response actually declares it. The one exception is
+     * 422, where the platform's list endpoints share a string-array validation shape (the same one every other list
+     * controller declares), so a 422 may carry that instead.
      */
     @Test
     void every4xxOr5xxResponseDeclaresErrorMessageContent() {
@@ -98,8 +100,10 @@ class CryptographicAssetControllerDocTest {
                         .stream(content)
                         .anyMatch(c -> c.schema().implementation() == ErrorMessageDto.class
                                 && (c.mediaType().isEmpty() || c.mediaType().equals(MediaType.APPLICATION_JSON_VALUE)));
-                assertTrue(hasErrorMessage, "response " + r.responseCode() + " on " + m.getName()
-                        + " does not declare ErrorMessageDto content");
+                boolean hasCanonicalValidationArray = r.responseCode().equals("422")
+                        && Arrays.stream(content).anyMatch(c -> c.array().schema().implementation() == String.class);
+                assertTrue(hasErrorMessage || hasCanonicalValidationArray, "response " + r.responseCode() + " on "
+                        + m.getName() + " declares neither ErrorMessageDto nor the canonical 422 validation content");
             }
         }
     }

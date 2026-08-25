@@ -9,6 +9,7 @@ import com.otilm.api.model.core.cryptoasset.CryptographicAssetDto;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -64,6 +65,8 @@ class CryptographicAssetControllerContractTest {
         assertEquals(1, list.getParameterCount());
         assertEquals(SearchRequestDto.class, list.getParameters()[0].getType());
         assertNotNull(list.getParameters()[0].getAnnotation(RequestBody.class), "search request must be the body");
+        assertNotNull(list.getParameters()[0].getAnnotation(Valid.class),
+                "search request must be validated — sort and column members carry constraints");
 
         assertEquals(PaginationResponseDto.class, list.getReturnType());
         ParameterizedType returnType = (ParameterizedType) list.getGenericReturnType();
@@ -72,15 +75,16 @@ class CryptographicAssetControllerContractTest {
     }
 
     /**
-     * The fixed sort order is contract, not prose decoration: consumers page the inventory and Core implements the
-     * ordering, so the sentence documenting it has to stay until the ordering itself changes.
+     * The default sort order is contract, not prose decoration: consumers page the inventory and Core implements the
+     * ordering, so the sentence documenting it has to stay until the ordering itself changes. A client-supplied sort
+     * (the canonical request's sort member) reorders the result set; this pins what happens when none is supplied.
      */
     @Test
-    void theListDocumentsTheFixedSortOrder() {
+    void theListDocumentsTheDefaultSortOrder() {
         Operation operation = method("listCryptographicAssets").getAnnotation(Operation.class);
         assertNotNull(operation, "missing @Operation on the list");
         assertTrue(operation.description().contains("ordered by name ascending, then UUID ascending"),
-                "the list description must document the fixed sort order (name ASC, uuid ASC)");
+                "the list description must document the default sort order (name ASC, uuid ASC)");
     }
 
     @Test
