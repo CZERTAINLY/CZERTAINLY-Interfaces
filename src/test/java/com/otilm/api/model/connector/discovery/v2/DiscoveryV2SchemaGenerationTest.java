@@ -248,11 +248,9 @@ class DiscoveryV2SchemaGenerationTest {
      * generators turn into a type name, and the severity enum reaches a client through the erased generic.
      *
      * <p>
-     * The severity assertion is the one with history behind it. {@code DiscoveryMessageDto} omits a description on its
-     * {@code severity} field deliberately, because OpenAPI 3.0 cannot carry one beside a {@code $ref} and swagger-core
-     * hoists it onto the shared component instead — the same failure
-     * {@link #discoveryDoesNotRewriteThePlatformWideResourceComponent} pins for {@code Resource}. A comment saying so
-     * is not a guard; this is.
+     * {@code DiscoveryMessageDto} omits a description on its {@code severity} field because OpenAPI 3.0 cannot carry
+     * one beside a {@code $ref}, and swagger-core hoists it onto the shared component instead — the failure
+     * {@link #discoveryDoesNotRewriteThePlatformWideResourceComponent} pins for {@code Resource}.
      */
     @Test
     void runMessagesListingResolvesToAPageKeepingTheSeverityComponentIntact() throws Exception {
@@ -283,7 +281,7 @@ class DiscoveryV2SchemaGenerationTest {
                 "reaching DiscoveryMessageSeverity through the listing must not change its description: a "
                         + "description on the referencing field gets hoisted onto the shared component, because "
                         + "OpenAPI 3.0 cannot carry one beside a $ref");
-        assertEquals(java.util.List.of("info", "warning", "error"), severity.getEnum(),
+        assertEquals(List.of("info", "warning", "error"), severity.getEnum(),
                 "the enum ships its wire codes, not its Java member names");
     }
 }

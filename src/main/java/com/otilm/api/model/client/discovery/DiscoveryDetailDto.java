@@ -62,10 +62,10 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "List of associated triggers", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerDto> triggers = new ArrayList<>();
 
-    // The four fields below are the discovery v2 additions, each individually @JsonInclude(NON_NULL) so a
-    // v1 run's payload keeps its existing shape — a class-level annotation would have silently changed
-    // every v1 response. resources and stoppable are still always present (Core synthesizes them for
-    // v1-connector runs); their NON_NULL only turns a broken mapper's null into a loud absence.
+    // The four fields below are the discovery v2 additions. The three object-typed ones carry
+    // @JsonInclude(NON_NULL) individually so a v1 run's payload keeps its existing shape; a class-level
+    // annotation would have changed every v1 response. runMessageCount is a primitive and always emitted,
+    // 0 for a v1 run. resources and stoppable are always present too, synthesized by Core for v1 runs.
 
     // The arraySchema indirection is deliberate: a bare @Schema description on a collection member lands
     // on the items schema — a $ref to a shared component — and swagger-core hoists it onto that component
