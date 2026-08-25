@@ -58,7 +58,7 @@ public interface TimeQualityConfigurationController extends AuthProtectedControl
     @PostMapping(path = "/list", produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE})
     PaginationResponseDto<TimeQualityConfigurationListDto> listTimeQualityConfigurations(
-            @RequestBody SearchRequestDto request);
+            @Valid @RequestBody SearchRequestDto request);
 
     @Operation(operationId = "getTimeQualityConfiguration", summary = "Details of a Time Quality Configuration")
     @ApiResponses(

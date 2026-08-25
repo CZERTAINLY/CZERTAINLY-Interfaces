@@ -83,9 +83,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface DiscoveryController extends AuthProtectedController {
 
     @Operation(summary = "List Discovery")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of available Discoveries")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of available Discoveries"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {"application/json"})
-    DiscoveryResponseDto listDiscoveries(@RequestBody SearchRequestDto request);
+    DiscoveryResponseDto listDiscoveries(@Valid @RequestBody SearchRequestDto request);
 
     @Operation(summary = "Discovery Details")
     @ApiResponses(value = {
