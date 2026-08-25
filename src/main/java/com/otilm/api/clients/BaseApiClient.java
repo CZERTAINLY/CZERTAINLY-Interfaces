@@ -400,16 +400,19 @@ public abstract class BaseApiClient {
                 .responseTimeout(tuning.responseTimeout());
     }
 
+    static ExchangeStrategies connectorExchangeStrategies(final ClientTuning tuning) {
+        return ExchangeStrategies.builder().codecs(codecs -> {
+            codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize());
+            ApiClientCodecs.configureJsonCodecs(codecs);
+        }).build();
+    }
+
     private static WebClient buildWebClient(HttpClient httpClient, ClientTuning tuning) {
-        ExchangeStrategies strategies = ExchangeStrategies
-                .builder()
-                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize()))
-                .build();
         return WebClient
                 .builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .filter(ExchangeFilterFunction.ofResponseProcessor(BaseApiClient::handleHttpExceptions))
-                .exchangeStrategies(strategies)
+                .exchangeStrategies(connectorExchangeStrategies(tuning))
                 .build();
     }
 
