@@ -152,8 +152,8 @@ public interface DiscoveryController extends AuthProtectedController {
 
     /**
      * The run's advisory message log, paged rather than carried on the detail — see
-     * {@link com.otilm.api.model.client.discovery.DiscoveryDetailDto#getRunMessageCount()} for why it is counted there
-     * and read here.
+     * {@link com.otilm.api.model.client.discovery.DiscoveryDetailDto}'s {@code runMessageCount} for why it is counted
+     * there and read here.
      *
      * <p>
      * <b>Ordering is oldest-first</b>, in the order the platform recorded each problem, and stable across pages. The
