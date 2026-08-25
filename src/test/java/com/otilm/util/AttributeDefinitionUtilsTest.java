@@ -1354,6 +1354,32 @@ class AttributeDefinitionUtilsTest {
                 .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
     }
 
+    @Test
+    void testValidateAttributes_jsonSchemaWithARemoteRefIsRejectedWithoutFetchingIt() {
+        // A $ref target is fetched on first use; validating against one would let a constraint author make the
+        // server issue a request of their choosing. A blocked host would hang, so the timing matters too.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"$ref\":\"http://169.254.169.254/latest/meta-data/\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        long startedAt = System.nanoTime();
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+        Assertions.assertTrue(System.nanoTime() - startedAt < java.time.Duration.ofSeconds(2).toNanos());
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaWithALocalRefIsStillAccepted() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$defs\":{\"node\":{\"type\":\"object\"}},\"$ref\":\"#/$defs/node\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
     private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
         JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
         constraint.setData(schemaDocument);

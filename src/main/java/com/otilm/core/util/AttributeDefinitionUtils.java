@@ -12,6 +12,7 @@ import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.resource.DisallowSchemaLoader;
 import com.otilm.api.config.serializer.AttributeContentDeserializer;
 import com.otilm.api.config.serializer.BaseAttributeDeserializer;
 import com.otilm.api.exception.ValidationError;
@@ -66,6 +67,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,8 +81,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 public class AttributeDefinitionUtils {
 
+    // Schema loading must never reach the network: a $ref target is fetched on first use, so a constraint
+    // author could otherwise make the server request a URL of their choosing.
     private static final JsonSchemaFactory JSON_SCHEMA_FACTORY = JsonSchemaFactory
-            .getInstance(SpecVersion.VersionFlag.V202012);
+            .getInstance(SpecVersion.VersionFlag.V202012,
+                    builder -> builder.schemaLoaders(loaders -> loaders.add(DisallowSchemaLoader.getInstance())));
 
     private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = JsonMapper
             .builder()
@@ -482,7 +488,9 @@ public class AttributeDefinitionUtils {
         }
         JsonSchema schema;
         try {
-            schema = JSON_SCHEMA_FACTORY.getSchema(ATTRIBUTES_OBJECT_MAPPER.readTree((String) constraint.getData()));
+            JsonNode document = ATTRIBUTES_OBJECT_MAPPER.readTree((String) constraint.getData());
+            rejectNonLocalRefs(document);
+            schema = JSON_SCHEMA_FACTORY.getSchema(document);
         } catch (Exception e) {
             errors
                     .add(ValidationError
@@ -501,7 +509,18 @@ public class AttributeDefinitionUtils {
                                         label));
                 continue;
             }
-            for (ValidationMessage violation : schema.validate(document)) {
+            Set<ValidationMessage> violations;
+            try {
+                violations = schema.validate(document);
+            } catch (RuntimeException e) {
+                // A $ref is resolved on first use, so a schema that survived parsing can still fail here.
+                errors
+                        .add(ValidationError
+                                .create("JSON Schema constraint of attribute {} does not carry a valid JSON Schema document",
+                                        label));
+                return;
+            }
+            for (ValidationMessage violation : violations) {
                 String reason = constraint.getErrorMessage() != null
                         ? constraint.getErrorMessage()
                         : violation.getMessage();
@@ -509,6 +528,31 @@ public class AttributeDefinitionUtils {
                         .add(ValidationError
                                 .create("Value of attribute {} violates the attribute's JSON Schema constraint: {} (at {})",
                                         label, reason, violation.getInstanceLocation()));
+            }
+        }
+    }
+
+    /**
+     * Rejects a {@code $ref} pointing outside the document. Such a target cannot be resolved without fetching it, which
+     * the platform does not do, so accepting one would register a constraint that enforces nothing.
+     */
+    private static void rejectNonLocalRefs(JsonNode node) {
+        if (node == null) {
+            return;
+        }
+        if (node.isObject()) {
+            for (Map.Entry<String, JsonNode> property : node.properties()) {
+                if ("$ref".equals(property.getKey()) && property.getValue().isTextual()
+                        && !property.getValue().textValue().startsWith("#")) {
+                    throw new IllegalArgumentException("$ref points outside the document");
+                }
+                rejectNonLocalRefs(property.getValue());
+            }
+            return;
+        }
+        if (node.isArray()) {
+            for (JsonNode child : node) {
+                rejectNonLocalRefs(child);
             }
         }
     }
