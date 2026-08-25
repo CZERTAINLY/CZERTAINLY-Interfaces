@@ -1,14 +1,19 @@
 package com.otilm.api.model.core.cryptography.key;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.common.attribute.v3.content.BaseAttributeContentV3;
 import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.common.enums.cryptography.KeyFormat;
 import com.otilm.api.model.common.enums.cryptography.KeyType;
 import com.otilm.api.model.core.certificate.group.GroupDto;
 import com.otilm.api.model.core.compliance.ComplianceStatus;
+import com.otilm.api.model.core.search.AttributeProjectable;
+import com.otilm.api.model.core.search.FilterFieldSource;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +25,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class KeyItemDto extends NameAndUuidDto {
+public class KeyItemDto extends NameAndUuidDto implements AttributeProjectable {
 
     @Schema(description = "Description of the Key", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String description;
@@ -83,4 +88,29 @@ public class KeyItemDto extends NameAndUuidDto {
 
     @Schema(description = "Key compliance status", requiredMode = Schema.RequiredMode.REQUIRED)
     private ComplianceStatus complianceStatus;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
+
+    /**
+     * Compatibility constructor for callers that construct this DTO positionally, so that adding the optional
+     * {@code attributeValues} field stays source- and binary-compatible. Leaves {@code attributeValues} unset; use the
+     * setter or the generated all-arguments constructor to populate it.
+     *
+     * @deprecated retained only for compatibility with callers compiled against a release before
+     * {@code attributeValues} existed; new code sets the field explicitly.
+     */
+    @Deprecated(since = "2.20.0")
+    @SuppressWarnings("java:S107")
+    public KeyItemDto(String description, OffsetDateTime creationTime, String keyWrapperUuid, String tokenProfileUuid,
+            String tokenProfileName, String tokenInstanceUuid, String tokenInstanceName, String owner, String ownerUuid,
+            List<GroupDto> groups, int associations, String keyReferenceUuid, KeyType type, KeyAlgorithm keyAlgorithm,
+            KeyFormat format, int length, List<KeyUsage> usage, boolean enabled, KeyState state,
+            ComplianceStatus complianceStatus) {
+        this(description, creationTime, keyWrapperUuid, tokenProfileUuid, tokenProfileName, tokenInstanceUuid,
+                tokenInstanceName, owner, ownerUuid, groups, associations, keyReferenceUuid, type, keyAlgorithm, format,
+                length, usage, enabled, state, complianceStatus, null);
+    }
 }

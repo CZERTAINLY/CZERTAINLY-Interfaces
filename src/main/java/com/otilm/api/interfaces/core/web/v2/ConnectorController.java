@@ -56,9 +56,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface ConnectorController extends AuthProtectedController {
 
     @Operation(operationId = "listConnectorsV2", summary = "List Connectors")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List all Connectors")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List all Connectors"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {"application/json"})
-    PaginationResponseDto<ConnectorDto> listConnectors(@RequestBody SearchRequestDto request) throws NotFoundException;
+    PaginationResponseDto<ConnectorDto> listConnectors(@Valid @RequestBody SearchRequestDto request)
+            throws NotFoundException;
 
     @Operation(operationId = "getConnectorSearchableFields", summary = "Get Connectors searchable fields information")
     @ApiResponses(value = {
