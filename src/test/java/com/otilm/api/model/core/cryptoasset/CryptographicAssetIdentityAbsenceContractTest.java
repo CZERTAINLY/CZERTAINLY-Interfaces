@@ -40,12 +40,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * surface that carries or names it would let a client recover what redaction removed. The DTOs are defined in this
  * artifact, so this is where the guarantee holds or fails. Swept surfaces: declared fields and Jackson wire properties
  * (getters and renames included) with their schema text (description, title, name, example, examples, defaultValue,
- * pattern, allowableValues) at class, field, getter and parameter level; operation names, operationIds, mapping paths,
- * response descriptions and example objects, parameter annotations and tags of the inventory controller and the
- * statistics operation; the three inventory enums and the CBOM_ASSET resource entry as served by the enums API.
- * Fixtures prove each dimension fails on a violation instead of passing silently. What no static sweep can reach — the
- * searchable-fields catalogue core populates at runtime — is guarded core-side; the operation's own prose states the
- * keys are never offered.
+ * pattern, allowableValues) at class, field, getter and parameter level; operation names, operationIds, class and
+ * method mapping paths, response descriptions with their content schemas and example objects, parameter annotations
+ * with their nested schemas, and tags of the inventory controller and the statistics operation; the three inventory
+ * enums and the CBOM_ASSET resource entry as served by the enums API. Fixtures prove each dimension fails on a
+ * violation instead of passing silently. What no static sweep can reach — the searchable-fields catalogue core
+ * populates at runtime — is guarded core-side; the operation's own prose states the keys are never offered.
  */
 class CryptographicAssetIdentityAbsenceContractTest {
 
@@ -140,7 +140,10 @@ class CryptographicAssetIdentityAbsenceContractTest {
         for (Method method : ViolatingControllerFixture.class.getDeclaredMethods()) {
             sweepOperation(method, problems);
         }
-        List<String> expected = List.of("operationId", "mapping path", "example object", "parameter example");
+        sweepTag(ViolatingControllerFixture.class, problems);
+        List<String> expected = List
+                .of("operationId", "find mapping path", "example object", "parameter example",
+                        "parameter nested schema", "content schema", "class mapping path");
         for (String fragment : expected) {
             assertTrue(problems.stream().anyMatch(p -> p.contains(fragment)),
                     "operation sweep missed: " + fragment + "\n" + String.join("\n", problems));
@@ -230,6 +233,8 @@ class CryptographicAssetIdentityAbsenceContractTest {
             reportBannedTokens(location + " description", response.description(), problems);
             for (Content content : response.content()) {
                 reportBannedTokens(location + " content mediaType", content.mediaType(), problems);
+                sweepSchema(location + " content schema", content.schema(), problems);
+                sweepSchema(location + " content array schema", content.array().schema(), problems);
                 for (ExampleObject example : content.examples()) {
                     String exampleLocation = location + " example object";
                     reportBannedTokens(exampleLocation + " name", example.name(), problems);
@@ -250,6 +255,7 @@ class CryptographicAssetIdentityAbsenceContractTest {
                 reportBannedTokens(location + " name", param.name(), problems);
                 reportBannedTokens(location + " description", param.description(), problems);
                 reportBannedTokens(location + " example", param.example(), problems);
+                sweepSchema(location + " nested schema", param.schema(), problems);
             }
             PathVariable pathVariable = parameter.getAnnotation(PathVariable.class);
             if (pathVariable != null) {
@@ -282,6 +288,10 @@ class CryptographicAssetIdentityAbsenceContractTest {
         if (tag != null) {
             reportBannedTokens(controller.getSimpleName() + " @Tag name", tag.name(), problems);
             reportBannedTokens(controller.getSimpleName() + " @Tag description", tag.description(), problems);
+        }
+        RequestMapping mapping = controller.getAnnotation(RequestMapping.class);
+        if (mapping != null) {
+            sweepMappingPaths(controller.getSimpleName() + " class", mapping.path(), mapping.value(), problems);
         }
     }
 
@@ -335,14 +345,16 @@ class CryptographicAssetIdentityAbsenceContractTest {
         }
     }
 
+    @RequestMapping("/identityFixtureRoot")
     private interface ViolatingControllerFixture {
 
         @Operation(operationId = "findByIdentityKey", summary = "clean summary", description = "clean description")
         @ApiResponses(value = {
                 @ApiResponse(responseCode = "200", description = "clean",
-                        content = @Content(examples = {@ExampleObject(value = "{\"key\":\"a fingerprint\"}")}))})
+                        content = @Content(schema = @Schema(title = "a fingerprint title"),
+                                examples = {@ExampleObject(value = "{\"key\":\"a fingerprint\"}")}))})
         @GetMapping(path = "/byIdentity")
-        String find(@io.swagger.v3.oas.annotations.Parameter(description = "clean",
-                example = "an identity example") String query);
+        String find(@io.swagger.v3.oas.annotations.Parameter(description = "clean", example = "an identity example",
+                schema = @Schema(description = "an identity schema")) String query);
     }
 }
