@@ -35,7 +35,7 @@ class StatisticsControllerCryptographicAssetContractTest {
         Method method = statisticsMethod();
         GetMapping mapping = method.getAnnotation(GetMapping.class);
         assertNotNull(mapping, "asset statistics must be a GET");
-        assertArrayEquals(new String[]{"/cbomAssets"}, mapping.path());
+        assertArrayEquals(new String[]{"/cryptoAssets"}, mapping.path());
         assertArrayEquals(new String[]{"application/json"}, mapping.produces());
         assertEquals(CryptographicAssetStatisticsDto.class, method.getReturnType());
         assertEquals(0, method.getParameterCount());
