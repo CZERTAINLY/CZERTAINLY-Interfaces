@@ -3,6 +3,7 @@ package com.otilm.api.model.common.attribute.v3.mapping;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,14 @@ import lombok.Data;
         @JsonSubTypes.Type(value = KeyUsageMappedField.class, name = FieldType.Codes.KEY_USAGE),
         @JsonSubTypes.Type(value = ExtendedKeyUsageMappedField.class, name = FieldType.Codes.EXTENDED_KEY_USAGE)})
 @Schema(description = "Describes a single target field within an object; concrete type is determined by fieldType",
+        discriminatorProperty = "fieldType",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = FieldType.Codes.RDN, schema = RdnMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.SAN, schema = SanMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.EXTENSION, schema = ExtensionMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.KEY_USAGE, schema = KeyUsageMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.EXTENDED_KEY_USAGE,
+                        schema = ExtendedKeyUsageMappedField.class)},
         subTypes = {
                 RdnMappedField.class,
                 SanMappedField.class,

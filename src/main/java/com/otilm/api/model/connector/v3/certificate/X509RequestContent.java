@@ -25,8 +25,9 @@ public class X509RequestContent extends CertificateRequestContent {
     private List<GeneralNameEntry> subjectAltNames;
 
     @Schema(description = "Requested key usages; the key usage extension (2.5.29.15) is never duplicated in "
-            + "extensions. Criticality is not carried here: RFC 5280 4.2.1.3 requires this extension to be "
-            + "critical and the platform forces it.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "extensions. Criticality is not carried here: the platform marks this extension critical, which "
+            + "RFC 5280 4.2.1.3 recommends (SHOULD) rather than requires.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<CertificateKeyUsage> keyUsage;
 
     @Schema(description = "Requested extended key usage purposes as dotted-decimal OIDs; the extended key usage "
