@@ -400,16 +400,19 @@ public abstract class BaseApiClient {
                 .responseTimeout(tuning.responseTimeout());
     }
 
+    static ExchangeStrategies connectorExchangeStrategies(final ClientTuning tuning) {
+        return ExchangeStrategies.builder().codecs(codecs -> {
+            codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize());
+            ApiClientCodecs.configureJsonCodecs(codecs);
+        }).build();
+    }
+
     private static WebClient buildWebClient(HttpClient httpClient, ClientTuning tuning) {
-        ExchangeStrategies strategies = ExchangeStrategies
-                .builder()
-                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(tuning.maxInMemorySize()))
-                .build();
         return WebClient
                 .builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .filter(ExchangeFilterFunction.ofResponseProcessor(BaseApiClient::handleHttpExceptions))
-                .exchangeStrategies(strategies)
+                .exchangeStrategies(connectorExchangeStrategies(tuning))
                 .build();
     }
 
@@ -731,7 +734,7 @@ public abstract class BaseApiClient {
      * success.
      */
     private static Mono<ClientResponse> handleLegacyErrorResponse(ClientResponse clientResponse) {
-        if (HttpStatus.UNPROCESSABLE_ENTITY.equals(clientResponse.statusCode())) {
+        if (clientResponse.statusCode().isSameCodeAs(HttpStatus.UNPROCESSABLE_ENTITY)) {
             return clientResponse
                     .bodyToMono(ERROR_LIST_TYPE_REF)
                     .defaultIfEmpty(List.of("Connector returned 422 with an empty body"))
