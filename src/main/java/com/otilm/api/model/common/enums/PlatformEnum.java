@@ -71,6 +71,7 @@ import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import com.otilm.api.model.core.search.FilterConditionOperator;
 import com.otilm.api.model.core.search.FilterFieldSource;
 import com.otilm.api.model.core.search.FilterFieldType;
+import com.otilm.api.model.core.search.SortDirection;
 import com.otilm.api.model.core.secret.SecretState;
 import com.otilm.api.model.core.settings.SettingsSection;
 import com.otilm.api.model.core.signing.SigningProtocol;
@@ -91,6 +92,7 @@ public enum PlatformEnum implements IPlatformEnum {
     FILTER_CONDITION_OPERATOR(FilterConditionOperator.class, "Filter condition operator"),
     FILTER_FIELD_TYPE(FilterFieldType.class, "Filter field type"),
     FILTER_FIELD_SOURCE(FilterFieldSource.class, "Filter field source"),
+    SORT_DIRECTION(SortDirection.class, "Sort direction"),
     SETTINGS_SECTION(SettingsSection.class, "Settings section"),
 
     // connectors

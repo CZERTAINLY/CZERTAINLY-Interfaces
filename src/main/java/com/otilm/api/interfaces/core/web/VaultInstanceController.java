@@ -16,7 +16,9 @@ import com.otilm.api.model.core.vault.VaultInstanceRequestDto;
 import com.otilm.api.model.core.vault.VaultInstanceUpdateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -68,9 +70,13 @@ public interface VaultInstanceController extends AuthProtectedController {
             throws ConnectorException, NotFoundException, AttributeException;
 
     @Operation(summary = "List Vault instances")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of Vault instances retrieved")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of Vault instances retrieved"),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<VaultInstanceDto> listVaultInstances(@RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<VaultInstanceDto> listVaultInstances(@Valid @RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Delete a Vault instance")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Vault instance deleted")})
