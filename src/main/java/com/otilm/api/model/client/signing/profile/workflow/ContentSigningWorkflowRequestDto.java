@@ -64,13 +64,14 @@ public class ContentSigningWorkflowRequestDto extends WorkflowRequestDto {
     private Long documentSizeCap;
 
     @Schema(description = "Demand the nonRepudiation key-usage bit specifically, for commitment-grade profiles. "
-            + "Present only when ILM-managed signing is used; null for delegated signing.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Applies to ILM-managed signing only. For delegated signing, omit it or send false; an echoed "
+            + "false from a response is accepted, true is rejected.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean requireNonRepudiation;
 
     @Schema(description = "Extended key usage OIDs the signing certificate must all carry, in dot notation "
             + "(1.3.6.1.5.5.7.3.36 is RFC 9336 id-kp-documentSigning). An empty set accepts any extended key "
-            + "usage. Must be omitted for delegated signing.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "usage. Applies to ILM-managed signing only; for delegated signing send nothing or an empty set.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     // @Pattern publishes into the generated item schema, and reports the violation on the offending element.
     private Set<@NotBlank @Pattern(regexp = OidFormat.REGEX,
             message = OidFormat.MESSAGE) String> requiredExtendedKeyUsageOids = new LinkedHashSet<>();
