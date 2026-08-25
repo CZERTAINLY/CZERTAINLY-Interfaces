@@ -18,7 +18,7 @@ import lombok.ToString;
  *
  * <p>
  * Status is reported per item and correlated by identifier. Polling is complete when every item has reached a terminal
- * status ({@code COMPLETED}, {@code FAILED}, or {@code CANCELLED}).
+ * status ({@code completed}, {@code failed}, or {@code cancelled}).
  * </p>
  */
 @Getter

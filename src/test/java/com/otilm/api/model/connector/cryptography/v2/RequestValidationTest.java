@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Named;
@@ -31,6 +32,7 @@ import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDt
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validMetadataAttribute;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.withValidTokenProfileScope;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.withValidTokenScope;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Named.named;
 
@@ -190,27 +192,36 @@ class RequestValidationTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("invalidCreationIds")
-    void validate_hasExpectedViolation_forInvalidKeyCreationId(String invalidId, String expectedMessage) {
+    void validate_hasExpectedViolations_forInvalidKeyCreationId(String invalidId, Set<String> expectedMessages) {
         // given
+        String property = "keyCreationId";
         CreateKeyRequestV2Dto request = validCreateKeyRequest();
         request.setKeyCreationId(invalidId);
 
         // when
-        Set<ConstraintViolation<CreateKeyRequestV2Dto>> violations = VALIDATOR.validate(request);
+        Set<String> actualMessages = VALIDATOR
+                .validate(request)
+                .stream()
+                .filter(violation -> property.equals(violation.getPropertyPath().toString()))
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.toSet());
 
         // then
-        assertHasViolation(violations, "keyCreationId", expectedMessage);
+        assertEquals(expectedMessages, actualMessages);
     }
 
     static Stream<org.junit.jupiter.params.provider.Arguments> invalidCreationIds() {
         return Stream
                 .of(org.junit.jupiter.params.provider.Arguments
-                        .arguments(named("empty", ""), "keyCreationId is required"),
+                        .arguments(named("empty", ""),
+                                Set
+                                        .of("keyCreationId is required",
+                                                "keyCreationId must contain between 1 and 256 characters")),
                         org.junit.jupiter.params.provider.Arguments
-                                .arguments(named("blank", "   "), "keyCreationId is required"),
+                                .arguments(named("blank", "   "), Set.of("keyCreationId is required")),
                         org.junit.jupiter.params.provider.Arguments
                                 .arguments(named("257 characters", "k".repeat(257)),
-                                        "keyCreationId must not exceed 256 characters"));
+                                        Set.of("keyCreationId must contain between 1 and 256 characters")));
     }
 
     @Test

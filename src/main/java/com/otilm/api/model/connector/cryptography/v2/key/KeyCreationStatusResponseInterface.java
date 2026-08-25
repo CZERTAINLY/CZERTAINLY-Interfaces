@@ -7,9 +7,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 
 /** OpenAPI schema for the polymorphic {@link KeyCreationStatusResponseV2Dto} hierarchy. */
-@Schema(name = "KeyCreationStatusResponseInterface",
+@Schema(name = "KeyCreationStatusResponse",
         description = "Status of an asynchronous key-creation operation selected by key request type", type = "object",
-        additionalProperties = Schema.AdditionalPropertiesValue.FALSE, discriminatorProperty = "keyRequestType",
+        discriminatorProperty = "keyRequestType",
         discriminatorMapping = {
                 @DiscriminatorMapping(value = KeyRequestType.Codes.SECRET,
                         schema = SecretKeyOperationStatusResponseV2Dto.class),
@@ -18,18 +18,11 @@ import java.io.Serializable;
         oneOf = {SecretKeyOperationStatusResponseV2Dto.class, KeyPairOperationStatusResponseV2Dto.class})
 public interface KeyCreationStatusResponseInterface extends Serializable {
 
-    @Schema(description = "Type of key requested by the original CreateKeyRequestV2Dto",
-            requiredMode = Schema.RequiredMode.REQUIRED)
     KeyRequestType getKeyRequestType();
 
-    @Schema(description = "Operation status as known to the connector", requiredMode = Schema.RequiredMode.REQUIRED)
     OperationStatus getStatus();
 
-    @Schema(description = "Failure or cancellation detail when status is FAILED or CANCELLED",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     String getReason();
 
-    @Schema(description = "Created key result. Present only when status is COMPLETED.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     KeyCreationResponseV2Dto getResult();
 }
