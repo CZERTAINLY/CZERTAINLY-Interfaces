@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Core-web discovery management: run CRUD plus the discovery v2 additions — a resource-agnostic item listing, a paged
- * run-messages listing, three connector-keyed relay endpoints and three run-lifecycle operations.
+ * run-messages listing, connector-keyed relay endpoints and run-lifecycle operations.
  *
  * <p>
  * <b>Connector-keyed relays.</b> {@link #listDiscoveryResources}, {@link #getDiscoveryAttributes} and
@@ -156,15 +156,16 @@ public interface DiscoveryController extends AuthProtectedController {
      * there and read here.
      *
      * <p>
-     * <b>Ordering is oldest-first</b>, in the order the platform recorded each problem, and stable across pages. The
-     * entry that explains a run is usually the one that started it, so the first page is the useful page — the opposite
-     * of a tail-first log. Deliberately not specified as "by timestamp": every message written in one tick shares a
-     * transaction-start time, so a timestamp is not a total order and paging on it would drop or repeat rows.
+     * The order the operation promises is the order the platform recorded each problem in, deliberately not "by
+     * timestamp": every message written in one tick shares a transaction-start time, so a timestamp is not a total
+     * order and paging on it would drop or repeat rows. The entry that explains a run is usually the one that started
+     * it, which is why the first page is the useful one.
      */
     @Operation(summary = "List Discovery Run Messages",
-            description = "Returns one page of the advisory messages a Discovery run collected, oldest first. "
-                    + "Repeated problems are aggregated into a single entry carrying an occurrence count rather than "
-                    + "repeated per occurrence. Messages are advisory: collecting them does not imply the run failed.")
+            description = "Returns one page of the advisory messages a Discovery run collected, oldest first and "
+                    + "stable across pages. Repeated problems are aggregated into a single entry carrying an "
+                    + "occurrence count rather than repeated per occurrence. Messages are advisory: collecting them "
+                    + "does not imply the run failed.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Discovery run messages retrieved"),
             @ApiResponse(responseCode = "404", description = "Discovery not found",

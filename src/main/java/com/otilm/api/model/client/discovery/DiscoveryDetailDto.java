@@ -62,7 +62,7 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "List of associated triggers", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerDto> triggers = new ArrayList<>();
 
-    // The four fields below are the discovery v2 additions. The three object-typed ones carry
+    // The fields below are the discovery v2 additions. The object-typed ones carry
     // @JsonInclude(NON_NULL) individually so a v1 run's payload keeps its existing shape; a class-level
     // annotation would have changed every v1 response. runMessageCount is a primitive and always emitted,
     // 0 for a v1 run. resources and stoppable are always present too, synthesized by Core for v1 runs.
@@ -98,8 +98,7 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
      *
      * <p>
      * <b>Relation to {@code message}:</b> {@code message} carries the single summary reason for the run's current
-     * status; the messages this counts are advisory, accumulate over the run's lifetime, and a run can collect them and
-     * still complete.
+     * status; the messages this counts accumulate over the run's lifetime instead.
      *
      * <p>
      * Primitive and REQUIRED: a run with nothing to report has none, which is 0 rather than absent.

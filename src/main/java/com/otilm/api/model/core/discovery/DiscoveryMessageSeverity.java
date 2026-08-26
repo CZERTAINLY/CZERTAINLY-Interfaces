@@ -12,11 +12,9 @@ import java.util.Arrays;
  * How much a {@link DiscoveryMessageDto} matters.
  *
  * <p>
- * <b>Deliberately scoped to Discovery.</b> Severity ladders in this platform have never been shared: compliance keeps
- * {@code ComplianceStatus} and {@code ComplianceRuleStatus} apart on purpose, audit records an outcome
- * ({@code OperationResult}) rather than a severity, and connector logging carries its own levels as plain wire strings.
- * A vocabulary shaped by what a Discovery run needs to say should not quietly become the platform's, and a shared name
- * would advertise a reuse this evidence does not support.
+ * <b>Deliberately scoped to Discovery.</b> Severity ladders in this platform have never been shared — compliance, audit
+ * and connector logging each keep their own — so this vocabulary is shaped by what a Discovery run needs to say and
+ * should not quietly become the platform's.
  *
  * <p>
  * <b>Assigned by the platform, never by a Discovery Provider.</b> A connector contributes a {@code code} from a closed
