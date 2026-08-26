@@ -12,11 +12,11 @@ import com.otilm.api.model.connector.discovery.v2.DiscoveredKeyDto;
 import com.otilm.api.model.core.auth.Resource;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
+import static com.otilm.api.testsupport.PagedResponseFixture.pageOf;
+import static com.otilm.api.testsupport.PagedResponseFixture.pagingMembersOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -60,16 +60,6 @@ class DiscoveryItemPageTest {
         item.setProcessed(true);
         item.setInventoryUuid(null);
         return item;
-    }
-
-    private static PaginationResponseDto<DiscoveryItemDto> pageOf(DiscoveryItemDto... items) {
-        PaginationResponseDto<DiscoveryItemDto> page = new PaginationResponseDto<>();
-        page.setItems(List.of(items));
-        page.setItemsPerPage(10);
-        page.setPageNumber(0);
-        page.setTotalPages(3);
-        page.setTotalItems(21L);
-        return page;
     }
 
     private PaginationResponseDto<DiscoveryItemDto> roundTrip(PaginationResponseDto<DiscoveryItemDto> page)
@@ -173,16 +163,8 @@ class DiscoveryItemPageTest {
         certificates.setTotalPages(3);
         certificates.setTotalItems(21L);
 
-        assertEquals(pagingMembersOf(certificates), pagingMembersOf(pageOf(certificateItem())),
+        assertEquals(pagingMembersOf(mapper, certificates), pagingMembersOf(mapper, pageOf(certificateItem())),
                 "the items listing must page under the same property names as the certificate listing");
-    }
-
-    /** Emitted property names other than the payload array, sorted. */
-    private String pagingMembersOf(Object dto) {
-        JsonNode root = mapper.valueToTree(dto);
-        List<String> names = new ArrayList<>();
-        root.fieldNames().forEachRemaining(names::add);
-        return names.stream().filter(name -> !root.get(name).isArray()).sorted().collect(Collectors.joining(","));
     }
 
     /**

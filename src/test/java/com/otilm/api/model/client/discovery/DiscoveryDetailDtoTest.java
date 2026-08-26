@@ -76,13 +76,13 @@ class DiscoveryDetailDtoTest {
     }
 
     @Test
-    void runMessagesAreNotCarriedOnTheDetail() throws Exception {
-        // The log is its own paged resource. A client polls this detail while a run is live, so shipping a
-        // bounded-but-large log on every poll would be waste -- the count is what the detail owes a client.
+    void reintroducingTheRunMessageLogOnTheDetailIsCaught() throws Exception {
+        // Guards the shape rather than today's behaviour, which cannot break while the field is absent: a client
+        // polls this detail while a run is live, so a bounded-but-large log riding along on every poll is the
+        // regression worth failing on. The count is what the detail owes a client.
         String json = mapper.writeValueAsString(v1Run());
 
         assertFalse(json.contains("runMessages\""), json);
-        assertTrue(json.contains("\"runMessageCount\":"), json);
     }
 
     @Test

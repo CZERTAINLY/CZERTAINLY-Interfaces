@@ -8,11 +8,11 @@ import com.otilm.api.model.client.discovery.DiscoveryCertificateResponseDto;
 import com.otilm.api.model.common.PaginationResponseDto;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
+import static com.otilm.api.testsupport.PagedResponseFixture.pageOf;
+import static com.otilm.api.testsupport.PagedResponseFixture.pagingMembersOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -40,16 +40,6 @@ class DiscoveryMessagePageTest {
         dto.setFirstSeenAt(OffsetDateTime.of(2026, 8, 24, 9, 15, 0, 0, ZoneOffset.UTC));
         dto.setLastSeenAt(OffsetDateTime.of(2026, 8, 24, 9, 57, 0, 0, ZoneOffset.UTC));
         return dto;
-    }
-
-    private static PaginationResponseDto<DiscoveryMessageDto> pageOf(DiscoveryMessageDto... messages) {
-        PaginationResponseDto<DiscoveryMessageDto> page = new PaginationResponseDto<>();
-        page.setItems(List.of(messages));
-        page.setItemsPerPage(10);
-        page.setPageNumber(0);
-        page.setTotalPages(3);
-        page.setTotalItems(21L);
-        return page;
     }
 
     @Test
@@ -102,16 +92,9 @@ class DiscoveryMessagePageTest {
         certificates.setTotalPages(3);
         certificates.setTotalItems(21L);
 
-        assertEquals(pagingMembersOf(certificates),
-                pagingMembersOf(pageOf(message(DiscoveryMessageSeverity.WARNING, "SKIPPED", 3L))),
+        assertEquals(pagingMembersOf(mapper, certificates),
+                pagingMembersOf(mapper, pageOf(message(DiscoveryMessageSeverity.WARNING, "SKIPPED", 3L))),
                 "the run messages listing must page under the same property names as the certificate listing");
     }
 
-    /** Emitted property names other than the payload array, sorted. */
-    private String pagingMembersOf(Object dto) {
-        JsonNode root = mapper.valueToTree(dto);
-        List<String> names = new ArrayList<>();
-        root.fieldNames().forEachRemaining(names::add);
-        return names.stream().filter(name -> !root.get(name).isArray()).sorted().collect(Collectors.joining(","));
-    }
 }

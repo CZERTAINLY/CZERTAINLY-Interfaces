@@ -13,9 +13,8 @@ import lombok.ToString;
  *
  * <p>
  * <b>One entry per distinct problem, not per occurrence.</b> A run against a broken estate can hit the same fault tens
- * of thousands of times, and a log that grew a line each time would bury its own first and most useful entry. A repeat
- * — same {@code code}, same {@code message} — therefore aggregates onto the entry already carrying it, advancing
- * {@code occurrences} and {@code lastSeenAt}; {@code firstSeenAt} keeps pointing at when the problem started, which is
+ * of thousands of times, and a log that grew a line each time would bury its own first and most useful entry. What a
+ * repeat aggregates onto is on {@code code}; {@code firstSeenAt} keeps pointing at when the problem started, which is
  * usually what an operator is looking for.
  *
  * <p>
@@ -25,6 +24,8 @@ import lombok.ToString;
  */
 // No class-level NON_NULL, unlike its siblings: every field here is REQUIRED, so there is no optional field for
 // it to hide and it could only turn a mapping bug that left one unset into a silently absent key.
+@Schema(description = "One kind of problem a Discovery run reported, with how often it happened. Repeats aggregate "
+        + "onto the entry already carrying them rather than adding a new one.")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -39,16 +40,13 @@ public class DiscoveryMessageDto {
     private DiscoveryMessageSeverity severity;
 
     /**
-     * Connector-supplied for problems a Discovery Provider reported, matching {@code DiscoveryErrorEvent.code};
-     * platform-assigned for the platform's own.
-     *
-     * <p>
-     * Repeats aggregate onto one entry when they carry the same code <b>and</b> the same rendered text. A code alone
-     * does not merge two differently worded problems, so a client grouping by code may see several entries sharing one.
+     * Connector-supplied for problems a Discovery Provider reported, matching {@code DiscoveryErrorEvent.code} and
+     * bounded to the same length; platform-assigned for the platform's own.
      */
     @Schema(description = "Identifier for the kind of problem, from a closed vocabulary — what an operator or a "
             + "support engineer matches on. Entries are aggregated by code together with the message text, so "
-            + "several entries in one run may share a code.", requiredMode = Schema.RequiredMode.REQUIRED)
+            + "several entries in one run may share a code.", maxLength = 64,
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
 
     @Schema(description = "Human-readable description of the problem. Curated text written for a person to read; "
