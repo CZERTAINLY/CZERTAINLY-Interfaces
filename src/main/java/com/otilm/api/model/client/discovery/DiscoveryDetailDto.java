@@ -16,9 +16,6 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Schema(description = "One Discovery run in full. Two statuses are reported, and they can differ: status is the "
-        + "platform's view of the run, including the processing it does after the provider has handed everything "
-        + "over, while connectorStatus is what the Discovery Provider last reported for its own side of the work.")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class DiscoveryDetailDto extends NameAndUuidDto {
