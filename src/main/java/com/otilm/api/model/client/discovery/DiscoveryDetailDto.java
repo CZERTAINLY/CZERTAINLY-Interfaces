@@ -16,6 +16,9 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+@Schema(description = "One Discovery run in full. Two statuses are reported, and they can differ: status is the "
+        + "platform's view of the run, including the processing it does after the provider has handed everything "
+        + "over, while connectorStatus is what the Discovery Provider last reported for its own side of the work.")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class DiscoveryDetailDto extends NameAndUuidDto {
@@ -23,10 +26,10 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "Discovery Kind", examples = {"IP-HostName"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "Status of Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private DiscoveryStatus status;
 
-    @Schema(description = "Status of Discovery returned by connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private DiscoveryStatus connectorStatus;
 
     @Schema(description = "Failure/Success Messages", examples = {"Failed due to network connectivity issues"})
