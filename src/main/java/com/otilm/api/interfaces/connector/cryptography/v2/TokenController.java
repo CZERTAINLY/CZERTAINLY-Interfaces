@@ -46,7 +46,14 @@ public interface TokenController extends AuthProtectedConnectorController {
                     + "and lockout information when available")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Token status retrieved"),
-            @ApiResponse(responseCode = "422", description = "Request validation failed (errorCode VALIDATION_FAILED)",
+            @ApiResponse(responseCode = "400",
+                    description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
+                            + "unknown properties, and values outside the published enum values",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/status", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -57,7 +64,14 @@ public interface TokenController extends AuthProtectedConnectorController {
             description = "Returns the token profile attribute schema for the supplied token context")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Token profile attributes retrieved"),
-            @ApiResponse(responseCode = "422", description = "Request validation failed (errorCode VALIDATION_FAILED)",
+            @ApiResponse(responseCode = "400",
+                    description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
+                            + "unknown properties, and values outside the published enum values",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/tokenProfile/attributes", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -68,7 +82,14 @@ public interface TokenController extends AuthProtectedConnectorController {
             description = "Returns the key usages supported for the supplied token context")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Supported key usages retrieved"),
-            @ApiResponse(responseCode = "422", description = "Request validation failed (errorCode VALIDATION_FAILED)",
+            @ApiResponse(responseCode = "400",
+                    description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
+                            + "unknown properties, and values outside the published enum values",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/tokenProfile/keyUsages", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -79,7 +100,14 @@ public interface TokenController extends AuthProtectedConnectorController {
             description = "List key types supported for the supplied token and token-profile context")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Supported key types retrieved"),
-            @ApiResponse(responseCode = "422", description = "Request validation failed (errorCode VALIDATION_FAILED)",
+            @ApiResponse(responseCode = "400",
+                    description = "Request body cannot be read (errorCode BAD_REQUEST), including malformed JSON, "
+                            + "unknown properties, and values outside the published enum values",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "422",
+                    description = "Request body was read successfully but violates a field validation rule "
+                            + "(errorCode VALIDATION_FAILED)",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
 

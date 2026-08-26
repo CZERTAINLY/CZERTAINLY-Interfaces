@@ -35,12 +35,12 @@ public class SignatureResultItemV2Dto implements IdentifiedDataV2Dto {
     @NotNull(message = "status is required")
     private OperationStatus status;
 
-    @Schema(description = "Signature over the item's data. Populated when status=COMPLETED.", format = "byte",
+    @Schema(description = "Signature over the item's data. Populated when status=`completed`.", format = "byte",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @ToString.Exclude
     private byte[] signature;
 
-    @Schema(description = "Failure or cancellation detail when status=FAILED or CANCELLED — curated message text (no raw exception messages)",
+    @Schema(description = "Failure or cancellation detail when status=`failed` or `cancelled` — curated message text (no raw exception messages)",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String reason;
 

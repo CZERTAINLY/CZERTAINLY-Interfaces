@@ -22,7 +22,7 @@ public abstract class KeyOperationStatusResponseV2Dto {
     @NotNull(message = "status is required")
     private OperationStatus status;
 
-    @Schema(description = "Failure or cancellation detail when status is FAILED or CANCELLED",
+    @Schema(description = "Failure or cancellation detail when status is `failed` or `cancelled`",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String reason;
 
