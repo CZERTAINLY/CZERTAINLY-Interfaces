@@ -488,7 +488,11 @@ public class AttributeDefinitionUtils {
         }
         JsonSchema schema;
         try {
-            JsonNode document = ATTRIBUTES_OBJECT_MAPPER.readTree((String) constraint.getData());
+            JsonNode document = ATTRIBUTES_OBJECT_MAPPER
+                    .reader()
+                    .with(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+                    .readTree((String) constraint.getData());
+            requireSupportedDialect(document);
             rejectNonLocalRefs(document);
             schema = JSON_SCHEMA_FACTORY.getSchema(document);
         } catch (Exception e) {
@@ -529,6 +533,25 @@ public class AttributeDefinitionUtils {
                                 .create("Value of attribute {} violates the attribute's JSON Schema constraint: {} (at {})",
                                         label, reason, violation.getInstanceLocation()));
             }
+        }
+    }
+
+    /** The one dialect the constraint's documentation promises, in both the bare and fragment-suffixed spellings. */
+    private static final Set<String> SUPPORTED_DIALECTS = Set
+            .of("https://json-schema.org/draft/2020-12/schema", "https://json-schema.org/draft/2020-12/schema#");
+
+    /**
+     * Rejects a declared {@code $schema} other than draft 2020-12. The factory's default applies only when the document
+     * omits the keyword, so a declared older draft would silently be honoured — and under draft-04 a keyword such as
+     * {@code prefixItems} is simply unknown, so the author's constraint would enforce nothing.
+     */
+    private static void requireSupportedDialect(JsonNode document) {
+        if (document == null || !document.isObject() || !document.has("$schema")) {
+            return;
+        }
+        JsonNode declared = document.get("$schema");
+        if (!declared.isTextual() || !SUPPORTED_DIALECTS.contains(declared.textValue())) {
+            throw new IllegalArgumentException("unsupported $schema dialect");
         }
     }
 

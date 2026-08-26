@@ -1380,6 +1380,45 @@ class AttributeDefinitionUtilsTest {
         Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
     }
 
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsADeclaredOlderDialect() {
+        // The factory default applies only when $schema is absent, so a declared draft-04 would be honoured — and
+        // there prefixItems is an unknown keyword, so the author's constraint would silently enforce nothing.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$schema\":\"http://json-schema.org/draft-04/schema#\"," + "\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsTheDeclaredSupportedDialect() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsTrailingContent() {
+        // readTree stops at the first complete value, so trailing text would be silently discarded.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"} and then some");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
     private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
         JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
         constraint.setData(schemaDocument);
