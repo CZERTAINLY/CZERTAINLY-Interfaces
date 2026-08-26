@@ -3,6 +3,7 @@ package com.otilm.api.model.common.attribute.v3.mapping;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -16,9 +17,24 @@ import lombok.Data;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RdnMappedField.class, name = FieldType.Codes.RDN),
         @JsonSubTypes.Type(value = SanMappedField.class, name = FieldType.Codes.SAN),
-        @JsonSubTypes.Type(value = ExtensionMappedField.class, name = FieldType.Codes.EXTENSION)})
+        @JsonSubTypes.Type(value = ExtensionMappedField.class, name = FieldType.Codes.EXTENSION),
+        @JsonSubTypes.Type(value = KeyUsageMappedField.class, name = FieldType.Codes.KEY_USAGE),
+        @JsonSubTypes.Type(value = ExtendedKeyUsageMappedField.class, name = FieldType.Codes.EXTENDED_KEY_USAGE)})
 @Schema(description = "Describes a single target field within an object; concrete type is determined by fieldType",
-        subTypes = {RdnMappedField.class, SanMappedField.class, ExtensionMappedField.class})
+        discriminatorProperty = "fieldType",
+        discriminatorMapping = {
+                @DiscriminatorMapping(value = FieldType.Codes.RDN, schema = RdnMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.SAN, schema = SanMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.EXTENSION, schema = ExtensionMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.KEY_USAGE, schema = KeyUsageMappedField.class),
+                @DiscriminatorMapping(value = FieldType.Codes.EXTENDED_KEY_USAGE,
+                        schema = ExtendedKeyUsageMappedField.class)},
+        subTypes = {
+                RdnMappedField.class,
+                SanMappedField.class,
+                ExtensionMappedField.class,
+                KeyUsageMappedField.class,
+                ExtendedKeyUsageMappedField.class})
 public abstract class MappedField implements Serializable {
 
     @Schema(description = "Field type, determines the concrete subtype", requiredMode = Schema.RequiredMode.REQUIRED)
