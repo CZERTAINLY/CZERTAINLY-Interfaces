@@ -45,11 +45,14 @@ public class DiscoveryCertificateDto {
             + "false - Certificate was already available in the inventory", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean newlyDiscovered;
 
-    @Schema(description = "Indicator whether the discovery certificate has already been processed.",
+    @Schema(description = "Whether processing of this row has been attempted; processedError conveys the outcome. "
+            + "False means the platform reached no verdict for the row, which may still carry a reason.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean processed;
 
-    @Schema(description = "Error message in case of failed processing of the discovery certificate.")
+    @Schema(description = "Reason recorded against this row, if any — not only a failure, and not tied to processed. "
+            + "A row that imported cleanly can carry one (a certificate imported without all of its public keys "
+            + "associated, say), and a row that was never attempted carries one while processed stays false.")
     private String processedError;
 
 }
