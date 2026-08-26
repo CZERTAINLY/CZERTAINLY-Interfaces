@@ -1419,6 +1419,37 @@ class AttributeDefinitionUtilsTest {
                 .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
     }
 
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsMalformedKeywords() {
+        // getSchema compiles these without complaint, so the constraint would enforce nothing.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"minItems\":\"x\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsARefInsideInstanceData() {
+        // const holds a literal value, so a member named $ref there is data and not a reference.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"properties\":{\"a\":{\"const\":{\"$ref\":\"https://example.invalid/x\"}}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        // The schema itself is accepted; the value simply does not match the const.
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("violates"),
+                        exception.getErrors().get(0).getErrorDescription());
+    }
+
     private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
         JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
         constraint.setData(schemaDocument);

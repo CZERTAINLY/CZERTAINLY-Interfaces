@@ -10,8 +10,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SchemaLocation;
 import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.resource.ClasspathSchemaLoader;
 import com.networknt.schema.resource.DisallowSchemaLoader;
 import com.otilm.api.config.serializer.AttributeContentDeserializer;
 import com.otilm.api.config.serializer.BaseAttributeDeserializer;
@@ -494,6 +496,7 @@ public class AttributeDefinitionUtils {
                     .readTree((String) constraint.getData());
             requireSupportedDialect(document);
             rejectNonLocalRefs(document);
+            requireWellFormedKeywords(document);
             schema = JSON_SCHEMA_FACTORY.getSchema(document);
         } catch (Exception e) {
             errors
@@ -536,9 +539,34 @@ public class AttributeDefinitionUtils {
         }
     }
 
+    /** Keywords whose values are instance data rather than subschemas, so a {@code $ref} inside is a literal. */
+    private static final Set<String> LITERAL_KEYWORDS = Set.of("const", "enum", "default", "examples");
+
+    /**
+     * Validates a candidate schema document against the dialect's own metaschema. Classpath loading is permitted so the
+     * library's bundled metaschema resolves; the network stays refused.
+     */
+    private static final JsonSchema CONSTRAINT_METASCHEMA = JsonSchemaFactory
+            .getInstance(SpecVersion.VersionFlag.V202012,
+                    builder -> builder
+                            .schemaLoaders(loaders -> loaders
+                                    .add(new ClasspathSchemaLoader())
+                                    .add(DisallowSchemaLoader.getInstance())))
+            .getSchema(SchemaLocation.of(SpecVersion.VersionFlag.V202012.getId()));
+
     /** The one dialect the constraint's documentation promises, in both the bare and fragment-suffixed spellings. */
     private static final Set<String> SUPPORTED_DIALECTS = Set
             .of("https://json-schema.org/draft/2020-12/schema", "https://json-schema.org/draft/2020-12/schema#");
+
+    /**
+     * Rejects a document whose keywords are malformed. {@code getSchema} compiles a schema without checking keyword
+     * shapes, so {@code {"minItems": "x"}} would otherwise be accepted and then constrain nothing.
+     */
+    private static void requireWellFormedKeywords(JsonNode document) {
+        if (!CONSTRAINT_METASCHEMA.validate(document).isEmpty()) {
+            throw new IllegalArgumentException("schema keywords are malformed");
+        }
+    }
 
     /**
      * Rejects a declared {@code $schema} other than draft 2020-12. The factory's default applies only when the document
@@ -568,6 +596,11 @@ public class AttributeDefinitionUtils {
                 if ("$ref".equals(property.getKey()) && property.getValue().isTextual()
                         && !property.getValue().textValue().startsWith("#")) {
                     throw new IllegalArgumentException("$ref points outside the document");
+                }
+                if (LITERAL_KEYWORDS.contains(property.getKey())) {
+                    // const, enum and friends hold instance data, not subschemas, so a member named $ref
+                    // inside one is a plain value.
+                    continue;
                 }
                 rejectNonLocalRefs(property.getValue());
             }
