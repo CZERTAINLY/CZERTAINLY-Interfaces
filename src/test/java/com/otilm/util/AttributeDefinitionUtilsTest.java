@@ -36,6 +36,10 @@ import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.TimeAttributeContentV2;
 import com.otilm.core.util.AttributeDefinitionUtils;
+import com.sun.net.httpserver.HttpServer;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -48,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -1448,6 +1453,39 @@ class AttributeDefinitionUtilsTest {
         Assertions
                 .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("violates"),
                         exception.getErrors().get(0).getErrorDescription());
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaNeverFetchesARemoteRef() throws Exception {
+        // Asserting on elapsed time only infers that no fetch happened. Stand up a loopback endpoint, point a
+        // $ref at it, and assert it is never contacted.
+        HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0), 0);
+        AtomicInteger hits = new AtomicInteger();
+        server.createContext("/schema", exchange -> {
+            hits.incrementAndGet();
+            byte[] body = "{\"type\":\"object\"}".getBytes(StandardCharsets.UTF_8);
+            exchange.sendResponseHeaders(200, body.length);
+            exchange.getResponseBody().write(body);
+            exchange.close();
+        });
+        server.start();
+        try {
+            String ref = "http://%s:%d/schema"
+                    .formatted(server.getAddress().getAddress().getHostAddress(), server.getAddress().getPort());
+            DataAttributeV2 definition = jsonSchemaDefinition("{\"$ref\":\"" + ref + "\"}");
+            RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+            ValidationException exception = Assertions
+                    .assertThrows(ValidationException.class,
+                            () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+            Assertions
+                    .assertTrue(
+                            exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+            Assertions.assertEquals(0, hits.get(), "the referenced endpoint must never be contacted");
+        } finally {
+            server.stop(0);
+        }
     }
 
     private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
