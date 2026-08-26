@@ -6,6 +6,7 @@ import com.otilm.api.model.connector.discovery.v2.DiscoveryEvent;
 import com.otilm.api.model.connector.discovery.v2.DiscoveryEventType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,8 +27,15 @@ public class DiscoveryErrorEvent implements DiscoveryEvent {
     @NotNull(message = "type is required")
     private DiscoveryEventType type = DiscoveryEventType.ERROR;
 
-    @Schema(description = "Connector-defined error code", requiredMode = Schema.RequiredMode.REQUIRED)
+    /**
+     * Bounded because the platform stores it as the identity of a kind of problem and aggregates repeats onto it. A
+     * code longer than this has to be shortened to be stored, and two long codes sharing a prefix would then merge into
+     * one entry under an identity neither connector sent — so the limit is stated here and enforced at the edge, rather
+     * than left to be silently applied later.
+     */
+    @Schema(description = "Connector-defined error code", maxLength = 64, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "code is required")
+    @Size(max = 64, message = "code must not exceed 64 characters")
     private String code;
 
     @Schema(description = "Human-readable error message — curated message text (no raw exception messages)",
