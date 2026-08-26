@@ -2,6 +2,7 @@ package com.otilm.api.model.connector.v3.certificate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.otilm.api.model.core.certificate.CertificateKeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.AssertTrue;
 import java.util.List;
@@ -23,14 +24,31 @@ public class X509RequestContent extends CertificateRequestContent {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<GeneralNameEntry> subjectAltNames;
 
-    @Schema(description = "Requested X.509 extensions, excluding SAN", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Requested key usages; the key usage extension (2.5.29.15) is never duplicated in "
+            + "extensions. Criticality is not carried here: the platform marks this extension critical, which "
+            + "RFC 5280 4.2.1.3 recommends (SHOULD) rather than requires.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<CertificateKeyUsage> keyUsage;
+
+    @Schema(description = "Requested extended key usage purposes as dotted-decimal OIDs; the extended key usage "
+            + "extension (2.5.29.37) is never duplicated in extensions",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private List<String> extendedKeyUsage;
+
+    @Schema(description = "Requested X.509 extensions, excluding SAN, key usage and extended key usage",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<RequestedExtension> extensions;
 
-    @AssertTrue(message = "At least one of subject, subjectAltNames or extensions must be provided")
+    @AssertTrue(message = "At least one of subject, subjectAltNames, keyUsage, extendedKeyUsage or extensions "
+            + "must be provided")
     @JsonIgnore
     @Schema(hidden = true)
     public boolean isRequestContentProvided() {
-        return (subject != null && !subject.isEmpty()) || (subjectAltNames != null && !subjectAltNames.isEmpty())
-                || (extensions != null && !extensions.isEmpty());
+        return notEmpty(subject) || notEmpty(subjectAltNames) || notEmpty(keyUsage) || notEmpty(extendedKeyUsage)
+                || notEmpty(extensions);
+    }
+
+    private static boolean notEmpty(List<?> values) {
+        return values != null && !values.isEmpty();
     }
 }
