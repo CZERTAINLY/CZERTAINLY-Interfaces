@@ -12,12 +12,16 @@ public enum FieldType implements IPlatformEnum {
     // X.509 certificate
     RDN(Codes.RDN, "RDN"),
     SAN(Codes.SAN, "Subject Alternative Name"),
-    EXTENSION(Codes.EXTENSION, "Extension");
+    EXTENSION(Codes.EXTENSION, "Extension"),
+    KEY_USAGE(Codes.KEY_USAGE, "Key Usage"),
+    EXTENDED_KEY_USAGE(Codes.EXTENDED_KEY_USAGE, "Extended Key Usage");
 
     public static class Codes {
         public static final String RDN = "rdn";
         public static final String SAN = "san";
         public static final String EXTENSION = "extension";
+        public static final String KEY_USAGE = "keyUsage";
+        public static final String EXTENDED_KEY_USAGE = "extendedKeyUsage";
 
         private Codes() {
         }
