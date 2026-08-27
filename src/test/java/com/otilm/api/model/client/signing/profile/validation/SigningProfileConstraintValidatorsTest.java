@@ -296,7 +296,6 @@ class SigningProfileConstraintValidatorsTest {
 
     // --- ManagedSignatureFormattingConnectorValidator: content signing ---
 
-    /** Levels above SIGNED need timestamps, and a profile that cannot get them would fail at signing time instead. */
     @Test
     void aTimestampedLevelWithoutASourceIsRejected() {
         for (SignatureLevel level : List
@@ -319,7 +318,6 @@ class SigningProfileConstraintValidatorsTest {
         assertFalse(hasViolationOn(violations, "workflow.timestampSource"));
     }
 
-    /** Without the {@code @Valid} cascade on the field, the source's own rules never run at profile level. */
     @Test
     void aTimestampSourceMissingItsProfileIsRejected() {
         ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.ARCHIVAL);
@@ -350,7 +348,6 @@ class SigningProfileConstraintValidatorsTest {
         assertTrue(hasViolationOn(violations, "workflow.maxLevel"));
     }
 
-    /** Pins that both checks run unconditionally, not one short-circuiting the other via {@code &&}. */
     @Test
     void aManagedProfileMissingBothFamilyAndMaxLevelReportsBoth() {
         ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(null);
@@ -363,7 +360,6 @@ class SigningProfileConstraintValidatorsTest {
         assertTrue(hasViolationOn(violations, "workflow.maxLevel"));
     }
 
-    /** The timestamp-source check runs even when an earlier field is missing, so one round trip names every problem. */
     @Test
     void aManagedProfileMissingFamilyStillReportsTheMissingTimestampSource() {
         ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.ARCHIVAL);
@@ -376,7 +372,6 @@ class SigningProfileConstraintValidatorsTest {
         assertTrue(hasViolationOn(violations, "workflow.timestampSource"));
     }
 
-    /** Delegated signing does no formatting here, so none of the signature parameters apply to it. */
     @Test
     void aDelegatedProfileNeedsNoSignatureParameters() {
         ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
@@ -388,11 +383,6 @@ class SigningProfileConstraintValidatorsTest {
         assertFalse(hasViolationOn(violations, "workflow.maxLevel"));
     }
 
-    /**
-     * The delegated case is what makes the check scheme-aware: a level above SIGNED with no source is a contradiction
-     * only under ILM-managed signing. Naming {@code maxLevel} points at the field the caller actually set wrongly,
-     * rather than demanding a {@code timestampSource} that delegated signing has no use for.
-     */
     @Test
     void aDelegatedProfileCarryingAManagedLevelIsRejectedAtThatField() {
         ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
@@ -413,10 +403,6 @@ class SigningProfileConstraintValidatorsTest {
         assertTrue(hasViolationOn(validator.validate(profileRequest(delegatedScheme(), workflow)), "workflow.family"));
     }
 
-    /**
-     * The formatting connector is as managed-only as the rest: delegated signing formats elsewhere, so a connector
-     * bound here would never be called.
-     */
     @Test
     void aDelegatedProfileCarryingAFormattingConnectorIsRejected() {
         ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
@@ -435,7 +421,42 @@ class SigningProfileConstraintValidatorsTest {
                 "workflow.signatureFormattingConnectorAttributes"));
     }
 
-    /** The attribute list defaults to an empty one, so an untouched workflow must not trip the rejection. */
+    @Test
+    void aDelegatedProfileDemandingNonRepudiationIsRejected() {
+        ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
+        workflow.setRequireNonRepudiation(true);
+
+        assertTrue(hasViolationOn(validator.validate(profileRequest(delegatedScheme(), workflow)),
+                "workflow.requireNonRepudiation"));
+    }
+
+    @Test
+    void aDelegatedProfileSendingAnExplicitFalseNonRepudiationIsAccepted() {
+        ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
+        workflow.setRequireNonRepudiation(false);
+
+        assertFalse(hasViolationOn(validator.validate(profileRequest(delegatedScheme(), workflow)),
+                "workflow.requireNonRepudiation"));
+    }
+
+    @Test
+    void aDelegatedProfileCarryingRequiredExtendedKeyUsagesIsRejected() {
+        ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
+        workflow.setRequiredExtendedKeyUsageOids(Set.of("1.3.6.1.5.5.7.3.36"));
+
+        assertTrue(hasViolationOn(validator.validate(profileRequest(delegatedScheme(), workflow)),
+                "workflow.requiredExtendedKeyUsageOids"));
+    }
+
+    @Test
+    void aDelegatedProfileWithTheDefaultCertificatePurposeConstraintsIsAccepted() {
+        Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
+                .validate(profileRequest(delegatedScheme(), new ContentSigningWorkflowRequestDto()));
+
+        assertFalse(hasViolationOn(violations, "workflow.requireNonRepudiation"));
+        assertFalse(hasViolationOn(violations, "workflow.requiredExtendedKeyUsageOids"));
+    }
+
     @Test
     void aDelegatedProfileWithTheDefaultAttributeListIsAccepted() {
         Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
@@ -453,7 +474,6 @@ class SigningProfileConstraintValidatorsTest {
                 "workflow.timestampSource"));
     }
 
-    /** The cap is enforced at signing time whoever formats the signature, so it is the one field delegated may set. */
     @Test
     void aDelegatedProfileCarryingADocumentSizeCapIsAccepted() {
         ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
@@ -463,7 +483,6 @@ class SigningProfileConstraintValidatorsTest {
                 "workflow.documentSizeCap"));
     }
 
-    /** SIGNED embeds no timestamp, so it is the one level that needs no source. */
     @Test
     void aManagedProfileAtSignedNeedsNoTimestampSource() {
         Set<ConstraintViolation<SigningProfileRequestDto>> violations = validator
@@ -472,7 +491,6 @@ class SigningProfileConstraintValidatorsTest {
         assertFalse(hasViolationOn(violations, "workflow.timestampSource"));
     }
 
-    /** A source at SIGNED would never be invoked, so storing it is the same mistake as omitting a needed one. */
     @Test
     void aManagedProfileAtSignedCarryingATimestampSourceIsRejected() {
         ContentSigningWorkflowRequestDto workflow = contentSigningWorkflow(SignatureLevel.SIGNED);
@@ -485,7 +503,6 @@ class SigningProfileConstraintValidatorsTest {
         assertTrue(hasViolationWithMessage(violations, "timestampSource must be omitted when maxLevel is SIGNED"));
     }
 
-    /** Delegated signing rejects the source on its own grounds, so maxLevel never gets a say. */
     @Test
     void aDelegatedProfileAtNoLevelCarryingATimestampSourceIsRejectedAsDelegated() {
         ContentSigningWorkflowRequestDto workflow = new ContentSigningWorkflowRequestDto();
