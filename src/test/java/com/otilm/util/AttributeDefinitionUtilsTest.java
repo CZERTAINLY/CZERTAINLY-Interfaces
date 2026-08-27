@@ -1,5 +1,6 @@
 package com.otilm.util;
 
+import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.attribute.RequestAttributeV2;
@@ -1529,6 +1530,46 @@ class AttributeDefinitionUtilsTest {
         } finally {
             server.stop(0);
         }
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsARefUnderAnUnknownKeyword() {
+        // Draft 2020-12 permits unknown keywords as annotations, so a member named $ref inside one is a
+        // literal. Only subschema-valued keywords are walked.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"type\":\"object\",\"x-ui\":{\"$ref\":\"https://example.invalid/x\"}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaStillRejectsARemoteRefInsideASubschema() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"properties\":{\"a\":{\"$ref\":\"https://example.invalid/x\"}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateConstraints_jsonSchemaReportsUnsupportedTypeWhenContentTypeIsNull() {
+        // contentType is nullable on the definition and validateConstraints is public, so equals() on it threw
+        // where this should report an unsupported type. (Through validateAttributes a null content type is
+        // already fatal further upstream, for reasons unrelated to this constraint.)
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        definition.setContentType(null);
+
+        List<ValidationError> errors = AttributeDefinitionUtils
+                .validateConstraints(definition, List.of(new StringAttributeContentV2("{\"a\":1}")));
+
+        Assertions.assertEquals(1, errors.size());
+        Assertions.assertTrue(errors.get(0).getErrorDescription().contains("STRING and TEXT"));
     }
 
     private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {

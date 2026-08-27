@@ -69,7 +69,6 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -487,7 +486,9 @@ public class AttributeDefinitionUtils {
             // already recorded that, so there is nothing left for this constraint to validate against.
             return;
         }
-        if (!contentType.equals(AttributeContentType.STRING) && !contentType.equals(AttributeContentType.TEXT)) {
+        // Compared from the constants: contentType is nullable on the definition, and equals() on it would
+        // throw where this should simply report an unsupported type.
+        if (contentType != AttributeContentType.STRING && contentType != AttributeContentType.TEXT) {
             errors
                     .add(ValidationError
                             .create("Invalid Attribute Constraint Type and Attribute Content Type. JSON Schema can be validated only for STRING and TEXT"));
@@ -547,8 +548,16 @@ public class AttributeDefinitionUtils {
         }
     }
 
-    /** Keywords whose values are instance data rather than subschemas, so a {@code $ref} inside is a literal. */
-    private static final Set<String> LITERAL_KEYWORDS = Set.of("const", "enum", "default", "examples");
+    // Draft 2020-12 keywords whose values are subschemas. Walking only these keeps the check off instance data
+    // (const, enum, default, examples) and off unknown keywords, which the dialect permits as annotations — a
+    // member named $ref inside either is a literal, not a reference. DisallowSchemaLoader remains the boundary
+    // for anything this list does not reach.
+    private static final Set<String> SUBSCHEMA_KEYWORDS = Set
+            .of("additionalProperties", "items", "not", "if", "then", "else", "contains", "propertyNames",
+                    "unevaluatedItems", "unevaluatedProperties");
+    private static final Set<String> SUBSCHEMA_LIST_KEYWORDS = Set.of("allOf", "anyOf", "oneOf", "prefixItems");
+    private static final Set<String> SUBSCHEMA_MAP_KEYWORDS = Set
+            .of("properties", "patternProperties", "$defs", "definitions", "dependentSchemas");
 
     /**
      * Validates a candidate schema document against the dialect's own metaschema. Classpath loading is permitted so the
@@ -596,27 +605,26 @@ public class AttributeDefinitionUtils {
      * the platform does not do, so accepting one would register a constraint that enforces nothing.
      */
     private static void rejectNonLocalRefs(JsonNode node) {
-        if (node == null) {
+        if (node == null || !node.isObject()) {
             return;
         }
-        if (node.isObject()) {
-            for (Map.Entry<String, JsonNode> property : node.properties()) {
-                if ("$ref".equals(property.getKey()) && property.getValue().isTextual()
-                        && !property.getValue().textValue().startsWith("#")) {
-                    throw new IllegalArgumentException("$ref points outside the document");
-                }
-                if (LITERAL_KEYWORDS.contains(property.getKey())) {
-                    // const, enum and friends hold instance data, not subschemas, so a member named $ref
-                    // inside one is a plain value.
-                    continue;
-                }
-                rejectNonLocalRefs(property.getValue());
+        JsonNode ref = node.get("$ref");
+        if (ref != null && ref.isTextual() && !ref.textValue().startsWith("#")) {
+            throw new IllegalArgumentException("$ref points outside the document");
+        }
+        for (String keyword : SUBSCHEMA_KEYWORDS) {
+            rejectNonLocalRefs(node.get(keyword));
+        }
+        for (String keyword : SUBSCHEMA_LIST_KEYWORDS) {
+            JsonNode list = node.get(keyword);
+            if (list != null && list.isArray()) {
+                list.forEach(AttributeDefinitionUtils::rejectNonLocalRefs);
             }
-            return;
         }
-        if (node.isArray()) {
-            for (JsonNode child : node) {
-                rejectNonLocalRefs(child);
+        for (String keyword : SUBSCHEMA_MAP_KEYWORDS) {
+            JsonNode map = node.get(keyword);
+            if (map != null && map.isObject()) {
+                map.properties().forEach(entry -> rejectNonLocalRefs(entry.getValue()));
             }
         }
     }
