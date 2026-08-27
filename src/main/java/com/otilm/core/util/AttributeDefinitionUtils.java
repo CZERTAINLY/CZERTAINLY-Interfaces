@@ -69,6 +69,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -614,21 +615,23 @@ public class AttributeDefinitionUtils {
         if (ref != null && ref.isTextual() && !ref.textValue().startsWith("#")) {
             throw new IllegalArgumentException("$ref points outside the document");
         }
-        for (String keyword : SUBSCHEMA_KEYWORDS) {
-            rejectNonLocalRefs(node.get(keyword));
+        for (Map.Entry<String, JsonNode> property : node.properties()) {
+            subschemasOf(property.getKey(), property.getValue()).forEach(AttributeDefinitionUtils::rejectNonLocalRefs);
         }
-        for (String keyword : SUBSCHEMA_LIST_KEYWORDS) {
-            JsonNode list = node.get(keyword);
-            if (list != null && list.isArray()) {
-                list.forEach(AttributeDefinitionUtils::rejectNonLocalRefs);
-            }
+    }
+
+    /** The subschemas a keyword's value holds, or nothing when the keyword does not hold subschemas. */
+    private static List<JsonNode> subschemasOf(String keyword, JsonNode value) {
+        if (SUBSCHEMA_KEYWORDS.contains(keyword)) {
+            return List.of(value);
         }
-        for (String keyword : SUBSCHEMA_MAP_KEYWORDS) {
-            JsonNode map = node.get(keyword);
-            if (map != null && map.isObject()) {
-                map.properties().forEach(entry -> rejectNonLocalRefs(entry.getValue()));
-            }
+        List<JsonNode> children = new ArrayList<>();
+        if (SUBSCHEMA_LIST_KEYWORDS.contains(keyword) && value.isArray()) {
+            value.forEach(children::add);
+        } else if (SUBSCHEMA_MAP_KEYWORDS.contains(keyword) && value.isObject()) {
+            value.properties().forEach(entry -> children.add(entry.getValue()));
         }
+        return children;
     }
 
     private static void validateRangeConstraint(List<? extends AttributeContent> contents,
