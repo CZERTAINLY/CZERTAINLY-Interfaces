@@ -482,6 +482,11 @@ public class AttributeDefinitionUtils {
     private static void validateJsonSchemaConstraint(List<? extends AttributeContent> contents,
             BaseAttributeConstraint<?> constraint, AttributeContentType contentType, List<ValidationError> errors,
             String label) {
+        if (contents == null) {
+            // A non-required attribute with no content reaches here with contents == null; validateAttributeContent
+            // already recorded that, so there is nothing left for this constraint to validate against.
+            return;
+        }
         if (!contentType.equals(AttributeContentType.STRING) && !contentType.equals(AttributeContentType.TEXT)) {
             errors
                     .add(ValidationError

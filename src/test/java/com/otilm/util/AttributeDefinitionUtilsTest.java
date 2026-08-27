@@ -1439,6 +1439,35 @@ class AttributeDefinitionUtilsTest {
     }
 
     @Test
+    void testValidateAttributes_jsonSchemaOnNonRequiredAttributeWithNoContentDoesNotThrowNpe() {
+        // A non-required attribute with no content reaches the constraint as contents == null. Content validation
+        // already rejects it with a clean ValidationException; the constraint must not additionally NPE on top of
+        // that by iterating a null list.
+        JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
+        constraint.setData("{\"type\":\"object\"}");
+        DataAttributeV2 definition = new DataAttributeV2();
+        definition.setName("jsonAttribute");
+        definition.setUuid("2f6c1b10-0000-4000-8000-000000000042");
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.STRING);
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(false);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeV2 attribute = new RequestAttributeV2();
+        attribute.setName(definition.getName());
+        attribute.setUuid(UUID.fromString(definition.getUuid()));
+        attribute.setContent(null);
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("wrong value"));
+    }
+
+    @Test
     void testValidateAttributes_jsonSchemaRejectsMalformedKeywords() {
         // getSchema compiles these without complaint, so the constraint would enforce nothing.
         DataAttributeV2 definition = jsonSchemaDefinition("{\"minItems\":\"x\"}");
