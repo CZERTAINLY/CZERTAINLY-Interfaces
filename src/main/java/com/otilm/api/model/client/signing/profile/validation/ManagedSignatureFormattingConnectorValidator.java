@@ -8,7 +8,7 @@ import com.otilm.api.model.common.signature.SignatureLevel;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 public class ManagedSignatureFormattingConnectorValidator
@@ -100,15 +100,30 @@ public class ManagedSignatureFormattingConnectorValidator
         boolean maxLevelAbsent = rejectOnDelegatedWorkflow(context, "maxLevel", workflow.getMaxLevel());
         boolean sourceAbsent = rejectOnDelegatedWorkflow(context, TIMESTAMP_SOURCE_PROPERTY,
                 workflow.getTimestampSource());
-        return connectorAbsent && attributesAbsent && familyAbsent && maxLevelAbsent && sourceAbsent;
+        boolean nonRepudiationAbsent = rejectTrueOnDelegatedWorkflow(context, "requireNonRepudiation",
+                workflow.getRequireNonRepudiation());
+        boolean extendedKeyUsageAbsent = rejectOnDelegatedWorkflow(context, "requiredExtendedKeyUsageOids",
+                workflow.getRequiredExtendedKeyUsageOids());
+        return connectorAbsent && attributesAbsent && familyAbsent && maxLevelAbsent && sourceAbsent
+                && nonRepudiationAbsent && extendedKeyUsageAbsent;
     }
 
-    /** The attribute list defaults to an empty one, so only a populated list counts as the caller having set it. */
-    private boolean rejectOnDelegatedWorkflow(ConstraintValidatorContext context, String property, List<?> values) {
+    private boolean rejectOnDelegatedWorkflow(ConstraintValidatorContext context, String property,
+            Collection<?> values) {
         if (values == null || values.isEmpty()) {
             return true;
         }
         return rejectOnDelegatedWorkflow(context, property, (Object) values);
+    }
+
+    /**
+     * An explicit {@code false} asks for no constraint and is tolerated.
+     */
+    private boolean rejectTrueOnDelegatedWorkflow(ConstraintValidatorContext context, String property, Boolean value) {
+        if (!Boolean.TRUE.equals(value)) {
+            return true;
+        }
+        return rejectOnDelegatedWorkflow(context, property, (Object) value);
     }
 
     private boolean rejectOnDelegatedWorkflow(ConstraintValidatorContext context, String property, Object value) {
