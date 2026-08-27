@@ -1424,6 +1424,21 @@ class AttributeDefinitionUtilsTest {
     }
 
     @Test
+    void testValidateAttributes_jsonSchemaRejectsTrailingContentInValue() {
+        // Mirrors testValidateAttributes_jsonSchemaRejectsTrailingContent, but for the value being validated rather
+        // than the schema document: readTree stops at the first complete value, so a schema-valid prefix followed by
+        // trailing content would otherwise pass on the prefix alone while the full string reaches the connector.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1} and then some");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("not well-formed JSON"));
+    }
+
+    @Test
     void testValidateAttributes_jsonSchemaRejectsMalformedKeywords() {
         // getSchema compiles these without complaint, so the constraint would enforce nothing.
         DataAttributeV2 definition = jsonSchemaDefinition("{\"minItems\":\"x\"}");

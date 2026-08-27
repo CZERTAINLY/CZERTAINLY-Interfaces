@@ -508,7 +508,10 @@ public class AttributeDefinitionUtils {
         for (AttributeContent value : contents) {
             JsonNode document;
             try {
-                document = ATTRIBUTES_OBJECT_MAPPER.readTree((String) value.getData());
+                document = ATTRIBUTES_OBJECT_MAPPER
+                        .reader()
+                        .with(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+                        .readTree((String) value.getData());
             } catch (Exception e) {
                 errors
                         .add(ValidationError
