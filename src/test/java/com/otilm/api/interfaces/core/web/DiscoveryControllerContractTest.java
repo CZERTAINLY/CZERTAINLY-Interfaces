@@ -39,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DiscoveryControllerContractTest {
 
     private static final String ITEMS_PATH = "/{uuid}/items";
+    private static final String MESSAGES_PATH = "/{uuid}/messages";
     private static final Set<String> LIFECYCLE_METHODS = Set.of("stopDiscovery", "resumeDiscovery", "cancelDiscovery");
 
     private Method method(String name) {
@@ -99,6 +100,41 @@ class DiscoveryControllerContractTest {
         // convention, and the frontend pages both listings with the same helper.
         assertEquals(pagingDefaults("getDiscoveryCertificates"), pagingDefaults("getDiscoveryItems"),
                 "the items listing must page exactly like the certificate listing");
+    }
+
+    @Test
+    void runMessagesListingIsAGetOnItsDocumentedPath() {
+        Method messages = method("getDiscoveryRunMessages");
+        GetMapping mapping = messages.getAnnotation(GetMapping.class);
+        assertNotNull(mapping, "expected @GetMapping on getDiscoveryRunMessages");
+        assertEquals(1, mapping.path().length, "expected exactly one path on getDiscoveryRunMessages");
+        assertEquals(MESSAGES_PATH, mapping.path()[0]);
+    }
+
+    @Test
+    void runMessagesListingPagesLikeEveryOtherListing() {
+        // Same reasoning as the items listing: the two defaults are the house convention and the frontend pages
+        // all three listings with one helper, so a listing that invents its own contract breaks that helper.
+        assertEquals(pagingDefaults("getDiscoveryCertificates"), pagingDefaults("getDiscoveryRunMessages"),
+                "the run messages listing must page exactly like the certificate listing");
+
+        RequestParam itemsPerPage = requestParamNamed("getDiscoveryRunMessages", "itemsPerPage");
+        assertFalse(itemsPerPage.required(), "itemsPerPage must stay optional");
+        RequestParam pageNumber = requestParamNamed("getDiscoveryRunMessages", "pageNumber");
+        assertFalse(pageNumber.required(), "pageNumber must stay optional");
+    }
+
+    /**
+     * The log is reachable only by uuid, so a run that does not exist and a run with an empty log must not look the
+     * same to a client — the first is a 404, the second a page with no items.
+     */
+    @Test
+    void runMessagesListingDocumentsTheNotFoundAnswer() {
+        ApiResponses responses = method("getDiscoveryRunMessages").getAnnotation(ApiResponses.class);
+        assertNotNull(responses, "expected @ApiResponses on getDiscoveryRunMessages");
+        Set<String> codes = Arrays.stream(responses.value()).map(ApiResponse::responseCode).collect(Collectors.toSet());
+        assertTrue(codes.contains("200"), "the success answer must be documented: " + codes);
+        assertTrue(codes.contains("404"), "an unknown run must be documented as 404, not an empty page: " + codes);
     }
 
     @Test

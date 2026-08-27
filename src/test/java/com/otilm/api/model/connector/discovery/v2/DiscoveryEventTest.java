@@ -238,6 +238,30 @@ class DiscoveryEventTest {
     }
 
     @Test
+    void errorCodeLongerThanTheBoundFailsValidation() {
+        DiscoveryErrorEvent error = new DiscoveryErrorEvent();
+        error.setCode("C".repeat(65));
+        error.setMessage("upstream connection timed out");
+
+        Set<ConstraintViolation<DiscoveryErrorEvent>> violations = VALIDATOR.validate(error);
+
+        // The platform stores the code as the identity of a kind of problem. An unbounded one has to be shortened
+        // to be stored, and two long codes sharing a prefix would then aggregate as one entry -- so the contract
+        // refuses the code rather than leaving it to be silently rewritten.
+        assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("code")),
+                "a code past 64 characters must fail the @Size constraint");
+    }
+
+    @Test
+    void errorCodeAtTheBoundPassesValidation() {
+        DiscoveryErrorEvent error = new DiscoveryErrorEvent();
+        error.setCode("C".repeat(64));
+        error.setMessage("upstream connection timed out");
+
+        assertTrue(VALIDATOR.validate(error).isEmpty(), "64 characters is the longest code a connector may send");
+    }
+
+    @Test
     void errorMissingMessageFailsNotNullValidation() {
         DiscoveryErrorEvent error = new DiscoveryErrorEvent();
         error.setCode("CONN_TIMEOUT");
