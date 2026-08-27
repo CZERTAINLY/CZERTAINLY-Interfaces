@@ -28,9 +28,10 @@ public class DiscoveryErrorEvent implements DiscoveryEvent {
     private DiscoveryEventType type = DiscoveryEventType.ERROR;
 
     /**
-     * Bounded because the platform uses it as the identity of a kind of problem and aggregates repeats onto it. A
-     * longer code is shortened before it is recorded, and two long codes sharing a prefix would then merge into one
-     * entry under an identity neither connector sent. Stated here so the edge can refuse it instead.
+     * Bounded because the platform uses it as the identity of a kind of problem and aggregates repeats onto it, so a
+     * code outside this bound is not recorded as the connector sent it — it is replaced by the platform's own, rather
+     * than shortened into an identity no connector chose. Published here as the limit to write to; a response body is
+     * not bean-validated, so nothing rejects an oversized code on arrival.
      */
     @Schema(description = "Connector-defined error code", maxLength = 64, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "code is required")
