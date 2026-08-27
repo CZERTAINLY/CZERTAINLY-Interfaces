@@ -7,15 +7,25 @@ import com.otilm.api.model.client.signing.profile.workflow.timestamp.TimestampSo
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.SignatureLevel;
+import com.otilm.api.testsupport.ValidatorFixture;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
+import java.util.Set;
 import java.util.UUID;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContentSigningWorkflowDtoTest {
+
+    @AutoClose
+    private static final ValidatorFixture VALIDATORS = new ValidatorFixture();
+    private static final Validator VALIDATOR = VALIDATORS.validator();
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -26,6 +36,8 @@ class ContentSigningWorkflowDtoTest {
         dto.setMaxLevel(SignatureLevel.ARCHIVAL);
         dto.setTimestampSource(new InternalTimestampSourceRequestDto(UUID.randomUUID()));
         dto.setDocumentSizeCap(5_242_880L);
+        dto.setRequireNonRepudiation(true);
+        dto.setRequiredExtendedKeyUsageOids(Set.of("1.3.6.1.5.5.7.3.36"));
         return dto;
     }
 
@@ -44,6 +56,8 @@ class ContentSigningWorkflowDtoTest {
         assertEquals(5_242_880L, workflow.getDocumentSizeCap());
         assertEquals(TimestampSourceType.INTERNAL, workflow.getTimestampSource().getType());
         assertEquals(original.getTimestampSource(), workflow.getTimestampSource());
+        assertEquals(Boolean.TRUE, workflow.getRequireNonRepudiation());
+        assertEquals(Set.of("1.3.6.1.5.5.7.3.36"), workflow.getRequiredExtendedKeyUsageOids());
     }
 
     @Test
@@ -64,9 +78,8 @@ class ContentSigningWorkflowDtoTest {
         assertEquals(original.getTimestampSource(), workflow.getTimestampSource());
     }
 
-    /** A delegated-signing profile carries none of these fields. */
     @Test
-    void allFourFieldsAreOptionalOnTheWire() throws Exception {
+    void everyIlmManagedFieldIsOptionalOnTheWire() throws Exception {
         WorkflowRequestDto decoded = mapper.readValue("{\"type\":\"content_signing\"}", WorkflowRequestDto.class);
 
         ContentSigningWorkflowRequestDto workflow = assertInstanceOf(ContentSigningWorkflowRequestDto.class, decoded);
@@ -74,6 +87,8 @@ class ContentSigningWorkflowDtoTest {
         assertNull(workflow.getMaxLevel());
         assertNull(workflow.getTimestampSource());
         assertNull(workflow.getDocumentSizeCap());
+        assertNull(workflow.getRequireNonRepudiation());
+        assertTrue(workflow.getRequiredExtendedKeyUsageOids().isEmpty());
     }
 
     @Test
@@ -82,5 +97,53 @@ class ContentSigningWorkflowDtoTest {
 
         assertTrue(json.contains("\"family\":\"pades\""), json);
         assertTrue(json.contains("\"maxLevel\":\"archival\""), json);
+    }
+
+    @Test
+    void theCertificatePurposeConstraintsDefaultToTheUntightenedRule() {
+        ContentSigningWorkflowRequestDto request = new ContentSigningWorkflowRequestDto();
+
+        assertNull(request.getRequireNonRepudiation());
+        assertTrue(request.getRequiredExtendedKeyUsageOids().isEmpty());
+    }
+
+    @Test
+    void anEkuEntryThatIsNotAnOidIsRejected() {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        request.setRequiredExtendedKeyUsageOids(Set.of("id-kp-documentSigning"));
+
+        Set<ConstraintViolation<ContentSigningWorkflowRequestDto>> violations = VALIDATOR.validate(request);
+
+        assertEquals(1, violations.size(), violations.toString());
+        assertEquals("Invalid OID format", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    void aBlankEkuEntryIsRejected() {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        request.setRequiredExtendedKeyUsageOids(Set.of(" "));
+
+        assertFalse(VALIDATOR.validate(request).isEmpty());
+    }
+
+    @Test
+    void aWellFormedEkuOidPasses() {
+        assertTrue(VALIDATOR.validate(fullyConfiguredRequest()).isEmpty());
+    }
+
+    @Test
+    void anEkuOidWhoseSecondArcExceedsItsRootIsRejected() {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        request.setRequiredExtendedKeyUsageOids(Set.of("1.40.1"));
+
+        assertFalse(VALIDATOR.validate(request).isEmpty());
+    }
+
+    @Test
+    void anEkuOidUnderTheUnrestrictedRootIsAccepted() {
+        ContentSigningWorkflowRequestDto request = fullyConfiguredRequest();
+        request.setRequiredExtendedKeyUsageOids(Set.of("2.999.1", "1.39.1"));
+
+        assertTrue(VALIDATOR.validate(request).isEmpty());
     }
 }
