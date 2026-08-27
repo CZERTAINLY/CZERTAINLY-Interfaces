@@ -4,6 +4,7 @@ import com.otilm.api.interfaces.core.web.DiscoveryController;
 import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
+import com.otilm.api.model.core.discovery.DiscoveryMessageSeverity;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -240,5 +242,52 @@ class DiscoveryV2SchemaGenerationTest {
         assertNotNull(payload, "the item payload union did not survive into the page's referenced schemas");
         assertNotNull(payload.getDiscriminator(), "the payload lost its discriminator inside the generic envelope");
         assertEquals("resource", payload.getDiscriminator().getPropertyName());
+    }
+
+    /**
+     * The run-messages listing, resolved the same way and for the same two reasons: the component name is what client
+     * generators turn into a type name, and the severity enum reaches a client through the erased generic.
+     *
+     * <p>
+     * {@code DiscoveryMessageDto} omits a description on its {@code severity} field because OpenAPI 3.0 cannot carry
+     * one beside a {@code $ref}, and swagger-core hoists it onto the shared component instead — the failure
+     * {@link #discoveryDoesNotRewriteThePlatformWideResourceComponent} pins for {@code Resource}.
+     */
+    @Test
+    void runMessagesListingResolvesToAPageKeepingTheSeverityComponentIntact() throws Exception {
+        String ownDescription = ModelConverters
+                .getInstance()
+                .readAll(DiscoveryMessageSeverity.class)
+                .get("DiscoveryMessageSeverity")
+                .getDescription();
+
+        Method listing = DiscoveryController.class
+                .getDeclaredMethod("getDiscoveryRunMessages", String.class, int.class, int.class);
+
+        ResolvedSchema resolved = ModelConverters
+                .getInstance()
+                .resolveAsResolvedSchema(new AnnotatedType(listing.getGenericReturnType()).resolveAsRef(true));
+
+        assertEquals("#/components/schemas/PaginationResponseDtoDiscoveryMessageDto", resolved.schema.get$ref(),
+                "the generated type name client generators see is derived from the element type");
+
+        Schema<?> page = resolved.referencedSchemas.get("PaginationResponseDtoDiscoveryMessageDto");
+        assertNotNull(page, "no page component was generated");
+        assertEquals(java.util.Set.of("items", "itemsPerPage", "pageNumber", "totalPages", "totalItems"),
+                page.getProperties().keySet(), "property order is not part of the OpenAPI contract, names are");
+
+        Schema<?> severity = resolved.referencedSchemas.get("DiscoveryMessageSeverity");
+        assertNotNull(severity, "the severity enum did not survive into the page's referenced schemas");
+        // Null on both sides under this repo's enum pattern -- the @Schema description sits on the enum's code
+        // field, not on the type, so the component carries none. That is what makes the equality meaningful
+        // rather than vacuous: a description added on the referencing field would be hoisted onto the shared
+        // component, turning this side non-null while a standalone read stays null.
+        assertNull(ownDescription, "DiscoveryMessageSeverity is expected to carry no component-level description");
+        assertEquals(ownDescription, severity.getDescription(),
+                "reaching DiscoveryMessageSeverity through the listing must not give it a description: one on the "
+                        + "referencing field gets hoisted onto the shared component, because OpenAPI 3.0 cannot "
+                        + "carry a description beside a $ref");
+        assertEquals(List.of("info", "warning", "error"), severity.getEnum(),
+                "the enum ships its wire codes, not its Java member names");
     }
 }

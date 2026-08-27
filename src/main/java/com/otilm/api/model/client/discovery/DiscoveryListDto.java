@@ -20,7 +20,7 @@ public class DiscoveryListDto extends NameAndUuidDto implements AttributeProject
     @Schema(description = "Discovery Kind", examples = {"IP-HostName"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "Status of Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private DiscoveryStatus status;
 
     @Schema(description = "Date and time when Discovery started", nullable = true)
