@@ -19,6 +19,7 @@ import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.connector.discovery.v2.DiscoverySupportedResourceDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
+import com.otilm.api.model.core.discovery.DiscoveryMessageDto;
 import com.otilm.api.model.core.scheduler.ScheduleDiscoveryDto;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,8 +47,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Core-web discovery management: run CRUD plus the discovery v2 additions — a resource-agnostic item listing, three
- * connector-keyed relay endpoints and three run-lifecycle operations.
+ * Core-web discovery management: run CRUD plus the discovery v2 additions — a resource-agnostic item listing, a paged
+ * run-messages listing, connector-keyed relay endpoints and run-lifecycle operations.
  *
  * <p>
  * <b>Connector-keyed relays.</b> {@link #listDiscoveryResources}, {@link #getDiscoveryAttributes} and
@@ -146,6 +147,32 @@ public interface DiscoveryController extends AuthProtectedController {
                     description = "Resource type to list, identified by its wire code (e.g. \"certificates\", \"keys\"); omit to list every resource type this run discovered") @RequestParam(
                             required = false) Resource resource,
             @RequestParam(required = false) Boolean newlyDiscovered,
+            @RequestParam(required = false, defaultValue = "10") int itemsPerPage,
+            @RequestParam(required = false, defaultValue = "0") int pageNumber) throws NotFoundException;
+
+    /**
+     * The run's advisory message log, paged rather than carried on the detail — see
+     * {@link com.otilm.api.model.client.discovery.DiscoveryDetailDto}'s {@code runMessageCount} for why it is counted
+     * there and read here.
+     *
+     * <p>
+     * The order the operation promises is the order the platform recorded each problem in, deliberately not "by
+     * timestamp": every message written in one tick shares a transaction-start time, so a timestamp is not a total
+     * order and paging on it would drop or repeat rows. The entry that explains a run is usually the one that started
+     * it, which is why the first page is the useful one.
+     */
+    @Operation(summary = "List Discovery Run Messages",
+            description = "Returns one page of the advisory messages a Discovery run collected, oldest first and "
+                    + "stable across pages. Repeated problems are aggregated into a single entry carrying an "
+                    + "occurrence count rather than repeated per occurrence. Messages are advisory: collecting them "
+                    + "does not imply the run failed.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Discovery run messages retrieved"),
+            @ApiResponse(responseCode = "404", description = "Discovery not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+    @GetMapping(path = "/{uuid}/messages", produces = {"application/json"})
+    PaginationResponseDto<DiscoveryMessageDto> getDiscoveryRunMessages(
+            @Parameter(description = "Discovery UUID") @PathVariable String uuid,
             @RequestParam(required = false, defaultValue = "10") int itemsPerPage,
             @RequestParam(required = false, defaultValue = "0") int pageNumber) throws NotFoundException;
 

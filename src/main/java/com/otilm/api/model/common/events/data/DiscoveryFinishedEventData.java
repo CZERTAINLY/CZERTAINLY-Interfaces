@@ -26,7 +26,7 @@ public class DiscoveryFinishedEventData implements EventData {
     @Schema(description = "Discovery connector name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String discoveryConnectorName;
 
-    @Schema(description = "Discovery status", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private DiscoveryStatus discoveryStatus;
 
     @Schema(description = "Total certificates discovered", requiredMode = Schema.RequiredMode.REQUIRED)

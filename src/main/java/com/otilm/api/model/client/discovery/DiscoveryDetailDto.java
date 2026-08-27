@@ -23,10 +23,10 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "Discovery Kind", examples = {"IP-HostName"}, requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
 
-    @Schema(description = "Status of Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private DiscoveryStatus status;
 
-    @Schema(description = "Status of Discovery returned by connector", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private DiscoveryStatus connectorStatus;
 
     @Schema(description = "Failure/Success Messages", examples = {"Failed due to network connectivity issues"})
@@ -62,10 +62,10 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "List of associated triggers", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<TriggerDto> triggers = new ArrayList<>();
 
-    // The four fields below are the discovery v2 additions, each individually @JsonInclude(NON_NULL) so a
-    // v1 run's payload keeps its existing shape — a class-level annotation would have silently changed
-    // every v1 response. resources and stoppable are still always present (Core synthesizes them for
-    // v1-connector runs); their NON_NULL only turns a broken mapper's null into a loud absence.
+    // The fields below are the discovery v2 additions. The object-typed ones carry
+    // @JsonInclude(NON_NULL) individually so a v1 run's payload keeps its existing shape; a class-level
+    // annotation would have changed every v1 response. runMessageCount is a primitive and always emitted,
+    // 0 for a v1 run. resources and stoppable are always present too, synthesized by Core for v1 runs.
 
     // The arraySchema indirection is deliberate: a bare @Schema description on a collection member lands
     // on the items schema — a $ref to a shared component — and swagger-core hoists it onto that component
@@ -91,20 +91,23 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     private DiscoveryProgressDto progress;
 
     /**
-     * <b>Safety:</b> curated text only — a raw exception message must never pass through here; it can carry credentials
-     * or connection internals ({@code DiscoveryErrorEvent} states the same rule for the connector side).
+     * A count rather than the log itself. The messages are their own paged resource
+     * ({@code GET /v1/discoveries/{uuid}/messages}), because a client polls this detail while a run is live and a log
+     * bounded only by "large" would ride along on every poll. The count is enough to badge the log without reading it,
+     * and it is what tells a client whether the log is worth opening at all.
      *
      * <p>
      * <b>Relation to {@code message}:</b> {@code message} carries the single summary reason for the run's current
-     * status; entries here are advisory, accumulate over the run's lifetime, and a run can collect them and still
-     * complete.
+     * status; the messages this counts accumulate over the run's lifetime instead.
+     *
+     * <p>
+     * Primitive and REQUIRED: a run with nothing to report has none, which is 0 rather than absent.
      */
-    @Schema(description = "Advisory messages collected over the run's lifetime — non-fatal connector "
-            + "errors and per-phase failure reasons — newest last. Entries do not imply the run "
-            + "failed. Curated message text; never a raw exception message.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<String> runMessages;
+    @Schema(description = "How many distinct advisory messages this run collected, as counted by the run messages "
+            + "listing. Repeated problems are aggregated, so this counts kinds of problem rather than occurrences. "
+            + "A non-zero count does not imply the run failed. Always 0 for runs against a v1 Discovery Provider.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private long runMessageCount;
 
     /**
      * <b>Provenance:</b> declared by the connector at initiate and refreshed on resume; derived by Core from the
