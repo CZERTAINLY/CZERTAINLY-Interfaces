@@ -1,5 +1,7 @@
 package com.otilm.api.model.client.signing.profile.workflow.validation;
 
+import com.otilm.api.model.common.validation.OidFormat;
+
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -15,7 +17,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ValidOid {
 
-    String message() default "Invalid OID format";
+    String message() default OidFormat.MESSAGE;
 
     Class<?>[] groups() default {};
 
