@@ -28,8 +28,8 @@ public class DiscoveryErrorEvent implements DiscoveryEvent {
     private DiscoveryEventType type = DiscoveryEventType.ERROR;
 
     /**
-     * Bounded because the platform stores it as the identity of a kind of problem and aggregates repeats onto it: an
-     * unbounded code has to be shortened to be stored, and two long codes sharing a prefix would then merge into one
+     * Bounded because the platform uses it as the identity of a kind of problem and aggregates repeats onto it. A
+     * longer code is shortened before it is recorded, and two long codes sharing a prefix would then merge into one
      * entry under an identity neither connector sent. Stated here so the edge can refuse it instead.
      */
     @Schema(description = "Connector-defined error code", maxLength = 64, requiredMode = Schema.RequiredMode.REQUIRED)
