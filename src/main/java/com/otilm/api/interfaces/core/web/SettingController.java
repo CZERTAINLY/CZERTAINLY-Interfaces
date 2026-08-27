@@ -61,11 +61,14 @@ public interface SettingController extends AuthProtectedController {
      * still returns one: the read is the same grant either way.
      */
     @Operation(summary = "Update platform branding",
-            description = "The only way to write branding. It is deliberately absent from the "
+            description = "The only way to write branding.\n\n"
+                    + "**Authorization:** gated by `UPDATE_BRANDING`, a narrower action than the `UPDATE` that gates "
+                    + "the rest of settings. This is why branding is deliberately absent from the "
                     + "`PUT /v1/settings/platform` body: authorization is applied per endpoint, so branding carried "
-                    + "in that body would be writable by anyone holding plain `UPDATE` over settings, and the "
-                    + "narrower `UPDATE_BRANDING` action that gates this endpoint would grant nothing extra. The "
-                    + "request carries the full desired state — a field left out clears that part of the branding.")
+                    + "in that body would be writable by anyone holding plain `UPDATE`, and `UPDATE_BRANDING` would "
+                    + "grant nothing extra.\n\n"
+                    + "**Request semantics:** the request carries the full desired state. A field left out clears "
+                    + "that part of the branding.")
     @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Platform branding updated")})
     @PutMapping(path = "/platform/branding", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
