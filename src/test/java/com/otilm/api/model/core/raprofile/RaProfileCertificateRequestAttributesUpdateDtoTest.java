@@ -3,7 +3,10 @@ package com.otilm.api.model.core.raprofile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.mapping.ValueSourceType;
+import com.otilm.api.testsupport.ValidatorFixture;
+import jakarta.validation.Validator;
 import java.util.List;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 import static com.otilm.util.builders.DataAttributeV3Builder.aDataAttribute;
@@ -13,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RaProfileCertificateRequestAttributesUpdateDtoTest {
+
+    @AutoClose
+    private static final ValidatorFixture VALIDATORS = new ValidatorFixture();
+    private static final Validator VALIDATOR = VALIDATORS.validator();
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -57,10 +64,10 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
         RaProfileCertificateRequestAttributesUpdateDto back = mapper
                 .readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
 
-        // since it is hidden, it should not return it
-        // then — valueSourceBindings is hidden from JSON and strictness still round-trips
-        assertFalse(json.contains("valueSourceBindings"));
-        assertEquals(0, back.getValueSourceBindings().size());
+        // then
+        assertEquals(1, back.getValueSourceBindings().size());
+        assertEquals(boundName, back.getValueSourceBindings().get(0).getAttributeName());
+        assertEquals(ValueSourceType.CONNECTOR_CALLBACK, back.getValueSourceBindings().get(0).getValueSourceType());
         assertEquals(Boolean.TRUE, back.getExternalCsrValidationStrict());
     }
 
@@ -106,6 +113,29 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
 
         // when / then
         assertFalse(dto.isValueSourceBindingsUnique());
+    }
+
+    @Test
+    void rejectsDuplicateBindingTargetsArrivingAsJson() throws Exception {
+        // given — a payload binding the same attribute twice
+        var json = """
+                {"valueSourceBindings":[
+                  {"attributeUuid":"u1","valueSourceType":"staticList"},
+                  {"attributeUuid":"u1","valueSourceType":"staticList"}]}""";
+
+        // when
+        var dto = mapper.readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
+
+        // then
+        assertEquals(1, VALIDATOR.validate(dto).size());
+    }
+
+    @Test
+    void defaultsToStaticOnlyWhenMergeModeAbsentFromJson() throws Exception {
+        // Merge modes are opt-in: a client that omits mergeMode must not start consulting the connector.
+        var dto = mapper.readValue("{\"requestAttributes\":[]}", RaProfileCertificateRequestAttributesUpdateDto.class);
+
+        assertEquals(AttributeSetMergeMode.STATIC_ONLY, dto.getMergeMode());
     }
 
     private static ValueSourceBindingDto bindingByUuid(String uuid) {
