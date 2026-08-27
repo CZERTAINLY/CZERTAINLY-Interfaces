@@ -556,8 +556,10 @@ public class AttributeDefinitionUtils {
             .of("additionalProperties", "items", "not", "if", "then", "else", "contains", "propertyNames",
                     "unevaluatedItems", "unevaluatedProperties");
     private static final Set<String> SUBSCHEMA_LIST_KEYWORDS = Set.of("allOf", "anyOf", "oneOf", "prefixItems");
+    // "definitions" is deliberately absent: draft 2020-12 replaced it with $defs and treats it as an
+    // annotation, so a $ref inside one is data.
     private static final Set<String> SUBSCHEMA_MAP_KEYWORDS = Set
-            .of("properties", "patternProperties", "$defs", "definitions", "dependentSchemas");
+            .of("properties", "patternProperties", "$defs", "dependentSchemas");
 
     /**
      * Validates a candidate schema document against the dialect's own metaschema. Classpath loading is permitted so the

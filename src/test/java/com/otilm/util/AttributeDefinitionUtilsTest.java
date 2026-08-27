@@ -1572,6 +1572,31 @@ class AttributeDefinitionUtilsTest {
         Assertions.assertTrue(errors.get(0).getErrorDescription().contains("STRING and TEXT"));
     }
 
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsARefUnderTheDefinitionsAnnotation() {
+        // Draft 2020-12 replaced definitions with $defs and treats it as an annotation, so a $ref inside one
+        // is data rather than a reference.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"type\":\"object\",\"definitions\":{\"x\":{\"$ref\":\"https://example.invalid/x\"}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaStillRejectsARemoteRefUnderDefs() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$defs\":{\"x\":{\"$ref\":\"https://example.invalid/x\"}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
     private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
         JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
         constraint.setData(schemaDocument);
