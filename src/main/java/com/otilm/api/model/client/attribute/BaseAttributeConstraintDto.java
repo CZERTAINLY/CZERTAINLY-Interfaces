@@ -2,6 +2,7 @@ package com.otilm.api.model.client.attribute;
 
 import com.otilm.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.otilm.api.model.common.attribute.common.constraint.DateTimeAttributeConstraint;
+import com.otilm.api.model.common.attribute.common.constraint.JsonSchemaAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RangeAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
@@ -15,8 +16,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
                 @DiscriminatorMapping(value = AttributeConstraintType.Codes.RANGE,
                         schema = RangeAttributeConstraint.class),
                 @DiscriminatorMapping(value = AttributeConstraintType.Codes.DATETIME,
-                        schema = DateTimeAttributeConstraint.class)},
-        oneOf = {RegexpAttributeConstraint.class, RangeAttributeConstraint.class, DateTimeAttributeConstraint.class})
+                        schema = DateTimeAttributeConstraint.class),
+                @DiscriminatorMapping(value = AttributeConstraintType.Codes.JSON_SCHEMA,
+                        schema = JsonSchemaAttributeConstraint.class)},
+        oneOf = {
+                RegexpAttributeConstraint.class,
+                RangeAttributeConstraint.class,
+                DateTimeAttributeConstraint.class,
+                JsonSchemaAttributeConstraint.class})
 public interface BaseAttributeConstraintDto {
     @Schema(description = "Description of the constraint")
     String getDescription();
