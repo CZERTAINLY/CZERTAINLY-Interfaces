@@ -1597,6 +1597,36 @@ class AttributeDefinitionUtilsTest {
                 .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
     }
 
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsAnEmptyRefAndAnAbsoluteSelfReference() {
+        // Draft 2020-12: "" is the document root, and an absolute reference matching the document's own $id
+        // resolves inside it. Neither needs an external load.
+        DataAttributeV2 emptyRef = jsonSchemaDefinition("{\"$defs\":{\"n\":{\"$ref\":\"\"}},\"type\":\"object\"}");
+        Assertions
+                .assertDoesNotThrow(
+                        () -> validateAttributes(List.of(emptyRef), List.of(stringAttribute(emptyRef, "{\"a\":1}"))));
+
+        DataAttributeV2 selfRef = jsonSchemaDefinition("{\"$id\":\"https://example.test/s\","
+                + "\"$defs\":{\"n\":{\"type\":\"object\"}},\"$ref\":\"https://example.test/s#/$defs/n\"}");
+        Assertions
+                .assertDoesNotThrow(
+                        () -> validateAttributes(List.of(selfRef), List.of(stringAttribute(selfRef, "{\"a\":1}"))));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaStillRejectsAnAbsoluteRefToAnotherDocument() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$id\":\"https://example.test/s\",\"$ref\":\"https://elsewhere.invalid/other#/x\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
     private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
         JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
         constraint.setData(schemaDocument);

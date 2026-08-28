@@ -502,7 +502,7 @@ public class AttributeDefinitionUtils {
                     .with(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
                     .readTree((String) constraint.getData());
             requireSupportedDialect(document);
-            rejectNonLocalRefs(document);
+            rejectNonLocalRefs(document, documentId(document));
             requireWellFormedKeywords(document);
             schema = JSON_SCHEMA_FACTORY.getSchema(document);
         } catch (Exception e) {
@@ -607,17 +607,43 @@ public class AttributeDefinitionUtils {
      * Rejects a {@code $ref} pointing outside the document. Such a target cannot be resolved without fetching it, which
      * the platform does not do, so accepting one would register a constraint that enforces nothing.
      */
-    private static void rejectNonLocalRefs(JsonNode node) {
+    private static void rejectNonLocalRefs(JsonNode node, String documentId) {
         if (node == null || !node.isObject()) {
             return;
         }
         JsonNode ref = node.get("$ref");
-        if (ref != null && ref.isTextual() && !ref.textValue().startsWith("#")) {
+        if (ref != null && ref.isTextual() && !resolvesWithinDocument(ref.textValue(), documentId)) {
             throw new IllegalArgumentException("$ref points outside the document");
         }
         for (Map.Entry<String, JsonNode> property : node.properties()) {
-            subschemasOf(property.getKey(), property.getValue()).forEach(AttributeDefinitionUtils::rejectNonLocalRefs);
+            subschemasOf(property.getKey(), property.getValue())
+                    .forEach(child -> rejectNonLocalRefs(child, documentId));
         }
+    }
+
+    /** The document's own {@code $id}, against which an absolute self-reference resolves, or {@code null}. */
+    private static String documentId(JsonNode document) {
+        JsonNode id = document == null ? null : document.get("$id");
+        return id != null && id.isTextual() ? id.textValue() : null;
+    }
+
+    /**
+     * Whether a reference stays inside the document: empty (the root), a fragment, or absolute but matching the
+     * document's own {@code $id}.
+     *
+     * <p>
+     * A nested {@code $id} re-scopes the base URI, which this does not follow — a reference relying on one falls
+     * through to the loader, which refuses it, so the failure surfaces later rather than being missed.
+     */
+    private static boolean resolvesWithinDocument(String ref, String documentId) {
+        if (ref.isEmpty() || ref.startsWith("#")) {
+            return true;
+        }
+        if (documentId == null) {
+            return false;
+        }
+        int fragment = ref.indexOf('#');
+        return documentId.equals(fragment < 0 ? ref : ref.substring(0, fragment));
     }
 
     /** The subschemas a keyword's value holds, or nothing when the keyword does not hold subschemas. */
