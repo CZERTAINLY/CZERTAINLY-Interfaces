@@ -10,9 +10,12 @@ import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 import static com.otilm.util.builders.DataAttributeV3Builder.aDataAttribute;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RaProfileCertificateRequestAttributesUpdateDtoTest {
@@ -83,6 +86,25 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
         // then
         assertTrue(json.contains("mergeMode"));
         assertTrue(json.contains(AttributeSetMergeMode.STATIC_ONLY.getCode()));
+    }
+
+    @Test
+    void absentBindingsDeserializeToNullSoAPatchCanLeaveThemAlone() {
+        // PATCH semantics: Core must be able to tell "field omitted" from "explicitly cleared", because it replaces
+        // the stored binding rows wholesale. An empty-list default would make an unrelated edit delete them.
+        var dto = assertDoesNotThrow(() -> mapper
+                .readValue("{\"requestAttributes\":[]}", RaProfileCertificateRequestAttributesUpdateDto.class));
+
+        assertNull(dto.getValueSourceBindings());
+    }
+
+    @Test
+    void explicitlyEmptyBindingsDeserializeToAnEmptyList() {
+        var dto = assertDoesNotThrow(() -> mapper
+                .readValue("{\"valueSourceBindings\":[]}", RaProfileCertificateRequestAttributesUpdateDto.class));
+
+        assertNotNull(dto.getValueSourceBindings());
+        assertEquals(0, dto.getValueSourceBindings().size());
     }
 
     @Test

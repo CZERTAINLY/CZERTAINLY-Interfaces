@@ -36,11 +36,16 @@ public class RaProfileCertificateRequestAttributesUpdateDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "staticOnly")
     private AttributeSetMergeMode mergeMode = AttributeSetMergeMode.STATIC_ONLY;
 
+    /**
+     * Null when the field is absent from the request, which a {@code PATCH} must be able to tell from an explicitly
+     * empty list: Core replaces the stored bindings wholesale, so an empty-list default would make any unrelated edit
+     * delete them.
+     */
     @ArraySchema(arraySchema = @Schema(
-            description = "Core-side value-source bindings to attach onto connector-supplied (or static) definitions by reference",
+            description = "Core-side value-source bindings to attach onto connector-supplied (or static) definitions by reference; omit to leave the stored bindings unchanged, send an empty array to clear them",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @Valid
-    private List<ValueSourceBindingDto> valueSourceBindings = new ArrayList<>();
+    private List<ValueSourceBindingDto> valueSourceBindings;
 
     @Schema(description = "Whether an external CSR violating the resolved set is rejected (true) or accepted with warnings (false); null inherits the platform default",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
