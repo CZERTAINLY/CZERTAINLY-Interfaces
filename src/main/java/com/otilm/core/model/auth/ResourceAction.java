@@ -23,6 +23,9 @@ public enum ResourceAction implements IPlatformEnum {
     UPDATE("update", "Update", AccessType.WRITE),
     DELETE("delete", "Delete", AccessType.WRITE),
 
+    // Posting comments on an object; a capability of its own, grantable to users who cannot update the object
+    COMMENT("comment", "Comment", AccessType.WRITE),
+
     // Default change state actions that allows also reverse action (disable/deactivate)
     ENABLE("enable", "Enable", AccessType.WRITE),
     ACTIVATE("activate", "Activate", AccessType.WRITE),
@@ -69,7 +72,11 @@ public enum ResourceAction implements IPlatformEnum {
 
     // Digital Signing
     TIMESTAMP("timestamp", "Timestamp", AccessType.WRITE), // RFC 3161 Timestamping
-    ;
+
+    // Settings
+    // Branding is separated from UPDATE so that operators can delegate the platform's appearance without also handing
+    // over the utils service URL, certificate validation defaults and every other platform setting.
+    UPDATE_BRANDING("updateBranding", "Update branding", AccessType.WRITE);
 
     /**
      * Whether an action may be granted to a role that must not be able to change anything, so such a permission set can

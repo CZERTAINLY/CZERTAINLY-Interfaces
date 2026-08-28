@@ -7,7 +7,9 @@ import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.SignatureLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -51,10 +53,20 @@ public class ContentSigningWorkflowDto extends WorkflowDto {
             + "Set when maxLevel is TIMESTAMPED or higher.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private TimestampSourceDto timestampSource;
 
-    @Schema(description = "Largest document accepted for signing, in bytes. Enforced when a signing request arrives, "
-            + "under both ILM-managed and delegated signing. Null when no profile-level cap applies.",
+    @Schema(description = "Largest document accepted for signing, in bytes. Enforced when an ILM-managed "
+            + "signing request arrives. Null when no profile-level cap applies.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "5242880")
     private Long documentSizeCap;
+
+    @Schema(description = "Demand the nonRepudiation key-usage bit specifically, for commitment-grade profiles. "
+            + "Applies to ILM-managed signing only; delegated profile gets always false.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
+    private boolean requireNonRepudiation;
+
+    @Schema(description = "Extended key usage OIDs the signing certificate must all carry, in dot notation "
+            + "(1.3.6.1.5.5.7.3.36 is RFC 9336 id-kp-documentSigning). An empty set accepts any extended key "
+            + "usage. Applies to ILM-managed signing only.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Set<String> requiredExtendedKeyUsageOids = new LinkedHashSet<>();
 
     public ContentSigningWorkflowDto() {
         super(SigningWorkflowType.CONTENT_SIGNING);

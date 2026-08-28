@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Setter
 public class DiscoveryProviderDto extends NameAndUuidDto {
 
-    @Schema(description = "Status of Discovery", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private DiscoveryStatus status;
 
     @Schema(description = "Number of Certificates discovered", defaultValue = "0")

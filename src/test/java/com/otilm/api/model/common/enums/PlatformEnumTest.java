@@ -1,5 +1,8 @@
 package com.otilm.api.model.common.enums;
 
+import com.otilm.api.model.core.cbom.CbomAssetSyncState;
+import com.otilm.api.model.core.cryptoasset.CryptographicAssetType;
+import com.otilm.api.model.core.cryptoasset.PqcVerdict;
 import com.otilm.api.model.core.notification.NotificationDataCategory;
 import com.otilm.api.model.core.protocol.ProtocolChallengeSource;
 import java.util.HashSet;
@@ -46,5 +49,29 @@ class PlatformEnumTest {
             assertTrue(seen.add(entry.getEnumClass()),
                     "enum class registered twice: " + entry.getEnumClass().getSimpleName());
         }
+    }
+
+    @Test
+    void cryptographicAssetTypeIsRegistered() {
+        PlatformEnum entry = PlatformEnum.findByClass(CryptographicAssetType.class);
+        assertNotNull(entry);
+        assertEquals(CryptographicAssetType.class, entry.getEnumClass());
+        assertEquals("CryptographicAssetType", entry.getCode());
+    }
+
+    @Test
+    void pqcVerdictIsRegistered() {
+        PlatformEnum entry = PlatformEnum.findByClass(PqcVerdict.class);
+        assertNotNull(entry);
+        assertEquals(PqcVerdict.class, entry.getEnumClass());
+        assertEquals("PqcVerdict", entry.getCode());
+    }
+
+    @Test
+    void cbomAssetSyncStateIsRegistered() {
+        PlatformEnum entry = PlatformEnum.findByClass(CbomAssetSyncState.class);
+        assertNotNull(entry);
+        assertEquals(CbomAssetSyncState.class, entry.getEnumClass());
+        assertEquals("CbomAssetSyncState", entry.getCode());
     }
 }

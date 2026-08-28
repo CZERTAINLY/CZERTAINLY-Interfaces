@@ -4,11 +4,16 @@ import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.signing.profile.workflow.timestamp.TimestampSourceRequestDto;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.SignatureLevel;
+import com.otilm.api.model.common.validation.OidFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -53,10 +58,23 @@ public class ContentSigningWorkflowRequestDto extends WorkflowRequestDto {
     private TimestampSourceRequestDto timestampSource;
 
     @Positive
-    @Schema(description = "Largest document accepted for signing, in bytes. Enforced when a signing request arrives, "
-            + "under both ILM-managed and delegated signing. When omitted, no profile-level cap applies.",
+    @Schema(description = "Largest document accepted for signing, in bytes. Enforced when an ILM-managed "
+            + "signing request arrives. When omitted, no profile-level cap applies.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "5242880")
     private Long documentSizeCap;
+
+    @Schema(description = "Demand the nonRepudiation key-usage bit specifically, for commitment-grade profiles. "
+            + "Applies to ILM-managed signing only. For delegated signing, omit it or send false; an echoed "
+            + "false from a response is accepted, true is rejected.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Boolean requireNonRepudiation;
+
+    @Schema(description = "Extended key usage OIDs the signing certificate must all carry, in dot notation "
+            + "(1.3.6.1.5.5.7.3.36 is RFC 9336 id-kp-documentSigning). An empty set accepts any extended key "
+            + "usage. Applies to ILM-managed signing only; for delegated signing send nothing or an empty set.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    // @Pattern publishes into the generated item schema, and reports the violation on the offending element.
+    private Set<@NotBlank @Pattern(regexp = OidFormat.REGEX,
+            message = OidFormat.MESSAGE) String> requiredExtendedKeyUsageOids = new LinkedHashSet<>();
 
     public ContentSigningWorkflowRequestDto() {
         super(SigningWorkflowType.CONTENT_SIGNING);

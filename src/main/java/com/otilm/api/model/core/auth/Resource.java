@@ -7,8 +7,10 @@ import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.common.enums.IPlatformEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 @Schema(enumAsRef = true)
 public enum Resource implements IPlatformEnum {
@@ -34,6 +36,7 @@ public enum Resource implements IPlatformEnum {
     ACME_PROFILE(Codes.ACME_PROFILE, "ACME Profile", true, true),
 
     CBOM(Codes.CBOM, "CBOM"),
+    CRYPTO_ASSET(Codes.CRYPTO_ASSET, "Cryptographic Asset"),
 
     // SCEP
     SCEP_PROFILE(Codes.SCEP_PROFILE, "SCEP Profile", true, true),
@@ -63,11 +66,14 @@ public enum Resource implements IPlatformEnum {
     CRYPTOGRAPHIC_KEY(Codes.CRYPTOGRAPHIC_KEY, "Key", false, true, true, true),
 
     // APPROVALS
-    APPROVAL_PROFILE("approvalProfiles", "Approval profile"),
+    APPROVAL_PROFILE(Codes.APPROVAL_PROFILE, "Approval profile"),
     APPROVAL(Codes.APPROVAL, "Approval"),
 
+    // COMMENTS
+    COMMENT(Codes.COMMENT, "Comment"),
+
     // NOTIFICATIONS
-    NOTIFICATION_PROFILE("notificationProfiles", "Notification profile"),
+    NOTIFICATION_PROFILE(Codes.NOTIFICATION_PROFILE, "Notification profile"),
     NOTIFICATION_INSTANCE("notificationInstances", "Notification instance"),
 
     // WORKFLOWS
@@ -79,6 +85,7 @@ public enum Resource implements IPlatformEnum {
     RESOURCE("resources", "Resource"),
     RESOURCE_EVENT("resourceEvents", "Resource Event"),
     SEARCH_FILTER("searchFilters", "Search Filter"),
+    LIST_VIEW("listViews", "List view"),
     CRYPTOGRAPHIC_KEY_ITEM("keyItems", "Key item"),
     PLATFORM_ENUM("platformEnums", "Platform enumerator"),
     NOTIFICATION("notifications", "Notification"),
@@ -117,6 +124,13 @@ public enum Resource implements IPlatformEnum {
             .of(Resource.RA_PROFILE, Resource.TOKEN_PROFILE, Resource.VAULT_PROFILE);
     private static final EnumSet<Resource> approvalProfilesAssignable = EnumSet
             .of(Resource.RA_PROFILE, Resource.VAULT_PROFILE);
+    private static final EnumSet<Resource> commentableResources = EnumSet
+            .of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY, Resource.TOKEN, Resource.DISCOVERY, Resource.SECRET,
+                    Resource.VAULT, Resource.AUTHORITY, Resource.ENTITY, Resource.LOCATION, Resource.CONNECTOR,
+                    Resource.APPROVAL, Resource.RA_PROFILE, Resource.VAULT_PROFILE, Resource.COMPLIANCE_PROFILE,
+                    Resource.APPROVAL_PROFILE, Resource.NOTIFICATION_PROFILE, Resource.SIGNING_PROFILE,
+                    Resource.TOKEN_PROFILE, Resource.ACME_PROFILE, Resource.SCEP_PROFILE, Resource.CMP_PROFILE,
+                    Resource.TSP_PROFILE);
 
     static {
         VALUES = values();
@@ -205,6 +219,22 @@ public enum Resource implements IPlatformEnum {
         return approvalProfilesAssignable.contains(this);
     }
 
+    /**
+     * Whether comment threads can be attached to objects of this resource. The set is the single source of truth: core
+     * validates comment requests against it and registers the COMMENT action for exactly these resources.
+     */
+    public boolean commentable() {
+        return commentableResources.contains(this);
+    }
+
+    /**
+     * The authoritative set of resources comment threads can be attached to. The returned set is immutable; making a
+     * new resource commentable means extending {@code commentableResources}, never mutating this view.
+     */
+    public static Set<Resource> getCommentableResources() {
+        return Collections.unmodifiableSet(commentableResources);
+    }
+
     @JsonCreator
     public static Resource findByCode(String code) {
         return Arrays
@@ -221,6 +251,9 @@ public enum Resource implements IPlatformEnum {
     public static class Codes {
         public static final String AUTHORITY = "authorities";
         public static final String APPROVAL = "approvals";
+        public static final String APPROVAL_PROFILE = "approvalProfiles";
+        public static final String COMMENT = "comments";
+        public static final String NOTIFICATION_PROFILE = "notificationProfiles";
         public static final String RA_PROFILE = "raProfiles";
         public static final String CERTIFICATE = "certificates";
         public static final String CERTIFICATE_REQUEST = "certificateRequests";
@@ -248,6 +281,7 @@ public enum Resource implements IPlatformEnum {
         public static final String VAULT_PROFILE = "vaultProfiles";
         public static final String SECRET = "secrets";
         public static final String CBOM = "cboms";
+        public static final String CRYPTO_ASSET = "cryptoAssets";
         public static final String SIGNING_PROFILE = "signingProfiles";
         public static final String TSP_PROFILE = "tspProfiles";
         public static final String TSP_PROFILE_BASIC_CREDENTIAL = "tspProfileBasicCredentials";

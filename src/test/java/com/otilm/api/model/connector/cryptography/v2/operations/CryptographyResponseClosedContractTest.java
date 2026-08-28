@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.token.TokenStatusResponseV2Dto;
-import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Schema;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.otilm.api.testsupport.OpenApiSchemaTestSupport.openApi31Schemas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,7 +46,7 @@ class CryptographyResponseClosedContractTest {
     @MethodSource("closedResponses")
     void responseSchema_publishesAdditionalPropertiesFalse(ResponseContract contract) {
         // given
-        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(contract.type());
+        Map<String, Schema> schemas = openApi31Schemas(contract.type());
 
         // when
         Schema<?> responseSchema = schemas.get(contract.type().getSimpleName());
