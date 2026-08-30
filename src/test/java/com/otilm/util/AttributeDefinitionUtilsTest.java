@@ -1,5 +1,6 @@
 package com.otilm.util;
 
+import com.otilm.api.exception.ValidationError;
 import com.otilm.api.exception.ValidationException;
 import com.otilm.api.model.client.attribute.RequestAttribute;
 import com.otilm.api.model.client.attribute.RequestAttributeV2;
@@ -14,6 +15,7 @@ import com.otilm.api.model.common.attribute.common.callback.AttributeValueTarget
 import com.otilm.api.model.common.attribute.common.callback.RequestAttributeCallback;
 import com.otilm.api.model.common.attribute.common.constraint.AttributeConstraintType;
 import com.otilm.api.model.common.attribute.common.constraint.DateTimeAttributeConstraint;
+import com.otilm.api.model.common.attribute.common.constraint.JsonSchemaAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RangeAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.RegexpAttributeConstraint;
 import com.otilm.api.model.common.attribute.common.constraint.data.DateTimeAttributeConstraintData;
@@ -35,6 +37,10 @@ import com.otilm.api.model.common.attribute.v2.content.SecretAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
 import com.otilm.api.model.common.attribute.v2.content.TimeAttributeContentV2;
 import com.otilm.core.util.AttributeDefinitionUtils;
+import com.sun.net.httpserver.HttpServer;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -47,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -1270,5 +1277,377 @@ class AttributeDefinitionUtilsTest {
 
         Assertions.assertNotNull(result);
         Assertions.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaPass() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\",\"required\":[\"sequence\"]}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"sequence\":[{\"boolean\":true}]}");
+
+        validateAttributes(List.of(definition), List.of(attribute));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaFail_namesThePath() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"type\":\"object\",\"properties\":{\"sequence\":{\"type\":\"array\",\"minItems\":2}},\"required\":[\"sequence\"]}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"sequence\":[{\"boolean\":true}]}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertEquals(1, exception.getErrors().size());
+        String message = exception.getErrors().get(0).getErrorDescription();
+        Assertions.assertTrue(message.contains("JSON Schema constraint"), message);
+        Assertions.assertTrue(message.contains("$.sequence"), message);
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaFail_usesTheAuthorsErrorMessage() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"array\"}");
+        ((JsonSchemaAttributeConstraint) definition.getConstraints().get(0))
+                .setErrorMessage("workers only on this profile");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(
+                        exception.getErrors().get(0).getErrorDescription().contains("workers only on this profile"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsNonJsonContent() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "MAYBAf8CAQA=");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("not well-formed JSON"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsMismatchedContentType() {
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        definition.setContentType(AttributeContentType.INTEGER);
+        RequestAttributeV2 attribute = new RequestAttributeV2();
+        attribute.setName(definition.getName());
+        attribute.setUuid(UUID.fromString(definition.getUuid()));
+        attribute.setContent(List.of(new IntegerAttributeContentV2(4)));
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("STRING and TEXT"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaWithBrokenSchemaDocumentDegradesToError() {
+        DataAttributeV2 definition = jsonSchemaDefinition("this is not json");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaWithARemoteRefIsRejectedWithoutFetchingIt() {
+        // A $ref target is fetched on first use; validating against one would let a constraint author make the
+        // server issue a request of their choosing.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"$ref\":\"http://169.254.169.254/latest/meta-data/\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        List<DataAttributeV2> definitions = List.of(definition);
+        List<RequestAttribute> attributes = List.of(attribute);
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class, () -> validateAttributes(definitions, attributes));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaWithALocalRefIsStillAccepted() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$defs\":{\"node\":{\"type\":\"object\"}},\"$ref\":\"#/$defs/node\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsADeclaredOlderDialect() {
+        // The factory default applies only when $schema is absent, so a declared draft-04 would be honoured — and
+        // there prefixItems is an unknown keyword, so the author's constraint would silently enforce nothing.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$schema\":\"http://json-schema.org/draft-04/schema#\"," + "\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsTheDeclaredSupportedDialect() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsTrailingContent() {
+        // readTree stops at the first complete value, so trailing text would be silently discarded.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"} and then some");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsTrailingContentInValue() {
+        // Mirrors testValidateAttributes_jsonSchemaRejectsTrailingContent, but for the value being validated rather
+        // than the schema document: readTree stops at the first complete value, so a schema-valid prefix followed by
+        // trailing content would otherwise pass on the prefix alone while the full string reaches the connector.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1} and then some");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("not well-formed JSON"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaOnNonRequiredAttributeWithNoContentDoesNotThrowNpe() {
+        // A non-required attribute with no content reaches the constraint as contents == null. Content validation
+        // already rejects it with a clean ValidationException; the constraint must not additionally NPE on top of
+        // that by iterating a null list.
+        JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
+        constraint.setData("{\"type\":\"object\"}");
+        DataAttributeV2 definition = new DataAttributeV2();
+        definition.setName("jsonAttribute");
+        definition.setUuid("2f6c1b10-0000-4000-8000-000000000042");
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.STRING);
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(false);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+
+        RequestAttributeV2 attribute = new RequestAttributeV2();
+        attribute.setName(definition.getName());
+        attribute.setUuid(UUID.fromString(definition.getUuid()));
+        attribute.setContent(null);
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions.assertTrue(exception.getErrors().get(0).getErrorDescription().contains("wrong value"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaRejectsMalformedKeywords() {
+        // getSchema compiles these without complaint, so the constraint would enforce nothing.
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"minItems\":\"x\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsARefInsideInstanceData() {
+        // const holds a literal value, so a member named $ref there is data and not a reference.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"properties\":{\"a\":{\"const\":{\"$ref\":\"https://example.invalid/x\"}}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        // The schema itself is accepted; the value simply does not match the const.
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("violates"),
+                        exception.getErrors().get(0).getErrorDescription());
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaNeverFetchesARemoteRef() throws Exception {
+        // Asserting on elapsed time only infers that no fetch happened. Stand up a loopback endpoint, point a
+        // $ref at it, and assert it is never contacted.
+        HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0), 0);
+        AtomicInteger hits = new AtomicInteger();
+        server.createContext("/schema", exchange -> {
+            hits.incrementAndGet();
+            byte[] body = "{\"type\":\"object\"}".getBytes(StandardCharsets.UTF_8);
+            exchange.sendResponseHeaders(200, body.length);
+            exchange.getResponseBody().write(body);
+            exchange.close();
+        });
+        server.start();
+        try {
+            String ref = "http://%s:%d/schema"
+                    .formatted(server.getAddress().getAddress().getHostAddress(), server.getAddress().getPort());
+            DataAttributeV2 definition = jsonSchemaDefinition("{\"$ref\":\"" + ref + "\"}");
+            RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+            ValidationException exception = Assertions
+                    .assertThrows(ValidationException.class,
+                            () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+            Assertions
+                    .assertTrue(
+                            exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+            Assertions.assertEquals(0, hits.get(), "the referenced endpoint must never be contacted");
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsARefUnderAnUnknownKeyword() {
+        // Draft 2020-12 permits unknown keywords as annotations, so a member named $ref inside one is a
+        // literal. Only subschema-valued keywords are walked.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"type\":\"object\",\"x-ui\":{\"$ref\":\"https://example.invalid/x\"}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaStillRejectsARemoteRefInsideASubschema() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"properties\":{\"a\":{\"$ref\":\"https://example.invalid/x\"}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateConstraints_jsonSchemaReportsUnsupportedTypeWhenContentTypeIsNull() {
+        // contentType is nullable on the definition and validateConstraints is public, so equals() on it threw
+        // where this should report an unsupported type. (Through validateAttributes a null content type is
+        // already fatal further upstream, for reasons unrelated to this constraint.)
+        DataAttributeV2 definition = jsonSchemaDefinition("{\"type\":\"object\"}");
+        definition.setContentType(null);
+
+        List<ValidationError> errors = AttributeDefinitionUtils
+                .validateConstraints(definition, List.of(new StringAttributeContentV2("{\"a\":1}")));
+
+        Assertions.assertEquals(1, errors.size());
+        Assertions.assertTrue(errors.get(0).getErrorDescription().contains("STRING and TEXT"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsARefUnderTheDefinitionsAnnotation() {
+        // Draft 2020-12 replaced definitions with $defs and treats it as an annotation, so a $ref inside one
+        // is data rather than a reference.
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"type\":\"object\",\"definitions\":{\"x\":{\"$ref\":\"https://example.invalid/x\"}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        Assertions.assertDoesNotThrow(() -> validateAttributes(List.of(definition), List.of(attribute)));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaStillRejectsARemoteRefUnderDefs() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$defs\":{\"x\":{\"$ref\":\"https://example.invalid/x\"}}}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaAcceptsAnEmptyRefAndAnAbsoluteSelfReference() {
+        // Draft 2020-12: "" is the document root, and an absolute reference matching the document's own $id
+        // resolves inside it. Neither needs an external load.
+        DataAttributeV2 emptyRef = jsonSchemaDefinition("{\"$defs\":{\"n\":{\"$ref\":\"\"}},\"type\":\"object\"}");
+        Assertions
+                .assertDoesNotThrow(
+                        () -> validateAttributes(List.of(emptyRef), List.of(stringAttribute(emptyRef, "{\"a\":1}"))));
+
+        DataAttributeV2 selfRef = jsonSchemaDefinition("{\"$id\":\"https://example.test/s\","
+                + "\"$defs\":{\"n\":{\"type\":\"object\"}},\"$ref\":\"https://example.test/s#/$defs/n\"}");
+        Assertions
+                .assertDoesNotThrow(
+                        () -> validateAttributes(List.of(selfRef), List.of(stringAttribute(selfRef, "{\"a\":1}"))));
+    }
+
+    @Test
+    void testValidateAttributes_jsonSchemaStillRejectsAnAbsoluteRefToAnotherDocument() {
+        DataAttributeV2 definition = jsonSchemaDefinition(
+                "{\"$id\":\"https://example.test/s\",\"$ref\":\"https://elsewhere.invalid/other#/x\"}");
+        RequestAttributeV2 attribute = stringAttribute(definition, "{\"a\":1}");
+
+        ValidationException exception = Assertions
+                .assertThrows(ValidationException.class,
+                        () -> validateAttributes(List.of(definition), List.of(attribute)));
+
+        Assertions
+                .assertTrue(exception.getErrors().get(0).getErrorDescription().contains("valid JSON Schema document"));
+    }
+
+    private static DataAttributeV2 jsonSchemaDefinition(String schemaDocument) {
+        JsonSchemaAttributeConstraint constraint = new JsonSchemaAttributeConstraint();
+        constraint.setData(schemaDocument);
+
+        DataAttributeV2 definition = new DataAttributeV2();
+        definition.setName("jsonAttribute");
+        definition.setUuid("2f6c1b10-0000-4000-8000-000000000042");
+        definition.setType(AttributeType.DATA);
+        definition.setContentType(AttributeContentType.STRING);
+        DataAttributeProperties properties = new DataAttributeProperties();
+        properties.setRequired(true);
+        definition.setProperties(properties);
+        definition.setConstraints(List.of(constraint));
+        return definition;
+    }
+
+    private static RequestAttributeV2 stringAttribute(DataAttributeV2 definition, String value) {
+        RequestAttributeV2 attribute = new RequestAttributeV2();
+        attribute.setName(definition.getName());
+        attribute.setUuid(UUID.fromString(definition.getUuid()));
+        attribute.setContent(List.of(new StringAttributeContentV2(value)));
+        return attribute;
     }
 }

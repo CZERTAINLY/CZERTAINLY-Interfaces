@@ -2,11 +2,19 @@ package com.otilm.core.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SchemaLocation;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.resource.ClasspathSchemaLoader;
+import com.networknt.schema.resource.DisallowSchemaLoader;
 import com.otilm.api.config.serializer.AttributeContentDeserializer;
 import com.otilm.api.config.serializer.BaseAttributeDeserializer;
 import com.otilm.api.exception.ValidationError;
@@ -61,6 +69,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,6 +82,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 public class AttributeDefinitionUtils {
+
+    // Schema loading must never reach the network: a $ref target is fetched on first use, so a constraint
+    // author could otherwise make the server request a URL of their choosing.
+    private static final JsonSchemaFactory JSON_SCHEMA_FACTORY = JsonSchemaFactory
+            .getInstance(SpecVersion.VersionFlag.V202012,
+                    builder -> builder.schemaLoaders(loaders -> loaders.add(DisallowSchemaLoader.getInstance())));
 
     private static final ObjectMapper ATTRIBUTES_OBJECT_MAPPER = JsonMapper
             .builder()
@@ -457,9 +473,191 @@ public class AttributeDefinitionUtils {
                 case REGEXP -> validateRegexpConstraint(contents, constraint, contentType, errors, label);
                 case RANGE -> validateRangeConstraint(contents, constraint, contentType, errors, label);
                 case DATETIME -> validateDateTimeConstraint(contents, constraint, contentType, errors, label);
+                case JSON_SCHEMA -> validateJsonSchemaConstraint(contents, constraint, contentType, errors, label);
             }
         }
         return errors;
+    }
+
+    private static void validateJsonSchemaConstraint(List<? extends AttributeContent> contents,
+            BaseAttributeConstraint<?> constraint, AttributeContentType contentType, List<ValidationError> errors,
+            String label) {
+        if (contents == null) {
+            // A non-required attribute with no content reaches here with contents == null; validateAttributeContent
+            // already recorded that, so there is nothing left for this constraint to validate against.
+            return;
+        }
+        // Compared from the constants: contentType is nullable on the definition, and equals() on it would
+        // throw where this should simply report an unsupported type.
+        if (contentType != AttributeContentType.STRING && contentType != AttributeContentType.TEXT) {
+            errors
+                    .add(ValidationError
+                            .create("Invalid Attribute Constraint Type and Attribute Content Type. JSON Schema can be validated only for STRING and TEXT"));
+            return;
+        }
+        JsonSchema schema;
+        try {
+            JsonNode document = ATTRIBUTES_OBJECT_MAPPER
+                    .reader()
+                    .with(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+                    .readTree((String) constraint.getData());
+            requireSupportedDialect(document);
+            rejectNonLocalRefs(document, documentId(document));
+            requireWellFormedKeywords(document);
+            schema = JSON_SCHEMA_FACTORY.getSchema(document);
+        } catch (Exception e) {
+            errors
+                    .add(ValidationError
+                            .create("JSON Schema constraint of attribute {} does not carry a valid JSON Schema document",
+                                    label));
+            return;
+        }
+        for (AttributeContent value : contents) {
+            JsonNode document;
+            try {
+                document = ATTRIBUTES_OBJECT_MAPPER
+                        .reader()
+                        .with(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+                        .readTree((String) value.getData());
+            } catch (Exception e) {
+                errors
+                        .add(ValidationError
+                                .create("Value of attribute {} violates the attribute's JSON Schema constraint: content is not well-formed JSON",
+                                        label));
+                continue;
+            }
+            Set<ValidationMessage> violations;
+            try {
+                violations = schema.validate(document);
+            } catch (RuntimeException e) {
+                // A $ref is resolved on first use, so a schema that survived parsing can still fail here.
+                errors
+                        .add(ValidationError
+                                .create("JSON Schema constraint of attribute {} does not carry a valid JSON Schema document",
+                                        label));
+                return;
+            }
+            for (ValidationMessage violation : violations) {
+                String reason = constraint.getErrorMessage() != null
+                        ? constraint.getErrorMessage()
+                        : violation.getMessage();
+                errors
+                        .add(ValidationError
+                                .create("Value of attribute {} violates the attribute's JSON Schema constraint: {} (at {})",
+                                        label, reason, violation.getInstanceLocation()));
+            }
+        }
+    }
+
+    // Draft 2020-12 keywords whose values are subschemas. Walking only these keeps the check off instance data
+    // (const, enum, default, examples) and off unknown keywords, which the dialect permits as annotations — a
+    // member named $ref inside either is a literal, not a reference. DisallowSchemaLoader remains the boundary
+    // for anything this list does not reach.
+    private static final Set<String> SUBSCHEMA_KEYWORDS = Set
+            .of("additionalProperties", "items", "not", "if", "then", "else", "contains", "propertyNames",
+                    "unevaluatedItems", "unevaluatedProperties");
+    private static final Set<String> SUBSCHEMA_LIST_KEYWORDS = Set.of("allOf", "anyOf", "oneOf", "prefixItems");
+    // "definitions" is deliberately absent: draft 2020-12 replaced it with $defs and treats it as an
+    // annotation, so a $ref inside one is data.
+    private static final Set<String> SUBSCHEMA_MAP_KEYWORDS = Set
+            .of("properties", "patternProperties", "$defs", "dependentSchemas");
+
+    /**
+     * Validates a candidate schema document against the dialect's own metaschema. Classpath loading is permitted so the
+     * library's bundled metaschema resolves; the network stays refused.
+     */
+    private static final JsonSchema CONSTRAINT_METASCHEMA = JsonSchemaFactory
+            .getInstance(SpecVersion.VersionFlag.V202012,
+                    builder -> builder
+                            .schemaLoaders(loaders -> loaders
+                                    .add(new ClasspathSchemaLoader())
+                                    .add(DisallowSchemaLoader.getInstance())))
+            .getSchema(SchemaLocation.of(SpecVersion.VersionFlag.V202012.getId()));
+
+    /** The one dialect the constraint's documentation promises, in both the bare and fragment-suffixed spellings. */
+    private static final Set<String> SUPPORTED_DIALECTS = Set
+            .of("https://json-schema.org/draft/2020-12/schema", "https://json-schema.org/draft/2020-12/schema#");
+
+    /**
+     * Rejects a document whose keywords are malformed. {@code getSchema} compiles a schema without checking keyword
+     * shapes, so {@code {"minItems": "x"}} would otherwise be accepted and then constrain nothing.
+     */
+    private static void requireWellFormedKeywords(JsonNode document) {
+        if (!CONSTRAINT_METASCHEMA.validate(document).isEmpty()) {
+            throw new IllegalArgumentException("schema keywords are malformed");
+        }
+    }
+
+    /**
+     * Rejects a declared {@code $schema} other than draft 2020-12. The factory's default applies only when the document
+     * omits the keyword, so a declared older draft would silently be honoured — and under draft-04 a keyword such as
+     * {@code prefixItems} is simply unknown, so the author's constraint would enforce nothing.
+     */
+    private static void requireSupportedDialect(JsonNode document) {
+        if (document == null || !document.isObject() || !document.has("$schema")) {
+            return;
+        }
+        JsonNode declared = document.get("$schema");
+        if (!declared.isTextual() || !SUPPORTED_DIALECTS.contains(declared.textValue())) {
+            throw new IllegalArgumentException("unsupported $schema dialect");
+        }
+    }
+
+    /**
+     * Rejects a {@code $ref} pointing outside the document. Such a target cannot be resolved without fetching it, which
+     * the platform does not do, so accepting one would register a constraint that enforces nothing.
+     */
+    private static void rejectNonLocalRefs(JsonNode node, String documentId) {
+        if (node == null || !node.isObject()) {
+            return;
+        }
+        JsonNode ref = node.get("$ref");
+        if (ref != null && ref.isTextual() && !resolvesWithinDocument(ref.textValue(), documentId)) {
+            throw new IllegalArgumentException("$ref points outside the document");
+        }
+        for (Map.Entry<String, JsonNode> property : node.properties()) {
+            subschemasOf(property.getKey(), property.getValue())
+                    .forEach(child -> rejectNonLocalRefs(child, documentId));
+        }
+    }
+
+    /** The document's own {@code $id}, against which an absolute self-reference resolves, or {@code null}. */
+    private static String documentId(JsonNode document) {
+        JsonNode id = document == null ? null : document.get("$id");
+        return id != null && id.isTextual() ? id.textValue() : null;
+    }
+
+    /**
+     * Whether a reference stays inside the document: empty (the root), a fragment, or absolute but matching the
+     * document's own {@code $id}.
+     *
+     * <p>
+     * A nested {@code $id} re-scopes the base URI, which this does not follow — a reference relying on one falls
+     * through to the loader, which refuses it, so the failure surfaces later rather than being missed.
+     */
+    private static boolean resolvesWithinDocument(String ref, String documentId) {
+        if (ref.isEmpty() || ref.startsWith("#")) {
+            return true;
+        }
+        if (documentId == null) {
+            return false;
+        }
+        int fragment = ref.indexOf('#');
+        return documentId.equals(fragment < 0 ? ref : ref.substring(0, fragment));
+    }
+
+    /** The subschemas a keyword's value holds, or nothing when the keyword does not hold subschemas. */
+    private static List<JsonNode> subschemasOf(String keyword, JsonNode value) {
+        if (SUBSCHEMA_KEYWORDS.contains(keyword)) {
+            return List.of(value);
+        }
+        List<JsonNode> children = new ArrayList<>();
+        if (SUBSCHEMA_LIST_KEYWORDS.contains(keyword) && value.isArray()) {
+            value.forEach(children::add);
+        } else if (SUBSCHEMA_MAP_KEYWORDS.contains(keyword) && value.isObject()) {
+            value.properties().forEach(entry -> children.add(entry.getValue()));
+        }
+        return children;
     }
 
     private static void validateRangeConstraint(List<? extends AttributeContent> contents,

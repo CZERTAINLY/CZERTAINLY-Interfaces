@@ -70,7 +70,9 @@ public class DiscoveryItemDto {
             + "inventoryUuid convey the outcome.", requiredMode = Schema.RequiredMode.REQUIRED)
     private boolean processed;
 
-    @Schema(description = "Error message in case of failed processing of the staged item.")
+    @Schema(description = "Reason recorded against this item, if any — not only a failure, and not tied to "
+            + "processed. An item that was handled can carry one, and an item that was never attempted carries one "
+            + "while processed stays false.")
     private String processedError;
 
     @Schema(description = "Item metadata as reported by the Discovery Provider — where the item was found "
