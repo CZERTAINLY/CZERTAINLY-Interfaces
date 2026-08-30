@@ -4,9 +4,11 @@ import com.otilm.api.interfaces.core.web.DiscoveryController;
 import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
 import com.otilm.api.model.client.discovery.DiscoveryListDto;
 import com.otilm.api.model.core.auth.Resource;
+import com.otilm.api.model.core.authority.AuthorityInstanceDto;
 import com.otilm.api.model.core.connector.v2.ConnectorInterfaceDto;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
 import com.otilm.api.model.core.discovery.DiscoveryMessageSeverity;
+import com.otilm.api.model.core.vault.VaultInstanceDto;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -199,7 +201,13 @@ class DiscoveryV2SchemaGenerationTest {
                 .readAll(ConnectorInterfaceDto.class)
                 .get("ConnectorInterfaceDto");
 
-        for (Class<?> discoveryRoot : new Class<?>[]{DiscoveryDetailDto.class, DiscoveryListDto.class}) {
+        // Authority and vault are guarded here too, not because they are discovery: they reference the same
+        // component, and both used to hoist onto it, so discovery published whichever prose won.
+        for (Class<?> discoveryRoot : new Class<?>[]{
+                DiscoveryDetailDto.class,
+                DiscoveryListDto.class,
+                AuthorityInstanceDto.class,
+                VaultInstanceDto.class}) {
             Schema<?> reached = ModelConverters.getInstance().readAll(discoveryRoot).get("ConnectorInterfaceDto");
             if (reached == null) {
                 continue;

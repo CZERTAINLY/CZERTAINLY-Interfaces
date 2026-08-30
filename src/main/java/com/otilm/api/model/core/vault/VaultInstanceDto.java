@@ -16,8 +16,15 @@ public class VaultInstanceDto extends NameAndUuidDto {
     @Schema(description = "Connector associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto connector;
 
-    @Schema(description = "Connector Interface associated with this Vault instance",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    /**
+     * The connector interface this vault instance is associated with.
+     *
+     * <p>
+     * The prose lives here and not in {@code @Schema}: ConnectorInterfaceDto is a shared component, and OpenAPI 3.0
+     * cannot carry a description beside a {@code $ref} — swagger-core hoists it onto the referenced component,
+     * rewriting it for authority, discovery and every other API that references it.
+     */
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private ConnectorInterfaceDto connectorInterface;
 
 }

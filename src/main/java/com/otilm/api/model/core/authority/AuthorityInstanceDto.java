@@ -1,5 +1,6 @@
 package com.otilm.api.model.core.authority;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.core.connector.v2.ConnectorInterfaceDto;
@@ -28,8 +29,17 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto connector;
 
-    @Schema(description = "Connector Interface this Authority instance is bound to; null for legacy v1 connectors, "
-            + "which are identified by kind instead", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
+    /**
+     * The connector interface this authority instance is bound to; null for a legacy v1 connector, which is identified
+     * by {@code kind} instead.
+     *
+     * <p>
+     * The prose lives here and not in {@code @Schema}, and {@code nullable} is not set: ConnectorInterfaceDto is a
+     * shared component, and OpenAPI 3.0 cannot carry either beside a {@code $ref} — swagger-core hoists both onto the
+     * referenced component, rewriting it for vault, discovery and every other API that references it.
+     */
+    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ConnectorInterfaceDto connectorInterface;
 
     /**
