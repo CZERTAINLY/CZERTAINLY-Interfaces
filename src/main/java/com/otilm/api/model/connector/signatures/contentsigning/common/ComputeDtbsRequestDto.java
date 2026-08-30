@@ -3,6 +3,7 @@ package com.otilm.api.model.connector.signatures.contentsigning.common;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.otilm.api.model.common.enums.cryptography.SignatureAlgorithm;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.connector.signatures.contentsigning.cades.CadesComputeDtbsRequestDto;
 import com.otilm.api.model.connector.signatures.contentsigning.jades.JadesComputeDtbsRequestDto;
@@ -25,6 +26,12 @@ import lombok.ToString;
  * Everything the connector needs to build the data-to-be-signed bytes arrives here, including {@code signingTime}. The
  * connector never reads its own clock. A signature's time must be the one the platform recorded, not the one a
  * connector replica observed.
+ * </p>
+ *
+ * <p>
+ * {@code signatureAlgorithm} arrives the same way and for the same reason. The surfaces that carry that to a connector
+ * author are the {@code computeDtbs} operation description and the {@link SignatureAlgorithm} component, never the
+ * field's own description.
  * </p>
  *
  * <p>
@@ -61,6 +68,19 @@ public abstract class ComputeDtbsRequestDto extends ContentSigningFormattingRequ
     @Schema(description = "Signing time supplied by the platform. The connector puts this value into the signature "
             + "and never substitutes its own clock.", requiredMode = Schema.RequiredMode.REQUIRED)
     private OffsetDateTime signingTime;
+
+    @NotNull(message = "signatureAlgorithm is required")
+    @Schema(description = "Signature algorithm the platform's signer will use. Set by the platform; a connector MUST "
+            + "build the data-to-be-signed bytes for exactly this algorithm and MUST NOT substitute one of its own, "
+            + "and MUST refuse an algorithm it cannot format with 422 and errorCode PARAMETER_UNSUPPORTED naming the "
+            + "set it does support.\n\nThe signature's message-digest algorithm follows from this algorithm rather "
+            + "than arriving as a second field, because the two are one choice and not two. The digest the connector "
+            + "echoes in documentDigest, and a digestOnly transfer's document.digestAlgorithm, are a separate axis "
+            + "that the platform pins to this same algorithm and checks before it calls. A connector therefore "
+            + "receives that pairing on every call, and a document digest under any other algorithm would arrive "
+            + "named in a field of its own rather than left to be inferred.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
+    private SignatureAlgorithm signatureAlgorithm;
 
     protected ComputeDtbsRequestDto(SignatureFamily family) {
         super.setFamily(family);

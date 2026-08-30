@@ -17,7 +17,20 @@ import org.bouncycastle.asn1.pkcs.RSASSAPSSparams;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x9.X9ObjectIdentifiers;
 
-@Schema(enumAsRef = true)
+/**
+ * Because the schema is published with {@code enumAsRef}, a property of this type publishes as a bare {@code $ref} and
+ * the generator drops that property's own description. The component description below is therefore the only place the
+ * document can carry what an algorithm means, and it is what a connector author reads.
+ */
+@Schema(enumAsRef = true,
+        description = "Signature algorithm, named by its code. Each algorithm fixes the digest carried inside the "
+                + "signature it produces, so naming the algorithm names that digest. It says nothing about a digest an "
+                + "operation takes as a parameter of its own. Where the code spells its digest out, that is the "
+                + "digest. Where it does not, the platform records the digest it pairs the algorithm with: Ed25519 "
+                + "commits to SHA-512, FALCON-1024 commits to SHA-512, ML-DSA-65 commits to SHA-512, "
+                + "SLH-DSA-SHA2-128F commits to SHA-256, and Ed448 commits to SHAKE256, which is not a "
+                + "DigestAlgorithm value. An algorithm whose paired digest is not a DigestAlgorithm value is never "
+                + "sent on a content-signing computeDtbs request.")
 public enum SignatureAlgorithm implements IPlatformEnum {
     SHA256_WITH_RSA("SHA256withRSA", "RSASSA-PKCS_v1.5 using SHA256", "RSA signature with SHA-256 digest",
             new AlgorithmIdentifier(PKCSObjectIdentifiers.sha256WithRSAEncryption, DERNull.INSTANCE),

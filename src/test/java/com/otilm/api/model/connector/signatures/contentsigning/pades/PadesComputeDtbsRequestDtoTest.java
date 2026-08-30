@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.otilm.api.model.common.enums.cryptography.SignatureAlgorithm;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.parameters.pades.PadesSignatureParametersDto;
 import com.otilm.api.model.common.signature.parameters.pades.PadesVisibleSignatureDto;
@@ -37,6 +38,7 @@ class PadesComputeDtbsRequestDtoTest {
         request.setDocument(new InlineDocumentTransferDto(new byte[]{1, 2, 3}));
         request.setSignerCertificateChain(List.of(new byte[]{9}));
         request.setSigningTime(OffsetDateTime.parse("2026-08-11T10:15:30Z"));
+        request.setSignatureAlgorithm(SignatureAlgorithm.SHA256_WITH_RSA);
         request.setFormattingAttributes(List.of());
         return request;
     }
