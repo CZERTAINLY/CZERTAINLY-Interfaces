@@ -51,16 +51,12 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "Name of the Discovery Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    /**
-     * The connector interface this run is driven through, and so which generation drives it. Absent for a run against a
-     * legacy v1 connector, which declares no connector interface.
-     *
-     * <p>
-     * The prose lives here and not in {@code @Schema}: ConnectorInterfaceDto is a shared component, and OpenAPI 3.0
-     * cannot carry a description beside a {@code $ref} — swagger-core hoists a referencing field's description onto the
-     * referenced component, rewriting it for every other API that references it.
-     */
-    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    // ALL_OF_REF wraps the $ref in an allOf, which gives the description somewhere to live that is not beside the
+    // $ref itself. Without it swagger-core hoists this prose onto the shared ConnectorInterfaceDto component,
+    // rewriting it for every other API that references it; a plain ALL_OF drops the description instead.
+    @Schema(description = "The connector interface this run is driven through, and so which generation drives it. "
+            + "Absent for a run against a legacy v1 connector, which declares no connector interface.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ConnectorInterfaceDto connectorInterface;
 

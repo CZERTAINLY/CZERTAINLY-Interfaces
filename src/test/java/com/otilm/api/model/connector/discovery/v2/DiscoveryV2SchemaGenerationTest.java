@@ -5,6 +5,7 @@ import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
 import com.otilm.api.model.client.discovery.DiscoveryListDto;
 import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.authority.AuthorityInstanceDto;
+import com.otilm.api.model.core.connector.v2.ConnectorDto;
 import com.otilm.api.model.core.connector.v2.ConnectorInterfaceDto;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
 import com.otilm.api.model.core.discovery.DiscoveryMessageSeverity;
@@ -207,7 +208,8 @@ class DiscoveryV2SchemaGenerationTest {
                 DiscoveryDetailDto.class,
                 DiscoveryListDto.class,
                 AuthorityInstanceDto.class,
-                VaultInstanceDto.class}) {
+                VaultInstanceDto.class,
+                ConnectorDto.class}) {
             Schema<?> reached = ModelConverters.getInstance().readAll(discoveryRoot).get("ConnectorInterfaceDto");
             if (reached == null) {
                 continue;
@@ -220,6 +222,33 @@ class DiscoveryV2SchemaGenerationTest {
             assertEquals(standalone.getNullable(), reached.getNullable(),
                     "nullable is hoisted onto the shared component the same way a description is, so "
                             + discoveryRoot.getSimpleName() + " must not set it either.");
+        }
+    }
+
+    /**
+     * The other half of the rule above. Keeping the shared component intact is trivially satisfied by describing the
+     * referencing field nowhere at all, which is how the description was lost once already — swagger-core resolves no
+     * javadoc on this classpath, so prose moved into a doc comment leaves the published field blank. Each of these
+     * carries its own description through {@code ALL_OF_REF}, which parks it beside the {@code $ref} inside an
+     * {@code allOf} rather than on the component. A plain {@code ALL_OF} drops it silently, so assert it is there.
+     */
+    @Test
+    void eachReferencingFieldStillPublishesItsOwnDescription() {
+        record Field(Class<?> root, String schemaName, String property) {
+        }
+        for (Field field : List
+                .of(new Field(DiscoveryDetailDto.class, "DiscoveryDetailDto", "connectorInterface"),
+                        new Field(DiscoveryListDto.class, "DiscoveryListDto", "connectorInterface"),
+                        new Field(AuthorityInstanceDto.class, "AuthorityInstanceDto", "connectorInterface"),
+                        new Field(VaultInstanceDto.class, "VaultInstanceDto", "connectorInterface"))) {
+            Schema<?> root = ModelConverters.getInstance().readAll(field.root()).get(field.schemaName());
+            assertNotNull(root, "expected a generated schema for " + field.schemaName());
+            Schema<?> property = (Schema<?>) root.getProperties().get(field.property());
+            assertNotNull(property, field.schemaName() + " publishes no " + field.property() + " property");
+            assertNotNull(property.getDescription(),
+                    field.schemaName() + "." + field.property() + " publishes no description. Moving the prose into "
+                            + "a doc comment does not reach the OpenAPI document -- there is no javadoc processor on "
+                            + "this classpath -- and a plain ALL_OF drops it. Use ALL_OF_REF.");
         }
     }
 

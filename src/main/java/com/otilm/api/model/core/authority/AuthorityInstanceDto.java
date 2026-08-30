@@ -29,16 +29,11 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto connector;
 
-    /**
-     * The connector interface this authority instance is bound to; null for a legacy v1 connector, which is identified
-     * by {@code kind} instead.
-     *
-     * <p>
-     * The prose lives here and not in {@code @Schema}, and {@code nullable} is not set: ConnectorInterfaceDto is a
-     * shared component, and OpenAPI 3.0 cannot carry either beside a {@code $ref} — swagger-core hoists both onto the
-     * referenced component, rewriting it for vault, discovery and every other API that references it.
-     */
-    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    // ALL_OF_REF gives the description somewhere to live that is not beside the $ref, so it is not hoisted onto the
+    // shared ConnectorInterfaceDto component. nullable stays unset: it has no such escape and would be hoisted.
+    @Schema(description = "The connector interface this authority instance is bound to. Absent for a legacy v1 "
+            + "connector, which is identified by kind instead.", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ConnectorInterfaceDto connectorInterface;
 
