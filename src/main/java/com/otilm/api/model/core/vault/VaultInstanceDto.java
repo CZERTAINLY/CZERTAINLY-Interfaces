@@ -18,8 +18,9 @@ public class VaultInstanceDto extends NameAndUuidDto {
 
     // ALL_OF_REF gives the description somewhere to live that is not beside the $ref, so it is not hoisted onto the
     // shared ConnectorInterfaceDto component.
-    @Schema(description = "The connector interface this vault instance is associated with.",
-            requiredMode = Schema.RequiredMode.REQUIRED, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
+    @Schema(description = "The connector interface this vault instance is associated with; null once the interface "
+            + "has been removed from its connector.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true,
+            schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     private ConnectorInterfaceDto connectorInterface;
 
 }
