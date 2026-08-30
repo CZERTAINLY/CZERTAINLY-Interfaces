@@ -87,16 +87,14 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Resource> resources;
 
-    /**
-     * Progress counters reported by the connector, with an optional per-resource breakdown. Omitted when the run is
-     * against a v1 connector, or when the connector reports no progress at all. Individual counters inside it are
-     * independently optional — a connector that cannot estimate a total still reports what it has processed.
-     *
-     * <p>
-     * The prose lives here and not in {@code @Schema} for the hoisting reason in the comment above
-     * ({@code progressComponentsAreIdenticalFromEveryEntryPoint} pins it).
-     */
-    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    // ALL_OF_REF for the same reason as connectorInterface above: it parks the description inside an allOf beside
+    // the $ref rather than hoisting it onto the shared DiscoveryProgressDto component
+    // (progressComponentsAreIdenticalFromEveryEntryPoint pins that).
+    @Schema(description = "Progress counters reported by the connector, with an optional per-resource breakdown. "
+            + "Omitted for a run against a v1 connector, and when the connector reports no progress at all. The "
+            + "counters inside are independently optional: a connector that cannot estimate a total still reports "
+            + "what it has processed.", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private DiscoveryProgressDto progress;
 

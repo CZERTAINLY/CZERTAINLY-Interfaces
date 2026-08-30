@@ -240,7 +240,9 @@ class DiscoveryV2SchemaGenerationTest {
                 .of(new Field(DiscoveryDetailDto.class, "DiscoveryDetailDto", "connectorInterface"),
                         new Field(DiscoveryListDto.class, "DiscoveryListDto", "connectorInterface"),
                         new Field(AuthorityInstanceDto.class, "AuthorityInstanceDto", "connectorInterface"),
-                        new Field(VaultInstanceDto.class, "VaultInstanceDto", "connectorInterface"))) {
+                        new Field(VaultInstanceDto.class, "VaultInstanceDto", "connectorInterface"),
+                        new Field(DiscoveryDetailDto.class, "DiscoveryDetailDto", "progress"),
+                        new Field(DiscoveryStatusResponseDto.class, "DiscoveryStatusResponseDto", "progress"))) {
             Schema<?> root = ModelConverters.getInstance().readAll(field.root()).get(field.schemaName());
             assertNotNull(root, "expected a generated schema for " + field.schemaName());
             Schema<?> property = (Schema<?>) root.getProperties().get(field.property());
