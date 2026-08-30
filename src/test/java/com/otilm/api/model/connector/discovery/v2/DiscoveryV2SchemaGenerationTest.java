@@ -2,7 +2,9 @@ package com.otilm.api.model.connector.discovery.v2;
 
 import com.otilm.api.interfaces.core.web.DiscoveryController;
 import com.otilm.api.model.client.discovery.DiscoveryDetailDto;
+import com.otilm.api.model.client.discovery.DiscoveryListDto;
 import com.otilm.api.model.core.auth.Resource;
+import com.otilm.api.model.core.connector.v2.ConnectorInterfaceDto;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
 import com.otilm.api.model.core.discovery.DiscoveryMessageSeverity;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -182,6 +184,34 @@ class DiscoveryV2SchemaGenerationTest {
                     "Resource is a platform-wide component; reaching it through " + discoveryRoot.getSimpleName()
                             + " must not change its description. A description on the referencing field gets "
                             + "hoisted onto it, because OpenAPI 3.0 cannot carry one beside a $ref.");
+        }
+    }
+
+    /**
+     * The same guard for {@code ConnectorInterfaceDto}, which the discovery detail and list both reach through a
+     * {@code $ref}. Its own description is asserted rather than a literal, so the test states the rule — reaching a
+     * shared component through discovery must not rewrite it — rather than today's value.
+     */
+    @Test
+    void discoveryDoesNotRewriteThePlatformWideConnectorInterfaceComponent() {
+        Schema<?> standalone = ModelConverters
+                .getInstance()
+                .readAll(ConnectorInterfaceDto.class)
+                .get("ConnectorInterfaceDto");
+
+        for (Class<?> discoveryRoot : new Class<?>[]{DiscoveryDetailDto.class, DiscoveryListDto.class}) {
+            Schema<?> reached = ModelConverters.getInstance().readAll(discoveryRoot).get("ConnectorInterfaceDto");
+            if (reached == null) {
+                continue;
+            }
+            assertEquals(standalone.getDescription(), reached.getDescription(),
+                    "ConnectorInterfaceDto is a platform-wide component; reaching it through "
+                            + discoveryRoot.getSimpleName() + " must not change its description. A description on "
+                            + "the referencing field gets hoisted onto it, because OpenAPI 3.0 cannot carry one "
+                            + "beside a $ref.");
+            assertEquals(standalone.getNullable(), reached.getNullable(),
+                    "nullable is hoisted onto the shared component the same way a description is, so "
+                            + discoveryRoot.getSimpleName() + " must not set it either.");
         }
     }
 

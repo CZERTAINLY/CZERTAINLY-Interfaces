@@ -28,12 +28,14 @@ public class DiscoveryDto {
     private String connectorUuid;
 
     @Schema(description = "UUID of the Connector Interface (DISCOVERY) to bind this run to. "
-            + "Required to select a specific version when the connector exposes more than one "
-            + "DISCOVERY interface side-by-side. "
-            + "When null, the run targets a legacy v1 connector that declares no connector "
-            + "interface; if such a connector exposes exactly one DISCOVERY interface it is used.",
+            + "Required when the Connector exposes more than one DISCOVERY interface side-by-side: "
+            + "the request is rejected if it is omitted. Omit it when the Connector exposes exactly "
+            + "one DISCOVERY interface, which is then selected automatically. A Connector that "
+            + "declares no DISCOVERY interface at all yields a legacy v1 run.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private UUID interfaceUuid;
+
     @Schema(description = "Discovery Kind", requiredMode = Schema.RequiredMode.REQUIRED)
     private String kind;
     @Schema(description = "List of triggers to be triggered after the discovery is finished, triggers will be evaluated in given order")
@@ -70,8 +72,8 @@ public class DiscoveryDto {
                 .append("attributes", attributes)
                 .append("customAttributes", customAttributes)
                 .append("connectorUuid", connectorUuid)
-                .append("kind", kind)
                 .append("interfaceUuid", interfaceUuid)
+                .append("kind", kind)
                 .append("resources", resources)
                 // resourceAttributes is deliberately not appended: it multiplies the attribute payload
                 // by the number of targeted resources, and the run-level attributes already above give

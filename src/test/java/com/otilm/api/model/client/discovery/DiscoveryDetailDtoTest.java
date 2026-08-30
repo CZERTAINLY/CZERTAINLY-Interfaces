@@ -119,9 +119,12 @@ class DiscoveryDetailDtoTest {
         assertTrue(json.contains("\"runMessageCount\":0"), json);
         assertEquals(0L, back.getRunMessageCount());
 
-        // progress is the one genuinely optional field, and it promises absence rather than null
+        // progress and connectorInterface are the genuinely optional fields, and both promise absence rather
+        // than null: a v1 run declares no connector interface, which is how a client tells the generations apart.
         assertFalse(json.contains("progress"), json);
         assertNull(back.getProgress());
+        assertFalse(json.contains("connectorInterface"), json);
+        assertNull(back.getConnectorInterface());
     }
 
     @Test
