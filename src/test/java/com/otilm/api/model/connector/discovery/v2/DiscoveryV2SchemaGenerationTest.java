@@ -202,6 +202,12 @@ class DiscoveryV2SchemaGenerationTest {
                 .readAll(ConnectorInterfaceDto.class)
                 .get("ConnectorInterfaceDto");
 
+        assertNotNull(standalone, "ConnectorInterfaceDto publishes no schema of its own");
+        assertNotNull(standalone.getDescription(),
+                "ConnectorInterfaceDto must describe itself at class level. Without that, every reached copy is null "
+                        + "too and this guard compares null against null -- passing while the component says nothing "
+                        + "at all.");
+
         // Authority and vault are guarded here too, not because they are discovery: they reference the same
         // component, and both used to hoist onto it, so discovery published whichever prose won.
         for (Class<?> discoveryRoot : new Class<?>[]{
@@ -224,6 +230,28 @@ class DiscoveryV2SchemaGenerationTest {
                     "nullable is hoisted onto the shared component the same way a description is, so "
                             + discoveryRoot.getSimpleName() + " must not set it either.");
         }
+    }
+
+    /**
+     * Where a collection's own description lives. On a collection field swagger-core applies a bare {@code @Schema} to
+     * the item, and a description cannot sit beside the item's {@code $ref}: it is hoisted onto the shared component,
+     * or — wrapped in an {@code allOf} — stranded where nothing reads it. {@code @ArraySchema} keeps it on the array.
+     */
+    @Test
+    void theConnectorInterfaceArrayDescribesTheArrayAndNotItsItems() {
+        Schema<?> interfaces = (Schema<?>) ModelConverters
+                .getInstance()
+                .readAll(ConnectorDto.class)
+                .get("ConnectorDtoV2")
+                .getProperties()
+                .get("interfaces");
+
+        assertEquals("array", interfaces.getType());
+        assertNotNull(interfaces.getDescription(), "the collection's own description belongs on the array");
+        assertNotNull(interfaces.getItems(), "the array publishes no item schema");
+        assertNull(interfaces.getItems().getDescription(),
+                "a description on the item is either hoisted onto the shared component or stranded beside a $ref, "
+                        + "where OpenAPI 3.0 ignores it.");
     }
 
     /**
