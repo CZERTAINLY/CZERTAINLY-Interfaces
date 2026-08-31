@@ -35,6 +35,7 @@ import com.otilm.api.model.core.certificate.CertificateValidationResultDto;
 import com.otilm.api.model.core.certificate.FingerprintDto;
 import com.otilm.api.model.core.location.LocationDto;
 import com.otilm.api.model.core.scheduler.PaginationRequestDto;
+import com.otilm.api.model.core.search.ConfigurableColumnsDocs;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import com.otilm.api.model.core.v2.ClientCertificateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,14 +75,28 @@ import org.springframework.web.bind.annotation.ResponseStatus;
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 public interface CertificateController extends AuthProtectedController {
 
-    @Operation(summary = "List Certificates")
+    @Operation(summary = "List Certificates",
+            description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all the certificates"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    CertificateResponseDto listCertificates(@Valid @RequestBody CertificateSearchRequestDto request);
+    CertificateResponseDto listCertificates(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(schema = @Schema(implementation = CertificateSearchRequestDto.class),
+                    examples = {@ExampleObject(name = "With ordering and columns", value = """
+                            {
+                              "pageNumber": 1,
+                              "itemsPerPage": 10,
+                              "filters": [],
+                              "sort": {"fieldSource": "property", "fieldIdentifier": "NOT_AFTER", "direction": "asc"},
+                              "columns": [
+                                {"fieldSource": "property", "fieldIdentifier": "COMMON_NAME"},
+                                {"fieldSource": "property", "fieldIdentifier": "NOT_AFTER"},
+                                {"fieldSource": "custom", "fieldIdentifier": "businessUnit"}
+                              ]
+                            }""")})) @Valid @RequestBody CertificateSearchRequestDto request);
 
     @Operation(summary = "Get Certificate Details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Certificate detail retrieved")})
@@ -162,7 +177,8 @@ public interface CertificateController extends AuthProtectedController {
             throws NotFoundException, NotSupportedException;
 
     @Operation(operationId = "getCertificateSearchableFields",
-            summary = "Get Certificate searchable fields information")
+            summary = "Get Certificate searchable fields information",
+            description = ConfigurableColumnsDocs.CATALOGUE_FLAGS)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate searchable field information retrieved")})
     @GetMapping(path = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})

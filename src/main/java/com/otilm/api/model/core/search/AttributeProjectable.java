@@ -20,7 +20,25 @@ public interface AttributeProjectable {
      */
     String ATTRIBUTE_VALUES_DESCRIPTION = "Values of the attribute-sourced fields requested as columns, keyed by field "
             + "source and then by field identifier. Present only when the listing request asked for attribute-sourced "
-            + "columns; a field the object has no value for is absent rather than empty.";
+            + "columns; a field the object has no value for is absent rather than empty, and a multi-valued attribute "
+            + "arrives in its stored item_order.";
+
+    /**
+     * Shared example for the {@code attributeValues} schema. Shows both halves of the nesting and a multi-valued
+     * attribute in its stored order, so the shape is readable without reading the description twice.
+     */
+    String ATTRIBUTE_VALUES_EXAMPLE = """
+            {
+              "custom": {
+                "businessUnit": [
+                  {"contentType": "string", "reference": "Payments", "data": "payments"}
+                ],
+                "environment": [
+                  {"contentType": "string", "reference": "Production", "data": "production"},
+                  {"contentType": "string", "reference": "Disaster recovery", "data": "disaster-recovery"}
+                ]
+              }
+            }""";
 
     Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> getAttributeValues();
 

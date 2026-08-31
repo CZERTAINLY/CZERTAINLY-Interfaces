@@ -30,7 +30,8 @@ public class ListViewColumnDto {
 
     @NotBlank
     @Schema(description = "Field identifier of the column, resolved against the resource's field catalogue when the "
-            + "view is read", requiredMode = Schema.RequiredMode.REQUIRED)
+            + "view is read. Available fields with their identifiers can be retrieved from the corresponding "
+            + "endpoint `GET /v1/{resource}/search`.", requiredMode = Schema.RequiredMode.REQUIRED)
     private String fieldIdentifier;
 
     @NullableNotBlank(message = "Label cannot be blank if provided")
