@@ -39,8 +39,7 @@ public class DiscoveryListDto extends NameAndUuidDto implements AttributeProject
     @Schema(description = "Name of the Discovery Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    // ALL_OF_REF for the same reason as the detail's own copy: it gives the description somewhere to live that is
-    // not beside the $ref, so it is not hoisted onto the shared ConnectorInterfaceDto component.
+    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
     @Schema(description = "The connector interface this run is driven through, and so which generation drives it. "
             + "Absent for a run against a legacy v1 connector, which declares no connector interface.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)

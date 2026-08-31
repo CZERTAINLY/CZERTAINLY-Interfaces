@@ -24,15 +24,14 @@ public class DiscoveryProviderCertificateDataDto {
     @Schema(description = "Metadata for the Certificate", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<MetadataAttribute> meta;
 
-    @Schema(description = "Run-wide item number the Connector assigned. Populated by Core on the v2 ingest path, "
-            + "where certificates and other resources share one sequence; absent for a v1 Connector, whose "
-            + "provider numbers nothing.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Run-wide item number the Connector assigned, shared across the run's resources. "
+            + "Absent for a v1 Connector, whose provider numbers nothing.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long sequence;
 
     @Schema(description = "When the Connector observed the certificate, which is not when Core staged it. "
-            + "Populated by Core on the v2 ingest path; absent for a v1 Connector.",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            + "Absent for a v1 Connector.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private OffsetDateTime discoveredAt;
 

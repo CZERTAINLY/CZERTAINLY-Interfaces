@@ -11,7 +11,8 @@ import lombok.Data;
 // The description belongs on the type, not on the fields that reference it. This is a shared component reached
 // through a $ref from several resources, and OpenAPI 3.0 cannot carry a description beside a $ref, so a description
 // on any referencing field is hoisted onto this component instead — whichever resource resolves last wins. A
-// class-level one is the only form that hoisting cannot overwrite.
+// class-level one is the only form that hoisting cannot overwrite. A referencing field keeps a description of
+// its own through ALL_OF_REF, which parks it in an allOf rather than beside the $ref.
 @Schema(description = "An interface a connector implements: its code, its version, and the features it supports. "
         + "The version decides which generation of the provider contract Core speaks to that connector.")
 @Data

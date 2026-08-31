@@ -28,8 +28,7 @@ public class AuthorityInstanceDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto connector;
 
-    // ALL_OF_REF gives the description and nullable somewhere to live that is not beside the $ref, so neither is
-    // hoisted onto the shared ConnectorInterfaceDto component.
+    // ALL_OF_REF: parks the description and nullable in an allOf so neither is hoisted onto the shared component.
     @Schema(description = "The connector interface this authority instance is bound to; null for a legacy v1 "
             + "connector, which is identified by kind instead.", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             nullable = true, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)

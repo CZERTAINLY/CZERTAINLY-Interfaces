@@ -51,9 +51,7 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "Name of the Discovery Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    // ALL_OF_REF wraps the $ref in an allOf, which gives the description somewhere to live that is not beside the
-    // $ref itself. Without it swagger-core hoists this prose onto the shared ConnectorInterfaceDto component,
-    // rewriting it for every other API that references it; a plain ALL_OF drops the description instead.
+    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
     @Schema(description = "The connector interface this run is driven through, and so which generation drives it. "
             + "Absent for a run against a legacy v1 connector, which declares no connector interface.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
@@ -87,13 +85,10 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Resource> resources;
 
-    // ALL_OF_REF for the same reason as connectorInterface above: it parks the description inside an allOf beside
-    // the $ref rather than hoisting it onto the shared DiscoveryProgressDto component
-    // (progressComponentsAreIdenticalFromEveryEntryPoint pins that).
+    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
     @Schema(description = "Progress counters reported by the connector, with an optional per-resource breakdown. "
-            + "Omitted for a run against a v1 connector, and when the connector reports no progress at all. The "
-            + "counters inside are independently optional: a connector that cannot estimate a total still reports "
-            + "what it has processed.", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
+            + "Omitted for a v1 run and when the connector reports no progress. The counters inside are "
+            + "independently optional.", requiredMode = Schema.RequiredMode.NOT_REQUIRED,
             schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private DiscoveryProgressDto progress;

@@ -35,11 +35,10 @@ public class DiscoveryItemDto {
     @Schema(description = "UUID of the staged Discovery item", requiredMode = Schema.RequiredMode.REQUIRED)
     private String uuid;
 
-    @Schema(description = "UUID of this item's object in inventory. For a certificate this answers where the "
-            + "certificate is, and is present as soon as one with the same content exists — including a "
-            + "certificate a previous run imported, so it may be present while processed is false. For every "
-            + "other resource it is what this item became, and is absent until the item is processed and "
-            + "absent permanently if its processing failed.")
+    @Schema(description = "UUID of this item's object in inventory. For a certificate, present as soon as one "
+            + "with the same content exists — including from an earlier run, so it may be present while "
+            + "processed is false. For every other resource it is what the item became: absent until "
+            + "processed, and absent permanently if processing failed.")
     private String inventoryUuid;
 
     // Primitive, unlike the connector's DiscoveredItemDto.sequence: that one is inbound, where a boxed Long lets a

@@ -21,9 +21,7 @@ public class DiscoveryStatusResponseDto {
     @NotNull(message = "state is required")
     private DiscoveryRunState state;
 
-    // ALL_OF_REF parks the description inside an allOf beside the $ref. A description placed directly beside it
-    // is hoisted onto the shared DiscoveryProgressDto component, overwriting the component's own for every other
-    // endpoint that references it; a plain ALL_OF drops it instead.
+    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
     @Schema(description = "How far the run has got. Omitted when the connector cannot report progress.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     private DiscoveryProgressDto progress;

@@ -35,10 +35,8 @@ public interface DiscoveredItemPayloadDto {
      * The resources discovery can report — exactly those with a payload subtype registered above.
      *
      * <p>
-     * Declared here, beside the registration it describes, because it is the same fact: a run can target a resource
-     * precisely when this contract can carry an item for it. Core gates what it accepts on this, and the client gates
-     * the per-resource attribute route on it, rather than each keeping a copy that a third subtype would silently leave
-     * stale. {@code DiscoveredItemPayloadSubtypesTest} holds the two in step.
+     * A run may target a resource precisely when this contract can carry an item for it, so Core and the connector
+     * client both read this set rather than keeping copies of it.
      */
     Set<Resource> DISCOVERABLE = Collections
             .unmodifiableSet(EnumSet.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY));

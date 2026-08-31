@@ -27,11 +27,9 @@ public class DiscoveryDto {
     @Schema(description = "Discovery Provider UUID", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "UUID of the Connector Interface (DISCOVERY) to bind this run to. "
-            + "Required when the Connector exposes more than one DISCOVERY interface side-by-side: "
-            + "the request is rejected if it is omitted. Omit it when the Connector exposes exactly "
-            + "one DISCOVERY interface, which is then selected automatically. A Connector that "
-            + "declares no DISCOVERY interface at all yields a legacy v1 run.",
+    @Schema(description = "UUID of the DISCOVERY Connector Interface to bind this run to. Required when the "
+            + "Connector exposes more than one; selected automatically when it exposes exactly one. A "
+            + "Connector with no DISCOVERY interface yields a legacy v1 run.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private UUID interfaceUuid;
