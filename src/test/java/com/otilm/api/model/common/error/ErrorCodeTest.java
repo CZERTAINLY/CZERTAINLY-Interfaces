@@ -1,6 +1,7 @@
 package com.otilm.api.model.common.error;
 
 import com.otilm.api.model.client.connector.v2.ConnectorInterface;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -72,6 +73,19 @@ class ErrorCodeTest {
         assertEquals(ConnectorInterface.DISCOVERY, ErrorCode.CHECKPOINT_LOST.getInterfaceCode());
         assertEquals(HttpStatus.GONE, ErrorCode.CHECKPOINT_LOST.getStatus());
         assertFalse(ErrorCode.CHECKPOINT_LOST.isRetryable());
+    }
+
+    @Test
+    void connectorCryptographyEntries() {
+        for (ErrorCode code : List
+                .of(ErrorCode.KEY_TYPE_NOT_IMPORTABLE, ErrorCode.KEY_TYPE_NOT_EXPORTABLE,
+                        ErrorCode.KEY_MATERIAL_MISMATCH, ErrorCode.KEY_DECRYPTION_FAILED,
+                        ErrorCode.EXPORTABLE_NOT_SUPPORTED, ErrorCode.KEY_NOT_EXPORTABLE)) {
+            assertEquals(ProblemTypeCategory.CONNECTOR, code.getCategory(), code.name());
+            assertEquals(ConnectorInterface.CRYPTOGRAPHY, code.getInterfaceCode(), code.name());
+            assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, code.getStatus(), code.name());
+            assertFalse(code.isRetryable(), code.name());
+        }
     }
 
     @Test

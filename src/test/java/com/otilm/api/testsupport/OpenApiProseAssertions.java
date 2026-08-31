@@ -29,7 +29,33 @@ public final class OpenApiProseAssertions {
                     "scope chain", "fail closed", "fail-closed", "footgun", "s-1", "dependson", "ladder",
                     "envelope assembly");
 
+    /**
+     * Vocabulary of the language the platform is written in, which describes nothing to an author generating a client
+     * in another language. Matched on word boundaries like {@link #BANNED_JARGON}; JSON vocabulary such as "null" and
+     * "object" is not listed because it means the same thing everywhere.
+     */
+    public static final List<String> BANNED_LANGUAGE_TERMS = List
+            .of("java", "jvm", "lombok", "jackson", "bean validation", "tostring", "hashcode", "multipartfile",
+                    "responseentity", "serializable", "getter", "setter", "char[]", "byte[]", "classpath");
+
     private static final List<BannedTerm> BANNED_TERMS = BANNED_JARGON.stream().map(BannedTerm::of).toList();
+
+    private static final List<BannedTerm> LANGUAGE_TERMS = BANNED_LANGUAGE_TERMS.stream().map(BannedTerm::of).toList();
+
+    private static final Pattern JAVADOC_MARKUP = Pattern
+            .compile("\\{@\\w+|^\\s*@(param|return|throws)\\b", Pattern.MULTILINE);
+
+    /**
+     * A reader of the document sees properties in whatever order a generator chose, so a reference to the field "below"
+     * or "above" points at nothing. Name the property instead.
+     */
+    private static final Pattern SOURCE_ORDER_REFERENCE = Pattern
+            .compile("\\bthe (field|property) (below|above)\\b|\\b(field|property) (below|above)\\b");
+
+    /**
+     * Every path in the document is versioned and absolute. A partial one looks like a path and resolves to nothing.
+     */
+    private static final Pattern UNVERSIONED_PATH = Pattern.compile("`(?:POST|GET|PATCH|PUT|DELETE) (/(?!v\\d)[^`]*)`");
 
     private OpenApiProseAssertions() {
     }
@@ -46,10 +72,44 @@ public final class OpenApiProseAssertions {
         }
     }
 
+    /**
+     * Fails if {@code text} names the implementation language or one of its types, or carries documentation markup that
+     * only renders inside source. {@code context} identifies where the text came from, for the failure message only.
+     */
+    public static void assertLanguageNeutral(String context, String text) {
+        assertFalse(JAVADOC_MARKUP.matcher(text).find(),
+                "source documentation markup leaked into OpenAPI prose on " + context + ": " + text);
+
+        assertFalse(SOURCE_ORDER_REFERENCE.matcher(text.toLowerCase(Locale.ROOT)).find(),
+                "OpenAPI prose on " + context + " points at a neighbouring field by position, which a reader of the "
+                        + "document cannot resolve. Name the property: " + text);
+
+        java.util.regex.Matcher path = UNVERSIONED_PATH.matcher(text);
+        assertFalse(path.find(), () -> "OpenAPI prose on " + context + " names a path that is not the absolute one the "
+                + "document publishes" + (path.groupCount() >= 1 ? ": " + path.group(1) : ""));
+
+        String lower = text.toLowerCase(Locale.ROOT);
+        for (BannedTerm banned : LANGUAGE_TERMS) {
+            assertFalse(banned.pattern().matcher(lower).find(), "implementation-language term \"" + banned.term()
+                    + "\" leaked into OpenAPI prose on " + context + ", which is read by authors in other languages");
+        }
+    }
+
     private record BannedTerm(String term, Pattern pattern) {
 
+        /**
+         * A word boundary belongs only where the term itself ends in a word character. Asking for one after a term such
+         * as {@code char[]} demands a word character right after the bracket, which prose never has, and the term then
+         * matches nothing at all.
+         */
         private static BannedTerm of(String term) {
-            return new BannedTerm(term, Pattern.compile("\\b" + Pattern.quote(term) + "\\b"));
+            return new BannedTerm(term, Pattern
+                    .compile(
+                            boundary(term.charAt(0)) + Pattern.quote(term) + boundary(term.charAt(term.length() - 1))));
+        }
+
+        private static String boundary(char edge) {
+            return Character.isLetterOrDigit(edge) || edge == '_' ? "\\b" : "";
         }
     }
 }

@@ -59,4 +59,19 @@ public class KeyItemDetailDto extends NameAndUuidDto {
     @Schema(description = "Key compliance status", requiredMode = Schema.RequiredMode.REQUIRED)
     private ComplianceStatus complianceStatus;
 
+    @Schema(description = "Whether this key may be exported. Set when the key is created or imported and never "
+            + "raised afterwards; it can only be lowered to false.", requiredMode = Schema.RequiredMode.REQUIRED,
+            defaultValue = "false")
+    private boolean exportable;
+
+    /**
+     * The signature this class carried before {@code exportable} was added, so a caller that constructs it positionally
+     * still compiles. A key item is not exportable unless it is said to be.
+     */
+    public KeyItemDetailDto(String keyReferenceUuid, KeyType type, KeyAlgorithm keyAlgorithm, KeyFormat format,
+            String keyData, int length, List<MetadataResponseDto> metadata, List<KeyUsage> usage, boolean enabled,
+            KeyState state, KeyCompromiseReason reason, ComplianceStatus complianceStatus) {
+        this(keyReferenceUuid, type, keyAlgorithm, format, keyData, length, metadata, usage, enabled, state, reason,
+                complianceStatus, false);
+    }
 }

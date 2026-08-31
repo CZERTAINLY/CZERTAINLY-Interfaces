@@ -66,6 +66,13 @@ public enum ResourceAction implements IPlatformEnum {
     // Instructions embed a client secret, a broker SAS key and a non-expiring configuration token.
     GET_PROXY_INSTALLATION("getProxyInstallation", "Get proxy installation", AccessType.SENSITIVE_READ),
 
+    // Cryptographic key material transfer
+    // Import creates a key in the technology, so it is a write. Export discloses private or secret key material, so it
+    // is a SENSITIVE_READ rather than the READ-typed EXPORT above, which exists for audit-log export and is granted to
+    // the read-only role.
+    IMPORT_KEY("importKey", "Import key", AccessType.WRITE),
+    EXPORT_KEY("exportKey", "Export key", AccessType.SENSITIVE_READ),
+
     // Secret
     GET_SECRET_CONTENT("getSecretContent", "Get secret content", AccessType.SENSITIVE_READ),
     UPDATE_SOURCE_VAULT_PROFILE("updateSourceVaultProfile", "Update source vault profile", AccessType.WRITE),

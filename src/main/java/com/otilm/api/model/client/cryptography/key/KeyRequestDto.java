@@ -35,4 +35,19 @@ public class KeyRequestDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
     private Boolean enabled;
 
+    @Schema(description = """
+            Whether the created key may later be exported. Defaults to false, and false is final: a key created
+            non-exportable can never become exportable. It can only be requested where the token profile reports key
+            export as available for the key type.
+            """, requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "false")
+    private Boolean exportable;
+
+    /**
+     * The signature this class carried before {@code exportable} was added, so a caller that constructs it positionally
+     * still compiles. The request then leaves the exportable intent unstated, which the platform reads as false.
+     */
+    public KeyRequestDto(String name, String description, List<String> groupUuids, List<RequestAttribute> attributes,
+            List<RequestAttribute> customAttributes, Boolean enabled) {
+        this(name, description, groupUuids, attributes, customAttributes, enabled, null);
+    }
 }

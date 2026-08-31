@@ -7,6 +7,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ResourceActionAccessTypeTest {
@@ -17,7 +18,7 @@ class ResourceActionAccessTypeTest {
             .of(ResourceAction.MEMBERS, ResourceAction.LIST, ResourceAction.DETAIL, ResourceAction.EXPORT);
 
     private static final Set<ResourceAction> SENSITIVE_READ = EnumSet
-            .of(ResourceAction.GET_SECRET_CONTENT, ResourceAction.GET_PROXY_INSTALLATION);
+            .of(ResourceAction.GET_SECRET_CONTENT, ResourceAction.GET_PROXY_INSTALLATION, ResourceAction.EXPORT_KEY);
 
     @Test
     void everyActionDeclaresAnAccessType() {
@@ -61,6 +62,18 @@ class ResourceActionAccessTypeTest {
             }
             assertEquals(ResourceAction.AccessType.WRITE, action.getAccessType(), action.name());
         }
+    }
+
+    /**
+     * Key export discloses key material, so it must not ride on the READ-typed audit-log export action that the
+     * read-only role holds.
+     */
+    @Test
+    void keyExportIsSeparateFromTheReadTypedExport() {
+        assertNotEquals(ResourceAction.EXPORT, ResourceAction.EXPORT_KEY);
+        assertEquals(ResourceAction.AccessType.READ, ResourceAction.EXPORT.getAccessType());
+        assertEquals(ResourceAction.AccessType.SENSITIVE_READ, ResourceAction.EXPORT_KEY.getAccessType());
+        assertEquals(ResourceAction.AccessType.WRITE, ResourceAction.IMPORT_KEY.getAccessType());
     }
 
     @Test
