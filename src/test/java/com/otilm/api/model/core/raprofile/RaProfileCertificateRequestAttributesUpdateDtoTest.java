@@ -3,16 +3,26 @@ package com.otilm.api.model.core.raprofile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.common.attribute.v3.DataAttributeV3;
 import com.otilm.api.model.common.attribute.v3.mapping.ValueSourceType;
+import com.otilm.api.testsupport.ValidatorFixture;
+import jakarta.validation.Validator;
 import java.util.List;
+import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 
 import static com.otilm.util.builders.DataAttributeV3Builder.aDataAttribute;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RaProfileCertificateRequestAttributesUpdateDtoTest {
+
+    @AutoClose
+    private static final ValidatorFixture VALIDATORS = new ValidatorFixture();
+    private static final Validator VALIDATOR = VALIDATORS.validator();
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -57,10 +67,10 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
         RaProfileCertificateRequestAttributesUpdateDto back = mapper
                 .readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
 
-        // since it is hidden, it should not return it
-        // then — valueSourceBindings is hidden from JSON and strictness still round-trips
-        assertFalse(json.contains("valueSourceBindings"));
-        assertEquals(0, back.getValueSourceBindings().size());
+        // then
+        assertEquals(1, back.getValueSourceBindings().size());
+        assertEquals(boundName, back.getValueSourceBindings().get(0).getAttributeName());
+        assertEquals(ValueSourceType.CONNECTOR_CALLBACK, back.getValueSourceBindings().get(0).getValueSourceType());
         assertEquals(Boolean.TRUE, back.getExternalCsrValidationStrict());
     }
 
@@ -76,6 +86,25 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
         // then
         assertTrue(json.contains("mergeMode"));
         assertTrue(json.contains(AttributeSetMergeMode.STATIC_ONLY.getCode()));
+    }
+
+    @Test
+    void absentBindingsDeserializeToNullSoAPatchCanLeaveThemAlone() {
+        // PATCH semantics: Core must be able to tell "field omitted" from "explicitly cleared", because it replaces
+        // the stored binding rows wholesale. An empty-list default would make an unrelated edit delete them.
+        var dto = assertDoesNotThrow(() -> mapper
+                .readValue("{\"requestAttributes\":[]}", RaProfileCertificateRequestAttributesUpdateDto.class));
+
+        assertNull(dto.getValueSourceBindings());
+    }
+
+    @Test
+    void explicitlyEmptyBindingsDeserializeToAnEmptyList() {
+        var dto = assertDoesNotThrow(() -> mapper
+                .readValue("{\"valueSourceBindings\":[]}", RaProfileCertificateRequestAttributesUpdateDto.class));
+
+        assertNotNull(dto.getValueSourceBindings());
+        assertEquals(0, dto.getValueSourceBindings().size());
     }
 
     @Test
@@ -106,6 +135,29 @@ class RaProfileCertificateRequestAttributesUpdateDtoTest {
 
         // when / then
         assertFalse(dto.isValueSourceBindingsUnique());
+    }
+
+    @Test
+    void rejectsDuplicateBindingTargetsArrivingAsJson() throws Exception {
+        // given — a payload binding the same attribute twice
+        var json = """
+                {"valueSourceBindings":[
+                  {"attributeUuid":"u1","valueSourceType":"staticList"},
+                  {"attributeUuid":"u1","valueSourceType":"staticList"}]}""";
+
+        // when
+        var dto = mapper.readValue(json, RaProfileCertificateRequestAttributesUpdateDto.class);
+
+        // then
+        assertEquals(1, VALIDATOR.validate(dto).size());
+    }
+
+    @Test
+    void defaultsToStaticOnlyWhenMergeModeAbsentFromJson() throws Exception {
+        // Merge modes are opt-in: a client that omits mergeMode must not start consulting the connector.
+        var dto = mapper.readValue("{\"requestAttributes\":[]}", RaProfileCertificateRequestAttributesUpdateDto.class);
+
+        assertEquals(AttributeSetMergeMode.STATIC_ONLY, dto.getMergeMode());
     }
 
     private static ValueSourceBindingDto bindingByUuid(String uuid) {
