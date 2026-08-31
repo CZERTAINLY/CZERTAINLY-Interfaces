@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ErrorCodeTest {
@@ -130,9 +129,10 @@ class ErrorCodeTest {
     }
 
     @Test
-    void everyStatusIsTheConstantHttpStatusResolvesTo() {
+    void noCodeIsDeclaredWithADeprecatedHttpStatus() throws NoSuchFieldException {
         for (ErrorCode code : ErrorCode.values()) {
-            assertSame(HttpStatus.resolve(code.getStatus().value()), code.getStatus(), code.name());
+            assertFalse(HttpStatus.class.getField(code.getStatus().name()).isAnnotationPresent(Deprecated.class),
+                    code.name());
         }
     }
 }

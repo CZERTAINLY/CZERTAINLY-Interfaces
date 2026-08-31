@@ -120,18 +120,14 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- this dependency is included to avoid warning -->
-        <!-- Compilation warning: "unknown enum constant When.MAYBE" -->
-        <!-- Caused by @Nullable annotations -->
         <dependency>
             <groupId>com.networknt</groupId>
             <artifactId>json-schema-validator</artifactId>
             <version>1.5.6</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
