@@ -28,9 +28,9 @@ public class TokenInstanceRequestDto {
 
     @NotNull
     @Schema(description = "Connector-defined token attributes", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttribute> tokenAttributes;
+    private List<@NotNull RequestAttribute> tokenAttributes;
 
     @NotNull
     @Schema(description = "Core custom attributes", requiredMode = Schema.RequiredMode.REQUIRED)
-    private List<RequestAttribute> customAttributes;
+    private List<@NotNull RequestAttribute> customAttributes;
 }
