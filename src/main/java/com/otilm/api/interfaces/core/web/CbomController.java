@@ -42,7 +42,7 @@ public interface CbomController extends AuthProtectedController {
     @Operation(summary = "List CBOMs")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of available CBOMs"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -89,7 +89,7 @@ public interface CbomController extends AuthProtectedController {
     @Operation(summary = "Delete multiple CBOM entries")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "CBOM entries deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -47,7 +47,7 @@ public interface SigningRecordController extends AuthProtectedController {
     @Operation(operationId = "listSigningRecords", summary = "List of Signing Records")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Signing Records retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -69,7 +69,7 @@ public interface SigningRecordController extends AuthProtectedController {
     @Operation(operationId = "bulkDeleteSigningRecords", summary = "Delete multiple Signing Records")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Signing Records deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})

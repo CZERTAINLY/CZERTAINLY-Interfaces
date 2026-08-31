@@ -64,7 +64,7 @@ public interface TokenProfileController extends AuthProtectedController {
     @Operation(summary = "Create Token Profile")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Token Profile added"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
@@ -79,7 +79,7 @@ public interface TokenProfileController extends AuthProtectedController {
     @Operation(summary = "Edit Token Profile")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Token Profile updated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
             @ApiResponse(responseCode = "404", description = "Token Profile or Token instance not found",
@@ -138,7 +138,7 @@ public interface TokenProfileController extends AuthProtectedController {
     @Operation(summary = "Delete multiple Token Profiles")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Token Profiles deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(path = "/tokenProfiles", produces = MediaType.APPLICATION_JSON_VALUE)

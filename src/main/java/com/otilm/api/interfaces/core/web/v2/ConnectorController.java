@@ -58,7 +58,7 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(operationId = "listConnectorsV2", summary = "List Connectors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List all Connectors"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {"application/json"})
@@ -80,7 +80,7 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(operationId = "createConnectorV2", summary = "Create a new Connector")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "New Connector created"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),})
     @PostMapping(consumes = {"application/json"}, produces = {"application/json"})
@@ -90,7 +90,7 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(operationId = "editConnectorV2", summary = "Edit a Connector")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connector updated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PutMapping(path = "/{uuid}", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {"application/json"})
@@ -110,7 +110,7 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(operationId = "connectV2", summary = "Connect to a Connector")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connector connected"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/connect", consumes = {"application/json"}, produces = {"application/json"})
@@ -120,7 +120,7 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(operationId = "reconnectV2", summary = "Reconnect Connector")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Reconnect to a Connector"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{uuid}/reconnect", produces = {"application/json"})
@@ -150,7 +150,7 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(operationId = "bulkDeleteConnectorV2", summary = "Delete multiple Connectors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connectors deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(produces = {"application/json"})
@@ -160,7 +160,7 @@ public interface ConnectorController extends AuthProtectedController {
     @Operation(operationId = "bulkForceDeleteConnectorV2", summary = "Force Delete multiple Connectors")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connectors deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/forceDelete", produces = {"application/json"})

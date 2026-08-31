@@ -77,7 +77,7 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "List Certificates")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all the certificates"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -205,7 +205,7 @@ public interface CertificateController extends AuthProtectedController {
             With `raProfileUuid`: the resolved request-attribute set for that RA profile.""")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
             @ApiResponse(responseCode = "502", description = "Connector Error",
@@ -221,7 +221,7 @@ public interface CertificateController extends AuthProtectedController {
     @Operation(summary = "Get Certificate Content")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Certificate content retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/content", consumes = {MediaType.APPLICATION_JSON_VALUE},
