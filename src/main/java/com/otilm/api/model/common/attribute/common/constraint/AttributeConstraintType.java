@@ -10,7 +10,8 @@ import java.util.Arrays;
 public enum AttributeConstraintType implements IPlatformEnum {
     REGEXP(Codes.REGEXP, "Regular Expression"),
     RANGE(Codes.RANGE, "Integer Range"),
-    DATETIME(Codes.DATETIME, "DateTime Range");
+    DATETIME(Codes.DATETIME, "DateTime Range"),
+    JSON_SCHEMA(Codes.JSON_SCHEMA, "JSON Schema");
 
     private static final AttributeConstraintType[] VALUES;
 
@@ -67,6 +68,7 @@ public enum AttributeConstraintType implements IPlatformEnum {
         public static final String REGEXP = "regExp";
         public static final String RANGE = "range";
         public static final String DATETIME = "dateTime";
+        public static final String JSON_SCHEMA = "jsonSchema";
 
     }
 
