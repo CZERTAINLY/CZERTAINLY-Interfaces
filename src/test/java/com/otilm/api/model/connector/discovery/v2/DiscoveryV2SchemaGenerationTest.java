@@ -211,9 +211,10 @@ class DiscoveryV2SchemaGenerationTest {
                 VaultInstanceDto.class,
                 ConnectorDto.class}) {
             Schema<?> reached = ModelConverters.getInstance().readAll(discoveryRoot).get("ConnectorInterfaceDto");
-            if (reached == null) {
-                continue;
-            }
+            assertNotNull(reached,
+                    discoveryRoot.getSimpleName() + " no longer emits the ConnectorInterfaceDto component at all. "
+                            + "Skipping that case would let a schema that stopped publishing the component pass this "
+                            + "guard, which exists to catch exactly that kind of contract regression.");
             assertEquals(standalone.getDescription(), reached.getDescription(),
                     "ConnectorInterfaceDto is a platform-wide component; reaching it through "
                             + discoveryRoot.getSimpleName() + " must not change its description. A description on "
@@ -242,7 +243,11 @@ class DiscoveryV2SchemaGenerationTest {
                         new Field(AuthorityInstanceDto.class, "AuthorityInstanceDto", "connectorInterface"),
                         new Field(VaultInstanceDto.class, "VaultInstanceDto", "connectorInterface"),
                         new Field(DiscoveryDetailDto.class, "DiscoveryDetailDto", "progress"),
-                        new Field(DiscoveryStatusResponseDto.class, "DiscoveryStatusResponseDto", "progress"))) {
+                        new Field(DiscoveryStatusResponseDto.class, "DiscoveryStatusResponseDto", "progress"),
+                        // The array's own description, which @ArraySchema puts on the array rather than on the item.
+                        // Dropped back to a bare @Schema it would land on the item instead, which the guard above
+                        // catches; removed altogether it would only show up here.
+                        new Field(ConnectorDto.class, "ConnectorDtoV2", "interfaces"))) {
             Schema<?> root = ModelConverters.getInstance().readAll(field.root()).get(field.schemaName());
             assertNotNull(root, "expected a generated schema for " + field.schemaName());
             Schema<?> property = (Schema<?>) root.getProperties().get(field.property());
