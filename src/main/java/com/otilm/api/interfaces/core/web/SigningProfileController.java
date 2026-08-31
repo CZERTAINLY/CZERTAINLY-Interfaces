@@ -16,6 +16,8 @@ import com.otilm.api.model.common.BulkActionMessageDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.PaginationResponseDto;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import com.otilm.api.model.common.signature.SignatureFamily;
+import com.otilm.api.model.common.signature.SignatureLevel;
 import com.otilm.api.model.common.validation.OidFormat;
 import com.otilm.api.model.core.certificate.CertificateDto;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
@@ -231,6 +233,33 @@ public interface SigningProfileController extends AuthProtectedController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listSignatureFormattingConnectorAttributes(
             @Parameter(description = "Signature Formatting Provider UUID") @PathVariable UUID connectorUuid,
+            @Parameter(description = "Signing Profile UUID — used for authorization purposes only",
+                    in = ParameterIn.QUERY) @RequestParam(required = false) UUID signingProfileUuid)
+            throws AttributeException, ConnectorException, NotFoundException;
+
+    @Operation(operationId = "listContentSigningFormattingConnectorAttributes",
+            summary = "Get content signing formatting attribute descriptors from a Signature Formatting Provider",
+            description = """
+                    Returns the formatting attribute descriptors a content signing Signing Profile can reach,
+                    merged by name into one flat set carrying the connector's default values.
+                    The family parameter does not narrow the returned descriptors, which follow from maxLevel
+                    alone. The signingProfileUuid parameter is used for authorization only and does not affect the
+                    returned descriptors.""")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Formatting attribute descriptors retrieved"),
+            @ApiResponse(responseCode = "404", description = "Connector or Signing Profile not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @GetMapping(path = "/signatureFormattingConnectors/{connectorUuid}/contentSigningFormattingAttributes",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    List<BaseAttribute> listContentSigningFormattingConnectorAttributes(
+            @Parameter(description = "Signature Formatting Provider UUID") @PathVariable UUID connectorUuid,
+            @Parameter(description = "Signature family the Signing Profile produces",
+                    in = ParameterIn.QUERY) @RequestParam SignatureFamily family,
+            @Parameter(description = "Highest signature level the Signing Profile may reach",
+                    in = ParameterIn.QUERY) @RequestParam SignatureLevel maxLevel,
             @Parameter(description = "Signing Profile UUID — used for authorization purposes only",
                     in = ParameterIn.QUERY) @RequestParam(required = false) UUID signingProfileUuid)
             throws AttributeException, ConnectorException, NotFoundException;
