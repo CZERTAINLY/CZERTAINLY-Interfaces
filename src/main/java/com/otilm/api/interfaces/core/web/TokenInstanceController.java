@@ -48,6 +48,10 @@ public interface TokenInstanceController extends AuthProtectedController {
     List<TokenInstanceDto> listTokenInstances();
 
     @Operation(summary = "List available token attributes for the specified connector")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Attribute information retrieved"),
+            @ApiResponse(responseCode = "404", description = "Connector not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{connectorUuid}/attributes", produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listTokenAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid,
             @Parameter(
