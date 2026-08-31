@@ -1,6 +1,7 @@
 package com.otilm.api.interfaces.connector.signing.contentsigning;
 
 import com.otilm.api.model.connector.signatures.contentsigning.common.ContentSigningFormattingOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.lang.reflect.Method;
@@ -73,6 +74,44 @@ class ContentSigningFormattingControllerContractTest {
         codes.put("getExtendToLevelStatus", "200");
         codes.put("cancelExtendToLevel", "204");
         return Map.copyOf(codes);
+    }
+
+    /** The operation description is where a connector author learns who chooses the algorithm, so it is pinned. */
+    @Test
+    void theOperationsSayWhoChoosesTheSignatureAlgorithm() {
+        String computeDtbs = operationDescription("computeDtbs");
+        assertTrue(computeDtbs.contains("The platform also supplies signatureAlgorithm"),
+                "computeDtbs does not say that the platform supplies the algorithm");
+        assertTrue(computeDtbs.contains("MUST NOT substitute one of its own"),
+                "computeDtbs does not forbid the connector substituting an algorithm of its own");
+
+        String embed = operationDescription("embedSignatureValue");
+        assertTrue(embed.contains("the same value the platform gave computeDtbs"),
+                "embedSignatureValue does not say the algorithm is the value computeDtbs was given");
+        assertTrue(embed.contains("MUST refuse a request whose algorithm disagrees"),
+                "embedSignatureValue does not require refusing compute-to-embed drift");
+    }
+
+    /** Drift is its own error code, so an operator can alert on it apart from a caller's bad field. */
+    @Test
+    void embedSignatureValueDocumentsContextMismatchAmongItsUnprocessableCodes() {
+        String description = Arrays
+                .stream(method("embedSignatureValue").getAnnotation(ApiResponses.class).value())
+                .filter(response -> "422".equals(response.responseCode()))
+                .map(ApiResponse::description)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("embedSignatureValue documents no 422 at all"));
+
+        assertTrue(description.contains("`CONTEXT_MISMATCH`"),
+                "embedSignatureValue does not document CONTEXT_MISMATCH as a 422 code");
+        assertTrue(description.contains("formattingContext"),
+                "the CONTEXT_MISMATCH entry does not say what the request contradicts");
+    }
+
+    private static String operationDescription(String methodName) {
+        Operation operation = method(methodName).getAnnotation(Operation.class);
+        assertNotNull(operation, methodName + " carries no @Operation");
+        return operation.description();
     }
 
     @Test

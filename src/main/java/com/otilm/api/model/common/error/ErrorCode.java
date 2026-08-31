@@ -52,6 +52,13 @@ public enum ErrorCode {
             "Requested parameter or signature family is not supported by this connector",
             HttpStatus.UNPROCESSABLE_ENTITY, false),
 
+    // Replayed-context divergence. Distinct from VALIDATION_FAILED: the body is well formed, so no field
+    // rule is what failed. It says the platform's own state moved between a compute step and the embed
+    // step that replays its context, which is a condition an operator can alert on. It stays 422 because
+    // the connector cannot complete the operation as asked.
+    CONTEXT_MISMATCH(ProblemTypeCategory.CONNECTOR, null, "Request contradicts the context it replays",
+            HttpStatus.UNPROCESSABLE_ENTITY, false),
+
     // CONNECTOR + AUTHORITY — interface-specific
     CSR_MALFORMED(ProblemTypeCategory.CONNECTOR, ConnectorInterface.AUTHORITY, "CSR malformed",
             HttpStatus.UNPROCESSABLE_ENTITY, false),
