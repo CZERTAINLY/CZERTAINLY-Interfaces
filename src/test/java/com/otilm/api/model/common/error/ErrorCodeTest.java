@@ -129,10 +129,6 @@ class ErrorCodeTest {
         assertFalse(ErrorCode.CONTEXT_MISMATCH.isRetryable());
     }
 
-    /**
-     * Guards against a code being declared with a deprecated {@link HttpStatus} constant. Where two constants share a
-     * code, {@code resolve} returns the one declared first, which is always the non-deprecated spelling.
-     */
     @Test
     void everyStatusIsTheConstantHttpStatusResolvesTo() {
         for (ErrorCode code : ErrorCode.values()) {
