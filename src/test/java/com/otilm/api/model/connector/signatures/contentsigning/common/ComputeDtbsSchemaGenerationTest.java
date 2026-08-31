@@ -1,18 +1,25 @@
 package com.otilm.api.model.connector.signatures.contentsigning.common;
 
+import com.otilm.api.exception.ValidationException;
+import com.otilm.api.model.common.enums.cryptography.DigestAlgorithm;
+import com.otilm.api.model.common.enums.cryptography.SignatureAlgorithm;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.media.Discriminator;
 import io.swagger.v3.oas.models.media.Schema;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Generates the OpenAPI schema for the {@code computeDtbs} union and asserts it carries a {@code discriminator} stanza
@@ -72,11 +79,88 @@ class ComputeDtbsSchemaGenerationTest {
                         "JadesComputeDtbsRequestDto")) {
             Schema<?> schema = schemas.get(subtype);
             for (String property : List
-                    .of("document", "signerCertificateChain", "signingTime", "formattingAttributes")) {
+                    .of("document", "signerCertificateChain", "signingTime", "signatureAlgorithm",
+                            "formattingAttributes")) {
                 assertTrue(resolvesProperty(schema, property, schemas),
                         subtype + " does not resolve the inherited property " + property);
             }
         }
+    }
+
+    /**
+     * Presence is not the part a generated client keys off: the algorithm resolves through a {@code $ref} and across
+     * the interface indirection, either of which can drop the requiredMode silently.
+     */
+    @Test
+    void everySubschemaMarksTheSignatureAlgorithmRequired() {
+        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(ComputeDtbsInterface.class);
+
+        for (String subtype : List
+                .of("PadesComputeDtbsRequestDto", "XadesComputeDtbsRequestDto", "CadesComputeDtbsRequestDto",
+                        "JadesComputeDtbsRequestDto")) {
+            assertTrue(requiredAnywhere(schemas.get(subtype), "signatureAlgorithm", schemas),
+                    subtype + " does not publish signatureAlgorithm as required");
+        }
+    }
+
+    /**
+     * The embed request declares its own {@code signatureAlgorithm} rather than inheriting one, so the assertion above
+     * never reaches it and a requiredMode relaxed on that half alone would publish unnoticed.
+     */
+    @Test
+    void theEmbedRequestMarksTheSignatureAlgorithmRequired() {
+        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(EmbedSignatureValueRequestDto.class);
+
+        Schema<?> embed = schemas.get("EmbedSignatureValueRequest");
+        assertNotNull(embed, "expected a generated schema named EmbedSignatureValueRequest; found " + schemas.keySet());
+        assertTrue(requiredAnywhere(embed, "signatureAlgorithm", schemas),
+                "EmbedSignatureValueRequest does not publish signatureAlgorithm as required");
+    }
+
+    /**
+     * The digest an algorithm commits to lives in {@code SignatureAlgorithm}'s Java fields, which the document does not
+     * publish, so the component description spells the mapping out. Prose written by hand rots the day the enum gains a
+     * member, so the enum is what this asserts against.
+     */
+    @Test
+    void thePublishedEnumNamesTheDigestEachAlgorithmCommitsTo() {
+        String description = signatureAlgorithmDescription();
+
+        for (SignatureAlgorithm algorithm : SignatureAlgorithm.values()) {
+            DigestAlgorithm committed = committedDigestOrNull(algorithm);
+            if (!algorithm.isDigestAlgorithmIsImplicit()) {
+                assertNotNull(committed, algorithm.getCode() + " commits to a digest the platform cannot name");
+                assertTrue(algorithm.getCode().toUpperCase(Locale.ROOT).contains(committed.getCode().replace("-", "")),
+                        algorithm.getCode() + " does not spell its own digest, so the description must map it too");
+            } else if (committed != null) {
+                assertTrue(description.contains(algorithm.getCode() + " commits to " + committed.getCode()),
+                        "the description does not say that " + algorithm.getCode() + " commits to "
+                                + committed.getCode());
+            } else {
+                Pattern clause = Pattern
+                        .compile(Pattern.quote(algorithm.getCode() + " commits to ")
+                                + "\\S+, which is not a DigestAlgorithm value");
+                assertTrue(clause.matcher(description).find(),
+                        algorithm.getCode() + " commits to a digest that fills no documentDigestAlgorithm, which the "
+                                + "description must say of that algorithm by name");
+            }
+        }
+    }
+
+    /**
+     * Every algorithm stays published, including the post-quantum names no connector formats yet: capability is a
+     * per-connector matter it refuses with PARAMETER_UNSUPPORTED, not a hole cut in the shared contract.
+     */
+    @Test
+    void thePublishedEnumOffersEveryAlgorithmThePlatformKnows() {
+        Schema<?> component = ModelConverters
+                .getInstance()
+                .readAll(ComputeDtbsInterface.class)
+                .get("SignatureAlgorithm");
+
+        assertNotNull(component, "SignatureAlgorithm is not published as a component of the computeDtbs union");
+        assertEquals(Arrays.stream(SignatureAlgorithm.values()).map(SignatureAlgorithm::getCode).toList(),
+                component.getEnum(), "the published algorithm list is not the enum");
     }
 
     /**
@@ -194,6 +278,45 @@ class ComputeDtbsSchemaGenerationTest {
             return schema.getAllOf().stream().anyMatch(member -> resolvesProperty(member, property, allSchemas));
         }
         return false;
+    }
+
+    /** Whether {@code property} appears in this schema's own {@code required} list or an inherited one. */
+    private static boolean requiredAnywhere(Schema<?> schema, String property, Map<String, Schema> allSchemas) {
+        if (schema == null) {
+            return false;
+        }
+        if (schema.getRequired() != null && schema.getRequired().contains(property)) {
+            return true;
+        }
+        if (schema.get$ref() != null) {
+            String name = schema.get$ref().substring(schema.get$ref().lastIndexOf('/') + 1);
+            return requiredAnywhere(allSchemas.get(name), property, allSchemas);
+        }
+        if (schema.getAllOf() != null) {
+            return schema.getAllOf().stream().anyMatch(member -> requiredAnywhere(member, property, allSchemas));
+        }
+        return false;
+    }
+
+    /** The description the document actually publishes for the algorithm. */
+    private static String signatureAlgorithmDescription() {
+        Schema<?> component = ModelConverters
+                .getInstance()
+                .readAll(ComputeDtbsInterface.class)
+                .get("SignatureAlgorithm");
+        if (component == null || component.getDescription() == null) {
+            return fail("the SignatureAlgorithm component publishes no description");
+        }
+        return component.getDescription();
+    }
+
+    /** The digest algorithm an algorithm's signatures carry, or {@code null} when the platform can name none. */
+    private static DigestAlgorithm committedDigestOrNull(SignatureAlgorithm algorithm) {
+        try {
+            return DigestAlgorithm.findByOid(algorithm.getDigestAlgorithmIdentifier().getAlgorithm().getId());
+        } catch (ValidationException e) {
+            return null;
+        }
     }
 
     /** Every property a generator would resolve for this schema. */

@@ -89,12 +89,18 @@ public interface ContentSigningFormattingController extends AuthProtectedConnect
     @Operation(summary = "Compute data-to-be-signed bytes",
             description = "Builds the signature structure for the requested family and returns the bytes to be signed. "
                     + "It also returns the formattingContext needed to complete the signature once the signature value "
-                    + "comes back. This is the only operation whose request varies by family. The connector MUST put "
-                    + "the supplied signingTime into the signature, not its own clock. It MUST also embed the digest "
-                    + "the request commits to. An inline transfer carries the document, and the connector digests "
-                    + "it. A digestOnly transfer carries that digest already. Either way the connector MUST echo "
-                    + "that digest in documentDigest. The platform compares that echo against the digest the user "
-                    + "authorized before it releases the signing key.",
+                    + "comes back. This is the only operation whose request varies by family.\n\n**Signing time.** "
+                    + "The connector MUST put the supplied signingTime into the signature, not its own "
+                    + "clock.\n\n**Signature algorithm.** The platform also supplies signatureAlgorithm, from the "
+                    + "signer it resolved for this request. Only the platform sees both that key and the padding "
+                    + "scheme its provider will apply. The connector MUST build the bytes for exactly that algorithm, "
+                    + "and MUST NOT substitute one of its own.\n\n**Document digest.** The connector MUST embed the "
+                    + "digest the request commits to. An inline transfer carries the document, and the connector "
+                    + "digests it. A digestOnly transfer carries that digest already. The platform pins both to the "
+                    + "digest signatureAlgorithm commits to, and checks that before it calls, so an algorithm whose "
+                    + "paired digest is not a DigestAlgorithm value is never sent here. Either way the connector "
+                    + "MUST echo that digest in documentDigest. The platform compares that echo against the digest "
+                    + "the user authorized before it releases the signing key.",
             operationId = "computeDtbs")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Data-to-be-signed bytes computed"),
@@ -112,7 +118,8 @@ public interface ContentSigningFormattingController extends AuthProtectedConnect
             @ApiResponse(responseCode = "422",
                     description = "- `DOCUMENT_MALFORMED` — the document cannot be parsed as the declared format.\n- "
                             + "`PARAMETER_UNSUPPORTED` — the requested family or a supplied parameter is not one this "
-                            + "connector serves.\n- `VALIDATION_FAILED` — the body is readable but breaks a field "
+                            + "connector serves, including a signatureAlgorithm it cannot format; the message names "
+                            + "the set it does support.\n- `VALIDATION_FAILED` — the body is readable but breaks a field "
                             + "rule, such as an absent document or a digest transfer missing its algorithm.",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
@@ -124,7 +131,12 @@ public interface ContentSigningFormattingController extends AuthProtectedConnect
             description = "Completes a SIGNED-level signature by embedding the signature value the platform's signer "
                     + "produced over the data-to-be-signed bytes. The formattingContext returned by computeDtbs is "
                     + "replayed here unchanged. The connector MUST NOT expect to have kept any state of its own "
-                    + "between the two calls.",
+                    + "between the two calls.\n\n**Signature algorithm.** signatureAlgorithm is the same value the "
+                    + "platform gave computeDtbs. The connector MUST embed the value as a signature under that "
+                    + "algorithm, and MUST refuse a request whose algorithm disagrees with the one its "
+                    + "formattingContext committed to, answering 422 with errorCode CONTEXT_MISMATCH. That turns "
+                    + "compute-to-embed drift into one diagnosable error rather than a structurally valid signature "
+                    + "no validator accepts.",
             operationId = "embedSignatureValue")
     @ApiResponses({
             @ApiResponse(responseCode = "200",
@@ -141,8 +153,9 @@ public interface ContentSigningFormattingController extends AuthProtectedConnect
             @ApiResponse(responseCode = "422",
                     description = "- `DOCUMENT_MALFORMED` — the replayed formattingContext cannot be interpreted.\n- "
                             + "`PARAMETER_UNSUPPORTED` — the requested family or a supplied parameter is not one this "
-                            + "connector serves.\n- `VALIDATION_FAILED` — the body is readable but breaks a field "
-                            + "rule.",
+                            + "connector serves.\n- `CONTEXT_MISMATCH` — the request contradicts the formattingContext "
+                            + "it replays, such as a signatureAlgorithm that disagrees with the one that context "
+                            + "committed to.\n- `VALIDATION_FAILED` — the body is readable but breaks a field rule.",
                     content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
                             schema = @Schema(implementation = ProblemDetailExtended.class)))})
     @PostMapping(path = "/embedSignatureValue", consumes = MediaType.APPLICATION_JSON_VALUE,

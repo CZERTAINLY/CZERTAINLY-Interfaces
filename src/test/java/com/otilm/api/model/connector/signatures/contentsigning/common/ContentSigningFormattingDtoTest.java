@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.otilm.api.model.client.attribute.RequestAttributeV3;
 import com.otilm.api.model.common.attribute.v3.content.StringAttributeContentV3;
 import com.otilm.api.model.common.enums.cryptography.DigestAlgorithm;
+import com.otilm.api.model.common.enums.cryptography.SignatureAlgorithm;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.SignatureLevel;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
@@ -55,6 +56,7 @@ class ContentSigningFormattingDtoTest {
         assertTrue(paths.contains("document"), paths.toString());
         assertTrue(paths.contains("signerCertificateChain"), paths.toString());
         assertTrue(paths.contains("signingTime"), paths.toString());
+        assertTrue(paths.contains("signatureAlgorithm"), paths.toString());
         assertTrue(paths.contains("formattingAttributes"), paths.toString());
     }
 
@@ -100,12 +102,26 @@ class ContentSigningFormattingDtoTest {
         assertEquals(original.getSigningTime(), deserialized.getSigningTime());
     }
 
+    /** The connector matches the algorithm by code, so the enum's spelling is what has to reach the wire. */
     @Test
-    void embedSignatureValueRequiresBothHalvesOfThePair() {
+    void computeDtbsCarriesItsSignatureAlgorithmCodeOverTheWire() throws Exception {
+        CadesComputeDtbsRequestDto original = validComputeDtbs();
+        original.setSignatureAlgorithm(SignatureAlgorithm.SHA256_WITH_RSA_PSS);
+
+        String json = mapper.writeValueAsString(original);
+        ComputeDtbsRequestDto deserialized = mapper.readValue(json, ComputeDtbsRequestDto.class);
+
+        assertTrue(json.contains("\"signatureAlgorithm\":\"SHA256withRSAandMGF1\""), json);
+        assertEquals(SignatureAlgorithm.SHA256_WITH_RSA_PSS, deserialized.getSignatureAlgorithm());
+    }
+
+    @Test
+    void embedSignatureValueRequiresItsCoreSuppliedFields() {
         Set<String> paths = paths(VALIDATOR.validate(new EmbedSignatureValueRequestDto()));
 
         assertTrue(paths.contains("signatureValue"), paths.toString());
         assertTrue(paths.contains("formattingContext"), paths.toString());
+        assertTrue(paths.contains("signatureAlgorithm"), paths.toString());
     }
 
     @Test
@@ -114,6 +130,7 @@ class ContentSigningFormattingDtoTest {
         original.setFamily(SignatureFamily.XADES);
         original.setFormattingAttributes(List.of());
         original.setSignatureValue(new byte[]{1, 2, 3});
+        original.setSignatureAlgorithm(SignatureAlgorithm.SHA384_WITH_ECDSA);
         original.setFormattingContext(new byte[]{4, 5, 6});
 
         EmbedSignatureValueRequestDto deserialized = mapper
@@ -121,6 +138,7 @@ class ContentSigningFormattingDtoTest {
 
         assertEquals(SignatureFamily.XADES, deserialized.getFamily());
         assertArrayEquals(original.getSignatureValue(), deserialized.getSignatureValue());
+        assertEquals(SignatureAlgorithm.SHA384_WITH_ECDSA, deserialized.getSignatureAlgorithm());
         assertArrayEquals(original.getFormattingContext(), deserialized.getFormattingContext());
     }
 
@@ -652,6 +670,7 @@ class ContentSigningFormattingDtoTest {
         dto.setFormattingAttributes(List.of());
         dto.setSignerCertificateChain(List.of(new byte[]{4, 5, 6}));
         dto.setSigningTime(OffsetDateTime.parse("2026-08-11T09:30:00Z"));
+        dto.setSignatureAlgorithm(SignatureAlgorithm.SHA256_WITH_RSA);
         dto.setDocument(new InlineDocumentTransferDto(new byte[]{1, 2, 3}));
         return dto;
     }

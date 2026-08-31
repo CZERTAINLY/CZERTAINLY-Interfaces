@@ -95,6 +95,14 @@ class ErrorCodeTest {
     }
 
     @Test
+    void connectorContextMismatchEntry() {
+        assertEquals(ProblemTypeCategory.CONNECTOR, ErrorCode.CONTEXT_MISMATCH.getCategory());
+        assertNull(ErrorCode.CONTEXT_MISMATCH.getInterfaceCode());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.CONTEXT_MISMATCH.getStatus());
+        assertFalse(ErrorCode.CONTEXT_MISMATCH.isRetryable());
+    }
+
+    @Test
     void retryableTrueOnlyForTransientCodes() {
         // Transient infrastructure / rate-limit recovery → retryable
         assertTrue(ErrorCode.REQUEST_TIMEOUT.isRetryable());
@@ -117,5 +125,6 @@ class ErrorCodeTest {
         assertFalse(ErrorCode.DOCUMENT_TOO_LARGE.isRetryable());
         assertFalse(ErrorCode.SIGNATURE_NOT_FOUND.isRetryable());
         assertFalse(ErrorCode.PARAMETER_UNSUPPORTED.isRetryable());
+        assertFalse(ErrorCode.CONTEXT_MISMATCH.isRetryable());
     }
 }
