@@ -6,6 +6,7 @@ import com.otilm.api.clients.BaseApiClient;
 import com.otilm.api.exception.ConnectorException;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import com.otilm.api.model.common.enums.cryptography.DigestAlgorithm;
+import com.otilm.api.model.common.enums.cryptography.SignatureAlgorithm;
 import com.otilm.api.model.common.signature.SignatureFamily;
 import com.otilm.api.model.common.signature.SignatureLevel;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
@@ -146,6 +147,7 @@ class ContentSigningFormattingApiClientTest {
         request.setDocument(new InlineDocumentTransferDto(new byte[]{7, 7, 7}));
         request.setSignerCertificateChain(List.of(new byte[]{9}));
         request.setSigningTime(OffsetDateTime.parse("2026-08-11T10:15:30Z"));
+        request.setSignatureAlgorithm(SignatureAlgorithm.SHA256_WITH_RSA);
         request.setFormattingAttributes(List.of());
 
         client.computeDtbs(connector, request);
@@ -160,13 +162,31 @@ class ContentSigningFormattingApiClientTest {
     void embedSignatureValue_postsAndReturnsTheSignedDocument() throws ConnectorException {
         stubPost(BASE + "/embedSignatureValue", "{ \"signedDocument\": \"AQID\" }");
 
-        EmbedSignatureValueRequestDto request = new EmbedSignatureValueRequestDto();
-        request.setSignatureValue(new byte[]{1});
-        request.setFormattingContext(new byte[]{2});
-
-        SignedDocumentResponseDto result = client.embedSignatureValue(connector, request);
+        SignedDocumentResponseDto result = client.embedSignatureValue(connector, embedSignatureValueRequest());
 
         assertArrayEquals(new byte[]{1, 2, 3}, result.getSignedDocument());
+    }
+
+    /**
+     * The connector cross-checks the embed's algorithm against the one baked into its formattingContext, so a value
+     * dropped in transport would surface as drift rather than as a missing field.
+     */
+    @Test
+    void computeDtbsAndEmbedSignatureValue_putTheSameSignatureAlgorithmOnTheWire() throws ConnectorException {
+        stubPost(BASE + "/computeDtbs", "{ \"dtbs\": \"AQID\", \"formattingContext\": \"BAUG\" }");
+        stubPost(BASE + "/embedSignatureValue", "{ \"signedDocument\": \"AQID\" }");
+
+        client.computeDtbs(connector, padesRequest());
+        client.embedSignatureValue(connector, embedSignatureValueRequest());
+
+        for (String operation : List.of("/computeDtbs", "/embedSignatureValue")) {
+            mockServer
+                    .verify(WireMock
+                            .postRequestedFor(WireMock.urlEqualTo(BASE + operation))
+                            .withRequestBody(WireMock
+                                    .matchingJsonPath("$.signatureAlgorithm",
+                                            WireMock.equalTo("SHA256withRSAandMGF1"))));
+        }
     }
 
     @Test
@@ -386,7 +406,16 @@ class ContentSigningFormattingApiClientTest {
         request.setDocument(new InlineDocumentTransferDto(new byte[]{1, 2, 3}));
         request.setSignerCertificateChain(List.of(new byte[]{9}));
         request.setSigningTime(OffsetDateTime.parse("2026-08-11T10:15:30Z"));
+        request.setSignatureAlgorithm(SignatureAlgorithm.SHA256_WITH_RSA_PSS);
         request.setFormattingAttributes(List.of());
+        return request;
+    }
+
+    private static EmbedSignatureValueRequestDto embedSignatureValueRequest() {
+        EmbedSignatureValueRequestDto request = new EmbedSignatureValueRequestDto();
+        request.setSignatureValue(new byte[]{1});
+        request.setSignatureAlgorithm(SignatureAlgorithm.SHA256_WITH_RSA_PSS);
+        request.setFormattingContext(new byte[]{2});
         return request;
     }
 
