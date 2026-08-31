@@ -104,6 +104,20 @@ class ComputeDtbsSchemaGenerationTest {
     }
 
     /**
+     * The embed request declares its own {@code signatureAlgorithm} rather than inheriting one, so the assertion above
+     * never reaches it and a requiredMode relaxed on that half alone would publish unnoticed.
+     */
+    @Test
+    void theEmbedRequestMarksTheSignatureAlgorithmRequired() {
+        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(EmbedSignatureValueRequestDto.class);
+
+        Schema<?> embed = schemas.get("EmbedSignatureValueRequest");
+        assertNotNull(embed, "expected a generated schema named EmbedSignatureValueRequest; found " + schemas.keySet());
+        assertTrue(requiredAnywhere(embed, "signatureAlgorithm", schemas),
+                "EmbedSignatureValueRequest does not publish signatureAlgorithm as required");
+    }
+
+    /**
      * The digest an algorithm commits to lives in {@code SignatureAlgorithm}'s Java fields, which the document does not
      * publish, so the component description spells the mapping out. Prose written by hand rots the day the enum gains a
      * member, so the enum is what this asserts against.

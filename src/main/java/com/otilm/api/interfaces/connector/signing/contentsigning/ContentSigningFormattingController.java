@@ -97,7 +97,8 @@ public interface ContentSigningFormattingController extends AuthProtectedConnect
                     + "and MUST NOT substitute one of its own.\n\n**Document digest.** The connector MUST embed the "
                     + "digest the request commits to. An inline transfer carries the document, and the connector "
                     + "digests it. A digestOnly transfer carries that digest already. The platform pins both to the "
-                    + "digest signatureAlgorithm commits to, and checks that before it calls. Either way the connector "
+                    + "digest signatureAlgorithm commits to, and checks that before it calls, so an algorithm whose "
+                    + "paired digest is not a DigestAlgorithm value is never sent here. Either way the connector "
                     + "MUST echo that digest in documentDigest. The platform compares that echo against the digest "
                     + "the user authorized before it releases the signing key.",
             operationId = "computeDtbs")

@@ -29,9 +29,9 @@ import lombok.ToString;
  * </p>
  *
  * <p>
- * {@code signatureAlgorithm} arrives the same way and for the same reason. The surfaces that carry that to a connector
- * author are the {@code computeDtbs} operation description and the {@link SignatureAlgorithm} component, never the
- * field's own description.
+ * {@code signatureAlgorithm} arrives the same way and for the same reason. It carries the message digest with it
+ * because the two are one choice and not two; a document digest under any other algorithm would arrive named in a field
+ * of its own rather than left to be inferred.
  * </p>
  *
  * <p>
@@ -73,12 +73,10 @@ public abstract class ComputeDtbsRequestDto extends ContentSigningFormattingRequ
     @Schema(description = "Signature algorithm the platform's signer will use. Set by the platform; a connector MUST "
             + "build the data-to-be-signed bytes for exactly this algorithm and MUST NOT substitute one of its own, "
             + "and MUST refuse an algorithm it cannot format with 422 and errorCode PARAMETER_UNSUPPORTED naming the "
-            + "set it does support.\n\nThe signature's message-digest algorithm follows from this algorithm rather "
-            + "than arriving as a second field, because the two are one choice and not two. The digest the connector "
-            + "echoes in documentDigest, and a digestOnly transfer's document.digestAlgorithm, are a separate axis "
-            + "that the platform pins to this same algorithm and checks before it calls. A connector therefore "
-            + "receives that pairing on every call, and a document digest under any other algorithm would arrive "
-            + "named in a field of its own rather than left to be inferred.",
+            + "set it does support.\n\nThe connector derives the signature's own message-digest algorithm from this "
+            + "algorithm; no field carries it. The digest the connector echoes in documentDigest, and a digestOnly "
+            + "transfer's document.digestAlgorithm, are a different axis that the platform pins to this same "
+            + "algorithm and checks before it calls, so a connector receives that pairing on every call.",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private SignatureAlgorithm signatureAlgorithm;
 
