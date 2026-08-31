@@ -50,7 +50,9 @@ public interface TokenInstanceController extends AuthProtectedController {
     @Operation(summary = "List available token attributes for the specified connector")
     @GetMapping(path = "/{connectorUuid}/attributes", produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listTokenAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid,
-            @Nullable @RequestParam String kind) throws ConnectorException, NotFoundException;
+            @Parameter(
+                    description = "Connector kind. Required for connectors based on version 1 of the connector framework; omit for connectors based on version 2 (NG) of the connector framework.") @Nullable @RequestParam String kind)
+            throws ConnectorException, NotFoundException;
 
     @Operation(summary = "Get Token Instance Detail")
     @ApiResponses(value = {
