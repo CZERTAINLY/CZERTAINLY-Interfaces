@@ -18,14 +18,12 @@ class ValueSourceBindingDtoTest {
     void roundTripsBindingByUuid() throws Exception {
         // given — a binding identified by attributeUuid, with no attributeName
         var boundUuid = "u1";
-        var collectionRef = "cmdb.servers";
         var paramName = "dc_select";
         var param = new SourceParam();
         param.setAttributeName(paramName);
         var dto = new ValueSourceBindingDto();
         dto.setAttributeUuid(boundUuid);
         dto.setValueSourceType(ValueSourceType.STATIC_LIST);
-        dto.setCollectionRef(collectionRef);
         dto.setParams(List.of(param));
 
         // when
@@ -36,13 +34,12 @@ class ValueSourceBindingDtoTest {
         assertEquals(boundUuid, back.getAttributeUuid());
         assertNull(back.getAttributeName());
         assertEquals(ValueSourceType.STATIC_LIST, back.getValueSourceType());
-        assertEquals(collectionRef, back.getCollectionRef());
         assertEquals(paramName, back.getParams().get(0).getAttributeName());
     }
 
     @Test
-    void omitsNullUuidAndCollectionRef_whenBindingByName() throws Exception {
-        // given — a binding identified by attributeName, with no uuid or collectionRef
+    void omitsNullUuid_whenBindingByName() throws Exception {
+        // given — a binding identified by attributeName, with no uuid
         var boundName = "server";
         var dto = new ValueSourceBindingDto();
         dto.setAttributeName(boundName);
@@ -54,7 +51,6 @@ class ValueSourceBindingDtoTest {
 
         // then
         assertFalse(json.contains("attributeUuid"));
-        assertFalse(json.contains("collectionRef"));
         assertEquals(boundName, back.getAttributeName());
         assertEquals(ValueSourceType.CONNECTOR_CALLBACK, back.getValueSourceType());
     }

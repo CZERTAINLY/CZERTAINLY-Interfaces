@@ -32,24 +32,25 @@ public class RaProfileCertificateRequestAttributesUpdateDto {
     @Valid
     private List<BaseAttribute> requestAttributes = new ArrayList<>();
 
-    @Schema(description = "How the static set combines with a connector-supplied set; currently only 'staticOnly' is supported",
+    @Schema(description = "How the static set combines with a connector-supplied set; defaults to staticOnly when omitted",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, defaultValue = "staticOnly")
     private AttributeSetMergeMode mergeMode = AttributeSetMergeMode.STATIC_ONLY;
 
-    // Hidden until properly supported in a future version
+    /**
+     * Null when the field is absent from the request, which a {@code PATCH} must be able to tell from an explicitly
+     * empty list: Core replaces the stored bindings wholesale, so an empty-list default would make any unrelated edit
+     * delete them.
+     */
     @ArraySchema(arraySchema = @Schema(
-            description = "Core-side value-source bindings to attach onto connector-supplied (or static) definitions by reference",
+            description = "Core-side value-source bindings to attach onto connector-supplied (or static) definitions by reference; omit to leave the stored bindings unchanged, send an empty array to clear them",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @Valid
-    @JsonIgnore
-    @Schema(hidden = true)
-    private List<ValueSourceBindingDto> valueSourceBindings = new ArrayList<>();
+    private List<ValueSourceBindingDto> valueSourceBindings;
 
     @Schema(description = "Whether an external CSR violating the resolved set is rejected (true) or accepted with warnings (false); null inherits the platform default",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean externalCsrValidationStrict;
 
-    // This check is dormant until valueSourceBindings is re-exposed
     /**
      * Each attribute may carry at most one value-source binding. Two bindings targeting the same attribute are
      * ambiguous.
