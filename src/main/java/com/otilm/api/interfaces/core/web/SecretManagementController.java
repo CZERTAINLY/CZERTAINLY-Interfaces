@@ -10,6 +10,7 @@ import com.otilm.api.model.client.certificate.SearchRequestDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.PaginationResponseDto;
 import com.otilm.api.model.connector.secrets.content.SecretContent;
+import com.otilm.api.model.core.search.ConfigurableColumnsDocs;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import com.otilm.api.model.core.secret.SecretDetailDto;
 import com.otilm.api.model.core.secret.SecretDto;
@@ -54,12 +55,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface SecretManagementController extends AuthProtectedController {
 
-    @Operation(operationId = "getSecretSearchableFields", summary = "List search filters for secrets")
+    @Operation(operationId = "getSecretSearchableFields", summary = "List search filters for secrets",
+            description = ConfigurableColumnsDocs.CATALOGUE_FLAGS)
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of search filters retrieved")})
     @GetMapping(path = "/secrets/search", produces = {MediaType.APPLICATION_JSON_VALUE})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
-    @Operation(summary = "List secrets")
+    @Operation(summary = "List secrets",
+            description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of secrets retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
@@ -67,7 +70,20 @@ public interface SecretManagementController extends AuthProtectedController {
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/secrets", consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<SecretDto> listSecrets(@Valid @RequestBody SearchRequestDto searchRequest);
+    PaginationResponseDto<SecretDto> listSecrets(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(schema = @Schema(implementation = SearchRequestDto.class),
+                    examples = {@ExampleObject(name = "With ordering and columns", value = """
+                            {
+                              "pageNumber": 1,
+                              "itemsPerPage": 10,
+                              "filters": [],
+                              "sort": {"fieldSource": "property", "fieldIdentifier": "SECRET_NAME", "direction": "asc"},
+                              "columns": [
+                                {"fieldSource": "property", "fieldIdentifier": "SECRET_NAME"},
+                                {"fieldSource": "property", "fieldIdentifier": "SECRET_STATE"},
+                                {"fieldSource": "property", "fieldIdentifier": "SECRET_OWNER"}
+                              ]
+                            }""")})) @Valid @RequestBody SearchRequestDto searchRequest);
 
     @Operation(summary = "Get secret details")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Secret details retrieved")})
