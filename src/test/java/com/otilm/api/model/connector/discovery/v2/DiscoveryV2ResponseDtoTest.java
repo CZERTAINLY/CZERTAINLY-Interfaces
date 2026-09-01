@@ -325,23 +325,51 @@ class DiscoveryV2ResponseDtoTest {
         assertEquals(300L, back.getByResource().get(Resource.CRYPTOGRAPHIC_KEY).getTotalEstimate());
     }
 
+    /**
+     * A scan of address space fails most of what it attempts, so a run that examined little and failed the rest must be
+     * distinguishable from one that found nothing to do. Pinned run-wide and per-resource, since the counter is
+     * inherited by the leaf rather than declared on the run-level type.
+     */
+    @Test
+    void progressCountsFailedTargetsRunWideAndPerResource() throws Exception {
+        DiscoveryProgressDto certProgress = new DiscoveryProgressDto();
+        certProgress.setProcessed(42L);
+        certProgress.setFailed(65_492L);
+
+        DiscoveryProgressDto dto = new DiscoveryProgressDto();
+        dto.setProcessed(42L);
+        dto.setTotalEstimate(65_534L);
+        dto.setFailed(65_492L);
+        dto.setByResource(Map.of(Resource.CERTIFICATE, certProgress));
+
+        String json = mapper.writeValueAsString(dto);
+        assertTrue(json.contains("\"failed\":65492"), json);
+
+        DiscoveryProgressDto back = mapper.readValue(json, DiscoveryProgressDto.class);
+        assertEquals(65_492L, back.getFailed());
+        assertEquals(65_492L, back.getByResource().get(Resource.CERTIFICATE).getFailed(),
+                "the per-resource breakdown must carry its own failure count, not only the run-wide one");
+    }
+
     @Test
     void progressOmitsAbsentFieldsIndependently() throws Exception {
         DiscoveryProgressDto dto = new DiscoveryProgressDto();
         dto.setProcessed(42L);
         dto.setPhase("scanning");
-        // totalEstimate and byResource intentionally left unset.
+        // totalEstimate, failed and byResource intentionally left unset.
 
         String json = mapper.writeValueAsString(dto);
         assertTrue(json.contains("\"processed\":42"));
         assertTrue(json.contains("\"phase\":\"scanning\""));
         assertFalse(json.contains("\"totalEstimate\""));
+        assertFalse(json.contains("\"failed\""));
         assertFalse(json.contains("\"byResource\""));
 
         DiscoveryProgressDto back = mapper.readValue(json, DiscoveryProgressDto.class);
         assertEquals(42L, back.getProcessed());
         assertEquals("scanning", back.getPhase());
         assertNull(back.getTotalEstimate());
+        assertNull(back.getFailed());
         assertNull(back.getByResource());
     }
 

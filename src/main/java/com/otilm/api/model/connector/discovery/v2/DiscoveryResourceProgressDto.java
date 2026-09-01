@@ -8,8 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Progress counters for a single resource type. Every field is optional; a connector that cannot estimate progress at
- * all sends an all-null instance.
+ * Progress counters for a single resource type. Every field is optional; a connector that cannot report progress at all
+ * omits the whole object rather than sending an empty one, since the two say the same thing and a consumer keeping the
+ * last known snapshot cannot tell an empty report from a missing one.
  *
  * <p>
  * This is the leaf of the progress model, and deliberately carries no {@code byResource} of its own: a per-resource
@@ -39,4 +40,11 @@ public class DiscoveryResourceProgressDto {
     @Schema(description = "Connector-defined free-text phase label (e.g. \"scanning\", \"enumerating\"); "
             + "omitted when the connector has no phase concept", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String phase;
+
+    @Schema(description = "Number of targets the connector attempted and could not examine — an unreachable "
+            + "host, a refused connection, a target that answered nothing usable. Counts attempts that "
+            + "yielded no item, so it never overlaps processed. Omitted when the connector does not count "
+            + "failures. Reporting failures here does not degrade the run: a connector whose result is not "
+            + "worth trusting reports the run itself as failed.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Long failed;
 }
