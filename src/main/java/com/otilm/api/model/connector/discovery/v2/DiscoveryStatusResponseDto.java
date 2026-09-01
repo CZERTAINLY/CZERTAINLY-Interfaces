@@ -21,7 +21,7 @@ public class DiscoveryStatusResponseDto {
     @NotNull(message = "state is required")
     private DiscoveryRunState state;
 
-    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
+    // ALL_OF_REF keeps this description off the shared component; see ConnectorInterfaceDto.
     @Schema(description = "How far the run has got. Omitted when the connector cannot report progress.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     private DiscoveryProgressDto progress;

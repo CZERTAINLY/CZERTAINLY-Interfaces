@@ -235,28 +235,6 @@ class DiscoveryV2SchemaGenerationTest {
     }
 
     /**
-     * Where a collection's own description lives. On a collection field swagger-core applies a bare {@code @Schema} to
-     * the item, and a description cannot sit beside the item's {@code $ref}: it is hoisted onto the shared component,
-     * or — wrapped in an {@code allOf} — stranded where nothing reads it. {@code @ArraySchema} keeps it on the array.
-     */
-    @Test
-    void theConnectorInterfaceArrayDescribesTheArrayAndNotItsItems() {
-        Schema<?> interfaces = (Schema<?>) ModelConverters
-                .getInstance()
-                .readAll(ConnectorDto.class)
-                .get("ConnectorDtoV2")
-                .getProperties()
-                .get("interfaces");
-
-        assertEquals("array", interfaces.getType());
-        assertNotNull(interfaces.getDescription(), "the collection's own description belongs on the array");
-        assertNotNull(interfaces.getItems(), "the array publishes no item schema");
-        assertNull(interfaces.getItems().getDescription(),
-                "a description on the item is either hoisted onto the shared component or stranded beside a $ref, "
-                        + "where OpenAPI 3.0 ignores it.");
-    }
-
-    /**
      * The other half of the rule above. Keeping the shared component intact is trivially satisfied by describing the
      * referencing field nowhere at all, which is how the description was lost once already — swagger-core resolves no
      * javadoc on this classpath, so prose moved into a doc comment leaves the published field blank. Each of these
@@ -274,12 +252,11 @@ class DiscoveryV2SchemaGenerationTest {
                         new Field(VaultInstanceDto.class, "VaultInstanceDto", "connectorInterface"),
                         new Field(DiscoveryDetailDto.class, "DiscoveryDetailDto", "progress"),
                         new Field(DiscoveryStatusResponseDto.class, "DiscoveryStatusResponseDto", "progress"),
-                        // The array's own description, which @ArraySchema puts on the array rather than on the item.
-                        // Dropped back to a bare @Schema it would land on the item instead, which the guard above
-                        // catches; removed altogether it would only show up here.
-                        new Field(ConnectorDto.class, "ConnectorDtoV2", "interfaces"),
-                        // Also @ArraySchema, but its items are an enum: there a bare @Schema still describes the
-                        // array, so only the Resource-component guard catches that. This row catches it vanishing.
+                        // @ArraySchema, so the description sits on the array rather than the item. Needed here and
+                        // not on the other collections in this contract because Resource carries no class-level
+                        // description of its own: any prose reaching that component is a change to it, which
+                        // discoveryDoesNotRewriteThePlatformWideResourceComponent refuses. This row is the other
+                        // half — that the description exists at all.
                         new Field(DiscoveryRunRequestDto.class, "DiscoveryRunRequestDto", "resources"))) {
             Schema<?> root = ModelConverters.getInstance().readAll(field.root()).get(field.schemaName());
             assertNotNull(root, "expected a generated schema for " + field.schemaName());

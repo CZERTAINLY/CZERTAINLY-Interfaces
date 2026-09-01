@@ -16,9 +16,11 @@ public class VaultInstanceDto extends NameAndUuidDto {
     @Schema(description = "Connector associated with this Vault instance", requiredMode = Schema.RequiredMode.REQUIRED)
     private NameAndUuidDto connector;
 
-    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
-    @Schema(description = "The connector interface this vault instance is associated with; null once the interface "
-            + "has been removed from its connector.", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true,
+    // ALL_OF_REF keeps this description off the shared component; see ConnectorInterfaceDto. nullable is inert
+    // beside an allOf, so the field states its own nullability in prose.
+    @Schema(description = "The connector interface this vault instance is associated with. Sent as an explicit null "
+            + "once the interface has been removed from its connector; the key is always present.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true,
             schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
     private ConnectorInterfaceDto connectorInterface;
 

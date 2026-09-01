@@ -9,7 +9,6 @@ import com.otilm.api.model.core.connector.FunctionGroupDto;
 import com.otilm.api.model.core.proxy.ProxyDto;
 import com.otilm.api.model.core.search.AttributeProjectable;
 import com.otilm.api.model.core.search.FilterFieldSource;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +37,10 @@ public class ConnectorDto extends NameAndUuidDto implements AttributeProjectable
             requiredMode = Schema.RequiredMode.REQUIRED)
     private List<FunctionGroupDto> functionGroups = new ArrayList<>();
 
-    // @ArraySchema, not @Schema: on a collection field swagger-core applies a bare @Schema to the item, and since
-    // OpenAPI 3.0 cannot carry a description beside the item's $ref it hoists this prose onto the shared
-    // ConnectorInterfaceDto component, where every other reader of that component then sees it.
-    @ArraySchema(arraySchema = @Schema(description = "List of connector interfaces implemented by the Connector",
-            requiredMode = Schema.RequiredMode.REQUIRED))
+    // Worded to describe one connector interface rather than this field's use of them, so it reads correctly wherever
+    // swagger-core puts it. ConnectorInterfaceDto's own class-level description is what keeps this prose off it.
+    @Schema(description = "A connector interface implemented by the Connector",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ConnectorInterfaceDto> interfaces = new ArrayList<>();
 
     @Schema(description = "Proxy for message queue routing. "

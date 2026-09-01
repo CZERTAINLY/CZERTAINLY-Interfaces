@@ -8,9 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Progress counters for a single resource type. Every field is optional; a connector that cannot report progress at all
- * omits the whole object rather than sending an empty one, since the two say the same thing and a consumer keeping the
- * last known snapshot cannot tell an empty report from a missing one.
+ * Progress counters for a single resource type.
  *
  * <p>
  * This is the leaf of the progress model, and deliberately carries no {@code byResource} of its own: a per-resource
@@ -24,7 +22,9 @@ import lombok.ToString;
 @ToString
 @Schema(description = "Progress counters. Used for a whole run and, keyed by resource code inside "
         + "byResource (e.g. \"certificates\", \"keys\"), for one resource type at a time. Every "
-        + "field is optional.")
+        + "field is optional, and a producer with nothing to report MUST omit the whole object rather "
+        + "than send one whose fields are all absent: a consumer keeping the last progress it was "
+        + "told cannot tell an empty report from a missing one.")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DiscoveryResourceProgressDto {
@@ -41,10 +41,13 @@ public class DiscoveryResourceProgressDto {
             + "omitted when the connector has no phase concept", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String phase;
 
-    @Schema(description = "Number of targets the connector attempted and could not examine — an unreachable "
-            + "host, a refused connection, a target that answered nothing usable. Counts attempts that "
-            + "yielded no item, so it never overlaps processed. Omitted when the connector does not count "
-            + "failures. Reporting failures here does not degrade the run: a connector whose result is not "
-            + "worth trusting reports the run itself as failed.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Number of targets the connector attempted and could not examine — an unreachable host, a "
+            + "refused connection, a target that answered nothing usable. Counted in targets, not items, so it "
+            + "shares no denominator with processed and totalEstimate: one target can yield many items or none. "
+            + "Outside totalEstimate, so completion stays processed against totalEstimate and a run can finish "
+            + "with failures outstanding. The run-wide value exceeds the sum of the byResource values when a "
+            + "failure belongs to no single resource. Omitted when the connector does not count failures, and "
+            + "reporting failures here does not degrade the run: a connector whose result is not worth trusting "
+            + "reports the run itself as failed.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Long failed;
 }

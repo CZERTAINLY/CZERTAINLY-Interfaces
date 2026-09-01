@@ -51,7 +51,7 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @Schema(description = "Name of the Discovery Provider", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorName;
 
-    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
+    // ALL_OF_REF keeps this description off the shared component; see ConnectorInterfaceDto.
     @Schema(description = "The connector interface this run is driven through, and so which generation drives it. "
             + "Absent for a run against a legacy v1 connector, which declares no connector interface.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED, schemaResolution = Schema.SchemaResolution.ALL_OF_REF)
@@ -85,7 +85,7 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Resource> resources;
 
-    // ALL_OF_REF: parks the description in an allOf so it is not hoisted onto the shared component.
+    // ALL_OF_REF keeps this description off the shared component; see ConnectorInterfaceDto.
     @Schema(description = "Progress counters reported by the connector, with an optional per-resource breakdown. "
             + "Omitted for a v1 run and when the connector reports no progress. The counters inside are "
             + "independently optional.", requiredMode = Schema.RequiredMode.NOT_REQUIRED,

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Setter
+@Schema(description = "One certificate a Discovery Provider reports, with the metadata it was found under.")
 public class DiscoveryProviderCertificateDataDto {
 
     @Schema(description = "Certificate UUID", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -41,6 +42,8 @@ public class DiscoveryProviderCertificateDataDto {
                 .append("uuid", uuid)
                 .append("base64Content", base64Content)
                 .append("meta", meta)
+                .append("sequence", sequence)
+                .append("discoveredAt", discoveredAt)
                 .toString();
     }
 

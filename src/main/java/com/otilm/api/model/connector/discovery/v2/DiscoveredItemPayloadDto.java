@@ -32,11 +32,9 @@ import java.util.Set;
 public interface DiscoveredItemPayloadDto {
 
     /**
-     * The resources discovery can report — exactly those with a payload subtype registered above.
-     *
-     * <p>
-     * A run may target a resource precisely when this contract can carry an item for it, so Core and the connector
-     * client both read this set rather than keeping copies of it.
+     * The resources discovery can report — exactly those with a payload subtype registered above. A run may target a
+     * resource precisely when this contract can carry an item for it, so Core and the connector client read this set
+     * rather than keeping copies of it.
      */
     Set<Resource> DISCOVERABLE = Collections
             .unmodifiableSet(EnumSet.of(Resource.CERTIFICATE, Resource.CRYPTOGRAPHIC_KEY));

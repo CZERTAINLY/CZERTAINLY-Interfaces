@@ -36,10 +36,11 @@ import lombok.ToString;
         + "per-resource breakdown.")
 public class DiscoveryProgressDto extends DiscoveryResourceProgressDto {
 
-    // No description here on purpose. OpenAPI 3.0 cannot carry a description alongside a $ref, so
-    // swagger-core hoists a referencing field's description onto the referenced component — which
-    // would overwrite DiscoveryResourceProgressDto's own description for every other user of it.
-    // The prose lives on that class instead; see its class-level @Schema.
-    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED, propertyNames = Resource.class)
+    // A plain @Schema, unlike the $ref-valued fields elsewhere in this contract: a Map's $ref sits under
+    // additionalProperties rather than beside the description, so there is nothing for swagger-core to hoist
+    // onto the shared component. ALL_OF_REF would be wrong here -- on a Map field it drops the description.
+    @Schema(description = "Per-resource progress, keyed by resource code. Present only when the connector "
+            + "breaks its progress down by resource; the run-wide counters above stand alone otherwise.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED, propertyNames = Resource.class)
     private Map<Resource, DiscoveryResourceProgressDto> byResource;
 }
