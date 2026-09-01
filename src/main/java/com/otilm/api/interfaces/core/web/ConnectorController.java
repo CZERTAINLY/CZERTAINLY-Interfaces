@@ -55,7 +55,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface ConnectorController extends AuthProtectedController {
 
-    @Operation(summary = "List Connectors by Function Group and Kind")
+    @Operation(summary = "List Connectors by Function Group and Kind", description = """
+            Returns every Connector matching the supplied function group, kind and status, unpaged.
+
+            Those three query parameters are the only narrowing this listing offers, and it takes neither \
+            ordering nor column selection. The Connector listing that accepts request filters, ordering and \
+            columns is `POST /v2/connectors/list`.""")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List all Connectors")})
     @GetMapping(produces = {"application/json"})
     List<ConnectorDto> listConnectors(@RequestParam Optional<FunctionGroupCode> functionGroup,
