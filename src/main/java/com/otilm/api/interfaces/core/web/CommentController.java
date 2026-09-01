@@ -41,7 +41,7 @@ public interface CommentController extends AuthProtectedController {
                     + "otherwise; each root carries its reply count. Replies are paged separately.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment threads retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{resource}/{objectUuid}", produces = {"application/json"})
@@ -55,7 +55,7 @@ public interface CommentController extends AuthProtectedController {
                     + "direction says otherwise.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Thread replies retrieved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{uuid}/replies", produces = {"application/json"})
@@ -67,7 +67,7 @@ public interface CommentController extends AuthProtectedController {
                     + "thread root. Threads are one level deep.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment created"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/{resource}/{objectUuid}", consumes = {"application/json"}, produces = {"application/json"})
@@ -78,7 +78,7 @@ public interface CommentController extends AuthProtectedController {
     @Operation(summary = "Resolve a comment thread", description = "Thread roots only.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Comment thread resolved"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(path = "/{uuid}/resolve")
@@ -88,7 +88,7 @@ public interface CommentController extends AuthProtectedController {
     @Operation(summary = "Reopen a resolved comment thread", description = "Thread roots only.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Comment thread reopened"),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PatchMapping(path = "/{uuid}/unresolve")
