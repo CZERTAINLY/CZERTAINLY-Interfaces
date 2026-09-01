@@ -56,11 +56,6 @@ public class BrandingSettingsUpdateDto implements Serializable {
     @Pattern(regexp = COLOR_REGEX, message = COLOR_VALIDATION_MESSAGE)
     private String secondaryColor;
 
-    @Schema(description = "Tertiary brand color, used as an additional accent", examples = {"#7B61FF"},
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @Pattern(regexp = COLOR_REGEX, message = COLOR_VALIDATION_MESSAGE)
-    private String tertiaryColor;
-
     @Schema(description = "Page background color of the branded theme", examples = {"#FFFFFF"},
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @Pattern(regexp = COLOR_REGEX, message = COLOR_VALIDATION_MESSAGE)
