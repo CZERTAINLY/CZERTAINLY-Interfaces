@@ -17,7 +17,19 @@ import org.bouncycastle.asn1.pkcs.RSASSAPSSparams;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x9.X9ObjectIdentifiers;
 
-@Schema(enumAsRef = true)
+/**
+ * Published with {@code enumAsRef}, so every operation that names an algorithm reaches this one component. Its
+ * description therefore says what an algorithm means on its own terms, and leaves per-operation obligations to the
+ * operation that imposes them.
+ */
+@Schema(enumAsRef = true,
+        description = "Signature algorithm, named by its code. Each algorithm fixes the digest carried inside the "
+                + "signature it produces, so naming the algorithm names that digest. It says nothing about a digest an "
+                + "operation takes as a parameter of its own. Where the code spells its digest out, that is the "
+                + "digest. Where it does not, the platform records the digest it pairs the algorithm with: Ed25519 "
+                + "commits to SHA-512, FALCON-1024 commits to SHA-512, ML-DSA-65 commits to SHA-512, "
+                + "SLH-DSA-SHA2-128F commits to SHA-256, and Ed448 commits to SHAKE256, which is not a "
+                + "DigestAlgorithm value.")
 public enum SignatureAlgorithm implements IPlatformEnum {
     SHA256_WITH_RSA("SHA256withRSA", "RSASSA-PKCS_v1.5 using SHA256", "RSA signature with SHA-256 digest",
             new AlgorithmIdentifier(PKCSObjectIdentifiers.sha256WithRSAEncryption, DERNull.INSTANCE),

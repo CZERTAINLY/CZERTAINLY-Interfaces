@@ -34,7 +34,8 @@ public class ComputeDtbsResponseDto {
 
     @NotNull(message = "documentDigestAlgorithm is required")
     @Schema(description = "Algorithm that produced documentDigest. The platform needs it to compare the digest "
-            + "against the authorized one.", requiredMode = Schema.RequiredMode.REQUIRED)
+            + "against the authorized one, and pins it to the digest the request's signatureAlgorithm commits to.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private DigestAlgorithm documentDigestAlgorithm;
 
     @ToString.Exclude

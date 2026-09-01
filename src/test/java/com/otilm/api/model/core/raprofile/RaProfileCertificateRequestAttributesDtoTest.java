@@ -3,7 +3,6 @@ package com.otilm.api.model.core.raprofile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.otilm.api.model.common.attribute.v3.mapping.ValueSourceType;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static com.otilm.util.builders.DataAttributeV3Builder.aDataAttribute;
@@ -48,9 +47,10 @@ class RaProfileCertificateRequestAttributesDtoTest {
         RaProfileCertificateRequestAttributesDto back = mapper
                 .readValue(json, RaProfileCertificateRequestAttributesDto.class);
 
-        // value source binding is supposed to be hidden
-        Assertions.assertFalse(json.contains("valueSourceBindings"));
-        assertEquals(0, back.getValueSourceBindings().size());
+        // then
+        assertEquals(1, back.getValueSourceBindings().size());
+        assertEquals(boundUuid, back.getValueSourceBindings().get(0).getAttributeUuid());
+        assertEquals(ValueSourceType.STATIC_LIST, back.getValueSourceBindings().get(0).getValueSourceType());
         assertEquals(Boolean.TRUE, back.getExternalCsrValidationStrict());
     }
 }

@@ -34,10 +34,6 @@ public class ValueSourceBindingDto {
     @NotNull(message = "Value-source binding valueSourceType is required")
     private ValueSourceType valueSourceType;
 
-    @Schema(description = "Reference to a registered collection/source; used by collection-style value sources",
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String collectionRef;
-
     @ArraySchema(arraySchema = @Schema(description = "Optional cascading dependency parameters (from other attributes)",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     @Valid
