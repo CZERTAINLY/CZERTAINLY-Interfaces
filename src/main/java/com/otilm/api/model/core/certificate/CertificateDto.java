@@ -116,7 +116,7 @@ public class CertificateDto implements Loggable, AttributeProjectable {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = AttributeProjectable.ATTRIBUTE_VALUES_DESCRIPTION,
-            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+            example = AttributeProjectable.ATTRIBUTE_VALUES_EXAMPLE, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Map<FilterFieldSource, Map<String, List<BaseAttributeContentV3<?>>>> attributeValues;
 
     public CertificateDto(UUID uuid, String commonName, String serialNumber, String issuerCommonName, String issuerDn,

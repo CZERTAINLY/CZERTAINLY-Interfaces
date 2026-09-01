@@ -21,6 +21,7 @@ import com.otilm.api.model.core.auth.Resource;
 import com.otilm.api.model.core.discovery.DiscoveryItemDto;
 import com.otilm.api.model.core.discovery.DiscoveryMessageDto;
 import com.otilm.api.model.core.scheduler.ScheduleDiscoveryDto;
+import com.otilm.api.model.core.search.ConfigurableColumnsDocs;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -83,14 +84,30 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface DiscoveryController extends AuthProtectedController {
 
-    @Operation(summary = "List Discovery")
+    @Operation(summary = "List Discovery",
+            description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of available Discoveries"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {"application/json"})
-    DiscoveryResponseDto listDiscoveries(@Valid @RequestBody SearchRequestDto request);
+    DiscoveryResponseDto listDiscoveries(@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(
+            schema = @Schema(implementation = SearchRequestDto.class),
+            examples = {
+                    @ExampleObject(name = "With ordering and columns",
+                            value = """
+                                    {
+                                      "pageNumber": 1,
+                                      "itemsPerPage": 10,
+                                      "filters": [],
+                                      "sort": {"fieldSource": "property", "fieldIdentifier": "DISCOVERY_START_TIME", "direction": "desc"},
+                                      "columns": [
+                                        {"fieldSource": "property", "fieldIdentifier": "DISCOVERY_NAME"},
+                                        {"fieldSource": "property", "fieldIdentifier": "DISCOVERY_STATUS"},
+                                        {"fieldSource": "property", "fieldIdentifier": "DISCOVERY_KIND"}
+                                      ]
+                                    }""")})) @Valid @RequestBody SearchRequestDto request);
 
     @Operation(summary = "Discovery Details")
     @ApiResponses(value = {
@@ -211,7 +228,8 @@ public interface DiscoveryController extends AuthProtectedController {
                             value = "[\"c2f685d4-6a3e-11ec-90d6-0242ac120003\",\"b9b09548-a97c-4c6a-a06a-e4ee6fc2da98\"]")})) @RequestBody List<String> discoveryUuids)
             throws NotFoundException;
 
-    @Operation(operationId = "getDiscoverySearchableFields", summary = "Get Discovery searchable fields information")
+    @Operation(operationId = "getDiscoverySearchableFields", summary = "Get Discovery searchable fields information",
+            description = ConfigurableColumnsDocs.CATALOGUE_FLAGS)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Discovery searchable field information retrieved")})
     @GetMapping(path = "/search", produces = {"application/json"})

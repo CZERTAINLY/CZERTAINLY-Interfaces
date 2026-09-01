@@ -24,6 +24,7 @@ import com.otilm.api.model.core.cryptography.key.KeyDetailDto;
 import com.otilm.api.model.core.cryptography.key.KeyDto;
 import com.otilm.api.model.core.cryptography.key.KeyEventHistoryDto;
 import com.otilm.api.model.core.cryptography.key.KeyItemDetailDto;
+import com.otilm.api.model.core.search.ConfigurableColumnsDocs;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -62,21 +63,36 @@ public interface CryptographicKeyController extends AuthProtectedController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(operationId = "getCryptographicKeySearchableFields",
-            summary = "Get CryptographicKey searchable fields information")
+            summary = "Get CryptographicKey searchable fields information",
+            description = ConfigurableColumnsDocs.CATALOGUE_FLAGS)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "CryptographicKey searchable field information retrieved")})
     @GetMapping(path = "/keys/search", produces = {"application/json"})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
-    @Operation(summary = "List cryptographic keys")
+    @Operation(summary = "List cryptographic keys",
+            description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of all the cryptographic keys"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/keys", produces = MediaType.APPLICATION_JSON_VALUE)
-    CryptographicKeyResponseDto listCryptographicKeys(@Valid @RequestBody SearchRequestDto request);
+    CryptographicKeyResponseDto listCryptographicKeys(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(schema = @Schema(implementation = SearchRequestDto.class),
+                    examples = {@ExampleObject(name = "With ordering and columns", value = """
+                            {
+                              "pageNumber": 1,
+                              "itemsPerPage": 10,
+                              "filters": [],
+                              "sort": {"fieldSource": "property", "fieldIdentifier": "CKI_NAME", "direction": "asc"},
+                              "columns": [
+                                {"fieldSource": "property", "fieldIdentifier": "CKI_NAME"},
+                                {"fieldSource": "property", "fieldIdentifier": "CKI_STATE"},
+                                {"fieldSource": "custom", "fieldIdentifier": "businessUnit|STRING"}
+                              ]
+                            }""")})) @Valid @RequestBody SearchRequestDto request);
 
     // -----------------------------------------------------------------------------------------------------------------
 
