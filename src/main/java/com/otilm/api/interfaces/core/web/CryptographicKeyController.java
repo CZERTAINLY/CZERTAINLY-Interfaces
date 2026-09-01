@@ -90,7 +90,7 @@ public interface CryptographicKeyController extends AuthProtectedController {
                               "columns": [
                                 {"fieldSource": "property", "fieldIdentifier": "CKI_NAME"},
                                 {"fieldSource": "property", "fieldIdentifier": "CKI_STATE"},
-                                {"fieldSource": "custom", "fieldIdentifier": "businessUnit"}
+                                {"fieldSource": "custom", "fieldIdentifier": "businessUnit|STRING"}
                               ]
                             }""")})) @Valid @RequestBody SearchRequestDto request);
 

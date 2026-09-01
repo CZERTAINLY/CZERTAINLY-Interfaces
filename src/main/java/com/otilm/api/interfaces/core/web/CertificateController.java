@@ -94,7 +94,7 @@ public interface CertificateController extends AuthProtectedController {
                               "columns": [
                                 {"fieldSource": "property", "fieldIdentifier": "COMMON_NAME"},
                                 {"fieldSource": "property", "fieldIdentifier": "NOT_AFTER"},
-                                {"fieldSource": "custom", "fieldIdentifier": "businessUnit"}
+                                {"fieldSource": "custom", "fieldIdentifier": "businessUnit|STRING"}
                               ]
                             }""")})) @Valid @RequestBody CertificateSearchRequestDto request);
 

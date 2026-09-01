@@ -26,14 +26,19 @@ public interface AttributeProjectable {
     /**
      * Shared example for the {@code attributeValues} schema. Shows both halves of the nesting and a multi-valued
      * attribute in its stored order, so the shape is readable without reading the description twice.
+     *
+     * <p>
+     * The identifiers carry the {@code name|CONTENT_TYPE} suffix the field catalogue publishes them under, because a
+     * name alone is ambiguous when one attribute name is registered against two content types. It is also the form a
+     * request has to use: a column addressed by the bare name matches no catalogue field and is projected as nothing.
      */
     String ATTRIBUTE_VALUES_EXAMPLE = """
             {
               "custom": {
-                "businessUnit": [
+                "businessUnit|STRING": [
                   {"contentType": "string", "reference": "Payments", "data": "payments"}
                 ],
-                "environment": [
+                "environment|STRING": [
                   {"contentType": "string", "reference": "Production", "data": "production"},
                   {"contentType": "string", "reference": "Disaster recovery", "data": "disaster-recovery"}
                 ]
