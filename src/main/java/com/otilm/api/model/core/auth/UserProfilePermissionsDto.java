@@ -18,17 +18,23 @@ public class UserProfilePermissionsDto {
      * {@code ResourceAction#UPDATE_BRANDING} guard endpoints that {@code UPDATE} does not reach, and without this a
      * client can only offer the control and let the authorization service refuse it.
      * <p>
-     * Reports the actions granted on the resource as a whole, which is what a global control needs. Object-scoped
-     * grants are deliberately not folded in, including the implicit access an owner or group member has: an action held
-     * on one object says nothing about the next, so a per-object control must still be decided by the server. The two
-     * fields therefore answer different questions and neither is derivable from the other - {@code allowedListings}
-     * additionally carries platform defaults and object-scoped access.
-     * <p>
-     * Resources on which the caller holds nothing are omitted rather than reported empty, and actions the authorization
-     * service will not grant at all are never reported.
+     * The constraints a client has to know are on the {@code @Schema} description rather than only here: this Javadoc
+     * does not reach the published specification, and the semantics are the part that is easy to get wrong.
      */
-    @Schema(description = "Actions the user is permitted to perform on a resource as a whole, per resource",
-            requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = """
+            Actions the user is permitted to perform on a resource as a whole, per resource. Use this, not \
+            allowedListings, to decide whether to offer a control for anything other than a listing.
+
+            Reports resource-level grants only. Object-scoped grants are excluded, including the implicit access an \
+            owner or a group member has, because an action held on one object says nothing about the next: a control \
+            scoped to a single object must still be decided by the server. Resources on which the caller holds no \
+            action are omitted rather than reported with an empty list, and actions the authorization service will \
+            not grant at all are never reported.
+
+            This is not derivable from allowedListings and does not supersede it. That field applies a broader rule \
+            to the list action alone, unioning object-scoped grants and adding the listings every user gets by \
+            default, so neither field can be computed from the other.
+            """, requiredMode = Schema.RequiredMode.REQUIRED)
     private List<ResourceActionsDto> allowedActions;
 
 }
