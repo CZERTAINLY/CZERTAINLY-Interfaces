@@ -153,16 +153,6 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     // Token Instance related Attribute APIs
 
-    @Operation(summary = "List Token Profile Attributes")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Token Profile Attributes retrieved"),
-            @ApiResponse(responseCode = "404", description = "Token Instance not found",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
-    @GetMapping(path = "/{uuid}/tokenProfiles/attributes", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<BaseAttribute> listTokenProfileAttributes(
-            @Parameter(description = "Token instance UUID") @PathVariable String uuid)
-            throws ConnectorException, NotFoundException;
-
     @Operation(summary = "List Token activation Attributes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Token activation Attributes retrieved"),
