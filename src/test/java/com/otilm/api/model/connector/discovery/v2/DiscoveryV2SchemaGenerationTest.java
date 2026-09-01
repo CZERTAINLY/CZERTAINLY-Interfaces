@@ -178,7 +178,9 @@ class DiscoveryV2SchemaGenerationTest {
                 DiscoveryEvent.class,
                 DiscoverySupportedResourceDto.class,
                 DiscoveryItemDto.class,
-                DiscoveryDetailDto.class}) {
+                DiscoveryDetailDto.class,
+                DiscoveryRunRequestDto.class,
+                DiscoveryInitiateRequestDto.class}) {
             Schema<?> resource = ModelConverters.getInstance().readAll(discoveryRoot).get("Resource");
             if (resource == null) {
                 continue;
@@ -275,7 +277,10 @@ class DiscoveryV2SchemaGenerationTest {
                         // The array's own description, which @ArraySchema puts on the array rather than on the item.
                         // Dropped back to a bare @Schema it would land on the item instead, which the guard above
                         // catches; removed altogether it would only show up here.
-                        new Field(ConnectorDto.class, "ConnectorDtoV2", "interfaces"))) {
+                        new Field(ConnectorDto.class, "ConnectorDtoV2", "interfaces"),
+                        // Also @ArraySchema, but its items are an enum: there a bare @Schema still describes the
+                        // array, so only the Resource-component guard catches that. This row catches it vanishing.
+                        new Field(DiscoveryRunRequestDto.class, "DiscoveryRunRequestDto", "resources"))) {
             Schema<?> root = ModelConverters.getInstance().readAll(field.root()).get(field.schemaName());
             assertNotNull(root, "expected a generated schema for " + field.schemaName());
             Schema<?> property = (Schema<?>) root.getProperties().get(field.property());

@@ -29,8 +29,8 @@ import reactor.core.publisher.Flux;
 @RequestMapping("/v2/discoveryProvider/discoveries")
 @Tag(name = "Discovery Operations v2",
         description = "Stateless discovery v2 run lifecycle: initiate a run, poll or stream its results, "
-                + "and control it (stop/resume/cancel). Every call carries the full runId + meta + "
-                + "attributes context; the connector is not required to hold any state between calls. A "
+                + "and control it (stop/resume/cancel). Every call carries the full runId + resources + "
+                + "meta + attributes context; the connector is not required to hold any state between calls. A "
                 + "connector MUST answer 404 for any runId it does not recognize, including after a restart.")
 public interface DiscoveryOperationController extends AuthProtectedConnectorController {
 
