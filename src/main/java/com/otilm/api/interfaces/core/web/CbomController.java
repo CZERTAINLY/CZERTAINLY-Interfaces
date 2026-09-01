@@ -12,6 +12,7 @@ import com.otilm.api.model.common.PaginationResponseDto;
 import com.otilm.api.model.core.cbom.CbomDetailDto;
 import com.otilm.api.model.core.cbom.CbomDto;
 import com.otilm.api.model.core.cbom.CbomUploadRequestDto;
+import com.otilm.api.model.core.search.ConfigurableColumnsDocs;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,14 +40,28 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "CBOM management", description = "CBOM management API")
 public interface CbomController extends AuthProtectedController {
 
-    @Operation(summary = "List CBOMs")
+    @Operation(summary = "List CBOMs",
+            description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of available CBOMs"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<CbomDto> listCboms(@Valid @RequestBody SearchRequestDto request);
+    PaginationResponseDto<CbomDto> listCboms(@io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(
+            schema = @Schema(implementation = SearchRequestDto.class),
+            examples = {@ExampleObject(name = "With ordering and columns", value = """
+                    {
+                      "pageNumber": 1,
+                      "itemsPerPage": 10,
+                      "filters": [],
+                      "sort": {"fieldSource": "property", "fieldIdentifier": "CBOM_TIMESTAMP", "direction": "desc"},
+                      "columns": [
+                        {"fieldSource": "property", "fieldIdentifier": "CBOM_SERIAL_NUMBER"},
+                        {"fieldSource": "property", "fieldIdentifier": "CBOM_VERSION"},
+                        {"fieldSource": "property", "fieldIdentifier": "CBOM_TIMESTAMP"}
+                      ]
+                    }""")})) @Valid @RequestBody SearchRequestDto request);
 
     @Operation(summary = "CBOM detail")
     @ApiResponses(value = {
@@ -104,7 +119,8 @@ public interface CbomController extends AuthProtectedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void sync() throws CbomRepositoryException;
 
-    @Operation(operationId = "getCbomSearchableFields", summary = "Get Cbom searchable fields information")
+    @Operation(operationId = "getCbomSearchableFields", summary = "Get Cbom searchable fields information",
+            description = ConfigurableColumnsDocs.CATALOGUE_FLAGS)
     @ApiResponses(
             value = {@ApiResponse(responseCode = "200", description = "Cbom searchable field information retrieved")})
     @GetMapping(path = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
