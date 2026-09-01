@@ -227,7 +227,7 @@ public interface SigningProfileController extends AuthProtectedController {
                     + "The signingProfileUuid parameter is used for authorization only and does not affect the returned descriptors.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Formatting attribute descriptors retrieved"),
-            @ApiResponse(responseCode = "404", description = "Connector or Signing Profile not found",
+            @ApiResponse(responseCode = "404", description = "Signature Formatting Provider not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/signatureFormattingConnectors/{connectorUuid}/formattingAttributes",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -242,12 +242,17 @@ public interface SigningProfileController extends AuthProtectedController {
             description = """
                     Returns the formatting attribute descriptors a content signing Signing Profile can reach,
                     merged by name into one flat set carrying the connector's default values.
-                    The family parameter does not narrow the returned descriptors, which follow from maxLevel
-                    alone. The signingProfileUuid parameter is used for authorization only and does not affect the
+                    family and maxLevel together name the workflow the Signing Profile will run, and the connector
+                    must be able to serve it; the descriptor set follows from maxLevel,
+                    so family does not narrow the returned descriptors.
+                    The signingProfileUuid parameter is used for authorization only and does not affect the
                     returned descriptors.""")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Formatting attribute descriptors retrieved"),
-            @ApiResponse(responseCode = "404", description = "Connector or Signing Profile not found",
+            @ApiResponse(responseCode = "400",
+                    description = "A required query parameter is missing, or a parameter value cannot be bound",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "404", description = "Signature Formatting Provider not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
