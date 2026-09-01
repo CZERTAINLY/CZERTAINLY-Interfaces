@@ -24,7 +24,7 @@ public class TokenInstanceRequestDto {
     @Schema(description = "UUID of the Connector", requiredMode = Schema.RequiredMode.REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Connector Kind", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Connector Kind", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String kind;
 
     @Schema(description = "Custom Attributes", requiredMode = Schema.RequiredMode.REQUIRED)
