@@ -1,6 +1,5 @@
 package com.otilm.api.model.core.raprofile;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -27,16 +26,13 @@ public class RaProfileCertificateRequestAttributesDto {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED))
     private List<BaseAttribute> requestAttributes = new ArrayList<>();
 
-    @Schema(description = "How the static set combines with a connector-supplied set; always the effective mode. Currently only `staticOnly` is supported.",
+    @Schema(description = "How the static set combines with a connector-supplied set; always the effective mode",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private AttributeSetMergeMode mergeMode = AttributeSetMergeMode.STATIC_ONLY;
 
-    // Hidden until properly supported in a future version
     @ArraySchema(arraySchema = @Schema(
             description = "Core-side value-source bindings attached onto connector-supplied (or static) definitions by reference",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED))
-    @JsonIgnore
-    @Schema(hidden = true)
     private List<ValueSourceBindingDto> valueSourceBindings = new ArrayList<>();
 
     @Schema(description = "Whether an external CSR violating the resolved set is rejected (true) or accepted with warnings (false); null inherits the platform default",
