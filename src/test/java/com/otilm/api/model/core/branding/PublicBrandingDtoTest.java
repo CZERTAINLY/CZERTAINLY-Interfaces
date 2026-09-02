@@ -24,7 +24,8 @@ class PublicBrandingDtoTest {
 
     /** Every stored branding field except the one the response omits rather than nulls. */
     private static final List<String> ALWAYS_PRESENT_FIELDS = List
-            .of("primaryColor", "secondaryColor", "backgroundColor", "textColor", "lightLogo", "darkLogo");
+            .of("primaryColor", "secondaryColor", "tertiaryColor", "backgroundColor", "textColor", "lightLogo",
+                    "darkLogo");
 
     private final ObjectMapper mapper = new ObjectMapper();
 

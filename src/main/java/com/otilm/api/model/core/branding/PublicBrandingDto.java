@@ -43,6 +43,10 @@ public class PublicBrandingDto implements Serializable {
             requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
     private String secondaryColor;
 
+    @Schema(description = "Tertiary brand color, used as an additional accent", examples = {"#7B61FF"},
+            requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
+    private String tertiaryColor;
+
     @Schema(description = "Page background color of the branded theme", examples = {"#FFFFFF"},
             requiredMode = Schema.RequiredMode.REQUIRED, types = {"string", "null"})
     private String backgroundColor;

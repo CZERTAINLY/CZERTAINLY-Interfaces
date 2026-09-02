@@ -32,7 +32,8 @@ class BrandingSettingsUpdateDtoTest {
     private static Stream<BiConsumer<BrandingSettingsUpdateDto, String>> colorSetters() {
         return Stream
                 .of(BrandingSettingsUpdateDto::setPrimaryColor, BrandingSettingsUpdateDto::setSecondaryColor,
-                        BrandingSettingsUpdateDto::setBackgroundColor, BrandingSettingsUpdateDto::setTextColor);
+                        BrandingSettingsUpdateDto::setTertiaryColor, BrandingSettingsUpdateDto::setBackgroundColor,
+                        BrandingSettingsUpdateDto::setTextColor);
     }
 
     private static Stream<BiConsumer<BrandingSettingsUpdateDto, String>> logoSetters() {
@@ -50,6 +51,7 @@ class BrandingSettingsUpdateDtoTest {
         BrandingSettingsUpdateDto dto = new BrandingSettingsUpdateDto();
         dto.setPrimaryColor("#0073CF");
         dto.setSecondaryColor("#00a3e0");
+        dto.setTertiaryColor("#7B61FF");
         dto.setBackgroundColor("#FFFFFF");
         dto.setTextColor("#171717");
         dto.setLightLogo(PNG_LOGO);
@@ -88,8 +90,7 @@ class BrandingSettingsUpdateDtoTest {
         BrandingSettingsUpdateDto dto = new BrandingSettingsUpdateDto();
         colorSetters().forEach(setter -> setter.accept(dto, "nonsense"));
 
-        // Derived rather than written out, so adding or removing a colour cannot leave this passing by coincidence.
-        assertEquals(colorSetters().count(), VALIDATOR.validate(dto).size());
+        assertEquals(5, VALIDATOR.validate(dto).size());
     }
 
     @ParameterizedTest
