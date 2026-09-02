@@ -112,6 +112,15 @@ public class DiscoveryDetailDto extends NameAndUuidDto {
             requiredMode = Schema.RequiredMode.REQUIRED)
     private long runMessageCount;
 
+    @Schema(description = "How many items this run has produced across every resource. Item sequences are dense, so "
+            + "this is an exact count rather than an estimate, and it counts what is available to read: the items "
+            + "listing returns exactly these. A connector that has produced more than has been collected reports "
+            + "the difference through progress, not here. Absent for a run against a v1 Discovery Provider, which "
+            + "numbers nothing — totalCertificatesDiscovered is that generation's count.",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Long itemsDiscovered;
+
     /**
      * <b>Provenance:</b> declared by the connector at initiate and refreshed on resume; derived by Core from the
      * interface-level {@code discoveryStopResume} flag when the connector left it undeclared.

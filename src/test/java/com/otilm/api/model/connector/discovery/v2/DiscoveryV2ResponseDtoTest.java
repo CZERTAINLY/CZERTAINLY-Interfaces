@@ -293,17 +293,17 @@ class DiscoveryV2ResponseDtoTest {
 
     @Test
     void byResourceProgressMapRoundTripsWithWireCodes() throws Exception {
-        DiscoveryProgressDto certProgress = new DiscoveryProgressDto();
+        DiscoveryResourceProgressDto certProgress = new DiscoveryResourceProgressDto();
         certProgress.setProcessed(60L);
         certProgress.setTotalEstimate(200L);
 
-        DiscoveryProgressDto keyProgress = new DiscoveryProgressDto();
+        DiscoveryResourceProgressDto keyProgress = new DiscoveryResourceProgressDto();
         keyProgress.setProcessed(40L);
         keyProgress.setTotalEstimate(300L);
 
         DiscoveryProgressDto dto = new DiscoveryProgressDto();
-        dto.setProcessed(100L);
-        dto.setTotalEstimate(500L);
+        dto.setTargetsProcessed(100L);
+        dto.setTargetsTotal(500L);
         dto.setPhase("scanning");
         dto.setByResource(Map.of(Resource.CERTIFICATE, certProgress, Resource.CRYPTOGRAPHIC_KEY, keyProgress));
 
@@ -314,8 +314,8 @@ class DiscoveryV2ResponseDtoTest {
         assertFalse(json.contains("CRYPTOGRAPHIC_KEY"), "byResource keys must not fall back to the enum's Java name");
 
         DiscoveryProgressDto back = mapper.readValue(json, DiscoveryProgressDto.class);
-        assertEquals(100L, back.getProcessed());
-        assertEquals(500L, back.getTotalEstimate());
+        assertEquals(100L, back.getTargetsProcessed());
+        assertEquals(500L, back.getTargetsTotal());
         assertEquals("scanning", back.getPhase());
         assertTrue(back.getByResource().containsKey(Resource.CERTIFICATE));
         assertTrue(back.getByResource().containsKey(Resource.CRYPTOGRAPHIC_KEY));
@@ -325,51 +325,67 @@ class DiscoveryV2ResponseDtoTest {
         assertEquals(300L, back.getByResource().get(Resource.CRYPTOGRAPHIC_KEY).getTotalEstimate());
     }
 
-    /**
-     * A scan of address space fails most of what it attempts, so a run that examined little and failed the rest must be
-     * distinguishable from one that found nothing to do. Pinned run-wide and per-resource, since the counter is
-     * inherited by the leaf rather than declared on the run-level type.
-     */
+    /** Work and yield travel together on one object without sharing a denominator. */
     @Test
-    void progressCountsFailedTargetsRunWideAndPerResource() throws Exception {
-        DiscoveryProgressDto certProgress = new DiscoveryProgressDto();
-        certProgress.setProcessed(42L);
-        certProgress.setFailed(65_492L);
+    void progressCountsWorkRunWideAndYieldPerResource() throws Exception {
+        DiscoveryResourceProgressDto certYield = new DiscoveryResourceProgressDto();
+        certYield.setProcessed(12L);
 
         DiscoveryProgressDto dto = new DiscoveryProgressDto();
-        dto.setProcessed(42L);
-        dto.setTotalEstimate(65_534L);
-        dto.setFailed(65_492L);
-        dto.setByResource(Map.of(Resource.CERTIFICATE, certProgress));
+        dto.setTargetsProcessed(4_200L);
+        dto.setTargetsTotal(16_645_890L);
+        dto.setTargetsFailed(4_188L);
+        dto.setByResource(Map.of(Resource.CERTIFICATE, certYield));
 
         String json = mapper.writeValueAsString(dto);
-        assertTrue(json.contains("\"failed\":65492"), json);
+        assertTrue(json.contains("\"targetsProcessed\":4200"), json);
+        assertTrue(json.contains("\"targetsTotal\":16645890"), json);
+        assertTrue(json.contains("\"targetsFailed\":4188"), json);
 
         DiscoveryProgressDto back = mapper.readValue(json, DiscoveryProgressDto.class);
-        assertEquals(65_492L, back.getFailed());
-        assertEquals(65_492L, back.getByResource().get(Resource.CERTIFICATE).getFailed(),
-                "the per-resource breakdown must carry its own failure count, not only the run-wide one");
+        assertEquals(4_200L, back.getTargetsProcessed());
+        assertEquals(16_645_890L, back.getTargetsTotal());
+        assertEquals(4_188L, back.getTargetsFailed());
+        assertEquals(12L, back.getByResource().get(Resource.CERTIFICATE).getProcessed(),
+                "yield is counted in items, per resource, and never mixed with the run's work counters");
+    }
+
+    /**
+     * The two denominators must not be confused for each other on the wire: a run-level object carries no item counts,
+     * and a per-resource one carries no work counts.
+     */
+    @Test
+    void workAndYieldCountersDoNotAppearOnEachOthersObjects() throws Exception {
+        DiscoveryProgressDto run = new DiscoveryProgressDto();
+        run.setTargetsProcessed(7L);
+        String runJson = mapper.writeValueAsString(run);
+        assertFalse(runJson.contains("\"processed\""), "the run level counts work, not items: " + runJson);
+
+        DiscoveryResourceProgressDto leaf = new DiscoveryResourceProgressDto();
+        leaf.setProcessed(7L);
+        String leafJson = mapper.writeValueAsString(leaf);
+        assertFalse(leafJson.contains("targets"), "a resource counts items, not the work that found them: " + leafJson);
     }
 
     @Test
     void progressOmitsAbsentFieldsIndependently() throws Exception {
         DiscoveryProgressDto dto = new DiscoveryProgressDto();
-        dto.setProcessed(42L);
+        dto.setTargetsProcessed(42L);
         dto.setPhase("scanning");
-        // totalEstimate, failed and byResource intentionally left unset.
-
+        // targetsTotal is left unset on purpose: a sweep of an unbounded range has no completion ratio, and the
+        // contract says a consumer must not invent one.
         String json = mapper.writeValueAsString(dto);
-        assertTrue(json.contains("\"processed\":42"));
+        assertTrue(json.contains("\"targetsProcessed\":42"));
         assertTrue(json.contains("\"phase\":\"scanning\""));
-        assertFalse(json.contains("\"totalEstimate\""));
-        assertFalse(json.contains("\"failed\""));
+        assertFalse(json.contains("\"targetsTotal\""));
+        assertFalse(json.contains("\"targetsFailed\""));
         assertFalse(json.contains("\"byResource\""));
 
         DiscoveryProgressDto back = mapper.readValue(json, DiscoveryProgressDto.class);
-        assertEquals(42L, back.getProcessed());
+        assertEquals(42L, back.getTargetsProcessed());
         assertEquals("scanning", back.getPhase());
-        assertNull(back.getTotalEstimate());
-        assertNull(back.getFailed());
+        assertNull(back.getTargetsTotal());
+        assertNull(back.getTargetsFailed());
         assertNull(back.getByResource());
     }
 

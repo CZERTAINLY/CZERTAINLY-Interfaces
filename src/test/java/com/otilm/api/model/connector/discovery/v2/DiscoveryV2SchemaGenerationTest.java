@@ -118,6 +118,13 @@ class DiscoveryV2SchemaGenerationTest {
      */
     @Test
     void progressComponentsAreIdenticalFromEveryEntryPoint() {
+        // The leaf's own description, read standalone: asserting the rule rather than today's wording, which a
+        // literal prefix would pin until someone rewords the schema and has to edit the guard to match.
+        String leafOwnDescription = ModelConverters
+                .getInstance()
+                .readAll(DiscoveryResourceProgressDto.class)
+                .get("DiscoveryResourceProgressDto")
+                .getDescription();
         Map<String, Schema> viaEvent = ModelConverters.getInstance().readAll(DiscoveryEvent.class);
         Map<String, Schema> viaStatus = ModelConverters.getInstance().readAll(DiscoveryStatusResponseDto.class);
         Map<String, Schema> viaDetail = ModelConverters.getInstance().readAll(DiscoveryDetailDto.class);
@@ -133,9 +140,8 @@ class DiscoveryV2SchemaGenerationTest {
                 "DiscoveryProgressDto's description must not depend on being reached through the run detail");
         Schema<?> leafViaDetail = viaDetail.get("DiscoveryResourceProgressDto");
         assertNotNull(leafViaDetail, "the per-resource leaf component must be emitted on the run-detail path");
-        assertTrue(leafViaDetail.getDescription().startsWith("Progress counters"),
-                "the leaf must keep its own description on the run-detail path; was: "
-                        + leafViaDetail.getDescription());
+        assertEquals(leafOwnDescription, leafViaDetail.getDescription(),
+                "the leaf must keep its own description on the run-detail path");
 
         // If the event path emits the run-level component at all, it must be the whole thing.
         Schema<?> progressViaEvent = viaEvent.get("DiscoveryProgressDto");
@@ -155,9 +161,8 @@ class DiscoveryV2SchemaGenerationTest {
                 "the leaf component's description must not depend on which endpoint reached it");
         assertEquals(leafViaStatus.getProperties().keySet(), leafViaEvent.getProperties().keySet(),
                 "the leaf component's properties must not depend on which endpoint reached it");
-        assertTrue(leafViaEvent.getDescription().startsWith("Progress counters"),
-                "the leaf must keep its own description, not one hoisted from a referencing field; was: "
-                        + leafViaEvent.getDescription());
+        assertEquals(leafOwnDescription, leafViaEvent.getDescription(),
+                "the leaf must keep its own description, not one hoisted from a referencing field");
     }
 
     /**
