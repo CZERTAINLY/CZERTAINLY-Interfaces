@@ -32,6 +32,13 @@ public class NotificationDto {
     @Schema(description = "Target object identification (UUID)")
     private List<String> targetObjectIdentification;
 
+    @Schema(description = "Type of the object within the target that the notification is about, when it is not the "
+            + "target itself - a comment on the object, for instance")
+    private Resource subjectObjectType;
+
+    @Schema(description = "Identification (UUID) of the object within the target that the notification is about")
+    private String subjectObjectIdentification;
+
     public NotificationDto(UUID uuid, String message, String detail, Date readAt, Date sentAt,
             Resource targetObjectType, String targetObjectIdentification) {
         this.uuid = uuid;
