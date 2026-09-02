@@ -29,9 +29,10 @@ import lombok.ToString;
  * </p>
  *
  * <p>
- * {@code signatureAlgorithm} arrives the same way and for the same reason. It carries the message digest with it
- * because the two are one choice and not two; a document digest under any other algorithm would arrive named in a field
- * of its own rather than left to be inferred.
+ * {@code signatureAlgorithm} arrives the same way and for the same reason. The signature's own message digest is
+ * structurally the algorithm's digest half, so no field carries it. The digest the connector echoes is a separate axis:
+ * the platform pins it to that same algorithm and checks the pairing before it calls, so a connector is handed the
+ * pairing rather than left to infer it.
  * </p>
  *
  * <p>
