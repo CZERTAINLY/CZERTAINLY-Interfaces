@@ -40,13 +40,9 @@ class UserProfilePermissionsDtoTest {
                                 List.of(ResourceAction.UPDATE, ResourceAction.UPDATE_BRANDING))));
     }
 
-    /**
-     * The wire codes, not the Java constant names, are what a generated client switches on. {@code @JsonValue} on both
-     * enums is the only reason {@code UPDATE_BRANDING} arrives as {@code updateBranding}; losing it would rename every
-     * member of a published enum without changing a single declaration.
-     */
     @Test
     void serializesResourcesAndActionsAsTheirWireCodes() throws Exception {
+        // @JsonValue on both enums is the only reason UPDATE_BRANDING arrives as updateBranding.
         assertEquals("{\"allowedListings\":[\"settings\"],"
                 + "\"allowedActions\":[{\"resource\":\"settings\",\"actions\":[\"update\",\"updateBranding\"]}]}",
                 mapper.writeValueAsString(settingsEditor()));
@@ -64,12 +60,14 @@ class UserProfilePermissionsDtoTest {
         assertEquals(Set.of("resource", "actions"), Set.copyOf(schemas().get(ACTIONS_SCHEMA).getRequired()));
     }
 
-    /**
-     * The nesting is three deep, and every level has to keep its typed reference. Resolved to a bare array of objects
-     * or of strings at any level, a generated client gets untyped maps and loose strings where it should get the
-     * {@code Resource} and {@code ResourceAction} enums - which is precisely how a caller ends up comparing a
-     * misspelled action code that never matches.
-     */
+    @Test
+    void publishesTheResourceActionsSemanticsOnTheSchemaRatherThanInJavadoc() {
+        assertTrue(
+                schemas().get(ACTIONS_SCHEMA).getDescription().contains("authorization service remains the only gate"),
+                "the published ResourceActionsDto description no longer states that this is a hint, not a gate");
+    }
+
+    /** A level that resolves to a bare array leaves a generated client untyped maps and loose strings, not enums. */
     @Test
     void publishesTypedReferencesThroughEveryNestedList() {
         assertEquals("#/components/schemas/Resource", property(PROFILE_SCHEMA, "allowedListings").getItems().get$ref());
@@ -82,11 +80,7 @@ class UserProfilePermissionsDtoTest {
                 "the referenced action enum does not publish the code clients gate branding on");
     }
 
-    /**
-     * The constraints on this field are the part a client gets wrong, and Javadoc does not reach the published
-     * specification - only the {@code @Schema} description does. Asserted on the prose deliberately: rewording it is
-     * allowed, but dropping one of these three constraints should require saying so here.
-     */
+    /** Asserted on the prose deliberately: rewording is allowed, dropping a constraint has to be said here first. */
     @Test
     void documentsTheConstraintsAClientCannotInferFromTheTypes() {
         String description = property(PROFILE_SCHEMA, "allowedActions").getDescription();

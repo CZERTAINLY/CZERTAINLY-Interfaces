@@ -6,15 +6,13 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * The actions the caller holds on one resource.
- * <p>
- * Reported so a client can gate a control on the action that actually guards the endpoint, rather than inferring it
- * from listing access. The authorization service remains the only gate; this is a hint that keeps a control the caller
- * cannot use off the screen.
- */
 @Data
 @AllArgsConstructor
+@Schema(description = """
+        Reported so a client can gate a control on the action that actually guards the endpoint, rather than \
+        inferring it from listing access. The authorization service remains the only gate; this is a hint that keeps \
+        a control the caller cannot use off the screen.
+        """)
 public class ResourceActionsDto {
 
     @Schema(description = "Resource the actions are granted on", requiredMode = Schema.RequiredMode.REQUIRED)
