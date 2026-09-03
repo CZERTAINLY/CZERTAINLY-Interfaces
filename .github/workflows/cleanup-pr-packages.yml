@@ -1,0 +1,143 @@
+name: Clean up PR snapshots
+
+# Weekly cron, deliberately NOT `pull_request: closed`. Merging an interfaces PR
+# closes it, and deleting the artifact while the coupled core PR still overrides
+# to that coordinate turns any re-run in the gap into an unreadable
+# "artifact not found". The grace period below is what buys that gap.
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Classify only, delete nothing (ignored when the workflow is not armed - it is dry either way)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: read
+    steps:
+      # Deleting is off until someone turns it on, and turning it on is not a
+      # code change: set the repository variable CLEANUP_PACKAGES_ARMED to
+      # 'true'. Until then every run classifies and deletes nothing, so the
+      # first cron firing is a free rehearsal rather than a surprise sweep.
+      #
+      # This is what makes the DoD's "verify DELETE authorization by hand first"
+      # enforceable. Maven is a repository-scoped package type and whether an
+      # Actions GITHUB_TOKEN with packages: write may delete through the /orgs/
+      # endpoint is exactly the sort of thing that returns 403 in production.
+      - id: mode
+        name: Resolve dry-run mode and fetch package versions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARMED: ${{ vars.CLEANUP_PACKAGES_ARMED }}
+          FORCE_DRY: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          if [ "${ARMED:-}" != "true" ]; then
+            DRY=true
+            echo "::notice::CLEANUP_PACKAGES_ARMED is not 'true' - classifying only, deleting nothing."
+          elif [ "${FORCE_DRY:-}" = "true" ]; then
+            DRY=true
+            echo "::notice::Dry run requested for this dispatch."
+          else
+            DRY=false
+          fi
+          echo "dry=$DRY" >> "$GITHUB_OUTPUT"
+          echo "dry run: $DRY"
+
+          # --slurp collapses every page into one array. Without it --jq runs
+          # per page, and the sort in the prune step would only order within a
+          # page - keeping the newest 50 *of each page* rather than overall.
+          gh api --paginate --slurp \
+            /orgs/OmniTrustILM/packages/maven/com.otilm.interfaces/versions \
+            > versions.json
+          echo "total versions: $(jq 'length' versions.json)"
+
+      - name: Delete PR snapshots for PRs closed over 7 days ago
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY: ${{ steps.mode.outputs.dry }}
+        run: |
+          # -u and pipefail but deliberately NOT -e: one failed delete, or one
+          # PR lookup that 404s, must not abort the rest of the sweep.
+          set -uo pipefail
+          CUTOFF=$(date -u -d '7 days ago' +%s)
+          jq -r '.[] | select(.name | test("-alpha-PR[0-9]+-SNAPSHOT$"))
+                 | [.id, .name] | @tsv' versions.json \
+          | while IFS=$'\t' read -r id name; do
+              num=${name#*-alpha-PR}; num=${num%-SNAPSHOT}
+              case "$num" in
+                ''|*[!0-9]*) echo "::warning::cannot parse a PR number from $name - keeping"; continue ;;
+              esac
+              closed=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/$num" --jq '.closed_at // empty' || true)
+              if [ -z "$closed" ]; then
+                echo "keep    $name (PR #$num still open, or lookup failed)"
+                continue
+              fi
+              if [ "$(date -u -d "$closed" +%s)" -ge "$CUTOFF" ]; then
+                echo "keep    $name (PR #$num closed $closed, inside the grace period)"
+                continue
+              fi
+              if [ "$DRY" = "true" ]; then
+                echo "WOULD DELETE $name (PR #$num closed $closed)"
+                continue
+              fi
+              echo "delete  $name (PR #$num closed $closed)"
+              gh api -X DELETE \
+                "/orgs/OmniTrustILM/packages/maven/com.otilm.interfaces/versions/$id" \
+                || echo "::warning::failed to delete $name (id $id)"
+            done
+
+      - name: Prune all but the 50 most recent immutable builds
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY: ${{ steps.mode.outputs.dry }}
+        run: |
+          set -uo pipefail
+          jq -r '[.[] | select(.name | test("-M[0-9]+$"))]
+                 | sort_by(.created_at) | reverse | .[50:]
+                 | .[] | [.id, .name] | @tsv' versions.json \
+          | while IFS=$'\t' read -r id name; do
+              if [ "$DRY" = "true" ]; then
+                echo "WOULD DELETE $name"
+                continue
+              fi
+              echo "delete  $name"
+              # The API refuses to delete a package's last remaining version.
+              # Irrelevant while the mainline SNAPSHOT and releases exist, but it
+              # explains an otherwise-baffling 400 if that ever changes.
+              gh api -X DELETE \
+                "/orgs/OmniTrustILM/packages/maven/com.otilm.interfaces/versions/$id" \
+                || echo "::warning::failed to delete $name (id $id)"
+            done
+
+      # Timestamped builds inside 2.20.0-SNAPSHOT are deliberately left alone:
+      # GitHub models the whole SNAPSHOT as one version entity and the API
+      # deletes whole versions only, so per-build pruning is not expressible.
+      # Both repos are public, so the storage is free anyway.
+      - name: Summary
+        env:
+          DRY: ${{ steps.mode.outputs.dry }}
+        run: |
+          set -euo pipefail
+          {
+            echo "### PR snapshot cleanup"
+            echo ""
+            if [ "$DRY" = "true" ]; then
+              echo "**Dry run** - nothing was deleted. Lines above marked \`WOULD DELETE\` are what an"
+              echo "armed run would remove. Arm it by setting the repository variable"
+              echo "\`CLEANUP_PACKAGES_ARMED\` to \`true\`, after confirming by hand that a DELETE"
+              echo "through the \`/orgs/\` endpoint actually succeeds for this package type."
+            else
+              echo "Armed run. Check the log above for \`failed to delete\` warnings."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
