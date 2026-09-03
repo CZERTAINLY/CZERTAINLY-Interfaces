@@ -167,6 +167,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
     // -----------------------------------------------------------------------------------------------------------------
     @Operation(summary = "Create a new Cryptographic Key")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "201", description = "Cryptographic Key Created Successfully"),
             @ApiResponse(responseCode = "404", description = "Token profile not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
@@ -308,6 +313,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
 
     @Operation(summary = "Edit Key")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Key updated"),
             @ApiResponse(responseCode = "404", description = "Key or token instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
@@ -340,6 +350,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
 
     @Operation(summary = "Sync Keys from connector")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Key sync completed"),
             @ApiResponse(responseCode = "404", description = "Token instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
@@ -417,6 +432,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
             description = "If the request body provided, only those key items will be destroyed. If the request body is "
                     + "not provided or given empty, then the entire key will be destroyed")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Keys destroyed"),
             @ApiResponse(responseCode = "404", description = "Key or token instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
@@ -441,6 +461,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
             description = "If the request body provided, only those key items will be destroyed. If the request body is "
                     + "not provided or given empty, then the entire key will be destroyed")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Keys destroyed"),
             @ApiResponse(responseCode = "404", description = "Key or token instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
@@ -461,6 +486,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
 
     @Operation(summary = "Destroy Multiple Cryptographic Key and its items")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Keys destroyed"),
             @ApiResponse(responseCode = "404", description = "Key not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
@@ -476,7 +506,12 @@ public interface CryptographicKeyController extends AuthProtectedController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(summary = "Destroy Multiple Cryptographic Key items")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Keys Items destroyed")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "204", description = "Keys Items destroyed")})
     @PatchMapping(path = "/keys/items/destroy", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -496,6 +531,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
             description = "If the request body provided, only those key items will be deleted. If the request body is "
                     + "not provided or given empty, then the entire key will be destroyed")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Key deleted"),
             @ApiResponse(responseCode = "404", description = "Key or token instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
@@ -520,6 +560,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
             description = "If the request body provided, only those key items will be deleted. If the request body is "
                     + "not provided or given empty, then the entire key will be destroyed")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Key deleted"),
             @ApiResponse(responseCode = "404", description = "Key or token instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
@@ -539,7 +584,12 @@ public interface CryptographicKeyController extends AuthProtectedController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(summary = "Delete Multiple Cryptographic Key")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Keys deleted")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "204", description = "Keys deleted")})
     @DeleteMapping(path = "/keys", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -552,7 +602,12 @@ public interface CryptographicKeyController extends AuthProtectedController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(summary = "Delete Multiple Cryptographic Key Items")
-    @ApiResponses(value = {@ApiResponse(responseCode = "204", description = "Key Items deleted")})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "204", description = "Key Items deleted")})
     @DeleteMapping(path = "/keys/items", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -770,6 +825,11 @@ public interface CryptographicKeyController extends AuthProtectedController {
 
     @Operation(summary = "List of Attributes to create a Key")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "List of Attributes retrieved"),
             @ApiResponse(responseCode = "404", description = "Token profile not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
