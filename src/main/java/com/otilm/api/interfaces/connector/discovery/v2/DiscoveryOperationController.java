@@ -81,7 +81,13 @@ public interface DiscoveryOperationController extends AuthProtectedConnectorCont
                     + "reached a terminal state, is the full ack. Until the full ack arrives, the connector "
                     + "MUST retain terminal-run state for at least 24 hours after the run reached a terminal "
                     + "state. Once the full ack arrives, the connector MAY discard all state it holds for the "
-                    + "run.")
+                    + "run.\n\n"
+                    + "A connector that bounds its result buffer should size it against the polling interval "
+                    + "rather than assume prompt collection. While items are flowing Core drains again "
+                    + "immediately, but a drain that returns nothing leaves the next one already scheduled, so "
+                    + "production resuming just after that drain waits out the interval before anything is "
+                    + "collected. It is tens of seconds by default and is Core-side configuration an operator "
+                    + "may widen, so treat it as a bound to cover rather than a fixed number.")
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     description = "Items retrieved; more indicates whether additional items remain beyond this page"),
