@@ -2,20 +2,15 @@ name: Build interfaces
 on:
   pull_request:
     branches: [main]
-    # ready_for_review is not one of the default activity types (opened,
-    # synchronize, reopened). Without it the ordinary open-as-draft, iterate,
-    # mark-ready flow fires no event once the draft flag clears, so publish-pr
-    # below - which skips drafts - would never run for such a PR, and the
-    # coupled core PR would find no coordinate and no explanation.
+    # ready_for_review is not a default activity type; without it, clearing the
+    # draft flag fires no event and publish-pr never runs for that PR.
     types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
   workflow_dispatch:
 
-# Baseline for every job in this file. `packages: read` is required, not
-# decorative: pom.xml declares a <repositories> entry for
-# maven.pkg.github.com, which is how the com.otilm parent resolves.
-# publish-pr escalates to packages: write in its own block.
+# packages: read is required: pom.xml resolves the com.otilm parent from
+# maven.pkg.github.com. publish-pr escalates to packages: write.
 permissions:
   contents: read
   packages: read
@@ -77,14 +72,9 @@ jobs:
   publish-pr:
     name: Publish PR snapshot
     needs: check  # never publish an artifact from a PR that fails verify
-    # Bots are excluded by PR *author*, not by github.actor. The actor is whoever
-    # triggered this particular event, so keying on it misfires both ways: a human
-    # pushing a fixup onto a Renovate branch would publish, and a bot-attributed
-    # push onto a human's coupled PR would skip - leaving the coordinate stale
-    # while the core PR still resolves it. Drafts are excluded because every PR
-    # otherwise pays a second full deploy for a coordinate almost none of them
-    # need. Fork PRs get a read-only token and cannot publish at all, so a
-    # fork-authored breaking change has no coupled flow.
+    # Bots are excluded by PR author, not github.actor - the actor is the pusher,
+    # which misfires on a bot push to a human PR and a human push to a bot branch.
+    # Drafts are skipped. Fork PRs get a read-only token and cannot publish.
     if: >-
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
@@ -95,10 +85,8 @@ jobs:
       contents: read
       packages: write
     concurrency:
-      # Deliberately NOT cancel-in-progress: aborting mid-deploy leaves the
-      # package version metadata pointing at a half-uploaded build. Runs are
-      # serialized instead, and the stale-head check below stands a superseded
-      # run down rather than letting it overwrite newer bytes.
+      # No cancel-in-progress: aborting mid-deploy leaves the package version
+      # metadata on a half-uploaded build. The stale-head check below is the guard.
       group: publish-pr-${{ github.event.pull_request.number }}
       cancel-in-progress: false
     steps:
@@ -112,13 +100,9 @@ jobs:
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
 
-      # The coordinate is mutable - every push republishes the same
-      # -alpha-PR<n>-SNAPSHOT - so a run that lost the race must not publish.
-      # Job concurrency serializes runs but does not order them by commit
-      # freshness: an older commit whose `check` ran slower reaches this job
-      # last and would overwrite newer bytes, leaving the coupled core PR green
-      # against superseded code with no signal anywhere. Same stand-down as
-      # core/.github/workflows/dispatch-preview-docker.yml.
+      # The coordinate is mutable, and job concurrency does not order runs by commit
+      # freshness - an older run finishing later would overwrite newer bytes.
+      # Same stand-down as core/.github/workflows/dispatch-preview-docker.yml.
       - id: freshness
         name: Stand down if the PR head has moved
         env:
@@ -146,22 +130,17 @@ jobs:
         run: |
           set -euo pipefail
           BASE=$(mvn -q -B -ntp help:evaluate -Dexpression=project.version -DforceStdout)
-          # The `alpha` qualifier is load-bearing: an unqualified -PR<n>-SNAPSHOT
-          # sorts ABOVE the GA release in Maven's ComparableVersion, which would
-          # make Renovate offer PR builds to other repos as upgrades.
+          # The `alpha` qualifier is load-bearing: an unqualified -PR<n>-SNAPSHOT sorts
+          # ABOVE the GA release in ComparableVersion, so Renovate would offer it.
           PRV="${BASE%-SNAPSHOT}-alpha-PR${PR_NUMBER}-SNAPSHOT"
           echo "Publishing $PRV"
           # Do not run versions:set locally - it rewrites the checked-in pom.xml.
-          # Pinned rather than invoked by the `versions` prefix: an unpinned
-          # prefix resolves whatever release Central serves that day and runs it
-          # inside a job holding packages: write, and Renovate cannot see a
-          # prefix invocation to bump it.
+          # Pinned rather than the `versions` prefix, which resolves whatever release
+          # Central serves that day and is invisible to Renovate.
           mvn -B -ntp org.codehaus.mojo:versions-maven-plugin:2.18.0:set \
               -DnewVersion="$PRV" -DgenerateBackupPoms=false
-          # No source:jar/javadoc:jar and no GPG signing: this coordinate exists
-          # only to unblock a coupled core PR and never reaches Maven Central.
-          # maven.test.skip rather than skipTests - the latter still compiles
-          # test sources, which `check` has already done for this tree.
+          # GitHub Packages only - unsigned, no source/javadoc jars. maven.test.skip
+          # also skips test compilation, which `check` has already done.
           mvn -B -ntp -Pgithub -Dmaven.test.skip=true \
               -DretryFailedDeploymentCount=3 deploy
           {

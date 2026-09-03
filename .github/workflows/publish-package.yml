@@ -8,34 +8,22 @@ on:
       - '*'
   workflow_dispatch:
       
-# Serialized per ref, never cancelled. The immutable -M<n> step below is a
-# check-then-act guard: without this, a push and a workflow_dispatch over the
-# same commit both probe "absent" and both deploy, and the loser hits the
-# release-coordinate conflict the guard exists to avoid. Cancelling instead
-# would abort a run mid-deploy.
+# Serialized per ref, never cancelled: the -M<n> step below is check-then-act,
+# so two runs over one commit would both deploy, and cancelling would abort a
+# run mid-deploy.
 concurrency:
   group: publish-package-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   publish:
-    # `workflow_dispatch` above carries no ref restriction, so without this the
-    # workflow could be dispatched against any branch holding the file - and
-    # check-version would pass, because a feature branch legitimately holds a
-    # SNAPSHOT. That deploys unreviewed branch code over the mainline SNAPSHOT to
-    # BOTH Maven Central and GitHub Packages, and rebuilds the published docs
-    # from it, with nothing in either registry recording where it came from.
+    # workflow_dispatch carries no ref restriction; without this, any branch could
+    # deploy over the mainline SNAPSHOT to both Maven Central and GitHub Packages
+    # and rebuild the published docs from it. Tags stay allowed - check-version
+    # hard-fails a tag carrying a SNAPSHOT.
     #
-    # Tags stay allowed: `check-version` already hard-fails a tag carrying a
-    # SNAPSHOT, and re-dispatching a release tag is the natural recovery from a
-    # half-failed Central upload.
-    #
-    # This stops an accidental dispatch of *this* definition. It is not an
-    # authorization boundary - workflow_dispatch runs the workflow file from the
-    # ref it is dispatched against, so a branch whose copy omits this line is
-    # never evaluated against it. Real enforcement means putting the publishing
-    # secrets behind an Environment whose deployment-branch policy allows only
-    # main, which lives in repository settings where a branch cannot edit it.
+    # Not an authorization boundary: a dispatch runs the workflow file from the ref
+    # it targets. Enforcement needs an Environment restricted to main.
     if: >-
       github.event_name != 'workflow_dispatch' ||
       github.ref == 'refs/heads/main' ||
@@ -47,9 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
-          # Full history: the immutable -M<n> coordinate published in the last
-          # step of this job is the commit count, which a shallow clone cannot
-          # compute.
+          # Full history: the -M<n> coordinate in the last step of this job is the commit
+          # count, which a shallow clone cannot compute.
           fetch-depth: 0
 
       - uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
@@ -148,24 +135,16 @@ jobs:
               ref: 'main',
             })
 
-      # Immutable coordinate for the escape hatch: a developer whose unrelated
-      # core PR is broken by a mainline snapshot change can pin the last good
-      # -M build and keep working. GitHub Packages only, unsigned, no source or
-      # javadoc jars - a build pin, not a release.
+      # Immutable pin for a developer whose unrelated core PR is broken by a mainline
+      # snapshot change. GitHub Packages only, unsigned, no source/javadoc jars.
       #
-      # Last step in the job on purpose. A failure here must not be able to
-      # abort the interface-documentation dispatch above, which would silently
-      # skip the docs rebuild for this merge. Rewriting the pom is safe at this
-      # point: check-version already read it and both deploys have completed.
+      # Last step in the job: a failure here must not abort the docs dispatch above.
+      # Rewriting the pom is safe here - check-version has read it and both deploys
+      # have completed.
       #
-      # Guarded on the ref, not on ref_type. workflow_dispatch accepts any ref
-      # carrying this file, and a feature branch legitimately holds a SNAPSHOT,
-      # so ref_type == 'branch' let any branch mint an -M from its own commit
-      # count. Those numbers overlap main's: a branch at main+1 claims the
-      # number the next real merge will compute, that merge then sees the
-      # coordinate already present and skips, and no immutable build exists for
-      # it - permanently, since the registry refuses to replace a release. It is
-      # the same silent-wrong failure mode github.run_number has.
+      # Guarded on the ref, not ref_type: every branch holds a SNAPSHOT and would
+      # mint an -M from its own commit count, claiming a number main will later
+      # compute - permanently, since the registry refuses to replace a release.
       - name: Publish immutable build version
         if: github.ref == 'refs/heads/main'
         env:
@@ -179,27 +158,16 @@ jobs:
           BASE="$BASE_VERSION"
           MV="${BASE%-SNAPSHOT}-M$(git rev-list --count HEAD)"
 
-          # -M<n> is a release coordinate and GitHub Packages refuses to replace
-          # one, so a re-run on the same commit has to skip rather than fail.
+          # -M<n> is a release coordinate the registry will not replace, so a re-run must
+          # skip. 2xx/3xx skips, 404 publishes, anything else warns and falls through -
+          # the registry's own conflict response is the authority. Asset GETs redirect to
+          # a pre-signed blob host, so 3xx means the version exists.
           #
-          # Polarity is deliberate: a definite "exists" answer skips, a definite
-          # 404 publishes, and anything else warns and FALLS THROUGH to the
-          # deploy. Treating the unknown as fatal would invert the guard's whole
-          # purpose - if the registry ever answers 3xx (it redirects asset GETs
-          # to a pre-signed blob host) or 401/422, every re-run would go red
-          # instead of skipping. A redundant deploy attempt costs nothing: the
-          # registry's own conflict response is the authority.
-          #
-          # Not `mvn dependency:get`: it answers "can I resolve this?" rather
-          # than "is this in the registry?" - anything already in the local
-          # repository satisfies it - and it cannot separate an auth failure
-          # from a genuine absence.
-          #
-          # No -L: curl drops Authorization across hosts, and --location-trusted
-          # against the blob host returns a documented 400.
+          # Not dependency:get: a copy in the local repository satisfies it, and it cannot
+          # tell an auth failure from an absence. No -L: curl drops Authorization across
+          # hosts, and --location-trusted against the blob host returns a documented 400.
           POM_URL="https://maven.pkg.github.com/omnitrustilm/interfaces/com/otilm/interfaces/$MV/interfaces-$MV.pom"
-          # curl writes %{http_code} as 000 on a connection failure itself, so
-          # `|| true` is only here to keep set -e from aborting on its exit code.
+          # curl writes 000 itself on a connection failure; `|| true` is only for set -e.
           CODE=$(curl -sS --retry 3 --retry-connrefused -o /dev/null -w '%{http_code}' \
                    -u "$GITHUB_ACTOR:$GITHUB_TOKEN" "$POM_URL" || true)
           case "$CODE" in
@@ -208,21 +176,17 @@ jobs:
             *)           echo "::warning::Registry probe for $MV returned HTTP $CODE; attempting the deploy and letting the registry decide" ;;
           esac
 
-          # Pinned rather than invoked by the `versions` prefix: an unpinned
-          # prefix resolves whatever release Central serves that day and runs it
-          # inside a job holding packages: write, and Renovate cannot see a
-          # prefix invocation to bump it.
+          # Pinned rather than the `versions` prefix, which resolves whatever release
+          # Central serves that day and is invisible to Renovate.
           mvn -B -ntp org.codehaus.mojo:versions-maven-plugin:2.18.0:set \
               -DnewVersion="$MV" -DgenerateBackupPoms=false
-          # No source:jar/javadoc:jar and no GPG signing, unlike the Central
-          # deploy above. maven.test.skip rather than skipTests - the latter
-          # still compiles test sources.
+          # No source/javadoc jars and no GPG signing, unlike the Central deploy above.
+          # maven.test.skip also skips test compilation.
           mvn -B -ntp -Pgithub -Dmaven.test.skip=true \
               -DretryFailedDeploymentCount=3 deploy
 
-          # The counter is an ordinal, not an address - no GitHub URL resolves
-          # "the Nth commit". Record the SHA so the number stays traceable to a
-          # commit from the place people read the number.
+          # The counter is an ordinal, not an address - no URL resolves the Nth commit,
+          # so the SHA is recorded here.
           {
             echo "### Immutable build version"
             echo ""

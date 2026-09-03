@@ -1,15 +1,11 @@
 name: Clean up PR snapshots
 
-# Weekly cron, deliberately NOT `pull_request: closed`. Merging the interfaces
-# PR closes it, and deleting the artifact while the coupled core PR still
-# overrides to that coordinate turns any re-run in the gap into an unreadable
-# "artifact not found". The grace period below bounds that gap.
+# Weekly cron, not `pull_request: closed`: merging the interfaces PR closes it,
+# and deleting the artifact while a coupled core PR still overrides to that
+# coordinate breaks its next run. The grace period below bounds that gap.
 #
-# Age is the only liveness test here: nothing checks whether an open core PR
-# still names the coordinate. A core PR can outlive the grace period, and its
-# next build then fails to resolve. Closing that properly means searching open
-# PRs for the marker, which is not worth building until the resolver that reads
-# it exists (OmniTrustILM/core#2191). Recorded rather than implied to be solved.
+# Age is the only liveness test - nothing checks whether an open core PR still
+# names the coordinate (needs the resolver in OmniTrustILM/core#2191).
 on:
   schedule:
     - cron: '0 3 * * 1'
@@ -24,18 +20,16 @@ permissions:
   contents: read
 
 # Never cancel: a half-finished sweep is harder to reason about than a queued
-# one, and an operator's exploratory dry-run dispatch must not race an armed
-# cron, or its WOULD DELETE log describes a registry someone else changed.
+# one.
 concurrency:
   group: cleanup-pr-packages
   cancel-in-progress: false
 
 jobs:
   cleanup:
-    # The package coordinates below are hardcoded to this repository while the
-    # PR lookup derives from GITHUB_REPOSITORY. Copy this file elsewhere and the
-    # two halves address different repos - classifying against the new repo's PR
-    # numbers, deleting from interfaces. This makes such a copy stand down.
+    # The package coordinates below are hardcoded to this repository while the PR
+    # lookup derives from GITHUB_REPOSITORY, so a copy elsewhere would classify
+    # and delete against different repos.
     if: github.repository == 'OmniTrustILM/interfaces'
     runs-on: ubuntu-latest
     permissions:
@@ -44,39 +38,31 @@ jobs:
       pull-requests: read
     env:
       PACKAGE: com.otilm.interfaces
-      # Read directly in every step that decides, rather than resolved once and
-      # passed along as a step output. A safety flag must not travel through a
-      # channel that renders empty when a step id is renamed or a key typo'd -
-      # and every delete below requires an affirmative value to proceed.
+      # Read in every step that decides rather than relayed as a step output, which
+      # renders empty if a step id changes. Every delete requires an affirmative
+      # value to proceed.
       ARMED: ${{ vars.CLEANUP_PACKAGES_ARMED }}
       FORCE_DRY: ${{ inputs.dry_run }}
     steps:
-      # Deleting is off until someone turns it on, and turning it on is not a
-      # code change: set the repository variable CLEANUP_PACKAGES_ARMED to
-      # 'true'. Until then every run classifies and prints what it would remove,
-      # so the first cron firing is a rehearsal rather than a surprise sweep.
+      # Deletion is off until the repository variable CLEANUP_PACKAGES_ARMED is
+      # 'true'; until then every run classifies and prints WOULD DELETE. Arming
+      # needs no code change.
       #
-      # Maven is a repository-scoped package type, and whether an Actions
-      # GITHUB_TOKEN with packages: write may delete through the /orgs/ endpoint
-      # is exactly the sort of thing that returns 403 only in production. The
-      # rehearsal exercises the read path only, so that question stays open
-      # until the first armed run - which is why that run fails loudly below if
-      # every delete is refused.
+      # Whether an Actions token may DELETE through the /orgs/ endpoint for a
+      # repository-scoped package type is unverified - the rehearsal exercises the
+      # read path only - so the first armed run fails loudly below if every delete
+      # is refused.
       #
-      # This gate stops an accidental or ill-considered sweep. It is not an
-      # authorization boundary: workflow_dispatch runs the workflow file from
-      # the ref it is dispatched against, so anyone with write access could
-      # dispatch a branch whose copy hardcodes the armed path. Enforcement of
-      # that kind belongs in repository settings, not in this file.
+      # A kill switch, not an authorization boundary: a dispatch runs the workflow
+      # file from the ref it targets.
       - name: Fetch package versions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          # --slurp WRAPS each page in an outer array; it does not flatten. So
-          # the raw output is [[v1..vN]], and `.[] | .name` would index a page
-          # rather than a version. flatten(1) is what makes it a flat list -
-          # and unlike `add` it yields [] rather than null for an empty listing.
+          # --slurp WRAPS each page in an outer array rather than flattening, so `.[] |
+          # .name` would index a page. flatten(1) also yields [] rather than null when
+          # the listing is empty.
           gh api --paginate --slurp \
             "/orgs/OmniTrustILM/packages/maven/${PACKAGE}/versions" \
             | jq 'flatten(1)' > versions.json
@@ -86,9 +72,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # -u and pipefail but deliberately NOT -e: one failed delete, or one
-          # PR lookup that 404s, must not abort the rest of the sweep. Every gh
-          # call below is individually guarded.
+          # No -e: one failed delete, or one PR lookup that 404s, must not abort the
+          # sweep. Every gh call below is individually guarded.
           set -uo pipefail
 
           if [ "${ARMED:-}" = "true" ] && [ "${FORCE_DRY:-}" != "true" ]; then
@@ -108,27 +93,25 @@ jobs:
           esac
 
           deleted=0; failed=0
-          # Process substitution, not a pipe: a `jq | while` body runs in a
-          # subshell and the counters would read 0 after the loop.
+          # Process substitution, not a pipe: a `jq | while` body runs in a subshell and
+          # the counters would read 0 after the loop.
           while IFS=$'\t' read -r id name; do
               num=${name#*-alpha-PR}; num=${num%-SNAPSHOT}
               case "$num" in
                 ''|*[!0-9]*) echo "::warning::cannot parse a PR number from $name - keeping"; continue ;;
               esac
 
-              # Fetched live per version rather than from the listing above.
-              # That is what makes the stale version list harmless: a PR
-              # reopened since the listing reports a null closed_at and is kept.
+              # Fetched live per version: a PR reopened since the listing reports a null
+              # closed_at and is kept, which is what makes the stale version list harmless.
               closed=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/$num" --jq '.closed_at // empty' || true)
               if [ -z "$closed" ]; then
                 echo "keep    $name (PR #$num still open, or the lookup failed)"
                 continue
               fi
 
-              # Parsed before comparing, and kept on failure. An empty operand
-              # does not make `[ "" -ge N ]` false - it errors and returns 2,
-              # which an `if` treats as false and falls through to the delete.
-              # Every other unknown in this loop resolves to keep; so must this.
+              # Parsed before comparing, and kept on failure: an empty operand does not make
+              # `[ "" -ge N ]` false - it returns 2, which an `if` treats as false and falls
+              # through to the delete.
               if ! closed_ts=$(date -u -d "$closed" +%s 2>/dev/null); then
                 echo "::warning::cannot parse closed_at $closed for $name - keeping"
                 continue
@@ -158,8 +141,7 @@ jobs:
             echo "pr_deleted=$deleted"
             echo "pr_failed=$failed"
           } >> "$GITHUB_ENV"
-          # Every delete refused means the authorization question above was
-          # answered no. That must not report success.
+          # Every delete refused means the token is not authorized. Not a success.
           if [ "$failed" -gt 0 ] && [ "$deleted" -eq 0 ]; then
             echo "::error::every delete was refused - the token is not authorized for this endpoint"
             exit 1
@@ -178,26 +160,18 @@ jobs:
           fi
 
           deleted=0; failed=0
-          # Two conditions, not one. A pure count is a moving window: the newest
-          # 50 commits on main span about 24 days, and an -M build is the pin a
-          # developer is told to use to escape a broken mainline snapshot. A core
-          # PR parked for a month would find its pin deleted and hit exactly the
-          # "artifact not found" the grace period above exists to prevent. The
-          # stated reason for pruning is listing noise, not storage - the repo is
-          # public - so a floor costs nothing.
+          # Two conditions, because a bare count is a moving window: the newest 50
+          # commits on main span about 24 days, and an -M build is the pin a core PR
+          # parked that long still needs.
           #
-          # -M[0-9]{3,} rather than -M[0-9]+: the short form is also how Maven
-          # spells a milestone RELEASE (3.0.0-M1), and this sweep must never be
-          # able to reach a hand-cut release. The commit count on main is past
-          # 900, so generated builds always carry three or more digits.
+          # -M[0-9]{3,} not -M[0-9]+: -M1 is how Maven spells a milestone release, and
+          # the commit count on main is past 900.
           while IFS=$'\t' read -r id name; do
               if [ "$DELETING" != "yes" ]; then
                 echo "WOULD DELETE $name"
                 continue
               fi
               # The API refuses to delete a package's last remaining version.
-              # Irrelevant while the mainline SNAPSHOT and releases exist, but it
-              # explains an otherwise-baffling failure if that ever changes.
               if gh api -X DELETE \
                    "/orgs/OmniTrustILM/packages/maven/${PACKAGE}/versions/$id"; then
                 echo "delete  $name"
@@ -221,13 +195,10 @@ jobs:
             exit 1
           fi
 
-      # Timestamped builds inside the mainline SNAPSHOT are deliberately left
-      # alone: GitHub models the whole SNAPSHOT as one version entity and the
-      # API deletes whole versions only, so per-build pruning is not
-      # expressible.
+      # Timestamped builds inside the mainline SNAPSHOT are left alone: GitHub models
+      # the whole SNAPSHOT as one version entity and deletes whole versions only.
       - name: Summary
-        # always(): this is the only place the counts and the arming state are
-        # reported, and it is most needed on a run where a sweep failed.
+        # always(): the only place the counts and the arming state are reported.
         if: always()
         run: |
           set -euo pipefail
