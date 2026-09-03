@@ -164,8 +164,8 @@ jobs:
           # commits on main span about 24 days, and an -M build is the pin a core PR
           # parked that long still needs.
           #
-          # -M[0-9]{3,} not -M[0-9]+: -M1 is how Maven spells a milestone release, and
-          # the commit count on main is past 900.
+          # The coordinate is <base>-M<count>-<short-sha>. Anchored on both parts so
+          # the sweep cannot reach a hand-cut milestone release like 3.0.0-M1.
           while IFS=$'\t' read -r id name; do
               if [ "$DELETING" != "yes" ]; then
                 echo "WOULD DELETE $name"
@@ -180,7 +180,7 @@ jobs:
                 echo "::warning::failed to delete $name (id $id)"
                 failed=$((failed + 1))
               fi
-          done < <(jq -r '[.[] | select(.name | test("-M[0-9]{3,}$"))]
+          done < <(jq -r '[.[] | select(.name | test("-M[0-9]{3,}-[0-9a-f]{7,12}$"))]
                           | sort_by(.created_at) | reverse | .[50:]
                           | map(select(.created_at < ((now - 90*86400) | todate)))
                           | .[] | [.id, .name] | @tsv' versions.json)
