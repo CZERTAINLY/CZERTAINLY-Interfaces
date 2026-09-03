@@ -148,7 +148,7 @@ class SigningProfileControllerContractTest {
                 .collect(Collectors.toSet());
 
         // then
-        assertEquals(Set.of("200", "400", "404", "422"), documentedStatuses);
+        assertEquals(Set.of("200", "400", "404", "422", "502", "503"), documentedStatuses);
     }
 
     @Test
