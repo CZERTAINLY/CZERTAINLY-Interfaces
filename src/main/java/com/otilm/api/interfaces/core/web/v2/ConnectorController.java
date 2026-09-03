@@ -18,6 +18,7 @@ import com.otilm.api.model.core.connector.v2.ConnectorDetailDto;
 import com.otilm.api.model.core.connector.v2.ConnectorDto;
 import com.otilm.api.model.core.connector.v2.ConnectorRequestDto;
 import com.otilm.api.model.core.connector.v2.ConnectorUpdateRequestDto;
+import com.otilm.api.model.core.search.ConfigurableColumnsDocs;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -55,17 +56,35 @@ import org.springframework.web.bind.annotation.ResponseStatus;
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface ConnectorController extends AuthProtectedController {
 
-    @Operation(operationId = "listConnectorsV2", summary = "List Connectors")
+    @Operation(operationId = "listConnectorsV2", summary = "List Connectors",
+            description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List all Connectors"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/list", produces = {"application/json"})
-    PaginationResponseDto<ConnectorDto> listConnectors(@Valid @RequestBody SearchRequestDto request)
+    PaginationResponseDto<ConnectorDto> listConnectors(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(schema = @Schema(implementation = SearchRequestDto.class),
+                            examples = {
+                                    @ExampleObject(name = "With ordering and columns",
+                                            value = """
+                                                    {
+                                                      "pageNumber": 1,
+                                                      "itemsPerPage": 10,
+                                                      "filters": [],
+                                                      "sort": {"fieldSource": "property", "fieldIdentifier": "CONNECTOR_NAME", "direction": "asc"},
+                                                      "columns": [
+                                                        {"fieldSource": "property", "fieldIdentifier": "CONNECTOR_NAME"},
+                                                        {"fieldSource": "property", "fieldIdentifier": "CONNECTOR_STATUS"},
+                                                        {"fieldSource": "property", "fieldIdentifier": "CONNECTOR_URL"}
+                                                      ]
+                                                    }""")})) @Valid @RequestBody SearchRequestDto request)
             throws NotFoundException;
 
-    @Operation(operationId = "getConnectorSearchableFields", summary = "Get Connectors searchable fields information")
+    @Operation(operationId = "getConnectorSearchableFields", summary = "Get Connectors searchable fields information",
+            description = ConfigurableColumnsDocs.CATALOGUE_FLAGS)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Connector searchable field information retrieved")})
     @GetMapping(path = "/search", produces = {"application/json"})

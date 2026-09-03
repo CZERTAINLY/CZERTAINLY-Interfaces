@@ -6,6 +6,7 @@ import com.otilm.api.model.client.certificate.SearchRequestDto;
 import com.otilm.api.model.common.BulkActionMessageDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.PaginationResponseDto;
+import com.otilm.api.model.core.search.ConfigurableColumnsDocs;
 import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import com.otilm.api.model.core.signing.signingrecord.SigningRecordDto;
 import com.otilm.api.model.core.signing.signingrecord.SigningRecordListDto;
@@ -39,19 +40,37 @@ import org.springframework.web.bind.annotation.ResponseStatus;
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 public interface SigningRecordController extends AuthProtectedController {
 
-    @Operation(operationId = "listSigningRecordSearchableFields", summary = "List search filters for Signing Records")
+    @Operation(operationId = "listSigningRecordSearchableFields", summary = "List search filters for Signing Records",
+            description = ConfigurableColumnsDocs.CATALOGUE_FLAGS)
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "List of search filters retrieved")})
     @GetMapping(path = "/search", produces = {MediaType.APPLICATION_JSON_VALUE})
     List<SearchFieldDataByGroupDto> getSearchableFieldInformation();
 
-    @Operation(operationId = "listSigningRecords", summary = "List of Signing Records")
+    @Operation(operationId = "listSigningRecords", summary = "List of Signing Records",
+            description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Signing Records retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    PaginationResponseDto<SigningRecordListDto> listSigningRecords(@Valid @RequestBody SearchRequestDto request);
+    PaginationResponseDto<SigningRecordListDto> listSigningRecords(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(
+                    schema = @Schema(implementation = SearchRequestDto.class),
+                    examples = {
+                            @ExampleObject(name = "With ordering and columns",
+                                    value = """
+                                            {
+                                              "pageNumber": 1,
+                                              "itemsPerPage": 10,
+                                              "filters": [],
+                                              "sort": {"fieldSource": "property", "fieldIdentifier": "SIGNING_RECORD_SIGNING_TIME", "direction": "desc"},
+                                              "columns": [
+                                                {"fieldSource": "property", "fieldIdentifier": "SIGNING_RECORD_NAME"},
+                                                {"fieldSource": "property", "fieldIdentifier": "SIGNING_RECORD_SIGNING_PROFILE"},
+                                                {"fieldSource": "property", "fieldIdentifier": "SIGNING_RECORD_PROTOCOL"}
+                                              ]
+                                            }""")})) @Valid @RequestBody SearchRequestDto request);
 
     @Operation(operationId = "getSigningRecord", summary = "Details of a Signing Record")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Signing Record details retrieved")})

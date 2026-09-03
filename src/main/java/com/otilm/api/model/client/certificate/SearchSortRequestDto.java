@@ -25,9 +25,11 @@ public class SearchSortRequestDto implements Serializable {
     private FilterFieldSource fieldSource;
 
     @NotBlank
-    @Schema(description = "Field identifier of the field to sort by. Available fields with their identifiers can be "
-            + "retrieved from the corresponding endpoint `GET /v1/{resource}/search`; only fields marked as sortable "
-            + "may be sorted by.", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Field identifier of the field to sort by. "
+            + "Available fields with their identifiers can be retrieved from the resource's "
+            + "searchable-fields operation, for example `GET /v1/certificates/search` or "
+            + "`GET /v2/connectors/search`; only fields marked as " + "sortable may be sorted by.",
+            requiredMode = Schema.RequiredMode.REQUIRED)
     private String fieldIdentifier;
 
     @NotNull
