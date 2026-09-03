@@ -41,11 +41,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1")
 @Tag(name = "Token Profile Management", description = "Token Profile Management API")
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "502", description = "Connector Error",
-                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
-                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 
 public interface TokenProfileController extends AuthProtectedController {
     @Operation(summary = "List of available Token Profiles")
@@ -57,7 +52,11 @@ public interface TokenProfileController extends AuthProtectedController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Token Profile Attributes retrieved"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
     @GetMapping(path = "/tokens/{tokenInstanceUuid}/tokenProfiles/attributes",
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listTokenProfileAttributes(
@@ -81,7 +80,11 @@ public interface TokenProfileController extends AuthProtectedController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
     @PostMapping(path = "/tokens/{tokenInstanceUuid}/tokenProfiles", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<TokenProfileDetailDto> createTokenProfile(
@@ -96,7 +99,11 @@ public interface TokenProfileController extends AuthProtectedController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
             @ApiResponse(responseCode = "404", description = "Token Profile or Token instance not found",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
     @PutMapping(path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{uuid}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     TokenProfileDetailDto editTokenProfile(
@@ -192,7 +199,11 @@ public interface TokenProfileController extends AuthProtectedController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Supported key usages retrieved"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
-                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
     @PostMapping(path = "/tokens/{tokenInstanceUuid}/tokenProfile/keyUsages",
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     List<KeyUsage> listSupportedTokenProfileKeyUsages(
