@@ -13,6 +13,9 @@ import com.otilm.api.interfaces.core.web.v2.ComplianceController;
 import com.otilm.api.model.client.approval.ApprovalResponseDto;
 import com.otilm.api.model.client.certificate.BulkOperationResponse;
 import com.otilm.api.model.client.certificate.CertificateComplianceCheckDto;
+import com.otilm.api.model.client.certificate.CertificateImportRequestDto;
+import com.otilm.api.model.client.certificate.CertificateImportResponseDto;
+import com.otilm.api.model.client.certificate.CertificateKeystoreRequestDto;
 import com.otilm.api.model.client.certificate.CertificateResponseDto;
 import com.otilm.api.model.client.certificate.CertificateSearchRequestDto;
 import com.otilm.api.model.client.certificate.CertificateUpdateObjectsDto;
@@ -22,6 +25,7 @@ import com.otilm.api.model.client.certificate.UploadCertificateRequestDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.UuidDto;
 import com.otilm.api.model.common.attribute.common.BaseAttribute;
+import com.otilm.api.model.common.error.ProblemDetailExtended;
 import com.otilm.api.model.core.certificate.CertificateChainDownloadResponseDto;
 import com.otilm.api.model.core.certificate.CertificateChainResponseDto;
 import com.otilm.api.model.core.certificate.CertificateContentDto;
@@ -40,6 +44,7 @@ import com.otilm.api.model.core.search.SearchFieldDataByGroupDto;
 import com.otilm.api.model.core.v2.ClientCertificateRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -55,6 +60,8 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +81,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
         @ApiResponse(responseCode = "404", description = "Not Found",
                 content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
 public interface CertificateController extends AuthProtectedController {
+
+    /** Media type of a PKCS#12 keystore download. */
+    String KEYSTORE_MEDIA_TYPE = "application/x-pkcs12";
 
     @Operation(summary = "List Certificates",
             description = ConfigurableColumnsDocs.SORT_AND_COLUMNS + ConfigurableColumnsDocs.ATTRIBUTE_PROJECTION)
@@ -161,6 +171,84 @@ public interface CertificateController extends AuthProtectedController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ResponseEntity<UuidDto> upload(@RequestBody UploadCertificateRequestDto request) throws AlreadyExistException,
             CertificateException, NoSuchAlgorithmException, NotFoundException, AttributeException;
+
+    @Operation(summary = "Import certificates and keys from an uploaded file", description = """
+            Import named entries from an uploaded file.
+
+            The file travels base64-encoded in `file`, like every upload in the platform, and is held in memory rather
+            than written anywhere; it is never echoed in an error, since it may carry key material. Every entry to
+            import is named, and nothing else in the file is touched: an import never takes in material the caller did
+            not ask for.
+
+            An entry reference is derived from the entry's own content — a certificate fingerprint, a public key
+            fingerprint, or a digest of the protected key — so naming one selects that content, not a position in a
+            file. A caller showing a user what is inside reads the file first with `POST /v1/inspections` and names
+            what the user chose. A caller that already knows what it is importing computes the reference itself and
+            imports in one call.
+
+            Each entry says where its own key material goes, because a file can hold entries of different key types
+            and each key type has its own provider attribute schema.
+
+            Entries succeed or fail on their own and the response reports the outcome of each. Each entry carries its
+            own `importId`, so repeating a request returns what already succeeded and retries only what did not: a
+            caller recovering from a lost or partial response resends the same body and needs to work out nothing.
+            """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Selected entries imported"),
+            @ApiResponse(responseCode = "404", description = "Token profile not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "409",
+                    description = "`RESOURCE_ALREADY_EXISTS` — an entry's `importId` was reused for an import of "
+                            + "something else",
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class))),
+            @ApiResponse(responseCode = "422", description = """
+                    - `VALIDATION_FAILED` — the body is readable but breaks a field rule, such as a named entry the
+                      file does not carry, key material with nowhere to go, or two entries sharing an `importId`.
+                    """,
+                    content = @Content(mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            schema = @Schema(implementation = ProblemDetailExtended.class)))})
+    @PostMapping(path = "/import", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    CertificateImportResponseDto importCertificates(@RequestBody @Valid CertificateImportRequestDto request)
+            throws ValidationException, NotFoundException, ConnectorException, AttributeException, CertificateException,
+            IOException;
+
+    @Operation(summary = "Download a certificate with its private key", description = """
+            Download a certificate, its chain and its private key as one PKCS#12 file.
+
+            This is a POST because the passphrase travels in the body: a URL is recorded by proxies, browser history
+            and access logs, so a passphrase must never appear in one. The response is not cacheable and carries a
+            sanitized download filename.
+
+            It is a separate operation from the certificate content download, which serves certificates only. Only a
+            key created or imported as exportable can be included.
+            """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Keystore downloaded",
+                    headers = {
+                            @Header(name = HttpHeaders.CONTENT_DISPOSITION, required = true,
+                                    description = "Attachment with a sanitized filename, as RFC 6266 describes",
+                                    schema = @Schema(type = "string")),
+                            @Header(name = HttpHeaders.CACHE_CONTROL, required = true,
+                                    description = "`no-store, no-cache`, so the file is not written to any cache",
+                                    schema = @Schema(type = "string")),
+                            @Header(name = HttpHeaders.PRAGMA, required = true,
+                                    description = "`no-cache`, for caches that predate `Cache-Control`",
+                                    schema = @Schema(type = "string")),
+                            @Header(name = "X-Content-Type-Options", required = true, description = "`nosniff`",
+                                    schema = @Schema(type = "string"))},
+                    content = @Content(mediaType = KEYSTORE_MEDIA_TYPE,
+                            schema = @Schema(type = "string", format = "binary"))),
+            @ApiResponse(responseCode = "404", description = "Certificate or its key not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
+                            examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
+    @PostMapping(path = "/{uuid}/keystore", consumes = MediaType.APPLICATION_JSON_VALUE, produces = KEYSTORE_MEDIA_TYPE)
+    ResponseEntity<Resource> downloadKeystore(@Parameter(description = "Certificate UUID") @PathVariable UUID uuid,
+            @RequestBody @Valid CertificateKeystoreRequestDto request) throws NotFoundException, ValidationException,
+            ConnectorException, AttributeException, CertificateException, IOException;
 
     @Operation(summary = "Delete multiple certificates", description = "In this operation, when the list of "
             + "Certificate UUIDs are provided and the filter is left as null or undefined, then the change will "

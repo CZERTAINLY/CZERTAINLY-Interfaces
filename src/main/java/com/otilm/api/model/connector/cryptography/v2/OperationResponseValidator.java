@@ -20,61 +20,34 @@ import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataReques
 import com.otilm.api.model.connector.cryptography.v2.operations.VerifyDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.IdentifiedDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.token.TokenStatusResponseV2Dto;
-import com.otilm.api.model.connector.cryptography.v2.validation.AsynchronousResponse;
-import com.otilm.api.model.connector.cryptography.v2.validation.SynchronousResponse;
 import com.otilm.api.model.core.cryptography.key.KeyUsage;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import jakarta.validation.groups.Default;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 /**
  * Validates that an async-capable connector response honors the caller-selected execution mode.
  */
-public final class OperationResponseValidator {
+public final class OperationResponseValidator extends ResponseChecks {
 
-    private final Validator validator;
+    private final KeyTransferResponseValidator keyTransfer;
 
     public OperationResponseValidator(Validator validator) {
-        this.validator = Objects.requireNonNull(validator, "validator is required");
+        super(validator);
+        this.keyTransfer = new KeyTransferResponseValidator(validator());
     }
 
-    private static OperationValidationResult validate(Runnable validation) {
-        try {
-            validation.run();
-            return OperationValidationResult.valid();
-        } catch (IllegalArgumentException e) {
-            return OperationValidationResult.invalid(e);
-        }
-    }
-
-    private static void requireExecutionMode(OperationExecutionMode mode) {
-        if (mode == null) {
-            throw new IllegalArgumentException("Execution mode is required");
-        }
-    }
-
-    private static void requireResponseStatus(ResponseEntity<?> response, HttpStatus expectedStatus) {
-        if (response == null) {
-            throw new IllegalArgumentException("Connector returned no response");
-        }
-        if (response.getStatusCode().value() != expectedStatus.value()) {
-            throw new IllegalArgumentException("Connector returned HTTP " + response.getStatusCode().value()
-                    + "; expected HTTP " + expectedStatus.value());
-        }
-    }
-
-    private static <T> T requireBody(ResponseEntity<T> response) {
-        if (response.getBody() == null) {
-            throw new IllegalArgumentException("Connector response body is required");
-        }
-        return response.getBody();
+    /**
+     * Validation of the operations that move key material into and out of a technology. Those responses are checked
+     * against the platform's record of the key as well as against their own field rules, which is a concern of its own.
+     *
+     * @return the validator for the key import and key export operations
+     */
+    public KeyTransferResponseValidator keyTransfer() {
+        return keyTransfer;
     }
 
     private static void requireMatchingIdentifiers(List<? extends IdentifiedDataV2Dto> requestItems,
@@ -126,18 +99,8 @@ public final class OperationResponseValidator {
     public OperationValidationResult validateCreateKey(CreateKeyRequestV2Dto request,
             ResponseEntity<? extends KeyCreationResponseV2Dto> response) {
         return validate(() -> {
-            if (request == null) {
-                throw new IllegalArgumentException("Key creation request is required");
-            }
-            if (request.getKeyRequestType() == null) {
-                throw new IllegalArgumentException("Key request type is required");
-            }
-            validateOperationResponseConstraints(request.getExecutionMode(), response);
-            KeyRequestType responseType = requireBody(response).getKeyRequestType();
-            if (request.getKeyRequestType() != responseType) {
-                throw new IllegalArgumentException("Connector returned key request type " + responseType + "; expected "
-                        + request.getKeyRequestType());
-            }
+            requireRequest(request, "Key creation");
+            validateKeyCreationOutcome(request.getKeyRequestType(), request.getExecutionMode(), response);
         });
     }
 
@@ -206,68 +169,12 @@ public final class OperationResponseValidator {
     public OperationValidationResult validateSign(SignDataRequestV2Dto request,
             ResponseEntity<SignDataResponseV2Dto> response) {
         return validate(() -> {
-            if (request == null) {
-                throw new IllegalArgumentException("Signing request is required");
-            }
+            requireRequest(request, "Signing");
             validateOperationResponseConstraints(request.getExecutionMode(), response);
             if (request.getExecutionMode() == OperationExecutionMode.SYNCHRONOUS) {
                 requireMatchingIdentifiers(request.getData(), requireBody(response).getSignatures(),
                         "Synchronous signing response identifiers must match request identifiers");
             }
         });
-    }
-
-    private static void requireRequest(Object request, String operation) {
-        if (request == null) {
-            throw new IllegalArgumentException(operation + " request is required");
-        }
-    }
-
-    private void validateOperationResponseConstraints(OperationExecutionMode mode, ResponseEntity<?> response) {
-        requireExecutionMode(mode);
-        if (mode == OperationExecutionMode.SYNCHRONOUS) {
-            requireResponseStatus(response, HttpStatus.OK);
-            validateBean(requireBody(response), SynchronousResponse.class);
-        } else {
-            requireResponseStatus(response, HttpStatus.ACCEPTED);
-            validateBean(requireBody(response), AsynchronousResponse.class);
-        }
-    }
-
-    private OperationValidationResult validateBeanConstraints(Object response) {
-        return validate(() -> validateRequiredBean(response));
-    }
-
-    private void validateRequiredBean(Object response) {
-        if (response == null) {
-            throw new IllegalArgumentException("Connector response body is required");
-        }
-        validateBean(response, Default.class);
-    }
-
-    private OperationValidationResult validateResponseElements(List<?> response, String itemName) {
-        return validate(() -> {
-            if (response == null) {
-                throw new IllegalArgumentException("Connector response body is required");
-            }
-            for (Object item : response) {
-                if (item == null) {
-                    throw new IllegalArgumentException("Connector response must not contain a null " + itemName);
-                }
-                validateBean(item, Default.class);
-            }
-        });
-    }
-
-    private void validateBean(Object body, Class<?> group) {
-        Set<ConstraintViolation<Object>> violations = validator.validate(body, group);
-        if (!violations.isEmpty()) {
-            String details = violations
-                    .stream()
-                    .map(violation -> violation.getPropertyPath() + ": " + violation.getMessage())
-                    .sorted()
-                    .collect(Collectors.joining(", "));
-            throw new IllegalArgumentException("Connector response validation failed: " + details);
-        }
     }
 }
