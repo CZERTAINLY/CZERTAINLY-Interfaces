@@ -141,9 +141,11 @@ jobs:
             echo "pr_deleted=$deleted"
             echo "pr_failed=$failed"
           } >> "$GITHUB_ENV"
-          # Every delete refused means the token is not authorized. Not a success.
+          # Nothing deleted while every attempt failed is not a success. The cause may
+          # be authorization, a transient API failure, or the last-version rejection -
+          # the errors above distinguish them.
           if [ "$failed" -gt 0 ] && [ "$deleted" -eq 0 ]; then
-            echo "::error::every delete was refused - the token is not authorized for this endpoint"
+            echo "::error::every delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
             exit 1
           fi
 
@@ -164,8 +166,9 @@ jobs:
           # commits on main span about 24 days, and an -M build is the pin a core PR
           # parked that long still needs.
           #
-          # The coordinate is <base>-M<count>-<short-sha>. Anchored on both parts so
-          # the sweep cannot reach a hand-cut milestone release like 3.0.0-M1.
+          # <base>-M<count>-<short-sha>, the suffix optional so this does not depend
+          # on the publisher's exact form. Three-or-more digits and the end anchor
+          # keep a hand-cut release like 3.0.0-M1 out of reach.
           while IFS=$'\t' read -r id name; do
               if [ "$DELETING" != "yes" ]; then
                 echo "WOULD DELETE $name"
@@ -180,7 +183,7 @@ jobs:
                 echo "::warning::failed to delete $name (id $id)"
                 failed=$((failed + 1))
               fi
-          done < <(jq -r '[.[] | select(.name | test("-M[0-9]{3,}-[0-9a-f]{7,12}$"))]
+          done < <(jq -r '[.[] | select(.name | test("-M[0-9]{3,}(-[0-9a-f]{7,12})?$"))]
                           | sort_by(.created_at) | reverse | .[50:]
                           | map(select(.created_at < ((now - 90*86400) | todate)))
                           | .[] | [.id, .name] | @tsv' versions.json)
@@ -191,7 +194,7 @@ jobs:
             echo "m_failed=$failed"
           } >> "$GITHUB_ENV"
           if [ "$failed" -gt 0 ] && [ "$deleted" -eq 0 ]; then
-            echo "::error::every delete was refused - the token is not authorized for this endpoint"
+            echo "::error::every delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
             exit 1
           fi
 

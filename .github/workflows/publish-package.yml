@@ -143,7 +143,11 @@ jobs:
   # an -M from its own commit count, claiming a number main will later compute.
   immutable-build:
     name: Publish immutable build version
-    if: github.ref == 'refs/heads/main'
+    # Ordered after `publish` so the two deploys do not race on GitHub Packages'
+    # artifact-level metadata. !cancelled() keeps the pin independent of it: a
+    # failed publish must not cost the pin.
+    needs: publish
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
