@@ -28,10 +28,15 @@ import reactor.core.publisher.Flux;
 
 @RequestMapping("/v2/discoveryProvider/discoveries")
 @Tag(name = "Discovery Operations v2",
-        description = "Stateless discovery v2 run lifecycle: initiate a run, poll or stream its results, "
-                + "and control it (stop/resume/cancel). Every call carries the full runId + resources + "
-                + "meta + attributes context; the connector is not required to hold any state between calls. A "
-                + "connector MUST answer 404 for any runId it does not recognize, including after a restart.")
+        description = "Stateless discovery v2 run lifecycle: initiate a run, poll or stream its results, and "
+                + "control it (stop/resume/cancel).\n\n"
+                + "Every call replays the run's identity, resources, handle and attributes, so you need keep "
+                + "no state between calls: rebuild the run from the request, including after a restart. "
+                + "Answer 404 only for a runId you cannot rebuild — it ends the run at once, and a stopped "
+                + "run may be waiting days for its resume.\n\n"
+                + "If you can rebuild the run but no longer hold the items a drain asks for, answer 404 "
+                + "rather than a later page: Core takes the highest sequence you return as its new cursor, so "
+                + "a page served across a gap loses everything in it.")
 public interface DiscoveryOperationController extends AuthProtectedConnectorController {
 
     /** Shared by every body-taking operation: the scoped base makes runId and resources mandatory on all of them. */
