@@ -59,3 +59,70 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: mvn -B verify -f pom.xml
+
+  publish-pr:
+    name: Publish PR snapshot
+    needs: check  # never publish an artifact from a PR that fails verify
+    # Bots are excluded wholesale rather than by name: the org runs Renovate, and
+    # nobody couples a core PR to a dependency bump, so a snapshot per Renovate
+    # push is pure waste. Fork PRs get a read-only token and cannot publish at
+    # all, so a fork-authored breaking change has no coupled flow.
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      !endsWith(github.actor, '[bot]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    concurrency:
+      # Deliberately NOT cancel-in-progress: aborting mid-deploy leaves the
+      # package version metadata pointing at a half-uploaded build.
+      group: publish-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Set up JDK 21
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
+        with:
+          java-version: 21
+          distribution: 'temurin'
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+      - name: Cache Maven packages
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Publish PR snapshot to GitHub Packages
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          BASE=$(mvn -q -B -ntp help:evaluate -Dexpression=project.version -DforceStdout)
+          # The `alpha` qualifier is load-bearing: an unqualified -PR<n>-SNAPSHOT
+          # sorts ABOVE the GA release in Maven's ComparableVersion, which would
+          # make Renovate offer PR builds to other repos as upgrades.
+          PRV="${BASE%-SNAPSHOT}-alpha-PR${PR_NUMBER}-SNAPSHOT"
+          echo "Publishing $PRV"
+          # versions:set runs in CI only; the branch pom.xml is never committed
+          # with this value.
+          mvn -B -ntp versions:set -DnewVersion="$PRV" -DgenerateBackupPoms=false
+          # No source:jar/javadoc:jar and no GPG signing: this coordinate exists
+          # only to unblock a coupled core PR and never reaches Maven Central.
+          mvn -B -ntp -Pgithub -DskipTests deploy
+          {
+            echo "### PR snapshot published"
+            echo ""
+            echo "Add this line to the body of the coupled \`core\` PR:"
+            echo ""
+            echo '```'
+            echo "Depends-On: ${{ github.repository }}#${PR_NUMBER}"
+            echo '```'
+            echo ""
+            echo "Coordinate: \`com.otilm:interfaces:$PRV\`"
+          } >> "$GITHUB_STEP_SUMMARY"

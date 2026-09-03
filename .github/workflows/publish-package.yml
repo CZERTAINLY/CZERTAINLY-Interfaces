@@ -16,6 +16,11 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          # Full history: the immutable -M<n> coordinate published in the last
+          # step of this job is the commit count, which a shallow clone cannot
+          # compute. Costs one to two seconds on this repository.
+          fetch-depth: 0
 
       - uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
         with:
@@ -112,3 +117,58 @@ jobs:
               workflow_id: 'publish.yml',
               ref: 'main',
             })
+
+      # Immutable coordinate for the escape hatch: a developer whose unrelated
+      # core PR is broken by a mainline snapshot change can pin the last good
+      # -M build and keep working. GitHub Packages only.
+      #
+      # Last step in the job on purpose. A failure here must not be able to
+      # abort the interface-documentation dispatch above, which would silently
+      # skip the docs rebuild for this merge. Rewriting the pom is safe at this
+      # point: check-version already read it and both deploys have completed.
+      - name: Publish immutable build version
+        if: github.ref_type == 'branch'
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          BASE="${{ steps.check-version.outputs.version }}"
+          MV="${BASE%-SNAPSHOT}-M$(git rev-list --count HEAD)"
+
+          # -M<n> is a release coordinate and GitHub Packages refuses to replace
+          # one, so a re-run on the same commit has to skip rather than fail.
+          #
+          # Probe over HTTP rather than with `mvn dependency:get`: the `github`
+          # profile declares only distributionManagement and no <repositories>,
+          # so Maven has no GitHub Packages repository to resolve against and the
+          # probe would report "absent" for every version, published or not.
+          # This form also separates 401/403 from a genuine 404 instead of
+          # treating both as "go ahead and deploy".
+          POM_URL="https://maven.pkg.github.com/omnitrustilm/interfaces/com/otilm/interfaces/$MV/interfaces-$MV.pom"
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' -u "$GITHUB_ACTOR:$GITHUB_TOKEN" "$POM_URL")
+          case "$CODE" in
+            200) echo "$MV is already published - workflow re-run, nothing to do"; exit 0 ;;
+            404) echo "$MV is not present; publishing" ;;
+            *)   echo "::error::Registry probe for $MV returned HTTP $CODE"; exit 1 ;;
+          esac
+
+          mvn -B -ntp versions:set -DnewVersion="$MV" -DgenerateBackupPoms=false
+          # No source:jar/javadoc:jar and no GPG signing, unlike the Central
+          # deploy above: this coordinate is a build pin, not a release.
+          mvn -B -ntp -Pgithub -DskipTests deploy
+
+          # The counter is an ordinal, not an address - no GitHub URL resolves
+          # "the Nth commit". Record the SHA so the number stays traceable to a
+          # commit from the place people read the number.
+          {
+            echo "### Immutable build version"
+            echo ""
+            echo "\`com.otilm:interfaces:$MV\` - pin this to escape a broken mainline snapshot:"
+            echo ""
+            echo '```'
+            echo "Interfaces-Version: $MV"
+            echo '```'
+            echo ""
+            echo "Built from [\`${GITHUB_SHA:0:8}\`](${{ github.server_url }}/${{ github.repository }}/commit/$GITHUB_SHA)."
+          } >> "$GITHUB_STEP_SUMMARY"
