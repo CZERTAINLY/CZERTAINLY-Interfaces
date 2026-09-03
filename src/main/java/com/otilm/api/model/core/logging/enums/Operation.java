@@ -64,7 +64,7 @@ public enum Operation implements IPlatformEnum {
     SYNC("sync", "Sync"),
     COMPROMISE("compromise", "Compromise"),
     DESTROY("destroy", "Destroy"),
-    LIST_KEY_USAGES("listSupportedKeyUsages", "List supported key usage"),
+    LIST_KEY_USAGES("listSupportedKeyUsages", "List supported key usages"),
     UPDATE_KEY_USAGE("updateKeyUsage", "Update key usage"),
     ENCRYPT("encrypt", "Encrypt"),
     DECRYPT("decrypt", "Decrypt"),
