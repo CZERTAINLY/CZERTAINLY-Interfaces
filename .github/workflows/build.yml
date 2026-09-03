@@ -2,6 +2,12 @@ name: Build interfaces
 on:
   pull_request:
     branches: [main]
+    # ready_for_review is not one of the default activity types (opened,
+    # synchronize, reopened). Without it the ordinary open-as-draft, iterate,
+    # mark-ready flow fires no event once the draft flag clears, so publish-pr
+    # below - which skips drafts - would never run for such a PR, and the
+    # coupled core PR would find no coordinate and no explanation.
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
   workflow_dispatch:
@@ -174,8 +180,5 @@ jobs:
             echo "\`pull_request\` event, so these bytes can differ from your branch"
             echo "even with no push."
             echo ""
-            echo "> **Not consumed yet.** The \`Depends-On:\` marker needs the \`core\`"
-            echo "> resolver, which is not live (OmniTrustILM/core#2191). Until that"
-            echo "> lands the coordinate is published but nothing reads the marker,"
-            echo "> and adding the line has no effect on your \`core\` build."
+            echo "> The \`Depends-On:\` marker is not read yet - tracking in OmniTrustILM/core#2191."
           } >> "$GITHUB_STEP_SUMMARY"

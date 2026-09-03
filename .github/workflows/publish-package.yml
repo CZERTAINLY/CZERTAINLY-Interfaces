@@ -25,9 +25,21 @@ jobs:
     # SNAPSHOT. That deploys unreviewed branch code over the mainline SNAPSHOT to
     # BOTH Maven Central and GitHub Packages, and rebuilds the published docs
     # from it, with nothing in either registry recording where it came from.
-    # The `push` trigger is already restricted to main and tags; only the manual
-    # path needs closing.
-    if: github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    #
+    # Tags stay allowed: `check-version` already hard-fails a tag carrying a
+    # SNAPSHOT, and re-dispatching a release tag is the natural recovery from a
+    # half-failed Central upload.
+    #
+    # This stops an accidental dispatch of *this* definition. It is not an
+    # authorization boundary - workflow_dispatch runs the workflow file from the
+    # ref it is dispatched against, so a branch whose copy omits this line is
+    # never evaluated against it. Real enforcement means putting the publishing
+    # secrets behind an Environment whose deployment-branch policy allows only
+    # main, which lives in repository settings where a branch cannot edit it.
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      github.ref == 'refs/heads/main' ||
+      startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest 
     permissions: 
       contents: read
@@ -152,8 +164,8 @@ jobs:
       # count. Those numbers overlap main's: a branch at main+1 claims the
       # number the next real merge will compute, that merge then sees the
       # coordinate already present and skips, and no immutable build exists for
-      # it - permanently, since the registry refuses to replace a release. That
-      # is the silent-wrong failure mode github.run_number was rejected for.
+      # it - permanently, since the registry refuses to replace a release. It is
+      # the same silent-wrong failure mode github.run_number has.
       - name: Publish immutable build version
         if: github.ref == 'refs/heads/main'
         env:
@@ -178,20 +190,20 @@ jobs:
           # instead of skipping. A redundant deploy attempt costs nothing: the
           # registry's own conflict response is the authority.
           #
-          # Not `mvn dependency:get`: it cannot separate an auth failure from a
-          # genuine absence, and reports "resolved" for anything already in the
-          # local repository. (An earlier version of this comment claimed the
-          # pom declares no <repositories> for GitHub Packages - that is wrong,
-          # pom.xml does declare one at project level. dependency:get would
-          # resolve; it just cannot answer this question reliably.)
+          # Not `mvn dependency:get`: it answers "can I resolve this?" rather
+          # than "is this in the registry?" - anything already in the local
+          # repository satisfies it - and it cannot separate an auth failure
+          # from a genuine absence.
           #
           # No -L: curl drops Authorization across hosts, and --location-trusted
           # against the blob host returns a documented 400.
           POM_URL="https://maven.pkg.github.com/omnitrustilm/interfaces/com/otilm/interfaces/$MV/interfaces-$MV.pom"
+          # curl writes %{http_code} as 000 on a connection failure itself, so
+          # `|| true` is only here to keep set -e from aborting on its exit code.
           CODE=$(curl -sS --retry 3 --retry-connrefused -o /dev/null -w '%{http_code}' \
-                   -u "$GITHUB_ACTOR:$GITHUB_TOKEN" "$POM_URL" || echo 000)
+                   -u "$GITHUB_ACTOR:$GITHUB_TOKEN" "$POM_URL" || true)
           case "$CODE" in
-            200|30[0-9]) echo "$MV is already published (HTTP $CODE) - workflow re-run, nothing to do"; exit 0 ;;
+            20[0-9]|30[0-9]) echo "$MV is already published (HTTP $CODE) - workflow re-run, nothing to do"; exit 0 ;;
             404)         echo "$MV is not present; publishing" ;;
             *)           echo "::warning::Registry probe for $MV returned HTTP $CODE; attempting the deploy and letting the registry decide" ;;
           esac
@@ -221,6 +233,10 @@ jobs:
             echo '```'
             echo ""
             echo "Built from [\`${GITHUB_SHA:0:8}\`]($SERVER_URL/$REPO/commit/$GITHUB_SHA)."
+            echo ""
+            echo "This pin stays resolvable for at least 90 days; the weekly cleanup"
+            echo "prunes an -M build only once it is both outside the newest 50 and"
+            echo "older than that."
             echo ""
             echo "Notes: the counter is monotonic and one per push to main, but not"
             echo "gap-free - a release-prep commit carries a non-SNAPSHOT version and"
