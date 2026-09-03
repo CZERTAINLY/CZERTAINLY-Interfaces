@@ -4,11 +4,12 @@ import com.otilm.api.exception.AlreadyExistException;
 import com.otilm.api.exception.AttributeException;
 import com.otilm.api.exception.NotFoundException;
 import com.otilm.api.interfaces.AuthProtectedController;
+import com.otilm.api.model.client.certificate.group.GroupUserResponseDto;
 import com.otilm.api.model.common.ErrorMessageDto;
 import com.otilm.api.model.common.UuidDto;
-import com.otilm.api.model.core.auth.UserDto;
 import com.otilm.api.model.core.certificate.group.GroupDto;
 import com.otilm.api.model.core.certificate.group.GroupRequestDto;
+import com.otilm.api.model.core.scheduler.PaginationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -89,6 +90,6 @@ public interface GroupController extends AuthProtectedController {
             @ApiResponse(responseCode = "404", description = "Group not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
     @GetMapping(path = "/{uuid}/users", produces = {"application/json"})
-    List<UserDto> getGroupUsers(@Parameter(description = "Group UUID") @PathVariable String uuid)
-            throws NotFoundException;
+    GroupUserResponseDto getGroupUsers(@Parameter(description = "Group UUID") @PathVariable String uuid,
+            final PaginationRequestDto paginationRequestDto) throws NotFoundException;
 }
