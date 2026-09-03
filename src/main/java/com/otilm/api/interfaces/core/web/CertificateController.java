@@ -220,6 +220,11 @@ public interface CertificateController extends AuthProtectedController {
             Without `raProfileUuid`: the editable platform default request-attribute set.
             With `raProfileUuid`: the resolved request-attribute set for that RA profile.""")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "CSR Generation attributes retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -250,6 +255,11 @@ public interface CertificateController extends AuthProtectedController {
 
     @Operation(summary = "Submit certificate request")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200",
                     description = "Certificate request submit, certificate created and ready to be issued")})
     @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE,
