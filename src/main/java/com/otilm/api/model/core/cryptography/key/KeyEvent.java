@@ -9,6 +9,9 @@ import java.util.Arrays;
 
 public enum KeyEvent {
     CREATE("Create Key"),
+    IMPORT("Import Key"),
+    EXPORT("Export Key"),
+    EXPORT_DISABLED("Disable Key Export"),
     COMPROMISED("Compromised Key"),
     DESTROY("Destroy Key"),
     UPDATE_USAGE("Update Key Usages"),

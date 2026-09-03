@@ -31,6 +31,24 @@ public enum FeatureFlag implements IPlatformEnum {
             FeatureFlagBehavior.INFORMATIONAL, List.of(ConnectorInterface.METRICS)),
     ASYNCHRONOUS("asynchronous", "Asynchronous", "Supports asynchronous operations", FeatureFlagBehavior.ENFORCED,
             List.of(ConnectorInterface.CRYPTOGRAPHY)),
+    KEY_IMPORT("keyImport", "Key Import",
+            "Supports importing key material supplied as a protected PKCS#8 envelope into the technology. A request "
+                    + "carrying the envelope and the passphrase that opens it is as sensitive as the key itself: the transport "
+                    + "is trusted with it as it is with connector credentials, and the request must not outlive its operation, "
+                    + "so over a message broker it expires with the operation timeout.",
+            FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.CRYPTOGRAPHY)),
+    KEY_EXPORT("keyExport", "Key Export",
+            "Supports exporting key material as a protected PKCS#8 envelope; only keys created or imported as "
+                    + "exportable can be exported. A connector declaring this must publish the reserved keyExportable attribute "
+                    + "in its create-key attribute schema: a data attribute named keyExportable with boolean content, exactly "
+                    + "one content item, required, defaulting to false. It carries the exportable intent at creation time, so "
+                    + "key creation needs no field of its own, and it participates in keyCreationId replay equivalence like any "
+                    + "other create-key attribute. The connector maps it to the technology's own extractability control, which "
+                    + "is set once when the key is created and never raised afterwards. The export request carries the "
+                    + "passphrase and the response the envelope it protects, so together they are as sensitive as the key "
+                    + "itself: the transport is trusted with them as it is with connector credentials, and the request must not "
+                    + "outlive its operation, so over a message broker it expires with the operation timeout.",
+            FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.CRYPTOGRAPHY)),
     SECRET_VERSIONING("secretVersioning", "Secret Versioning",
             "Supports versioning of secrets, allowing to keep track of history of secrets.",
             FeatureFlagBehavior.ENFORCED, List.of(ConnectorInterface.SECRET)),

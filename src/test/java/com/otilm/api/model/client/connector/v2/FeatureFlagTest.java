@@ -38,6 +38,36 @@ class FeatureFlagTest {
     }
 
     @Test
+    void keyImportFlag_declaresCryptographyCapability() {
+        // given
+        var keyImportCode = "keyImport";
+
+        // when
+        FeatureFlag flag = FeatureFlag.findByCode(keyImportCode);
+
+        // then
+        assertEquals(FeatureFlag.KEY_IMPORT, flag);
+        assertEquals("Key Import", flag.getLabel());
+        assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, flag.getBehavior());
+        assertEquals(List.of(ConnectorInterface.CRYPTOGRAPHY), flag.getApplicableInterfaces());
+    }
+
+    @Test
+    void keyExportFlag_declaresCryptographyCapability() {
+        // given
+        var keyExportCode = "keyExport";
+
+        // when
+        FeatureFlag flag = FeatureFlag.findByCode(keyExportCode);
+
+        // then
+        assertEquals(FeatureFlag.KEY_EXPORT, flag);
+        assertEquals("Key Export", flag.getLabel());
+        assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, flag.getBehavior());
+        assertEquals(List.of(ConnectorInterface.CRYPTOGRAPHY), flag.getApplicableInterfaces());
+    }
+
+    @Test
     void findByCodeRoundTripsAllEntries() {
         for (FeatureFlag f : FeatureFlag.values()) {
             assertEquals(f, FeatureFlag.findByCode(f.getCode()));

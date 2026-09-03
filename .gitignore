@@ -33,3 +33,6 @@ build/
 .vscode/
 
 .DS_Store
+
+### Local AI assistant state ###
+.claude/settings.local.json

@@ -3,6 +3,7 @@ package com.otilm.api.model.core.cryptography.tokenprofile;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.common.NameAndUuidDto;
 import com.otilm.api.model.connector.cryptography.enums.TokenInstanceStatus;
+import com.otilm.api.model.core.cryptography.key.KeyTransferCapabilityDto;
 import com.otilm.api.model.core.cryptography.key.KeyUsage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
@@ -43,4 +44,19 @@ public class TokenProfileDetailDto extends NameAndUuidDto {
 
     @Schema(description = "Usages for the Keys assoiated to the profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<KeyUsage> usages;
+
+    @Schema(description = "Whether key material can be imported into or exported from this token profile, and for "
+            + "which key types", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private KeyTransferCapabilityDto keyTransfer;
+
+    /**
+     * The signature this class carried before {@code keyTransfer} was added, so a caller that constructs it
+     * positionally still compiles. Key transfer is then unreported rather than reported as unavailable.
+     */
+    public TokenProfileDetailDto(String description, String tokenInstanceUuid, String tokenInstanceName,
+            List<ResponseAttribute> attributes, List<ResponseAttribute> customAttributes,
+            TokenInstanceStatus tokenInstanceStatus, Boolean enabled, List<KeyUsage> usages) {
+        this(description, tokenInstanceUuid, tokenInstanceName, attributes, customAttributes, tokenInstanceStatus,
+                enabled, usages, null);
+    }
 }
