@@ -1,18 +1,29 @@
 package com.otilm.api.model.connector.cryptography.v2;
 
 import com.otilm.api.model.client.cryptography.key.KeyRequestType;
+import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.connector.common.v2.OperationExecutionMode;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportKeyResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportableKeyTypeV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportableKeyTypeV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.KeyCreationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyPairDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.PublicKeyDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyOperationStatusResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.data.SignatureDataV2Dto;
 import com.otilm.api.testsupport.ValidatorFixture;
+import java.security.KeyPairGenerator;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Named;
@@ -22,11 +33,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validExportKeyRequest;
+import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validExportKeyResponse;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validMetadata;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validPrivateKeyDataResponse;
+import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validPublicKeyData;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validPublicKeyDataResponse;
+import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validSecretKeyData;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.validSecretKeyDataResponse;
 import static com.otilm.api.model.connector.cryptography.v2.utils.CryptographyDtoFixtures.withValidTokenProfileScope;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -153,6 +169,134 @@ class OperationResponseValidatorTest {
 
         // when
         OperationValidationResult result = VALIDATOR.validateCreateKey(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateImportKey_acceptsValidSynchronousResponse() {
+        // given
+        ImportKeyRequestV2Dto request = importKeyRequest(KeyRequestType.SECRET, OperationExecutionMode.SYNCHRONOUS);
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportKey(request, response);
+
+        // then
+        assertValid(result);
+    }
+
+    @Test
+    void validateImportKey_acceptsValidAsynchronousResponse() {
+        // given
+        ImportKeyRequestV2Dto request = importKeyRequest(KeyRequestType.SECRET, OperationExecutionMode.ASYNCHRONOUS);
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = asynchronousCreateKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportKey(request, response);
+
+        // then
+        assertValid(result);
+    }
+
+    @Test
+    void validateImportKey_rejectsMissingRequest() {
+        // given
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportKey(null, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateImportKey_rejectsMissingKeyRequestType() {
+        // given
+        ImportKeyRequestV2Dto request = importKeyRequest(null, OperationExecutionMode.SYNCHRONOUS);
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportKey(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateImportKey_rejectsStatusContradictingExecutionMode() {
+        // given
+        ImportKeyRequestV2Dto request = importKeyRequest(KeyRequestType.SECRET, OperationExecutionMode.ASYNCHRONOUS);
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportKey(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateImportKey_rejectsMismatchedKeyRequestType() {
+        // given
+        ImportKeyRequestV2Dto request = importKeyRequest(KeyRequestType.KEY_PAIR, OperationExecutionMode.SYNCHRONOUS);
+        ResponseEntity<SecretKeyDataResponseV2Dto> response = synchronousCreateKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportKey(request, response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateImportKeyStatus_rejectsMissingStatus() {
+        // given
+        KeyCreationStatusResponseV2Dto response = new SecretKeyOperationStatusResponseV2Dto();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportKeyStatus(response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateImportableKeyTypes_acceptsAdvertisedTypes() {
+        // given
+        List<ImportableKeyTypeV2Dto> response = List.of(importableKeyType());
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportableKeyTypes(response);
+
+        // then
+        assertValid(result);
+    }
+
+    @Test
+    void validateImportableKeyTypes_rejectsNullItem() {
+        // given
+        List<ImportableKeyTypeV2Dto> response = Collections.singletonList(null);
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportableKeyTypes(response);
+
+        // then
+        assertInvalid(result);
+    }
+
+    @Test
+    void validateImportableKeyTypes_rejectsTypeWithoutAlgorithms() {
+        // given
+        ImportableKeyTypeV2Dto withoutAlgorithms = new ImportableKeyTypeV2Dto();
+        withoutAlgorithms.setKeyRequestType(KeyRequestType.KEY_PAIR);
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateImportableKeyTypes(List.of(withoutAlgorithms));
 
         // then
         assertInvalid(result);
@@ -606,12 +750,387 @@ class OperationResponseValidatorTest {
         return body;
     }
 
+    @Test
+    void validateExportKey_acceptsAKeyPairExportThatEchoesTheReferenceAndCarriesThePublicKey() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertValid(result);
+    }
+
+    @Test
+    void validateExportKey_requiresTheRequest() {
+        // given
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateExportKey(null, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Key export request is required");
+    }
+
+    @Test
+    void validateExportKey_requiresTheRequestedKeyRequestType() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        request.setKeyRequestType(null);
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Key request type is required");
+    }
+
+    @Test
+    void validateExportKey_requiresAResponse() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateExportKey(request, null);
+
+        // then
+        assertInvalid(result, "Connector returned no response");
+    }
+
+    @Test
+    void validateExportKey_requiresAResponseBody() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok().build());
+
+        // then
+        assertInvalid(result, "Connector response body is required");
+    }
+
+    @Test
+    void validateExportKey_rejectsAnAsynchronousStatus() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.accepted().body(response));
+
+        // then
+        assertInvalid(result, "Connector returned HTTP 202; expected HTTP 200");
+    }
+
+    @Test
+    void validateExportKey_rejectsAResponseWithoutMaterial() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+        response.setMaterial(null);
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Connector response validation failed: material: material is required");
+    }
+
+    @Test
+    void validateExportKey_rejectsAKeyReferenceTheRequestDidNotAskFor() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        request.setKeyReference(null);
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Connector returned a key reference for a key that carries none");
+    }
+
+    @Test
+    void validateExportKey_rejectsAMissingKeyReferenceEcho() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+        response.setKeyReference(null);
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Connector did not echo the requested key reference");
+    }
+
+    @Test
+    void validateExportKey_rejectsADifferentKeyReference() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+        response.setKeyReference("2f3d4e5a-6b7c-48d9-90e1-a2b3c4d5e6f7");
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Connector echoed a different key reference than requested");
+    }
+
+    @Test
+    void validateExportKey_requiresThePublicKeyDescriptorForAKeyPair() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+        response.setKeyData(validSecretKeyData());
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Connector described an exported key pair as Secret; expected its public key");
+    }
+
+    @Test
+    void validateExportKey_requiresTheSecretKeyDescriptorForASecretKey() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        request.setKeyRequestType(KeyRequestType.SECRET);
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertInvalid(result, "Connector described an exported secret key as Public; expected Secret");
+    }
+
+    @Test
+    void validateExportKey_acceptsASecretKeyExportDescribedAsSecret() {
+        // given
+        ExportKeyRequestV2Dto request = validExportKeyRequest();
+        request.setKeyRequestType(KeyRequestType.SECRET);
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+        response.setKeyData(validSecretKeyData());
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportKey(request, ResponseEntity.ok(response));
+
+        // then
+        assertValid(result);
+    }
+
+    @Test
+    void validateExportedKeyDescriptor_acceptsADescriptorMatchingTheRecord() {
+        // given
+        ExportKeyResponseV2Dto response = validExportKeyResponse();
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportedKeyDescriptor(validPublicKeyData(), response);
+
+        // then
+        assertTrue(result.isValid());
+    }
+
+    @Test
+    void validateExportedKeyDescriptor_rejectsAPublicKeyOtherThanTheRecord() throws Exception {
+        // given
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+        generator.initialize(2048);
+        PublicKeyDataV2Dto expected = validPublicKeyData();
+        expected.setPublicKeySpki(generator.generateKeyPair().getPublic().getEncoded());
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportedKeyDescriptor(expected, validExportKeyResponse());
+
+        // then
+        assertInvalid(result, "Connector exported a public key that differs from the platform's record");
+    }
+
+    @Test
+    void validateExportedKeyDescriptor_rejectsAnotherAlgorithm() {
+        // given
+        PublicKeyDataV2Dto expected = validPublicKeyData();
+        expected.setAlgorithm(KeyAlgorithm.ECDSA);
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportedKeyDescriptor(expected, validExportKeyResponse());
+
+        // then
+        assertInvalid(result, "Connector exported a key with algorithm RSA; expected ECDSA");
+    }
+
+    @Test
+    void validateExportedKeyDescriptor_rejectsAnotherLength() {
+        // given
+        PublicKeyDataV2Dto expected = validPublicKeyData();
+        expected.setLength(3072);
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportedKeyDescriptor(expected, validExportKeyResponse());
+
+        // then
+        assertInvalid(result, "Connector exported a key of length 2048; expected 3072");
+    }
+
+    @Test
+    void validateExportedKeyDescriptor_rejectsAnotherKindOfKey() {
+        // given
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportedKeyDescriptor(validSecretKeyData(), validExportKeyResponse());
+
+        // then
+        assertInvalid(result, "Connector described the exported key as Public; expected Secret");
+    }
+
+    @Test
+    void validateExportedKeyDescriptor_requiresTheRecordAndADescribedKey() {
+        // given
+        ExportKeyResponseV2Dto undescribed = validExportKeyResponse();
+        undescribed.setKeyData(null);
+
+        // when
+        OperationValidationResult withoutRecord = VALIDATOR
+                .keyTransfer()
+                .validateExportedKeyDescriptor(null, validExportKeyResponse());
+        OperationValidationResult withoutDescriptor = VALIDATOR
+                .keyTransfer()
+                .validateExportedKeyDescriptor(validPublicKeyData(), undescribed);
+
+        // then
+        assertInvalid(withoutRecord, "Expected key descriptor is required");
+        assertInvalid(withoutDescriptor, "Connector did not describe the exported key");
+    }
+
+    @Test
+    void validateExportableKeyTypes_acceptsADeclaredType() {
+        // given
+        List<ExportableKeyTypeV2Dto> response = List.of(exportableKeyType());
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateExportableKeyTypes(response);
+
+        // then
+        assertValid(result);
+    }
+
+    @Test
+    void validateExportableKeyTypes_rejectsATypeWithoutAlgorithms() {
+        // given
+        ExportableKeyTypeV2Dto exportableKeyType = exportableKeyType();
+        exportableKeyType.setAlgorithms(Set.of());
+
+        // when
+        OperationValidationResult result = VALIDATOR
+                .keyTransfer()
+                .validateExportableKeyTypes(List.of(exportableKeyType));
+
+        // then
+        assertInvalid(result,
+                "Connector response validation failed: algorithms: algorithms must contain at least one algorithm");
+    }
+
+    @Test
+    void validateExportableKeyTypes_rejectsANullEntry() {
+        // given
+        List<ExportableKeyTypeV2Dto> response = Collections.singletonList(null);
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateExportableKeyTypes(response);
+
+        // then
+        assertInvalid(result, "Connector response must not contain a null exportable key type");
+    }
+
+    @Test
+    void validateExportableKeyTypes_rejectsTheSameKeyTypeTwice() {
+        // given
+        List<ExportableKeyTypeV2Dto> response = List.of(exportableKeyType(), exportableKeyType());
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateExportableKeyTypes(response);
+
+        // then
+        assertInvalid(result, "Connector declared key type keyPair more than once");
+    }
+
+    @Test
+    void validateImportableKeyTypes_rejectsTheSameKeyTypeTwice() {
+        // given
+        List<ImportableKeyTypeV2Dto> response = List.of(importableKeyType(), importableKeyType());
+
+        // when
+        OperationValidationResult result = VALIDATOR.keyTransfer().validateImportableKeyTypes(response);
+
+        // then
+        assertInvalid(result, "Connector declared key type keyPair more than once");
+    }
+
     private static CreateKeyRequestV2Dto createKeyRequest(KeyRequestType keyRequestType,
             OperationExecutionMode executionMode) {
         CreateKeyRequestV2Dto request = new CreateKeyRequestV2Dto();
         request.setKeyRequestType(keyRequestType);
         request.setExecutionMode(executionMode);
         return request;
+    }
+
+    private static ImportKeyRequestV2Dto importKeyRequest(KeyRequestType keyRequestType,
+            OperationExecutionMode executionMode) {
+        ImportKeyRequestV2Dto request = new ImportKeyRequestV2Dto();
+        request.setKeyRequestType(keyRequestType);
+        request.setExecutionMode(executionMode);
+        return request;
+    }
+
+    private static ExportableKeyTypeV2Dto exportableKeyType() {
+        ExportableKeyTypeV2Dto exportableKeyType = new ExportableKeyTypeV2Dto();
+        exportableKeyType.setKeyRequestType(KeyRequestType.KEY_PAIR);
+        exportableKeyType.setAlgorithms(Set.of(KeyAlgorithm.RSA));
+        return exportableKeyType;
+    }
+
+    private static ImportableKeyTypeV2Dto importableKeyType() {
+        ImportableKeyTypeV2Dto importableKeyType = new ImportableKeyTypeV2Dto();
+        importableKeyType.setKeyRequestType(KeyRequestType.KEY_PAIR);
+        importableKeyType.setAlgorithms(Set.of(KeyAlgorithm.RSA));
+        return importableKeyType;
     }
 
     private static ResponseEntity<KeyOperationResponseV2Dto> asynchronousDestroyKeyResponse() {
@@ -665,6 +1184,11 @@ class OperationResponseValidatorTest {
     private static void assertInvalid(OperationValidationResult result) {
         assertFalse(result.isValid());
         assertNotNull(result.getCause());
+    }
+
+    private static void assertInvalid(OperationValidationResult result, String expectedMessage) {
+        assertInvalid(result);
+        assertEquals(expectedMessage, result.getCause().getMessage());
     }
 
     private record CreateKeyCase(OperationExecutionMode mode,

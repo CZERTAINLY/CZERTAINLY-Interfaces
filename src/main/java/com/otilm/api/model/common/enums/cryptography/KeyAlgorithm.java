@@ -24,7 +24,7 @@ public enum KeyAlgorithm implements IPlatformEnum {
     DILITHIUM("CRYSTALS-Dilithium", "CRYSTALS-Dilithium", "Post-quantum lattice-based signature scheme"),
     @Deprecated
     SPHINCSPLUS("SPHINCS+", "SPHINCS+", "Post-quantum stateless hash-based signature scheme"),
-    UNKNOWN("Unknown", "Unknown", "Key algorithm not recognized");
+    UNKNOWN("Unknown", "Unknown", "Key algorithm not recognized", false);
 
     private static final KeyAlgorithm[] VALUES;
 
@@ -37,11 +37,28 @@ public enum KeyAlgorithm implements IPlatformEnum {
     private final String code;
     private final String label;
     private final String description;
+    private final boolean keyPairAlgorithm;
 
     KeyAlgorithm(String code, String label, String description) {
+        this(code, label, description, true);
+    }
+
+    KeyAlgorithm(String code, String label, String description, boolean keyPairAlgorithm) {
         this.code = code;
         this.label = label;
         this.description = description;
+        this.keyPairAlgorithm = keyPairAlgorithm;
+    }
+
+    /**
+     * Whether this algorithm produces a key pair rather than a single secret key. Every algorithm named here does, so
+     * this reads {@code true} for all of them except {@link #UNKNOWN}; it exists so a rule pairing a key type with an
+     * algorithm stays correct when a secret-key algorithm is added.
+     *
+     * @return whether the algorithm is used for key pairs
+     */
+    public boolean isKeyPairAlgorithm() {
+        return keyPairAlgorithm;
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class FeatureFlagBehaviorTest {
 
@@ -30,6 +30,8 @@ class FeatureFlagBehaviorTest {
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.TIMESTAMPING.getBehavior());
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.CERTIFICATE_REGISTRATION.getBehavior());
         assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.CERTIFICATE_STATUS_POLLING.getBehavior());
+        assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.KEY_IMPORT.getBehavior());
+        assertEquals(FeatureFlag.FeatureFlagBehavior.ENFORCED, FeatureFlag.KEY_EXPORT.getBehavior());
     }
 
     /** A rung is an opt-in capability claim, so an absent one must read as "not reached" rather than as unknown. */
@@ -86,7 +88,7 @@ class FeatureFlagBehaviorTest {
         assertEquals("levelLongTerm", FeatureFlag.LEVEL_LONG_TERM.getCode());
         assertEquals("levelArchival", FeatureFlag.LEVEL_ARCHIVAL.getCode());
         for (FeatureFlag rung : LEVEL_RUNGS) {
-            assertTrue(FeatureFlag.findByCode(rung.getCode()) == rung, rung.name());
+            assertSame(rung, FeatureFlag.findByCode(rung.getCode()), rung.name());
         }
     }
 }
