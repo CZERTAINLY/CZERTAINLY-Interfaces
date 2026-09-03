@@ -39,8 +39,9 @@ public interface CommentController extends AuthProtectedController {
 
     @Operation(summary = "List comment threads for an object",
             description = "Pages over thread roots; each root carries its reply count. Replies are paged separately. "
-                    + "Pass anchorUuid, a thread root, to open the page holding that thread instead of the first "
-                    + "page; a reply is anchored on the replies listing.")
+                    + "Pass anchorUuid, a thread root, to open the page holding that thread in place of the requested "
+                    + "page; an anchor that no longer exists or is not a root of this object leaves the requested page "
+                    + "unchanged. A reply is anchored on the replies listing.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment threads retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
@@ -50,13 +51,14 @@ public interface CommentController extends AuthProtectedController {
     CommentResponseDto listComments(
             @Parameter(description = "Resource", required = true) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid,
-            @Parameter(description = "Return the page holding this thread root; ignored when it no longer exists "
-                    + "or is not a root of this object") @RequestParam(required = false) UUID anchorUuid,
+            @Parameter(description = "Thread root whose page replaces the requested one; ignored when it no longer "
+                    + "exists or is not a root of this object") @RequestParam(required = false) UUID anchorUuid,
             PaginationRequestDto pagination) throws NotFoundException;
 
     @Operation(summary = "List replies of a comment thread",
             description = "Pages over the thread root's replies in creation order. Pass anchorUuid to open the page "
-                    + "holding a particular reply instead of the first page.")
+                    + "holding a particular reply in place of the requested page; an anchor that no longer exists or is "
+                    + "not a reply of this thread leaves the requested page unchanged.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Thread replies retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
@@ -64,8 +66,8 @@ public interface CommentController extends AuthProtectedController {
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{uuid}/replies", produces = {"application/json"})
     CommentResponseDto listReplies(@Parameter(description = "Comment UUID") @PathVariable UUID uuid, @Parameter(
-            description = "Return the page holding this reply; ignored when the reply no longer exists") @RequestParam(
-                    required = false) UUID anchorUuid,
+            description = "Reply whose page replaces the requested one; ignored when it no longer exists or is not a "
+                    + "reply of this thread") @RequestParam(required = false) UUID anchorUuid,
             PaginationRequestDto pagination) throws NotFoundException;
 
     @Operation(summary = "Post a comment or a reply on an object",
