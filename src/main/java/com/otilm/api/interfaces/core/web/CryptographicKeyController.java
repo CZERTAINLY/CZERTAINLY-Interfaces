@@ -243,7 +243,7 @@ public interface CryptographicKeyController extends AuthProtectedController {
             @ApiResponse(responseCode = "201", description = "Key imported"),
             @ApiResponse(responseCode = "404", description = "Token profile not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/tokens/{tokenInstanceUuid}/tokenProfiles/{tokenProfileUuid}/keys/{type}/import",
@@ -283,7 +283,7 @@ public interface CryptographicKeyController extends AuthProtectedController {
                             schema = @Schema(type = "string", format = "binary"))),
             @ApiResponse(responseCode = "404", description = "Key item not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
-            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Content",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @PostMapping(path = "/keys/{uuid}/items/{keyItemUuid}/export", consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -55,7 +55,7 @@ public interface InspectionController extends AuthProtectedController {
             @ApiResponse(responseCode = "404", description = "Token profile not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             @ApiResponse(responseCode = "422",
-                    description = "Unprocessable Entity, including a file no supported container format explains and a "
+                    description = "Unprocessable Content, including a file no supported container format explains and a "
                             + "file the supplied passphrase does not open",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})

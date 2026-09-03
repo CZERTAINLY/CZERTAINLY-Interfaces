@@ -83,7 +83,7 @@ class ErrorCodeTest {
                         ErrorCode.EXPORTABLE_NOT_SUPPORTED, ErrorCode.KEY_NOT_EXPORTABLE)) {
             assertEquals(ProblemTypeCategory.CONNECTOR, code.getCategory(), code.name());
             assertEquals(ConnectorInterface.CRYPTOGRAPHY, code.getInterfaceCode(), code.name());
-            assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, code.getStatus(), code.name());
+            assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, code.getStatus(), code.name());
             assertFalse(code.isRetryable(), code.name());
         }
     }
