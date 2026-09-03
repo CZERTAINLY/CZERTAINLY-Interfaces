@@ -6,8 +6,8 @@ import com.otilm.api.model.client.comment.CommentCreateRequestDto;
 import com.otilm.api.model.client.comment.CommentDto;
 import com.otilm.api.model.client.comment.CommentResponseDto;
 import com.otilm.api.model.common.ErrorMessageDto;
+import com.otilm.api.model.common.SortedPaginationRequestDto;
 import com.otilm.api.model.core.auth.Resource;
-import com.otilm.api.model.core.scheduler.PaginationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -37,7 +37,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface CommentController extends AuthProtectedController {
 
     @Operation(summary = "List comment threads for an object",
-            description = "Pages over thread roots; each root carries its reply count. Replies are paged separately.")
+            description = "Pages over thread roots in creation order, oldest first unless the direction says "
+                    + "otherwise; each root carries its reply count. Replies are paged separately.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment threads retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
@@ -47,10 +48,11 @@ public interface CommentController extends AuthProtectedController {
     CommentResponseDto listComments(
             @Parameter(description = "Resource", required = true) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid,
-            PaginationRequestDto pagination) throws NotFoundException;
+            SortedPaginationRequestDto pagination) throws NotFoundException;
 
     @Operation(summary = "List replies of a comment thread",
-            description = "Pages over the thread root's replies in creation order.")
+            description = "Pages over the thread root's replies in creation order, oldest first unless the "
+                    + "direction says otherwise.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Thread replies retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
@@ -58,7 +60,7 @@ public interface CommentController extends AuthProtectedController {
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{uuid}/replies", produces = {"application/json"})
     CommentResponseDto listReplies(@Parameter(description = "Comment UUID") @PathVariable UUID uuid,
-            PaginationRequestDto pagination) throws NotFoundException;
+            SortedPaginationRequestDto pagination) throws NotFoundException;
 
     @Operation(summary = "Post a comment or a reply on an object",
             description = "A request without parentUuid starts a new thread; with parentUuid it replies to that "
