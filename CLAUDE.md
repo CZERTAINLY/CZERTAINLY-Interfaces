@@ -18,6 +18,12 @@ When a static-analysis bot keeps re-flagging the same finding on every push (lin
 
 Reserve "won't fix" / "accept" markings for findings that are genuinely false positives or stylistic preferences that don't reflect a real issue. Add a per-issue rationale comment. If the finding keeps coming back across pushes, that's a signal to fix structurally instead.
 
+## Lombok and the JDK that runs Maven
+
+A clean checkout that suddenly fails to compile with dozens of "cannot find symbol" errors for Lombok-generated accessors — `getX()`, `setX()`, or "is not abstract and does not override" — is not a broken source tree. The compile ran on JDK 23 or newer, which no longer enables annotation processing implicitly, so Lombok never ran and every generated member vanished.
+
+The build targets Java 21. Check `mvn -version`, not `java -version`: a package-manager Maven can carry its own newer runtime while the shell's `java` is correct. Point `JAVA_HOME` at a 21 JDK for the build.
+
 ## Coverage measurement parity
 
 Replicate the CI's coverage measurement locally before pushing. Read the project's `sonar.coverage.exclusions` from the build config (e.g. `pom.xml`) and apply the same exclusions when computing new-lines coverage against `git diff origin/main...HEAD`. The fast feedback avoids "passes locally but fails the gate" cycles.
@@ -30,11 +36,35 @@ new_coverage = (covered_lines + covered_branches) / (lines_to_cover + branches_t
 
 A purely line-based local script will systematically over-report. Match the formula.
 
+## Local Sonar findings the cloud profile does not raise
+
+`scripts/sonar-local.sh` runs an ephemeral SonarQube on its default rule set, which is wider than the profile SonarCloud applies to this project. Rules such as "too many parameters", "remove the `ApiResponses` wrapper" and "convert this optional parameter to an Object type" fire locally on code that SonarCloud reports nothing about, so a local finding is not by itself something to fix.
+
+The script also scopes its report to `git diff --name-only main...HEAD` against the *local* `main`, so fast-forward it first (`git fetch origin main:main`); after a rebase a stale local `main` lists every file that arrived from upstream as changed.
+
+Check before acting on one: `https://sonarcloud.io/api/issues/search?componentKeys=ilm_interfaces&rules=<rule>&resolved=false` returns the open count for that rule on the project. Zero alongside code on `main` that plainly breaks the rule means the rule is not in the applied profile. Treat SonarCloud on the pull request as authoritative, and use the local run for the rules it agrees on.
+
 ## Tests that look green but cover nothing
 
 When a test passes but JaCoCo (or the coverage report) shows the relevant lines as uncovered, the test is reaching a different code path than expected — usually a `catch (Exception)` upstream is swallowing the actual flow before the asserted code runs. Investigate the trace, don't trust the green. Common signal: the assertion checks the *type* of an exception or response without checking the *origin*; the test passes because *any* exception of that type is thrown, including ones from setup steps.
 
 For logic deep in private methods or complex Spring contexts, extract a static testable kernel — a pure function that takes inputs and returns outputs — and unit-test it independently. Keep the integration test for the integration concerns (DB, AOP, transactions). The kernel + integration split makes both halves much easier to reason about.
+
+## One WireMock server per test class, not per test
+
+`BaseApiClient.prepareWebClient()` builds a single JVM-wide Reactor Netty connection pool that keeps idle connections to a host and port for 30 seconds (the `POOL_*` constants in `BaseApiClient`). A test class that starts a `WireMockServer(options().dynamicPort())` in `@BeforeEach` and stops it in `@AfterEach` burns one localhost port per test, and a full suite run burns them far faster than the pool releases them. When the operating system recycles a port the pool still holds a connection for, the request is written to a socket that no longer belongs to the current stub server — sometimes one that was serving HTTPS.
+
+The failures land in whichever client test happens to run next, not in the class that caused them, and they look nothing like a stubbing mistake: `WebClientRequestException: Line Feed must be preceded by Carriage Return`, `Client sent an HTTP request to an HTTPS server`, `Proxy key is incorrect`, or an expected validation failure that arrives as a bare `ConnectorServerException` instead. They reproduce roughly one run in four under `mvn -B -U verify` and almost never when the class runs alone, so a single green run proves nothing.
+
+Start the server in `@BeforeAll`, stop it in `@AfterAll`, and call `mockServer.resetAll()` in `@BeforeEach` — stubs and the request journal stay per test while the port stays put. `KeyApiClientTest` is the pattern. Only take a per-test server when the test needs the server itself to change, and say why in a comment.
+
+## Uploads are base64 in JSON, held as `UploadedFile`
+
+Every upload in the platform travels base64-encoded inside a JSON body; there is no multipart endpoint, and `KeyTransferWebContractTest` refuses one. A file that may carry key material is typed `UploadedFile` (`com.otilm.api.model.core.secret`), never `String` or `byte[]`: its deserializer decodes the token straight to bytes, refuses other types with a fixed message that quotes nothing, and the value is excluded from rendering and can be cleared. Request bodies that take a file extend `UploadRequestDto`, which carries the field, its size limit and the shared description.
+
+## Adding a field to a DTO with `@AllArgsConstructor`
+
+Adding a field grows the generated all-args constructor, so any caller in another repository that builds the class positionally stops compiling. Append the field last and declare the previous signature explicitly, delegating to the full constructor with the new field left at its default. `TokenInstanceDetailDto`, `TokenProfileDetailDto`, `KeyItemDetailDto` and `KeyRequestDto` are the pattern, and `KeyTransferConstructorCompatibilityTest` is what holds those signatures in place. Appending last also matters on its own: a field inserted in the middle keeps the arity and silently reorders the parameters, which no compiler reports.
 
 ## Transactions and external calls
 

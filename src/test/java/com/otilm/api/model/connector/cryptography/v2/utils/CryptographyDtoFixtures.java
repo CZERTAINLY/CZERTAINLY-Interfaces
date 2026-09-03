@@ -1,5 +1,6 @@
 package com.otilm.api.model.connector.cryptography.v2.utils;
 
+import com.otilm.api.model.client.cryptography.key.KeyRequestType;
 import com.otilm.api.model.common.attribute.common.MetadataAttribute;
 import com.otilm.api.model.common.attribute.common.content.AttributeContentType;
 import com.otilm.api.model.common.attribute.common.properties.MetadataAttributeProperties;
@@ -7,19 +8,38 @@ import com.otilm.api.model.common.attribute.v2.MetadataAttributeV2;
 import com.otilm.api.model.common.attribute.v2.content.StringAttributeContentV2;
 import com.otilm.api.model.common.enums.cryptography.KeyAlgorithm;
 import com.otilm.api.model.connector.cryptography.v2.TokenProfileScopedRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportKeyResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.PrivateKeyDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.PrivateKeyDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.PublicKeyDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.PublicKeyDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.material.EncryptedKeyMaterialV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.token.TokenScopedRequestV2Dto;
 import com.otilm.api.model.core.cryptography.key.KeyUsage;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Set;
+import org.bouncycastle.asn1.ASN1Encoding;
+import org.bouncycastle.asn1.DERNull;
+import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
+import org.bouncycastle.asn1.pkcs.EncryptedPrivateKeyInfo;
+import org.bouncycastle.asn1.pkcs.EncryptionScheme;
+import org.bouncycastle.asn1.pkcs.KeyDerivationFunc;
+import org.bouncycastle.asn1.pkcs.PBES2Parameters;
+import org.bouncycastle.asn1.pkcs.PBKDF2Params;
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 
 public final class CryptographyDtoFixtures {
+
+    public static final String KEY_REFERENCE = "1c9a7e58-33d2-4b0a-8f4e-6a91d27c5f10";
+
+    public static final String EXPORT_PASSPHRASE = "correct horse battery staple";
 
     private static final String METADATA_UUID = "00000000-0000-0000-0000-000000000001";
     private static final String RSA_2048_PUBLIC_KEY_SPKI_BASE64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvdLbQTpr/mGvt4TmMcc4+eE4+ZzNU6ju4EZ33zkmNz5pPmHK+"
@@ -98,5 +118,48 @@ public final class CryptographyDtoFixtures {
         response.setKeyMeta(validMetadata());
         response.setKeyData(validPublicKeyData());
         return response;
+    }
+
+    public static ExportKeyRequestV2Dto validExportKeyRequest() {
+        ExportKeyRequestV2Dto request = withValidTokenProfileScope(new ExportKeyRequestV2Dto());
+        request.setKeyMeta(validMetadata());
+        request.setKeyRequestType(KeyRequestType.KEY_PAIR);
+        request.setKeyReference(KEY_REFERENCE);
+        request.setExportKeyAttributes(List.of());
+        request.setPassphrase(EXPORT_PASSPHRASE);
+        return request;
+    }
+
+    public static ExportKeyResponseV2Dto validExportKeyResponse() {
+        ExportKeyResponseV2Dto response = new ExportKeyResponseV2Dto();
+        response.setMaterial(validEncryptedKeyMaterial());
+        response.setKeyReference(KEY_REFERENCE);
+        response.setKeyData(validPublicKeyData());
+        return response;
+    }
+
+    public static EncryptedKeyMaterialV2Dto validEncryptedKeyMaterial() {
+        EncryptedKeyMaterialV2Dto material = new EncryptedKeyMaterialV2Dto();
+        material.setEncryptedPrivateKeyInfo(pinnedProtectionEnvelope());
+        return material;
+    }
+
+    /**
+     * A PKCS#8 EncryptedPrivateKeyInfo in the pinned protection profile. The ciphertext is filler because no contract
+     * rule reads it: everything the platform and a connector verify lives in the algorithm identifier.
+     */
+    public static byte[] pinnedProtectionEnvelope() {
+        AlgorithmIdentifier prf = new AlgorithmIdentifier(PKCSObjectIdentifiers.id_hmacWithSHA256, DERNull.INSTANCE);
+        KeyDerivationFunc keyDerivation = new KeyDerivationFunc(PKCSObjectIdentifiers.id_PBKDF2,
+                new PBKDF2Params(new byte[16], 100_000, prf));
+        EncryptionScheme scheme = new EncryptionScheme(NISTObjectIdentifiers.id_aes256_CBC,
+                new DEROctetString(new byte[16]));
+        AlgorithmIdentifier protection = new AlgorithmIdentifier(PKCSObjectIdentifiers.id_PBES2,
+                new PBES2Parameters(keyDerivation, scheme));
+        try {
+            return new EncryptedPrivateKeyInfo(protection, new byte[32]).getEncoded(ASN1Encoding.DER);
+        } catch (IOException e) {
+            throw new IllegalStateException("could not encode the protected key material fixture", e);
+        }
     }
 }
