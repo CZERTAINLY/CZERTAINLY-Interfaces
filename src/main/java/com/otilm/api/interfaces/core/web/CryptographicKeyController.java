@@ -53,6 +53,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1")
 @Tag(name = "Cryptographic Key Management", description = "Cryptographic Key Management API")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface CryptographicKeyController extends AuthProtectedController {
 
     // Token Instance Operation APIs

@@ -57,7 +57,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Tag(name = "Signing Profile Management", description = "Signing Profile Management API")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "404", description = "Not Found",
-                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 @Validated
 public interface SigningProfileController extends AuthProtectedController {
 

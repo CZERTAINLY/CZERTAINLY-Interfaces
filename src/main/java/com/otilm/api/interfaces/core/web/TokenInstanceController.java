@@ -39,6 +39,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/tokens")
 @Tag(name = "Token Instance Management", description = "Token Instance Management API")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface TokenInstanceController extends AuthProtectedController {
 
     // Token Instance Operation APIs
