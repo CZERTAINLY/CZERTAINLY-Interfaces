@@ -49,10 +49,14 @@ public class SecretAttributeContentData implements AttributeContentData {
         return Objects.hash(secret);
     }
 
+    /**
+     * Renders whether a secret is present without rendering the secret itself: this object is reached from attribute
+     * lists that end up in logs, error details and diagnostics.
+     */
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("secret", secret)
+                .append("secret", secret == null ? "absent" : "present")
                 .append("protectionLevel", protectionLevel)
                 .toString();
     }

@@ -3,6 +3,7 @@ package com.otilm.api.model.core.cryptography.token;
 import com.otilm.api.model.client.attribute.ResponseAttribute;
 import com.otilm.api.model.client.metadata.MetadataResponseDto;
 import com.otilm.api.model.common.NameAndUuidDto;
+import com.otilm.api.model.core.cryptography.key.KeyTransferAvailabilityDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -42,4 +43,19 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
 
     @Schema(description = "Custom Attributes for the Token Instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private List<ResponseAttribute> customAttributes;
+
+    @Schema(description = "Whether key material can be imported into or exported from this token, meaning it is "
+            + "available on at least one of its token profiles. The key types each profile accepts are reported on "
+            + "that profile.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private KeyTransferAvailabilityDto keyTransfer;
+
+    /**
+     * The signature this class carried before {@code keyTransfer} was added, so a caller that constructs it
+     * positionally still compiles. Key transfer is then unreported rather than reported as unavailable.
+     */
+    public TokenInstanceDetailDto(String connectorName, String connectorUuid, String kind,
+            TokenInstanceStatusDetailDto status, Integer tokenProfiles, List<ResponseAttribute> attributes,
+            List<MetadataResponseDto> metadata, List<ResponseAttribute> customAttributes) {
+        this(connectorName, connectorUuid, kind, status, tokenProfiles, attributes, metadata, customAttributes, null);
+    }
 }

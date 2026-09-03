@@ -526,7 +526,8 @@ class CryptographicOperationsApiClientTest {
 
     private void assertValidationFailure(Executable call) {
         ConnectorException exception = assertThrows(ConnectorException.class, call);
-        assertInstanceOf(IllegalArgumentException.class, exception.getCause());
+        assertInstanceOf(IllegalArgumentException.class, exception.getCause(),
+                () -> "expected a response-validation failure, got " + exception);
         assertSame(connector, exception.getConnector());
     }
 
