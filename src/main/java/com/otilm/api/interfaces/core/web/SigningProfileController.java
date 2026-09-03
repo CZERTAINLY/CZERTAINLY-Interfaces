@@ -95,6 +95,11 @@ public interface SigningProfileController extends AuthProtectedController {
 
     @Operation(operationId = "createSigningProfile", summary = "Add new Signing Profile")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "201", description = "New Signing Profile added"),
             @ApiResponse(responseCode = "409", description = "Already Exists",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
@@ -112,6 +117,11 @@ public interface SigningProfileController extends AuthProtectedController {
                     If there are existing Signing Records produced using this Signing Profile, creates a new version of Signing Profile.
                     Otherwise updates the latest version in-place.""")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Signing Profile updated"),
             @ApiResponse(responseCode = "409", description = "Already Exists",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
@@ -226,6 +236,11 @@ public interface SigningProfileController extends AuthProtectedController {
                     + "under the Content Signing Formatting contract and are not returned here. "
                     + "The signingProfileUuid parameter is used for authorization only and does not affect the returned descriptors.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Formatting attribute descriptors retrieved"),
             @ApiResponse(responseCode = "404", description = "Signature Formatting Provider not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
@@ -248,6 +263,11 @@ public interface SigningProfileController extends AuthProtectedController {
                     The signingProfileUuid parameter is used for authorization only and does not affect the
                     returned descriptors.""")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Formatting attribute descriptors retrieved"),
             @ApiResponse(responseCode = "400",
                     description = "A required query parameter is missing, or a parameter value cannot be bound",

@@ -47,6 +47,11 @@ public interface TokenInstanceController extends AuthProtectedController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<TokenInstanceDto> listTokenInstances();
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
     @Operation(summary = "List available token attributes for the specified connector")
     @GetMapping(path = "/{connectorUuid}/attributes", produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listTokenAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid,
@@ -54,6 +59,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Get Token Instance Detail")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Token Instance Detail retrieved"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
@@ -64,6 +74,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Create a new Token Instance")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "201", description = "Token Instance Created Successfully"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -77,6 +92,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Update Token Instance")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Token Instance Updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
@@ -102,6 +122,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Activate Token Instance")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Token Instance Activated"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
@@ -113,6 +138,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Deactivate Token Instance")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "204", description = "Token Instance Deactivated"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
@@ -136,6 +166,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "Reload Token Instance status")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Token Instance Status Reloaded from Connector"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
@@ -148,6 +183,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Token Profile Attributes")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Token Profile Attributes retrieved"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
@@ -158,6 +198,11 @@ public interface TokenInstanceController extends AuthProtectedController {
 
     @Operation(summary = "List Token activation Attributes")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "502", description = "Connector Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+            @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+
             @ApiResponse(responseCode = "200", description = "Token activation Attributes retrieved"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
