@@ -8,11 +8,12 @@ on:
       - '*'
   workflow_dispatch:
       
-# Serialized per ref, never cancelled: the -M<n> step below is check-then-act,
-# so two runs over one commit would both deploy, and cancelling would abort a
-# run mid-deploy.
+# Keyed by commit, not ref: the -M<n> step below is check-then-act, so two runs
+# over the same commit must serialize. Keying by ref would group every main push,
+# and only one run may be pending - a third push cancels the pending one, whose
+# commit then gets no -M coordinate. Never cancelled: aborts a run mid-deploy.
 concurrency:
-  group: publish-package-${{ github.ref }}
+  group: publish-package-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:

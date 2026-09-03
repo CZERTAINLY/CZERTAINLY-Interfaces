@@ -84,6 +84,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      pull-requests: read # the freshness step re-reads the PR head
     concurrency:
       # No cancel-in-progress: aborting mid-deploy leaves the package version
       # metadata on a half-uploaded build. The stale-head check below is the guard.
