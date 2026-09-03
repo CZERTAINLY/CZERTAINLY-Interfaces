@@ -6,6 +6,14 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Baseline for every job in this file. `packages: read` is required, not
+# decorative: pom.xml declares a <repositories> entry for
+# maven.pkg.github.com, which is how the com.otilm parent resolves.
+# publish-pr escalates to packages: write in its own block.
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   check:
     if: github.event_name != 'push'
@@ -63,21 +71,28 @@ jobs:
   publish-pr:
     name: Publish PR snapshot
     needs: check  # never publish an artifact from a PR that fails verify
-    # Bots are excluded wholesale rather than by name: the org runs Renovate, and
-    # nobody couples a core PR to a dependency bump, so a snapshot per Renovate
-    # push is pure waste. Fork PRs get a read-only token and cannot publish at
-    # all, so a fork-authored breaking change has no coupled flow.
+    # Bots are excluded by PR *author*, not by github.actor. The actor is whoever
+    # triggered this particular event, so keying on it misfires both ways: a human
+    # pushing a fixup onto a Renovate branch would publish, and a bot-attributed
+    # push onto a human's coupled PR would skip - leaving the coordinate stale
+    # while the core PR still resolves it. Drafts are excluded because every PR
+    # otherwise pays a second full deploy for a coordinate almost none of them
+    # need. Fork PRs get a read-only token and cannot publish at all, so a
+    # fork-authored breaking change has no coupled flow.
     if: >-
       github.event_name == 'pull_request' &&
+      github.event.pull_request.draft == false &&
       github.event.pull_request.head.repo.full_name == github.repository &&
-      !endsWith(github.actor, '[bot]')
+      !endsWith(github.event.pull_request.user.login, '[bot]')
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     concurrency:
       # Deliberately NOT cancel-in-progress: aborting mid-deploy leaves the
-      # package version metadata pointing at a half-uploaded build.
+      # package version metadata pointing at a half-uploaded build. Runs are
+      # serialized instead, and the stale-head check below stands a superseded
+      # run down rather than letting it overwrite newer bytes.
       group: publish-pr-${{ github.event.pull_request.number }}
       cancel-in-progress: false
     steps:
@@ -90,16 +105,37 @@ jobs:
           server-id: github
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
-      - name: Cache Maven packages
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+
+      # The coordinate is mutable - every push republishes the same
+      # -alpha-PR<n>-SNAPSHOT - so a run that lost the race must not publish.
+      # Job concurrency serializes runs but does not order them by commit
+      # freshness: an older commit whose `check` ran slower reaches this job
+      # last and would overwrite newer bytes, leaving the coupled core PR green
+      # against superseded code with no signal anywhere. Same stand-down as
+      # core/.github/workflows/dispatch-preview-docker.yml.
+      - id: freshness
+        name: Stand down if the PR head has moved
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RUN_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          LIVE=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.head.sha')
+          if [ "$LIVE" != "$RUN_HEAD_SHA" ]; then
+            echo "::notice::PR #$PR_NUMBER has moved from $RUN_HEAD_SHA to $LIVE; a newer run will publish it."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish PR snapshot to GitHub Packages
+        if: steps.freshness.outputs.publish == 'true'
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
@@ -109,20 +145,37 @@ jobs:
           # make Renovate offer PR builds to other repos as upgrades.
           PRV="${BASE%-SNAPSHOT}-alpha-PR${PR_NUMBER}-SNAPSHOT"
           echo "Publishing $PRV"
-          # versions:set runs in CI only; the branch pom.xml is never committed
-          # with this value.
-          mvn -B -ntp versions:set -DnewVersion="$PRV" -DgenerateBackupPoms=false
+          # Do not run versions:set locally - it rewrites the checked-in pom.xml.
+          # Pinned rather than invoked by the `versions` prefix: an unpinned
+          # prefix resolves whatever release Central serves that day and runs it
+          # inside a job holding packages: write, and Renovate cannot see a
+          # prefix invocation to bump it.
+          mvn -B -ntp org.codehaus.mojo:versions-maven-plugin:2.18.0:set \
+              -DnewVersion="$PRV" -DgenerateBackupPoms=false
           # No source:jar/javadoc:jar and no GPG signing: this coordinate exists
           # only to unblock a coupled core PR and never reaches Maven Central.
-          mvn -B -ntp -Pgithub -DskipTests deploy
+          # maven.test.skip rather than skipTests - the latter still compiles
+          # test sources, which `check` has already done for this tree.
+          mvn -B -ntp -Pgithub -Dmaven.test.skip=true \
+              -DretryFailedDeploymentCount=3 deploy
           {
             echo "### PR snapshot published"
             echo ""
             echo "Add this line to the body of the coupled \`core\` PR:"
             echo ""
             echo '```'
-            echo "Depends-On: ${{ github.repository }}#${PR_NUMBER}"
+            echo "Depends-On: $REPO#${PR_NUMBER}"
             echo '```'
             echo ""
             echo "Coordinate: \`com.otilm:interfaces:$PRV\`"
+            echo ""
+            echo "Built from the PR **merged into main**, not the branch head:"
+            echo "\`actions/checkout\` resolves \`refs/pull/${PR_NUMBER}/merge\` on a"
+            echo "\`pull_request\` event, so these bytes can differ from your branch"
+            echo "even with no push."
+            echo ""
+            echo "> **Not consumed yet.** The \`Depends-On:\` marker needs the \`core\`"
+            echo "> resolver, which is not live (OmniTrustILM/core#2191). Until that"
+            echo "> lands the coordinate is published but nothing reads the marker,"
+            echo "> and adding the line has no effect on your \`core\` build."
           } >> "$GITHUB_STEP_SUMMARY"

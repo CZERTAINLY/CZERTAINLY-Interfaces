@@ -8,6 +8,15 @@ on:
       - '*'
   workflow_dispatch:
       
+# Serialized per ref, never cancelled. The immutable -M<n> step below is a
+# check-then-act guard: without this, a push and a workflow_dispatch over the
+# same commit both probe "absent" and both deploy, and the loser hits the
+# release-coordinate conflict the guard exists to avoid. Cancelling instead
+# would abort a run mid-deploy.
+concurrency:
+  group: publish-package-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest 
@@ -19,7 +28,7 @@ jobs:
         with:
           # Full history: the immutable -M<n> coordinate published in the last
           # step of this job is the commit count, which a shallow clone cannot
-          # compute. Costs one to two seconds on this repository.
+          # compute.
           fetch-depth: 0
 
       - uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
@@ -120,43 +129,75 @@ jobs:
 
       # Immutable coordinate for the escape hatch: a developer whose unrelated
       # core PR is broken by a mainline snapshot change can pin the last good
-      # -M build and keep working. GitHub Packages only.
+      # -M build and keep working. GitHub Packages only, unsigned, no source or
+      # javadoc jars - a build pin, not a release.
       #
       # Last step in the job on purpose. A failure here must not be able to
       # abort the interface-documentation dispatch above, which would silently
       # skip the docs rebuild for this merge. Rewriting the pom is safe at this
       # point: check-version already read it and both deploys have completed.
+      #
+      # Guarded on the ref, not on ref_type. workflow_dispatch accepts any ref
+      # carrying this file, and a feature branch legitimately holds a SNAPSHOT,
+      # so ref_type == 'branch' let any branch mint an -M from its own commit
+      # count. Those numbers overlap main's: a branch at main+1 claims the
+      # number the next real merge will compute, that merge then sees the
+      # coordinate already present and skips, and no immutable build exists for
+      # it - permanently, since the registry refuses to replace a release. That
+      # is the silent-wrong failure mode github.run_number was rejected for.
       - name: Publish immutable build version
-        if: github.ref_type == 'branch'
+        if: github.ref == 'refs/heads/main'
         env:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_VERSION: ${{ steps.check-version.outputs.version }}
+          SERVER_URL: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          BASE="${{ steps.check-version.outputs.version }}"
+          BASE="$BASE_VERSION"
           MV="${BASE%-SNAPSHOT}-M$(git rev-list --count HEAD)"
 
           # -M<n> is a release coordinate and GitHub Packages refuses to replace
           # one, so a re-run on the same commit has to skip rather than fail.
           #
-          # Probe over HTTP rather than with `mvn dependency:get`: the `github`
-          # profile declares only distributionManagement and no <repositories>,
-          # so Maven has no GitHub Packages repository to resolve against and the
-          # probe would report "absent" for every version, published or not.
-          # This form also separates 401/403 from a genuine 404 instead of
-          # treating both as "go ahead and deploy".
+          # Polarity is deliberate: a definite "exists" answer skips, a definite
+          # 404 publishes, and anything else warns and FALLS THROUGH to the
+          # deploy. Treating the unknown as fatal would invert the guard's whole
+          # purpose - if the registry ever answers 3xx (it redirects asset GETs
+          # to a pre-signed blob host) or 401/422, every re-run would go red
+          # instead of skipping. A redundant deploy attempt costs nothing: the
+          # registry's own conflict response is the authority.
+          #
+          # Not `mvn dependency:get`: it cannot separate an auth failure from a
+          # genuine absence, and reports "resolved" for anything already in the
+          # local repository. (An earlier version of this comment claimed the
+          # pom declares no <repositories> for GitHub Packages - that is wrong,
+          # pom.xml does declare one at project level. dependency:get would
+          # resolve; it just cannot answer this question reliably.)
+          #
+          # No -L: curl drops Authorization across hosts, and --location-trusted
+          # against the blob host returns a documented 400.
           POM_URL="https://maven.pkg.github.com/omnitrustilm/interfaces/com/otilm/interfaces/$MV/interfaces-$MV.pom"
-          CODE=$(curl -sS -o /dev/null -w '%{http_code}' -u "$GITHUB_ACTOR:$GITHUB_TOKEN" "$POM_URL")
+          CODE=$(curl -sS --retry 3 --retry-connrefused -o /dev/null -w '%{http_code}' \
+                   -u "$GITHUB_ACTOR:$GITHUB_TOKEN" "$POM_URL" || echo 000)
           case "$CODE" in
-            200) echo "$MV is already published - workflow re-run, nothing to do"; exit 0 ;;
-            404) echo "$MV is not present; publishing" ;;
-            *)   echo "::error::Registry probe for $MV returned HTTP $CODE"; exit 1 ;;
+            200|30[0-9]) echo "$MV is already published (HTTP $CODE) - workflow re-run, nothing to do"; exit 0 ;;
+            404)         echo "$MV is not present; publishing" ;;
+            *)           echo "::warning::Registry probe for $MV returned HTTP $CODE; attempting the deploy and letting the registry decide" ;;
           esac
 
-          mvn -B -ntp versions:set -DnewVersion="$MV" -DgenerateBackupPoms=false
+          # Pinned rather than invoked by the `versions` prefix: an unpinned
+          # prefix resolves whatever release Central serves that day and runs it
+          # inside a job holding packages: write, and Renovate cannot see a
+          # prefix invocation to bump it.
+          mvn -B -ntp org.codehaus.mojo:versions-maven-plugin:2.18.0:set \
+              -DnewVersion="$MV" -DgenerateBackupPoms=false
           # No source:jar/javadoc:jar and no GPG signing, unlike the Central
-          # deploy above: this coordinate is a build pin, not a release.
-          mvn -B -ntp -Pgithub -DskipTests deploy
+          # deploy above. maven.test.skip rather than skipTests - the latter
+          # still compiles test sources.
+          mvn -B -ntp -Pgithub -Dmaven.test.skip=true \
+              -DretryFailedDeploymentCount=3 deploy
 
           # The counter is an ordinal, not an address - no GitHub URL resolves
           # "the Nth commit". Record the SHA so the number stays traceable to a
@@ -170,5 +211,13 @@ jobs:
             echo "Interfaces-Version: $MV"
             echo '```'
             echo ""
-            echo "Built from [\`${GITHUB_SHA:0:8}\`](${{ github.server_url }}/${{ github.repository }}/commit/$GITHUB_SHA)."
+            echo "Built from [\`${GITHUB_SHA:0:8}\`]($SERVER_URL/$REPO/commit/$GITHUB_SHA)."
+            echo ""
+            echo "Notes: the counter is monotonic and one per push to main, but not"
+            echo "gap-free - a release-prep commit carries a non-SNAPSHOT version and"
+            echo "fails check-version before this step, so no -M exists for it. Compare"
+            echo "these numbers for ordering, not for distance. Publishing a non-SNAPSHOT"
+            echo "version also moves \`<release>\`/\`<latest>\` in this registry's Maven"
+            echo "metadata onto a milestone build; no consumer uses a version range, but"
+            echo "do not read the registry's \"latest\" as a release pointer."
           } >> "$GITHUB_STEP_SUMMARY"
