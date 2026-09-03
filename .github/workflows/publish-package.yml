@@ -19,6 +19,15 @@ concurrency:
 
 jobs:
   publish:
+    # `workflow_dispatch` above carries no ref restriction, so without this the
+    # workflow could be dispatched against any branch holding the file - and
+    # check-version would pass, because a feature branch legitimately holds a
+    # SNAPSHOT. That deploys unreviewed branch code over the mainline SNAPSHOT to
+    # BOTH Maven Central and GitHub Packages, and rebuilds the published docs
+    # from it, with nothing in either registry recording where it came from.
+    # The `push` trigger is already restricted to main and tags; only the manual
+    # path needs closing.
+    if: github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest 
     permissions: 
       contents: read
