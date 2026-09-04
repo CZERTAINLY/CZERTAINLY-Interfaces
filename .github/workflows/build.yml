@@ -101,10 +101,13 @@ jobs:
   publish-pr:
     name: Publish PR snapshot
     needs: check
-    # Fork PRs get a read-only token regardless; this is belt and braces.
+    # Both clauses are about read-only tokens, not bot heuristics: fork PRs get one
+    # regardless, and GitHub forces one on Dependabot runs whatever this workflow
+    # requests, so the deploy would 401 on every security update.
     if: >-
       github.event_name == 'pull_request' &&
-      github.event.pull_request.head.repo.full_name == github.repository
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: read
