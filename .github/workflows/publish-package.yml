@@ -133,7 +133,7 @@ jobs:
             })
 
   # Immutable pin for a developer whose unrelated core PR is broken by a mainline
-  # snapshot change. GitHub Packages only, unsigned, no source/javadoc jars.
+  # snapshot change.
   #
   # Its own job so that it and the SNAPSHOT publish fail independently, and so a
   # failed pin can be re-run alone - re-running `publish` would redeploy the
@@ -216,10 +216,11 @@ jobs:
 
           # Pinned rather than the `versions` prefix, which resolves whatever release
           # Central serves that day and is invisible to Renovate.
-          mvn -B -ntp org.codehaus.mojo:versions-maven-plugin:2.18.0:set               -DnewVersion="$MV" -DgenerateBackupPoms=false
+          mvn -B -ntp org.codehaus.mojo:versions-maven-plugin:2.18.0:set \
+              -DnewVersion="$MV" -DgenerateBackupPoms=false
           # No source/javadoc jars and no GPG signing: a build pin, not a release.
-          # maven.test.skip also skips test compilation.
-          mvn -B -ntp -Pgithub -Dmaven.test.skip=true               -DretryFailedDeploymentCount=3 deploy
+          mvn -B -ntp -Pgithub -Dmaven.test.skip=true \
+              -DretryFailedDeploymentCount=3 deploy
 
           {
             echo "### Immutable build version"
@@ -231,6 +232,9 @@ jobs:
             echo '```'
             echo ""
             echo "Built from [\`${GITHUB_SHA:0:8}\`]($SERVER_URL/$REPO/commit/$GITHUB_SHA)."
+            echo ""
+            echo "> Not read by \`core\` yet - the resolver is not live, so adding the line has"
+            echo "> no effect. Override in \`core/pom.xml\` by hand until it lands."
             echo ""
             echo "The pin stays resolvable for at least 90 days. The ordinal orders these"
             echo "coordinates; it does not measure distance between them, and a release cut"

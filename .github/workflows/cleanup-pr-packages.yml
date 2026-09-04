@@ -5,7 +5,7 @@ name: Clean up PR snapshots
 # coordinate breaks its next run. The grace period below bounds that gap.
 #
 # Age is the only liveness test - nothing checks whether an open core PR still
-# names the coordinate (needs the resolver in OmniTrustILM/core#2191).
+# names the coordinate.
 on:
   schedule:
     - cron: '0 3 * * 1'
@@ -49,9 +49,8 @@ jobs:
       # needs no code change.
       #
       # Whether an Actions token may DELETE through the /orgs/ endpoint for a
-      # repository-scoped package type is unverified - the rehearsal exercises the
-      # read path only - so the first armed run fails loudly below if every delete
-      # is refused.
+      # repository-scoped package type is unverified, so the first armed run fails
+      # loudly below if every delete is refused.
       #
       # A kill switch, not an authorization boundary: a dispatch runs the workflow
       # file from the ref it targets.
@@ -165,7 +164,7 @@ jobs:
 
           deleted=0; failed=0
           # Two conditions, because a bare count is a moving window: the newest 50
-          # commits on main span about 24 days, and an -M build is the pin a core PR
+          # commits on main can span only a few weeks, and an -M build is the pin a core PR
           # parked that long still needs.
           #
           # <base>-M<count>-<short-sha>. The SHA suffix is required, not optional:

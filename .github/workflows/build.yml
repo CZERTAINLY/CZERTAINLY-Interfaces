@@ -103,7 +103,6 @@ jobs:
 
       # The coordinate is mutable, and job concurrency does not order runs by commit
       # freshness - an older run finishing later would overwrite newer bytes.
-      # Same stand-down as core/.github/workflows/dispatch-preview-docker.yml.
       - id: freshness
         name: Stand down if the PR head has moved
         env:
