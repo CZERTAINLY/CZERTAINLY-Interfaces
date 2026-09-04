@@ -141,15 +141,17 @@ jobs:
             echo "pr_deleted=$deleted"
             echo "pr_failed=$failed"
           } >> "$GITHUB_ENV"
-          # Nothing deleted while every attempt failed is not a success. The cause may
-          # be authorization, a transient API failure, or the last-version rejection -
-          # the errors above distinguish them.
+          # Recorded rather than raised here: exiting would skip the prune sweep
+          # below, and the summary would then report it as nothing-to-prune. The
+          # gate at the end of the job raises once both sweeps have had their turn.
           if [ "$failed" -gt 0 ] && [ "$deleted" -eq 0 ]; then
-            echo "::error::every delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
-            exit 1
+            echo "::error::every PR-snapshot delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
+            echo "sweep_failed=1" >> "$GITHUB_ENV"
           fi
 
       - name: Prune immutable builds outside the newest 50 and older than 90 days
+        # Independent of the sweep above: a failure there must not skip this one.
+        if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -166,9 +168,9 @@ jobs:
           # commits on main span about 24 days, and an -M build is the pin a core PR
           # parked that long still needs.
           #
-          # <base>-M<count>-<short-sha>, the suffix optional so this does not depend
-          # on the publisher's exact form. Three-or-more digits and the end anchor
-          # keep a hand-cut release like 3.0.0-M1 out of reach.
+          # <base>-M<count>-<short-sha>. The SHA suffix is required, not optional:
+          # the digit count alone stops protecting milestone releases as soon as one
+          # reaches three digits, and 3.0.0-M100 is a plausible release.
           while IFS=$'\t' read -r id name; do
               if [ "$DELETING" != "yes" ]; then
                 echo "WOULD DELETE $name"
@@ -183,7 +185,7 @@ jobs:
                 echo "::warning::failed to delete $name (id $id)"
                 failed=$((failed + 1))
               fi
-          done < <(jq -r '[.[] | select(.name | test("-M[0-9]{3,}(-[0-9a-f]{7,12})?$"))]
+          done < <(jq -r '[.[] | select(.name | test("-M[0-9]{3,}-[0-9a-f]{7,12}$"))]
                           | sort_by(.created_at) | reverse | .[50:]
                           | map(select(.created_at < ((now - 90*86400) | todate)))
                           | .[] | [.id, .name] | @tsv' versions.json)
@@ -194,8 +196,8 @@ jobs:
             echo "m_failed=$failed"
           } >> "$GITHUB_ENV"
           if [ "$failed" -gt 0 ] && [ "$deleted" -eq 0 ]; then
-            echo "::error::every delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
-            exit 1
+            echo "::error::every immutable-build delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
+            echo "sweep_failed=1" >> "$GITHUB_ENV"
           fi
 
       # Timestamped builds inside the mainline SNAPSHOT are left alone: GitHub models
@@ -222,3 +224,10 @@ jobs:
               echo "that a DELETE through the \`/orgs/\` endpoint succeeds for this package type."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail if a sweep deleted nothing it attempted
+        # After the summary, so the counts render even on a failing run.
+        if: ${{ !cancelled() && env.sweep_failed == '1' }}
+        run: |
+          echo "::error::a sweep failed every delete it attempted - see the errors above"
+          exit 1
