@@ -101,13 +101,16 @@ jobs:
   publish-pr:
     name: Publish PR snapshot
     needs: check
-    # Both clauses are about read-only tokens, not bot heuristics: fork PRs get one
-    # regardless, and GitHub forces one on Dependabot runs whatever this workflow
-    # requests, so the deploy would 401 on every security update.
+    # Fork PRs get a read-only token regardless. Bot PRs are excluded on measured
+    # waste: Renovate rebases every open PR when main moves, so one merge minted
+    # eight coordinates nobody consumes, and its PRs stay open for months so the
+    # close-based cleanup never reaches them. Dependabot additionally cannot publish
+    # at all - GitHub forces its runs a read-only token whatever this file requests.
+    # user.type rather than a `[bot]` login suffix, which misses Copilot's agent.
     if: >-
       github.event_name == 'pull_request' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
-      github.event.pull_request.user.login != 'dependabot[bot]'
+      github.event.pull_request.user.type != 'Bot'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -199,5 +202,9 @@ jobs:
             echo ""
             echo "Built from the PR **merged into main**, not the branch head."
             echo ""
-            echo "> The \`Depends-On:\` marker is not read yet - tracking in OmniTrustILM/core#2191."
+            echo "\`core\` CI resolves that marker and builds against this coordinate for the"
+            echo "duration of review, so both halves of a breaking change are reviewed on code"
+            echo "that has compiled. The marker clears itself: once this PR merges, re-run all"
+            echo "jobs on the \`core\` PR and the pin gate goes green against mainline. No pom"
+            echo "edit, and no push - a push would dismiss the approval."
           } >> "$GITHUB_STEP_SUMMARY"
