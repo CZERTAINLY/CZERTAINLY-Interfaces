@@ -25,7 +25,8 @@ public class TokenInstanceDetailDto extends NameAndUuidDto {
     @Schema(description = "Connector UUID", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String connectorUuid;
 
-    @Schema(description = "Connector kind. Required for connectors based on version 1 of the connector framework; omitted for connectors based on version 2 (NG) of the connector framework.",
+    @Schema(description = "Connector kind. Required for connectors based on version 1 of the connector framework;"
+            + " omitted for connectors based on version 2 (NG) of the connector framework.",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String kind;
 

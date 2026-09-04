@@ -58,8 +58,8 @@ public interface TokenInstanceController extends AuthProtectedController {
     @Operation(summary = "List available token attributes for the specified connector")
     @GetMapping(path = "/{connectorUuid}/attributes", produces = MediaType.APPLICATION_JSON_VALUE)
     List<BaseAttribute> listTokenAttributes(@Parameter(description = "Connector UUID") @PathVariable UUID connectorUuid,
-            @Parameter(
-                    description = "Connector kind. Required for connectors based on version 1 of the connector framework; omit for connectors based on version 2 (NG) of the connector framework.") @Nullable @RequestParam(
+            @Parameter(description = "Connector kind. Required for connectors based on version 1 of the connector "
+                    + "framework; omit for connectors based on version 2 (NG) of the connector framework.") @Nullable @RequestParam(
                             required = false) String kind)
             throws ConnectorException, NotFoundException;
 
@@ -85,7 +85,7 @@ public interface TokenInstanceController extends AuthProtectedController {
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 
             @ApiResponse(responseCode = "201", description = "Token Instance Created Successfully"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
             @ApiResponse(responseCode = "404", description = "Token Instance, Connector or Credential not found",
@@ -103,7 +103,7 @@ public interface TokenInstanceController extends AuthProtectedController {
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
 
             @ApiResponse(responseCode = "200", description = "Token Instance Updated"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",

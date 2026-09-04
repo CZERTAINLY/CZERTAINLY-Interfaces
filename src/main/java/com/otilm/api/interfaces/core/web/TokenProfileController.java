@@ -94,7 +94,7 @@ public interface TokenProfileController extends AuthProtectedController {
 
     @Operation(summary = "Edit Token Profile")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Token Profile updated"),
+            @ApiResponse(responseCode = "200", description = "Token Profile updated"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
@@ -158,7 +158,7 @@ public interface TokenProfileController extends AuthProtectedController {
     @Operation(summary = "Delete multiple Token Profiles")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Token Profiles deleted"),
-            @ApiResponse(responseCode = "422", description = "Unprocessible Entity",
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @DeleteMapping(path = "/tokenProfiles", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -195,7 +195,7 @@ public interface TokenProfileController extends AuthProtectedController {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Operation(summary = "List supported token profile key usages",
-            description = "Returns the key usages supported for the supplied token context")
+            description = "Returns the key usages supported for the specified token instance")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Supported key usages retrieved"),
             @ApiResponse(responseCode = "404", description = "Token Instance not found",
