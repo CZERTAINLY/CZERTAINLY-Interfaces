@@ -1,0 +1,233 @@
+name: Clean up PR snapshots
+
+# Weekly cron, not `pull_request: closed`: merging the interfaces PR closes it,
+# and deleting the artifact while a coupled core PR still overrides to that
+# coordinate breaks its next run. The grace period below bounds that gap.
+#
+# Age is the only liveness test - nothing checks whether an open core PR still
+# names the coordinate.
+on:
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Classify only, delete nothing (a run is dry regardless unless the workflow is armed)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+# Never cancel: a half-finished sweep is harder to reason about than a queued
+# one.
+concurrency:
+  group: cleanup-pr-packages
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    # The package coordinates below are hardcoded to this repository while the PR
+    # lookup derives from GITHUB_REPOSITORY, so a copy elsewhere would classify
+    # and delete against different repos.
+    if: github.repository == 'OmniTrustILM/interfaces'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: read
+    env:
+      PACKAGE: com.otilm.interfaces
+      # Read in every step that decides rather than relayed as a step output, which
+      # renders empty if a step id changes. Every delete requires an affirmative
+      # value to proceed.
+      ARMED: ${{ vars.CLEANUP_PACKAGES_ARMED }}
+      FORCE_DRY: ${{ inputs.dry_run }}
+    steps:
+      # Deletion is off until the repository variable CLEANUP_PACKAGES_ARMED is
+      # 'true'; until then every run classifies and prints WOULD DELETE. Arming
+      # needs no code change.
+      #
+      # Whether an Actions token may DELETE through the /orgs/ endpoint for a
+      # repository-scoped package type is unverified, so the first armed run fails
+      # loudly below if every delete is refused.
+      #
+      # A kill switch, not an authorization boundary: a dispatch runs the workflow
+      # file from the ref it targets.
+      - name: Fetch package versions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # --slurp WRAPS each page in an outer array rather than flattening, so `.[] |
+          # .name` would index a page. flatten(1) also yields [] rather than null when
+          # the listing is empty.
+          gh api --paginate --slurp \
+            "/orgs/OmniTrustILM/packages/maven/${PACKAGE}/versions" \
+            | jq 'flatten(1)' > versions.json
+          echo "total versions: $(jq 'length' versions.json)"
+
+      - name: Delete PR snapshots for PRs closed over 7 days ago
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # No -e: one failed delete, or one PR lookup that 404s, must not abort the
+          # sweep. Every gh call below is individually guarded.
+          set -uo pipefail
+
+          if [ "${ARMED:-}" = "true" ] && [ "${FORCE_DRY:-}" != "true" ]; then
+            DELETING=yes
+            echo "::notice::Armed run - deletions will be performed."
+          elif [ "${ARMED:-}" = "true" ]; then
+            DELETING=no
+            echo "::notice::Dry run requested for this dispatch."
+          else
+            DELETING=no
+            echo "::notice::CLEANUP_PACKAGES_ARMED is not set to true - classifying only."
+          fi
+
+          CUTOFF=$(date -u -d '7 days ago' +%s)
+          case "$CUTOFF" in
+            ''|*[!0-9]*) echo "::error::could not compute the cutoff timestamp"; exit 1 ;;
+          esac
+
+          deleted=0; failed=0
+          # Process substitution, not a pipe: a `jq | while` body runs in a subshell and
+          # the counters would read 0 after the loop.
+          while IFS=$'\t' read -r id name; do
+              num=${name#*-alpha-PR}; num=${num%-SNAPSHOT}
+              case "$num" in
+                ''|*[!0-9]*) echo "::warning::cannot parse a PR number from $name - keeping"; continue ;;
+              esac
+
+              # Fetched live per version: a PR reopened since the listing reports a null
+              # closed_at and is kept, which is what makes the stale version list harmless.
+              closed=$(gh api "repos/${GITHUB_REPOSITORY}/pulls/$num" --jq '.closed_at // empty' || true)
+              if [ -z "$closed" ]; then
+                echo "keep    $name (PR #$num still open, or the lookup failed)"
+                continue
+              fi
+
+              # Parsed before comparing, and kept on failure: an empty operand does not make
+              # `[ "" -ge N ]` false - it returns 2, which an `if` treats as false and falls
+              # through to the delete.
+              if ! closed_ts=$(date -u -d "$closed" +%s 2>/dev/null); then
+                echo "::warning::cannot parse closed_at $closed for $name - keeping"
+                continue
+              fi
+              if [ "$closed_ts" -ge "$CUTOFF" ]; then
+                echo "keep    $name (PR #$num closed $closed, inside the grace period)"
+                continue
+              fi
+
+              if [ "$DELETING" != "yes" ]; then
+                echo "WOULD DELETE $name (PR #$num closed $closed)"
+                continue
+              fi
+              if gh api -X DELETE \
+                   "/orgs/OmniTrustILM/packages/maven/${PACKAGE}/versions/$id"; then
+                echo "delete  $name (PR #$num closed $closed)"
+                deleted=$((deleted + 1))
+              else
+                echo "::warning::failed to delete $name (id $id)"
+                failed=$((failed + 1))
+              fi
+          done < <(jq -r '.[] | select(.name | test("-alpha-PR[0-9]+-SNAPSHOT$"))
+                          | [.id, .name] | @tsv' versions.json)
+
+          echo "pr-snapshots deleted=$deleted failed=$failed"
+          {
+            echo "pr_deleted=$deleted"
+            echo "pr_failed=$failed"
+          } >> "$GITHUB_ENV"
+          # Recorded rather than raised here: exiting would skip the prune sweep
+          # below, and the summary would then report it as nothing-to-prune. The
+          # gate at the end of the job raises once both sweeps have had their turn.
+          if [ "$failed" -gt 0 ] && [ "$deleted" -eq 0 ]; then
+            echo "::error::every PR-snapshot delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
+            echo "sweep_failed=1" >> "$GITHUB_ENV"
+          fi
+
+      - name: Prune immutable builds outside the newest 50 and older than 90 days
+        # Independent of the sweep above: a failure there must not skip this one.
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+
+          if [ "${ARMED:-}" = "true" ] && [ "${FORCE_DRY:-}" != "true" ]; then
+            DELETING=yes
+          else
+            DELETING=no
+          fi
+
+          deleted=0; failed=0
+          # Two conditions, because a bare count is a moving window: the newest 50
+          # commits on main can span only a few weeks, and an -M build is the pin a core PR
+          # parked that long still needs.
+          #
+          # Anchored to the exact shape the publisher mints: numeric base, -M<count>,
+          # short SHA. That is what keeps a hand-cut milestone release out of reach -
+          # 3.0.0-M1 has no SHA, 2.21.0-RC1-M2 has no numeric-only base - with no
+          # arbitrary minimum on the count.
+          while IFS=$'\t' read -r id name; do
+              if [ "$DELETING" != "yes" ]; then
+                echo "WOULD DELETE $name"
+                continue
+              fi
+              # The API refuses to delete a package's last remaining version.
+              if gh api -X DELETE \
+                   "/orgs/OmniTrustILM/packages/maven/${PACKAGE}/versions/$id"; then
+                echo "delete  $name"
+                deleted=$((deleted + 1))
+              else
+                echo "::warning::failed to delete $name (id $id)"
+                failed=$((failed + 1))
+              fi
+          done < <(jq -r '[.[] | select(.name | test("^[0-9]+(\\.[0-9]+)+-M[0-9]+-[0-9a-f]{7,12}$"))]
+                          | sort_by(.created_at) | reverse | .[50:]
+                          | map(select(.created_at < ((now - 90*86400) | todate)))
+                          | .[] | [.id, .name] | @tsv' versions.json)
+
+          echo "immutable-builds deleted=$deleted failed=$failed"
+          {
+            echo "m_deleted=$deleted"
+            echo "m_failed=$failed"
+          } >> "$GITHUB_ENV"
+          if [ "$failed" -gt 0 ] && [ "$deleted" -eq 0 ]; then
+            echo "::error::every immutable-build delete attempt failed - check the API errors above (403 means the token is not authorized for this endpoint)"
+            echo "sweep_failed=1" >> "$GITHUB_ENV"
+          fi
+
+      # Timestamped builds inside the mainline SNAPSHOT are left alone: GitHub models
+      # the whole SNAPSHOT as one version entity and deletes whole versions only.
+      - name: Summary
+        # always(): the only place the counts and the arming state are reported.
+        if: always()
+        run: |
+          set -euo pipefail
+          {
+            echo "### PR snapshot cleanup"
+            echo ""
+            echo "| Sweep | Deleted | Failed |"
+            echo "| --- | --- | --- |"
+            echo "| PR snapshots | ${pr_deleted:-0} | ${pr_failed:-0} |"
+            echo "| Immutable builds | ${m_deleted:-0} | ${m_failed:-0} |"
+            echo ""
+            if [ "${ARMED:-}" = "true" ] && [ "${FORCE_DRY:-}" != "true" ]; then
+              echo "Armed run."
+            else
+              echo "**Dry run - nothing was deleted.** Lines marked WOULD DELETE in the logs are what an"
+              echo "armed run would remove. Arm it by setting the repository variable"
+              echo "\`CLEANUP_PACKAGES_ARMED\` to \`true\`; no code change is needed. Confirm by hand first"
+              echo "that a DELETE through the \`/orgs/\` endpoint succeeds for this package type."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail if a sweep deleted nothing it attempted
+        # After the summary, so the counts render even on a failing run.
+        if: ${{ !cancelled() && env.sweep_failed == '1' }}
+        run: |
+          echo "::error::a sweep failed every delete it attempted - see the errors above"
+          exit 1
