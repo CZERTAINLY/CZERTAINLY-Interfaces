@@ -1,15 +1,13 @@
 name: Publish PR snapshot
 
-# Publishes <base>-alpha-PR<n>-SNAPSHOT so a coupled `core` PR can compile
-# against an unmerged interfaces change during review.
+# Publishes <base>-alpha-PR<n>-SNAPSHOT so a coupled `core` PR can compile against
+# an unmerged interfaces change during review.
 #
-# Its own workflow rather than a job in `Build interfaces`, because that one owns
-# the required `Check` context: a label event there would start a run whose verify
-# job is skipped, and a skipped job reports success on a required check. Applying
-# a routine label to a PR with a failing verify would then satisfy the gate.
+# Separate from `Build interfaces` because that workflow owns the required `Check`
+# context, and a label event there would emit a skipped `Check` - which counts as
+# passing. No job here may be named after a required context.
 #
-# `opened` is absent deliberately - a PR created with the label already on it also
-# fires `labeled`, so including both would build it twice.
+# `opened` is omitted: a PR created with the label also fires `labeled`.
 on:
   pull_request:
     branches: [main]
@@ -23,17 +21,12 @@ jobs:
   stage:
     name: Stage PR snapshot
     # Either the label was just applied, or an already-labelled PR got a commit.
-    # Testing the label list on every event would also rebuild for unrelated
-    # label changes while `publish-snapshot` happens to be present.
     #
     # Not an authorization boundary: labelling needs triage permission, and anyone
     # with it can edit this file in their own PR. Fork PRs get a read-only token
-    # regardless, which is what the repository check is for. Dependabot runs get
-    # one too, whatever this file requests, so a labelled Dependabot PR would
-    # reach the deploy and 401.
+    # regardless, which is what the repository check is for.
     if: >-
       github.event.pull_request.head.repo.full_name == github.repository &&
-      github.event.pull_request.user.login != 'dependabot[bot]' &&
       (
         (github.event.action == 'labeled' && github.event.label.name == 'publish-snapshot') ||
         (github.event.action != 'labeled' &&
@@ -49,9 +42,8 @@ jobs:
           java-version: 21
           distribution: 'temurin'
 
-      # Verified here rather than depending on the `Check` job in the other
-      # workflow: `needs:` does not span workflows, so this is what stops a
-      # snapshot being published from a PR whose tests fail.
+      # `needs:` does not span workflows, so this is what stops a snapshot being
+      # published from a PR whose tests fail.
       - name: Verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -89,11 +81,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # Write access to this repository already implies registry write - the
-      # package is repository-scoped, and a push-triggered workflow on any branch
-      # can grant itself this token - so this job adds no authorization. What it
-      # avoids is running PR-controlled Maven beside the token: no checkout, and
-      # only deploy-file, which reads the pom as data.
+      # Adds no authorization: the package is repository-scoped, so write access
+      # already implies registry write. What it avoids is running PR-controlled
+      # Maven beside the token - no checkout, only deploy-file.
       packages: write
       pull-requests: read
     concurrency:
@@ -102,9 +92,9 @@ jobs:
       group: publish-pr-${{ github.event.pull_request.number }}
       cancel-in-progress: false
     steps:
-      # No checkout, and deliberately no ~/.m2 cache: the stage job runs
-      # PR-controlled Maven, and a restored local repository could carry a planted
-      # resolver or plugin jar, which Maven trusts without re-verifying.
+      # No checkout and no ~/.m2 cache: the stage job runs PR-controlled Maven, and
+      # a restored local repository could carry a planted resolver or plugin jar,
+      # which Maven trusts without re-verifying.
       - name: Set up JDK 21
         uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5.4.0
         with:
@@ -114,10 +104,9 @@ jobs:
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
 
-      # Read live, not from the payload. The payload is a snapshot taken when the
-      # event fired, so it still says "labelled" after the label is removed, and a
-      # re-run replays whatever the original event carried. The coordinate is also
-      # mutable, so a run that lost the race must not overwrite newer bytes.
+      # Live, not from the payload: the payload is frozen at event time, so it still
+      # says "labelled" after the label is removed, and a re-run replays it. The
+      # coordinate is mutable, so a run that lost the race must not overwrite it.
       - id: gate
         name: Stand down if the PR moved, closed, or lost the label
         env:
@@ -161,11 +150,10 @@ jobs:
           cd "$RUNNER_TEMP"   # no project here, and .mvn/ discovery walks upwards
           PRV=$(cat "$STAGE/coordinate.txt")
 
-          # Fully qualified and version-pinned: the `deploy:` prefix resolves to
-          # whatever Central calls latest, currently a 4.0.0 beta. deploy-file
-          # reads the pom as data - no parent resolution, no plugins, no
-          # lifecycle. Files named explicitly so nothing in the archive can
-          # redirect them.
+          # Version-pinned: the `deploy:` prefix resolves to whatever Central calls
+          # latest. deploy-file reads the pom as data - no parent resolution, no
+          # plugins, no lifecycle. Files named explicitly so nothing in the archive
+          # can redirect them.
           mvn -B -ntp org.apache.maven.plugins:maven-deploy-plugin:3.1.4:deploy-file \
               -Durl=https://maven.pkg.github.com/omnitrustilm/interfaces \
               -DrepositoryId=github \
@@ -186,10 +174,6 @@ jobs:
             echo ""
             echo "To drop it: merge this PR, then re-run all jobs on the \`core\` PR - the marker"
             echo "clears itself. No body edit, no push."
-            echo ""
-            echo "> Not read by \`core\` yet - the resolver is not live, so adding the line has no"
-            echo "> effect. Until then, override \`interfaces.version\` in \`core/pom.xml\` by hand."
-            echo "> Tracking in OmniTrustILM/core#2191."
             echo ""
             echo "<sub>Built from the PR merged into main, not the branch head. Removing the"
             echo "label stops refreshing this coordinate but does not delete it.</sub>"
