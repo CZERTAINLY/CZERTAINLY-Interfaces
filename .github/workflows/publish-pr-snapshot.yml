@@ -47,7 +47,7 @@ jobs:
       - name: Verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn -B verify javadoc:jar -f pom.xml
+        run: mvn -B verify -f pom.xml
 
       # Staged here so the privileged job never runs Maven against PR-controlled
       # build configuration. Only the jar and a version-rewritten pom cross over.
