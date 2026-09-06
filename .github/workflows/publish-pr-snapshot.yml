@@ -87,9 +87,15 @@ jobs:
       packages: write
       pull-requests: read
     concurrency:
+      # Keyed by commit, not PR: only one job may be pending per group, so a
+      # newer arrival evicts the pending one - an older SHA finishing late would
+      # evict the newest publish and then stand down, leaving it unpublished.
+      # Per-commit groups never contend; the live head check below does the
+      # ordering. Re-runs of one commit still serialize, which is the point.
+      #
       # No cancel-in-progress: aborting mid-deploy leaves the package version
-      # metadata on a half-uploaded build. The stand-down below is the guard.
-      group: publish-pr-${{ github.event.pull_request.number }}
+      # metadata on a half-uploaded build.
+      group: publish-pr-${{ github.event.pull_request.head.sha }}
       cancel-in-progress: false
     steps:
       # No checkout and no ~/.m2 cache: the stage job runs PR-controlled Maven, and
