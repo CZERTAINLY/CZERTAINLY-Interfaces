@@ -5,17 +5,24 @@ import java.util.Map;
 import lombok.Data;
 
 /**
- * Statistics for the Signing Records dashboard. Every figure is sourced from shared tables (never per-instance metrics)
- * and is security-filtered identically to the Signing Records list endpoint, so the numbers are cluster-wide consistent
- * and scoped to the signing profiles the caller may access.
+ * Statistics for the Signing Records dashboard.
  *
  * <p>
- * The figures come in two kinds. How much was signed in a period — {@code volumeOverTime}, {@code countLast24h} and
- * {@code countLast7d} — is historical: deleting a signing record, whether by hand, by retention or by
- * delete-after-retrieval, does not change it. Every other figure describes the records currently <em>retained</em> and
- * does follow those deletions. The two therefore disagree by design once records have been removed, and neither is a
- * count of every signing that ever happened: recording is opt-in per signing profile, and nothing is counted for a
- * profile version that has it switched off.
+ * Every figure is sourced from shared tables, never per-instance metrics, and is security-filtered identically to the
+ * Signing Records list endpoint, so the numbers are cluster-wide consistent and scoped to the signing profiles the
+ * caller may access.
+ *
+ * <p>
+ * <b>Historical figures:</b> {@code volumeOverTime}, {@code countLast24h} and {@code countLast7d} count signings
+ * performed. Deleting a signing record leaves them unchanged, however it was deleted.
+ *
+ * <p>
+ * <b>Retained figures:</b> every other figure describes the records currently held, and deletions do carry through to
+ * them. The two kinds therefore disagree by design once records have been removed.
+ *
+ * <p>
+ * <b>Recording:</b> neither kind counts every signing that ever happened. Recording is opt-in per signing profile, and
+ * nothing is counted for a profile version that has it switched off.
  */
 @Data
 @Schema(name = "SigningRecordStatisticsDto", description = "Signing Records dashboard statistics")
