@@ -20,8 +20,6 @@ permissions:
 jobs:
   stage:
     name: Stage PR snapshot
-    # Either the label was just applied, or an already-labelled PR got a commit.
-    #
     # Not an authorization boundary: labelling needs triage permission, and anyone
     # with it can edit this file in their own PR. Fork PRs get a read-only token
     # regardless, which is what the repository check is for.
@@ -75,9 +73,45 @@ jobs:
           retention-days: 1
           if-no-files-found: error
 
+  # Admission control for the publish group below. A job's `if:` is evaluated
+  # before the job is queued, so a run that fails here never enters the group and
+  # cannot hold its pending slot - which is what makes a per-PR group safe.
+  preflight:
+    name: Check the PR snapshot is current
+    needs: stage
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      publish: ${{ steps.check.outputs.publish }}
+    steps:
+      - id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RUN_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          read -r STATE LIVE LABELS < <(gh api "repos/$REPO/pulls/$PR_NUMBER"             --jq '[.state, .head.sha, ([.labels[].name] | join(","))] | @tsv')
+
+          ok=true
+          [ "$STATE" = open ] || ok=false
+          case ",$LABELS," in *,publish-snapshot,*) ;; *) ok=false ;; esac
+          [ "$LIVE" = "$RUN_HEAD_SHA" ] || ok=false
+
+          if [ "$ok" = true ]; then
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::PR #$PR_NUMBER is $STATE at ${LIVE:0:8}, labels [$LABELS]; not publishing ${RUN_HEAD_SHA:0:8}."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          fi
+
   publish:
     name: Publish PR snapshot
-    needs: stage
+    needs: preflight
+    if: needs.preflight.outputs.publish == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -87,15 +121,15 @@ jobs:
       packages: write
       pull-requests: read
     concurrency:
-      # Keyed by commit, not PR: only one job may be pending per group, so a
-      # newer arrival evicts the pending one - an older SHA finishing late would
-      # evict the newest publish and then stand down, leaving it unpublished.
-      # Per-commit groups never contend; the live head check below does the
-      # ordering. Re-runs of one commit still serialize, which is the point.
+      # Keyed by PR: the coordinate is derived from the PR number alone and is
+      # mutable, so two commits' deploys must not interleave. They serialize
+      # instead, and the later-admitted run deploys last. `preflight` keeps stale
+      # runs out of the group, so the pending slot is never held by a run that
+      # will only stand down.
       #
       # No cancel-in-progress: aborting mid-deploy leaves the package version
       # metadata on a half-uploaded build.
-      group: publish-pr-${{ github.event.pull_request.head.sha }}
+      group: publish-pr-${{ github.event.pull_request.number }}
       cancel-in-progress: false
     steps:
       # No checkout and no ~/.m2 cache: the stage job runs PR-controlled Maven, and
@@ -111,8 +145,9 @@ jobs:
           server-password: GITHUB_TOKEN
 
       # Live, not from the payload: the payload is frozen at event time, so it still
-      # says "labelled" after the label is removed, and a re-run replays it. The
-      # coordinate is mutable, so a run that lost the race must not overwrite it.
+      # says "labelled" after the label is removed, and a re-run replays it. Checked
+      # again here because `preflight` ran before this job waited for the group, and
+      # the head can move during that wait.
       - id: gate
         name: Stand down if the PR moved, closed, or lost the label
         env:
