@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -25,7 +24,7 @@ class TokenProfileControllerContractTest {
 
     private static final String TOKEN_PROFILE_ATTRIBUTES_PATH = "/tokens/{tokenInstanceUuid}/tokenProfiles/attributes";
 
-    private static final String TOKEN_PROFILE_KEY_USAGES_PATH = "/tokens/{tokenInstanceUuid}/tokenProfile/keyUsages";
+    private static final String TOKEN_PROFILE_KEY_USAGES_PATH = "/tokens/{tokenInstanceUuid}/tokenProfiles/keyUsages";
 
     private static final String TOKEN_INSTANCE_UUID = "tokenInstanceUuid";
 
@@ -47,17 +46,17 @@ class TokenProfileControllerContractTest {
     }
 
     @Test
-    void supportedKeyUsagesArePublishedOnTheNewPostRoute() {
+    void supportedKeyUsagesArePublishedOnTheGetRoute() {
         // given
         Method keyUsages = method("listSupportedTokenProfileKeyUsages");
 
         // when
         RequestMapping controllerMapping = TokenProfileController.class.getAnnotation(RequestMapping.class);
-        PostMapping methodMapping = keyUsages.getAnnotation(PostMapping.class);
+        GetMapping methodMapping = keyUsages.getAnnotation(GetMapping.class);
 
         // then
         assertControllerBasePath(controllerMapping);
-        assertNotNull(methodMapping, "token profile key-usage discovery must be a POST");
+        assertNotNull(methodMapping, "token profile key-usage discovery must be a GET");
         assertArrayEquals(new String[]{TOKEN_PROFILE_KEY_USAGES_PATH}, methodMapping.path());
         assertArrayEquals(new String[]{MediaType.APPLICATION_JSON_VALUE}, methodMapping.produces());
         assertTokenInstancePathVariable(keyUsages);

@@ -204,7 +204,7 @@ public interface TokenProfileController extends AuthProtectedController {
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             @ApiResponse(responseCode = "503", description = "Connector Communication Error",
                     content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
-    @PostMapping(path = "/tokens/{tokenInstanceUuid}/tokenProfile/keyUsages",
+    @GetMapping(path = "/tokens/{tokenInstanceUuid}/tokenProfiles/keyUsages",
             produces = MediaType.APPLICATION_JSON_VALUE)
     List<KeyUsage> listSupportedTokenProfileKeyUsages(
             @Parameter(description = "Token Instance UUID") @PathVariable String tokenInstanceUuid)
