@@ -76,6 +76,8 @@ public interface TokenProfileController extends AuthProtectedController {
     @Operation(summary = "Create Token Profile")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Token Profile added"),
+            @ApiResponse(responseCode = "409", description = "Already Exists",
+                    content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")})),
