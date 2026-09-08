@@ -158,6 +158,6 @@ public class ClientCertificateRegistrationDto {
     @AssertTrue(message = "Supply authorizationSecret or set generateEabCredential, not both")
     @Schema(hidden = true)
     public boolean isSingleChallengeSource() {
-        return !(generateEabCredential && authorizationSecret != null && !authorizationSecret.isBlank());
+        return !(generateEabCredential && authorizationSecret != null);
     }
 }

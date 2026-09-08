@@ -234,12 +234,13 @@ class ClientCertificateRegistrationDtoTest {
     }
 
     @Test
-    void generateEabCredentialWithBlankSecret_satisfiesSingleChallengeSource() {
+    void generateEabCredentialWithWhitespaceSecret_violatesSingleChallengeSource() {
         ClientCertificateRegistrationDto dto = new ClientCertificateRegistrationDto();
         dto.setSubjectDn("CN=x");
         dto.setGenerateEabCredential(true);
-        dto.setAuthorizationSecret("   ");
-        assertTrue(dto.isSingleChallengeSource(), "a blank secret is not a supplied challenge");
+        dto.setAuthorizationSecret("            ");
+        assertFalse(dto.isSingleChallengeSource(),
+                "a 12-space secret passes the size and pattern constraints, so it is a supplied secret here too");
     }
 
     private static Set<ConstraintViolation<ClientCertificateRegistrationDto>> challengeSourceViolations(
