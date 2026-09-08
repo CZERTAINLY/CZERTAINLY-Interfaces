@@ -14,9 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Pins the token-profile discovery routes against their annotation values. One route moved from a controller whose base
- * path included {@code /tokens}, while the other was added for token-profile key-usage discovery, so both the
- * controller base path and method path participate in their published URLs.
+ * Pins the token-profile discovery routes against their annotation values because both the controller base path and
+ * method path determine their published URLs.
  */
 class TokenProfileControllerContractTest {
 
