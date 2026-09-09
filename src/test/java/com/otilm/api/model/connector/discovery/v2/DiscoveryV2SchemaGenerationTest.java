@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Generates the OpenAPI schema and asserts each union base carries a {@code discriminator} stanza with a
  * {@code mapping}, and that the discriminator property appears in every {@code oneOf} subschema — the condition client
  * generators require, and the reason the discriminator sits inside the payload rather than on its container (see
- * {@code DiscoveredItemPayloadDto} and {@code DiscoveryEvent}). Generation goes through swagger-core's
+ * {@link DiscoveredItemPayloadInterface} and {@link DiscoveryEventInterface}). Generation goes through swagger-core's
  * {@code ModelConverters}, the resolver springdoc uses at runtime, because this module has no OpenAPI build plugin to
  * invoke.
  */
@@ -34,7 +34,7 @@ class DiscoveryV2SchemaGenerationTest {
 
     @Test
     void discoveredItemPayloadSchemaCarriesADiscriminatorWithMapping() {
-        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(DiscoveredItemPayloadDto.class);
+        Map<String, Schema> schemas = openApi31Schemas(DiscoveredItemPayloadDto.class);
 
         Schema<?> base = schemas.get("DiscoveredItemPayload");
         assertNotNull(base, "expected a generated schema named DiscoveredItemPayload; found " + schemas.keySet());
@@ -55,7 +55,7 @@ class DiscoveryV2SchemaGenerationTest {
 
     @Test
     void discoveryEventSchemaCarriesADiscriminatorWithMapping() {
-        Map<String, Schema> schemas = ModelConverters.getInstance().readAll(DiscoveryEvent.class);
+        Map<String, Schema> schemas = openApi31Schemas(DiscoveryEvent.class);
 
         Schema<?> base = schemas.get("DiscoveryEvent");
         assertNotNull(base, "expected a generated schema named DiscoveryEvent; found " + schemas.keySet());
@@ -92,8 +92,9 @@ class DiscoveryV2SchemaGenerationTest {
     }
 
     /**
-     * A union that published the discriminator as a property of its own would invite a client to set it there rather
-     * than on the arm it picked.
+     * These two unions publish no properties of their own, so the discriminator reaches a client through
+     * {@code required} plus each arm's own declaration. That is the shape swagger-core resolves them to, not a rule
+     * every union in the module follows: {@code CryptographyKeySchemaTest} pins union parents that do carry properties.
      */
     @Test
     void thePayloadUnionRequiresTheDiscriminatorWithoutPublishingItAsItsOwnProperty() {
@@ -112,16 +113,9 @@ class DiscoveryV2SchemaGenerationTest {
     }
 
     /**
-     * The OpenAPI rule every generated discriminator must satisfy: {@code discriminator.propertyName} must name a
-     * property present in the subschema. springdoc/swagger-core will happily generate a discriminator that fails this
-     * rule, so it is checked against the generated subschema rather than assumed.
-     *
-     * <p>
-     * The property has to be declared directly. A subschema must not reach it by composing the union with
-     * {@code allOf: [{$ref: <union>}, {<own fields>}]}, because the union is a {@code oneOf} over these same
-     * subschemas: the composition is a cycle, which a client generator resolves into mutually recursive type aliases
-     * carrying none of the subschema's own fields.
-     * </p>
+     * swagger-core will generate a discriminator naming a property no subschema declares, so it is checked rather than
+     * assumed — and declared directly, since composing the union instead is the cycle
+     * {@link DiscoveredItemPayloadInterface} describes.
      */
     private void assertSubschemaDeclaresProperty(Map<String, Schema> schemas, String schemaName, String property) {
         Schema<?> sub = schemas.get(schemaName);

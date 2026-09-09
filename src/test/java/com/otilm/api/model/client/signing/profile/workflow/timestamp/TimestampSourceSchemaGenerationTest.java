@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.otilm.api.testsupport.OpenApiSchemaTestSupport.openApi31Schemas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,6 +27,13 @@ class TimestampSourceSchemaGenerationTest {
 
     /** The union is a {@code oneOf} over its arms, so an arm that composes it is a cycle no generator can express. */
     private static final String COMPOSITION_IS_A_CYCLE = "an arm must not compose the union it belongs to";
+
+    /**
+     * The arm declares {@code type} with a getter and no mutator, the shape swagger-core publishes as {@code readOnly}
+     * — which would tell a generated client not to send the discriminator the union requires.
+     */
+    private static final String DISCRIMINATOR_STAYS_WRITABLE = "the discriminator must stay writable: it is sent in a "
+            + "request body";
 
     @Test
     void theResponseUnionCarriesADiscriminatorWithMapping() {
@@ -75,6 +83,7 @@ class TimestampSourceSchemaGenerationTest {
         assertNull(arm.getAllOf(), COMPOSITION_IS_A_CYCLE);
         assertEquals(Set.of("type", "signingProfile"), arm.getProperties().keySet());
         assertTrue(arm.getRequired().contains("type"), RESPONSE_ARM + " must require the type discriminator");
+        assertNotEquals(Boolean.TRUE, arm.getProperties().get("type").getReadOnly(), DISCRIMINATOR_STAYS_WRITABLE);
     }
 
     @Test
@@ -85,6 +94,7 @@ class TimestampSourceSchemaGenerationTest {
         assertNull(arm.getAllOf(), COMPOSITION_IS_A_CYCLE);
         assertEquals(Set.of("type", "signingProfileUuid"), arm.getProperties().keySet());
         assertTrue(arm.getRequired().contains("type"), REQUEST_ARM + " must require the type discriminator");
+        assertNotEquals(Boolean.TRUE, arm.getProperties().get("type").getReadOnly(), DISCRIMINATOR_STAYS_WRITABLE);
     }
 
     /** Renaming a published schema breaks every generated client, so the four names are pinned here. */

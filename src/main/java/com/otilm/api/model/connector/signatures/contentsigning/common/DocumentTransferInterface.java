@@ -26,6 +26,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public interface DocumentTransferInterface {
 
     @Schema(description = "Transport this document uses, and the discriminator selecting the fields that accompany "
-            + "it", requiredMode = Schema.RequiredMode.REQUIRED, examples = {DocumentTransferMode.Codes.INLINE})
+            + "it", requiredMode = Schema.RequiredMode.REQUIRED)
     DocumentTransferMode getTransferMode();
 }

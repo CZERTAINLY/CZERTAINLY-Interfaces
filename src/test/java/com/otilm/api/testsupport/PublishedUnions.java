@@ -16,6 +16,11 @@ import java.util.stream.Stream;
 /**
  * Finds the unions the model package publishes, so a document-wide invariant does not have to be kept as a hand-written
  * list of families.
+ *
+ * <p>
+ * The scan is confined to {@code com.otilm.api.model}, so a union declared elsewhere in the module — under
+ * {@code com.otilm.core}, say — is invisible to every guard built on it.
+ * </p>
  */
 public final class PublishedUnions {
 
@@ -40,6 +45,30 @@ public final class PublishedUnions {
                 .toList();
     }
 
+    /**
+     * The name the document publishes a union under, which is the {@code @Schema} name wherever one is set. Read from
+     * the type's own annotation: {@code @Schema} is {@code @Inherited}, so a subtype would otherwise answer with its
+     * parent's name.
+     */
+    public static String publishedName(Class<?> declaring) {
+        Schema schema = declaring.getDeclaredAnnotation(Schema.class);
+        return schema == null || schema.name().isEmpty() ? declaring.getSimpleName() : schema.name();
+    }
+
+    /** The schema a type publishes, which is the one it delegates to wherever {@code implementation} names one. */
+    public static String publishedSchemaName(Class<?> type) {
+        Schema schema = type.getDeclaredAnnotation(Schema.class);
+        return schema != null && schema.implementation() != Void.class
+                ? publishedName(schema.implementation())
+                : publishedName(type);
+    }
+
+    /** The arms a union declares, as the {@code oneOf} names them. */
+    public static List<Class<?>> arms(Class<?> declaring) {
+        Schema schema = declaring.getDeclaredAnnotation(Schema.class);
+        return schema == null ? List.of() : List.of(schema.oneOf());
+    }
+
     private static Stream<String> classNamesUnder(Path root) {
         try (Stream<Path> files = Files.walk(root)) {
             return files
@@ -53,7 +82,7 @@ public final class PublishedUnions {
     }
 
     private static boolean declaresAOneOf(Class<?> type) {
-        Schema schema = type.getAnnotation(Schema.class);
+        Schema schema = type.getDeclaredAnnotation(Schema.class);
         return schema != null && schema.oneOf().length > 0;
     }
 

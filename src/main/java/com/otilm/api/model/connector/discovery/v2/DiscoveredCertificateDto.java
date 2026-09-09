@@ -37,7 +37,7 @@ public class DiscoveredCertificateDto implements DiscoveredItemPayloadDto {
     // DiscoveredItemPayloadInterface instead.
     // S1170 wants this static because it is final with a constant initializer. It cannot be:
     // Lombok generates a static getter for a static field, which then no longer implements
-    // DiscoveredItemPayloadDto.getResource(), so the class does not compile. Verified, not assumed.
+    // DiscoveredItemPayloadInterface.getResource(), so the class does not compile. Verified, not assumed.
     @SuppressWarnings("java:S1170")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private final Resource resource = Resource.CERTIFICATE;

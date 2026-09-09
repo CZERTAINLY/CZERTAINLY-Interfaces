@@ -11,12 +11,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
+import static com.otilm.api.testsupport.OpenApiSchemaTestSupport.openApi31Schemas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -160,19 +164,14 @@ class ComputeDtbsSchemaGenerationTest {
     }
 
     /**
-     * The document transport is one component reached from several places.
+     * The document transport is one component reached from several places. Resolved in 3.1 mode, the mode the published
+     * specification uses: 3.0 drops every {@code $ref} sibling, so a difference in one would be invisible here.
      */
     @Test
     void documentTransferIsPublishedIdenticallyFromEveryEntryPoint() {
-        Schema<?> viaCompute = ModelConverters
-                .getInstance()
-                .readAll(ComputeDtbsInterface.class)
-                .get("DocumentTransfer");
-        Schema<?> viaSignedDocument = ModelConverters
-                .getInstance()
-                .readAll(SignedDocumentRequestDto.class)
-                .get("DocumentTransfer");
-        Schema<?> standalone = ModelConverters.getInstance().readAll(DocumentTransferDto.class).get("DocumentTransfer");
+        Schema<?> viaCompute = openApi31Schemas(ComputeDtbsInterface.class).get("DocumentTransfer");
+        Schema<?> viaSignedDocument = openApi31Schemas(SignedDocumentRequestDto.class).get("DocumentTransfer");
+        Schema<?> standalone = openApi31Schemas(DocumentTransferDto.class).get("DocumentTransfer");
 
         assertNotNull(viaCompute, "DocumentTransfer not reached from the computeDtbs union");
         assertNotNull(viaSignedDocument, "DocumentTransfer not reached from SignedDocumentRequestDto");
@@ -254,6 +253,51 @@ class ComputeDtbsSchemaGenerationTest {
     }
 
     /**
+     * The arms are request bodies and declare {@code transferMode} with a getter and no mutator, the shape swagger-core
+     * publishes as {@code readOnly} — which would tell a generated client not to send the discriminator the union
+     * requires.
+     */
+    @Test
+    void neitherDocumentTransferArmPublishesTheDiscriminatorReadOnly() {
+        Map<String, Schema> schemas = openApi31Schemas(DocumentTransferDto.class);
+
+        for (String arm : List.of("InlineDocumentTransfer", "DigestOnlyDocumentTransfer")) {
+            assertNotEquals(Boolean.TRUE, transferMode(schemas, arm).getReadOnly(),
+                    arm + " must keep the discriminator writable: it is sent in a request body");
+        }
+    }
+
+    /**
+     * Both arms override one shared accessor and carry no schema annotation of their own, so anything naming a code
+     * there is published on both arms and can only ever be right for one of them.
+     */
+    @Test
+    void neitherDocumentTransferArmNamesTheOtherArmsCode() {
+        Map<String, Schema> schemas = openApi31Schemas(DocumentTransferDto.class);
+
+        assertNamesOnlyItsOwnCode(schemas, "InlineDocumentTransfer", DocumentTransferMode.Codes.INLINE);
+        assertNamesOnlyItsOwnCode(schemas, "DigestOnlyDocumentTransfer", DocumentTransferMode.Codes.DIGEST_ONLY);
+    }
+
+    private static void assertNamesOnlyItsOwnCode(Map<String, Schema> schemas, String arm, String code) {
+        Schema<?> transferMode = transferMode(schemas, arm);
+        Stream
+                .of(transferMode.getExamples(), transferMode.getEnum())
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
+                .forEach(named -> assertEquals(code, named,
+                        arm + " names a transferMode it cannot carry; its own code is " + code));
+    }
+
+    private static Schema<?> transferMode(Map<String, Schema> schemas, String arm) {
+        Schema<?> schema = schemas.get(arm);
+        assertNotNull(schema, "expected a generated schema named " + arm + "; found " + schemas.keySet());
+        Schema<?> property = (Schema<?>) schema.getProperties().get("transferMode");
+        assertNotNull(property, arm + " does not declare transferMode; found " + schema.getProperties().keySet());
+        return property;
+    }
+
+    /**
      * An arm has to declare the property itself: composing the union it belongs to is a cycle no generator can emit.
      */
     private static void assertArmDeclares(Map<String, Schema> schemas, String arm, String property) {
@@ -267,7 +311,6 @@ class ComputeDtbsSchemaGenerationTest {
         return schema != null && schema.getProperties() != null && schema.getProperties().containsKey(property);
     }
 
-    /** Whether {@code property} appears in this schema's own {@code required} list. */
     private static boolean declaresRequired(Schema<?> schema, String property) {
         return schema != null && schema.getRequired() != null && schema.getRequired().contains(property);
     }
