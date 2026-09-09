@@ -36,7 +36,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = "Cryptographic Operations Controller", description = "Cryptographic Operations Controller API")
 @ApiResponses(value = {
         @ApiResponse(responseCode = "404", description = "Not Found",
-                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class)))})
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "502", description = "Connector Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),
+        @ApiResponse(responseCode = "503", description = "Connector Communication Error",
+                content = @Content(schema = @Schema(implementation = ErrorMessageDto.class))),})
 public interface CryptographicOperationsController extends AuthProtectedController {
 
     /////////////////////////////////////////////////////////////////////////////////

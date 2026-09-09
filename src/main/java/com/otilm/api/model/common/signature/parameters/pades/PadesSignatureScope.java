@@ -21,8 +21,9 @@ import java.util.Arrays;
 public enum PadesSignatureScope implements IPlatformEnum {
 
     CERTIFICATION(Codes.CERTIFICATION, "Certification",
-            "A certification signature, applying the DocMDP permission level the operator configured. Only the "
-                    + "first signature in a document may certify."),
+            "A certification signature. Changes to the document afterwards are limited to filling in forms, "
+                    + "instantiating page templates, and adding further signatures; the permission level is "
+                    + "fixed and not configurable. Only the first signature in a document may certify."),
     REVISION(Codes.REVISION, "Revision", "An approval signature over the current revision of the document");
 
     public static class Codes {

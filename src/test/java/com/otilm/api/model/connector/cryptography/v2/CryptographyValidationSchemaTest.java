@@ -1,12 +1,16 @@
 package com.otilm.api.model.connector.cryptography.v2;
 
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportableKeyTypeV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportableKeyTypeV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyOperationResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.KeyPairDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.PrivateKeyDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.PublicKeyDataV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataResponseV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.SecretKeyDataV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.TransferableKeyTypeV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataResponseV2Dto;
 import io.swagger.v3.oas.models.media.Schema;
@@ -25,6 +29,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Named.named;
 
 class CryptographyValidationSchemaTest {
+
+    @Test
+    void importKeyRequestSchema_publishesKeyImportIdLengthBounds() {
+        // given
+        int minimumLength = 1;
+        int maximumLength = 256;
+        Map<String, Schema> schemas = openApi31Schemas(ImportKeyRequestV2Dto.class);
+
+        // when
+        Schema<?> keyImportId = property(schemas, ImportKeyRequestV2Dto.class, "keyImportId");
+
+        // then
+        assertEquals(minimumLength, keyImportId.getMinLength());
+        assertEquals(maximumLength, keyImportId.getMaxLength());
+    }
 
     @Test
     void createKeyRequestSchema_publishesKeyCreationIdLengthBounds() {
@@ -108,6 +127,30 @@ class CryptographyValidationSchemaTest {
 
     private static Named<SchemaPropertyContract> responseProperty(String name, Class<?> type, String property) {
         return named(name, new SchemaPropertyContract(type, property));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("keyTypeDeclarationSchemas")
+    void keyTypeDeclarationSchema_isPublishedInFullAndStaysClosed(Class<?> declarationType) {
+        // given
+        Map<String, Schema> schemas = openApi31Schemas(declarationType);
+
+        // when
+        Schema<?> declaration = schemas.get(declarationType.getSimpleName());
+
+        // then
+        assertNotNull(declaration, "schema must be generated for " + declarationType.getSimpleName());
+        assertNotNull(property(declaration, "keyRequestType"));
+        assertNotNull(property(declaration, "algorithms"));
+        assertEquals(Boolean.FALSE, declaration.getAdditionalProperties());
+        assertFalse(schemas.containsKey(TransferableKeyTypeV2Dto.class.getSimpleName()),
+                "the shared base must not reach the published document as a schema of its own");
+    }
+
+    static Stream<Named<Class<?>>> keyTypeDeclarationSchemas() {
+        return Stream
+                .of(named("importable key type", ImportableKeyTypeV2Dto.class),
+                        named("exportable key type", ExportableKeyTypeV2Dto.class));
     }
 
     private static Schema<?> property(Map<String, Schema> schemas, Class<?> type, String property) {

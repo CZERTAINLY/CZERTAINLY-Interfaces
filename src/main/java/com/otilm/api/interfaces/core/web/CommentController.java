@@ -6,8 +6,8 @@ import com.otilm.api.model.client.comment.CommentCreateRequestDto;
 import com.otilm.api.model.client.comment.CommentDto;
 import com.otilm.api.model.client.comment.CommentResponseDto;
 import com.otilm.api.model.common.ErrorMessageDto;
+import com.otilm.api.model.common.SortedPaginationRequestDto;
 import com.otilm.api.model.core.auth.Resource;
-import com.otilm.api.model.core.scheduler.PaginationRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RequestMapping("/v1/comments")
@@ -37,7 +38,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface CommentController extends AuthProtectedController {
 
     @Operation(summary = "List comment threads for an object",
-            description = "Pages over thread roots; each root carries its reply count. Replies are paged separately.")
+            description = "Pages over thread roots in creation order, oldest first unless the direction says "
+                    + "otherwise; each root carries its reply count. Replies are paged separately. "
+                    + "Pass anchorUuid, a thread root, to open the page holding that thread in the requested direction, "
+                    + "in place of the requested page; an anchor that no longer exists or is not a root of this object "
+                    + "leaves the requested page unchanged. A reply is anchored on the replies listing.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment threads retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
@@ -47,18 +52,25 @@ public interface CommentController extends AuthProtectedController {
     CommentResponseDto listComments(
             @Parameter(description = "Resource", required = true) @PathVariable Resource resource,
             @Parameter(description = "Object UUID", required = true) @PathVariable UUID objectUuid,
-            PaginationRequestDto pagination) throws NotFoundException;
+            @Parameter(description = "Thread root whose page replaces the requested one; ignored when it no longer "
+                    + "exists or is not a root of this object") @RequestParam(required = false) UUID anchorUuid,
+            SortedPaginationRequestDto pagination) throws NotFoundException;
 
     @Operation(summary = "List replies of a comment thread",
-            description = "Pages over the thread root's replies in creation order.")
+            description = "Pages over the thread root's replies in creation order, oldest first unless the direction says "
+                    + "otherwise. Pass anchorUuid to open the page holding a particular reply in the requested "
+                    + "direction, in place of the requested page; an anchor that no longer exists or is not a reply of "
+                    + "this thread leaves the requested page unchanged.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Thread replies retrieved"),
             @ApiResponse(responseCode = "422", description = "Unprocessable Entity",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)),
                             examples = {@ExampleObject(value = "[\"Error Message 1\",\"Error Message 2\"]")}))})
     @GetMapping(path = "/{uuid}/replies", produces = {"application/json"})
-    CommentResponseDto listReplies(@Parameter(description = "Comment UUID") @PathVariable UUID uuid,
-            PaginationRequestDto pagination) throws NotFoundException;
+    CommentResponseDto listReplies(@Parameter(description = "Comment UUID") @PathVariable UUID uuid, @Parameter(
+            description = "Reply whose page replaces the requested one; ignored when it no longer exists or is not a "
+                    + "reply of this thread") @RequestParam(required = false) UUID anchorUuid,
+            SortedPaginationRequestDto pagination) throws NotFoundException;
 
     @Operation(summary = "Post a comment or a reply on an object",
             description = "A request without parentUuid starts a new thread; with parentUuid it replies to that "

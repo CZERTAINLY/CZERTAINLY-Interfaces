@@ -2,6 +2,7 @@ package com.otilm.api.testsupport;
 
 import org.junit.jupiter.api.Test;
 
+import static com.otilm.api.testsupport.OpenApiProseAssertions.assertLanguageNeutral;
 import static com.otilm.api.testsupport.OpenApiProseAssertions.assertNoJargon;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,5 +47,35 @@ class OpenApiProseAssertionsTest {
     @Test
     void matchingIsCaseInsensitive() {
         assertThrows(AssertionError.class, () -> assertNoJargon("test", "The SWEEPER runs hourly."));
+    }
+
+    @Test
+    void everyLanguageTermIsStillCaughtOnItsOwn() {
+        for (String banned : OpenApiProseAssertions.BANNED_LANGUAGE_TERMS) {
+            assertThrows(AssertionError.class,
+                    () -> assertLanguageNeutral("test", "Prose about the " + banned + " here."),
+                    "implementation-language term \"" + banned + "\" is no longer caught");
+        }
+    }
+
+    /**
+     * A term that ends in a bracket has no word boundary after it, so demanding one silently disables the term. Both
+     * positions worth checking are covered: mid-sentence, and at the end of the text.
+     */
+    @Test
+    void aTypeNameEndingInBracketsIsCaught() {
+        AssertionError midSentence = assertThrows(AssertionError.class,
+                () -> assertLanguageNeutral("test", "The value is held as a char[] rather than a string."));
+        assertTrue(midSentence.getMessage().contains("char[]"), midSentence.getMessage());
+
+        AssertionError atEnd = assertThrows(AssertionError.class,
+                () -> assertLanguageNeutral("test", "The material arrives as a byte[]"));
+        assertTrue(atEnd.getMessage().contains("byte[]"), atEnd.getMessage());
+    }
+
+    @Test
+    void languageNeutralProseAboutTheSameThingPasses() {
+        assertDoesNotThrow(() -> assertLanguageNeutral("test",
+                "The material arrives as binary content, and the passphrase as characters the caller supplies."));
     }
 }

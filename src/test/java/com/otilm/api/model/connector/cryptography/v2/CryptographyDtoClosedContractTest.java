@@ -7,6 +7,14 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyAttributesRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.CreateKeyRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.key.DestroyKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportKeyResponseV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ExportableKeyTypeV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportKeyAttributesRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportKeyRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportKeyResultRequestV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.key.ImportableKeyTypeV2Dto;
+import com.otilm.api.model.connector.cryptography.v2.material.EncryptedKeyMaterialV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.CipherDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.RandomDataRequestV2Dto;
 import com.otilm.api.model.connector.cryptography.v2.operations.SignDataRequestV2Dto;
@@ -82,7 +90,15 @@ class CryptographyDtoClosedContractTest {
                         dto("cipher-data item", CipherDataV2Dto.class),
                         dto("signature-data item", SignatureDataV2Dto.class),
                         dto("signature-result item", SignatureResultItemV2Dto.class),
-                        dto("verification-response item", VerificationResponseItemV2Dto.class));
+                        dto("verification-response item", VerificationResponseItemV2Dto.class),
+                        dto("encrypted key material", EncryptedKeyMaterialV2Dto.class),
+                        dto("import-key request", ImportKeyRequestV2Dto.class),
+                        dto("import-key-attributes request", ImportKeyAttributesRequestV2Dto.class),
+                        dto("import-key-result request", ImportKeyResultRequestV2Dto.class),
+                        dto("importable key type", ImportableKeyTypeV2Dto.class),
+                        dto("export-key request", ExportKeyRequestV2Dto.class),
+                        dto("export-key response", ExportKeyResponseV2Dto.class),
+                        dto("exportable key type", ExportableKeyTypeV2Dto.class));
     }
 
     private static Named<DtoContract> dto(String name, Class<?> type) {

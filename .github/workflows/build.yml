@@ -6,6 +6,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# packages: read is required: pom.xml resolves the com.otilm parent from
+# maven.pkg.github.com.
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   check:
     if: github.event_name != 'push'
@@ -30,6 +36,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         run: mvn -B verify javadoc:jar -f pom.xml  # javadoc:jar catches broken {@link} refs before they break the publish workflow
+
+      # Staged here so the privileged job never runs Maven against PR-controlled
+      # build configuration. Only the jar and a version-rewritten pom cross over.
   build:
     if: github.event_name != 'pull_request'
     name: Build

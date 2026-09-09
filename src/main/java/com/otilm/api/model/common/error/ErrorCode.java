@@ -75,7 +75,21 @@ public enum ErrorCode {
 
     // CONNECTOR + DISCOVERY — interface-specific
     CHECKPOINT_LOST(ProblemTypeCategory.CONNECTOR, ConnectorInterface.DISCOVERY,
-            "Discovery checkpoint lost — run cannot be resumed", HttpStatus.GONE, false);
+            "Discovery checkpoint lost — run cannot be resumed", HttpStatus.GONE, false),
+
+    // CONNECTOR + CRYPTOGRAPHY — interface-specific
+    KEY_TYPE_NOT_IMPORTABLE(ProblemTypeCategory.CONNECTOR, ConnectorInterface.CRYPTOGRAPHY,
+            "Key type or algorithm cannot be imported into this token", HttpStatus.UNPROCESSABLE_ENTITY, false),
+    KEY_TYPE_NOT_EXPORTABLE(ProblemTypeCategory.CONNECTOR, ConnectorInterface.CRYPTOGRAPHY,
+            "Key type or algorithm cannot be exported from this token", HttpStatus.UNPROCESSABLE_ENTITY, false),
+    KEY_MATERIAL_MISMATCH(ProblemTypeCategory.CONNECTOR, ConnectorInterface.CRYPTOGRAPHY,
+            "Key material does not match the declared key type or algorithm", HttpStatus.UNPROCESSABLE_ENTITY, false),
+    KEY_DECRYPTION_FAILED(ProblemTypeCategory.CONNECTOR, ConnectorInterface.CRYPTOGRAPHY,
+            "Key material could not be decrypted with the supplied passphrase", HttpStatus.UNPROCESSABLE_ENTITY, false),
+    EXPORTABLE_NOT_SUPPORTED(ProblemTypeCategory.CONNECTOR, ConnectorInterface.CRYPTOGRAPHY,
+            "Token cannot hold a key that stays exportable", HttpStatus.UNPROCESSABLE_ENTITY, false),
+    KEY_NOT_EXPORTABLE(ProblemTypeCategory.CONNECTOR, ConnectorInterface.CRYPTOGRAPHY,
+            "Key was not created or imported as exportable", HttpStatus.UNPROCESSABLE_ENTITY, false);
 
     private final ProblemTypeCategory category;
 

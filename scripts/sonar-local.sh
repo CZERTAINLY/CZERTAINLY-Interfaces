@@ -76,8 +76,10 @@ fi
 echo "Running mvn verify with JaCoCo..."
 mvn -B -U verify -Dmaven.compiler.proc=full
 
+# Fully-qualified coordinates rather than the "sonar" prefix: prefix resolution walks the
+# remote plugin groups, which fails when the private package registry answers 401.
 echo "Running sonar:sonar..."
-mvn -B sonar:sonar \
+mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:5.7.0.6970:sonar \
     -Dmaven.compiler.proc=full \
     -Dsonar.projectKey="${PROJECT_KEY}" \
     -Dsonar.host.url="${SONAR_URL}" \
@@ -89,18 +91,36 @@ echo ""
 echo "=== SonarQube Results ==="
 echo "Dashboard: ${SONAR_URL}/dashboard?id=${PROJECT_KEY}"
 
-# Sonar processes the analysis report asynchronously after upload. Poll until
-# the projectStatus payload is available, then report.
+# Sonar processes the analysis report asynchronously after upload. The scanner records the
+# background task id, so wait for that task to finish: querying measures earlier returns an
+# empty payload and a quality gate status of NONE.
 echo ""
 echo "Waiting for Sonar to process the analysis..."
-for i in $(seq 1 60); do
-    PROBE=$(curl -s -u "${SONAR_CREDS}" \
-        "${SONAR_URL}/api/qualitygates/project_status?projectKey=${PROJECT_KEY}" 2>/dev/null || true)
-    if echo "${PROBE}" | python3 -c "import sys,json; d=json.load(sys.stdin); sys.exit(0 if 'projectStatus' in d else 1)" 2>/dev/null; then
+CE_TASK_ID=$(sed -n 's/^ceTaskId=//p' target/sonar/report-task.txt 2>/dev/null || true)
+if [ -z "${CE_TASK_ID}" ]; then
+    echo "ERROR: no ceTaskId in target/sonar/report-task.txt; the analysis was not submitted."
+    exit 1
+fi
+TASK_STATUS=""
+for i in $(seq 1 90); do
+    TASK_STATUS=$(curl -s -u "${SONAR_CREDS}" "${SONAR_URL}/api/ce/task?id=${CE_TASK_ID}" 2>/dev/null \
+        | python3 -c "import sys,json; print(json.load(sys.stdin)['task']['status'])" 2>/dev/null || true)
+    if [ "${TASK_STATUS}" = "SUCCESS" ]; then
         break
+    fi
+    if [ "${TASK_STATUS}" = "FAILED" ] || [ "${TASK_STATUS}" = "CANCELED" ]; then
+        echo "ERROR: Sonar background task ${CE_TASK_ID} ended as ${TASK_STATUS}."
+        exit 1
     fi
     sleep 2
 done
+if [ "${TASK_STATUS}" != "SUCCESS" ]; then
+    # Reporting here would show the previous analysis, which is worse than showing nothing.
+    echo "ERROR: Sonar background task ${CE_TASK_ID} did not finish within 3 minutes (last status: ${TASK_STATUS:-unknown})."
+    exit 1
+fi
+PROBE=$(curl -s -u "${SONAR_CREDS}" \
+    "${SONAR_URL}/api/qualitygates/project_status?projectKey=${PROJECT_KEY}" 2>/dev/null || true)
 
 # Determine the set of files changed against the upstream base branch (main).
 # We filter the issues report to those files only — ephemeral SonarQube has no
@@ -140,6 +160,51 @@ try:
         print(f'  {c[\"metricKey\"]}: {c[\"actualValue\"]} (threshold: {c[\"errorThreshold\"]}) - {c[\"status\"]}')
 except Exception as e:
     print(f'  WARN: Quality gate not yet available ({e}). See dashboard.')
+"
+
+echo ""
+echo "Project measures (whole project, not new code):"
+curl -s -u "${SONAR_CREDS}" \
+    "${SONAR_URL}/api/measures/component?component=${PROJECT_KEY}&metricKeys=coverage,line_coverage,duplicated_lines_density,duplicated_blocks,ncloc" \
+    | python3 -c "
+import sys, json
+labels = {
+    'coverage': 'Coverage',
+    'line_coverage': 'Line coverage',
+    'duplicated_lines_density': 'Duplicated lines',
+    'duplicated_blocks': 'Duplicated blocks',
+    'ncloc': 'Lines of code',
+}
+try:
+    measures = {m['metric']: m['value'] for m in json.load(sys.stdin)['component']['measures']}
+    for metric, label in labels.items():
+        if metric in measures:
+            unit = '%' if metric in ('coverage', 'line_coverage', 'duplicated_lines_density') else ''
+            print(f'  {label}: {measures[metric]}{unit}')
+except Exception as e:
+    print(f'  WARN: measures not available ({e}). See dashboard.')
+"
+
+echo ""
+echo "Duplications — ${SCOPE_DESC}:"
+curl -s -u "${SONAR_CREDS}" \
+    "${SONAR_URL}/api/measures/component_tree?component=${PROJECT_KEY}&metricKeys=duplicated_lines&qualifiers=FIL&ps=500" \
+    | CHANGED_LIST="${CHANGED}" python3 -c "
+import sys, json, os
+changed = [f.strip() for f in os.environ.get('CHANGED_LIST', '').splitlines() if f.strip()]
+try:
+    components = json.load(sys.stdin).get('components', [])
+    rows = []
+    for c in components:
+        lines = next((int(m['value']) for m in c.get('measures', []) if m['metric'] == 'duplicated_lines'), 0)
+        if lines and (not changed or any(c.get('path', '').endswith(f) for f in changed)):
+            rows.append((lines, c.get('path')))
+    if not rows:
+        print('  None.')
+    for lines, path in sorted(rows, reverse=True):
+        print(f'  {lines} duplicated lines: {path}')
+except Exception as e:
+    print(f'  WARN: duplications not available ({e}). See dashboard.')
 "
 
 echo ""
